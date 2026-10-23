@@ -1,0 +1,33 @@
+{
+  "name": "blazorui-monorepo",
+  "private": true,
+  "type": "module",
+  "description": "Node tooling for the BlazorUI React library, shared theme, and their tests.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p .",
+    "test:acceptance": "playwright test -c tests/react/acceptance"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@radix-ui/react-slot": "1.5.0",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.7",
+    "@types/node": "22.20.5",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "bootstrap": "5.3.8",
+    "clsx": "2.1.1",
+    "jsdom": "30.1.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "sass": "1.106.1",
+    "typescript": "5.9.3",
+    "vitest": "5.0.3"
+  }
+}

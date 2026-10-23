@@ -1,0 +1,32 @@
+// -----------------------------------------------------------------------------
+// boot-ui mixins
+// -----------------------------------------------------------------------------
+
+/// Live frosted-glass surface (HyperOS / iOS material).
+/// @param $alpha   Surface opacity. Defaults to the themed surface token.
+/// @param $tint    An RGB triplet (e.g. `var(--bs-primary-rgb)`) to tint with.
+/// @param $shadow  Elevation shadow appended after the glass edge.
+@mixin glass(
+  $alpha: var(--bui-glass-alpha),
+  $tint: var(--bs-body-bg-rgb),
+  $shadow: var(--bui-shadow-md)
+) {
+  background-color: rgba($tint, $alpha);
+  -webkit-backdrop-filter: blur(var(--bui-glass-blur)) saturate(var(--bui-glass-saturate));
+  backdrop-filter: blur(var(--bui-glass-blur)) saturate(var(--bui-glass-saturate));
+  border: 1px solid var(--bui-glass-border-color);
+  box-shadow: var(--bui-glass-edge), $shadow;
+
+  // No backdrop-filter (older Firefox ESR, some WebViews): go nearly opaque so
+  // text contrast never depends on what's behind the surface.
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: rgba($tint, 0.96);
+  }
+}
+
+/// Only animate for users who have not asked for reduced motion.
+@mixin motion-safe {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}

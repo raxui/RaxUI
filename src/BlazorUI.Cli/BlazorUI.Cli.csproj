@@ -18,7 +18,8 @@
   <ItemGroup>
     <None Include="../../README.md" Pack="true" PackagePath="/" />
     <AssemblyMetadata Include="RegistryVersion" Value="$(Version)" />
-    <EmbeddedResource Include="..\..\registry\**\*" LinkBase="registry" />
+    <!-- The React registry ships with the Node CLI, not this tool (ADR 006). -->
+    <EmbeddedResource Include="..\..\registry\**\*" Exclude="..\..\registry\react\**" LinkBase="registry" />
   </ItemGroup>
 
 </Project>

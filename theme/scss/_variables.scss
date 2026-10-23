@@ -1,0 +1,11 @@
+// -----------------------------------------------------------------------------
+// boot-ui's Bootstrap variables. Import before Bootstrap; set your own
+// Bootstrap variables before this file to override them.
+// -----------------------------------------------------------------------------
+
+// Tighter corners than iOS, and a font token (see _tokens.scss).
+$border-radius-sm: 0.5rem !default;
+$border-radius: 0.625rem !default;
+$border-radius-lg: 0.875rem !default;
+$border-radius-xl: 1.125rem !default;
+$font-family-sans-serif: var(--bui-font-sans) !default;

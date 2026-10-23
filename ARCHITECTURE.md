@@ -62,8 +62,8 @@ BlazorUI/
 │   └── button/                  button.tsx, _button.scss, manifest.json
 ├── src/react-cli/               Node CLI: init, add button
 ├── tests/react/                 component, CLI, and acceptance tests
-├── package.json                 npm workspaces (private)
-└── tsconfig.base.json
+├── package.json                 private Node tooling for tests
+└── tsconfig.json
 ```
 
 The .NET CLI embeds `registry/` but excludes `registry/react/`.
@@ -280,16 +280,16 @@ React manifests in `registry/react/<item>/manifest.json` share the same concepts
   "name": "button",
   "version": "0.1.0",
   "requires": ["foundation"],
-  "packages": { "@radix-ui/react-slot": "1.1.0" },
+  "packages": { "@radix-ui/react-slot": "1.5.0" },
   "styles": ["components/button"],
   "files": [
-    { "source": "button.tsx", "target": "components/ui/button.tsx", "type": "tsx", "sha256": "…" },
-    { "source": "_button.scss", "target": "styles/blazorui/components/_button.scss", "type": "scss", "sha256": "…" }
+    { "source": "registry/react/button/button.tsx", "target": "components/ui/button.tsx", "type": "tsx", "sha256": "…" },
+    { "source": "registry/react/button/_button.scss", "target": "styles/blazorui/components/_button.scss", "type": "scss", "sha256": "…" }
   ]
 }
 ```
 
-`target` is relative to the consumer's `src/`. File types are `tsx`, `ts`, and `scss`. `requires` lists other registry items, `packages` exact npm versions, and `styles` the SCSS partials to import, in order. The same rejection rules apply before writing. Values above are illustrative.
+`source` is relative to the repository root and must be under `registry/react/` or `theme/scss/`; the packed CLI keeps the same layout. `target` is relative to the consumer's `src/`: `tsx` and `ts` files go under `lib/` or `components/ui/`, `scss` files under `styles/blazorui/`. File types are `tsx`, `ts`, and `scss`. `requires` lists other registry items, `packages` exact npm versions, and `styles` the SCSS partials to import, in order. The same rejection rules apply before writing. Values above are illustrative.
 
 ### 6.3 Dependency Resolution
 

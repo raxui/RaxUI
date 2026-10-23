@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "name": "foundation",
+  "version": "0.1.0",
+  "description": "Theme context, class helper, and the shared theme partials.",
+  "requires": [],
+  "packages": {
+    "bootstrap": "5.3.8",
+    "sass": "1.106.1",
+    "clsx": "2.1.1"
+  },
+  "styles": [],
+  "files": [
+    {
+      "source": "registry/react/foundation/theme.tsx",
+      "target": "lib/theme.tsx",
+      "type": "tsx",
+      "sha256": "da278990952a3e3f6bc70ba0d8f89ab3bdf5fe6d4ecf3701d8f4e0db0c7e2a3f"
+    },
+    {
+      "source": "registry/react/foundation/utils.ts",
+      "target": "lib/utils.ts",
+      "type": "ts",
+      "sha256": "eb1eeb9b2f04cae9a7c82e965f3da16ab70744d3fe605dc7d5ff33dfed282f20"
+    },
+    {
+      "source": "theme/scss/_variables.scss",
+      "target": "styles/blazorui/_variables.scss",
+      "type": "scss",
+      "sha256": "2464254c4d5bf3cebfc4ba881620c8f58a4858658d5ced36d9fb2757a598078f"
+    },
+    {
+      "source": "theme/scss/_tokens.scss",
+      "target": "styles/blazorui/_tokens.scss",
+      "type": "scss",
+      "sha256": "594b0deccc684db687a82fdeaf270b4ee7761fb06b120b874a38041fbe3e4b13"
+    },
+    {
+      "source": "theme/scss/_accents.scss",
+      "target": "styles/blazorui/_accents.scss",
+      "type": "scss",
+      "sha256": "90a9ef6a2394987605088faa15af16ae65acf9c626a20d55d7662858d9e2f69e"
+    },
+    {
+      "source": "theme/scss/_mixins.scss",
+      "target": "styles/blazorui/_mixins.scss",
+      "type": "scss",
+      "sha256": "fcf0b0c6a22c92accab12ef59cfca56d594a1af1f0ba1cbda992ec8e5387a8c3"
+    },
+    {
+      "source": "theme/scss/_animations.scss",
+      "target": "styles/blazorui/_animations.scss",
+      "type": "scss",
+      "sha256": "776e2c11f966019c25e31b18e365be98e02405dd01ee1eb89da63bba009dff79"
+    },
+    {
+      "source": "theme/scss/_materials.scss",
+      "target": "styles/blazorui/_materials.scss",
+      "type": "scss",
+      "sha256": "60e1c502827f93ee67ad9954e7963d1fdd03155d0b8705f9c27d18534911f68f"
+    },
+    {
+      "source": "theme/scss/_text.scss",
+      "target": "styles/blazorui/_text.scss",
+      "type": "scss",
+      "sha256": "93ffdb4a649325906365ccced8f7c0f9e68d2cd0a17a1493771e9d7a7790b788"
+    },
+    {
+      "source": "theme/scss/_appearance.scss",
+      "target": "styles/blazorui/_appearance.scss",
+      "type": "scss",
+      "sha256": "d6627e214be583a7332815ca2f4773c067817c0abdaa3f54cd1c31a2076cedd8"
+    },
+    {
+      "source": "theme/scss/_core.scss",
+      "target": "styles/blazorui/_core.scss",
+      "type": "scss",
+      "sha256": "797df76eb1f6c8ec550aa79750fee642879acedd8b77f5e7a566b602c14c6b5b"
+    }
+  ]
+}

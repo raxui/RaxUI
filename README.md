@@ -52,6 +52,13 @@ Use `Variant` (`primary`, `secondary`, `outline`, `ghost`, `destructive`), `Size
 - `init` and `add button` are supported. Additional components, update commands,
   WebAssembly, and configurable paths remain future work.
 
+## React
+
+A React library with the same theme lives in this repository: React 18.3/19 +
+Vite, Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx blazorui-react init`,
+`npx blazorui-react add button`). It is not published to npm yet. See
+[docs/react.md](docs/react.md) for installation, usage, and customization.
+
 ## Build and test
 
 Requires the .NET 10 SDK and PowerShell 7 for Playwright's install script.
@@ -68,6 +75,16 @@ dotnet tool install --tool-path ./local-tools --add-source ./nupkg BlazorUI.Cli 
 On Linux, use `install --with-deps chromium` to install browser system dependencies.
 The E2E test generates and builds an application, runs it on an ephemeral local
 port, checks two interactive clicks and computed styles, and stops the process.
+
+React library (requires Node.js 22):
+
+```sh
+npm ci
+npm run typecheck
+npm test
+npx playwright install chromium
+npm run test:acceptance
+```
 
 ## Releases
 
