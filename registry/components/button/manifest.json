@@ -1,23 +1,16 @@
 {
   "schemaVersion": 1,
   "name": "button",
-  "version": "0.1.0",
-  "description": "A customizable button component.",
+  "version": "0.2.0",
+  "description": "Button with variants, sizes, semantic colors, and the shared theme appearances.",
   "dependencies": [],
   "assets": [
     {
-      "source": "styles/tokens.css",
+      "source": "styles/blazorui.css",
       "destination": "styles",
-      "target": "tokens.css",
+      "target": "blazorui.css",
       "type": "css",
-      "sha256": "f14521c1db4ec5a43f5301026fb1580e5caa137f73976aa436dde7edb49e95df"
-    },
-    {
-      "source": "styles/themes.css",
-      "destination": "styles",
-      "target": "themes.css",
-      "type": "css",
-      "sha256": "6b6c97c5b363c91be508bb7fe2929c1b5475fbc2b05b1bc8b1b7f49c4e2f100f"
+      "sha256": "3a451395566c41fa96c043b249e42ee4297b4374beb120e0a94e3b7f0916e1b0"
     }
   ],
   "files": [
@@ -26,14 +19,7 @@
       "destination": "components",
       "target": "Button/Button.razor",
       "type": "razor",
-      "sha256": "7e6ef5b4b95fb977073aa7adc420e40cf5ba4dae300b3f6ca2ce51d5768dae2e"
-    },
-    {
-      "source": "Button.razor.css",
-      "destination": "components",
-      "target": "Button/Button.razor.css",
-      "type": "isolated-css",
-      "sha256": "a614e8ff4b6532f4286852e3b5f5490f48b061667f225d56561cb3a61a50a0e9"
+      "sha256": "85fab7fbb39dd6a965ce9cae82cd54ef9fdd9eda03b54a9969326ebead5bb529"
     }
   ]
 }

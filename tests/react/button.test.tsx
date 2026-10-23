@@ -101,7 +101,7 @@ describe("Button", () => {
 
 describe("Button styles", () => {
   it("compile with the theme and Bootstrap", () => {
-    const css = compileTheme(['@import "button";'], ["registry/react/button"])
+    const css = compileTheme(['@import "components/button";'])
     expect(css).toContain(".btn-glass-primary")
     expect(css).toContain(".btn-glass-outline")
   })

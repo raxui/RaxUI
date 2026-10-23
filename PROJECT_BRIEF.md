@@ -54,7 +54,7 @@ The first React milestone targets **React 18.3 and 19 with TypeScript and Vite**
 | Component files      | Razor (`.razor`)                                | `.tsx`                                       |
 | Behavior             | Blazor event handling                           | Radix UI primitives                          |
 | Styling foundation   | Bootstrap                                       | Bootstrap 5.3 SCSS                           |
-| Custom design system | Global CSS variables/themes and isolated `.razor.css` (until migration to the shared theme) | Shared theme SCSS (`theme/scss`) |
+| Custom design system | Shared theme, precompiled to `blazorui.css` ([ADR 007](docs/adr/007-blazor-shared-theme.md)) | Shared theme SCSS (`theme/scss`) |
 | Developer tooling    | .NET CLI tool                                   | Node CLI (`npx`)                             |
 | Package manager      | NuGet                                           | npm                                          |
 | Component testing    | xUnit (bUnit planned)                           | Vitest and Testing Library                   |
@@ -89,10 +89,11 @@ MyApp/
 ├── Components/
 │   └── UI/
 │       └── Button/
-│           ├── Button.razor
-│           └── Button.razor.css
+│           └── Button.razor
 ├── wwwroot/
 │   ├── css/
+│   │   └── blazorui/
+│   │       └── blazorui.css    (shared theme, ADR 007)
 │   ├── js/
 │   └── lib/
 │       └── bootstrap/
@@ -205,9 +206,7 @@ The shared theme lives in `theme/scss/`, copied once from boot-ui ([ADR 005](doc
 
 Components resolve their look from CSS custom properties under these attributes. Precedence: an explicit component value, then the nearest scope, then the application, then `default`.
 
-React consumes the theme as SCSS. Blazor keeps the rules below until its migration to the shared theme.
-
-Use `.razor.css` for component-local styling and global CSS for Bootstrap, tokens, and themes. Blazor bundles isolated styles during the consumer build. Load Bootstrap, tokens, themes, and the generated application styles bundle once, in that order; explicit consumer overrides may follow. Customize through variables and parameters. See [ADR 001](docs/adr/001-hybrid-css.md).
+React consumes the theme as SCSS. Blazor consumes it as the precompiled `blazorui.css`, which contains the theme and every component's styles ([ADR 007](docs/adr/007-blazor-shared-theme.md)). Load Bootstrap, `blazorui.css`, and the generated application styles bundle once, in that order; explicit consumer overrides may follow. Customize through theme attributes, CSS variables, and component parameters. See [ADR 001](docs/adr/001-hybrid-css.md) for the link rules.
 
 The design system should support:
 

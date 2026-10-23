@@ -95,7 +95,7 @@ public class InstallSafetyTests : IDisposable
         var lockPath = Path.Combine(App, "blazorui.lock.json");
         var data = JsonNode.Parse(File.ReadAllText(lockPath))!;
         var file = command == "init"
-            ? data["assets"]!["wwwroot/css/blazorui/tokens.css"]!
+            ? data["assets"]!["wwwroot/css/blazorui/blazorui.css"]!
             : data["components"]!["button"]!["files"]![0]!;
         file["sourceHash"] = new string('0', 64);
         File.WriteAllText(lockPath, data.ToJsonString());

@@ -1,6 +1,6 @@
 # ADR 001 — Hybrid CSS
 
-- **Status:** Accepted; applies to the Blazor library. The React library uses global SCSS per component from the shared theme ([ADR 005](005-multi-framework-shared-theme.md)). Moving Blazor to the shared theme is deferred to a later ADR.
+- **Status:** Accepted; component styling superseded by [ADR 007](007-blazor-shared-theme.md): themed Blazor components get their styles from the shared `blazorui.css`, not `.razor.css` isolation. The load order and `init` link rules below still apply.
 - **Date:** 2026-10-23
 
 ## Context

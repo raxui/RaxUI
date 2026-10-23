@@ -6,11 +6,14 @@ namespace BlazorUI.Cli.Commands;
 
 public static class InitCommand
 {
+    // The shared theme compiled for Blazor: tokens, appearances, accents, and component styles (ADR 007).
     private static readonly (string Source, string TargetName)[] SharedAssets =
     [
-        ("styles/tokens.css", "tokens.css"),
-        ("styles/themes.css", "themes.css"),
+        ("styles/blazorui.css", "blazorui.css"),
     ];
+
+    // Stylesheets from releases before the shared theme; their tokens now come from blazorui.css.
+    private static readonly string[] LegacyStylesheets = ["css/blazorui/tokens.css", "css/blazorui/themes.css"];
 
     public static int Execute(string workingDirectory, TextWriter output, TextWriter error)
     {
@@ -105,6 +108,15 @@ public static class InitCommand
             output.WriteLine($"  - Host links updated in: {Path.GetRelativePath(workingDirectory, project.AppRazorPath).Replace('\\', '/')}");
             if (interactivityWarning != null)
                 output.WriteLine(interactivityWarning);
+
+            var appContent = File.ReadAllText(project.AppRazorPath);
+            var legacy = LegacyStylesheets.Where(path => appContent.Contains(path, StringComparison.OrdinalIgnoreCase)).ToList();
+            if (legacy.Count > 0)
+            {
+                output.WriteLine(
+                    "Note: Components/App.razor still links stylesheets from an earlier BlazorUI release (" + string.Join(", ", legacy) +
+                    "). The shared theme in css/blazorui/blazorui.css replaces them: remove those links and files.");
+            }
             return 0;
         }
         catch (Exception ex)
@@ -148,8 +160,7 @@ public static class InitCommand
         // Same @Assets[...] form as the template's own links, so the files get fingerprinted.
         var links = new[]
         {
-            (Path: "css/blazorui/tokens.css", Markup: """<link rel="stylesheet" href="@Assets["css/blazorui/tokens.css"]" />"""),
-            (Path: "css/blazorui/themes.css", Markup: """<link rel="stylesheet" href="@Assets["css/blazorui/themes.css"]" />"""),
+            (Path: "css/blazorui/blazorui.css", Markup: """<link rel="stylesheet" href="@Assets["css/blazorui/blazorui.css"]" />"""),
         };
 
         var missing = links.Where(l => !appContent.Contains(l.Path, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -160,7 +171,7 @@ public static class InitCommand
         var insertionIndex = -1;
         string? reference = null;
 
-        // Insert after the Bootstrap link (load order: Bootstrap, tokens, themes, styles bundle)
+        // Insert after the Bootstrap link (load order: Bootstrap, shared theme, styles bundle)
         for (int i = 0; i < lines.Count; i++)
         {
             if (lines[i].Contains("<link", StringComparison.OrdinalIgnoreCase) &&

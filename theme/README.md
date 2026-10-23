@@ -1,6 +1,10 @@
 # Shared theme
 
-The single source of the BlazorUI theme, shared by the React library and, after its migration, the Blazor library ([ADR 005](../docs/adr/005-multi-framework-shared-theme.md)).
+The single source of the BlazorUI theme and component styles, shared by the React and Blazor libraries ([ADR 005](../docs/adr/005-multi-framework-shared-theme.md), [ADR 007](../docs/adr/007-blazor-shared-theme.md)).
+
+- React installs these SCSS partials and compiles them with Bootstrap.
+- Blazor gets them precompiled: `npm run theme:css` (`build-css.mjs`) writes `registry/styles/blazorui.css` from `_core.scss` and `components/`, without Bootstrap. A test fails when that file is stale.
+- Component styles live in `scss/components/` (for example `_button.scss`, from boot-ui `src/components/ui/_button.scss`).
 
 ## Provenance
 

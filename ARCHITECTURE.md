@@ -16,7 +16,7 @@ The architecture prioritizes simplicity, developer ownership, accessibility, mai
 4. **Explicit dependencies:** Every component declares its component and asset dependencies.
 5. **Bootstrap foundation:** Bootstrap provides the base grid, utilities, and selected styling conventions.
 6. **Framework-native behavior:** In Blazor, use Razor and C# for component behavior and introduce JavaScript interop only when necessary. In React, use Radix UI primitives for behavior and accessibility.
-7. **Styles per ecosystem, one theme:** Blazor uses `.razor.css` for component-local styles and global CSS for Bootstrap, tokens, and themes, with no Sass build ([ADR 001](docs/adr/001-hybrid-css.md)). React compiles the shared theme SCSS with Bootstrap. Both read the same theme attributes.
+7. **One theme, delivered per ecosystem:** React compiles the shared theme SCSS with Bootstrap. Blazor receives it precompiled as `blazorui.css`, with no Sass build ([ADR 007](docs/adr/007-blazor-shared-theme.md)). Both render the same classes and read the same theme attributes.
 8. **Safe updates:** The CLI must detect local modifications and never silently overwrite them.
 9. **Accessibility by design:** Semantic HTML, keyboard navigation, focus management, and appropriate ARIA attributes are part of component development.
 10. **Rendering compatibility:** Components must account for static SSR and interactive Blazor rendering modes.
@@ -27,7 +27,7 @@ The system consists of four main parts:
 
 - **Component Registry:** Stores component manifests, source files, styles, and dependency information, one registry per ecosystem (`registry/` for Blazor, `registry/react/` for React).
 - **CLI:** Initializes applications, resolves dependencies, installs components, manages assets, and performs updates. One per ecosystem, with the same safety rules.
-- **Design System:** The shared theme in `theme/scss/`: CSS variables, appearances, accents, density, and Bootstrap integration. Blazor keeps its own tokens until it migrates ([ADR 005](docs/adr/005-multi-framework-shared-theme.md)).
+- **Design System:** The shared theme in `theme/scss/`: CSS variables, appearances, accents, density, component styles, and Bootstrap integration, used by both libraries ([ADR 005](docs/adr/005-multi-framework-shared-theme.md), [ADR 007](docs/adr/007-blazor-shared-theme.md)).
 - **Consumer Application:** Owns the installed component source code and executes the components as part of its normal Blazor or React application.
 
 ```mermaid
@@ -96,20 +96,11 @@ BlazorUI/
 ├── registry/
 │   ├── registry.json
 │   ├── styles/
-│   │   ├── blazorui.css
-│   │   ├── tokens.css
-│   │   ├── themes.css
-│   │   └── utils/
-│   │       ├── layout.css
-│   │       ├── spacing.css
-│   │       ├── typography.css
-│   │       ├── accessibility.css
-│   │       └── animations.css
+│   │   └── blazorui.css         generated from theme/scss (ADR 007)
 │   └── components/
 │       ├── button/
 │       │   ├── manifest.json
-│       │   ├── Button.razor
-│       │   └── Button.razor.css
+│       │   └── Button.razor
 │       ├── input/
 │       │   ├── manifest.json
 │       │   └── Input.razor
@@ -257,16 +248,12 @@ Conceptual example:
       "destination": "components",
       "target": "Button/Button.razor",
       "type": "razor"
-    },
-    {
-      "source": "Button.razor.css",
-      "destination": "components",
-      "target": "Button/Button.razor.css",
-      "type": "isolated-css"
     }
   ]
 }
 ```
+
+Since [ADR 007](docs/adr/007-blazor-shared-theme.md), themed components ship no `.razor.css`; their styles are in the shared `blazorui.css` asset.
 
 This abbreviated example is not an installable manifest. The schema must require SHA-256 hashes, framework requirements, shared asset references, and exact dependency versions. `destination` selects a configured base directory; `target` is relative to it. Registry templates use explicit namespace tokens, never broad text replacement (deferred: in the first milestone there is no substitution, per ADR 004). Reject unsupported schema versions and file types before writing.
 
@@ -284,7 +271,7 @@ React manifests in `registry/react/<item>/manifest.json` share the same concepts
   "styles": ["components/button"],
   "files": [
     { "source": "registry/react/button/button.tsx", "target": "components/ui/button.tsx", "type": "tsx", "sha256": "…" },
-    { "source": "registry/react/button/_button.scss", "target": "styles/blazorui/components/_button.scss", "type": "scss", "sha256": "…" }
+    { "source": "theme/scss/components/_button.scss", "target": "styles/blazorui/components/_button.scss", "type": "scss", "sha256": "…" }
   ]
 }
 ```
@@ -314,13 +301,10 @@ A typical component contains:
 
 ```text
 Button/
-├── Button.razor
-└── Button.razor.css
+└── Button.razor
 ```
 
-The `.razor` file defines markup, parameters, and component behavior. Its matching `.razor.css` file contains component-local styles and is copied alongside it. Blazor performs CSS isolation during the consumer application's build.
-
-Shared styles, theme tokens, and design-system rules are installed separately when required.
+The `.razor` file defines markup, parameters, and component behavior. It renders the shared class names; its styles come from the shared theme stylesheet `blazorui.css`, which `init` installs once ([ADR 007](docs/adr/007-blazor-shared-theme.md)).
 
 A React component is a `.tsx` file with a matching SCSS partial:
 
@@ -347,17 +331,17 @@ Components should:
 
 ### 7.2 CSS Loading Strategy
 
-Use the hybrid model in [ADR 001](docs/adr/001-hybrid-css.md):
+Blazor follows [ADR 001](docs/adr/001-hybrid-css.md) for link rules and [ADR 007](docs/adr/007-blazor-shared-theme.md) for component styles:
 
-- Global Bootstrap CSS provides layout and utilities.
-- Global `tokens.css` and `themes.css` define customization variables and themes.
-- Component-local `.razor.css` files are bundled by Blazor, not concatenated by the CLI.
+- Global Bootstrap CSS from the template provides layout, utilities, and `.btn`.
+- Global `blazorui.css`, compiled from `theme/scss` by `theme/build-css.mjs`, provides tokens, appearances, accents, density, and every component's styles.
+- The application's own `.razor.css` files keep working through the generated bundle.
 
-The supported host loads styles in this order: Bootstrap, tokens, themes, the application's generated `{AssemblyName}.styles.css`, then any explicit consumer overrides. Source order does not override CSS specificity; CSS variables and component parameters are the primary customization API.
+The supported host loads styles in this order: Bootstrap, `blazorui.css`, the application's generated `{AssemblyName}.styles.css`, then any explicit consumer overrides. Source order does not override CSS specificity; CSS variables and component parameters are the primary customization API.
 
 `init` adds each required link exactly once in `Components/App.razor`, using the supported template's static asset conventions. It preserves existing unrelated links and verifies the generated styles bundle reference using the evaluated assembly name. It must detect an existing Bootstrap reference before adding another. Ambiguous custom host markup produces actionable instructions instead of speculative rewrites.
 
-Do not link individual `.razor.css` files or modify generated CSS bundles. Isolation applies to rendered HTML in the component; styling child component content may require an intentional wrapper and `::deep`. Prefer variables and component APIs over coupling to child markup.
+Do not link individual `.razor.css` files or modify generated CSS bundles. Prefer theme attributes, variables, and component APIs over coupling to component markup.
 
 ## 8. Bootstrap Integration
 
@@ -506,7 +490,7 @@ The shared theme in `theme/scss/` ([ADR 005](docs/adr/005-multi-framework-shared
 
 Appearances set semantic tokens (`--bui-surface-bg`, `--bui-border-color`, `--bui-control-shadow`, `--bui-control-radius`, `--bui-surface-filter`); components consume those tokens and never test the appearance name. Precedence: explicit component value, then nearest scope, then application, then `default`.
 
-In React, `BootThemeProvider` and `BootAppearanceScope` carry the theme through context and render the attributes; a component's `appearance` prop overrides it. Blazor will use `CascadingValue` for the same purpose once it migrates.
+In React, `BootThemeProvider` and `BootAppearanceScope` carry the theme through context and render the attributes; a component's `appearance` prop overrides it. Blazor components render inline, so the attributes reach them through ordinary DOM inheritance: put them on `<html>` or any wrapper, and use a component's `Appearance` parameter to override ([ADR 007](docs/adr/007-blazor-shared-theme.md)). `CascadingValue` will be needed only for components that render outside their parent's subtree.
 
 ## 13. Testing Strategy
 
@@ -571,6 +555,7 @@ Accepted ADRs:
 - [004 — Simplified first milestone](docs/adr/004-simplified-first-milestone.md)
 - [005 — Multi-framework repository and shared theme](docs/adr/005-multi-framework-shared-theme.md)
 - [006 — React first milestone](docs/adr/006-react-first-milestone.md)
+- [007 — Blazor uses the shared theme](docs/adr/007-blazor-shared-theme.md)
 
 ADRs should record the context, decision, alternatives considered, and consequences.
 

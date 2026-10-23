@@ -90,29 +90,45 @@ public class InstallationWorkflowTests : IDisposable
         Assert.Equal("net10.0", config.TargetFramework);
 
         var lockFile = BlazorUiLock.LoadOrCreate(_testDirectory);
-        Assert.True(File.Exists(Path.Combine(_testDirectory, "wwwroot", "css", "blazorui", "tokens.css")));
-        Assert.True(File.Exists(Path.Combine(_testDirectory, "wwwroot", "css", "blazorui", "themes.css")));
+        Assert.True(File.Exists(Path.Combine(_testDirectory, "wwwroot", "css", "blazorui", "blazorui.css")));
         Assert.NotEmpty(lockFile.Assets);
 
         var appContent = File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor"));
-        Assert.Contains("css/blazorui/tokens.css", appContent);
-        Assert.Contains("css/blazorui/themes.css", appContent);
+        Assert.Contains("""<link rel="stylesheet" href="@Assets["css/blazorui/blazorui.css"]" />""", appContent);
+        Assert.DoesNotContain("tokens.css", appContent);
 
         // 2. Run 'add button'
         var addCode = Program.Run(["add", "button"], _testDirectory, output, error);
         Assert.Equal(0, addCode);
 
         var buttonRazor = Path.Combine(_testDirectory, "Components", "UI", "Button", "Button.razor");
-        var buttonCss = Path.Combine(_testDirectory, "Components", "UI", "Button", "Button.razor.css");
         Assert.True(File.Exists(buttonRazor));
-        Assert.True(File.Exists(buttonCss));
+        // Styles come from the shared theme, not CSS isolation (ADR 007).
+        Assert.False(File.Exists(buttonRazor + ".css"));
 
         var importsContent = File.ReadAllText(Path.Combine(_testDirectory, "Components", "_Imports.razor"));
         Assert.Contains("@using TestConsumerApp.Components.UI.Button", importsContent);
 
         lockFile = BlazorUiLock.LoadOrCreate(_testDirectory);
         Assert.True(lockFile.Components.ContainsKey("button"));
-        Assert.Equal(2, lockFile.Components["button"].Files.Count);
+        Assert.Single(lockFile.Components["button"].Files);
+    }
+
+    [Fact]
+    public void Init_points_out_stylesheets_from_an_earlier_release()
+    {
+        CreateSampleBlazorProject();
+        var appRazor = Path.Combine(_testDirectory, "Components", "App.razor");
+        File.WriteAllText(appRazor, File.ReadAllText(appRazor).Replace(
+            """<link rel="stylesheet" href="app.css" />""",
+            """<link rel="stylesheet" href="@Assets["css/blazorui/tokens.css"]" />""" + "\n" + """<link rel="stylesheet" href="app.css" />"""));
+
+        var output = new StringWriter();
+        var error = new StringWriter();
+        Assert.Equal(0, Program.Run(["init"], _testDirectory, output, error));
+
+        Assert.Contains("earlier BlazorUI release (css/blazorui/tokens.css)", output.ToString());
+        Assert.Contains("css/blazorui/tokens.css", File.ReadAllText(appRazor)); // reported, not removed
     }
 
     [Fact]
@@ -131,8 +147,8 @@ public class InstallationWorkflowTests : IDisposable
         Assert.Equal(0, Program.Run(["add", "button"], _testDirectory, output, error));
 
         var appContent = File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor"));
-        var tokensMatches = System.Text.RegularExpressions.Regex.Matches(appContent, "tokens\\.css");
-        Assert.Single(tokensMatches);
+        var themeMatches = System.Text.RegularExpressions.Regex.Matches(appContent, "blazorui\\.css");
+        Assert.Single(themeMatches);
 
         var importsContent = File.ReadAllText(Path.Combine(_testDirectory, "Components", "_Imports.razor"));
         var usingMatches = System.Text.RegularExpressions.Regex.Matches(importsContent, "TestConsumerApp\\.Components\\.UI\\.Button");
@@ -179,7 +195,7 @@ public class InstallationWorkflowTests : IDisposable
         CreateSampleBlazorProject();
         var stylesDir = Path.Combine(_testDirectory, "wwwroot", "css", "blazorui");
         Directory.CreateDirectory(stylesDir);
-        var tokens = Path.Combine(stylesDir, "tokens.css");
+        var tokens = Path.Combine(stylesDir, "blazorui.css");
         File.WriteAllText(tokens, "/* my own tokens */");
         var appBefore = File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor"));
 
@@ -190,7 +206,6 @@ public class InstallationWorkflowTests : IDisposable
         Assert.Equal(1, code);
         Assert.Contains("not managed by BlazorUI", error.ToString());
         Assert.Equal("/* my own tokens */", File.ReadAllText(tokens));
-        Assert.False(File.Exists(Path.Combine(stylesDir, "themes.css")));
         Assert.Equal(appBefore, File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor")));
         Assert.False(File.Exists(Path.Combine(_testDirectory, BlazorUiConfig.DefaultFileName)));
     }
