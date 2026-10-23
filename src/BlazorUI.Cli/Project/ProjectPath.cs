@@ -27,19 +27,22 @@ public static class ProjectPath
         string.Equals(root, path, Comparison) ||
         path.StartsWith(Path.TrimEndingDirectorySeparator(root) + Path.DirectorySeparatorChar, Comparison);
 
-    private static string Resolve(string path, int depth)
+    // Counts links followed, not directory levels, so deep paths without links are accepted.
+    private const int MaxLinkHops = 40;
+
+    private static string Resolve(string path, int linkHops)
     {
-        if (depth > 64)
-            throw new InvalidOperationException($"Too many symbolic links in '{path}'.");
         var parent = Path.GetDirectoryName(path);
         if (parent == null)
             return path;
-        var resolved = Path.Combine(Resolve(parent, depth + 1), Path.GetFileName(path));
+        var resolved = Path.Combine(Resolve(parent, linkHops), Path.GetFileName(path));
         FileSystemInfo info = Directory.Exists(resolved) ? new DirectoryInfo(resolved) : new FileInfo(resolved);
         var target = info.LinkTarget;
         if (target == null)
             return resolved;
+        if (linkHops >= MaxLinkHops)
+            throw new InvalidOperationException($"Too many symbolic links in '{path}'.");
         var absoluteTarget = Path.GetFullPath(target, Path.GetDirectoryName(resolved)!);
-        return Resolve(absoluteTarget, depth + 1);
+        return Resolve(absoluteTarget, linkHops + 1);
     }
 }

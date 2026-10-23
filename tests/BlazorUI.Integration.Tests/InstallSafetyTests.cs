@@ -29,6 +29,7 @@ public class InstallSafetyTests : IDisposable
     [InlineData("componentsPath", "Components/Custom")]
     [InlineData("stylesPath", "../Outside")]
     [InlineData("registryVersion", "99.0.0")]
+    [InlineData("registryVersion", "not-a-version")]
     [InlineData("schemaVersion", "999")]
     public void Invalid_configuration_is_rejected_without_writes(string field, string value)
     {
@@ -57,6 +58,53 @@ public class InstallSafetyTests : IDisposable
         var before = InstallationWorkflowTests.SnapshotFiles(App);
         Assert.Equal(1, Run("init").Code);
         Assert.Equal(1, Run("add", "button").Code);
+        Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(App));
+    }
+
+    [Fact]
+    public void Project_from_an_older_cli_accepts_new_components_and_records_this_version()
+    {
+        Assert.Equal(0, Run("init").Code);
+        foreach (var name in new[] { "blazorui.json", "blazorui.lock.json" })
+        {
+            var path = Path.Combine(App, name);
+            var data = JsonNode.Parse(File.ReadAllText(path))!;
+            data["registryVersion"] = "0.0.1";
+            File.WriteAllText(path, data.ToJsonString());
+        }
+
+        var result = Run("add", "button");
+
+        Assert.True(result.Code == 0, result.Error);
+        var version = BlazorUI.Cli.Registry.ReleaseIdentity.Version;
+        Assert.Equal(version, JsonNode.Parse(File.ReadAllText(Path.Combine(App, "blazorui.json")))!["registryVersion"]!.GetValue<string>());
+        var lockData = JsonNode.Parse(File.ReadAllText(Path.Combine(App, "blazorui.lock.json")))!;
+        Assert.Equal(version, lockData["registryVersion"]!.GetValue<string>());
+        Assert.Equal(version, lockData["components"]!["button"]!["registryVersion"]!.GetValue<string>());
+    }
+
+    [Theory]
+    [InlineData("init")]
+    [InlineData("add")]
+    public void Tracked_file_from_another_release_is_not_silently_updated(string command)
+    {
+        Assert.Equal(0, Run("init").Code);
+        Assert.Equal(0, Run("add", "button").Code);
+
+        // Simulate files installed from an older release whose registry content differed.
+        var lockPath = Path.Combine(App, "blazorui.lock.json");
+        var data = JsonNode.Parse(File.ReadAllText(lockPath))!;
+        var file = command == "init"
+            ? data["assets"]!["wwwroot/css/blazorui/tokens.css"]!
+            : data["components"]!["button"]!["files"]![0]!;
+        file["sourceHash"] = new string('0', 64);
+        File.WriteAllText(lockPath, data.ToJsonString());
+        var before = InstallationWorkflowTests.SnapshotFiles(App);
+
+        var result = command == "init" ? Run("init") : Run("add", "button");
+
+        Assert.Equal(1, result.Code);
+        Assert.Contains("Updating installed files is not supported yet", result.Error);
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(App));
     }
 

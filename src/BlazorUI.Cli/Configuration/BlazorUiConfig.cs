@@ -53,8 +53,7 @@ public class BlazorUiConfig
             ?? throw new InvalidOperationException("Configuration must be a JSON object.");
         if (config.SchemaVersion != CurrentSchemaVersion)
             throw new InvalidOperationException($"Unsupported configuration schema version {config.SchemaVersion}.");
-        if (config.RegistryVersion != ReleaseIdentity.Version)
-            throw new InvalidOperationException($"Registry version '{config.RegistryVersion}' does not match CLI '{ReleaseIdentity.Version}'. Use the matching CLI version.");
+        ReleaseIdentity.EnsureSupported(config.RegistryVersion, DefaultFileName);
         if (config.ComponentsPath != "Components/UI" || config.StylesPath != "wwwroot/css/blazorui")
             throw new InvalidOperationException("Custom paths are unsupported. Use componentsPath 'Components/UI' and stylesPath 'wwwroot/css/blazorui'.");
         if (config.Framework != "blazor" || config.TargetFramework != "net10.0" || config.Bootstrap == null || config.Bootstrap.Managed)

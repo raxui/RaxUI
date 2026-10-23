@@ -48,6 +48,7 @@ public static class AddCommand
                 var targetPath = Path.Combine(componentsDir, file.Target);
                 ProjectPath.Validate(workingDirectory, targetPath);
                 var relTarget = Path.GetRelativePath(workingDirectory, targetPath).Replace('\\', '/');
+                lockFile.EnsureSameSource(relTarget, hash);
 
                 if (File.Exists(targetPath))
                 {
@@ -91,9 +92,18 @@ public static class AddCommand
             lockFile.Components[manifest.Name] = new LockedComponent
             {
                 Version = manifest.Version,
+                RegistryVersion = ReleaseIdentity.Version,
                 ManifestSha256 = manifest.ManifestSha256,
                 Files = lockedFiles
             };
+            lockFile.RegistryVersion = ReleaseIdentity.Version;
+
+            if (config.RegistryVersion != ReleaseIdentity.Version)
+            {
+                config.RegistryVersion = ReleaseIdentity.Version;
+                backup.Remember(Path.Combine(workingDirectory, BlazorUiConfig.DefaultFileName));
+                config.Save(workingDirectory);
+            }
 
             backup.Remember(Path.Combine(workingDirectory, BlazorUiLock.DefaultFileName));
             lockFile.Save(workingDirectory);

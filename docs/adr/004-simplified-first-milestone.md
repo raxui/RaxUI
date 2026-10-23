@@ -57,8 +57,13 @@ All other ADR 003 rules stay in force: manifest validation, lock file contents, 
 - The CLI assembly's `RegistryVersion` metadata is generated from the MSBuild
   `Version` property. The embedded index receives this release identity when
   loaded; component manifest versions remain independent content versions.
-- Configuration and lock files must match that release identity. This milestone
-  rejects unsupported schema versions and custom paths before installation.
+- Configuration and lock files record that release identity. A CLI accepts files
+  written by the same or an older release (SemVer precedence) and rejects files
+  written by a newer one. Each locked component records the release it came from.
+  `init` and `add` refuse to replace a tracked file whose registry source hash
+  differs from this release; replacing it is an update, deferred with
+  `update`/`diff`. This milestone rejects unsupported schema versions and custom
+  paths before installation.
 
 - The first milestone needs no network access at install time.
 - A registry fix requires a new CLI release.

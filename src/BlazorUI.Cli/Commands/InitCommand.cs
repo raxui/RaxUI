@@ -39,6 +39,7 @@ public static class InitCommand
             ProjectPath.Validate(workingDirectory, project.AppRazorPath);
             ProjectPath.Validate(workingDirectory, Path.Combine(workingDirectory, BlazorUiConfig.DefaultFileName));
             lockFile.RegistryVersion = index.Version;
+            config.RegistryVersion = index.Version;
 
             var stylesDir = Path.Combine(workingDirectory, config.StylesPath);
 
@@ -52,6 +53,7 @@ public static class InitCommand
                 var targetPath = Path.Combine(stylesDir, asset.TargetName);
                 ProjectPath.Validate(workingDirectory, targetPath);
                 var relTarget = Path.GetRelativePath(workingDirectory, targetPath).Replace('\\', '/');
+                lockFile.EnsureSameSource(relTarget, hash);
 
                 if (File.Exists(targetPath))
                 {
