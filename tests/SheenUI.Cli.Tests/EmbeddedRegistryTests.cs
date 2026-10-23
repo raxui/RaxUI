@@ -48,6 +48,19 @@ public class EmbeddedRegistryTests
         Assert.NotEmpty(manifest.Assets);
     }
 
+    // Overlays ship a collocated JavaScript module (ADR 013); "dropdown-menu" also checks MSBuild's '-' to '_'
+    // resource naming for folders.
+    [Theory]
+    [InlineData("dialog", "Dialog/Dialog.razor.js")]
+    [InlineData("dropdown-menu", "DropdownMenu/DropdownMenu.razor.js")]
+    public void Overlay_manifests_load_with_their_javascript_module(string name, string module)
+    {
+        var manifest = _registry.GetComponentManifest(name);
+
+        Assert.Contains(manifest.Files, f => f.Type == "js" && f.Target == module);
+        Assert.Equal(_registry.GetComponentManifest("button").Assets.Single().Sha256, manifest.Assets.Single().Sha256);
+    }
+
     [Fact]
     public void All_manifest_files_match_their_sha256_checksums()
     {

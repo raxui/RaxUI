@@ -38,6 +38,9 @@ public class GeneratedAppTests : IDisposable
         var error = new StringWriter();
         Assert.True(Program.Run(["init"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "button"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "dialog"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "dropdown-menu"], app, output, error) == 0, error.ToString());
+        Assert.True(File.Exists(Path.Combine(app, "Components", "UI", "Dialog", "Dialog.razor.js")));
 
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
         var bootstrap = Directory.GetFiles(Path.Combine(app, "wwwroot"), "bootstrap.min.css", SearchOption.AllDirectories).Single();
@@ -67,9 +70,27 @@ public class GeneratedAppTests : IDisposable
             <p id="count">@count</p>
             <div data-sheen-appearance="flat"><Button id="sheen-flat">Flat</Button></div>
             <Button id="sheen-glass" Appearance="glass">Glass</Button>
+            <Button id="open-dialog" Disabled="@(!ready)" OnClick="@(() => dialogOpen = true)">Open dialog</Button>
+            <p id="dialog-state">@dialogOpen</p>
+            <Dialog @bind-Open="dialogOpen" Title="Delete file?" Description="This cannot be undone.">
+                <Footer><Button Variant="outline" OnClick="@(() => dialogOpen = false)">Cancel</Button></Footer>
+            </Dialog>
+            <DropdownMenu>
+                <Trigger>Options</Trigger>
+                <ChildContent>
+                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                    <DropdownMenuItem OnSelect="@(() => picked = "Edit")">Edit</DropdownMenuItem>
+                    <DropdownMenuItem Disabled>Archive</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem OnSelect="@(() => picked = "Delete")">Delete</DropdownMenuItem>
+                </ChildContent>
+            </DropdownMenu>
+            <p id="picked">@picked</p>
             @code {
                 private int count;
                 private bool ready;
+                private bool dialogOpen;
+                private string picked = "";
                 protected override void OnAfterRender(bool firstRender)
                 {
                     if (firstRender) { ready = true; StateHasChanged(); }
@@ -90,6 +111,8 @@ public class GeneratedAppTests : IDisposable
         var before = InstallationWorkflowTests.SnapshotFiles(app);
         Assert.True(Program.Run(["init"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "button"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "dialog"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "dropdown-menu"], app, output, error) == 0, error.ToString());
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app);
     }
@@ -164,6 +187,9 @@ public class GeneratedAppTests : IDisposable
             Assert.NotEqual("none", await button.EvaluateAsync<string>("el => getComputedStyle(el).boxShadow"));
             Assert.Equal("none", await page.Locator("#sheen-flat").EvaluateAsync<string>("el => getComputedStyle(el).boxShadow"));
             Assert.Contains("blur", await page.Locator("#sheen-glass").EvaluateAsync<string>("el => getComputedStyle(el).backdropFilter"));
+
+            await VerifyDialog(page);
+            await VerifyDropdownMenu(page);
         }
         finally
         {
@@ -171,6 +197,84 @@ public class GeneratedAppTests : IDisposable
             await process.WaitForExitAsync();
             await stderr;
         }
+    }
+
+    // The ADR 013 contract: name and description, Esc / outside / close button, focus return, scroll lock.
+    private static async Task VerifyDialog(IPage page)
+    {
+        var opener = page.Locator("#open-dialog");
+        var dialog = page.GetByRole(AriaRole.Dialog, new() { Name = "Delete file?" });
+        await Assertions.Expect(opener).ToBeEnabledAsync();
+
+        await opener.ClickAsync();
+        await Assertions.Expect(dialog).ToBeVisibleAsync();
+        await Assertions.Expect(dialog).ToHaveAccessibleDescriptionAsync("This cannot be undone.");
+        Assert.Equal("hidden", await page.EvaluateAsync<string>("() => getComputedStyle(document.documentElement).overflow"));
+        await page.Keyboard.PressAsync("Escape");
+        await Assertions.Expect(dialog).ToBeHiddenAsync();
+        await Assertions.Expect(page.Locator("#dialog-state")).ToHaveTextAsync("False");
+        await Assertions.Expect(opener).ToBeFocusedAsync();
+
+        await opener.ClickAsync();
+        await Assertions.Expect(dialog).ToBeVisibleAsync();
+        await page.Mouse.ClickAsync(5, 5); // the backdrop
+        await Assertions.Expect(dialog).ToBeHiddenAsync();
+        await Assertions.Expect(page.Locator("#dialog-state")).ToHaveTextAsync("False");
+
+        await opener.ClickAsync();
+        await dialog.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
+        await Assertions.Expect(dialog).ToBeHiddenAsync();
+        await opener.ClickAsync();
+        await dialog.GetByRole(AriaRole.Button, new() { Name = "Cancel" }).ClickAsync();
+        await Assertions.Expect(dialog).ToBeHiddenAsync();
+        await Assertions.Expect(page.Locator("#dialog-state")).ToHaveTextAsync("False");
+    }
+
+    // The ADR 013 contract: focus on open, arrows skip disabled items and wrap, Home/End, typeahead, select, Esc.
+    private static async Task VerifyDropdownMenu(IPage page)
+    {
+        var trigger = page.GetByRole(AriaRole.Button, new() { Name = "Options" });
+        var menu = page.GetByRole(AriaRole.Menu);
+        Task Focused(string name) => Assertions.Expect(menu.GetByRole(AriaRole.Menuitem, new() { Name = name })).ToBeFocusedAsync();
+
+        await trigger.ClickAsync();
+        await Assertions.Expect(menu).ToBeVisibleAsync();
+        await Assertions.Expect(trigger).ToHaveAttributeAsync("aria-expanded", "true");
+        await Assertions.Expect(menu).ToBeFocusedAsync(); // a pointer open focuses the menu; arrows move in
+        await page.Keyboard.PressAsync("ArrowDown");
+        await Focused("Edit");
+        // Read the placement the script set; the bounding box still scales during the opening animation.
+        var triggerBox = (await trigger.BoundingBoxAsync())!;
+        var placed = await menu.EvaluateAsync<double[]>("el => [parseFloat(el.style.left), parseFloat(el.style.top)]");
+        Assert.True(Math.Abs(placed[0] - triggerBox.X) < 1, "The menu aligns to the trigger's start.");
+        Assert.True(placed[1] >= triggerBox.Y + triggerBox.Height, "The menu opens below the trigger.");
+
+        await page.Keyboard.PressAsync("ArrowDown");
+        await Focused("Delete"); // Archive is disabled
+        await page.Keyboard.PressAsync("ArrowDown");
+        await Focused("Edit");
+        await page.Keyboard.PressAsync("End");
+        await Focused("Delete");
+        await page.Keyboard.PressAsync("Home");
+        await Focused("Edit");
+        await page.Keyboard.PressAsync("d");
+        await Focused("Delete");
+        await page.Keyboard.PressAsync("Enter");
+        await Assertions.Expect(page.Locator("#picked")).ToHaveTextAsync("Delete");
+        await Assertions.Expect(menu).ToBeHiddenAsync();
+        await Assertions.Expect(trigger).ToHaveAttributeAsync("aria-expanded", "false");
+        await Assertions.Expect(trigger).ToBeFocusedAsync();
+
+        await page.Keyboard.PressAsync("ArrowDown");
+        await Focused("Edit");
+        await page.Keyboard.PressAsync("Escape");
+        await Assertions.Expect(menu).ToBeHiddenAsync();
+        await Assertions.Expect(trigger).ToBeFocusedAsync();
+
+        await trigger.ClickAsync();
+        await menu.GetByRole(AriaRole.Menuitem, new() { Name = "Edit" }).ClickAsync();
+        await Assertions.Expect(page.Locator("#picked")).ToHaveTextAsync("Edit");
+        await Assertions.Expect(menu).ToBeHiddenAsync();
     }
 
     private static void Dotnet(string workingDirectory, params string[] args)

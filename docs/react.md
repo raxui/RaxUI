@@ -110,6 +110,38 @@ Button props:
 
 Plus every native `<button>` attribute and a forwarded `ref`. `type` defaults to `button`, so buttons do not submit forms unless you pass `type="submit"`.
 
+### Dialog and DropdownMenu
+
+`npx sheenui-react add dialog` and `npx sheenui-react add dropdown-menu` install wrappers over Radix with the shared styles ([ADR 013](adr/013-overlay-primitives.md)). Their content renders inside the nearest `SheenThemeProvider`, so mode, appearance, accent, and direction apply to it.
+
+```tsx
+<Dialog>
+  <DialogTrigger asChild><Button variant="destructive">Delete…</Button></DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Delete file?</DialogTitle>
+      <DialogDescription>This cannot be undone.</DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+      <Button variant="destructive" onClick={remove}>Delete</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild><Button variant="secondary">Options</Button></DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+    <DropdownMenuItem onSelect={edit}>Edit</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem disabled>Archive</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+`DialogContent` also takes `appearance`, `showCloseButton`, and `closeLabel`; `DropdownMenuContent` takes `appearance` and every Radix content prop (it defaults to `align="start"` and `sideOffset={4}`).
+
 Appearance precedence: the component's `appearance`, then the nearest `SheenAppearanceScope`, then `SheenThemeProvider`, then `default`. `mode`, `direction`, and `density` travel the same way.
 
 ## Customize
@@ -117,7 +149,7 @@ Appearance precedence: the component's `appearance`, then the nearest `SheenAppe
 - **Bootstrap variables:** set them at the top of `src/styles/sheenui.scss`, above the imports, for example `$primary: #0a84ff;`.
 - **Theme tokens:** override `--sheen-*` custom properties in your own CSS, for example `--sheen-radius-control` or `--sheen-glass-blur`.
 - **Accent:** add `data-sheen-accent="emerald"` (or `indigo`, `amber`) on `<html>` or any wrapper.
-- **Source:** `button.tsx` and `_button.scss` are yours to edit. Repeated `init`/`add` never overwrite files you changed.
+- **Source:** component files such as `button.tsx` and `_button.scss` are yours to edit. Repeated `init`/`add` never overwrite files you changed.
 
 Users who set their system to reduce transparency get opaque glass automatically.
 
@@ -127,4 +159,4 @@ Users who set their system to reduce transparency get opaque glass automatically
 - Unknown files, locally modified files, and files from another release are never silently replaced. Paths that escape the project, including through symlinks or junctions, are rejected.
 - Ordinary write failures restore original files and remove new empty folders.
 - Sass prints `@import` deprecation warnings that come from Bootstrap 5.3 itself.
-- Only React on Vite 6+ or Next.js 15+ (App Router, no Tailwind) and the Button component are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` App or the `create-next-app` 15.x–16.x page; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.
+- Only React on Vite 6+ or Next.js 15+ (App Router, no Tailwind) and the Button, Dialog, and DropdownMenu components are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` App or the `create-next-app` 15.x–16.x page; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.

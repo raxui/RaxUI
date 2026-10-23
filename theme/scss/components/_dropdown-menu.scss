@@ -1,0 +1,86 @@
+// -----------------------------------------------------------------------------
+// DropdownMenu — one look for Blazor's popover menu and React's Radix content (ADR 013).
+//
+// Markup: `.sheen-dropdown-menu` with `.sheen-dropdown-item`, `.sheen-dropdown-label`,
+// and `.sheen-dropdown-separator` children. Blazor positions the popover from
+// JavaScript; Radix positions its own content.
+// -----------------------------------------------------------------------------
+
+.sheen-dropdown-menu {
+  z-index: 1060;
+  min-width: 10rem;
+  max-width: calc(100vw - 1rem);
+  max-height: calc(100vh - 1rem);
+  margin: 0;
+  padding: 0.25rem;
+  overflow: auto;
+  color: var(--bs-body-color);
+  border-radius: var(--sheen-radius);
+  @include sheen-surface;
+  box-shadow: var(--sheen-surface-shadow), var(--sheen-shadow-md);
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin, top);
+  outline: none; // focused after a pointer open; the items show the keyboard position
+
+  // The UA centers popovers in the viewport; the script sets top and left instead.
+  &[popover] {
+    position: fixed;
+    inset: auto;
+  }
+}
+
+// A closed popover must stay hidden; Radix only mounts the menu while open.
+.sheen-dropdown-menu:where(:not([popover]), :popover-open) {
+  display: grid;
+}
+
+.sheen-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.375rem 0.625rem;
+  border: 0;
+  border-radius: var(--sheen-radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.9375rem;
+  text-align: start;
+  cursor: default;
+  user-select: none;
+  outline: none;
+
+  // Radix marks the active item with data-highlighted; the Blazor script focuses it.
+  &:is([data-highlighted], :focus) {
+    background: rgba(var(--bs-emphasis-color-rgb), 0.08);
+  }
+
+  &:is([data-disabled], :disabled) {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+}
+
+.sheen-dropdown-label {
+  padding: 0.375rem 0.625rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.sheen-dropdown-separator {
+  height: 1px;
+  margin: 0.25rem -0.25rem;
+  background: var(--sheen-border-color);
+}
+
+@include motion-safe {
+  .sheen-dropdown-menu:where(:not([popover]), :popover-open) { animation: sheen-pop-in var(--sheen-duration-fast) var(--sheen-ease-out); }
+  .sheen-dropdown-menu[data-state="closed"] { animation: sheen-pop-out var(--sheen-duration-fast) var(--sheen-ease-in); }
+}

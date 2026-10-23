@@ -15,12 +15,15 @@ const CREATE_VITE = `vite@${process.env.CREATE_VITE_VERSION ?? "9.3.1"}`
 
 const APP = `import { useState } from "react"
 import { Button } from "./components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./components/ui/dialog"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./components/ui/dropdown-menu"
 import { SheenThemeProvider, type SheenAppearance } from "./lib/theme"
 
 const params = new URLSearchParams(window.location.search)
 
 export default function App() {
   const [count, setCount] = useState(0)
+  const [picked, setPicked] = useState("")
   return (
     <SheenThemeProvider
       data-testid="theme"
@@ -32,6 +35,22 @@ export default function App() {
       <Button id="count" onClick={() => setCount((value) => value + 1)}>
         Count {count}
       </Button>
+      <Dialog>
+        <DialogTrigger asChild><Button variant="outline">Open dialog</Button></DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete file?</DialogTitle>
+            <DialogDescription>This cannot be undone.</DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild><Button variant="secondary">Options</Button></DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onSelect={() => setPicked("Edit")}>Edit</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <p id="picked">{picked}</p>
     </SheenThemeProvider>
   )
 }
@@ -88,6 +107,8 @@ test.beforeAll(async () => {
 
   sh("npx sheenui-react init", app)
   sh("npx sheenui-react add button", app)
+  sh("npx sheenui-react add dialog", app)
+  sh("npx sheenui-react add dropdown-menu", app)
 
   // The starter replaced the unmodified template App and removed what only it used (ADR 008).
   if (!readFileSync(path.join(app, "src/App.tsx"), "utf8").includes("Welcome to your SheenUI app"))
@@ -170,9 +191,32 @@ test("light and dark Primary inherit the provider's accent", async ({ page }) =>
   }
 })
 
+test("Dialog and DropdownMenu portal into the theme root and use the shared styles (ADR 013)", async ({ page }) => {
+  await page.goto(`${baseUrl}/?mode=dark&accent=emerald`)
+  await page.getByRole("button", { name: "Open dialog" }).click()
+  const dialog = page.getByRole("dialog", { name: "Delete file?" })
+  await expect(dialog).toHaveClass(/\bsheen-dialog\b/)
+  await expect(dialog).toHaveCSS("position", "fixed")
+  expect(await dialog.evaluate((el) => !!el.closest('[data-bs-theme="dark"][data-sheen-accent="emerald"]'))).toBe(true)
+  await page.keyboard.press("Escape")
+  await expect(dialog).toBeHidden()
+
+  await page.getByRole("button", { name: "Options" }).click()
+  const menu = page.getByRole("menu")
+  await expect(menu).toHaveClass(/\bsheen-dropdown-menu\b/)
+  await expect(menu).toBeFocused() // a pointer open focuses the menu; arrows move in (ADR 013)
+  await page.keyboard.press("ArrowDown")
+  await expect(page.getByRole("menuitem", { name: "Edit" })).toBeFocused()
+  await page.keyboard.press("Enter")
+  await expect(page.locator("#picked")).toHaveText("Edit")
+  await expect(menu).toBeHidden()
+})
+
 test("running init and add again changes no files", () => {
   const before = snapshot(app)
   sh("npx sheenui-react init", app)
   sh("npx sheenui-react add button", app)
+  sh("npx sheenui-react add dialog", app)
+  sh("npx sheenui-react add dropdown-menu", app)
   expect(snapshot(app)).toEqual(before)
 })

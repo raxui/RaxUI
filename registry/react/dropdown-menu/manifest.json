@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "dropdown-menu",
+  "version": "0.1.0",
+  "description": "DropdownMenu on Radix with items, labels, separators, and groups.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-dropdown-menu": "2.2.1"
+  },
+  "styles": [
+    "components/dropdown-menu"
+  ],
+  "files": [
+    {
+      "source": "registry/react/dropdown-menu/dropdown-menu.tsx",
+      "target": "components/ui/dropdown-menu.tsx",
+      "type": "tsx",
+      "sha256": "361f68f371e25b3cd5119586fef508662fb3a0cdd0efb7cfab06fcc78b223b23"
+    },
+    {
+      "source": "theme/scss/components/_dropdown-menu.scss",
+      "target": "styles/sheenui/components/_dropdown-menu.scss",
+      "type": "scss",
+      "sha256": "1328de442119f8bd90b87e86a7786f43c484c2090d8c3ec041666fd3ea42e057"
+    }
+  ]
+}

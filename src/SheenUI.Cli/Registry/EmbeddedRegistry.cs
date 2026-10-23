@@ -18,11 +18,12 @@ public class EmbeddedRegistry
 
     private const string ResourcePrefix = "SheenUI.Cli.registry.";
 
-    // Allowed file types and target depth per destination: components go to Components/UI/<Folder>/;
-    // the starter writes Components/<Folder>/ pages and the app's wwwroot/app.css (ADR 008).
+    // Allowed file types and target depth per destination: components go to Components/UI/<Folder>/, with
+    // collocated .razor.js modules for overlays (ADR 013); the starter writes Components/<Folder>/ pages and
+    // the app's wwwroot/app.css (ADR 008).
     private static readonly Dictionary<string, (string[] Types, int Segments)> ComponentRules = new()
     {
-        [ComponentsDestination] = (["razor", "isolated-css"], 2),
+        [ComponentsDestination] = (["razor", "isolated-css", "js"], 2),
     };
     private static readonly Dictionary<string, (string[] Types, int Segments)> StarterRules = new()
     {
@@ -178,6 +179,10 @@ public class EmbeddedRegistry
     private string ResolveResourceName(string relativePath)
     {
         var normalized = relativePath.Replace('\\', '/').TrimStart('/');
+        // MSBuild names embedded resources with '-' in folder names as '_' (components/dropdown-menu/ -> dropdown_menu).
+        var slash = normalized.LastIndexOf('/');
+        if (slash >= 0)
+            normalized = normalized[..slash].Replace('-', '_') + normalized[slash..];
         var candidate = ResourcePrefix + normalized.Replace('/', '.');
 
         var existingNames = _assembly.GetManifestResourceNames();

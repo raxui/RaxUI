@@ -1,0 +1,90 @@
+// SheenUI DropdownMenu: positioning and keyboard navigation for the popover menu (ADR 013).
+// The popover attribute already gives the top layer, Esc, and closing on a click outside. Source-owned: edit freely.
+
+const ITEM = '[role="menuitem"]:not(:disabled)'
+const GAP = 4 // px between trigger and menu
+const MARGIN = 8 // px kept free at the viewport edges
+
+export function init(trigger, menu) {
+  const place = () => position(trigger, menu)
+  let pointer = false
+  trigger.addEventListener("pointerdown", () => { pointer = true })
+
+  menu.addEventListener("toggle", (event) => {
+    const open = event.newState === "open"
+    trigger.setAttribute("aria-expanded", String(open))
+    if (open) {
+      place()
+      // Like Radix: the keyboard focuses the first item, the pointer the menu itself (arrows then move in).
+      if (pointer) menu.focus()
+      else menu.querySelector(ITEM)?.focus()
+      pointer = false
+      window.addEventListener("resize", place)
+      window.addEventListener("scroll", place, true)
+    } else {
+      window.removeEventListener("resize", place)
+      window.removeEventListener("scroll", place, true)
+      // Safari does not focus clicked buttons, so the popover may have no element to return focus to.
+      if (document.activeElement === document.body || menu.contains(document.activeElement)) trigger.focus()
+    }
+  })
+
+  trigger.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return
+    event.preventDefault()
+    menu.showPopover()
+  })
+
+  menu.addEventListener("keydown", (event) => onKeyDown(event, menu))
+  menu.addEventListener("click", (event) => {
+    if (event.target.closest(ITEM)) menu.hidePopover()
+  })
+  // Like Radix, the pointer moves the highlight, so mouse and keyboard share one active item.
+  menu.addEventListener("pointermove", (event) => {
+    const item = event.target.closest(ITEM)
+    if (item && item !== document.activeElement) item.focus()
+  })
+}
+
+function onKeyDown(event, menu) {
+  const items = [...menu.querySelectorAll(ITEM)]
+  const index = items.indexOf(document.activeElement)
+  let next
+  switch (event.key) {
+    case "ArrowDown": next = items[(index + 1) % items.length]; break
+    case "ArrowUp": next = items[index <= 0 ? items.length - 1 : index - 1]; break
+    case "Home": next = items[0]; break
+    case "End": next = items.at(-1); break
+    case "Tab":
+      event.preventDefault()
+      menu.hidePopover()
+      return
+    default: {
+      // Typeahead: jump to the next item that starts with the typed character.
+      if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey || !event.key.trim()) return
+      const key = event.key.toLocaleLowerCase()
+      const ordered = [...items.slice(index + 1), ...items.slice(0, index + 1)]
+      next = ordered.find((item) => item.textContent.trim().toLocaleLowerCase().startsWith(key))
+    }
+  }
+  if (!next) return
+  event.preventDefault()
+  next.focus()
+}
+
+// Below the trigger and aligned to its inline start; above it when there is no room below.
+function position(trigger, menu) {
+  const anchor = trigger.getBoundingClientRect()
+  // offset sizes ignore the opening animation's scale.
+  const width = menu.offsetWidth
+  const height = menu.offsetHeight
+  const rtl = getComputedStyle(trigger).direction === "rtl"
+  const start = rtl ? anchor.right - width : anchor.left
+  const left = Math.max(MARGIN, Math.min(start, window.innerWidth - width - MARGIN))
+  const below = anchor.bottom + GAP
+  const above = anchor.top - GAP - height
+  const top = below + height <= window.innerHeight - MARGIN || above < MARGIN ? below : above
+  menu.style.left = `${left}px`
+  menu.style.top = `${top}px`
+  menu.style.transformOrigin = `${top === below ? "top" : "bottom"} ${rtl ? "right" : "left"}`
+}

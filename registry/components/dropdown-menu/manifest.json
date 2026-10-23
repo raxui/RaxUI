@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "name": "dropdown-menu",
+  "version": "0.1.0",
+  "description": "Popover menu with items, labels, separators, and keyboard navigation.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "155da66f98b94ab7dd2adf0273af52a9cd7a17e8e7af8b2bfd3f4c2d69fce30f"
+    }
+  ],
+  "files": [
+    {
+      "source": "DropdownMenu.razor",
+      "destination": "components",
+      "target": "DropdownMenu/DropdownMenu.razor",
+      "type": "razor",
+      "sha256": "0731b4f1f3b1d079be0b6afa55cd517c1d12e6caa873f3e9212d9249f4ef3a95"
+    },
+    {
+      "source": "DropdownMenuItem.razor",
+      "destination": "components",
+      "target": "DropdownMenu/DropdownMenuItem.razor",
+      "type": "razor",
+      "sha256": "40d7c06c3c04ef18afadbe9306f16e9d0349a6b632e807ffdefb5b998367d882"
+    },
+    {
+      "source": "DropdownMenuLabel.razor",
+      "destination": "components",
+      "target": "DropdownMenu/DropdownMenuLabel.razor",
+      "type": "razor",
+      "sha256": "124c675017d2a1359d13ad647695bdaaa743f4da84f27af36b30faa04ae806b4"
+    },
+    {
+      "source": "DropdownMenuSeparator.razor",
+      "destination": "components",
+      "target": "DropdownMenu/DropdownMenuSeparator.razor",
+      "type": "razor",
+      "sha256": "644a4346beedb233e657306d504c3eb6152341171110e092644cb5d59651fcd9"
+    },
+    {
+      "source": "DropdownMenu.razor.js",
+      "destination": "components",
+      "target": "DropdownMenu/DropdownMenu.razor.js",
+      "type": "js",
+      "sha256": "9ad774f0526b0dc83d7b868b0f53ede4615d6e21994bfa00a6c44dc6d6139293"
+    }
+  ]
+}

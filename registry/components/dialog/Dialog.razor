@@ -1,0 +1,118 @@
+@* SheenUI Dialog. Source-owned: edit freely. A native <dialog> opened with showModal() (ADR 013), styled by
+   the shared theme with the same classes and behavior as the React Dialog. Needs an interactive render mode. *@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<dialog @ref="_element"
+        @attributes="AdditionalAttributes"
+        class="@CssClass"
+        aria-labelledby="@(Title is null ? null : TitleId)"
+        aria-describedby="@(Description is null ? null : DescriptionId)"
+        data-sheen-appearance="@Appearance"
+        @onclose="HandleCloseAsync">
+    @if (Title is not null || Description is not null)
+    {
+        <div class="sheen-dialog-header">
+            @if (Title is not null)
+            {
+                <h2 id="@TitleId" class="sheen-dialog-title">@Title</h2>
+            }
+            @if (Description is not null)
+            {
+                <p id="@DescriptionId" class="sheen-dialog-description">@Description</p>
+            }
+        </div>
+    }
+    @ChildContent
+    @if (Footer is not null)
+    {
+        <div class="sheen-dialog-footer">@Footer</div>
+    }
+    @if (ShowCloseButton)
+    {
+        <button type="button" class="btn-close sheen-dialog-close" aria-label="@CloseLabel" @onclick="CloseAsync"></button>
+    }
+</dialog>
+
+@code {
+    private readonly string _id = $"sheen-dialog-{Guid.NewGuid():N}";
+    private ElementReference _element;
+    private IJSObjectReference? _module;
+    private bool _shown;
+
+    /// <summary>Whether the dialog is open. Use with @bind-Open; Esc, a click outside, and the close button set it to false.</summary>
+    [Parameter] public bool Open { get; set; }
+
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+    /// <summary>The heading that names the dialog for screen readers.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>A short description read after the title.</summary>
+    [Parameter] public string? Description { get; set; }
+
+    /// <summary>Actions, usually buttons, aligned to the end of the dialog.</summary>
+    [Parameter] public RenderFragment? Footer { get; set; }
+
+    [Parameter] public bool ShowCloseButton { get; set; } = true;
+
+    /// <summary>The close button's accessible name; translate it for your app.</summary>
+    [Parameter] public string CloseLabel { get; set; } = "Close";
+
+    /// <summary>default, flat, or glass. When null, the dialog inherits it from the nearest ancestor with data-sheen-appearance.</summary>
+    [Parameter] public string? Appearance { get; set; }
+
+    /// <summary>Extra CSS classes appended after the component's own classes.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string TitleId => $"{_id}-title";
+    private string DescriptionId => $"{_id}-description";
+    private string CssClass => string.IsNullOrEmpty(Class) ? "sheen-dialog" : $"sheen-dialog {Class}";
+
+    /// <summary>Closes the dialog and reports Open = false.</summary>
+    public async Task CloseAsync()
+    {
+        if (!Open) return;
+        Open = false;
+        await OpenChanged.InvokeAsync(false);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Dialog/Dialog.razor.js");
+            await _module.InvokeVoidAsync("init", _element);
+        }
+        if (_module is not null && Open != _shown)
+        {
+            _shown = Open;
+            await _module.InvokeVoidAsync("setOpen", _element, Open);
+        }
+    }
+
+    // The native close event: Esc, a click outside, the close button, or Open set to false.
+    private async Task HandleCloseAsync()
+    {
+        _shown = false;
+        await CloseAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is null) return;
+        try
+        {
+            await _module.DisposeAsync();
+        }
+        catch (JSDisconnectedException)
+        {
+            // The circuit is gone; the browser already dropped the module.
+        }
+    }
+}
