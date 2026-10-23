@@ -5,6 +5,8 @@ Licensed under [MIT](LICENSE).
 
 للتجربة دون نشر الحزم: [دليل الاستخدام المحلي على Windows بالعربية](docs/local-development.ar.md).
 
+For local usage without publishing packages: [Windows local usage guide in English](docs/local-development.en.md).
+
 The first preview supports **Blazor Web Apps on .NET 8, 9, and 10 with
 Interactive Server**, the template's Bootstrap, and the **Button** component.
 On .NET 8, `init` upgrades the template's unmodified Bootstrap 5.1 to 5.3, which
