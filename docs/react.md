@@ -65,8 +65,9 @@ silenceDeprecations: ["import", "global-builtin", "color-functions", "if-functio
 ```
 
 For plain Next.js templates, `init` also sets `turbopack.root` and
-`outputFileTracingRoot` to `process.cwd()` so unrelated parent lockfiles do not
-change the application root. Run Next.js commands from the application directory.
+`outputFileTracingRoot` to the config file's directory (`__dirname`, or
+`import.meta.dirname` for ES module configs) so unrelated parent lockfiles do not
+change the application root, wherever the command runs from.
 Monorepos or linked packages may need a shared parent root instead.
 Existing CSS/Sass/root settings, spreads, and unsupported config shapes are kept
 and reported for manual setup. Review custom settings before merging these options.

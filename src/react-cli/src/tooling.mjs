@@ -40,8 +40,17 @@ export function planTooling(projectDir, kind, notes) {
   // Next 15's Turbopack Sass loader still calls the legacy JS API.
   const deprecations = kind === "next" ? [...SASS_DEPRECATIONS, "legacy-js-api"] : SASS_DEPRECATIONS
   const options = `silenceDeprecations: ${JSON.stringify(deprecations)}`
+  // The config file's folder, not process.cwd(): builds may run from another directory.
+  const root = isEsmConfig(projectDir, name) ? "import.meta.dirname" : "__dirname"
   const settings = kind === "next"
-    ? `\n  // SheenUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  sassOptions: { ${options} },\n  turbopack: { root: process.cwd() },\n  outputFileTracingRoot: process.cwd(),\n`
+    ? `\n  // SheenUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  sassOptions: { ${options} },\n  turbopack: { root: ${root} },\n  outputFileTracingRoot: ${root},\n`
     : `\n  // SheenUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  css: { preprocessorOptions: { scss: { ${options} } } },\n`
   return { full, content: original.replace(anchor, (start) => start + settings) }
+}
+
+// Next compiles next.config.ts to CommonJS, so only .mjs and type-module .js run as ES modules.
+function isEsmConfig(projectDir, name) {
+  if (name.endsWith(".mjs")) return true
+  if (!name.endsWith(".js")) return false
+  try { return JSON.parse(readFileSync(path.join(projectDir, "package.json"), "utf8")).type === "module" } catch { return false }
 }
