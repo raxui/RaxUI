@@ -23,6 +23,20 @@ describe("shared theme", () => {
     expect(readFileSync("registry/styles/blazorui.css", "utf8")).toBe(compileBlazorTheme())
   })
 
+  it("re-declares the default surfaces where the mode changes without an appearance", () => {
+    expect(css).toMatch(/:where\(\[data-bs-theme\]:not\(\[data-bui-appearance=flat\] \*, \[data-bui-appearance=glass\] \*\)\)\s*\{[^}]*--bui-surface-bg: var\(--bs-body-bg\)/)
+  })
+
+  it("shows the button focus ring for keyboard focus only", () => {
+    const withButton = compileTheme(['@import "components/button";'])
+    expect(withButton).toMatch(/\.btn\.bui-button:focus:not\(:focus-visible\)\s*\{\s*box-shadow: var\(--bui-btn-shadow\);/)
+  })
+
+  it("keeps Blazor's error bar hidden until blazor.web.js shows it", () => {
+    const withStarter = compileTheme(['@import "components/starter";'])
+    expect(withStarter).toMatch(/#blazor-error-ui\s*\{\s*display: none;/)
+  })
+
   it("makes glass opaque when the user prefers reduced transparency", () => {
     expect(css).toMatch(/@media \(prefers-reduced-transparency: reduce\)[\s\S]*--bui-glass-alpha: 1 !important/)
   })

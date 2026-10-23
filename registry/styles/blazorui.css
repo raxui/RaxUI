@@ -360,7 +360,8 @@ body {
   color: color-mix(in srgb, rgba(var(--bs-danger-rgb), var(--bs-text-opacity, 1)) var(--bui-text-mix), var(--bui-text-ink)) !important;
 }
 
-:root, [data-bui-appearance=default], [data-bui-appearance=flat], [data-bui-appearance=glass] {
+:root, [data-bui-appearance=default], [data-bui-appearance=flat], [data-bui-appearance=glass],
+:where([data-bs-theme]:not([data-bui-appearance=flat] *, [data-bui-appearance=glass] *)) {
   --bui-surface-bg: var(--bs-body-bg);
   --bui-border-color: var(--bs-border-color);
   --bui-control-shadow: 0 1px 3px rgba(var(--bs-emphasis-color-rgb), 0.12);
@@ -603,6 +604,10 @@ body {
   --bui-btn-shadow: none;
 }
 
+.btn.bui-button:focus:not(:focus-visible) {
+  box-shadow: var(--bui-btn-shadow);
+}
+
 .bui-app {
   min-height: 100vh;
   color: var(--bs-body-color);
@@ -706,6 +711,25 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+#blazor-error-ui {
+  display: none;
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1000;
+  padding: 0.6rem 1.25rem 0.7rem;
+  background: var(--bs-warning-bg-subtle);
+  color: var(--bs-warning-text-emphasis);
+  border-block-start: 1px solid var(--bs-warning-border-subtle);
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+}
+#blazor-error-ui .dismiss {
+  position: absolute;
+  inset-inline-end: 0.75rem;
+  top: 0.5rem;
+  cursor: pointer;
 }
 
 .bui-preview-row {

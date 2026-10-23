@@ -53,6 +53,11 @@ public class GeneratedAppTests : IDisposable
             Assert.False(File.Exists(Path.Combine(components, removed)), removed);
         Assert.True(File.Exists(Path.Combine(components, "Pages", "Error.razor")));
 
+        // The template app.css (button, link, font, and focus overrides) is replaced by the minimal one.
+        var appCss = File.ReadAllText(Path.Combine(app, "wwwroot", "app.css"));
+        Assert.DoesNotContain(".btn-primary", appCss);
+        Assert.Contains(".validation-message", appCss);
+
         // Interactive test page; the starter pages stay as installed.
         var testPage = Path.Combine(components, "Pages", "TestPage.razor");
         File.WriteAllText(testPage, """
@@ -125,6 +130,7 @@ public class GeneratedAppTests : IDisposable
             await page.GotoAsync(url);
             await Assertions.Expect(page.Locator("h1")).ToHaveTextAsync("Welcome to your BlazorUI app");
             Assert.Equal(0, await page.Locator(".sidebar, .navbar-brand").CountAsync());
+            await Assertions.Expect(page.Locator("#blazor-error-ui")).ToBeHiddenAsync(); // shown only on an unhandled error
             await page.GotoAsync(url.TrimEnd('/') + "/?appearance=glass&mode=dark&accent=emerald&dir=rtl");
             var shell = page.Locator(".bui-app");
             await Assertions.Expect(shell).ToHaveAttributeAsync("data-bui-appearance", "glass");

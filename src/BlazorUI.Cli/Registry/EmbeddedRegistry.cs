@@ -17,7 +17,18 @@ public class EmbeddedRegistry
     public const string AppDestination = "app";
 
     private const string ResourcePrefix = "BlazorUI.Cli.registry.";
-    private static readonly HashSet<string> FileTypes = ["razor", "isolated-css"];
+
+    // Allowed file types and target depth per destination: components go to Components/UI/<Folder>/;
+    // the starter writes Components/<Folder>/ pages and the app's wwwroot/app.css (ADR 008).
+    private static readonly Dictionary<string, (string[] Types, int Segments)> ComponentRules = new()
+    {
+        [ComponentsDestination] = (["razor", "isolated-css"], 2),
+    };
+    private static readonly Dictionary<string, (string[] Types, int Segments)> StarterRules = new()
+    {
+        [AppDestination] = (["razor"], 2),
+        ["wwwroot"] = (["css"], 1),
+    };
 
     private readonly Assembly _assembly = typeof(EmbeddedRegistry).Assembly;
 
@@ -79,21 +90,26 @@ public class EmbeddedRegistry
             throw new InvalidOperationException($"Manifest for '{manifest.Name}' declares no files.");
 
         var folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var rules = destination == ComponentsDestination ? ComponentRules : StarterRules;
 
         foreach (var file in manifest.Files)
         {
             ValidatePathSafety(file.Source);
             ValidatePathSafety(file.Target);
 
-            if (!FileTypes.Contains(file.Type))
-                throw new InvalidOperationException($"Unsupported file type '{file.Type}' for '{file.Source}'.");
-
-            if (file.Destination != destination)
+            if (!rules.TryGetValue(file.Destination, out var rule))
                 throw new InvalidOperationException($"Unsupported destination '{file.Destination}' for '{file.Source}'.");
 
+            if (!rule.Types.Contains(file.Type))
+                throw new InvalidOperationException($"Unsupported file type '{file.Type}' for '{file.Source}'.");
+
             var segments = file.Target.Split('/');
-            if (segments.Length != 2)
-                throw new InvalidOperationException($"Target '{file.Target}' must have the form '<Folder>/<file>'.");
+            if (segments.Length != rule.Segments)
+            {
+                throw new InvalidOperationException(rule.Segments == 2
+                    ? $"Target '{file.Target}' must have the form '<Folder>/<file>'."
+                    : $"Target '{file.Target}' must be a file name.");
+            }
 
             folders.Add(segments[0]);
             VerifyHash($"{manifest.SourceDirectory}/{file.Source}", file.Sha256);

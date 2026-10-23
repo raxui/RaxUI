@@ -22,7 +22,7 @@
       "source": "theme/scss/components/_starter.scss",
       "target": "styles/blazorui/components/_starter.scss",
       "type": "scss",
-      "sha256": "0c9237670d3375cb4265300d32c94650c2a5a4b710865b1f865a1eb6d28fefea"
+      "sha256": "350c334a3aaa4decded5818278763de8eaf1f6613ada807a69424a1687bc8524"
     }
   ]
 }

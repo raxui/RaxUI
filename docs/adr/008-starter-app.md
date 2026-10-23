@@ -23,7 +23,9 @@ The shell is a header with the app name and a centered main area, styled by `the
 - Blazor reads the theme from the query string (`?appearance=glass&mode=dark&accent=emerald&dir=rtl`) through `[SupplyParameterFromQuery]`, so switching works without interactivity, in any render mode. Only known values reach the attributes.
 - React keeps the theme in component state and passes it to `BootThemeProvider`.
 
-The layout and welcome page keep Blazor's error UI and the template's `Error`, `NotFound`, and `ReconnectModal` components.
+The layout and welcome page keep Blazor's error UI and the template's `Error`, `NotFound`, and `ReconnectModal` components. The error bar's styles (`#blazor-error-ui`, hidden until `blazor.web.js` shows it) move from the removed `MainLayout.razor.css` into `_starter.scss`.
+
+**Blazor `app.css`:** the template's `wwwroot/app.css` overrides Bootstrap buttons, links, fonts, and adds a focus ring to every `.btn:focus`, which conflicts with the theme. When it is unmodified, `init` replaces it with a minimal `app.css` that keeps only what Blazor's built-in features need: `h1:focus` for `FocusOnNavigate`, form validation classes, and the default `ErrorBoundary` content, all using Bootstrap's theme variables. A changed `app.css` is kept and reported.
 
 ### Template files are replaced only when unmodified
 
