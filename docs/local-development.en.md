@@ -319,6 +319,9 @@ or linked dependencies outside the Next.js application root.
 
 ## 9. Verification checklist
 
+For repository development, run `npm run check`; before merging, run
+`npm run check:full`. See [coverage and prerequisites](local-checks.md).
+
 - `dotnet build` or `npm run build` succeeds.
 - The welcome page appears and its theme controls work.
 - Button click handlers work.

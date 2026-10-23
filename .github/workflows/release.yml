@@ -1,18 +1,29 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Explicitly publish the selected v* tag to NuGet and GitHub Releases'
+        type: boolean
+        default: false
 
 jobs:
   release:
+    if: ${{ inputs.publish }}
     name: Build & Publish Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
+      - name: Require a version tag
+        run: |
+          if [[ "$GITHUB_REF" != refs/tags/v* ]]; then
+            echo "Select an existing v* tag. Publishing from a branch is not supported."
+            exit 1
+          fi
+
       - name: Check publishing credentials
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
