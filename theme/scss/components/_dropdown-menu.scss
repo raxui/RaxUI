@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------------
 
 .sheen-dropdown-menu {
+  position: relative; // the gliding highlight is measured in the menu
   z-index: 1060;
   min-width: 10rem;
   max-width: calc(100vw - 1rem);
@@ -33,7 +34,32 @@
   display: grid;
 }
 
+// One highlight that glides to the active item. Radix and the Blazor script both focus that item,
+// and the component sets --sheen-menu-hover-y/-h from it; data-hover shows the highlight.
+.sheen-dropdown-highlight {
+  position: absolute;
+  inset-inline: 0.25rem;
+  top: 0;
+  height: var(--sheen-menu-hover-h, 0);
+  border-radius: var(--sheen-radius-sm);
+  background: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(var(--sheen-menu-hover-y, 0));
+  transition: opacity 80ms ease;
+
+  .sheen-dropdown-menu[data-hover] > & { opacity: 1; }
+
+  @include motion-safe {
+    transition:
+      opacity 80ms ease,
+      transform var(--sheen-duration) var(--sheen-ease-out),
+      height var(--sheen-duration) var(--sheen-ease-out);
+  }
+}
+
 .sheen-dropdown-item {
+  position: relative; // paints above the highlight
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -51,9 +77,9 @@
   outline: none;
   transition: background-color 80ms ease;
 
-  // Radix marks the active item with data-highlighted; the Blazor script focuses it.
-  &:is([data-highlighted], :focus) {
-    background: rgba(var(--bs-emphasis-color-rgb), 0.08);
+  // Menus without the gliding highlight tint the active item itself.
+  .sheen-dropdown-menu:not(:has(> .sheen-dropdown-highlight)) &:is([data-highlighted], :focus) {
+    background: rgba(var(--bs-emphasis-color-rgb), 0.07);
   }
 
   &:is([data-disabled], :disabled) {

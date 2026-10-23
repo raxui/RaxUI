@@ -22,6 +22,7 @@ export function init(trigger, menu) {
       window.addEventListener("resize", place)
       window.addEventListener("scroll", place, true)
     } else {
+      menu.removeAttribute("data-hover")
       window.removeEventListener("resize", place)
       window.removeEventListener("scroll", place, true)
       // Safari does not focus clicked buttons, so the popover may have no element to return focus to.
@@ -44,6 +45,26 @@ export function init(trigger, menu) {
     const item = event.target.closest(ITEM)
     if (item && item !== document.activeElement) item.focus()
   })
+  // Leaving the items clears the highlight, as in Radix.
+  menu.addEventListener("pointerleave", () => menu.focus())
+  menu.addEventListener("focusin", (event) => glide(menu, event.target.closest(ITEM)))
+}
+
+// Slides the highlight to the focused item; it appears in place first, then glides from item to item.
+function glide(menu, item) {
+  const highlight = menu.querySelector(":scope > .sheen-dropdown-highlight")
+  if (!highlight) return
+  if (!item) return menu.removeAttribute("data-hover")
+  const set = () => {
+    menu.style.setProperty("--sheen-menu-hover-y", `${item.offsetTop}px`)
+    menu.style.setProperty("--sheen-menu-hover-h", `${item.offsetHeight}px`)
+  }
+  if (menu.hasAttribute("data-hover")) return set()
+  highlight.style.transition = "none"
+  set()
+  void highlight.offsetHeight // commit the position before transitions return
+  highlight.style.transition = ""
+  menu.setAttribute("data-hover", "")
 }
 
 function onKeyDown(event, menu) {
