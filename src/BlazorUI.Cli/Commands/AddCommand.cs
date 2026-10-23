@@ -8,7 +8,7 @@ public static class AddCommand
 {
     public static int Execute(string workingDirectory, string componentName, TextWriter output, TextWriter error)
     {
-        var backupFiles = new Dictionary<string, string?>();
+        var backup = new FileBackup();
 
         try
         {
@@ -31,39 +31,25 @@ public static class AddCommand
 
             output.WriteLine($"Adding component '{manifest.Name}' (v{manifest.Version})...");
 
-            var lockPath = Path.Combine(workingDirectory, BlazorUiLock.DefaultFileName);
             var lockFile = BlazorUiLock.LoadOrCreate(workingDirectory);
+            var componentsDir = Path.Combine(workingDirectory, config.ComponentsPath);
 
-            // 1. Validate files and check for conflicts before writing anything
-            var plannedWrites = new List<(string SourceRel, string TargetPath, string RelTarget, byte[] Bytes, string Hash)>();
+            // The manifest validator guarantees every target is "<ComponentFolder>/<file>" in one folder.
+            var componentFolder = manifest.Files[0].Target.Split('/')[0];
 
-            // Capitalize folder name (e.g., button -> Button)
-            var componentFolder = char.ToUpperInvariant(manifest.Name[0]) + manifest.Name[1..];
-            var baseComponentsDir = Path.Combine(workingDirectory, config.ComponentsPath, componentFolder);
+            // 1. Plan and check for conflicts before writing anything
+            var plannedWrites = new List<(string TargetPath, string RelTarget, byte[] Bytes, string Hash)>();
 
             foreach (var file in manifest.Files)
             {
-                EmbeddedRegistry.ValidatePathSafety(file.Source);
-                EmbeddedRegistry.ValidatePathSafety(file.Target);
-
-                var sourceRel = $"components/{manifest.Name}/{file.Source}";
-                var bytes = registry.GetResourceBytes(sourceRel);
+                var bytes = registry.GetResourceBytes($"components/{manifest.Name}/{file.Source}");
                 var hash = EmbeddedRegistry.ComputeSha256(bytes);
-
-                if (!string.Equals(file.Sha256, hash, StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new InvalidOperationException(
-                        $"Manifest integrity check failed for '{file.Source}'. Expected hash '{file.Sha256}', but got '{hash}'.");
-                }
-
-                var fileName = Path.GetFileName(file.Target);
-                var targetPath = Path.Combine(baseComponentsDir, fileName);
+                var targetPath = Path.Combine(componentsDir, file.Target);
                 var relTarget = Path.GetRelativePath(workingDirectory, targetPath).Replace('\\', '/');
 
                 if (File.Exists(targetPath))
                 {
-                    var existingBytes = File.ReadAllBytes(targetPath);
-                    var existingHash = EmbeddedRegistry.ComputeSha256(existingBytes);
+                    var existingHash = EmbeddedRegistry.ComputeSha256(File.ReadAllBytes(targetPath));
                     var tracked = lockFile.FindTrackedFile(relTarget);
 
                     if (tracked == null)
@@ -79,26 +65,15 @@ public static class AddCommand
                     }
                 }
 
-                plannedWrites.Add((sourceRel, targetPath, relTarget, bytes, hash));
+                plannedWrites.Add((targetPath, relTarget, bytes, hash));
             }
 
-            // 2. Perform staged file writes
-            Directory.CreateDirectory(baseComponentsDir);
+            // 2. Write files, keeping originals for rollback
             var lockedFiles = new List<LockedFile>();
 
             foreach (var write in plannedWrites)
             {
-                if (File.Exists(write.TargetPath))
-                {
-                    backupFiles[write.TargetPath] = File.ReadAllText(write.TargetPath);
-                }
-                else
-                {
-                    backupFiles[write.TargetPath] = null;
-                }
-
-                File.WriteAllBytes(write.TargetPath, write.Bytes);
-
+                backup.Write(write.TargetPath, write.Bytes);
                 lockedFiles.Add(new LockedFile
                 {
                     Target = write.RelTarget,
@@ -108,15 +83,17 @@ public static class AddCommand
             }
 
             // 3. Update Components/_Imports.razor
-            UpdateImportsRazor(project, componentFolder, backupFiles);
+            UpdateImportsRazor(project, componentFolder, backup);
 
             // 4. Update lock file (written LAST per ADR 003)
             lockFile.Components[manifest.Name] = new LockedComponent
             {
                 Version = manifest.Version,
+                ManifestSha256 = manifest.ManifestSha256,
                 Files = lockedFiles
             };
 
+            backup.Remember(Path.Combine(workingDirectory, BlazorUiLock.DefaultFileName));
             lockFile.Save(workingDirectory);
 
             output.WriteLine($"Component '{manifest.Name}' installed successfully:");
@@ -131,42 +108,22 @@ public static class AddCommand
         catch (Exception ex)
         {
             error.WriteLine($"Error adding component '{componentName}': {ex.Message}");
-
-            // Rollback
-            foreach (var kvp in backupFiles)
-            {
-                try
-                {
-                    if (kvp.Value == null)
-                    {
-                        if (File.Exists(kvp.Key))
-                            File.Delete(kvp.Key);
-                    }
-                    else
-                    {
-                        File.WriteAllText(kvp.Key, kvp.Value);
-                    }
-                }
-                catch
-                {
-                    // Ignore secondary rollback failures
-                }
-            }
-
+            backup.Restore();
             return 1;
         }
     }
 
-    private static void UpdateImportsRazor(ProjectContext project, string componentFolder, Dictionary<string, string?> backupFiles)
+    private static void UpdateImportsRazor(ProjectContext project, string componentFolder, FileBackup backup)
     {
         var importsPath = project.ImportsRazorPath;
         var usingDirective = $"@using {project.RootNamespace}.Components.UI.{componentFolder}";
 
         var currentContent = File.Exists(importsPath) ? File.ReadAllText(importsPath) : "";
-        if (!backupFiles.ContainsKey(importsPath))
-            backupFiles[importsPath] = File.Exists(importsPath) ? currentContent : null;
+        var alreadyPresent = currentContent
+            .Split(["\r\n", "\n"], StringSplitOptions.None)
+            .Any(line => line.Trim() == usingDirective);
 
-        if (currentContent.Contains(usingDirective, StringComparison.OrdinalIgnoreCase))
+        if (alreadyPresent)
             return;
 
         var separator = currentContent.Contains("\r\n") ? "\r\n" : "\n";
@@ -175,6 +132,6 @@ public static class AddCommand
             newContent += separator;
         newContent += usingDirective + separator;
 
-        File.WriteAllText(importsPath, newContent);
+        backup.WriteText(importsPath, newContent);
     }
 }

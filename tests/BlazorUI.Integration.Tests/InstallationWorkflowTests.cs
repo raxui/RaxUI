@@ -56,7 +56,7 @@ public class InstallationWorkflowTests : IDisposable
                 <meta charset="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <base href="/" />
-                <link rel="stylesheet" href="lib/bootstrap/bootstrap.min.css" />
+                <link rel="stylesheet" href="@Assets["lib/bootstrap/bootstrap.min.css"]" />
                 <link rel="stylesheet" href="app.css" />
                 <link rel="stylesheet" href="TestConsumerApp.styles.css" />
             </head>
@@ -138,6 +138,105 @@ public class InstallationWorkflowTests : IDisposable
         var usingMatches = System.Text.RegularExpressions.Regex.Matches(importsContent, "TestConsumerApp\\.Components\\.UI\\.Button");
         Assert.Single(usingMatches);
     }
+
+    [Fact]
+    public void Repeated_commands_change_no_file_bytes()
+    {
+        CreateSampleBlazorProject();
+
+        var output = new StringWriter();
+        var error = new StringWriter();
+
+        Assert.Equal(0, Program.Run(["init"], _testDirectory, output, error));
+        Assert.Equal(0, Program.Run(["add", "button"], _testDirectory, output, error));
+        var before = SnapshotFiles(_testDirectory);
+
+        Assert.Equal(0, Program.Run(["init"], _testDirectory, output, error));
+        Assert.Equal(0, Program.Run(["add", "button"], _testDirectory, output, error));
+
+        Assert.Equal(before, SnapshotFiles(_testDirectory));
+    }
+
+    [Fact]
+    public void Lock_file_records_manifest_digest_and_hashes()
+    {
+        CreateSampleBlazorProject();
+
+        var output = new StringWriter();
+        var error = new StringWriter();
+
+        Assert.Equal(0, Program.Run(["init"], _testDirectory, output, error));
+        Assert.Equal(0, Program.Run(["add", "button"], _testDirectory, output, error));
+
+        var button = BlazorUiLock.LoadOrCreate(_testDirectory).Components["button"];
+        Assert.Matches("^[0-9a-f]{64}$", button.ManifestSha256);
+        Assert.All(button.Files, f => Assert.Matches("^[0-9a-f]{64}$", f.InstalledHash));
+    }
+
+    [Fact]
+    public void Init_refuses_to_overwrite_unknown_style_file_and_writes_nothing()
+    {
+        CreateSampleBlazorProject();
+        var stylesDir = Path.Combine(_testDirectory, "wwwroot", "css", "blazorui");
+        Directory.CreateDirectory(stylesDir);
+        var tokens = Path.Combine(stylesDir, "tokens.css");
+        File.WriteAllText(tokens, "/* my own tokens */");
+        var appBefore = File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor"));
+
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var code = Program.Run(["init"], _testDirectory, output, error);
+
+        Assert.Equal(1, code);
+        Assert.Contains("not managed by BlazorUI", error.ToString());
+        Assert.Equal("/* my own tokens */", File.ReadAllText(tokens));
+        Assert.False(File.Exists(Path.Combine(stylesDir, "themes.css")));
+        Assert.Equal(appBefore, File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor")));
+        Assert.False(File.Exists(Path.Combine(_testDirectory, BlazorUiConfig.DefaultFileName)));
+    }
+
+    [Fact]
+    public void Init_reports_manual_steps_when_host_has_no_known_link()
+    {
+        CreateSampleBlazorProject();
+        var appRazor = Path.Combine(_testDirectory, "Components", "App.razor");
+        File.WriteAllText(appRazor, "<html><head></head><body><Routes /></body></html>");
+
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var code = Program.Run(["init"], _testDirectory, output, error);
+
+        Assert.Equal(1, code);
+        Assert.Contains("Add these links manually", error.ToString());
+        Assert.Equal("<html><head></head><body><Routes /></body></html>", File.ReadAllText(appRazor));
+    }
+
+    [Fact]
+    public void Root_namespace_comes_from_evaluated_msbuild_properties()
+    {
+        CreateSampleBlazorProject();
+        // Defined only in Directory.Build.props, not in the .csproj
+        var csproj = Path.Combine(_testDirectory, "TestConsumerApp.csproj");
+        File.WriteAllText(csproj, File.ReadAllText(csproj).Replace("<RootNamespace>TestConsumerApp</RootNamespace>", ""));
+        File.WriteAllText(Path.Combine(_testDirectory, "Directory.Build.props"),
+            "<Project><PropertyGroup><RootNamespace>Contoso.Web</RootNamespace></PropertyGroup></Project>");
+
+        var output = new StringWriter();
+        var error = new StringWriter();
+        Assert.Equal(0, Program.Run(["init"], _testDirectory, output, error));
+        Assert.Equal(0, Program.Run(["add", "button"], _testDirectory, output, error));
+
+        var importsContent = File.ReadAllText(Path.Combine(_testDirectory, "Components", "_Imports.razor"));
+        Assert.Contains("@using Contoso.Web.Components.UI.Button", importsContent);
+    }
+
+    internal static Dictionary<string, string> SnapshotFiles(string root) =>
+        Directory.GetFiles(root, "*", SearchOption.AllDirectories)
+            .Where(f => !f.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}") &&
+                        !f.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}"))
+            .ToDictionary(
+                f => Path.GetRelativePath(root, f),
+                f => Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(f))));
 
     [Fact]
     public void Add_refuses_to_overwrite_locally_modified_files()

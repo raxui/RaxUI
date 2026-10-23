@@ -48,6 +48,10 @@ public class ComponentManifest
 
     [JsonPropertyName("files")]
     public List<ManifestFile> Files { get; set; } = [];
+
+    /// <summary>SHA-256 of the manifest resource itself; recorded in the lock file.</summary>
+    [JsonIgnore]
+    public string ManifestSha256 { get; set; } = "";
 }
 
 public class ManifestAsset

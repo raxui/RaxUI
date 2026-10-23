@@ -1,4 +1,5 @@
-using System.Xml.Linq;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace BlazorUI.Cli.Project;
 
@@ -31,14 +32,7 @@ public class ProjectContext
         var csprojPath = csprojFiles[0];
         var projectName = Path.GetFileNameWithoutExtension(csprojPath);
 
-        var xml = XDocument.Load(csprojPath);
-        var rootNamespace = xml.Descendants("RootNamespace").FirstOrDefault()?.Value?.Trim();
-        if (string.IsNullOrEmpty(rootNamespace))
-            rootNamespace = projectName;
-
-        var assemblyName = xml.Descendants("AssemblyName").FirstOrDefault()?.Value?.Trim();
-        if (string.IsNullOrEmpty(assemblyName))
-            assemblyName = rootNamespace;
+        var (rootNamespace, assemblyName) = EvaluateMsBuildProperties(csprojPath);
 
         // Verify Bootstrap existence per ADR 004
         var bootstrapDir = Path.Combine(workingDirectory, "wwwroot", "lib", "bootstrap");
@@ -75,10 +69,8 @@ public class ProjectContext
             importsRazor = Path.Combine(workingDirectory, "_Imports.razor");
             if (!File.Exists(importsRazor))
             {
-                // Create if missing or throw
-                var componentsDir = Path.Combine(workingDirectory, "Components");
-                Directory.CreateDirectory(componentsDir);
-                importsRazor = Path.Combine(componentsDir, "_Imports.razor");
+                // Created on first 'add'
+                importsRazor = Path.Combine(workingDirectory, "Components", "_Imports.razor");
             }
         }
 
@@ -93,6 +85,51 @@ public class ProjectContext
             ImportsRazorPath = importsRazor,
             BootstrapCssRelativePath = bootstrapCss
         };
+    }
+
+    /// <summary>
+    /// Reads the evaluated RootNamespace and AssemblyName, so values from Directory.Build.props
+    /// and SDK defaults are honored (ADR 003), instead of parsing the .csproj XML.
+    /// </summary>
+    private static (string RootNamespace, string AssemblyName) EvaluateMsBuildProperties(string csprojPath)
+    {
+        var startInfo = new ProcessStartInfo("dotnet")
+        {
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            WorkingDirectory = Path.GetDirectoryName(csprojPath)!,
+        };
+        foreach (var arg in new[] { "msbuild", csprojPath, "-getProperty:RootNamespace", "-getProperty:AssemblyName" })
+            startInfo.ArgumentList.Add(arg);
+
+        using var process = Process.Start(startInfo)
+                            ?? throw new InvalidOperationException("Could not start 'dotnet msbuild'.");
+        var stdoutTask = process.StandardOutput.ReadToEndAsync();
+        var stderrTask = process.StandardError.ReadToEndAsync();
+
+        if (!process.WaitForExit(TimeSpan.FromMinutes(2)))
+        {
+            process.Kill(entireProcessTree: true);
+            throw new InvalidOperationException($"Timed out evaluating '{csprojPath}' with 'dotnet msbuild'.");
+        }
+
+        var stdout = stdoutTask.Result;
+        if (process.ExitCode != 0)
+        {
+            throw new InvalidOperationException(
+                $"'dotnet msbuild' failed to evaluate '{csprojPath}': {(stdout + stderrTask.Result).Trim()}");
+        }
+
+        using var json = JsonDocument.Parse(stdout);
+        var properties = json.RootElement.GetProperty("Properties");
+        var rootNamespace = properties.GetProperty("RootNamespace").GetString();
+        var assemblyName = properties.GetProperty("AssemblyName").GetString();
+
+        if (string.IsNullOrWhiteSpace(rootNamespace) || string.IsNullOrWhiteSpace(assemblyName))
+            throw new InvalidOperationException($"Project '{csprojPath}' has no RootNamespace or AssemblyName.");
+
+        return (rootNamespace, assemblyName);
     }
 
     private static string? FindBootstrapCssRelative(string root, string bootstrapDir)
