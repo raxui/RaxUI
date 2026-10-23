@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { execFileSync } from "node:child_process"
 import { createHash } from "node:crypto"
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
@@ -183,6 +184,20 @@ describe("blazorui-react init and add button", () => {
     symlinkSync(outside, file("src/components/ui"), "junction")
     expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("escapes the project") })
     expect(readdirSync(outside)).toEqual([])
+  })
+
+  it("keeps every packed CLI file visible to git", () => {
+    // A .NET-style `bin/` ignore once hid the CLI entry point, so CI packed a CLI without its command.
+    const packed = ["bin/blazorui-react.mjs", "src/cli.mjs", "src/registry.mjs", "src/safety.mjs", "src/state.mjs", "package.json"]
+    const ignored = packed.filter((relative) => {
+      try {
+        execFileSync("git", ["check-ignore", "-q", `src/react-cli/${relative}`])
+        return true // exit 0: ignored
+      } catch {
+        return false
+      }
+    })
+    expect(ignored).toEqual([])
   })
 
   it("prints the install command when packages are missing and --no-install is set", () => {

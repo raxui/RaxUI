@@ -1,5 +1,7 @@
 .vs/
 bin/
+# The React CLI's entry point, not .NET build output
+!src/react-cli/bin/
 obj/
 *.user
 TestResults/
@@ -9,3 +11,6 @@ src/react-cli/registry/
 src/react-cli/theme/
 *.tgz
 test-results/
+# Local packaging and tool installs (README "Build and test")
+nupkg/
+local-tools/
