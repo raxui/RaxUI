@@ -17,9 +17,11 @@
 }
 [data-bui-appearance="glass"] {
   --bui-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
-  // Controls get a light lift; panels (cards, dialogs, menus) keep the deeper glass shadow.
-  --bui-control-shadow: var(--bui-glass-edge), var(--bui-shadow-sm);
-  --bui-surface-shadow: var(--bui-glass-edge), var(--bui-shadow-md);
+  // Keep glass close to the page: subtle contact shadows, without a broad halo.
+  --bui-control-shadow: var(--bui-glass-edge),
+    0 1px 2px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 0.3));
+  --bui-surface-shadow: var(--bui-glass-edge),
+    0 2px 8px -2px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 0.4));
   --bui-border-color: var(--bui-glass-border-color);
   @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     --bui-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);

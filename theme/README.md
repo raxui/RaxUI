@@ -32,6 +32,11 @@ Semantic tokens set by the appearance: `--bui-surface-bg`, `--bui-border-color`,
 
 ## Import order
 
+Glass appearance uses compact contact shadows (2px blur on controls, 8px on
+surfaces) with reduced opacity in both light and dark mode. The glass edge and
+backdrop blur remain intact. Override `--bui-control-shadow` and
+`--bui-surface-shadow` on the appearance boundary to customize elevation.
+
 ```scss
 // Your Bootstrap variables, e.g. $primary: #0a84ff;
 @import "variables";                 // theme defaults for Bootstrap variables
