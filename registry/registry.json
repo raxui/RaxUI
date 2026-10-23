@@ -5,6 +5,14 @@
     {
       "name": "button",
       "manifest": "components/button/manifest.json"
+    },
+    {
+      "name": "dialog",
+      "manifest": "components/dialog/manifest.json"
+    },
+    {
+      "name": "dropdown-menu",
+      "manifest": "components/dropdown-menu/manifest.json"
     }
   ]
 }

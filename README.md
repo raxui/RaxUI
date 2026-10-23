@@ -69,6 +69,39 @@ Theme any part of the page with attributes; components inherit them:
 </div>
 ```
 
+### Dialog and DropdownMenu
+
+`sheenui add dialog` and `sheenui add dropdown-menu` install overlays built on the
+native `<dialog>` element and the `popover` attribute, each with a small
+collocated `.razor.js` module ([ADR 013](docs/adr/013-overlay-primitives.md)).
+They need an interactive render mode, for example `@rendermode InteractiveServer`:
+
+```razor
+<Button OnClick="@(() => open = true)">Delete…</Button>
+<Dialog @bind-Open="open" Title="Delete file?" Description="This cannot be undone.">
+    <Footer>
+        <Button Variant="outline" OnClick="@(() => open = false)">Cancel</Button>
+        <Button Variant="destructive" OnClick="Delete">Delete</Button>
+    </Footer>
+</Dialog>
+
+<DropdownMenu>
+    <Trigger>Options</Trigger>
+    <ChildContent>
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem OnSelect="Edit">Edit</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem OnSelect="Archive" Disabled>Archive</DropdownMenuItem>
+    </ChildContent>
+</DropdownMenu>
+```
+
+`Dialog` also takes `ShowCloseButton`, `CloseLabel`, `Appearance`, and `Class`;
+`Esc`, a click outside, and the close button set `Open` to `false`.
+`DropdownMenu` takes `TriggerVariant` (a Button variant, `secondary` by default),
+`TriggerClass`, `Disabled`, `Appearance`, and `Class`; the menu supports arrow
+keys, `Home`/`End`, and typeahead.
+
 ## Installation guarantees and limits
 
 - Configuration and lock files record the CLI's embedded registry release. A newer
@@ -81,7 +114,7 @@ Theme any part of the page with attributes; components inherit them:
 - Ordinary write failures restore original files and remove newly created empty
   directories. Concurrent edits and process termination during installation are
   not covered by that rollback guarantee.
-- `init` and `add button` are supported. Additional components, update commands,
+- `init` and `add` for `button`, `dialog`, and `dropdown-menu` are supported. Additional components, update commands,
   WebAssembly, and configurable paths remain future work.
 
 ## React

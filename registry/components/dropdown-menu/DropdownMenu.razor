@@ -1,0 +1,89 @@
+@* SheenUI DropdownMenu. Source-owned: edit freely. A popover menu (ADR 013) styled by the shared theme, with
+   the same classes and keyboard behavior as the React DropdownMenu. Needs an interactive render mode.
+   Put DropdownMenuItem, DropdownMenuLabel, and DropdownMenuSeparator inside. *@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<button @ref="_trigger"
+        type="button"
+        class="@TriggerCssClass"
+        popovertarget="@_id"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-controls="@_id"
+        disabled="@Disabled">
+    @Trigger
+</button>
+<div @ref="_menu"
+     @attributes="AdditionalAttributes"
+     id="@_id"
+     popover
+     role="menu"
+     tabindex="-1"
+     class="@CssClass"
+     data-sheen-appearance="@Appearance">
+    @ChildContent
+</div>
+
+@code {
+    private readonly string _id = $"sheen-menu-{Guid.NewGuid():N}";
+    private ElementReference _trigger;
+    private ElementReference _menu;
+    private IJSObjectReference? _module;
+
+    /// <summary>The trigger button's content.</summary>
+    [Parameter] public RenderFragment? Trigger { get; set; }
+
+    /// <summary>The trigger's Button variant: default, secondary, tinted, destructive, outline, ghost, or link.</summary>
+    [Parameter] public string TriggerVariant { get; set; } = "secondary";
+
+    /// <summary>Extra CSS classes for the trigger button.</summary>
+    [Parameter] public string? TriggerClass { get; set; }
+
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>default, flat, or glass. When null, the menu inherits it from the nearest ancestor with data-sheen-appearance.</summary>
+    [Parameter] public string? Appearance { get; set; }
+
+    /// <summary>Extra CSS classes for the menu.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.IsNullOrEmpty(Class) ? "sheen-dropdown-menu" : $"sheen-dropdown-menu {Class}";
+
+    private string TriggerCssClass
+    {
+        get
+        {
+            // Only a plain variant name may become a class; default and solid are Button's primary look.
+            var variant = TriggerVariant is "default" or "solid" || !TriggerVariant.All(c => char.IsAsciiLetter(c) || c == '-')
+                ? "primary"
+                : TriggerVariant;
+            return $"btn sheen-button btn-glass btn-glass-{variant} {TriggerClass}".TrimEnd();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        _module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/DropdownMenu/DropdownMenu.razor.js");
+        await _module.InvokeVoidAsync("init", _trigger, _menu);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is null) return;
+        try
+        {
+            await _module.DisposeAsync();
+        }
+        catch (JSDisconnectedException)
+        {
+            // The circuit is gone; the browser already dropped the module.
+        }
+    }
+}

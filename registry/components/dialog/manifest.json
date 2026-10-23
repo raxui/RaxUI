@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "dialog",
+  "version": "0.1.0",
+  "description": "Modal dialog on the native <dialog> element with title, description, footer, and close button.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "155da66f98b94ab7dd2adf0273af52a9cd7a17e8e7af8b2bfd3f4c2d69fce30f"
+    }
+  ],
+  "files": [
+    {
+      "source": "Dialog.razor",
+      "destination": "components",
+      "target": "Dialog/Dialog.razor",
+      "type": "razor",
+      "sha256": "a84b032587f5d9a2edec5bdd43771ab8021903d3cb0bafd7c54d812a9f93f3f4"
+    },
+    {
+      "source": "Dialog.razor.js",
+      "destination": "components",
+      "target": "Dialog/Dialog.razor.js",
+      "type": "js",
+      "sha256": "55bfb54a14a93195aaecf1ca074059953295bf5bca3b45aa55f657261ef7cda7"
+    }
+  ]
+}

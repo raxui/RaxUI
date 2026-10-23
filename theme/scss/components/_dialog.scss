@@ -1,0 +1,91 @@
+// -----------------------------------------------------------------------------
+// Dialog — one look for Blazor's native <dialog> and React's Radix content (ADR 013).
+//
+// Markup: `.sheen-dialog` panel with `.sheen-dialog-header` (`-title`,
+// `-description`), body content, `.sheen-dialog-footer`, and `.sheen-dialog-close`.
+// Blazor dims the page with `::backdrop`; Radix renders `.sheen-dialog-overlay`.
+// -----------------------------------------------------------------------------
+
+.sheen-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+}
+
+// ::backdrop inherits custom properties only in recent browsers; the fallbacks keep it dimmed elsewhere.
+.sheen-dialog::backdrop,
+.sheen-dialog-overlay {
+  background: rgba(var(--sheen-overlay-rgb, 15, 23, 42), var(--sheen-overlay-alpha, 0.3));
+}
+
+.sheen-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  width: min(32rem, calc(100% - 2rem));
+  max-width: none;
+  height: fit-content;
+  max-height: calc(100% - 2rem);
+  margin: auto;
+  padding: 1.5rem;
+  overflow: auto;
+  color: var(--bs-body-color);
+  border-radius: var(--sheen-radius-lg);
+  @include sheen-surface;
+  box-shadow: var(--sheen-surface-shadow), var(--sheen-shadow-lg);
+
+  &:focus-visible { outline: none; }
+}
+
+// A closed native <dialog> must stay hidden; Radix only mounts the panel while open.
+.sheen-dialog:where(:not(dialog), [open]) {
+  display: grid;
+  gap: 1rem;
+}
+
+.sheen-dialog-header {
+  display: grid;
+  gap: 0.375rem;
+  padding-inline-end: 2rem; // room for the close button
+}
+
+.sheen-dialog-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.sheen-dialog-description {
+  margin: 0;
+  color: var(--bs-secondary-color);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.sheen-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+// Bootstrap's .btn-close draws the icon and adapts it to dark mode.
+.sheen-dialog-close {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+}
+
+// Native modal dialogs do not lock page scrolling; Radix locks it itself.
+:root:has(dialog.sheen-dialog:modal) {
+  overflow: hidden;
+}
+
+@include motion-safe {
+  .sheen-dialog:where(:not(dialog), [open]) { animation: sheen-zoom-in var(--sheen-duration) var(--sheen-ease-out); }
+  .sheen-dialog[data-state="closed"] { animation: sheen-zoom-out var(--sheen-duration-fast) var(--sheen-ease-in); }
+  .sheen-dialog-overlay[data-state="open"],
+  .sheen-dialog[open]::backdrop { animation: sheen-fade-in var(--sheen-duration) ease; }
+  .sheen-dialog-overlay[data-state="closed"] { animation: sheen-fade-out var(--sheen-duration-fast) ease; }
+}

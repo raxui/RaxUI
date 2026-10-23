@@ -11,6 +11,12 @@ export interface SheenTheme {
 }
 export type SheenThemeOptions = Partial<SheenTheme>
 const ThemeContext = React.createContext<SheenTheme>({ appearance: "default" })
+const PortalContainerContext = React.createContext<HTMLElement | null>(null)
+
+/** The nearest SheenThemeProvider element. Overlays portal into it to inherit its theme attributes and accent. */
+export function useSheenPortalContainer(): HTMLElement | undefined {
+  return React.useContext(PortalContainerContext) ?? undefined
+}
 
 /** Undefined inherits; explicit `default` resets the appearance. No global DOM mutations. */
 export function useSheenTheme(options: SheenThemeOptions = {}): SheenTheme {
@@ -40,11 +46,14 @@ export interface SheenThemeProviderProps extends Omit<React.HTMLAttributes<HTMLD
 
 export function SheenThemeProvider({ appearance, mode, density, direction, children, ...props }: SheenThemeProviderProps) {
   const theme = useSheenTheme({ appearance, mode, density, direction })
+  const [element, setElement] = React.useState<HTMLDivElement | null>(null)
   return (
     <SheenThemeBoundary value={theme}>
-      <div {...props} {...sheenThemeAttributes(theme)}>
-        {children}
-      </div>
+      <PortalContainerContext.Provider value={element}>
+        <div ref={setElement} {...props} {...sheenThemeAttributes(theme)}>
+          {children}
+        </div>
+      </PortalContainerContext.Provider>
     </SheenThemeBoundary>
   )
 }
