@@ -28,7 +28,7 @@ export function planTooling(projectDir, kind, notes) {
   const full = path.join(projectDir, name)
   assertInsideProject(projectDir, full)
   const original = readFileSync(full, "utf8")
-  if (original.includes("// BlazorUI Bootstrap 5 Sass compatibility")) return null
+  if (original.includes("// SheenUI Bootstrap 5 Sass compatibility")) return null
   const stripped = original.replace(/\/\*[\s\S]*?\*\/|\/\/[^\r\n]*/g, "")
   const anchor = kind === "next" ? /\bconst\s+nextConfig(?:\s*:\s*NextConfig)?\s*=\s*\{/ : /\bexport\s+default\s+defineConfig\(\s*\{/
   const match = anchor.exec(stripped)
@@ -41,7 +41,7 @@ export function planTooling(projectDir, kind, notes) {
   const deprecations = kind === "next" ? [...SASS_DEPRECATIONS, "legacy-js-api"] : SASS_DEPRECATIONS
   const options = `silenceDeprecations: ${JSON.stringify(deprecations)}`
   const settings = kind === "next"
-    ? `\n  // BlazorUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  sassOptions: { ${options} },\n  turbopack: { root: process.cwd() },\n  outputFileTracingRoot: process.cwd(),\n`
-    : `\n  // BlazorUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  css: { preprocessorOptions: { scss: { ${options} } } },\n`
+    ? `\n  // SheenUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  sassOptions: { ${options} },\n  turbopack: { root: process.cwd() },\n  outputFileTracingRoot: process.cwd(),\n`
+    : `\n  // SheenUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  css: { preprocessorOptions: { scss: { ${options} } } },\n`
   return { full, content: original.replace(anchor, (start) => start + settings) }
 }

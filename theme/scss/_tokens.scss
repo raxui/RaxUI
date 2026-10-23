@@ -14,124 +14,124 @@
 // 1. Primitives — light
 :root,
 [data-bs-theme="light"] {
-  --bui-glass-alpha: 0.5;           // surfaces: cards, dialogs, popovers
-  --bui-glass-alpha-subtle: 0.38;   // controls sitting on top of surfaces
-  --bui-glass-border-color: rgba(255, 255, 255, 0.45);
-  --bui-glass-highlight: rgba(255, 255, 255, 0.85); // top inner rim light
-  --bui-glass-sheen: rgba(255, 255, 255, 0.25);     // faint inner glow on all edges
-  --bui-glass-hairline: rgba(0, 0, 0, 0.06);        // keeps edges visible on white
-  --bui-shadow-rgb: 15, 23, 42;
-  --bui-shadow-opacity: 0.1;
-  --bui-overlay-rgb: 15, 23, 42;
-  --bui-overlay-alpha: 0.18;
+  --sheen-glass-alpha: 0.5;           // surfaces: cards, dialogs, popovers
+  --sheen-glass-alpha-subtle: 0.38;   // controls sitting on top of surfaces
+  --sheen-glass-border-color: rgba(255, 255, 255, 0.45);
+  --sheen-glass-highlight: rgba(255, 255, 255, 0.85); // top inner rim light
+  --sheen-glass-sheen: rgba(255, 255, 255, 0.25);     // faint inner glow on all edges
+  --sheen-glass-hairline: rgba(0, 0, 0, 0.06);        // keeps edges visible on white
+  --sheen-shadow-rgb: 15, 23, 42;
+  --sheen-shadow-opacity: 0.1;
+  --sheen-overlay-rgb: 15, 23, 42;
+  --sheen-overlay-alpha: 0.18;
   // Coloured text (a tinted button's label, an active link) is its colour mixed
   // toward this ink, just enough to read at 4.5:1 on its own tinted background.
-  --bui-text-ink: #000;
-  --bui-text-mix: 72%;
-  --bui-avatar-text-mix: 50%; // avatar tints include yellow and cyan, which need more
+  --sheen-text-ink: #000;
+  --sheen-text-mix: 72%;
+  --sheen-avatar-text-mix: 50%; // avatar tints include yellow and cyan, which need more
 }
 
 // 1. Primitives — dark
 [data-bs-theme="dark"] {
-  --bui-glass-alpha: 0.42;
-  --bui-glass-alpha-subtle: 0.3;
-  --bui-glass-border-color: rgba(255, 255, 255, 0.14);
-  --bui-glass-highlight: rgba(255, 255, 255, 0.2);
-  --bui-glass-sheen: rgba(255, 255, 255, 0.05);
-  --bui-glass-hairline: rgba(0, 0, 0, 0.4);
-  --bui-shadow-rgb: 0, 0, 0;
-  --bui-shadow-opacity: 0.35;
-  --bui-overlay-rgb: 0, 0, 0;
-  --bui-overlay-alpha: 0.45;
-  --bui-text-ink: #fff;
-  --bui-text-mix: 65%;
-  --bui-avatar-text-mix: 55%;
+  --sheen-glass-alpha: 0.42;
+  --sheen-glass-alpha-subtle: 0.3;
+  --sheen-glass-border-color: rgba(255, 255, 255, 0.14);
+  --sheen-glass-highlight: rgba(255, 255, 255, 0.2);
+  --sheen-glass-sheen: rgba(255, 255, 255, 0.05);
+  --sheen-glass-hairline: rgba(0, 0, 0, 0.4);
+  --sheen-shadow-rgb: 0, 0, 0;
+  --sheen-shadow-opacity: 0.35;
+  --sheen-overlay-rgb: 0, 0, 0;
+  --sheen-overlay-alpha: 0.45;
+  --sheen-text-ink: #fff;
+  --sheen-text-mix: 65%;
+  --sheen-avatar-text-mix: 55%;
 }
 
 // Theme-independent
 :root {
-  --bui-glass-blur: 32px;
-  --bui-glass-saturate: 190%;
+  --sheen-glass-blur: 32px;
+  --sheen-glass-saturate: 190%;
 
 
   // Control heights shared by inputs, selects and buttons (40px by default).
-  --bui-control-height-sm: 2.25rem;
-  --bui-control-height: 2.5rem;
-  --bui-control-height-lg: 3rem;
+  --sheen-control-height-sm: 2.25rem;
+  --sheen-control-height: 2.5rem;
+  --sheen-control-height-lg: 3rem;
 
   // Typeface (load it yourself, e.g. from Google Fonts). Switch with
-  // <html data-bui-font="readex | system">.
-  --bui-font-sans: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  // <html data-sheen-font="readex | system">.
+  --sheen-font-sans: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   // Motion. `spring` overshoots slightly (~10%) then settles, like a
   // critically-under-damped spring; `out` is a fast decelerate for exits.
-  --bui-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --bui-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --bui-ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --bui-duration-fast: 150ms;
-  --bui-duration: 250ms;
-  --bui-duration-slow: 500ms;
+  --sheen-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --sheen-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --sheen-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --sheen-duration-fast: 150ms;
+  --sheen-duration: 250ms;
+  --sheen-duration-slow: 500ms;
 }
 
 // 2. Composites
 :root,
 [data-bs-theme] {
   // The accent as text: links, active items, tinted labels. Re-resolves per theme and accent.
-  --bui-primary-text: color-mix(in srgb, rgb(var(--bs-primary-rgb)) var(--bui-text-mix), var(--bui-text-ink));
+  --sheen-primary-text: color-mix(in srgb, rgb(var(--bs-primary-rgb)) var(--sheen-text-mix), var(--sheen-text-ink));
 
   // Inner rim light + outer hairline: the "edge" every glass layer shares.
-  --bui-glass-edge:
-    inset 0 1px 0 0 var(--bui-glass-highlight),
-    inset 0 0 0 1px var(--bui-glass-sheen),
-    0 0 0 0.5px var(--bui-glass-hairline);
+  --sheen-glass-edge:
+    inset 0 1px 0 0 var(--sheen-glass-highlight),
+    inset 0 0 0 1px var(--sheen-glass-sheen),
+    0 0 0 0.5px var(--sheen-glass-hairline);
 
   // Layered soft shadows (contact + ambient + key light).
-  --bui-shadow-sm:
-    0 1px 2px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 0.6)),
-    0 2px 6px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 0.5));
-  --bui-shadow-md:
-    0 1px 2px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 0.6)),
-    0 4px 12px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 0.7)),
-    0 12px 32px -8px rgba(var(--bui-shadow-rgb), var(--bui-shadow-opacity));
-  --bui-shadow-lg:
-    0 2px 4px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 0.5)),
-    0 12px 28px -4px rgba(var(--bui-shadow-rgb), var(--bui-shadow-opacity)),
-    0 32px 80px -12px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 1.6));
+  --sheen-shadow-sm:
+    0 1px 2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.6)),
+    0 2px 6px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.5));
+  --sheen-shadow-md:
+    0 1px 2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.6)),
+    0 4px 12px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.7)),
+    0 12px 32px -8px rgba(var(--sheen-shadow-rgb), var(--sheen-shadow-opacity));
+  --sheen-shadow-lg:
+    0 2px 4px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.5)),
+    0 12px 28px -4px rgba(var(--sheen-shadow-rgb), var(--sheen-shadow-opacity)),
+    0 32px 80px -12px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 1.6));
 }
 
-// Corners. Every radius in the library is a base size × --bui-radius-scale, so
+// Corners. Every radius in the library is a base size × --sheen-radius-scale, so
 // one switch reshapes buttons, inputs, cards and dialogs together:
-// <html data-bui-radius="none | xs | sm | md | lg | xl"> (md is the default).
-// Declared on [data-bui-radius] too, so a subtree can have its own corners.
+// <html data-sheen-radius="none | xs | sm | md | lg | xl"> (md is the default).
+// Declared on [data-sheen-radius] too, so a subtree can have its own corners.
 :root,
-[data-bui-radius] {
-  --bui-radius-scale: 1;
+[data-sheen-radius] {
+  --sheen-radius-scale: 1;
 
-  --bui-radius-sm: calc(0.5rem * var(--bui-radius-scale));       // small controls, chips
-  --bui-radius-control: calc(0.625rem * var(--bui-radius-scale)); // inputs, buttons
-  --bui-radius: calc(0.875rem * var(--bui-radius-scale));        // cards, popovers, menus
-  --bui-radius-lg: calc(1.125rem * var(--bui-radius-scale));     // dialogs, sheets, panels
+  --sheen-radius-sm: calc(0.5rem * var(--sheen-radius-scale));       // small controls, chips
+  --sheen-radius-control: calc(0.625rem * var(--sheen-radius-scale)); // inputs, buttons
+  --sheen-radius: calc(0.875rem * var(--sheen-radius-scale));        // cards, popovers, menus
+  --sheen-radius-lg: calc(1.125rem * var(--sheen-radius-scale));     // dialogs, sheets, panels
 
   // Bootstrap's own radius variables (.form-control, .btn, .card, .rounded-*) follow.
-  --bs-border-radius-sm: var(--bui-radius-sm);
-  --bs-border-radius: var(--bui-radius-control);
-  --bs-border-radius-lg: var(--bui-radius);
-  --bs-border-radius-xl: var(--bui-radius-lg);
-  --bs-border-radius-xxl: calc(2rem * var(--bui-radius-scale));
+  --bs-border-radius-sm: var(--sheen-radius-sm);
+  --bs-border-radius: var(--sheen-radius-control);
+  --bs-border-radius-lg: var(--sheen-radius);
+  --bs-border-radius-xl: var(--sheen-radius-lg);
+  --bs-border-radius-xxl: calc(2rem * var(--sheen-radius-scale));
 }
 
-[data-bui-radius="none"] { --bui-radius-scale: 0; }
-[data-bui-radius="xs"] { --bui-radius-scale: 0.4; }
-[data-bui-radius="sm"] { --bui-radius-scale: 0.7; }
-[data-bui-radius="md"] { --bui-radius-scale: 1; }
-[data-bui-radius="lg"] { --bui-radius-scale: 1.35; }
-[data-bui-radius="xl"] { --bui-radius-scale: 1.75; }
+[data-sheen-radius="none"] { --sheen-radius-scale: 0; }
+[data-sheen-radius="xs"] { --sheen-radius-scale: 0.4; }
+[data-sheen-radius="sm"] { --sheen-radius-scale: 0.7; }
+[data-sheen-radius="md"] { --sheen-radius-scale: 1; }
+[data-sheen-radius="lg"] { --sheen-radius-scale: 1.35; }
+[data-sheen-radius="xl"] { --sheen-radius-scale: 1.75; }
 
 // Alternative typefaces (on <html>, so Bootstrap's font variable picks them up).
-[data-bui-font="readex"] {
-  --bui-font-sans: "Readex Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+[data-sheen-font="readex"] {
+  --sheen-font-sans: "Readex Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-[data-bui-font="system"] {
-  --bui-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+[data-sheen-font="system"] {
+  --sheen-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }

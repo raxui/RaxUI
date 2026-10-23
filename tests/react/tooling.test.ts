@@ -9,7 +9,7 @@ import { npmInvocation, planTooling, SASS_DEPRECATIONS } from "../../src/react-c
 
 const dirs: string[] = []
 function project(name: string, content: string) {
-  const dir = mkdtempSync(path.join(tmpdir(), "bui-tooling-"))
+  const dir = mkdtempSync(path.join(tmpdir(), "sheen-tooling-"))
   dirs.push(dir)
   writeFileSync(path.join(dir, name), content)
   return dir

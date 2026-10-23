@@ -1,19 +1,19 @@
 using System.Reflection;
-using BlazorUI.Cli.Commands;
+using SheenUI.Cli.Commands;
 
-namespace BlazorUI.Cli;
+namespace SheenUI.Cli;
 
 public static class Program
 {
     public const string Usage = """
-        BlazorUI CLI — Source-first Blazor UI components installed into your project.
+        SheenUI CLI — Source-first Blazor UI components installed into your project.
 
         Usage:
-          blazorui init [options]
-          blazorui add <component> [options]
+          sheenui init [options]
+          sheenui add <component> [options]
 
         Commands:
-          init              Initialize BlazorUI in the current Blazor project
+          init              Initialize SheenUI in the current Blazor project
           add <component>   Install a component and its assets into your project
 
         Options:
@@ -52,6 +52,13 @@ public static class Program
 
         var command = cleanArgs.FirstOrDefault();
 
+        if ((command is "init" or "add") &&
+            new[] { "blazorui.json", "blazorui.lock.json" }.Any(file => File.Exists(Path.Combine(cwd, file))))
+        {
+            error.WriteLine("Error: This app uses the former BlazorUI registry. SheenUI uses different files and theme APIs. Test in a new app or follow docs/adr/012-sheenui-identity.md; existing files were not changed.");
+            return 1;
+        }
+
         switch (command)
         {
             case "-h":
@@ -78,7 +85,7 @@ public static class Program
                 if (string.IsNullOrWhiteSpace(component))
                 {
                     error.WriteLine("Error: Missing component name.");
-                    error.WriteLine("Usage: blazorui add <component>");
+                    error.WriteLine("Usage: sheenui add <component>");
                     return 1;
                 }
                 return AddCommand.Execute(cwd, component, output, error);

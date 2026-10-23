@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Text.Json;
 
-namespace BlazorUI.Cli.Project;
+namespace SheenUI.Cli.Project;
 
 public class ProjectContext
 {
@@ -60,7 +60,7 @@ public class ProjectContext
         if (bootstrapDir == null)
         {
             throw new InvalidOperationException(
-                $"Bootstrap was not found in '{string.Join("' or '", BootstrapFolders)}'. BlazorUI requires template Bootstrap to initialize. " +
+                $"Bootstrap was not found in '{string.Join("' or '", BootstrapFolders)}'. SheenUI requires template Bootstrap to initialize. " +
                 "Ensure your project was created with 'dotnet new blazor'.");
         }
 

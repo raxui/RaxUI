@@ -6,7 +6,7 @@
 
 ## Context
 
-ADR 002 limits the first milestone to `blazorui init` and `blazorui add button`. Even within that scope, ADR 003 and the brief require a hosted remote registry, CLI-managed Bootstrap assets, and configurable component paths with namespace-token substitution. None of these is needed to prove the core workflow: copying owned source into a project, loading its styles, and refusing to overwrite local changes. Each one adds hosting, download, validation, or templating work before the first end-to-end test can run.
+ADR 002 limits the first milestone to `sheenui init` and `sheenui add button`. Even within that scope, ADR 003 and the brief require a hosted remote registry, CLI-managed Bootstrap assets, and configurable component paths with namespace-token substitution. None of these is needed to prove the core workflow: copying owned source into a project, loading its styles, and refusing to overwrite local changes. Each one adds hosting, download, validation, or templating work before the first end-to-end test can run.
 
 ## Decision
 
@@ -14,21 +14,21 @@ For the first milestone:
 
 ### 1. Embedded registry
 
-- The registry ships as embedded resources inside the CLI package (`BlazorUI.Cli`).
+- The registry ships as embedded resources inside the CLI package (`SheenUI.Cli`).
 - The CLI package version is the registry version. NuGet package versions are immutable, so each CLI release is an immutable registry snapshot, as ADR 003 requires.
 - No remote download, HTTPS transport, or registry hosting is implemented. A remote registry is deferred.
 - Manifests keep `schemaVersion`, per-file SHA-256 hashes, and path validation from ADR 003. Embedded content is still validated before any write.
-- `blazorui.lock.json` still records the registry version and the manifest digest.
+- `sheenui.lock.json` still records the registry version and the manifest digest.
 
 ### 2. Template Bootstrap
 
 - `init` uses the Bootstrap already shipped by `dotnet new blazor` in `wwwroot/lib/bootstrap/`.
 - If Bootstrap is missing, `init` fails with an actionable message and writes nothing.
-- The CLI does not install, pin, or update its own Bootstrap copy. Managed Bootstrap and `blazorui bootstrap update` are deferred.
+- The CLI does not install, pin, or update its own Bootstrap copy. Managed Bootstrap and `sheenui bootstrap update` are deferred.
 
 ### 3. No custom namespace
 
-- Each component installs into its own folder under `Components/UI` (for example `Components/UI/Button/Button.razor` and `Button.razor.css`); shared styles install to `wwwroot/css/blazorui`. Neither base path is configurable.
+- Each component installs into its own folder under `Components/UI` (for example `Components/UI/Button/Button.razor` and `Button.razor.css`); shared styles install to `wwwroot/css/sheenui`. Neither base path is configurable.
 - Components declare no `@namespace`. Razor derives the namespace from the folder, so Button lives in `<RootNamespace>.Components.UI.Button`. `add` adds that component's `@using` once to `Components/_Imports.razor`.
 - The class name repeating the last namespace segment (`...UI.Button.Button`) was verified to work: `<Button>` resolves from pages and from components in sibling folders (for example `Components/UI/Card/`), including `@ref` fields typed `Button`.
 - No template-token substitution. The installed hash equals the registry source hash; the lock file still stores both fields so later substitution needs no schema change.

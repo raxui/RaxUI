@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\BlazorUI.Cli\BlazorUI.Cli.csproj" />
+    <ProjectReference Include="..\..\src\SheenUI.Cli\SheenUI.Cli.csproj" />
   </ItemGroup>
 
 </Project>

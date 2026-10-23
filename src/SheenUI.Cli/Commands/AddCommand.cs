@@ -1,8 +1,8 @@
-using BlazorUI.Cli.Configuration;
-using BlazorUI.Cli.Project;
-using BlazorUI.Cli.Registry;
+using SheenUI.Cli.Configuration;
+using SheenUI.Cli.Project;
+using SheenUI.Cli.Registry;
 
-namespace BlazorUI.Cli.Commands;
+namespace SheenUI.Cli.Commands;
 
 public static class AddCommand
 {
@@ -14,14 +14,14 @@ public static class AddCommand
         {
             if (string.IsNullOrWhiteSpace(componentName))
             {
-                error.WriteLine("Error: Component name must be specified. Example: 'blazorui add button'");
+                error.WriteLine("Error: Component name must be specified. Example: 'sheenui add button'");
                 return 1;
             }
 
-            var config = BlazorUiConfig.Load(workingDirectory);
+            var config = SheenUiConfig.Load(workingDirectory);
             if (config == null)
             {
-                error.WriteLine("Error: BlazorUI is not initialized in this project. Please run 'blazorui init' first.");
+                error.WriteLine("Error: SheenUI is not initialized in this project. Please run 'sheenui init' first.");
                 return 1;
             }
 
@@ -31,7 +31,7 @@ public static class AddCommand
 
             output.WriteLine($"Adding component '{manifest.Name}' (v{manifest.Version})...");
 
-            var lockFile = BlazorUiLock.LoadOrCreate(workingDirectory);
+            var lockFile = SheenUiLock.LoadOrCreate(workingDirectory);
             ProjectPath.Validate(workingDirectory, project.ImportsRazorPath);
             var componentsDir = Path.Combine(workingDirectory, config.ComponentsPath);
 
@@ -58,7 +58,7 @@ public static class AddCommand
                     if (tracked == null)
                     {
                         throw new InvalidOperationException(
-                            $"Destination file '{relTarget}' already exists and is not managed by BlazorUI. Refusing to overwrite unknown file.");
+                            $"Destination file '{relTarget}' already exists and is not managed by SheenUI. Refusing to overwrite unknown file.");
                     }
 
                     if (!string.Equals(tracked.InstalledHash, existingHash, StringComparison.OrdinalIgnoreCase))
@@ -101,11 +101,11 @@ public static class AddCommand
             if (config.RegistryVersion != ReleaseIdentity.Version)
             {
                 config.RegistryVersion = ReleaseIdentity.Version;
-                backup.Remember(Path.Combine(workingDirectory, BlazorUiConfig.DefaultFileName));
+                backup.Remember(Path.Combine(workingDirectory, SheenUiConfig.DefaultFileName));
                 config.Save(workingDirectory);
             }
 
-            backup.Remember(Path.Combine(workingDirectory, BlazorUiLock.DefaultFileName));
+            backup.Remember(Path.Combine(workingDirectory, SheenUiLock.DefaultFileName));
             lockFile.Save(workingDirectory);
 
             output.WriteLine($"Component '{manifest.Name}' installed successfully:");

@@ -1,16 +1,16 @@
 using System.Diagnostics;
-using Program = BlazorUI.Cli.Program;
+using Program = SheenUI.Cli.Program;
 using Microsoft.Playwright;
 
-namespace BlazorUI.Integration.Tests;
+namespace SheenUI.Integration.Tests;
 
 /// <summary>
-/// End-to-end: a real 'dotnet new blazor' app, BlazorUI installed into it, and a real 'dotnet build'.
+/// End-to-end: a real 'dotnet new blazor' app, SheenUI installed into it, and a real 'dotnet build'.
 /// </summary>
 [Trait("Category", "E2E")]
 public class GeneratedAppTests : IDisposable
 {
-    private readonly string _root = Path.Combine(Path.GetTempPath(), "BlazorUI_E2E_" + Guid.NewGuid().ToString("N"));
+    private readonly string _root = Path.Combine(Path.GetTempPath(), "SheenUI_E2E_" + Guid.NewGuid().ToString("N"));
 
     public void Dispose()
     {
@@ -42,13 +42,13 @@ public class GeneratedAppTests : IDisposable
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
         var bootstrap = Directory.GetFiles(Path.Combine(app, "wwwroot"), "bootstrap.min.css", SearchOption.AllDirectories).Single();
         Assert.Matches(@"Bootstrap\s+v5\.3\.", string.Join(" ", File.ReadLines(bootstrap).Take(3)));
-        Assert.Contains(targetFramework == "net8.0" ? "href=\"css/blazorui/blazorui.css\"" : "@Assets[\"css/blazorui/blazorui.css\"]",
+        Assert.Contains(targetFramework == "net8.0" ? "href=\"css/sheenui/sheenui.css\"" : "@Assets[\"css/sheenui/sheenui.css\"]",
             File.ReadAllText(Path.Combine(app, "Components", "App.razor")));
 
         // The starter replaced the unmodified template layout and home page and removed the samples (ADR 008).
         var components = Path.Combine(app, "Components");
-        Assert.Contains("class=\"bui-app\"", File.ReadAllText(Path.Combine(components, "Layout", "MainLayout.razor")));
-        Assert.Contains("Welcome to your BlazorUI app", File.ReadAllText(Path.Combine(components, "Pages", "Home.razor")));
+        Assert.Contains("class=\"sheen-app\"", File.ReadAllText(Path.Combine(components, "Layout", "MainLayout.razor")));
+        Assert.Contains("Welcome to your SheenUI app", File.ReadAllText(Path.Combine(components, "Pages", "Home.razor")));
         foreach (var removed in new[] { "Layout/NavMenu.razor", "Layout/NavMenu.razor.css", "Layout/MainLayout.razor.css", "Pages/Counter.razor", "Pages/Weather.razor" })
             Assert.False(File.Exists(Path.Combine(components, removed)), removed);
         Assert.True(File.Exists(Path.Combine(components, "Pages", "Error.razor")));
@@ -63,10 +63,10 @@ public class GeneratedAppTests : IDisposable
         File.WriteAllText(testPage, """
             @page "/test"
             @rendermode InteractiveServer
-            <Button id="bui-click" Disabled="@(!ready)" OnClick="@(() => count++)">Click</Button>
+            <Button id="sheen-click" Disabled="@(!ready)" OnClick="@(() => count++)">Click</Button>
             <p id="count">@count</p>
-            <div data-bui-appearance="flat"><Button id="bui-flat">Flat</Button></div>
-            <Button id="bui-glass" Appearance="glass">Glass</Button>
+            <div data-sheen-appearance="flat"><Button id="sheen-flat">Flat</Button></div>
+            <Button id="sheen-glass" Appearance="glass">Glass</Button>
             @code {
                 private int count;
                 private bool ready;
@@ -83,8 +83,8 @@ public class GeneratedAppTests : IDisposable
         var appRazor = File.ReadAllText(Path.Combine(app, "Components", "App.razor"));
         Assert.Contains("SampleApp.styles.css", appRazor);
         Assert.True(appRazor.IndexOf("bootstrap.min.css", StringComparison.Ordinal) <
-                    appRazor.IndexOf("css/blazorui/blazorui.css", StringComparison.Ordinal));
-        Assert.True(appRazor.IndexOf("css/blazorui/blazorui.css", StringComparison.Ordinal) <
+                    appRazor.IndexOf("css/sheenui/sheenui.css", StringComparison.Ordinal));
+        Assert.True(appRazor.IndexOf("css/sheenui/sheenui.css", StringComparison.Ordinal) <
                     appRazor.IndexOf("SampleApp.styles.css", StringComparison.Ordinal));
 
         var before = InstallationWorkflowTests.SnapshotFiles(app);
@@ -128,33 +128,33 @@ public class GeneratedAppTests : IDisposable
 
             // Starter welcome page: theme switching through the query string, no template layout.
             await page.GotoAsync(url);
-            await Assertions.Expect(page.Locator("h1")).ToHaveTextAsync("Welcome to your BlazorUI app");
+            await Assertions.Expect(page.Locator("h1")).ToHaveTextAsync("Welcome to your SheenUI app");
             Assert.Equal(0, await page.Locator(".sidebar, .navbar-brand").CountAsync());
             await Assertions.Expect(page.Locator("#blazor-error-ui")).ToBeHiddenAsync(); // shown only on an unhandled error
             await page.GotoAsync(url.TrimEnd('/') + "/?appearance=glass&mode=dark&accent=emerald&dir=rtl");
-            var shell = page.Locator(".bui-app");
-            await Assertions.Expect(shell).ToHaveAttributeAsync("data-bui-appearance", "glass");
+            var shell = page.Locator(".sheen-app");
+            await Assertions.Expect(shell).ToHaveAttributeAsync("data-sheen-appearance", "glass");
             await Assertions.Expect(shell).ToHaveAttributeAsync("data-bs-theme", "dark");
-            await Assertions.Expect(shell).ToHaveAttributeAsync("data-bui-accent", "emerald");
+            await Assertions.Expect(shell).ToHaveAttributeAsync("data-sheen-accent", "emerald");
             await Assertions.Expect(shell).ToHaveAttributeAsync("dir", "rtl");
-            Assert.Contains("blur", await page.Locator(".bui-panel").First.EvaluateAsync<string>("el => getComputedStyle(el).backdropFilter"));
+            Assert.Contains("blur", await page.Locator(".sheen-panel").First.EvaluateAsync<string>("el => getComputedStyle(el).backdropFilter"));
 
             await page.GotoAsync(url.TrimEnd('/') + "/test");
-            var button = page.Locator("#bui-click");
+            var button = page.Locator("#sheen-click");
             await Assertions.Expect(button).ToBeEnabledAsync();
             await button.ClickAsync();
             await button.ClickAsync();
             await Assertions.Expect(page.Locator("#count")).ToHaveTextAsync("2");
             // Same classes and look as the React Button (shared theme, ADR 007).
-            await Assertions.Expect(button).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bbtn bui-button btn-glass btn-glass-primary\\b"));
+            await Assertions.Expect(button).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bbtn sheen-button btn-glass btn-glass-primary\\b"));
             var color = await button.EvaluateAsync<string>("el => getComputedStyle(el).backgroundColor");
             Assert.NotEqual("rgba(0, 0, 0, 0)", color);
             Assert.NotEqual("transparent", color);
             await Assertions.Expect(button).ToHaveCSSAsync("display", "inline-flex");
-            Assert.False(string.IsNullOrWhiteSpace(await button.EvaluateAsync<string>("el => getComputedStyle(el).getPropertyValue('--bui-glass-blur')")));
+            Assert.False(string.IsNullOrWhiteSpace(await button.EvaluateAsync<string>("el => getComputedStyle(el).getPropertyValue('--sheen-glass-blur')")));
             Assert.NotEqual("none", await button.EvaluateAsync<string>("el => getComputedStyle(el).boxShadow"));
-            Assert.Equal("none", await page.Locator("#bui-flat").EvaluateAsync<string>("el => getComputedStyle(el).boxShadow"));
-            Assert.Contains("blur", await page.Locator("#bui-glass").EvaluateAsync<string>("el => getComputedStyle(el).backdropFilter"));
+            Assert.Equal("none", await page.Locator("#sheen-flat").EvaluateAsync<string>("el => getComputedStyle(el).boxShadow"));
+            Assert.Contains("blur", await page.Locator("#sheen-glass").EvaluateAsync<string>("el => getComputedStyle(el).backdropFilter"));
         }
         finally
         {

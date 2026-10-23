@@ -2,9 +2,9 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using BlazorUI.Cli.Configuration;
+using SheenUI.Cli.Configuration;
 
-namespace BlazorUI.Cli.Registry;
+namespace SheenUI.Cli.Registry;
 
 public class EmbeddedRegistry
 {
@@ -16,7 +16,7 @@ public class EmbeddedRegistry
     /// <summary>Destination of starter files: the app's <c>Components/</c> folder (ADR 008).</summary>
     public const string AppDestination = "app";
 
-    private const string ResourcePrefix = "BlazorUI.Cli.registry.";
+    private const string ResourcePrefix = "SheenUI.Cli.registry.";
 
     // Allowed file types and target depth per destination: components go to Components/UI/<Folder>/;
     // the starter writes Components/<Folder>/ pages and the app's wwwroot/app.css (ADR 008).
@@ -35,7 +35,7 @@ public class EmbeddedRegistry
     public RegistryIndex GetIndex()
     {
         var json = ReadResourceAsString("registry.json");
-        var index = JsonSerializer.Deserialize<RegistryIndex>(json, BlazorUiConfig.JsonOptions)
+        var index = JsonSerializer.Deserialize<RegistryIndex>(json, SheenUiConfig.JsonOptions)
                     ?? throw new InvalidOperationException("Failed to deserialize registry index.");
 
         if (index.SchemaVersion != SupportedSchemaVersion)
@@ -65,7 +65,7 @@ public class EmbeddedRegistry
     private ComponentManifest LoadManifest(string manifestPath, string destination)
     {
         var bytes = GetResourceBytes(manifestPath);
-        var manifest = JsonSerializer.Deserialize<ComponentManifest>(bytes, BlazorUiConfig.JsonOptions)
+        var manifest = JsonSerializer.Deserialize<ComponentManifest>(bytes, SheenUiConfig.JsonOptions)
                        ?? throw new InvalidOperationException($"Failed to deserialize manifest '{manifestPath}'.");
 
         manifest.ManifestSha256 = ComputeSha256(bytes);

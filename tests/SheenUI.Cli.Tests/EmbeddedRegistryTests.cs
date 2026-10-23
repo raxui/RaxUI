@@ -1,6 +1,6 @@
-using BlazorUI.Cli.Registry;
+using SheenUI.Cli.Registry;
 
-namespace BlazorUI.Cli.Tests;
+namespace SheenUI.Cli.Tests;
 
 public class EmbeddedRegistryTests
 {
@@ -12,7 +12,7 @@ public class EmbeddedRegistryTests
         var index = _registry.GetIndex();
 
         Assert.Equal(1, index.SchemaVersion);
-        Assert.Equal("BlazorUI", index.Name);
+        Assert.Equal("SheenUI", index.Name);
         var version = new StringWriter();
         Program.Run(["--version"], Directory.GetCurrentDirectory(), version, TextWriter.Null);
         Assert.Equal(version.ToString().Trim().Split('+')[0], index.Version);
@@ -24,16 +24,16 @@ public class EmbeddedRegistryTests
     {
         var names = typeof(EmbeddedRegistry).Assembly.GetManifestResourceNames();
 
-        Assert.DoesNotContain(names, n => n.StartsWith("BlazorUI.Cli.registry.react.", StringComparison.OrdinalIgnoreCase));
-        Assert.Contains(names, n => n.StartsWith("BlazorUI.Cli.registry.components.button.", StringComparison.OrdinalIgnoreCase));
+        Assert.DoesNotContain(names, n => n.StartsWith("SheenUI.Cli.registry.react.", StringComparison.OrdinalIgnoreCase));
+        Assert.Contains(names, n => n.StartsWith("SheenUI.Cli.registry.components.button.", StringComparison.OrdinalIgnoreCase));
     }
 
     [Fact]
     public void Bundled_Bootstrap_is_5_3_and_matches_its_recorded_hash()
     {
-        var bytes = _registry.GetResourceBytes(BlazorUI.Cli.Commands.InitCommand.BundledBootstrapSource);
+        var bytes = _registry.GetResourceBytes(SheenUI.Cli.Commands.InitCommand.BundledBootstrapSource);
 
-        Assert.Equal(BlazorUI.Cli.Commands.InitCommand.BundledBootstrapSha256, EmbeddedRegistry.ComputeSha256(bytes));
+        Assert.Equal(SheenUI.Cli.Commands.InitCommand.BundledBootstrapSha256, EmbeddedRegistry.ComputeSha256(bytes));
         Assert.Matches(@"Bootstrap\s+v5\.3\.", System.Text.Encoding.UTF8.GetString(bytes, 0, 200));
     }
 

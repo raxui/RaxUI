@@ -15,7 +15,7 @@
       "source": "registry/react/foundation/theme.tsx",
       "target": "lib/theme.tsx",
       "type": "tsx",
-      "sha256": "c6280190655310f4b112e2cec6e7baf5d34ed94b35fead899bfbee7cecfb93a4"
+      "sha256": "62e9707256ad87bc2c1ee9bfabed5b5929c6169786b8324ccc5430b5a30f529d"
     },
     {
       "source": "registry/react/foundation/utils.ts",
@@ -25,55 +25,55 @@
     },
     {
       "source": "theme/scss/_variables.scss",
-      "target": "styles/blazorui/_variables.scss",
+      "target": "styles/sheenui/_variables.scss",
       "type": "scss",
-      "sha256": "2464254c4d5bf3cebfc4ba881620c8f58a4858658d5ced36d9fb2757a598078f"
+      "sha256": "ccf55479c664da91f184119e87ec6ce5665a31841fd14a7060784ae3e9c27740"
     },
     {
       "source": "theme/scss/_tokens.scss",
-      "target": "styles/blazorui/_tokens.scss",
+      "target": "styles/sheenui/_tokens.scss",
       "type": "scss",
-      "sha256": "594b0deccc684db687a82fdeaf270b4ee7761fb06b120b874a38041fbe3e4b13"
+      "sha256": "e34c070e91b052ffc9202e42eb0fbccd9907b2c8ac2fb909f6e88ee373082756"
     },
     {
       "source": "theme/scss/_accents.scss",
-      "target": "styles/blazorui/_accents.scss",
+      "target": "styles/sheenui/_accents.scss",
       "type": "scss",
-      "sha256": "90a9ef6a2394987605088faa15af16ae65acf9c626a20d55d7662858d9e2f69e"
+      "sha256": "c8bf0adb418267435acfd4057bb527392b047ccd1bb9d00f31936513f5deafc2"
     },
     {
       "source": "theme/scss/_mixins.scss",
-      "target": "styles/blazorui/_mixins.scss",
+      "target": "styles/sheenui/_mixins.scss",
       "type": "scss",
-      "sha256": "fcf0b0c6a22c92accab12ef59cfca56d594a1af1f0ba1cbda992ec8e5387a8c3"
+      "sha256": "fac0d1c695400ffa5237a7ae0b7349807b50e01839eba547b38cae5ad41bb7d8"
     },
     {
       "source": "theme/scss/_animations.scss",
-      "target": "styles/blazorui/_animations.scss",
+      "target": "styles/sheenui/_animations.scss",
       "type": "scss",
-      "sha256": "776e2c11f966019c25e31b18e365be98e02405dd01ee1eb89da63bba009dff79"
+      "sha256": "b8fe961be37c2f384a1e084e8ecb3d1675668f271012dc7fe381333e98ad4839"
     },
     {
       "source": "theme/scss/_materials.scss",
-      "target": "styles/blazorui/_materials.scss",
+      "target": "styles/sheenui/_materials.scss",
       "type": "scss",
-      "sha256": "60e1c502827f93ee67ad9954e7963d1fdd03155d0b8705f9c27d18534911f68f"
+      "sha256": "f4b8ee41a50d5d5ae6ee361af8289021f797958d1ccdf87eb77ebf9a4e39c60d"
     },
     {
       "source": "theme/scss/_text.scss",
-      "target": "styles/blazorui/_text.scss",
+      "target": "styles/sheenui/_text.scss",
       "type": "scss",
-      "sha256": "93ffdb4a649325906365ccced8f7c0f9e68d2cd0a17a1493771e9d7a7790b788"
+      "sha256": "a3ef8b9ed1d2e6f40b39b4f7fdcb1d40bf7eb856147d51c489898eca75ad34d5"
     },
     {
       "source": "theme/scss/_appearance.scss",
-      "target": "styles/blazorui/_appearance.scss",
+      "target": "styles/sheenui/_appearance.scss",
       "type": "scss",
-      "sha256": "55e1a01aee2159130ca7b8777dc0191774e3deaa4e64612c68ff98a70e6f18e5"
+      "sha256": "3da53e3cd562a0b10bff69c38585ebe101765c6a89c58dd52520d86428624e17"
     },
     {
       "source": "theme/scss/_core.scss",
-      "target": "styles/blazorui/_core.scss",
+      "target": "styles/sheenui/_core.scss",
       "type": "scss",
       "sha256": "797df76eb1f6c8ec550aa79750fee642879acedd8b77f5e7a566b602c14c6b5b"
     }

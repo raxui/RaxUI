@@ -2,18 +2,18 @@
 
 import * as React from "react"
 
-export type BootAppearance = "default" | "flat" | "glass"
-export interface BootTheme {
-  appearance: BootAppearance
+export type SheenAppearance = "default" | "flat" | "glass"
+export interface SheenTheme {
+  appearance: SheenAppearance
   mode?: "light" | "dark"
   density?: "comfortable" | "compact"
   direction?: "ltr" | "rtl"
 }
-export type BootThemeOptions = Partial<BootTheme>
-const ThemeContext = React.createContext<BootTheme>({ appearance: "default" })
+export type SheenThemeOptions = Partial<SheenTheme>
+const ThemeContext = React.createContext<SheenTheme>({ appearance: "default" })
 
 /** Undefined inherits; explicit `default` resets the appearance. No global DOM mutations. */
-export function useBootTheme(options: BootThemeOptions = {}): BootTheme {
+export function useSheenTheme(options: SheenThemeOptions = {}): SheenTheme {
   const parent = React.useContext(ThemeContext)
   const appearance = options.appearance ?? parent.appearance
   const mode = options.mode ?? parent.mode
@@ -22,31 +22,31 @@ export function useBootTheme(options: BootThemeOptions = {}): BootTheme {
   return React.useMemo(() => ({ appearance, mode, density, direction }), [appearance, mode, density, direction])
 }
 
-export function bootThemeAttributes(theme: BootTheme) {
+export function sheenThemeAttributes(theme: SheenTheme) {
   return {
-    "data-bui-appearance": theme.appearance,
+    "data-sheen-appearance": theme.appearance,
     "data-bs-theme": theme.mode,
-    "data-bui-density": theme.density,
+    "data-sheen-density": theme.density,
     dir: theme.direction,
   }
 }
 
 /** Context-only boundary used by composite components and their React portals. */
-export function BootThemeBoundary({ value, children }: { value: BootTheme; children: React.ReactNode }) {
+export function SheenThemeBoundary({ value, children }: { value: SheenTheme; children: React.ReactNode }) {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
-export interface BootThemeProviderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "dir">, BootThemeOptions {}
+export interface SheenThemeProviderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "dir">, SheenThemeOptions {}
 
-export function BootThemeProvider({ appearance, mode, density, direction, children, ...props }: BootThemeProviderProps) {
-  const theme = useBootTheme({ appearance, mode, density, direction })
+export function SheenThemeProvider({ appearance, mode, density, direction, children, ...props }: SheenThemeProviderProps) {
+  const theme = useSheenTheme({ appearance, mode, density, direction })
   return (
-    <BootThemeBoundary value={theme}>
-      <div {...props} {...bootThemeAttributes(theme)}>
+    <SheenThemeBoundary value={theme}>
+      <div {...props} {...sheenThemeAttributes(theme)}>
         {children}
       </div>
-    </BootThemeBoundary>
+    </SheenThemeBoundary>
   )
 }
 
-export const BootAppearanceScope = BootThemeProvider
+export const SheenAppearanceScope = SheenThemeProvider

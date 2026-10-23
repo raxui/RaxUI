@@ -1,4 +1,4 @@
-// blazorui-react: init and add for React projects on Vite 6+ or Next.js 15+ App Router (ADR 006, 010, 011).
+// sheenui-react: init and add for React projects on Vite 6+ or Next.js 15+ App Router (ADR 006, 010, 011).
 import { spawnSync } from "node:child_process"
 import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
@@ -63,19 +63,19 @@ const NEXT_TEMPLATE = {
   "public/window.svg": ["644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1"],
 }
 
-const baseImports = ({ bootstrapImport }) => ['@import "blazorui/variables";', `@import "${bootstrapImport}";`, '@import "blazorui/core";']
-const stylesheetTemplate = (project) => `// BlazorUI theme. Set Bootstrap Sass variables above the imports, for example:
+const baseImports = ({ bootstrapImport }) => ['@import "sheenui/variables";', `@import "${bootstrapImport}";`, '@import "sheenui/core";']
+const stylesheetTemplate = (project) => `// SheenUI theme. Set Bootstrap Sass variables above the imports, for example:
 // $primary: #0a84ff;
 ${baseImports(project).join("\n")}
 `
 
-export const USAGE = `blazorui-react ${VERSION}
+export const USAGE = `sheenui-react ${VERSION}
 
 React + Vite 6 or later, or Next.js 15 or later (App Router).
 
 Usage:
-  blazorui-react init [options]
-  blazorui-react add <component> [options]
+  sheenui-react init [options]
+  sheenui-react add <component> [options]
 
 Options:
   --cwd <dir>      Project directory (defaults to the current directory)
@@ -109,8 +109,8 @@ export function run(args, { cwd, stdout, stderr }) {
         // The starter requires the foundation and Button, so this installs all three (ADR 008).
         return installItems(projectDir, null, { init: true, install, stdout })
       case "add":
-        if (!name) throw new Error("Missing component name. Usage: blazorui-react add <component>")
-        if (name === "foundation" || STARTER_ITEMS.includes(name)) throw new Error(`'${name}' is installed by 'blazorui-react init'.`)
+        if (!name) throw new Error("Missing component name. Usage: sheenui-react add <component>")
+        if (name === "foundation" || STARTER_ITEMS.includes(name)) throw new Error(`'${name}' is installed by 'sheenui-react init'.`)
         return installItems(projectDir, name, { init: false, install, stdout })
       default:
         stderr.write(`Unknown command '${command ?? ""}'.\n\n${USAGE}`)
@@ -123,9 +123,11 @@ export function run(args, { cwd, stdout, stderr }) {
 }
 
 function installItems(projectDir, name, { init, install, stdout }) {
+  if (["blazorui.react.json", "blazorui.react.lock.json"].some((file) => existsSync(path.join(projectDir, file))))
+    throw new Error("This app uses the former BlazorUI registry. SheenUI uses different files and theme APIs. Test in a new app or follow docs/adr/012-sheenui-identity.md; existing files were not changed.")
   const project = detectProject(projectDir)
   const config = loadConfig(projectDir, VERSION)
-  if (!init && !config) throw new Error(`BlazorUI is not initialized here. Run 'blazorui-react init' first.`)
+  if (!init && !config) throw new Error(`SheenUI is not initialized here. Run 'sheenui-react init' first.`)
   const lock = loadLock(projectDir, VERSION)
   const items = resolveItems(registryRoot, name ?? project.starter)
 
@@ -145,15 +147,15 @@ function installItems(projectDir, name, { init, install, stdout }) {
 
       if (tracked && tracked.sourceHash !== file.sha256) {
         if (starter) {
-          notes.push(`Kept ${target} from an earlier BlazorUI release.`)
+          notes.push(`Kept ${target} from an earlier SheenUI release.`)
           continue
         }
         throw new Error(`'${target}' was installed from another registry release and differs from this CLI's version. Updating installed files is not supported yet.`)
       }
       if (existsSync(full)) {
         if (!tracked && !(starter && isTemplate(projectDir, project, target))) {
-          if (!starter) throw new Error(`'${target}' already exists and is not managed by BlazorUI. Refusing to overwrite unknown file.`)
-          notes.push(`Kept your ${target} (it differs from the ${project.label} template), so the BlazorUI version was not installed.`)
+          if (!starter) throw new Error(`'${target}' already exists and is not managed by SheenUI. Refusing to overwrite unknown file.`)
+          notes.push(`Kept your ${target} (it differs from the ${project.label} template), so the SheenUI version was not installed.`)
           continue
         }
         if (tracked && sha256(readFileSync(full)) !== tracked.installedHash) {
@@ -248,7 +250,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
     ...deletes.map(({ relative }) => `  - ${relative} (template file)`),
     ...notes.map((note) => `Note: ${note}`),
   ]
-  stdout.write(`${init ? "BlazorUI initialized" : `Added ${name}`}:\n${lines.join("\n")}\n`)
+  stdout.write(`${init ? "SheenUI initialized" : `Added ${name}`}:\n${lines.join("\n")}\n`)
   return 0
 }
 
@@ -279,8 +281,8 @@ function detectVite(projectDir, dependencies) {
     label: "Vite",
     sourceRoot: "src",
     entry,
-    entryImport: "./styles/blazorui.scss",
-    stylesheet: "src/styles/blazorui.scss",
+    entryImport: "./styles/sheenui.scss",
+    stylesheet: "src/styles/sheenui.scss",
     bootstrapImport: "bootstrap/scss/bootstrap",
     starter: "starter",
     starterTarget: "src/App.tsx",
@@ -312,13 +314,13 @@ function detectNext(projectDir, dependencies) {
   const template = Object.fromEntries(
     Object.entries(NEXT_TEMPLATE).map(([key, hashes]) => [key.startsWith("app/") && sourceRoot ? `${sourceRoot}/${key}` : key, hashes]),
   )
-  const stylesheet = sourceRoot ? `${sourceRoot}/styles/blazorui.scss` : "styles/blazorui.scss"
+  const stylesheet = sourceRoot ? `${sourceRoot}/styles/sheenui.scss` : "styles/sheenui.scss"
   return {
     kind: "next",
     label: "Next.js",
     sourceRoot,
     entry,
-    entryImport: "../styles/blazorui.scss",
+    entryImport: "../styles/sheenui.scss",
     stylesheet,
     // Next's Sass pipeline cannot follow Bootstrap's own relative imports when it is imported by package
     // name, so the stylesheet imports it by path. shortcut: assumes node_modules at the project root; a
@@ -359,11 +361,11 @@ function planStylesheet(projectDir, project, items) {
   const base = baseImports(project)
   if (/^\s*@use\s/m.test(content) || !base.every((line) => content.includes(line))) {
     throw new Error(
-      `'${stylesheet}' is customized in a way this CLI does not edit (@use, or missing base imports). Make sure it contains, in order:\n  ${base.join("\n  ")}\nthen one '@import "blazorui/<style>";' line per installed component.`,
+      `'${stylesheet}' is customized in a way this CLI does not edit (@use, or missing base imports). Make sure it contains, in order:\n  ${base.join("\n  ")}\nthen one '@import "sheenui/<style>";' line per installed component.`,
     )
   }
   for (const style of items.flatMap((item) => item.styles ?? [])) {
-    const line = `@import "blazorui/${style}";`
+    const line = `@import "sheenui/${style}";`
     if (!content.split(/\r?\n/).some((existing) => existing.trim() === line)) content = content.replace(/\s*$/, `\n${line}\n`)
   }
   return { full, content: content === original ? null : content }
@@ -382,7 +384,7 @@ function planEntry({ entry, entryPath, entryImport, stylesheet }, deleted) {
     content = content.replace(new RegExp(`^import ['"]\\./${name}['"];?\\r?\\n`, "m"), "")
   }
   // First line, so the app's own CSS (imported later) can override the theme.
-  if (!content.includes("styles/blazorui.scss")) content = `import "${entryImport}"${newline}${content}`
+  if (!content.includes("styles/sheenui.scss")) content = `import "${entryImport}"${newline}${content}`
   return { full: entryPath, content: content === original ? null : content }
 }
 

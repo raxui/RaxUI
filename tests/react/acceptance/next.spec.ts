@@ -22,7 +22,7 @@ const sh = (command: string, cwd: string) => {
   const result = spawnSync(command, { cwd, shell: true, encoding: "utf8" })
   const output = (result.stdout ?? "") + (result.stderr ?? "")
   if (result.status !== 0) throw new Error(`Command failed: ${command}\n${output}`)
-  if (/blazorui-react|npm run build/.test(command))
+  if (/sheenui-react|npm run build/.test(command))
     expect(output).not.toMatch(/DEP0190|Deprecation Warning|SassWarning|inferred your workspace root/i)
   return result.stdout
 }
@@ -53,16 +53,16 @@ async function freePort() {
 }
 
 test.beforeAll(async () => {
-  root = mkdtempSync(path.join(tmpdir(), "bui-next-e2e-"))
+  root = mkdtempSync(path.join(tmpdir(), "sheen-next-e2e-"))
   app = path.join(root, "app")
 
   sh(`npx --yes ${CREATE_NEXT_APP} app --ts --app --no-tailwind --eslint --no-src-dir --import-alias "@/*" --use-npm --yes`, root)
 
   const packed = sh(`npm pack "${path.join(repo, "src/react-cli")}" --pack-destination "${root}" --silent`, repo).trim().split(/\r?\n/).pop()!
   sh(`npm install -D --save-exact --ignore-scripts --no-audit --no-fund "${path.join(root, packed)}"`, app)
-  sh("npx blazorui-react init", app)
+  sh("npx sheenui-react init", app)
 
-  if (!readFileSync(path.join(app, "app/page.tsx"), "utf8").includes("Welcome to your BlazorUI app"))
+  if (!readFileSync(path.join(app, "app/page.tsx"), "utf8").includes("Welcome to your SheenUI app"))
     throw new Error("init did not install the Next.js starter page")
   for (const leftover of ["app/page.module.css", "app/globals.css", "public/next.svg"]) {
     if (existsSync(path.join(app, leftover))) throw new Error(`init left the template file ${leftover}`)
@@ -93,13 +93,13 @@ test.afterAll(() => {
   if (root) rmSync(root, { recursive: true, force: true })
 })
 
-const shell = (page: Page) => page.locator(".bui-app")
+const shell = (page: Page) => page.locator(".sheen-app")
 
-test("the welcome page renders in the BlazorUI shell with Bootstrap and the theme", async ({ page }) => {
+test("the welcome page renders in the SheenUI shell with Bootstrap and the theme", async ({ page }) => {
   await page.goto(baseUrl)
-  await expect(page.locator("h1")).toHaveText("Welcome to your BlazorUI app")
+  await expect(page.locator("h1")).toHaveText("Welcome to your SheenUI app")
   const primary = page.getByRole("button", { name: "Primary" })
-  await expect(primary).toHaveClass(/\bbtn bui-button btn-glass btn-glass-primary\b/)
+  await expect(primary).toHaveClass(/\bbtn sheen-button btn-glass btn-glass-primary\b/)
   // inline-flex, blockified to flex inside the preview row's flex container
   await expect(primary).toHaveCSS("display", /flex$/)
   expect(await primary.evaluate((el) => getComputedStyle(el).boxShadow)).not.toBe("none")
@@ -111,16 +111,16 @@ test("the theme controls switch appearance, mode, accent, and direction", async 
   await page.getByRole("button", { name: "Dark" }).click()
   await page.getByRole("button", { name: "Emerald" }).click()
   await page.getByRole("button", { name: "RTL" }).click()
-  await expect(shell(page)).toHaveAttribute("data-bui-appearance", "glass")
+  await expect(shell(page)).toHaveAttribute("data-sheen-appearance", "glass")
   await expect(shell(page)).toHaveAttribute("data-bs-theme", "dark")
-  await expect(shell(page)).toHaveAttribute("data-bui-accent", "emerald")
+  await expect(shell(page)).toHaveAttribute("data-sheen-accent", "emerald")
   await expect(shell(page)).toHaveAttribute("dir", "rtl")
-  expect(await page.locator(".bui-panel").first().evaluate((el) => getComputedStyle(el).backdropFilter)).toContain("blur")
+  expect(await page.locator(".sheen-panel").first().evaluate((el) => getComputedStyle(el).backdropFilter)).toContain("blur")
 })
 
 test("running init and add again changes no files", () => {
   const before = snapshot(app)
-  sh("npx blazorui-react init", app)
-  sh("npx blazorui-react add button", app)
+  sh("npx sheenui-react init", app)
+  sh("npx sheenui-react add button", app)
   expect(snapshot(app)).toEqual(before)
 })

@@ -8,32 +8,32 @@
 // -----------------------------------------------------------------------------
 
 .glass-ultrathin {
-  --bui-glass-alpha: 0.18;
-  --bui-glass-alpha-subtle: 0.12;
-  --bui-glass-blur: 20px;
+  --sheen-glass-alpha: 0.18;
+  --sheen-glass-alpha-subtle: 0.12;
+  --sheen-glass-blur: 20px;
 }
 
 .glass-thin {
-  --bui-glass-alpha: 0.32;
-  --bui-glass-alpha-subtle: 0.24;
-  --bui-glass-blur: 28px;
+  --sheen-glass-alpha: 0.32;
+  --sheen-glass-alpha-subtle: 0.24;
+  --sheen-glass-blur: 28px;
 }
 
 // `.glass-regular` is the theme default; the class exists to reset a subtree.
 .glass-regular {
-  --bui-glass-alpha: 0.5;
-  --bui-glass-alpha-subtle: 0.38;
-  --bui-glass-blur: 32px;
+  --sheen-glass-alpha: 0.5;
+  --sheen-glass-alpha-subtle: 0.38;
+  --sheen-glass-blur: 32px;
 
   [data-bs-theme="dark"] &,
   &[data-bs-theme="dark"] {
-    --bui-glass-alpha: 0.42;
-    --bui-glass-alpha-subtle: 0.3;
+    --sheen-glass-alpha: 0.42;
+    --sheen-glass-alpha-subtle: 0.3;
   }
 }
 
 .glass-thick {
-  --bui-glass-alpha: 0.78;
-  --bui-glass-alpha-subtle: 0.6;
-  --bui-glass-blur: 48px;
+  --sheen-glass-alpha: 0.78;
+  --sheen-glass-alpha-subtle: 0.6;
+  --sheen-glass-blur: 48px;
 }

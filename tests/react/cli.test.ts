@@ -28,7 +28,7 @@ const DEPENDENCIES = {
 }
 
 beforeEach(() => {
-  root = mkdtempSync(path.join(tmpdir(), "bui-react-"))
+  root = mkdtempSync(path.join(tmpdir(), "sheen-react-"))
   app = path.join(root, "app")
   mkdirSync(path.join(app, "src"), { recursive: true })
   writeFileSync(path.join(app, "package.json"), JSON.stringify({ dependencies: DEPENDENCIES, devDependencies: { vite: "8.3.5" } }))
@@ -88,7 +88,16 @@ function ok(result: { code: number; err: string }) {
   expect(result.code).toBe(0)
 }
 
-describe("blazorui-react init and add button", () => {
+it.each(["blazorui.react.json", "blazorui.react.lock.json"])("preserves former identity state %s and refuses initialization", (legacyFile) => {
+  writeFileSync(file(legacyFile), "original state")
+  const before = snapshot()
+  expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("former BlazorUI registry") })
+  expect(snapshot()).toEqual(before)
+  expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("former BlazorUI registry") })
+  expect(snapshot()).toEqual(before)
+})
+
+describe("sheenui-react init and add button", () => {
   it("installs the foundation and Button with relative imports, one stylesheet, and one entry import", () => {
     ok(cli("init"))
     ok(cli("add", "button"))
@@ -96,16 +105,16 @@ describe("blazorui-react init and add button", () => {
     expect(read("src/components/ui/button.tsx")).toContain('from "../../lib/theme"')
     expect(read("src/components/ui/button.tsx")).not.toContain("@/lib")
     expect(existsSync(file("src/lib/utils.ts"))).toBe(true)
-    expect(existsSync(file("src/styles/blazorui/_core.scss"))).toBe(true)
-    expect(existsSync(file("src/styles/blazorui/components/_button.scss"))).toBe(true)
+    expect(existsSync(file("src/styles/sheenui/_core.scss"))).toBe(true)
+    expect(existsSync(file("src/styles/sheenui/components/_button.scss"))).toBe(true)
 
-    const stylesheet = read("src/styles/blazorui.scss")
-    expect(stylesheet.indexOf('@import "blazorui/variables";')).toBeLessThan(stylesheet.indexOf('@import "bootstrap/scss/bootstrap";'))
-    expect(stylesheet.indexOf('@import "blazorui/core";')).toBeLessThan(stylesheet.indexOf('@import "blazorui/components/button";'))
-    expect(read("src/main.tsx").startsWith('import "./styles/blazorui.scss"\n')).toBe(true)
+    const stylesheet = read("src/styles/sheenui.scss")
+    expect(stylesheet.indexOf('@import "sheenui/variables";')).toBeLessThan(stylesheet.indexOf('@import "bootstrap/scss/bootstrap";'))
+    expect(stylesheet.indexOf('@import "sheenui/core";')).toBeLessThan(stylesheet.indexOf('@import "sheenui/components/button";'))
+    expect(read("src/main.tsx").startsWith('import "./styles/sheenui.scss"\n')).toBe(true)
 
-    expect(json("blazorui.react.json")).toMatchObject({ registryVersion: VERSION, framework: "react", bundler: "vite", entry: "src/main.tsx" })
-    const button = json("blazorui.react.lock.json").items.button
+    expect(json("sheenui.react.json")).toMatchObject({ registryVersion: VERSION, framework: "react", bundler: "vite", entry: "src/main.tsx" })
+    const button = json("sheenui.react.lock.json").items.button
     const tsx = button.files.find((entry: { target: string }) => entry.target === "src/components/ui/button.tsx")
     expect(tsx.installedHash).not.toBe(tsx.sourceHash) // imports were rewritten
     expect(button.manifestSha256).toMatch(/^[0-9a-f]{64}$/)
@@ -121,7 +130,7 @@ describe("blazorui-react init and add button", () => {
   })
 
   it("requires init before add", () => {
-    expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("Run 'blazorui-react init' first") })
+    expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("Run 'sheenui-react init' first") })
   })
 
   it("rejects projects that are not React + Vite", () => {
@@ -142,16 +151,16 @@ describe("blazorui-react init and add button", () => {
     mkdirSync(file("src/components/ui"), { recursive: true })
     writeFileSync(file("src/components/ui/button.tsx"), "// not ours")
     const before = snapshot()
-    expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("not managed by BlazorUI") })
+    expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("not managed by SheenUI") })
     expect(snapshot()).toEqual(before)
   })
 
   it("does not silently update a file installed from another release", () => {
     ok(cli("init"))
     ok(cli("add", "button"))
-    const lock = json("blazorui.react.lock.json")
+    const lock = json("sheenui.react.lock.json")
     lock.items.button.files[0].sourceHash = "0".repeat(64)
-    writeFileSync(file("blazorui.react.lock.json"), JSON.stringify(lock))
+    writeFileSync(file("sheenui.react.lock.json"), JSON.stringify(lock))
     const before = snapshot()
     expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("Updating installed files is not supported yet") })
     expect(snapshot()).toEqual(before)
@@ -159,13 +168,13 @@ describe("blazorui-react init and add button", () => {
 
   it("rejects state written by a newer CLI and accepts an older one", () => {
     ok(cli("init"))
-    const lock = json("blazorui.react.lock.json")
-    writeFileSync(file("blazorui.react.lock.json"), JSON.stringify({ ...lock, registryVersion: "99.0.0" }))
+    const lock = json("sheenui.react.lock.json")
+    writeFileSync(file("sheenui.react.lock.json"), JSON.stringify({ ...lock, registryVersion: "99.0.0" }))
     expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("newer than this CLI") })
 
-    writeFileSync(file("blazorui.react.lock.json"), JSON.stringify({ ...lock, registryVersion: "0.0.1" }))
+    writeFileSync(file("sheenui.react.lock.json"), JSON.stringify({ ...lock, registryVersion: "0.0.1" }))
     ok(cli("add", "button"))
-    expect(json("blazorui.react.lock.json").registryVersion).toBe(VERSION)
+    expect(json("sheenui.react.lock.json").registryVersion).toBe(VERSION)
   })
 
   it("prints manual steps and writes nothing when the entry imports Bootstrap CSS directly", () => {
@@ -177,7 +186,7 @@ describe("blazorui-react init and add button", () => {
 
   it("does not edit a stylesheet that uses @use", () => {
     mkdirSync(file("src/styles"), { recursive: true })
-    writeFileSync(file("src/styles/blazorui.scss"), '@use "bootstrap/scss/bootstrap";\n')
+    writeFileSync(file("src/styles/sheenui.scss"), '@use "bootstrap/scss/bootstrap";\n')
     const before = snapshot()
     expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("does not edit") })
     expect(snapshot()).toEqual(before)
@@ -185,8 +194,8 @@ describe("blazorui-react init and add button", () => {
 
   it("rolls back files and new folders when a write fails midway", () => {
     // A file where the components style folder should be lets the first writes succeed, then fails.
-    mkdirSync(file("src/styles/blazorui"), { recursive: true })
-    writeFileSync(file("src/styles/blazorui/components"), "")
+    mkdirSync(file("src/styles/sheenui"), { recursive: true })
+    writeFileSync(file("src/styles/sheenui/components"), "")
     const before = snapshot()
     expect(cli("init").code).toBe(1)
     expect(snapshot()).toEqual(before)
@@ -207,14 +216,14 @@ describe("blazorui-react init and add button", () => {
     const template = createViteTemplateFiles()
     ok(cli("init"))
 
-    expect(read("src/App.tsx")).toContain("Welcome to your BlazorUI app")
+    expect(read("src/App.tsx")).toContain("Welcome to your SheenUI app")
     expect(read("src/App.tsx")).toContain('from "./lib/theme"')
     for (const leftover of Object.keys(template).filter((name) => name !== "src/App.tsx")) {
       expect(existsSync(file(leftover)), leftover).toBe(false)
     }
     expect(read("src/main.tsx")).not.toContain("./index.css")
-    expect(read("src/styles/blazorui.scss")).toContain('@import "blazorui/components/starter";')
-    expect(json("blazorui.react.lock.json").items.starter.files.map((entry: { target: string }) => entry.target)).toContain("src/App.tsx")
+    expect(read("src/styles/sheenui.scss")).toContain('@import "sheenui/components/starter";')
+    expect(json("sheenui.react.lock.json").items.starter.files.map((entry: { target: string }) => entry.target)).toContain("src/App.tsx")
 
     const before = snapshot()
     ok(cli("init"))
@@ -225,7 +234,7 @@ describe("blazorui-react init and add button", () => {
     createViteTemplateFiles("vite-react-ts-classic", VITE_CLASSIC_FILES)
     ok(cli("init"))
 
-    expect(read("src/App.tsx")).toContain("Welcome to your BlazorUI app")
+    expect(read("src/App.tsx")).toContain("Welcome to your SheenUI app")
     for (const leftover of ["src/App.css", "src/index.css", "src/assets/react.svg"]) {
       expect(existsSync(file(leftover)), leftover).toBe(false)
     }
@@ -281,17 +290,17 @@ describe("blazorui-react init and add button", () => {
       expect(read(`${root}app/page.tsx`)).toContain('from "../components/ui/button"')
       expect(read(`${root}lib/theme.tsx`)).toMatch(/^"use client"/)
       expect(existsSync(file(`${root}components/ui/button.tsx`))).toBe(true)
-      expect(read(`${root}styles/blazorui.scss`)).toContain('@import "blazorui/components/starter";')
-      expect(read(`${root}styles/blazorui.scss`)).toContain(`@import "${srcDir ? "../../" : "../"}node_modules/bootstrap/scss/bootstrap";`)
+      expect(read(`${root}styles/sheenui.scss`)).toContain('@import "sheenui/components/starter";')
+      expect(read(`${root}styles/sheenui.scss`)).toContain(`@import "${srcDir ? "../../" : "../"}node_modules/bootstrap/scss/bootstrap";`)
       for (const leftover of [`${root}app/page.module.css`, `${root}app/globals.css`, "public/next.svg", "public/vercel.svg"]) {
         expect(existsSync(file(leftover)), leftover).toBe(false)
       }
 
       const layout = read(`${root}app/layout.tsx`)
-      expect(layout.startsWith('import "../styles/blazorui.scss"\n')).toBe(true)
+      expect(layout.startsWith('import "../styles/sheenui.scss"\n')).toBe(true)
       expect(layout).not.toContain("./globals.css")
       expect(layout).toContain("next/font/google") // the layout itself is kept
-      expect(json("blazorui.react.json")).toMatchObject({ bundler: "next", entry: `${root}app/layout.tsx`, stylesheet: `${root}styles/blazorui.scss` })
+      expect(json("sheenui.react.json")).toMatchObject({ bundler: "next", entry: `${root}app/layout.tsx`, stylesheet: `${root}styles/sheenui.scss` })
 
       const before = snapshot()
       ok(cli("init"))
@@ -335,7 +344,7 @@ describe("blazorui-react init and add button", () => {
 
   it("keeps every packed CLI file visible to git", () => {
     // A .NET-style `bin/` ignore once hid the CLI entry point, so CI packed a CLI without its command.
-    const packed = ["bin/blazorui-react.mjs", "src/cli.mjs", "src/registry.mjs", "src/safety.mjs", "src/state.mjs", "package.json"]
+    const packed = ["bin/sheenui-react.mjs", "src/cli.mjs", "src/registry.mjs", "src/safety.mjs", "src/state.mjs", "package.json"]
     const ignored = packed.filter((relative) => {
       try {
         execFileSync("git", ["check-ignore", "-q", `src/react-cli/${relative}`])

@@ -11,21 +11,21 @@
       "destination": "app",
       "target": "Layout/MainLayout.razor",
       "type": "razor",
-      "sha256": "47a073535873a82dd3bb0e1691e8e263e1563465269674ec3acd9b64e04fcfeb"
+      "sha256": "e09937b28caae5ea01143b5201a876e25c94b42624fdc6b4ef36aede74ae1b56"
     },
     {
       "source": "Home.razor",
       "destination": "app",
       "target": "Pages/Home.razor",
       "type": "razor",
-      "sha256": "71d97d9145f66c816f94c37df16e0e576d2e71b7ddb64f42742e046dc9254e4e"
+      "sha256": "2e24ce1d9597d676043d2ac604e72f47f717efae129cf10e6d41d201b153f052"
     },
     {
       "source": "app.css",
       "destination": "wwwroot",
       "target": "app.css",
       "type": "css",
-      "sha256": "5389db56ca1c87451baedcebc588e11c132696e60806f43faad57275895a7ef7"
+      "sha256": "5be0b5a7e49e955c0919a99816fa7f5fabf414ab6a1cfc386f13792e2c7960fc"
     }
   ]
 }

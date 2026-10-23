@@ -1,11 +1,11 @@
 using System.Text.Json.Nodes;
-using BlazorUI.Cli;
+using SheenUI.Cli;
 
-namespace BlazorUI.Integration.Tests;
+namespace SheenUI.Integration.Tests;
 
 public class InstallSafetyTests : IDisposable
 {
-    private readonly string _root = Path.Combine(Path.GetTempPath(), "BlazorUI_Safety_" + Guid.NewGuid().ToString("N"));
+    private readonly string _root = Path.Combine(Path.GetTempPath(), "SheenUI_Safety_" + Guid.NewGuid().ToString("N"));
     private string App => Path.Combine(_root, "App");
 
     public InstallSafetyTests()
@@ -34,7 +34,7 @@ public class InstallSafetyTests : IDisposable
     public void Invalid_configuration_is_rejected_without_writes(string field, string value)
     {
         Assert.Equal(0, Run("init").Code);
-        var path = Path.Combine(App, "blazorui.json");
+        var path = Path.Combine(App, "sheenui.json");
         var config = JsonNode.Parse(File.ReadAllText(path))!;
         config[field] = field == "schemaVersion" ? JsonValue.Create(int.Parse(value)) : JsonValue.Create(value);
         File.WriteAllText(path, config.ToJsonString());
@@ -51,7 +51,7 @@ public class InstallSafetyTests : IDisposable
     public void Incompatible_lock_is_rejected_without_writes(string field, string value)
     {
         Assert.Equal(0, Run("init").Code);
-        var path = Path.Combine(App, "blazorui.lock.json");
+        var path = Path.Combine(App, "sheenui.lock.json");
         var data = JsonNode.Parse(File.ReadAllText(path))!;
         data[field] = field == "schemaVersion" ? JsonValue.Create(int.Parse(value)) : JsonValue.Create(value);
         File.WriteAllText(path, data.ToJsonString());
@@ -65,7 +65,7 @@ public class InstallSafetyTests : IDisposable
     public void Project_from_an_older_cli_accepts_new_components_and_records_this_version()
     {
         Assert.Equal(0, Run("init").Code);
-        foreach (var name in new[] { "blazorui.json", "blazorui.lock.json" })
+        foreach (var name in new[] { "sheenui.json", "sheenui.lock.json" })
         {
             var path = Path.Combine(App, name);
             var data = JsonNode.Parse(File.ReadAllText(path))!;
@@ -76,9 +76,9 @@ public class InstallSafetyTests : IDisposable
         var result = Run("add", "button");
 
         Assert.True(result.Code == 0, result.Error);
-        var version = BlazorUI.Cli.Registry.ReleaseIdentity.Version;
-        Assert.Equal(version, JsonNode.Parse(File.ReadAllText(Path.Combine(App, "blazorui.json")))!["registryVersion"]!.GetValue<string>());
-        var lockData = JsonNode.Parse(File.ReadAllText(Path.Combine(App, "blazorui.lock.json")))!;
+        var version = SheenUI.Cli.Registry.ReleaseIdentity.Version;
+        Assert.Equal(version, JsonNode.Parse(File.ReadAllText(Path.Combine(App, "sheenui.json")))!["registryVersion"]!.GetValue<string>());
+        var lockData = JsonNode.Parse(File.ReadAllText(Path.Combine(App, "sheenui.lock.json")))!;
         Assert.Equal(version, lockData["registryVersion"]!.GetValue<string>());
         Assert.Equal(version, lockData["components"]!["button"]!["registryVersion"]!.GetValue<string>());
     }
@@ -92,10 +92,10 @@ public class InstallSafetyTests : IDisposable
         Assert.Equal(0, Run("add", "button").Code);
 
         // Simulate files installed from an older release whose registry content differed.
-        var lockPath = Path.Combine(App, "blazorui.lock.json");
+        var lockPath = Path.Combine(App, "sheenui.lock.json");
         var data = JsonNode.Parse(File.ReadAllText(lockPath))!;
         var file = command == "init"
-            ? data["assets"]!["wwwroot/css/blazorui/blazorui.css"]!
+            ? data["assets"]!["wwwroot/css/sheenui/sheenui.css"]!
             : data["components"]!["button"]!["files"]![0]!;
         file["sourceHash"] = new string('0', 64);
         File.WriteAllText(lockPath, data.ToJsonString());
@@ -110,7 +110,7 @@ public class InstallSafetyTests : IDisposable
 
     [Theory]
     [InlineData("Components/UI", "add")]
-    [InlineData("wwwroot/css/blazorui", "init")]
+    [InlineData("wwwroot/css/sheenui", "init")]
     public void Directory_link_escape_is_rejected_before_writes(string relative, string command)
     {
         if (command == "add") Assert.Equal(0, Run("init").Code);
@@ -160,8 +160,8 @@ public class InstallSafetyTests : IDisposable
     [UnixTheory]
     [InlineData("Components/App.razor", "init")]
     [InlineData("Components/_Imports.razor", "add")]
-    [InlineData("blazorui.json", "init")]
-    [InlineData("blazorui.lock.json", "add")]
+    [InlineData("sheenui.json", "init")]
+    [InlineData("sheenui.lock.json", "add")]
     public void File_link_escape_leaves_external_file_unchanged(string relative, string command)
     {
         Assert.Equal(0, Run("init").Code);

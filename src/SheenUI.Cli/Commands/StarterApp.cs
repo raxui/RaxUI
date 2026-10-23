@@ -1,12 +1,12 @@
 using System.Text;
-using BlazorUI.Cli.Configuration;
-using BlazorUI.Cli.Project;
-using BlazorUI.Cli.Registry;
+using SheenUI.Cli.Configuration;
+using SheenUI.Cli.Project;
+using SheenUI.Cli.Registry;
 
-namespace BlazorUI.Cli.Commands;
+namespace SheenUI.Cli.Commands;
 
 /// <summary>
-/// Replaces the unmodified <c>dotnet new blazor</c> layout and sample pages with the BlazorUI starter
+/// Replaces the unmodified <c>dotnet new blazor</c> layout and sample pages with the SheenUI starter
 /// layout and welcome page (ADR 008). A template file is replaced or removed only when its content is
 /// byte-for-byte a known template version; anything the developer changed is kept and reported.
 /// </summary>
@@ -74,7 +74,7 @@ public static class StarterApp
 
     public sealed record Plan(ComponentManifest Manifest, List<Write> Writes, List<string> Deletes, List<string> Notes);
 
-    public static Plan Prepare(string workingDirectory, string projectName, BlazorUiLock lockFile, EmbeddedRegistry registry)
+    public static Plan Prepare(string workingDirectory, string projectName, SheenUiLock lockFile, EmbeddedRegistry registry)
     {
         bool IsTemplate(string fullPath, string relative) => IsTemplateFile(fullPath, relative, projectName);
 
@@ -95,7 +95,7 @@ public static class StarterApp
             {
                 // Installed by an earlier init: refresh only an unchanged copy from this release.
                 if (!string.Equals(tracked.SourceHash, hash, StringComparison.OrdinalIgnoreCase))
-                    notes.Add($"Kept {relative} from an earlier BlazorUI release.");
+                    notes.Add($"Kept {relative} from an earlier SheenUI release.");
                 else if (File.Exists(fullPath) && Hash(fullPath) == tracked.InstalledHash)
                     writes.Add(new Write(fullPath, relative, bytes, hash));
             }
@@ -105,7 +105,7 @@ public static class StarterApp
             }
             else if (File.Exists(fullPath))
             {
-                notes.Add($"Kept your {relative} (it differs from the Blazor template), so the BlazorUI version was not installed.");
+                notes.Add($"Kept your {relative} (it differs from the Blazor template), so the SheenUI version was not installed.");
             }
         }
 

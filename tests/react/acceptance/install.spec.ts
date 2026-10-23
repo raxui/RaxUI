@@ -15,23 +15,23 @@ const CREATE_VITE = `vite@${process.env.CREATE_VITE_VERSION ?? "9.3.1"}`
 
 const APP = `import { useState } from "react"
 import { Button } from "./components/ui/button"
-import { BootThemeProvider, type BootAppearance } from "./lib/theme"
+import { SheenThemeProvider, type SheenAppearance } from "./lib/theme"
 
 const params = new URLSearchParams(window.location.search)
 
 export default function App() {
   const [count, setCount] = useState(0)
   return (
-    <BootThemeProvider
+    <SheenThemeProvider
       data-testid="theme"
-      appearance={(params.get("appearance") ?? "default") as BootAppearance}
+      appearance={(params.get("appearance") ?? "default") as SheenAppearance}
       mode={params.get("mode") === "dark" ? "dark" : "light"}
       direction={params.get("dir") === "rtl" ? "rtl" : "ltr"}
     >
       <Button id="count" onClick={() => setCount((value) => value + 1)}>
         Count {count}
       </Button>
-    </BootThemeProvider>
+    </SheenThemeProvider>
   )
 }
 `
@@ -45,7 +45,7 @@ const sh = (command: string, cwd: string) => {
   const result = spawnSync(command, { cwd, shell: true, encoding: "utf8" })
   const output = (result.stdout ?? "") + (result.stderr ?? "")
   if (result.status !== 0) throw new Error(`Command failed: ${command}\n${output}`)
-  if (/blazorui-react|npm run build/.test(command))
+  if (/sheenui-react|npm run build/.test(command))
     expect(output).not.toMatch(/DEP0190|Deprecation Warning|SassWarning|inferred your workspace root/i)
   return result.stdout
 }
@@ -76,7 +76,7 @@ async function freePort() {
 }
 
 test.beforeAll(async () => {
-  root = mkdtempSync(path.join(tmpdir(), "bui-react-e2e-"))
+  root = mkdtempSync(path.join(tmpdir(), "sheen-react-e2e-"))
   app = path.join(root, "app")
 
   sh(`npm create --yes ${CREATE_VITE} app -- --template react-ts --no-interactive`, root)
@@ -85,11 +85,11 @@ test.beforeAll(async () => {
   const packed = sh(`npm pack "${path.join(repo, "src/react-cli")}" --pack-destination "${root}" --silent`, repo).trim().split(/\r?\n/).pop()!
   sh(`npm install -D --save-exact --ignore-scripts --no-audit --no-fund "${path.join(root, packed)}"`, app)
 
-  sh("npx blazorui-react init", app)
-  sh("npx blazorui-react add button", app)
+  sh("npx sheenui-react init", app)
+  sh("npx sheenui-react add button", app)
 
   // The starter replaced the unmodified template App and removed what only it used (ADR 008).
-  if (!readFileSync(path.join(app, "src/App.tsx"), "utf8").includes("Welcome to your BlazorUI app"))
+  if (!readFileSync(path.join(app, "src/App.tsx"), "utf8").includes("Welcome to your SheenUI app"))
     throw new Error("init did not install the starter App.tsx")
   for (const leftover of ["src/App.css", "src/index.css", "src/assets/react.svg"]) {
     if (existsSync(path.join(app, leftover))) throw new Error(`init left the template file ${leftover}`)
@@ -128,7 +128,7 @@ const style = (page: Page, property: string) => button(page).evaluate((el, name)
 test("the installed Button renders with the shared classes and handles clicks", async ({ page }) => {
   await page.goto(baseUrl)
   await expect(button(page)).toHaveClass(/\bbtn\b/)
-  await expect(button(page)).toHaveClass(/\bbui-button\b/)
+  await expect(button(page)).toHaveClass(/\bsheen-button\b/)
   await expect(button(page)).toHaveClass(/\bbtn-glass-primary\b/)
   await expect(button(page)).toHaveAttribute("type", "button")
   await button(page).click()
@@ -146,7 +146,7 @@ test("appearances change the look: default has a shadow, flat has none, glass bl
 
   await page.goto(`${baseUrl}/?appearance=glass`)
   expect(await style(page, "backdrop-filter")).toContain("blur")
-  await expect(button(page)).toHaveAttribute("data-bui-appearance", "glass")
+  await expect(button(page)).toHaveAttribute("data-sheen-appearance", "glass")
 })
 
 test("dark mode and RTL apply through the theme provider", async ({ page }) => {
@@ -162,7 +162,7 @@ test("dark mode and RTL apply through the theme provider", async ({ page }) => {
 
 test("running init and add again changes no files", () => {
   const before = snapshot(app)
-  sh("npx blazorui-react init", app)
-  sh("npx blazorui-react add button", app)
+  sh("npx sheenui-react init", app)
+  sh("npx sheenui-react add button", app)
   expect(snapshot(app)).toEqual(before)
 })

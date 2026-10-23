@@ -6,13 +6,13 @@
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>blazorui</ToolCommandName>
-    <PackageId>BlazorUI.Cli</PackageId>
+    <ToolCommandName>sheenui</ToolCommandName>
+    <PackageId>SheenUI.Cli</PackageId>
     <Version>0.1.0-preview.2</Version>
     <Description>Source-first Blazor UI components installed into your project.</Description>
     <Authors>SaadAlsaree</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/SaadAlsaree/BlazorUI</RepositoryUrl>
+    <RepositoryUrl>https://github.com/SaadAlsaree/SheenUI</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>blazor;components;bootstrap;cli</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>

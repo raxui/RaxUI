@@ -2,41 +2,41 @@
 // Custom properties resolve where they are declared, so a mode switch (data-bs-theme) without an
 // appearance attribute re-declares the default material there; otherwise it would inherit surfaces
 // resolved in the outer mode (white panels in dark). :where() keeps it below explicit appearances.
-:root, [data-bui-appearance="default"], [data-bui-appearance="flat"], [data-bui-appearance="glass"],
-:where([data-bs-theme]:not([data-bui-appearance="flat"] *, [data-bui-appearance="glass"] *)) {
-  --bui-surface-bg: var(--bs-body-bg);
-  --bui-border-color: var(--bs-border-color);
-  --bui-control-shadow: 0 1px 3px rgba(var(--bui-shadow-rgb), 0.12);
-  --bui-surface-shadow: var(--bui-control-shadow);
-  --bui-control-radius: var(--bui-radius-control);
-  --bui-surface-filter: none;
+:root, [data-sheen-appearance="default"], [data-sheen-appearance="flat"], [data-sheen-appearance="glass"],
+:where([data-bs-theme]:not([data-sheen-appearance="flat"] *, [data-sheen-appearance="glass"] *)) {
+  --sheen-surface-bg: var(--bs-body-bg);
+  --sheen-border-color: var(--bs-border-color);
+  --sheen-control-shadow: 0 1px 3px rgba(var(--sheen-shadow-rgb), 0.12);
+  --sheen-surface-shadow: var(--sheen-control-shadow);
+  --sheen-control-radius: var(--sheen-radius-control);
+  --sheen-surface-filter: none;
 }
-[data-bui-appearance="flat"] {
-  --bui-control-shadow: none;
-  --bui-surface-shadow: none;
+[data-sheen-appearance="flat"] {
+  --sheen-control-shadow: none;
+  --sheen-surface-shadow: none;
 }
-[data-bui-appearance="glass"] {
-  --bui-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
+[data-sheen-appearance="glass"] {
+  --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
   // Keep glass close to the page: subtle contact shadows, without a broad halo.
-  --bui-control-shadow: var(--bui-glass-edge),
-    0 1px 2px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 0.3));
-  --bui-surface-shadow: var(--bui-glass-edge),
-    0 2px 8px -2px rgba(var(--bui-shadow-rgb), calc(var(--bui-shadow-opacity) * 0.4));
-  --bui-border-color: var(--bui-glass-border-color);
+  --sheen-control-shadow: var(--sheen-glass-edge),
+    0 1px 2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.3));
+  --sheen-surface-shadow: var(--sheen-glass-edge),
+    0 2px 8px -2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.4));
+  --sheen-border-color: var(--sheen-glass-border-color);
   @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    --bui-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);
-    --bui-surface-filter: blur(var(--bui-glass-blur)) saturate(var(--bui-glass-saturate));
+    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);
+    --sheen-surface-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
   }
 }
-[data-bui-density="compact"] {
-  --bui-control-height: 2rem;
-  --bui-control-height-sm: 1.75rem;
-  --bui-control-height-lg: 2.5rem;
+[data-sheen-density="compact"] {
+  --sheen-control-height: 2rem;
+  --sheen-control-height-sm: 1.75rem;
+  --sheen-control-height-lg: 2.5rem;
 }
-[data-bui-density="comfortable"] {
-  --bui-control-height: 2.5rem;
-  --bui-control-height-sm: 2.25rem;
-  --bui-control-height-lg: 3rem;
+[data-sheen-density="comfortable"] {
+  --sheen-control-height: 2.5rem;
+  --sheen-control-height-sm: 2.25rem;
+  --sheen-control-height-lg: 3rem;
 }
 
 // Users who ask the system for less transparency get opaque glass everywhere.
@@ -45,18 +45,18 @@
   *,
   ::before,
   ::after {
-    --bui-glass-alpha: 1 !important;
-    --bui-glass-alpha-subtle: 1 !important;
-    --bui-glass-blur: 0px !important;
-    --bui-surface-bg: var(--bs-body-bg) !important;
-    --bui-surface-filter: none !important;
+    --sheen-glass-alpha: 1 !important;
+    --sheen-glass-alpha-subtle: 1 !important;
+    --sheen-glass-blur: 0px !important;
+    --sheen-surface-bg: var(--bs-body-bg) !important;
+    --sheen-surface-filter: none !important;
   }
 }
 
-@mixin bui-surface {
-  background-color: var(--bui-surface-bg);
-  border: 1px solid var(--bui-border-color);
-  box-shadow: var(--bui-surface-shadow);
-  -webkit-backdrop-filter: var(--bui-surface-filter);
-  backdrop-filter: var(--bui-surface-filter);
+@mixin sheen-surface {
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
 }

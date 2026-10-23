@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace BlazorUI.Cli.Registry;
+namespace SheenUI.Cli.Registry;
 
 public class RegistryIndex
 {
