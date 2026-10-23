@@ -130,11 +130,31 @@ test("Primary follows the selected accent in every appearance and mode, includin
     for (const [mode, accents] of Object.entries(colors)) {
       await page.getByRole("button", { name: mode, exact: true }).click()
       for (const [accent, color] of Object.entries(accents)) {
-        await page.getByRole("button", { name: accent, exact: true }).click()
+        const swatch = page.getByRole("button", { name: accent, exact: true })
+        await expect(swatch).toHaveClass("sheen-accent-swatch")
+        await swatch.click()
+        await expect(swatch).toHaveAttribute("aria-pressed", "true")
+        await expect(page.getByRole("group", { name: "Accent", exact: true }).locator('[aria-pressed="true"]')).toHaveCount(1)
         await expect(primary).toHaveCSS("background-color", color)
       }
     }
   }
+})
+
+test("accent swatches have distinct colors and support keyboard selection", async ({ page }) => {
+  await page.goto(baseUrl)
+  const accents = page.getByRole("group", { name: "Accent", exact: true })
+  const swatches = accents.getByRole("button")
+  await expect(swatches).toHaveCount(4)
+  const colors = await swatches.evaluateAll((elements) => elements.map((el) => getComputedStyle(el, "::before").backgroundColor))
+  expect(new Set(colors).size).toBe(4)
+  const indigo = accents.getByRole("button", { name: "Indigo" })
+  await indigo.focus()
+  await expect(indigo).toBeFocused()
+  await indigo.press("Space")
+  await expect(indigo).toHaveAttribute("aria-pressed", "true")
+  await expect(page.getByRole("button", { name: "Primary", exact: true })).toHaveCSS("background-color", "rgb(79, 70, 229)")
+  expect(await indigo.evaluate((el) => getComputedStyle(el).boxShadow)).not.toBe("none")
 })
 
 test("running init and add again changes no files", () => {

@@ -5,7 +5,7 @@
 <PageTitle>Welcome to SheenUI</PageTitle>
 
 <div class="sheen-welcome">
-    <section>
+    <section class="sheen-welcome-intro">
         <h1>Welcome to your SheenUI app</h1>
         <p class="sheen-welcome-lead">
             Your components live in <code>Components/UI</code> and are yours to edit.
@@ -13,7 +13,7 @@
         </p>
     </section>
 
-    <section class="sheen-panel" aria-labelledby="theme-heading">
+    <section class="sheen-panel sheen-theme-panel" aria-labelledby="theme-heading">
         <h2 id="theme-heading">Theme</h2>
         @foreach (var (label, key, options) in ThemeRows)
         {
@@ -23,17 +23,30 @@
                     @foreach (var (text, value) in options)
                     {
                         var selected = Current(key) == value;
-                        <a class="btn sheen-button btn-glass btn-sm @(selected ? "btn-glass-primary" : "btn-glass-secondary")"
-                           href="@Navigation.GetUriWithQueryParameter(key, value)"
-                           aria-current="@(selected ? "true" : null)">@text</a>
+                        @if (key == "accent")
+                        {
+                            <a class="sheen-accent-swatch"
+                               data-sheen-accent="@value"
+                               data-sheen-swatch="@(value ?? "blue")"
+                               href="@Navigation.GetUriWithQueryParameter(key, value)"
+                               aria-label="@text" title="@text"
+                               aria-current="@(selected ? "true" : null)"></a>
+                        }
+                        else
+                        {
+                            <a class="btn sheen-button btn-glass btn-sm @(selected ? "btn-glass-primary" : "btn-glass-secondary")"
+                               href="@Navigation.GetUriWithQueryParameter(key, value)"
+                               aria-current="@(selected ? "true" : null)">@text</a>
+                        }
                     }
                 </div>
             </div>
         }
     </section>
 
-    <section class="sheen-panel" aria-labelledby="preview-heading">
+    <section class="sheen-panel sheen-preview-panel" aria-labelledby="preview-heading">
         <h2 id="preview-heading">Preview</h2>
+        <p class="sheen-preview-description">One component, six variants. Use the theme controls to compare their appearance.</p>
         <div class="sheen-preview-row">
             <button type="button" class="btn sheen-button btn-glass btn-glass-primary">Primary</button>
             <button type="button" class="btn sheen-button btn-glass btn-glass-secondary">Secondary</button>
@@ -42,9 +55,10 @@
             <button type="button" class="btn sheen-button btn-glass btn-glass-ghost">Ghost</button>
             <button type="button" class="btn sheen-button btn-glass btn-glass-destructive">Destructive</button>
         </div>
+        <p class="sheen-preview-hint">Use Tab to explore keyboard focus.</p>
     </section>
 
-    <section class="sheen-panel" aria-labelledby="next-heading">
+    <section class="sheen-next-steps" aria-labelledby="next-heading">
         <h2 id="next-heading">Next steps</h2>
         <p>Add components, then use them in your pages:</p>
         <pre><code>dotnet sheenui add button</code></pre>

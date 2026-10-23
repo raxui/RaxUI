@@ -11,14 +11,14 @@
       "destination": "app",
       "target": "Layout/MainLayout.razor",
       "type": "razor",
-      "sha256": "e09937b28caae5ea01143b5201a876e25c94b42624fdc6b4ef36aede74ae1b56"
+      "sha256": "22da4e4b11700d2bf1194ac40d76b238ff1ac0952eae153463aac16acd6e499e"
     },
     {
       "source": "Home.razor",
       "destination": "app",
       "target": "Pages/Home.razor",
       "type": "razor",
-      "sha256": "2e24ce1d9597d676043d2ac604e72f47f717efae129cf10e6d41d201b153f052"
+      "sha256": "b8d0ac975e1ff85ff30e8273f57abc51f5a779148a95af5255f66d276f8cbd66"
     },
     {
       "source": "app.css",

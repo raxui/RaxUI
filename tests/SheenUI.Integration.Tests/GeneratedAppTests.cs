@@ -131,6 +131,15 @@ public class GeneratedAppTests : IDisposable
             await Assertions.Expect(page.Locator("h1")).ToHaveTextAsync("Welcome to your SheenUI app");
             Assert.Equal(0, await page.Locator(".sidebar, .navbar-brand").CountAsync());
             await Assertions.Expect(page.Locator("#blazor-error-ui")).ToBeHiddenAsync(); // shown only on an unhandled error
+            var accents = page.GetByRole(AriaRole.Group, new() { Name = "Accent", Exact = true });
+            await Assertions.Expect(accents.GetByRole(AriaRole.Link)).ToHaveCountAsync(4);
+            await Assertions.Expect(accents.GetByRole(AriaRole.Link, new() { Name = "Blue", Exact = true }))
+                .ToHaveAttributeAsync("aria-current", "true");
+            await accents.GetByRole(AriaRole.Link, new() { Name = "Emerald", Exact = true }).ClickAsync();
+            await Assertions.Expect(accents.GetByRole(AriaRole.Link, new() { Name = "Emerald", Exact = true }))
+                .ToHaveAttributeAsync("aria-current", "true");
+            await Assertions.Expect(page.GetByRole(AriaRole.Button, new() { Name = "Primary", Exact = true }))
+                .ToHaveCSSAsync("background-color", "rgb(14, 122, 109)");
             await page.GotoAsync(url.TrimEnd('/') + "/?appearance=glass&mode=dark&accent=emerald&dir=rtl");
             var shell = page.Locator(".sheen-app");
             await Assertions.Expect(shell).ToHaveAttributeAsync("data-sheen-appearance", "glass");
