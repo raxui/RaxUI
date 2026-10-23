@@ -216,6 +216,9 @@
     --bs-btn-active-bg: var(--bui-surface-bg);
     --bs-btn-disabled-bg: var(--bui-surface-bg);
     --bs-btn-border-color: var(--bui-border-color);
+    --bs-btn-hover-border-color: var(--bui-border-color);
+    --bs-btn-active-border-color: var(--bui-border-color);
+    --bs-btn-disabled-border-color: var(--bui-border-color);
   }
   &:is(.btn-glass-ghost, .btn-glass-link) { --bui-btn-shadow: none; }
 }

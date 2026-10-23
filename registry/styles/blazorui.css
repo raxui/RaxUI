@@ -364,7 +364,7 @@ body {
 :where([data-bs-theme]:not([data-bui-appearance=flat] *, [data-bui-appearance=glass] *)) {
   --bui-surface-bg: var(--bs-body-bg);
   --bui-border-color: var(--bs-border-color);
-  --bui-control-shadow: 0 1px 3px rgba(var(--bs-emphasis-color-rgb), 0.12);
+  --bui-control-shadow: 0 1px 3px rgba(var(--bui-shadow-rgb), 0.12);
   --bui-surface-shadow: var(--bui-control-shadow);
   --bui-control-radius: var(--bui-radius-control);
   --bui-surface-filter: none;
@@ -601,6 +601,9 @@ body {
   --bs-btn-active-bg: var(--bui-surface-bg);
   --bs-btn-disabled-bg: var(--bui-surface-bg);
   --bs-btn-border-color: var(--bui-border-color);
+  --bs-btn-hover-border-color: var(--bui-border-color);
+  --bs-btn-active-border-color: var(--bui-border-color);
+  --bs-btn-disabled-border-color: var(--bui-border-color);
 }
 .bui-button:is(.btn-glass-ghost, .btn-glass-link) {
   --bui-btn-shadow: none;
