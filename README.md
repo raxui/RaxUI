@@ -2,9 +2,11 @@
 
 Source-owned Blazor components installed into your application by a .NET CLI.
 Licensed under [MIT](LICENSE).
-The first preview supports **.NET 10 Blazor Web App with Interactive Server**,
-the template's Bootstrap, and the **Button** component. Installed components run
-without the CLI or a registry connection.
+The first preview supports **Blazor Web Apps on .NET 8, 9, and 10 with
+Interactive Server**, the template's Bootstrap, and the **Button** component.
+On .NET 8, `init` upgrades the template's unmodified Bootstrap 5.1 to 5.3, which
+the theme needs ([ADR 009](docs/adr/009-dotnet-8-9-10.md)). Installed components
+run without the CLI or a registry connection.
 
 ## Quick start
 
@@ -82,7 +84,8 @@ Vite, Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx blazorui-react init`,
 
 ## Build and test
 
-Requires the .NET 10 SDK and PowerShell 7 for Playwright's install script.
+Requires the .NET 8, 9, and 10 SDKs (the CLI multi-targets and the end-to-end
+test builds an app on each) and PowerShell 7 for Playwright's install script.
 
 ```sh
 dotnet restore BlazorUI.slnx

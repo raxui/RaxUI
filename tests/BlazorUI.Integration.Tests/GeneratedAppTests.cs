@@ -24,16 +24,26 @@ public class GeneratedAppTests : IDisposable
         }
     }
 
-    [Fact]
-    public async Task Init_and_add_button_produce_an_app_that_builds_and_reruns_cleanly()
+    // Every supported Blazor Web App target (ADR 009); each needs its runtime installed.
+    [Theory]
+    [InlineData("net8.0")]
+    [InlineData("net9.0")]
+    [InlineData("net10.0")]
+    public async Task Init_and_add_button_produce_an_app_that_builds_and_reruns_cleanly(string targetFramework)
     {
         var app = Path.Combine(_root, "SampleApp");
-        Dotnet(_root, "new", "blazor", "--interactivity", "Server", "-n", "SampleApp", "-o", app);
+        Dotnet(_root, "new", "blazor", "-f", targetFramework, "--interactivity", "Server", "-n", "SampleApp", "-o", app);
 
         var output = new StringWriter();
         var error = new StringWriter();
         Assert.True(Program.Run(["init"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "button"], app, output, error) == 0, error.ToString());
+
+        // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
+        var bootstrap = Directory.GetFiles(Path.Combine(app, "wwwroot"), "bootstrap.min.css", SearchOption.AllDirectories).Single();
+        Assert.Matches(@"Bootstrap\s+v5\.3\.", string.Join(" ", File.ReadLines(bootstrap).Take(3)));
+        Assert.Contains(targetFramework == "net8.0" ? "href=\"css/blazorui/blazorui.css\"" : "@Assets[\"css/blazorui/blazorui.css\"]",
+            File.ReadAllText(Path.Combine(app, "Components", "App.razor")));
 
         // The starter replaced the unmodified template layout and home page and removed the samples (ADR 008).
         var components = Path.Combine(app, "Components");

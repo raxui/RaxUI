@@ -56,8 +56,12 @@ public class BlazorUiConfig
         ReleaseIdentity.EnsureSupported(config.RegistryVersion, DefaultFileName);
         if (config.ComponentsPath != "Components/UI" || config.StylesPath != "wwwroot/css/blazorui")
             throw new InvalidOperationException("Custom paths are unsupported. Use componentsPath 'Components/UI' and stylesPath 'wwwroot/css/blazorui'.");
-        if (config.Framework != "blazor" || config.TargetFramework != "net10.0" || config.Bootstrap == null || config.Bootstrap.Managed)
-            throw new InvalidOperationException("Only net10.0 Blazor with template Bootstrap is supported.");
+        if (config.Framework != "blazor" || !ProjectContext.SupportedTargetFrameworks.Contains(config.TargetFramework) ||
+            config.Bootstrap == null || config.Bootstrap.Managed)
+        {
+            throw new InvalidOperationException(
+                $"Only Blazor on {string.Join(", ", ProjectContext.SupportedTargetFrameworks)} with template Bootstrap is supported.");
+        }
         return config;
     }
 

@@ -29,6 +29,15 @@ public class EmbeddedRegistryTests
     }
 
     [Fact]
+    public void Bundled_Bootstrap_is_5_3_and_matches_its_recorded_hash()
+    {
+        var bytes = _registry.GetResourceBytes(BlazorUI.Cli.Commands.InitCommand.BundledBootstrapSource);
+
+        Assert.Equal(BlazorUI.Cli.Commands.InitCommand.BundledBootstrapSha256, EmbeddedRegistry.ComputeSha256(bytes));
+        Assert.Matches(@"Bootstrap\s+v5\.3\.", System.Text.Encoding.UTF8.GetString(bytes, 0, 200));
+    }
+
+    [Fact]
     public void GetComponentManifest_returns_valid_button_manifest()
     {
         var manifest = _registry.GetComponentManifest("button");

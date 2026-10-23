@@ -15,25 +15,42 @@ public static class StarterApp
     public const string ItemName = "starter";
     private const string MainLayout = "Components/Layout/MainLayout.razor";
 
-    // SHA-256 of .NET 10 template files (--interactivity Server and None; Visual Studio produces the
-    // same files), with line endings normalized to LF and the project name replaced by {{name}}.
+    // SHA-256 of .NET 8, 9, and 10 template files (--interactivity Server and None; the SDK of each
+    // version and Visual Studio produce the same files), with line endings normalized to LF and the
+    // project name replaced by {{name}}.
     private static readonly Dictionary<string, string[]> TemplateHashes = new()
     {
         [MainLayout] =
         [
-            "ed2aed0b7f089fac8e1659a7ed564e6b21bec2017213e9ce1e886a1b71876e43",
-            "2bfd79b3ad587751d051086952d16945ad08d88f045a7a53d27f0fff2c5fe707",
+            "ed2aed0b7f089fac8e1659a7ed564e6b21bec2017213e9ce1e886a1b71876e43", // 9, 10 Server
+            "2bfd79b3ad587751d051086952d16945ad08d88f045a7a53d27f0fff2c5fe707", // 8, 9, 10 None
+            "5ea33a836decaa39d06b9386bbdd71ca2ba58b46091f461b4a66c481562482b6", // 8 Server
         ],
-        ["Components/Layout/MainLayout.razor.css"] = ["212b70f685a4fd2639fbd7a5d1151c4feb1e61f86987635b83affaca12bd45af"],
+        ["Components/Layout/MainLayout.razor.css"] =
+        [
+            "212b70f685a4fd2639fbd7a5d1151c4feb1e61f86987635b83affaca12bd45af", // 9, 10
+            "d30709b08e4a01978d8f98edb4519cf3c6a8a98e1f3944df9943b8f4441c5feb", // 8
+        ],
         ["Components/Layout/NavMenu.razor"] =
         [
-            "62020a244945aae64b3849214800365819c0ae5e24877694fad62976da3c6a6f",
-            "259b22b05a7d87c5574c00ed734d35e0630629ccaf63f07d9863fd1336b0bfe8",
+            "62020a244945aae64b3849214800365819c0ae5e24877694fad62976da3c6a6f", // 9, 10 Server
+            "259b22b05a7d87c5574c00ed734d35e0630629ccaf63f07d9863fd1336b0bfe8", // 9, 10 None
+            "65acf429c1ef9c7b31cdf430994db0a52ef46be5226555fd346713540d17e3e0", // 8 Server
+            "36248157843753b412e71d5b461f19e324d6481b486b764b1f96bf3f7a8d7317", // 8 None
         ],
-        ["Components/Layout/NavMenu.razor.css"] = ["efc5d4330245bade87901de30202741ea7220c5b4721f190dba084a898765a16"],
+        ["Components/Layout/NavMenu.razor.css"] =
+        [
+            "efc5d4330245bade87901de30202741ea7220c5b4721f190dba084a898765a16", // 9, 10
+            "f90d08c634c75f35354979b665a18f8ea34697a237eb603270d6573be4d92d1e", // 8
+        ],
         ["Components/Pages/Home.razor"] = ["597102dd1b63515a15ec00e0eeee502623194e8403a94088e85b0648a6d622f7"],
         ["Components/Pages/Counter.razor"] = ["3a00d5a97c3264266bb33584e0252b6b3d726b2f72c0b62140e9f9c6c5473475"],
-        ["Components/Pages/Weather.razor"] = ["377c0117b2bf4937f87e58aa4a06d3d81c10097289ed30184e34958e3bdc67f1"],
+        ["Components/Pages/Weather.razor"] =
+        [
+            "377c0117b2bf4937f87e58aa4a06d3d81c10097289ed30184e34958e3bdc67f1", // 10
+            "b3d7d04fb7b686256f8774a44cd23da3fc171121556ce8d7344b86b80c24fc44", // 9
+            "eebad1032d22b558c64f341ced2d30a5278e696bd7b768b3980fe7a8562f096c", // 8
+        ],
     };
 
     // Only reachable through the template layout, so they go once that layout is replaced.

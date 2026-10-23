@@ -5,14 +5,26 @@ namespace BlazorUI.Cli.Project;
 
 public class ProjectContext
 {
+    /// <summary>Supported Blazor Web App targets (ADR 009).</summary>
+    public static readonly string[] SupportedTargetFrameworks = ["net8.0", "net9.0", "net10.0"];
+
+    // .NET 9+ templates ship Bootstrap under lib/; .NET 8 under bootstrap/.
+    private static readonly string[] BootstrapFolders = ["wwwroot/lib/bootstrap", "wwwroot/bootstrap"];
+
     public required string RootDirectory { get; init; }
+    public required string TargetFramework { get; init; }
+
+    /// <summary>.NET 9+ apps reference static assets through @Assets (MapStaticAssets); .NET 8 apps use plain URLs.</summary>
+    public bool UsesAssetsDirective => TargetFramework != "net8.0";
+
+    /// <summary>Full path of the Bootstrap CSS the template ships.</summary>
+    public required string BootstrapCssPath { get; init; }
     public required string ProjectFilePath { get; init; }
     public required string ProjectName { get; init; }
     public required string RootNamespace { get; init; }
     public required string AssemblyName { get; init; }
     public required string AppRazorPath { get; init; }
     public required string ImportsRazorPath { get; init; }
-    public required string BootstrapCssRelativePath { get; init; }
 
     public static ProjectContext Detect(string workingDirectory)
     {
@@ -32,23 +44,28 @@ public class ProjectContext
         var csprojPath = csprojFiles[0];
         var projectName = Path.GetFileNameWithoutExtension(csprojPath);
 
-        var (rootNamespace, assemblyName) = EvaluateMsBuildProperties(csprojPath);
-
-        // Verify Bootstrap existence per ADR 004
-        var bootstrapDir = Path.Combine(workingDirectory, "wwwroot", "lib", "bootstrap");
-        if (!Directory.Exists(bootstrapDir))
+        var (rootNamespace, assemblyName, targetFramework) = EvaluateMsBuildProperties(csprojPath);
+        if (string.IsNullOrEmpty(targetFramework))
+            throw new InvalidOperationException($"'{projectName}' targets several frameworks. Only single-target Blazor Web Apps are supported.");
+        if (!SupportedTargetFrameworks.Contains(targetFramework))
         {
             throw new InvalidOperationException(
-                $"Bootstrap was not found in 'wwwroot/lib/bootstrap/'. BlazorUI requires template Bootstrap to initialize. " +
+                $"'{projectName}' targets {targetFramework}. Supported: {string.Join(", ", SupportedTargetFrameworks)}.");
+        }
+
+        // Verify the template Bootstrap exists (ADR 004)
+        var bootstrapDir = BootstrapFolders
+            .Select(folder => Path.Combine(workingDirectory, folder))
+            .FirstOrDefault(Directory.Exists);
+        if (bootstrapDir == null)
+        {
+            throw new InvalidOperationException(
+                $"Bootstrap was not found in '{string.Join("' or '", BootstrapFolders)}'. BlazorUI requires template Bootstrap to initialize. " +
                 "Ensure your project was created with 'dotnet new blazor'.");
         }
 
-        var bootstrapCss = FindBootstrapCssRelative(workingDirectory, bootstrapDir);
-        if (bootstrapCss == null)
-        {
-            throw new InvalidOperationException(
-                $"No Bootstrap CSS file found under 'wwwroot/lib/bootstrap/'.");
-        }
+        var bootstrapCss = FindBootstrapCss(bootstrapDir)
+                           ?? throw new InvalidOperationException($"No Bootstrap CSS file found under '{Path.GetRelativePath(workingDirectory, bootstrapDir)}'.");
 
         // Host App.razor
         var appRazor = Path.Combine(workingDirectory, "Components", "App.razor");
@@ -77,13 +94,14 @@ public class ProjectContext
         return new ProjectContext
         {
             RootDirectory = workingDirectory,
+            TargetFramework = targetFramework,
             ProjectFilePath = csprojPath,
             ProjectName = projectName,
             RootNamespace = rootNamespace,
             AssemblyName = assemblyName,
             AppRazorPath = appRazor,
             ImportsRazorPath = importsRazor,
-            BootstrapCssRelativePath = bootstrapCss
+            BootstrapCssPath = bootstrapCss
         };
     }
 
@@ -91,7 +109,7 @@ public class ProjectContext
     /// Reads the evaluated RootNamespace and AssemblyName, so values from Directory.Build.props
     /// and SDK defaults are honored (ADR 003), instead of parsing the .csproj XML.
     /// </summary>
-    private static (string RootNamespace, string AssemblyName) EvaluateMsBuildProperties(string csprojPath)
+    private static (string RootNamespace, string AssemblyName, string TargetFramework) EvaluateMsBuildProperties(string csprojPath)
     {
         var startInfo = new ProcessStartInfo("dotnet")
         {
@@ -100,7 +118,7 @@ public class ProjectContext
             UseShellExecute = false,
             WorkingDirectory = Path.GetDirectoryName(csprojPath)!,
         };
-        foreach (var arg in new[] { "msbuild", csprojPath, "-getProperty:RootNamespace", "-getProperty:AssemblyName" })
+        foreach (var arg in new[] { "msbuild", csprojPath, "-getProperty:RootNamespace", "-getProperty:AssemblyName", "-getProperty:TargetFramework" })
             startInfo.ArgumentList.Add(arg);
 
         using var process = Process.Start(startInfo)
@@ -125,29 +143,16 @@ public class ProjectContext
         var properties = json.RootElement.GetProperty("Properties");
         var rootNamespace = properties.GetProperty("RootNamespace").GetString();
         var assemblyName = properties.GetProperty("AssemblyName").GetString();
+        var targetFramework = properties.GetProperty("TargetFramework").GetString() ?? "";
 
         if (string.IsNullOrWhiteSpace(rootNamespace) || string.IsNullOrWhiteSpace(assemblyName))
             throw new InvalidOperationException($"Project '{csprojPath}' has no RootNamespace or AssemblyName.");
 
-        return (rootNamespace, assemblyName);
+        return (rootNamespace, assemblyName, targetFramework);
     }
 
-    private static string? FindBootstrapCssRelative(string root, string bootstrapDir)
-    {
-        var candidates = Directory.GetFiles(bootstrapDir, "*.css", SearchOption.AllDirectories)
-            .OrderBy(f => f.Contains("bootstrap.min.css", StringComparison.OrdinalIgnoreCase) ? 0 : 1)
-            .ToList();
-
-        if (candidates.Count == 0)
-            return null;
-
-        var fullPath = candidates[0];
-        var wwwrootDir = Path.Combine(root, "wwwroot");
-        if (fullPath.StartsWith(wwwrootDir, StringComparison.OrdinalIgnoreCase))
-        {
-            return Path.GetRelativePath(wwwrootDir, fullPath).Replace('\\', '/');
-        }
-
-        return Path.GetRelativePath(root, fullPath).Replace('\\', '/');
-    }
+    private static string? FindBootstrapCss(string bootstrapDir) =>
+        Directory.GetFiles(bootstrapDir, "*.css", SearchOption.AllDirectories)
+            .OrderBy(f => f.EndsWith("bootstrap.min.css", StringComparison.OrdinalIgnoreCase) ? 0 : 1)
+            .FirstOrDefault();
 }
