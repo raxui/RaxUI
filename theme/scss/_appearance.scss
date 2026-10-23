@@ -19,9 +19,9 @@
   --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
   // Keep glass close to the page: subtle contact shadows, without a broad halo.
   --sheen-control-shadow: var(--sheen-glass-edge),
-    0 1px 2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.3));
+    0 2px 4px -1px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.6));
   --sheen-surface-shadow: var(--sheen-glass-edge),
-    0 2px 8px -2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.4));
+    0 3px 8px -2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.65));
   --sheen-border-color: var(--sheen-glass-border-color);
   @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);
