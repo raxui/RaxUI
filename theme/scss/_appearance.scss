@@ -1,5 +1,9 @@
 // Each boundary defines a complete material, so explicit default resets glass.
-:root, [data-bui-appearance="default"], [data-bui-appearance="flat"], [data-bui-appearance="glass"] {
+// Custom properties resolve where they are declared, so a mode switch (data-bs-theme) without an
+// appearance attribute re-declares the default material there; otherwise it would inherit surfaces
+// resolved in the outer mode (white panels in dark). :where() keeps it below explicit appearances.
+:root, [data-bui-appearance="default"], [data-bui-appearance="flat"], [data-bui-appearance="glass"],
+:where([data-bs-theme]:not([data-bui-appearance="flat"] *, [data-bui-appearance="glass"] *)) {
   --bui-surface-bg: var(--bs-body-bg);
   --bui-border-color: var(--bs-border-color);
   --bui-control-shadow: 0 1px 3px rgba(var(--bs-emphasis-color-rgb), 0.12);

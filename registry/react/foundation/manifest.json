@@ -69,7 +69,7 @@
       "source": "theme/scss/_appearance.scss",
       "target": "styles/blazorui/_appearance.scss",
       "type": "scss",
-      "sha256": "d6627e214be583a7332815ca2f4773c067817c0abdaa3f54cd1c31a2076cedd8"
+      "sha256": "e0a0233a12a73fa1b74947afbca31515e0fb712f453b063f71e2fb46b0cabddc"
     },
     {
       "source": "theme/scss/_core.scss",

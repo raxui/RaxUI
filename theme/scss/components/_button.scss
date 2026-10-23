@@ -219,3 +219,9 @@
   }
   &:is(.btn-glass-ghost, .btn-glass-link) { --bui-btn-shadow: none; }
 }
+
+// App styles such as the Blazor template's app.css ring every :focus, mouse clicks included. Keep the
+// focus ring for keyboard focus (:focus-visible, from Bootstrap's --bs-btn-focus-box-shadow) only.
+.btn.bui-button:focus:not(:focus-visible) {
+  box-shadow: var(--bui-btn-shadow);
+}

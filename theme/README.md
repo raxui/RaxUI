@@ -13,6 +13,8 @@ Copied once from [boot-ui](https://github.com/SaadAlsaree/boot-ui) `src/styles/`
 Changes since the copy:
 
 - `_appearance.scss`: opaque glass under `prefers-reduced-transparency: reduce`.
+- `_appearance.scss`: an element that switches mode (`data-bs-theme`) without an appearance re-declares the default material, so surfaces follow the inner mode (dark mode with the default appearance showed light panels).
+- `components/_button.scss`: no focus ring on mouse clicks when app styles (the Blazor template's `app.css`) ring every `:focus`; keyboard focus keeps it.
 
 ## Contract
 
