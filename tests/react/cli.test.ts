@@ -50,16 +50,22 @@ function cli(...args: string[]) {
 
 const file = (relative: string) => path.join(app, ...relative.split("/"))
 
-/** Copies the create-vite 9.3.1 react-ts files the starter knows into the fake app; returns their paths. */
-function createViteTemplateFiles() {
-  const fixture = path.resolve("tests/react/fixtures/vite-react-ts")
-  const files: Record<string, true> = {}
-  for (const relative of ["src/App.tsx", "src/App.css", "src/index.css", "src/assets/hero.png", "src/assets/react.svg", "src/assets/vite.svg", "public/icons.svg"]) {
+const VITE_9_FILES = ["src/App.tsx", "src/App.css", "src/index.css", "src/assets/hero.png", "src/assets/react.svg", "src/assets/vite.svg", "public/icons.svg"]
+const VITE_CLASSIC_FILES = ["src/App.tsx", "src/App.css", "src/index.css", "src/assets/react.svg", "public/vite.svg"]
+
+/**
+ * Copies template files the starter knows into the fake app; returns their paths. Fixtures: create-vite 9.3.1
+ * (`vite-react-ts`) and create-vite 6.5.0, whose template 7.x and 8.x share (`vite-react-ts-classic`).
+ */
+function createViteTemplateFiles(fixtureName = "vite-react-ts", files = VITE_9_FILES) {
+  const fixture = path.resolve("tests/react/fixtures", fixtureName)
+  const copied: Record<string, true> = {}
+  for (const relative of files) {
     mkdirSync(path.dirname(file(relative)), { recursive: true })
     writeFileSync(file(relative), readFileSync(path.join(fixture, relative)))
-    files[relative] = true
+    copied[relative] = true
   }
-  return files
+  return copied
 }
 const read = (relative: string) => readFileSync(file(relative), "utf8")
 const json = (relative: string) => JSON.parse(read(relative))
@@ -213,6 +219,30 @@ describe("blazorui-react init and add button", () => {
     const before = snapshot()
     ok(cli("init"))
     expect(snapshot()).toEqual(before)
+  })
+
+  it("replaces the create-vite 6-8 template App and keeps public/vite.svg, the favicon", () => {
+    createViteTemplateFiles("vite-react-ts-classic", VITE_CLASSIC_FILES)
+    ok(cli("init"))
+
+    expect(read("src/App.tsx")).toContain("Welcome to your BlazorUI app")
+    for (const leftover of ["src/App.css", "src/index.css", "src/assets/react.svg"]) {
+      expect(existsSync(file(leftover)), leftover).toBe(false)
+    }
+    expect(existsSync(file("public/vite.svg"))).toBe(true)
+    expect(read("src/main.tsx")).not.toContain("./index.css")
+  })
+
+  it.each([
+    ["^5.4.10", undefined],
+    ["^6.0.0", "5.4.10"], // the installed version wins over the range
+  ])("rejects Vite older than 6 (range %s, installed %s)", (range, installed) => {
+    writeFileSync(path.join(app, "package.json"), JSON.stringify({ dependencies: DEPENDENCIES, devDependencies: { vite: range } }))
+    if (installed) {
+      mkdirSync(file("node_modules/vite"), { recursive: true })
+      writeFileSync(file("node_modules/vite/package.json"), JSON.stringify({ version: installed }))
+    }
+    expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("Vite 6 or later is required") })
   })
 
   it("keeps a changed App.tsx and the files it may use, and says so", () => {

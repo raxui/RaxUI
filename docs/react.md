@@ -1,6 +1,6 @@
 # BlazorUI for React
 
-Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared BlazorUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. The first React milestone supports **React 18.3 or 19 with TypeScript and Vite**, and the **Button** component ([ADR 006](adr/006-react-first-milestone.md)).
+Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared BlazorUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. The first React milestone supports **React 18.3 or 19 with TypeScript and Vite 6 or later**, and the **Button** component ([ADR 006](adr/006-react-first-milestone.md), [ADR 010](adr/010-vite-6-and-later.md)).
 
 ## Install
 
@@ -88,4 +88,4 @@ Users who set their system to reduce transparency get opaque glass automatically
 - Unknown files, locally modified files, and files from another release are never silently replaced. Paths that escape the project, including through symlinks or junctions, are rejected.
 - Ordinary write failures restore original files and remove new empty folders.
 - Sass prints `@import` deprecation warnings that come from Bootstrap 5.3 itself.
-- Only React + Vite and the Button component are supported. Other components, `update`/`diff`, path aliases, and other build tools are future work.
+- Only React + Vite 6 or later and the Button component are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` template App; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.
