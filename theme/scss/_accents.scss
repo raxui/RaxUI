@@ -85,3 +85,14 @@ body {
 @include sheen-accent-dark("amber") {
   @include sheen-accent-vars(#b55b19, #fdba74, #3b1d0a, #7c2d12, #fdba74, #fed7aa, #18130f, #0f0c09);
 }
+
+// React components repeat the provider's mode. Bootstrap resets its palette at
+// each light boundary. Preserve the nearest accent rather than selecting one
+// again from an ancestor (which would override nested accent scopes).
+[data-sheen-accent] [data-bs-theme="light"]:not([data-sheen-accent]) {
+  @each $variable in primary, primary-rgb, primary-text-emphasis, primary-bg-subtle,
+    primary-border-subtle, link-color, link-color-rgb, link-hover-color,
+    link-hover-color-rgb, focus-ring-color, body-bg, body-bg-rgb, success, success-rgb {
+    --bs-#{$variable}: inherit;
+  }
+}

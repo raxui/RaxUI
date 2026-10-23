@@ -118,6 +118,25 @@ test("the theme controls switch appearance, mode, accent, and direction", async 
   expect(await page.locator(".sheen-panel").first().evaluate((el) => getComputedStyle(el).backdropFilter)).toContain("blur")
 })
 
+test("Primary follows the selected accent in every appearance and mode, including returning to Blue", async ({ page }) => {
+  await page.goto(baseUrl)
+  const primary = page.getByRole("button", { name: "Primary", exact: true })
+  const colors = {
+    Light: { Emerald: "rgb(14, 122, 109)", Indigo: "rgb(79, 70, 229)", Amber: "rgb(194, 86, 12)", Blue: "rgb(13, 110, 253)" },
+    Dark: { Emerald: "rgb(19, 131, 113)", Indigo: "rgb(94, 97, 241)", Amber: "rgb(181, 91, 25)", Blue: "rgb(13, 110, 253)" },
+  }
+  for (const appearance of ["Default", "Flat", "Glass"]) {
+    await page.getByRole("button", { name: appearance, exact: true }).click()
+    for (const [mode, accents] of Object.entries(colors)) {
+      await page.getByRole("button", { name: mode, exact: true }).click()
+      for (const [accent, color] of Object.entries(accents)) {
+        await page.getByRole("button", { name: accent, exact: true }).click()
+        await expect(primary).toHaveCSS("background-color", color)
+      }
+    }
+  }
+})
+
 test("running init and add again changes no files", () => {
   const before = snapshot(app)
   sh("npx sheenui-react init", app)

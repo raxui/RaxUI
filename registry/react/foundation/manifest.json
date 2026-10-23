@@ -39,7 +39,7 @@
       "source": "theme/scss/_accents.scss",
       "target": "styles/sheenui/_accents.scss",
       "type": "scss",
-      "sha256": "c8bf0adb418267435acfd4057bb527392b047ccd1bb9d00f31936513f5deafc2"
+      "sha256": "597704b8076e1c0666d4c859b0159712fe3c09716672cb7273f5deacd8aa82ba"
     },
     {
       "source": "theme/scss/_mixins.scss",

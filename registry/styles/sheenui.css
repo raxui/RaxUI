@@ -223,6 +223,23 @@ body {
   --sheen-page-bg: #0f0c09;
 }
 
+[data-sheen-accent] [data-bs-theme=light]:not([data-sheen-accent]) {
+  --bs-primary: inherit;
+  --bs-primary-rgb: inherit;
+  --bs-primary-text-emphasis: inherit;
+  --bs-primary-bg-subtle: inherit;
+  --bs-primary-border-subtle: inherit;
+  --bs-link-color: inherit;
+  --bs-link-color-rgb: inherit;
+  --bs-link-hover-color: inherit;
+  --bs-link-hover-color-rgb: inherit;
+  --bs-focus-ring-color: inherit;
+  --bs-body-bg: inherit;
+  --bs-body-bg-rgb: inherit;
+  --bs-success: inherit;
+  --bs-success-rgb: inherit;
+}
+
 @keyframes sheen-fade-in {
   from {
     opacity: 0;
