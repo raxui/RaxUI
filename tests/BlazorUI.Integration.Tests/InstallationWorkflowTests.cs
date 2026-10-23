@@ -196,6 +196,49 @@ public class InstallationWorkflowTests : IDisposable
     }
 
     [Fact]
+    public void Init_warns_without_editing_when_Program_cs_lacks_interactive_server()
+    {
+        CreateSampleBlazorProject();
+        var programPath = Path.Combine(_testDirectory, "Program.cs");
+        // The default 'dotnet new blazor' template, without --interactivity Server.
+        var program = """
+            var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddRazorComponents();
+            var app = builder.Build();
+            app.MapRazorComponents<App>();
+            app.Run();
+            """;
+        File.WriteAllText(programPath, program);
+
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var code = Program.Run(["init"], _testDirectory, output, error);
+
+        Assert.Equal(0, code);
+        Assert.Contains("does not enable Interactive Server", output.ToString());
+        Assert.Contains(".AddInteractiveServerComponents();", output.ToString());
+        Assert.Contains(".AddInteractiveServerRenderMode();", output.ToString());
+        Assert.Equal(program, File.ReadAllText(programPath));
+    }
+
+    [Fact]
+    public void Init_does_not_warn_when_Program_cs_enables_interactive_server()
+    {
+        CreateSampleBlazorProject();
+        File.WriteAllText(Path.Combine(_testDirectory, "Program.cs"), """
+            var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+            var app = builder.Build();
+            app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+            app.Run();
+            """);
+
+        var output = new StringWriter();
+        Assert.Equal(0, Program.Run(["init"], _testDirectory, output, new StringWriter()));
+        Assert.DoesNotContain("Warning", output.ToString());
+    }
+
+    [Fact]
     public void Init_reports_manual_steps_when_host_has_no_known_link()
     {
         CreateSampleBlazorProject();

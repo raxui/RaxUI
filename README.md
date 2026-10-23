@@ -34,6 +34,9 @@ In `Components/Pages/Home.razor`, use:
 The CLI copies Razor and isolated CSS into `Components/UI/Button`, adds its
 namespace to `_Imports.razor`, and installs tokens/themes under
 `wwwroot/css/blazorui`. Keep the template Bootstrap and application styles links.
+If `Program.cs` does not enable Interactive Server (an app created without
+`--interactivity Server`), `init` prints a warning with the two lines to add; it
+does not edit `Program.cs`.
 Use `Variant` (`primary`, `secondary`, `outline`, `ghost`, `destructive`), `Size`
 (`sm`, `md`, `lg`), `Disabled`, `Type`, `Class`, and `OnClick` to customize Button.
 

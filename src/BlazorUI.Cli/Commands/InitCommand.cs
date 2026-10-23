@@ -21,6 +21,8 @@ public static class InitCommand
             var project = ProjectContext.Detect(workingDirectory);
             var registry = new EmbeddedRegistry();
             var index = registry.GetIndex();
+            // Read before any write; printed after a successful init.
+            var interactivityWarning = CheckInteractiveServer(workingDirectory);
 
             output.WriteLine($"Initializing BlazorUI for project '{project.ProjectName}'...");
 
@@ -101,6 +103,8 @@ public static class InitCommand
             output.WriteLine($"  - Configuration: {BlazorUiConfig.DefaultFileName}");
             output.WriteLine($"  - Shared styles: {config.StylesPath}/");
             output.WriteLine($"  - Host links updated in: {Path.GetRelativePath(workingDirectory, project.AppRazorPath).Replace('\\', '/')}");
+            if (interactivityWarning != null)
+                output.WriteLine(interactivityWarning);
             return 0;
         }
         catch (Exception ex)
@@ -109,6 +113,32 @@ public static class InitCommand
             backup.Restore();
             return 1;
         }
+    }
+
+    /// <summary>
+    /// The supported target is Interactive Server (ADR 002). Program.cs is the developer's code,
+    /// so init only warns when the two registrations are missing; it never edits the file.
+    /// </summary>
+    private static string? CheckInteractiveServer(string workingDirectory)
+    {
+        var programPath = Path.Combine(workingDirectory, "Program.cs");
+        ProjectPath.Validate(workingDirectory, programPath);
+        if (!File.Exists(programPath))
+            return null;
+
+        var program = File.ReadAllText(programPath);
+        var missing = new List<string>();
+        if (!program.Contains("AddInteractiveServerComponents", StringComparison.Ordinal))
+            missing.Add("builder.Services.AddRazorComponents().AddInteractiveServerComponents();");
+        if (!program.Contains("AddInteractiveServerRenderMode", StringComparison.Ordinal))
+            missing.Add("app.MapRazorComponents<App>().AddInteractiveServerRenderMode();");
+
+        if (missing.Count == 0)
+            return null;
+
+        return "Warning: Program.cs does not enable Interactive Server, so components render but do not respond to clicks. " +
+               "Create the app with 'dotnet new blazor --interactivity Server', or add:" + Environment.NewLine +
+               string.Join(Environment.NewLine, missing.Select(line => "  " + line));
     }
 
     private static void UpdateAppRazor(ProjectContext project, FileBackup backup)
