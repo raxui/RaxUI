@@ -69,7 +69,7 @@
       "source": "theme/scss/_appearance.scss",
       "target": "styles/sheenui/_appearance.scss",
       "type": "scss",
-      "sha256": "3da53e3cd562a0b10bff69c38585ebe101765c6a89c58dd52520d86428624e17"
+      "sha256": "1a4ced201172601dd1cf3537820cd96cc6d48b74505012769151ac20b5950fa6"
     },
     {
       "source": "theme/scss/_core.scss",
