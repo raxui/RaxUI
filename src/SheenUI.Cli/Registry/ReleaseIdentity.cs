@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace BlazorUI.Cli.Registry;
+namespace SheenUI.Cli.Registry;
 
 public static class ReleaseIdentity
 {
@@ -17,8 +17,8 @@ public static class ReleaseIdentity
         if (Compare(recordedVersion, Version) > 0)
         {
             throw new InvalidOperationException(
-                $"'{fileName}' was written by BlazorUI {recordedVersion}, which is newer than this CLI ({Version}). " +
-                $"Install BlazorUI.Cli {recordedVersion} or later.");
+                $"'{fileName}' was written by SheenUI {recordedVersion}, which is newer than this CLI ({Version}). " +
+                $"Install SheenUI.Cli {recordedVersion} or later.");
         }
     }
 

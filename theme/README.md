@@ -1,9 +1,9 @@
 # Shared theme
 
-The single source of the BlazorUI theme and component styles, shared by the React and Blazor libraries ([ADR 005](../docs/adr/005-multi-framework-shared-theme.md), [ADR 007](../docs/adr/007-blazor-shared-theme.md)).
+The single source of the SheenUI theme and component styles, shared by the React and Blazor libraries ([ADR 005](../docs/adr/005-multi-framework-shared-theme.md), [ADR 007](../docs/adr/007-blazor-shared-theme.md)).
 
 - React installs these SCSS partials and compiles them with Bootstrap.
-- Blazor gets them precompiled: `npm run theme:css` (`build-css.mjs`) writes `registry/styles/blazorui.css` from `_core.scss` and `components/`, without Bootstrap. A test fails when that file is stale.
+- Blazor gets them precompiled: `npm run theme:css` (`build-css.mjs`) writes `registry/styles/sheenui.css` from `_core.scss` and `components/`, without Bootstrap. A test fails when that file is stale.
 - Component styles live in `scss/components/` (for example `_button.scss`, from boot-ui `src/components/ui/_button.scss`). `_starter.scss` styles the app shell and welcome page that `init` installs ([ADR 008](../docs/adr/008-starter-app.md)).
 
 ## Provenance
@@ -23,19 +23,19 @@ Any element may carry these attributes; components resolve their look from CSS c
 | Attribute | Values |
 | --- | --- |
 | `data-bs-theme` | `light`, `dark` |
-| `data-bui-appearance` | `default`, `flat`, `glass` |
-| `data-bui-accent` | `emerald`, `indigo`, `amber` (omit for Bootstrap defaults) |
-| `data-bui-density` | `comfortable`, `compact` |
+| `data-sheen-appearance` | `default`, `flat`, `glass` |
+| `data-sheen-accent` | `emerald`, `indigo`, `amber` (omit for Bootstrap defaults) |
+| `data-sheen-density` | `comfortable`, `compact` |
 | `dir` | `ltr`, `rtl` |
 
-Semantic tokens set by the appearance: `--bui-surface-bg`, `--bui-border-color`, `--bui-control-shadow`, `--bui-surface-shadow`, `--bui-control-radius`, `--bui-surface-filter`. Components use these and never test the appearance name.
+Semantic tokens set by the appearance: `--sheen-surface-bg`, `--sheen-border-color`, `--sheen-control-shadow`, `--sheen-surface-shadow`, `--sheen-control-radius`, `--sheen-surface-filter`. Components use these and never test the appearance name.
 
 ## Import order
 
 Glass appearance uses compact contact shadows (2px blur on controls, 8px on
 surfaces) with reduced opacity in both light and dark mode. The glass edge and
-backdrop blur remain intact. Override `--bui-control-shadow` and
-`--bui-surface-shadow` on the appearance boundary to customize elevation.
+backdrop blur remain intact. Override `--sheen-control-shadow` and
+`--sheen-surface-shadow` on the appearance boundary to customize elevation.
 
 ```scss
 // Your Bootstrap variables, e.g. $primary: #0a84ff;
@@ -51,8 +51,8 @@ backdrop blur remain intact. Override `--bui-control-shadow` and
 | --- | --- |
 | `_variables.scss` | Bootstrap Sass variable defaults (radii, font) |
 | `_tokens.scss` | Glass, shadow, radius, control-size, font, and motion tokens, light and dark |
-| `_accents.scss` | `data-bui-accent` themes |
-| `_appearance.scss` | `data-bui-appearance` and `data-bui-density` tokens |
+| `_accents.scss` | `data-sheen-accent` themes |
+| `_appearance.scss` | `data-sheen-appearance` and `data-sheen-density` tokens |
 | `_materials.scss` | `glass-ultrathin` / `thin` / `regular` / `thick` classes |
 | `_mixins.scss` | `glass()`, `motion-safe` |
 | `_animations.scss`, `_text.scss` | Shared keyframes and text helpers |

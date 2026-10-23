@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event"
 import * as React from "react"
 import { describe, expect, it, vi } from "vitest"
 
-import { BootAppearanceScope, BootThemeProvider } from "@/lib/theme"
+import { SheenAppearanceScope, SheenThemeProvider } from "@/lib/theme"
 import { Button, buttonVariants } from "../../registry/react/button/button"
 import { compileTheme } from "./compile-theme"
 
@@ -26,31 +26,31 @@ describe("Button", () => {
       </Button>,
     )
     const link = screen.getByRole("link", { name: "Docs" })
-    expect(link).toHaveClass("btn", "bui-button", "btn-glass", "btn-glass-outline")
+    expect(link).toHaveClass("btn", "sheen-button", "btn-glass", "btn-glass-outline")
     expect(link).not.toHaveAttribute("type")
   })
 
   it("maps variants and sizes to classes", () => {
     expect(buttonVariants({ variant: "destructive", size: "icon-sm" })).toBe(
-      "btn bui-button btn-glass btn-glass-destructive btn-glass-icon btn-sm",
+      "btn sheen-button btn-glass btn-glass-destructive btn-glass-icon btn-sm",
     )
-    expect(buttonVariants()).toBe("btn bui-button btn-glass btn-glass-primary")
+    expect(buttonVariants()).toBe("btn sheen-button btn-glass btn-glass-primary")
   })
 
   it("inherits appearance: component, then nearest scope, then provider, then default", () => {
     render(
       <>
         <Button>Bare</Button>
-        <BootThemeProvider appearance="glass" mode="dark" direction="rtl">
+        <SheenThemeProvider appearance="glass" mode="dark" direction="rtl">
           <Button>Provider</Button>
-          <BootAppearanceScope appearance="flat">
+          <SheenAppearanceScope appearance="flat">
             <Button>Scope</Button>
             <Button appearance="default">Explicit</Button>
-          </BootAppearanceScope>
-        </BootThemeProvider>
+          </SheenAppearanceScope>
+        </SheenThemeProvider>
       </>,
     )
-    const appearance = (name: string) => screen.getByRole("button", { name }).getAttribute("data-bui-appearance")
+    const appearance = (name: string) => screen.getByRole("button", { name }).getAttribute("data-sheen-appearance")
     expect(appearance("Bare")).toBe("default")
     expect(appearance("Provider")).toBe("glass")
     expect(appearance("Scope")).toBe("flat")
@@ -61,7 +61,7 @@ describe("Button", () => {
 
   it("tints with a semantic color", () => {
     render(<Button color="success">Save</Button>)
-    expect(screen.getByRole("button", { name: "Save" }).style.getPropertyValue("--bui-btn-tint-rgb")).toBe(
+    expect(screen.getByRole("button", { name: "Save" }).style.getPropertyValue("--sheen-btn-tint-rgb")).toBe(
       "var(--bs-success-rgb)",
     )
   })

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "name": "BlazorUI",
+  "name": "SheenUI",
   "components": [
     {
       "name": "button",

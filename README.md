@@ -1,6 +1,8 @@
-# BlazorUI
+# SheenUI
 
-Source-owned Blazor components installed into your application by a .NET CLI.
+Formerly BlazorUI. See [the identity change and existing-app guidance](docs/adr/012-sheenui-identity.md).
+
+Source-owned Blazor and React components with a shared theme, installed into your application by .NET and Node CLIs.
 Licensed under [MIT](LICENSE).
 
 للتجربة دون نشر الحزم: [دليل الاستخدام المحلي على Windows بالعربية](docs/local-development.ar.md).
@@ -18,14 +20,14 @@ run without the CLI or a registry connection.
 Once the preview is published to NuGet:
 
 ```sh
-dotnet tool install --global BlazorUI.Cli --version 0.1.0-preview.2
+dotnet tool install --global SheenUI.Cli --version 0.1.0-preview.2
 dotnet new blazor --interactivity Server -n MyApp
 cd MyApp
-blazorui init
-blazorui add button
+sheenui init
+sheenui add button
 ```
 
-`init` replaces the template's sidebar layout and sample pages with a BlazorUI
+`init` replaces the template's sidebar layout and sample pages with a SheenUI
 app shell and a welcome page where you can try the theme, and replaces the
 template `wwwroot/app.css` with a minimal one (validation, error boundary, and
 heading focus styles only), so it no longer overrides the theme's buttons. It only replaces or
@@ -45,7 +47,7 @@ Use Button in any page, for example a new `Components/Pages/Counter.razor`:
 }
 ```
 
-`init` installs the shared theme as `wwwroot/css/blazorui/blazorui.css` and links
+`init` installs the shared theme as `wwwroot/css/sheenui/sheenui.css` and links
 it after Bootstrap; `add button` copies `Components/UI/Button/Button.razor` and
 adds its namespace to `_Imports.razor`. Keep the template Bootstrap and
 application styles links. If `Program.cs` does not enable Interactive Server (an
@@ -61,7 +63,7 @@ as `success`), plus `Disabled`, `Type`, `Class`, and `OnClick`.
 Theme any part of the page with attributes; components inherit them:
 
 ```razor
-<div data-bui-appearance="glass" data-bs-theme="dark" data-bui-accent="emerald" dir="rtl">
+<div data-sheen-appearance="glass" data-bs-theme="dark" data-sheen-accent="emerald" dir="rtl">
     <Button>Glass</Button>
     <Button Appearance="flat" Color="success">Flat override</Button>
 </div>
@@ -85,8 +87,8 @@ Theme any part of the page with attributes; components inherit them:
 ## React
 
 A React library with the same theme lives in this repository: React 18.3/19 on
-Vite 6+ or Next.js 15+ (App Router, no Tailwind), Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx blazorui-react init`,
-`npx blazorui-react add button`). It is not published to npm yet. See
+Vite 6+ or Next.js 15+ (App Router, no Tailwind), Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx sheenui-react init`,
+`npx sheenui-react add button`). It is not published to npm yet. See
 [docs/react.md](docs/react.md) for installation, usage, and customization.
 
 ## Build and test
@@ -95,12 +97,12 @@ Requires the .NET 8, 9, and 10 SDKs (the CLI multi-targets and the end-to-end
 test builds an app on each) and PowerShell 7 for Playwright's install script.
 
 ```sh
-dotnet restore BlazorUI.slnx
-dotnet build BlazorUI.slnx -c Release --no-restore
-pwsh tests/BlazorUI.Integration.Tests/bin/Release/net10.0/playwright.ps1 install chromium
-dotnet test BlazorUI.slnx -c Release --no-build
-dotnet pack src/BlazorUI.Cli/BlazorUI.Cli.csproj -c Release --no-build -o ./nupkg
-dotnet tool install --tool-path ./local-tools --add-source ./nupkg BlazorUI.Cli --version 0.1.0-preview.2
+dotnet restore SheenUI.slnx
+dotnet build SheenUI.slnx -c Release --no-restore
+pwsh tests/SheenUI.Integration.Tests/bin/Release/net10.0/playwright.ps1 install chromium
+dotnet test SheenUI.slnx -c Release --no-build
+dotnet pack src/SheenUI.Cli/SheenUI.Cli.csproj -c Release --no-build -o ./nupkg
+dotnet tool install --tool-path ./local-tools --add-source ./nupkg SheenUI.Cli --version 0.1.0-preview.2
 ```
 
 On Linux, use `install --with-deps chromium` to install browser system dependencies.
@@ -122,7 +124,7 @@ npm run test:acceptance:next  # Next.js (CREATE_NEXT_APP_VERSION, default 16.4.3
 
 The `v*` tag workflow builds and tests the tagged source, packs the CLI, attaches
 the package to a GitHub Release, and publishes to NuGet. The owner must configure
-the `NUGET_API_KEY` repository secret scoped to `BlazorUI.Cli` before tagging.
+the `NUGET_API_KEY` repository secret scoped to `SheenUI.Cli` before tagging.
 The tag version controls both the package and registry release identity; component
 versions and their content hashes are independent.
 

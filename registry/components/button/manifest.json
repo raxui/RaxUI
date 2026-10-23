@@ -6,11 +6,11 @@
   "dependencies": [],
   "assets": [
     {
-      "source": "styles/blazorui.css",
+      "source": "styles/sheenui.css",
       "destination": "styles",
-      "target": "blazorui.css",
+      "target": "sheenui.css",
       "type": "css",
-      "sha256": "dc8b3883833695923a696412e04e6c12d3104be74a551b8bfb9b1c6cc810f090"
+      "sha256": "f3e6638fd9c396b5a11f696a9db480a0be9d0696496aaae66b040677193b7220"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Button/Button.razor",
       "type": "razor",
-      "sha256": "85fab7fbb39dd6a965ce9cae82cd54ef9fdd9eda03b54a9969326ebead5bb529"
+      "sha256": "eb80ccd5f4b9eb4ee13baba2cdad8ccc3f7dd8c2031029a072849b3fa7aa8514"
     }
   ]
 }

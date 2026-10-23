@@ -1,7 +1,7 @@
-using BlazorUI.Cli;
-using BlazorUI.Cli.Configuration;
+using SheenUI.Cli;
+using SheenUI.Cli.Configuration;
 
-namespace BlazorUI.Integration.Tests;
+namespace SheenUI.Integration.Tests;
 
 public class InstallationWorkflowTests : IDisposable
 {
@@ -9,7 +9,7 @@ public class InstallationWorkflowTests : IDisposable
 
     public InstallationWorkflowTests()
     {
-        _testDirectory = Path.Combine(Path.GetTempPath(), "BlazorUI_Tests_" + Guid.NewGuid().ToString("N"));
+        _testDirectory = Path.Combine(Path.GetTempPath(), "SheenUI_Tests_" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(_testDirectory);
     }
 
@@ -85,16 +85,16 @@ public class InstallationWorkflowTests : IDisposable
         var initCode = Program.Run(["init"], _testDirectory, output, error);
         Assert.Equal(0, initCode);
 
-        var config = BlazorUiConfig.Load(_testDirectory);
+        var config = SheenUiConfig.Load(_testDirectory);
         Assert.NotNull(config);
         Assert.Equal("net10.0", config.TargetFramework);
 
-        var lockFile = BlazorUiLock.LoadOrCreate(_testDirectory);
-        Assert.True(File.Exists(Path.Combine(_testDirectory, "wwwroot", "css", "blazorui", "blazorui.css")));
+        var lockFile = SheenUiLock.LoadOrCreate(_testDirectory);
+        Assert.True(File.Exists(Path.Combine(_testDirectory, "wwwroot", "css", "sheenui", "sheenui.css")));
         Assert.NotEmpty(lockFile.Assets);
 
         var appContent = File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor"));
-        Assert.Contains("""<link rel="stylesheet" href="@Assets["css/blazorui/blazorui.css"]" />""", appContent);
+        Assert.Contains("""<link rel="stylesheet" href="@Assets["css/sheenui/sheenui.css"]" />""", appContent);
         Assert.DoesNotContain("tokens.css", appContent);
 
         // 2. Run 'add button'
@@ -109,7 +109,7 @@ public class InstallationWorkflowTests : IDisposable
         var importsContent = File.ReadAllText(Path.Combine(_testDirectory, "Components", "_Imports.razor"));
         Assert.Contains("@using TestConsumerApp.Components.UI.Button", importsContent);
 
-        lockFile = BlazorUiLock.LoadOrCreate(_testDirectory);
+        lockFile = SheenUiLock.LoadOrCreate(_testDirectory);
         Assert.True(lockFile.Components.ContainsKey("button"));
         Assert.Single(lockFile.Components["button"].Files);
     }
@@ -134,8 +134,8 @@ public class InstallationWorkflowTests : IDisposable
         File.WriteAllText(csproj, File.ReadAllText(csproj).Replace("net10.0", "net8.0"));
 
         Assert.Equal(0, Program.Run(["init"], _testDirectory, new StringWriter(), new StringWriter()));
-        Assert.Equal("net8.0", BlazorUiConfig.Load(_testDirectory)!.TargetFramework);
-        Assert.Contains("""<link rel="stylesheet" href="css/blazorui/blazorui.css" />""",
+        Assert.Equal("net8.0", SheenUiConfig.Load(_testDirectory)!.TargetFramework);
+        Assert.Contains("""<link rel="stylesheet" href="css/sheenui/sheenui.css" />""",
             File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor")));
     }
 
@@ -149,7 +149,7 @@ public class InstallationWorkflowTests : IDisposable
         var error = new StringWriter();
         Assert.Equal(1, Program.Run(["init"], _testDirectory, new StringWriter(), error));
         Assert.Contains("needs Bootstrap 5.3 or later", error.ToString());
-        Assert.False(File.Exists(Path.Combine(_testDirectory, BlazorUiConfig.DefaultFileName)));
+        Assert.False(File.Exists(Path.Combine(_testDirectory, SheenUiConfig.DefaultFileName)));
     }
 
     [Fact]
@@ -173,7 +173,7 @@ public class InstallationWorkflowTests : IDisposable
         Assert.True(File.Exists(weather)); // the template layout was not replaced, so its pages stay
         Assert.Contains("Kept your Components/Layout/MainLayout.razor", output.ToString());
         Assert.Contains("Kept your Components/Pages/Home.razor", output.ToString());
-        Assert.False(BlazorUiLock.LoadOrCreate(_testDirectory).Components.ContainsKey("starter"));
+        Assert.False(SheenUiLock.LoadOrCreate(_testDirectory).Components.ContainsKey("starter"));
     }
 
     [Fact]
@@ -183,14 +183,14 @@ public class InstallationWorkflowTests : IDisposable
         var appRazor = Path.Combine(_testDirectory, "Components", "App.razor");
         File.WriteAllText(appRazor, File.ReadAllText(appRazor).Replace(
             """<link rel="stylesheet" href="app.css" />""",
-            """<link rel="stylesheet" href="@Assets["css/blazorui/tokens.css"]" />""" + "\n" + """<link rel="stylesheet" href="app.css" />"""));
+            """<link rel="stylesheet" href="@Assets["css/sheenui/tokens.css"]" />""" + "\n" + """<link rel="stylesheet" href="app.css" />"""));
 
         var output = new StringWriter();
         var error = new StringWriter();
         Assert.Equal(0, Program.Run(["init"], _testDirectory, output, error));
 
-        Assert.Contains("earlier BlazorUI release (css/blazorui/tokens.css)", output.ToString());
-        Assert.Contains("css/blazorui/tokens.css", File.ReadAllText(appRazor)); // reported, not removed
+        Assert.Contains("earlier SheenUI release (css/sheenui/tokens.css)", output.ToString());
+        Assert.Contains("css/sheenui/tokens.css", File.ReadAllText(appRazor)); // reported, not removed
     }
 
     [Fact]
@@ -209,7 +209,7 @@ public class InstallationWorkflowTests : IDisposable
         Assert.Equal(0, Program.Run(["add", "button"], _testDirectory, output, error));
 
         var appContent = File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor"));
-        var themeMatches = System.Text.RegularExpressions.Regex.Matches(appContent, "blazorui\\.css");
+        var themeMatches = System.Text.RegularExpressions.Regex.Matches(appContent, "sheenui\\.css");
         Assert.Single(themeMatches);
 
         var importsContent = File.ReadAllText(Path.Combine(_testDirectory, "Components", "_Imports.razor"));
@@ -246,7 +246,7 @@ public class InstallationWorkflowTests : IDisposable
         Assert.Equal(0, Program.Run(["init"], _testDirectory, output, error));
         Assert.Equal(0, Program.Run(["add", "button"], _testDirectory, output, error));
 
-        var button = BlazorUiLock.LoadOrCreate(_testDirectory).Components["button"];
+        var button = SheenUiLock.LoadOrCreate(_testDirectory).Components["button"];
         Assert.Matches("^[0-9a-f]{64}$", button.ManifestSha256);
         Assert.All(button.Files, f => Assert.Matches("^[0-9a-f]{64}$", f.InstalledHash));
     }
@@ -255,9 +255,9 @@ public class InstallationWorkflowTests : IDisposable
     public void Init_refuses_to_overwrite_unknown_style_file_and_writes_nothing()
     {
         CreateSampleBlazorProject();
-        var stylesDir = Path.Combine(_testDirectory, "wwwroot", "css", "blazorui");
+        var stylesDir = Path.Combine(_testDirectory, "wwwroot", "css", "sheenui");
         Directory.CreateDirectory(stylesDir);
-        var tokens = Path.Combine(stylesDir, "blazorui.css");
+        var tokens = Path.Combine(stylesDir, "sheenui.css");
         File.WriteAllText(tokens, "/* my own tokens */");
         var appBefore = File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor"));
 
@@ -266,10 +266,10 @@ public class InstallationWorkflowTests : IDisposable
         var code = Program.Run(["init"], _testDirectory, output, error);
 
         Assert.Equal(1, code);
-        Assert.Contains("not managed by BlazorUI", error.ToString());
+        Assert.Contains("not managed by SheenUI", error.ToString());
         Assert.Equal("/* my own tokens */", File.ReadAllText(tokens));
         Assert.Equal(appBefore, File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor")));
-        Assert.False(File.Exists(Path.Combine(_testDirectory, BlazorUiConfig.DefaultFileName)));
+        Assert.False(File.Exists(Path.Combine(_testDirectory, SheenUiConfig.DefaultFileName)));
     }
 
     [Fact]
@@ -401,7 +401,7 @@ public class InstallationWorkflowTests : IDisposable
         var addCode = Program.Run(["add", "button"], _testDirectory, output, error);
 
         Assert.Equal(1, addCode);
-        Assert.Contains("not managed by BlazorUI", error.ToString());
+        Assert.Contains("not managed by SheenUI", error.ToString());
         Assert.Equal("<!-- unmanaged code -->", File.ReadAllText(buttonRazor));
     }
 
@@ -417,6 +417,6 @@ public class InstallationWorkflowTests : IDisposable
 
         Assert.Equal(1, initCode);
         Assert.Contains("Bootstrap was not found", error.ToString());
-        Assert.False(File.Exists(Path.Combine(_testDirectory, BlazorUiConfig.DefaultFileName)));
+        Assert.False(File.Exists(Path.Combine(_testDirectory, SheenUiConfig.DefaultFileName)));
     }
 }

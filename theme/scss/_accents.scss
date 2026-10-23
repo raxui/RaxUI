@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Accent themes — pick one with <html data-bui-accent="…">:
+// Accent themes — pick one with <html data-sheen-accent="…">:
 //
 //   (none)    the default: Bootstrap blue on white / black, unchanged
 //   emerald   deep teal-green, with a greener "success" so the two don't blur
@@ -7,7 +7,7 @@
 //   amber     warm orange
 //
 // Each accent re-points Bootstrap's primary / link / focus variables, tints the
-// surface colour (glass picks it up) and sets --bui-page-bg, a slightly deeper
+// surface colour (glass picks it up) and sets --sheen-page-bg, a slightly deeper
 // tint for the page behind the glass. Works with data-bs-theme light and dark.
 // Put the attribute on <html> together with data-bs-theme.
 //
@@ -19,19 +19,19 @@
 
 // The page behind the glass. Unset = Bootstrap's body background, as before.
 body {
-  background-color: var(--bui-page-bg, var(--bs-body-bg));
+  background-color: var(--sheen-page-bg, var(--bs-body-bg));
 }
 
-@mixin bui-accent($accent) {
-  [data-bui-accent="#{$accent}"] {
+@mixin sheen-accent($accent) {
+  [data-sheen-accent="#{$accent}"] {
     @content;
   }
 }
 
-@mixin bui-accent-dark($accent) {
-  [data-bui-accent="#{$accent}"][data-bs-theme="dark"],
-  [data-bui-accent="#{$accent}"] [data-bs-theme="dark"],
-  [data-bs-theme="dark"] [data-bui-accent="#{$accent}"] {
+@mixin sheen-accent-dark($accent) {
+  [data-sheen-accent="#{$accent}"][data-bs-theme="dark"],
+  [data-sheen-accent="#{$accent}"] [data-bs-theme="dark"],
+  [data-bs-theme="dark"] [data-sheen-accent="#{$accent}"] {
     @content;
   }
 }
@@ -41,7 +41,7 @@ body {
 }
 
 // Sets every variable an accent owns. $success is optional.
-@mixin bui-accent-vars($primary, $emphasis, $bg-subtle, $border-subtle, $link, $link-hover, $surface, $page, $success: null) {
+@mixin sheen-accent-vars($primary, $emphasis, $bg-subtle, $border-subtle, $link, $link-hover, $surface, $page, $success: null) {
   --bs-primary: #{$primary};
   --bs-primary-rgb: #{rgb-list($primary)};
   --bs-primary-text-emphasis: #{$emphasis};
@@ -54,7 +54,7 @@ body {
   --bs-focus-ring-color: #{color.change($primary, $alpha: 0.25)};
   --bs-body-bg: #{$surface};
   --bs-body-bg-rgb: #{rgb-list($surface)};
-  --bui-page-bg: #{$page};
+  --sheen-page-bg: #{$page};
 
   @if $success {
     --bs-success: #{$success};
@@ -63,25 +63,25 @@ body {
 }
 
 // ---- Emerald ------------------------------------------------------------------------
-@include bui-accent("emerald") {
-  @include bui-accent-vars(#0e7a6d, #0a5249, #d5ece8, #a6d6cd, #0e7a6d, #0a5c52, #fbfdfc, #edf3f1, $success: #2d843a);
+@include sheen-accent("emerald") {
+  @include sheen-accent-vars(#0e7a6d, #0a5249, #d5ece8, #a6d6cd, #0e7a6d, #0a5c52, #fbfdfc, #edf3f1, $success: #2d843a);
 }
-@include bui-accent-dark("emerald") {
-  @include bui-accent-vars(#138371, #7fdcc9, #0d2a26, #1d5148, #5fd0bb, #8fe0d0, #121a19, #0a100f, $success: #2f8445);
+@include sheen-accent-dark("emerald") {
+  @include sheen-accent-vars(#138371, #7fdcc9, #0d2a26, #1d5148, #5fd0bb, #8fe0d0, #121a19, #0a100f, $success: #2f8445);
 }
 
 // ---- Indigo -------------------------------------------------------------------------
-@include bui-accent("indigo") {
-  @include bui-accent-vars(#4f46e5, #3730a3, #e0e7ff, #c7d2fe, #4f46e5, #4338ca, #fcfcfe, #f0f0f7);
+@include sheen-accent("indigo") {
+  @include sheen-accent-vars(#4f46e5, #3730a3, #e0e7ff, #c7d2fe, #4f46e5, #4338ca, #fcfcfe, #f0f0f7);
 }
-@include bui-accent-dark("indigo") {
-  @include bui-accent-vars(#5e61f1, #a5b4fc, #1e1b4b, #3730a3, #a5b4fc, #c7d2fe, #14141c, #0c0c12);
+@include sheen-accent-dark("indigo") {
+  @include sheen-accent-vars(#5e61f1, #a5b4fc, #1e1b4b, #3730a3, #a5b4fc, #c7d2fe, #14141c, #0c0c12);
 }
 
 // ---- Amber --------------------------------------------------------------------------
-@include bui-accent("amber") {
-  @include bui-accent-vars(#c2560c, #9a3412, #ffedd5, #fed7aa, #b4500b, #9a3412, #fffdfb, #f6f1ec);
+@include sheen-accent("amber") {
+  @include sheen-accent-vars(#c2560c, #9a3412, #ffedd5, #fed7aa, #b4500b, #9a3412, #fffdfb, #f6f1ec);
 }
-@include bui-accent-dark("amber") {
-  @include bui-accent-vars(#b55b19, #fdba74, #3b1d0a, #7c2d12, #fdba74, #fed7aa, #18130f, #0f0c09);
+@include sheen-accent-dark("amber") {
+  @include sheen-accent-vars(#b55b19, #fdba74, #3b1d0a, #7c2d12, #fdba74, #fed7aa, #18130f, #0f0c09);
 }

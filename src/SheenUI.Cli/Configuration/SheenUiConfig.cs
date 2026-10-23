@@ -1,13 +1,13 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BlazorUI.Cli.Project;
-using BlazorUI.Cli.Registry;
+using SheenUI.Cli.Project;
+using SheenUI.Cli.Registry;
 
-namespace BlazorUI.Cli.Configuration;
+namespace SheenUI.Cli.Configuration;
 
-public class BlazorUiConfig
+public class SheenUiConfig
 {
-    public const string DefaultFileName = "blazorui.json";
+    public const string DefaultFileName = "sheenui.json";
     public const int CurrentSchemaVersion = 1;
 
     [JsonPropertyName("schemaVersion")]
@@ -26,7 +26,7 @@ public class BlazorUiConfig
     public string ComponentsPath { get; set; } = "Components/UI";
 
     [JsonPropertyName("stylesPath")]
-    public string StylesPath { get; set; } = "wwwroot/css/blazorui";
+    public string StylesPath { get; set; } = "wwwroot/css/sheenui";
 
     [JsonPropertyName("bootstrap")]
     public BootstrapConfig Bootstrap { get; set; } = new();
@@ -41,7 +41,7 @@ public class BlazorUiConfig
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
 
-    public static BlazorUiConfig? Load(string directory)
+    public static SheenUiConfig? Load(string directory)
     {
         var path = Path.Combine(directory, DefaultFileName);
         ProjectPath.Validate(directory, path);
@@ -49,13 +49,13 @@ public class BlazorUiConfig
             return null;
 
         var json = File.ReadAllText(path);
-        var config = JsonSerializer.Deserialize<BlazorUiConfig>(json, JsonOptions)
+        var config = JsonSerializer.Deserialize<SheenUiConfig>(json, JsonOptions)
             ?? throw new InvalidOperationException("Configuration must be a JSON object.");
         if (config.SchemaVersion != CurrentSchemaVersion)
             throw new InvalidOperationException($"Unsupported configuration schema version {config.SchemaVersion}.");
         ReleaseIdentity.EnsureSupported(config.RegistryVersion, DefaultFileName);
-        if (config.ComponentsPath != "Components/UI" || config.StylesPath != "wwwroot/css/blazorui")
-            throw new InvalidOperationException("Custom paths are unsupported. Use componentsPath 'Components/UI' and stylesPath 'wwwroot/css/blazorui'.");
+        if (config.ComponentsPath != "Components/UI" || config.StylesPath != "wwwroot/css/sheenui")
+            throw new InvalidOperationException("Custom paths are unsupported. Use componentsPath 'Components/UI' and stylesPath 'wwwroot/css/sheenui'.");
         if (config.Framework != "blazor" || !ProjectContext.SupportedTargetFrameworks.Contains(config.TargetFramework) ||
             config.Bootstrap == null || config.Bootstrap.Managed)
         {

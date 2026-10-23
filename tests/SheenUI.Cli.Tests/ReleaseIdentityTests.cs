@@ -1,7 +1,7 @@
-using BlazorUI.Cli.Project;
-using BlazorUI.Cli.Registry;
+using SheenUI.Cli.Project;
+using SheenUI.Cli.Registry;
 
-namespace BlazorUI.Cli.Tests;
+namespace SheenUI.Cli.Tests;
 
 public class ReleaseIdentityTests
 {
@@ -32,17 +32,17 @@ public class ReleaseIdentityTests
     [Fact]
     public void EnsureSupported_accepts_older_and_rejects_newer_versions()
     {
-        ReleaseIdentity.EnsureSupported("0.0.1", "blazorui.json");
-        ReleaseIdentity.EnsureSupported(ReleaseIdentity.Version, "blazorui.json");
+        ReleaseIdentity.EnsureSupported("0.0.1", "sheenui.json");
+        ReleaseIdentity.EnsureSupported(ReleaseIdentity.Version, "sheenui.json");
 
-        var ex = Assert.Throws<InvalidOperationException>(() => ReleaseIdentity.EnsureSupported("99.0.0", "blazorui.json"));
+        var ex = Assert.Throws<InvalidOperationException>(() => ReleaseIdentity.EnsureSupported("99.0.0", "sheenui.json"));
         Assert.Contains("newer than this CLI", ex.Message);
     }
 
     [Fact]
     public void ProjectPath_accepts_deep_paths_without_links()
     {
-        var root = Path.Combine(Path.GetTempPath(), "BlazorUI_Deep_" + Guid.NewGuid().ToString("N"));
+        var root = Path.Combine(Path.GetTempPath(), "SheenUI_Deep_" + Guid.NewGuid().ToString("N"));
         var deep = Path.Combine([root, .. Enumerable.Repeat("a", 70), "file.txt"]);
 
         ProjectPath.Validate(root, deep);

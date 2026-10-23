@@ -1,4 +1,4 @@
-# استخدام BlazorUI محلياً على Windows 11
+# استخدام SheenUI محلياً على Windows 11
 
 العربية | [English](local-development.en.md)
 
@@ -6,11 +6,14 @@
 نفّذ الأوامر في **PowerShell**. المسارات أدناه تفترض أن المستودع موجود في:
 
 ```text
-C:\Users\saada\source\repos\BlazorUI
+C:\Users\saada\source\repos\SheenUI
 ```
 
 غيّر المسارات إذا كان موقع المستودع مختلفاً. أوامر إنشاء التطبيقات مخصّصة
 لمجلدات جديدة؛ إذا كان التطبيق موجوداً، انتقل إلى فقرة تثبيته مباشرة.
+
+إذا بقي اسم مجلد نسختك المحلية `BlazorUI`، فاستخدم ذلك المسار بدلاً من
+`SheenUI` في الأمثلة؛ لا يلزم نقل المجلد لاستخدام الأدوات الجديدة.
 
 ## 1. المتطلبات
 
@@ -37,10 +40,10 @@ npm --version
 نفّذ من نسخة المستودع التي تريد تجربتها:
 
 ```powershell
-cd C:\Users\saada\source\repos\BlazorUI
+cd C:\Users\saada\source\repos\SheenUI
 
 # حزمة أداة Blazor
-dotnet pack .\src\BlazorUI.Cli\BlazorUI.Cli.csproj -c Release -o .\nupkg
+dotnet pack .\src\SheenUI.Cli\SheenUI.Cli.csproj -c Release -o .\nupkg
 
 # حزمة أداة React وNext.js
 npm ci
@@ -50,8 +53,8 @@ npm pack ./src/react-cli --pack-destination .
 ينتج عن ذلك، وفق الإصدارات الحالية:
 
 ```text
-BlazorUI\nupkg\BlazorUI.Cli.0.1.0-preview.2.nupkg
-BlazorUI\blazorui-react-0.1.0-preview.1.tgz
+SheenUI\nupkg\SheenUI.Cli.0.1.0-preview.2.nupkg
+SheenUI\sheenui-react-0.1.0-preview.1.tgz
 ```
 
 هذه أوامر إنشاء حزم محلية فقط. لا تستخدم `npm publish` أو `dotnet nuget push`.
@@ -63,8 +66,8 @@ BlazorUI\blazorui-react-0.1.0-preview.1.tgz
 ### تثبيت الأداة مرة واحدة
 
 ```powershell
-cd C:\Users\saada\source\repos\BlazorUI
-dotnet tool install --tool-path .\local-tools --add-source .\nupkg BlazorUI.Cli --version 0.1.0-preview.2
+cd C:\Users\saada\source\repos\SheenUI
+dotnet tool install --tool-path .\local-tools --add-source .\nupkg SheenUI.Cli --version 0.1.0-preview.2
 ```
 
 الأداة هنا مثبتة داخل مجلد المستودع، وليست أداة عامة على الجهاز.
@@ -87,8 +90,8 @@ cd blazor-test
 انتقل إلى المجلد الذي يحتوي ملف التطبيق `.csproj`، ثم نفّذ:
 
 ```powershell
-& "C:\Users\saada\source\repos\BlazorUI\local-tools\blazorui.exe" init
-& "C:\Users\saada\source\repos\BlazorUI\local-tools\blazorui.exe" add button
+& "C:\Users\saada\source\repos\SheenUI\local-tools\sheenui.exe" init
+& "C:\Users\saada\source\repos\SheenUI\local-tools\sheenui.exe" add button
 dotnet build
 dotnet run
 ```
@@ -98,7 +101,7 @@ dotnet run
 الملفات التي عدّلتها تُحفظ وتظهر ملاحظة عنها.
 
 ستجد المكوّن في `Components/UI/Button/Button.razor`، والثيم في
-`wwwroot/css/blazorui/blazorui.css`.
+`wwwroot/css/sheenui/sheenui.css`.
 
 ### استخدام Button
 
@@ -140,13 +143,13 @@ npm install
 لتثبيت المكتبة، سواء في هذا التطبيق أو في تطبيق Vite 6+ موجود:
 
 ```powershell
-npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\BlazorUI\blazorui-react-0.1.0-preview.1.tgz"
-npx blazorui-react init
+npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\SheenUI\sheenui-react-0.1.0-preview.1.tgz"
+npx sheenui-react init
 npm run dev
 ```
 
 افتح الرابط الظاهر في الطرفية، وعادةً يكون `http://localhost:5173`.
-`init` يثبّت Button تلقائياً؛ تشغيل `npx blazorui-react add button` بعده لا يضيف
+`init` يثبّت Button تلقائياً؛ تشغيل `npx sheenui-react add button` بعده لا يضيف
 نسخة أخرى.
 
 الملفات الرئيسية التي تنسخها المكتبة:
@@ -155,8 +158,8 @@ npm run dev
 src/App.tsx                         صفحة الترحيب والليّاوت
 src/components/ui/button.tsx         المكوّن
 src/lib/theme.tsx                    مزوّد الثيم
-src/styles/blazorui.scss             نقطة تجميع الأنماط
-src/styles/blazorui/                 ملفات الثيم والمكونات
+src/styles/sheenui.scss             نقطة تجميع الأنماط
+src/styles/sheenui/                 ملفات الثيم والمكونات
 ```
 
 للتأكد من بناء التطبيق:
@@ -179,8 +182,8 @@ cd next-test
 ثم داخل التطبيق:
 
 ```powershell
-npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\BlazorUI\blazorui-react-0.1.0-preview.1.tgz"
-npx blazorui-react init
+npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\SheenUI\sheenui-react-0.1.0-preview.1.tgz"
+npx sheenui-react init
 npm run dev
 ```
 
@@ -192,7 +195,7 @@ app/page.tsx                       صفحة الترحيب
 app/layout.tsx                     إضافة استيراد الثيم إلى الليّاوت الموجود
 components/ui/button.tsx           المكوّن
 lib/theme.tsx                      مزوّد الثيم
-styles/blazorui.scss               نقطة تجميع الأنماط
+styles/sheenui.scss               نقطة تجميع الأنماط
 ```
 
 عند استخدام خيار `--src-dir` تكون هذه الملفات تحت `src/` بدلاً من جذر التطبيق.
@@ -218,14 +221,14 @@ npm run start
 
 // في Next.js استخدم ../components/ui/button و../lib/theme بدلاً من ./
 import { Button } from "./components/ui/button"
-import { BootThemeProvider } from "./lib/theme"
+import { SheenThemeProvider } from "./lib/theme"
 
 export default function App() {
   return (
-    <BootThemeProvider className="bui-app" mode="dark" appearance="glass" direction="rtl">
+    <SheenThemeProvider className="sheen-app" mode="dark" appearance="glass" direction="rtl">
       <Button onClick={() => alert("تم الحفظ")}>حفظ</Button>
       <Button variant="outline" appearance="flat">إلغاء</Button>
-    </BootThemeProvider>
+    </SheenThemeProvider>
   )
 }
 ```
@@ -233,13 +236,13 @@ export default function App() {
 في Blazor يمكنك استخدام خصائص HTML على حاوية المكوّن:
 
 ```razor
-<div data-bs-theme="dark" data-bui-appearance="glass" dir="rtl">
+<div data-bs-theme="dark" data-sheen-appearance="glass" dir="rtl">
     <Button>حفظ</Button>
 </div>
 ```
 
 خلفية صفحة الترحيب الداكنة سوداء مع تدرجات الزوايا. لتثبيت إعدادات الصفحة
-عدّل الحاوية `.bui-app` في الليّاوت الخاص بـBlazor، أو قيم الحالة في صفحة React.
+عدّل الحاوية `.sheen-app` في الليّاوت الخاص بـBlazor، أو قيم الحالة في صفحة React.
 
 ## 7. تجربة تحديثات المكتبة أثناء التطوير
 
@@ -256,9 +259,9 @@ export default function App() {
 هذا يتجاوز نسخة الأداة المثبّتة سابقاً ومشاكل تخزين حزمة بنفس رقم الإصدار:
 
 ```powershell
-cd C:\Users\saada\source\repos\BlazorUI
-dotnet run --project .\src\BlazorUI.Cli -c Release -f net10.0 -- init --cwd "C:\Users\saada\source\repos\blazor-test-new"
-dotnet run --project .\src\BlazorUI.Cli -c Release -f net10.0 -- add button --cwd "C:\Users\saada\source\repos\blazor-test-new"
+cd C:\Users\saada\source\repos\SheenUI
+dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- init --cwd "C:\Users\saada\source\repos\blazor-test-new"
+dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- add button --cwd "C:\Users\saada\source\repos\blazor-test-new"
 ```
 
 يجب أن يكون التطبيق الجديد موجوداً قبل تشغيل هذه الأوامر.
@@ -266,7 +269,7 @@ dotnet run --project .\src\BlazorUI.Cli -c Release -f net10.0 -- add button --cw
 ### React وNext.js: إعادة تجهيز الحزمة
 
 ```powershell
-cd C:\Users\saada\source\repos\BlazorUI
+cd C:\Users\saada\source\repos\SheenUI
 npm pack ./src/react-cli --pack-destination .
 ```
 
@@ -278,7 +281,7 @@ npm pack ./src/react-cli --pack-destination .
 المصدر المشترك في `theme/scss/`. بعد تغييره:
 
 ```powershell
-cd C:\Users\saada\source\repos\BlazorUI
+cd C:\Users\saada\source\repos\SheenUI
 npm run theme:css
 node src/react-cli/scripts/update-hashes.mjs
 ```

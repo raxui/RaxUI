@@ -9,12 +9,12 @@ The long-term repository map in `ARCHITECTURE.md` lists several CLI commands, te
 
 ## Decision
 
-The first implementation milestone delivers one complete workflow: `blazorui init` followed by `blazorui add button` in a supported project.
+The first implementation milestone delivers one complete workflow: `sheenui init` followed by `sheenui add button` in a supported project.
 
 In scope:
 
 - `init` and `add button`.
-- `blazorui.json` configuration and `blazorui.lock.json` lock metadata from the first installation, including baseline file hashes.
+- `sheenui.json` configuration and `sheenui.lock.json` lock metadata from the first installation, including baseline file hashes.
 - Refusing an installation that would overwrite an unknown or locally modified file.
 - One tested support target: a .NET 10 Blazor Web App with Interactive Server, including prerendering.
 - Only the projects this workflow needs. Further projects are added when a concrete responsibility justifies them.

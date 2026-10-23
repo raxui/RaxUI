@@ -1,19 +1,19 @@
-using BlazorUI.Cli.Configuration;
-using BlazorUI.Cli.Project;
-using BlazorUI.Cli.Registry;
+using SheenUI.Cli.Configuration;
+using SheenUI.Cli.Project;
+using SheenUI.Cli.Registry;
 
-namespace BlazorUI.Cli.Commands;
+namespace SheenUI.Cli.Commands;
 
 public static class InitCommand
 {
     // The shared theme compiled for Blazor: tokens, appearances, accents, and component styles (ADR 007).
     private static readonly (string Source, string TargetName)[] SharedAssets =
     [
-        ("styles/blazorui.css", "blazorui.css"),
+        ("styles/sheenui.css", "sheenui.css"),
     ];
 
-    // Stylesheets from releases before the shared theme; their tokens now come from blazorui.css.
-    private static readonly string[] LegacyStylesheets = ["css/blazorui/tokens.css", "css/blazorui/themes.css"];
+    // Stylesheets from releases before the shared theme; their tokens now come from sheenui.css.
+    private static readonly string[] LegacyStylesheets = ["css/sheenui/tokens.css", "css/sheenui/themes.css"];
 
     // The theme needs Bootstrap 5.3 (data-bs-theme, --bs-btn-* variables). The .NET 8 template ships 5.1,
     // so its unmodified copy is replaced in place with the bundled 5.3 (MIT) (ADR 009).
@@ -33,22 +33,22 @@ public static class InitCommand
             // Read before any write; printed after a successful init.
             var interactivityWarning = CheckInteractiveServer(workingDirectory);
 
-            output.WriteLine($"Initializing BlazorUI for project '{project.ProjectName}'...");
+            output.WriteLine($"Initializing SheenUI for project '{project.ProjectName}'...");
 
-            var config = BlazorUiConfig.Load(workingDirectory) ?? new BlazorUiConfig
+            var config = SheenUiConfig.Load(workingDirectory) ?? new SheenUiConfig
             {
                 Framework = "blazor",
                 TargetFramework = project.TargetFramework,
                 RegistryVersion = index.Version,
                 ComponentsPath = "Components/UI",
-                StylesPath = "wwwroot/css/blazorui",
+                StylesPath = "wwwroot/css/sheenui",
                 Bootstrap = new BootstrapConfig { Managed = false },
                 Theme = new ThemeConfig { Default = "light", DarkMode = true, Rtl = false }
             };
 
-            var lockFile = BlazorUiLock.LoadOrCreate(workingDirectory);
+            var lockFile = SheenUiLock.LoadOrCreate(workingDirectory);
             ProjectPath.Validate(workingDirectory, project.AppRazorPath);
-            ProjectPath.Validate(workingDirectory, Path.Combine(workingDirectory, BlazorUiConfig.DefaultFileName));
+            ProjectPath.Validate(workingDirectory, Path.Combine(workingDirectory, SheenUiConfig.DefaultFileName));
             lockFile.RegistryVersion = index.Version;
             config.RegistryVersion = index.Version;
             config.TargetFramework = project.TargetFramework; // follows a retargeted project
@@ -75,7 +75,7 @@ public static class InitCommand
                     if (tracked == null)
                     {
                         throw new InvalidOperationException(
-                            $"File '{relTarget}' already exists and is not managed by BlazorUI. Refusing to overwrite unknown file.");
+                            $"File '{relTarget}' already exists and is not managed by SheenUI. Refusing to overwrite unknown file.");
                     }
 
                     if (!string.Equals(tracked.InstalledHash, existingHash, StringComparison.OrdinalIgnoreCase))
@@ -132,13 +132,13 @@ public static class InitCommand
             }
 
             // 5. Save config, then lock last
-            backup.Remember(Path.Combine(workingDirectory, BlazorUiConfig.DefaultFileName));
+            backup.Remember(Path.Combine(workingDirectory, SheenUiConfig.DefaultFileName));
             config.Save(workingDirectory);
-            backup.Remember(Path.Combine(workingDirectory, BlazorUiLock.DefaultFileName));
+            backup.Remember(Path.Combine(workingDirectory, SheenUiLock.DefaultFileName));
             lockFile.Save(workingDirectory);
 
-            output.WriteLine("BlazorUI initialized successfully.");
-            output.WriteLine($"  - Configuration: {BlazorUiConfig.DefaultFileName}");
+            output.WriteLine("SheenUI initialized successfully.");
+            output.WriteLine($"  - Configuration: {SheenUiConfig.DefaultFileName}");
             output.WriteLine($"  - Shared styles: {config.StylesPath}/");
             output.WriteLine($"  - Host links updated in: {Path.GetRelativePath(workingDirectory, project.AppRazorPath).Replace('\\', '/')}");
             if (bootstrapUpgrade != null)
@@ -157,8 +157,8 @@ public static class InitCommand
             if (legacy.Count > 0)
             {
                 output.WriteLine(
-                    "Note: Components/App.razor still links stylesheets from an earlier BlazorUI release (" + string.Join(", ", legacy) +
-                    "). The shared theme in css/blazorui/blazorui.css replaces them: remove those links and files.");
+                    "Note: Components/App.razor still links stylesheets from an earlier SheenUI release (" + string.Join(", ", legacy) +
+                    "). The shared theme in css/sheenui/sheenui.css replaces them: remove those links and files.");
             }
             return 0;
         }
@@ -176,7 +176,7 @@ public static class InitCommand
     /// with instructions; newer or unrecognized files are left alone.
     /// </summary>
     private static (string TargetPath, string RelTarget, byte[] Bytes, string Hash)? PlanBootstrap(
-        string workingDirectory, ProjectContext project, BlazorUiLock lockFile, EmbeddedRegistry registry)
+        string workingDirectory, ProjectContext project, SheenUiLock lockFile, EmbeddedRegistry registry)
     {
         var path = project.BootstrapCssPath;
         ProjectPath.Validate(workingDirectory, path);
@@ -210,7 +210,7 @@ public static class InitCommand
         if (version < new Version(5, 3))
         {
             throw new InvalidOperationException(
-                $"BlazorUI needs Bootstrap 5.3 or later, but '{relative}' is Bootstrap {version}. " +
+                $"SheenUI needs Bootstrap 5.3 or later, but '{relative}' is Bootstrap {version}. " +
                 "Replace it with Bootstrap 5.3 (https://getbootstrap.com), then run init again.");
         }
 
@@ -250,9 +250,9 @@ public static class InitCommand
         // Same form as the template's own links: @Assets[...] (fingerprinted) on .NET 9+, a plain URL on .NET 8.
         var links = new[]
         {
-            (Path: "css/blazorui/blazorui.css", Markup: project.UsesAssetsDirective
-                ? """<link rel="stylesheet" href="@Assets["css/blazorui/blazorui.css"]" />"""
-                : """<link rel="stylesheet" href="css/blazorui/blazorui.css" />"""),
+            (Path: "css/sheenui/sheenui.css", Markup: project.UsesAssetsDirective
+                ? """<link rel="stylesheet" href="@Assets["css/sheenui/sheenui.css"]" />"""
+                : """<link rel="stylesheet" href="css/sheenui/sheenui.css" />"""),
         };
 
         var missing = links.Where(l => !appContent.Contains(l.Path, StringComparison.OrdinalIgnoreCase)).ToList();

@@ -1,4 +1,4 @@
-namespace BlazorUI.Cli.Commands;
+namespace SheenUI.Cli.Commands;
 
 /// <summary>
 /// Writes files while remembering their original bytes, so an ordinary failure can restore

@@ -7,15 +7,15 @@
 /// @param $tint    An RGB triplet (e.g. `var(--bs-primary-rgb)`) to tint with.
 /// @param $shadow  Elevation shadow appended after the glass edge.
 @mixin glass(
-  $alpha: var(--bui-glass-alpha),
+  $alpha: var(--sheen-glass-alpha),
   $tint: var(--bs-body-bg-rgb),
-  $shadow: var(--bui-shadow-md)
+  $shadow: var(--sheen-shadow-md)
 ) {
   background-color: rgba($tint, $alpha);
-  -webkit-backdrop-filter: blur(var(--bui-glass-blur)) saturate(var(--bui-glass-saturate));
-  backdrop-filter: blur(var(--bui-glass-blur)) saturate(var(--bui-glass-saturate));
-  border: 1px solid var(--bui-glass-border-color);
-  box-shadow: var(--bui-glass-edge), $shadow;
+  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  border: 1px solid var(--sheen-glass-border-color);
+  box-shadow: var(--sheen-glass-edge), $shadow;
 
   // No backdrop-filter (older Firefox ESR, some WebViews): go nearly opaque so
   // text contrast never depends on what's behind the surface.

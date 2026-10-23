@@ -4,22 +4,22 @@
 // Theme tokens and Bootstrap variables, with a black canvas for the dark starter.
 // -----------------------------------------------------------------------------
 
-.bui-app {
+.sheen-app {
   min-height: 100vh;
   color: var(--bs-body-color);
   // A soft wash of the primary color gives glass something to blur.
   background:
     radial-gradient(60rem 30rem at 0% 0%, rgba(var(--bs-primary-rgb), 0.18), transparent 60%),
     radial-gradient(50rem 30rem at 100% 100%, rgba(var(--bs-info-rgb), 0.14), transparent 60%),
-    var(--bui-page-bg, var(--bs-body-bg));
+    var(--sheen-page-bg, var(--bs-body-bg));
 }
 
-.bui-app[data-bs-theme="dark"] {
+.sheen-app[data-bs-theme="dark"] {
   // Override only the canvas; keep both corner gradients and their accent colors.
   background-color: #000;
 }
 
-.bui-app-header {
+.sheen-app-header {
   position: sticky;
   top: 0;
   z-index: 10;
@@ -28,35 +28,35 @@
   gap: 1rem;
   padding-block: 0.75rem;
   padding-inline: 1.5rem;
-  @include bui-surface;
+  @include sheen-surface;
   border-inline: 0;
   border-block-start: 0;
 }
 
-.bui-app-brand {
+.sheen-app-brand {
   font-weight: 700;
   letter-spacing: -0.01em;
   color: inherit;
   text-decoration: none;
 }
 
-.bui-app-header-end {
+.sheen-app-header-end {
   margin-inline-start: auto;
 }
 
-.bui-app-main {
+.sheen-app-main {
   max-width: 64rem;
   margin-inline: auto;
   padding: 2.5rem 1.5rem 4rem;
 }
 
-.bui-panel {
-  @include bui-surface;
-  border-radius: var(--bui-radius-lg, 1rem);
+.sheen-panel {
+  @include sheen-surface;
+  border-radius: var(--sheen-radius-lg, 1rem);
   padding: 1.5rem;
 }
 
-.bui-welcome {
+.sheen-welcome {
   display: grid;
   gap: 1.5rem;
 
@@ -81,19 +81,19 @@
   pre {
     margin: 0;
     padding: 0.75rem 1rem;
-    border-radius: var(--bui-radius-control);
+    border-radius: var(--sheen-radius-control);
     background: rgba(var(--bs-emphasis-color-rgb), 0.06);
     color: var(--bs-body-color);
   }
 }
 
-.bui-welcome-lead {
+.sheen-welcome-lead {
   color: var(--bs-secondary-color);
   max-width: 40rem;
 }
 
 // One row per theme dimension: a label and a group of link buttons.
-.bui-theme-row {
+.sheen-theme-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -104,13 +104,13 @@
   }
 }
 
-.bui-theme-label {
+.sheen-theme-label {
   min-width: 7rem;
   font-weight: 600;
   color: var(--bs-secondary-color);
 }
 
-.bui-theme-options {
+.sheen-theme-options {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -139,7 +139,7 @@
   }
 }
 
-.bui-preview-row {
+.sheen-preview-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;

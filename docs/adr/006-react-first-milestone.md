@@ -18,18 +18,18 @@ The first React milestone delivers `init` followed by `add button` in a React + 
 - Behaviour from Radix UI (`@radix-ui/react-slot` for `asChild`). Styling from Bootstrap 5.3 and the shared theme.
 - Styles are delivered as **SCSS**. The application compiles Bootstrap and the theme with Dart Sass 1.79+, so it can override Bootstrap Sass variables such as `$primary`.
 - A separate **Node CLI**, run with `npx`, with only `init` and `add button`. No `list`, `diff`, `doctor`, `update`, HTTP registry, or path aliases.
-- The CLI package name is provisional (`blazorui-react`). Nothing is published to npm in this milestone; acceptance uses a packed tarball.
+- The CLI package name is provisional (`sheenui-react`). Nothing is published to npm in this milestone; acceptance uses a packed tarball.
 
 ### Installation layout
 
 `init` installs the foundation:
 
 - `src/lib/theme.tsx` and `src/lib/utils.ts`.
-- `src/styles/blazorui/` with the theme partials.
-- `src/styles/blazorui.scss`, which imports theme variables, then Bootstrap, then the theme core, then installed components.
-- One import of `src/styles/blazorui.scss` in `src/main.tsx` (or `src/main.jsx`).
+- `src/styles/sheenui/` with the theme partials.
+- `src/styles/sheenui.scss`, which imports theme variables, then Bootstrap, then the theme core, then installed components.
+- One import of `src/styles/sheenui.scss` in `src/main.tsx` (or `src/main.jsx`).
 
-`add button` installs `src/components/ui/button.tsx` and `src/styles/blazorui/components/_button.scss`, and adds the button import to `src/styles/blazorui.scss` once. Imports written as `@/lib/*` in the registry are rewritten to relative paths.
+`add button` installs `src/components/ui/button.tsx` and `src/styles/sheenui/components/_button.scss`, and adds the button import to `src/styles/sheenui.scss` once. Imports written as `@/lib/*` in the registry are rewritten to relative paths.
 
 If the entry already imports Bootstrap CSS directly, or the stylesheet uses `@use` integration, `init` writes nothing and prints the manual steps.
 
@@ -41,7 +41,7 @@ If the entry already imports Bootstrap CSS directly, or the stylesheet uses `@us
 - A manifest shares Blazor's concepts: `schemaVersion`, `name`, `version`, and `files` entries with `source`, `target`, `type`, and `sha256`. React adds `requires`, `packages` (exact npm versions), and `styles` (ordered SCSS partials).
 - File types are `tsx`, `ts`, and `scss`. Unknown types, unknown destinations, unsafe paths, and hash mismatches are rejected before any write.
 - The registry is bundled into the CLI package; the package version is the registry version.
-- Configuration is `blazorui.react.json`; the lock is `blazorui.react.lock.json`. Because import rewriting changes file content, the lock stores `sourceHash` and `installedHash` separately.
+- Configuration is `sheenui.react.json`; the lock is `sheenui.react.lock.json`. Because import rewriting changes file content, the lock stores `sourceHash` and `installedHash` separately.
 
 ### Safety
 

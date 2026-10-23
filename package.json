@@ -1,8 +1,8 @@
 {
-  "name": "blazorui-monorepo",
+  "name": "sheenui-monorepo",
   "private": true,
   "type": "module",
-  "description": "Node tooling for the BlazorUI React library, shared theme, and their tests.",
+  "description": "Node tooling for the SheenUI React library, shared theme, and their tests.",
   "engines": {
     "node": ">=22"
   },

@@ -1,14 +1,14 @@
-// BlazorUI starter app shell and welcome page, installed by `blazorui-react init` (ADR 008).
+// SheenUI starter app shell and welcome page, installed by `sheenui-react init` (ADR 008).
 // Source-owned: replace it with your own app.
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { BootThemeProvider, type BootAppearance } from "@/lib/theme"
+import { SheenThemeProvider, type SheenAppearance } from "@/lib/theme"
 
 type Accent = "emerald" | "indigo" | "amber" | undefined
 
 export default function App() {
-  const [appearance, setAppearance] = useState<BootAppearance>("default")
+  const [appearance, setAppearance] = useState<SheenAppearance>("default")
   const [mode, setMode] = useState<"light" | "dark">("light")
   const [accent, setAccent] = useState<Accent>(undefined)
   const [direction, setDirection] = useState<"ltr" | "rtl">("ltr")
@@ -21,30 +21,30 @@ export default function App() {
   ] as const
 
   return (
-    <BootThemeProvider className="bui-app" appearance={appearance} mode={mode} direction={direction} data-bui-accent={accent}>
-      <header className="bui-app-header">
-        <a className="bui-app-brand" href="/">
-          BlazorUI
+    <SheenThemeProvider className="sheen-app" appearance={appearance} mode={mode} direction={direction} data-sheen-accent={accent}>
+      <header className="sheen-app-header">
+        <a className="sheen-app-brand" href="/">
+          SheenUI
         </a>
-        <span className="bui-app-header-end" />
+        <span className="sheen-app-header-end" />
       </header>
 
-      <main className="bui-app-main">
-        <div className="bui-welcome">
+      <main className="sheen-app-main">
+        <div className="sheen-welcome">
           <section>
-            <h1>Welcome to your BlazorUI app</h1>
-            <p className="bui-welcome-lead">
+            <h1>Welcome to your SheenUI app</h1>
+            <p className="sheen-welcome-lead">
               Your components live in <code>src/components/ui</code> and are yours to edit. Try the theme below: every
-              BlazorUI component follows it.
+              SheenUI component follows it.
             </p>
           </section>
 
-          <section className="bui-panel" aria-labelledby="theme-heading">
+          <section className="sheen-panel" aria-labelledby="theme-heading">
             <h2 id="theme-heading">Theme</h2>
             {rows.map((row) => (
-              <div className="bui-theme-row" key={row.label}>
-                <span className="bui-theme-label">{row.label}</span>
-                <div className="bui-theme-options" role="group" aria-label={row.label}>
+              <div className="sheen-theme-row" key={row.label}>
+                <span className="sheen-theme-label">{row.label}</span>
+                <div className="sheen-theme-options" role="group" aria-label={row.label}>
                   {row.options.map(([text, value]) => {
                     const selected = row.value === value
                     return (
@@ -64,9 +64,9 @@ export default function App() {
             ))}
           </section>
 
-          <section className="bui-panel" aria-labelledby="preview-heading">
+          <section className="sheen-panel" aria-labelledby="preview-heading">
             <h2 id="preview-heading">Preview</h2>
-            <div className="bui-preview-row">
+            <div className="sheen-preview-row">
               <Button>Primary</Button>
               <Button variant="secondary">Secondary</Button>
               <Button variant="tinted">Tinted</Button>
@@ -76,11 +76,11 @@ export default function App() {
             </div>
           </section>
 
-          <section className="bui-panel" aria-labelledby="next-heading">
+          <section className="sheen-panel" aria-labelledby="next-heading">
             <h2 id="next-heading">Next steps</h2>
             <p>Button is already installed. Add more components, then use them in your pages:</p>
             <pre>
-              <code>npx blazorui-react add &lt;component&gt;</code>
+              <code>npx sheenui-react add &lt;component&gt;</code>
             </pre>
             <p className="mt-3 mb-0">
               Edit this page in <code>src/App.tsx</code>. The theme provider and its options live in{" "}
@@ -89,6 +89,6 @@ export default function App() {
           </section>
         </div>
       </main>
-    </BootThemeProvider>
+    </SheenThemeProvider>
   )
 }

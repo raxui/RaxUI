@@ -1,13 +1,13 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BlazorUI.Cli.Project;
-using BlazorUI.Cli.Registry;
+using SheenUI.Cli.Project;
+using SheenUI.Cli.Registry;
 
-namespace BlazorUI.Cli.Configuration;
+namespace SheenUI.Cli.Configuration;
 
-public class BlazorUiLock
+public class SheenUiLock
 {
-    public const string DefaultFileName = "blazorui.lock.json";
+    public const string DefaultFileName = "sheenui.lock.json";
     public const int CurrentSchemaVersion = 1;
 
     [JsonPropertyName("schemaVersion")]
@@ -22,15 +22,15 @@ public class BlazorUiLock
     [JsonPropertyName("assets")]
     public Dictionary<string, LockedFile> Assets { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
-    public static BlazorUiLock LoadOrCreate(string directory)
+    public static SheenUiLock LoadOrCreate(string directory)
     {
         var path = Path.Combine(directory, DefaultFileName);
         ProjectPath.Validate(directory, path);
         if (!File.Exists(path))
-            return new BlazorUiLock();
+            return new SheenUiLock();
 
         var json = File.ReadAllText(path);
-        var result = JsonSerializer.Deserialize<BlazorUiLock>(json, BlazorUiConfig.JsonOptions)
+        var result = JsonSerializer.Deserialize<SheenUiLock>(json, SheenUiConfig.JsonOptions)
             ?? throw new InvalidOperationException("Lock file must be a JSON object.");
         if (result.SchemaVersion != CurrentSchemaVersion)
             throw new InvalidOperationException($"Unsupported lock file schema version {result.SchemaVersion}.");
@@ -43,7 +43,7 @@ public class BlazorUiLock
     public void Save(string directory)
     {
         var path = Path.Combine(directory, DefaultFileName);
-        var json = JsonSerializer.Serialize(this, BlazorUiConfig.JsonOptions);
+        var json = JsonSerializer.Serialize(this, SheenUiConfig.JsonOptions);
         File.WriteAllText(path, json + Environment.NewLine);
     }
 

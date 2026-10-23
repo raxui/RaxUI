@@ -1,11 +1,11 @@
 {
-  "name": "blazorui-react",
+  "name": "sheenui-react",
   "version": "0.1.0-preview.1",
-  "description": "Install BlazorUI React components (Bootstrap 5.3 SCSS, Radix behavior, shared theme) into a React + Vite project.",
+  "description": "Install SheenUI React components (Bootstrap 5.3 SCSS, Radix behavior, shared theme) into Vite and Next.js projects.",
   "type": "module",
   "license": "MIT",
   "bin": {
-    "blazorui-react": "bin/blazorui-react.mjs"
+    "sheenui-react": "bin/sheenui-react.mjs"
   },
   "files": [
     "bin",
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SaadAlsaree/BlazorUI.git",
+    "url": "git+https://github.com/SaadAlsaree/SheenUI.git",
     "directory": "src/react-cli"
   }
 }

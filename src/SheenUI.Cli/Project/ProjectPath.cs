@@ -1,4 +1,4 @@
-namespace BlazorUI.Cli.Project;
+namespace SheenUI.Cli.Project;
 
 /// <summary>Checks both lexical paths and existing links before accessing project files.</summary>
 public static class ProjectPath

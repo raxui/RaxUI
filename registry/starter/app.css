@@ -1,5 +1,5 @@
-/* Your app's own styles. Components and the layout are styled by the BlazorUI theme
-   (css/blazorui/blazorui.css); this file keeps only what Blazor's built-in features need. */
+/* Your app's own styles. Components and the layout are styled by the SheenUI theme
+   (css/sheenui/sheenui.css); this file keeps only what Blazor's built-in features need. */
 
 /* FocusOnNavigate moves focus to the page heading after navigation; it needs no outline. */
 h1:focus {
