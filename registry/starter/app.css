@@ -1,0 +1,31 @@
+/* Your app's own styles. Components and the layout are styled by the BlazorUI theme
+   (css/blazorui/blazorui.css); this file keeps only what Blazor's built-in features need. */
+
+/* FocusOnNavigate moves focus to the page heading after navigation; it needs no outline. */
+h1:focus {
+    outline: none;
+}
+
+/* Form validation (EditForm, InputText, ValidationMessage). */
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid var(--bs-success);
+}
+
+.invalid {
+    outline: 1px solid var(--bs-danger);
+}
+
+.validation-message {
+    color: var(--bs-danger);
+}
+
+/* Default content of <ErrorBoundary>. */
+.blazor-error-boundary {
+    padding: 1rem 1.25rem;
+    background: var(--bs-danger);
+    color: #fff;
+}
+
+.blazor-error-boundary::after {
+    content: "An error has occurred.";
+}

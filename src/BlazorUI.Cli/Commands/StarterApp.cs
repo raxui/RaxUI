@@ -45,6 +45,13 @@ public static class StarterApp
         ],
         ["Components/Pages/Home.razor"] = ["597102dd1b63515a15ec00e0eeee502623194e8403a94088e85b0648a6d622f7"],
         ["Components/Pages/Counter.razor"] = ["3a00d5a97c3264266bb33584e0252b6b3d726b2f72c0b62140e9f9c6c5473475"],
+        // Replaced with a minimal app.css: the template's version overrides Bootstrap buttons, links, fonts,
+        // and focus rings, which conflicts with the theme.
+        ["wwwroot/app.css"] =
+        [
+            "3cdbc4c8048bf7ad2aa569952793eeaf36ebd05e21a1d427bbebbf5e4287b84d", // 9, 10
+            "43cb223fd4a2655f0634ece59071136a963a47f5eb8506c4f746809e51e61c5a", // 8
+        ],
         ["Components/Pages/Weather.razor"] =
         [
             "377c0117b2bf4937f87e58aa4a06d3d81c10097289ed30184e34958e3bdc67f1", // 10
@@ -78,7 +85,7 @@ public static class StarterApp
 
         foreach (var file in manifest.Files)
         {
-            var relative = $"Components/{file.Target}";
+            var relative = file.Destination == "wwwroot" ? $"wwwroot/{file.Target}" : $"Components/{file.Target}";
             var fullPath = Resolve(workingDirectory, relative);
             var bytes = registry.GetResourceBytes($"{manifest.SourceDirectory}/{file.Source}");
             var hash = EmbeddedRegistry.ComputeSha256(bytes);

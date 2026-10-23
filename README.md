@@ -21,7 +21,9 @@ blazorui add button
 ```
 
 `init` replaces the template's sidebar layout and sample pages with a BlazorUI
-app shell and a welcome page where you can try the theme. It only replaces or
+app shell and a welcome page where you can try the theme, and replaces the
+template `wwwroot/app.css` with a minimal one (validation, error boundary, and
+heading focus styles only), so it no longer overrides the theme's buttons. It only replaces or
 removes template files you have not changed; anything you edited is kept and
 reported ([ADR 008](docs/adr/008-starter-app.md)).
 
