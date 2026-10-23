@@ -45,6 +45,31 @@ In a Next.js 15+ App Router project created without Tailwind (`npx create-next-a
 
 Tailwind projects, the Pages Router, JavaScript layouts, and Next.js 14 or older are rejected with a message ([ADR 011](adr/011-nextjs.md)).
 
+## Tooling diagnostics
+
+`init` configures plain Vite `defineConfig({ ... })` and Next.js `nextConfig`
+template objects for Bootstrap 5 Sass compatibility. It suppresses only the
+`import`, `global-builtin`, `color-functions`, and `if-function` deprecation
+categories, which Bootstrap 5 still uses. This is temporary compatibility
+configuration, not a migration of Bootstrap to modern Sass. Other Sass warnings
+and compilation errors remain enabled. These category settings also apply to
+your own SCSS in the same build.
+
+For Vite the options go in `css.preprocessorOptions.scss.silenceDeprecations`;
+for Next.js they go in `sassOptions.silenceDeprecations`:
+
+```ts
+silenceDeprecations: ["import", "global-builtin", "color-functions", "if-function"]
+```
+
+For plain Next.js templates, `init` also sets `turbopack.root` and
+`outputFileTracingRoot` to `process.cwd()` so unrelated parent lockfiles do not
+change the application root. Run Next.js commands from the application directory.
+Monorepos or linked packages may need a shared parent root instead.
+Existing CSS/Sass/root settings, spreads, and unsupported config shapes are kept
+and reported for manual setup. Review custom settings before merging these options.
+Windows package installation runs `npm-cli.js` directly with Node, without a shell.
+
 ## Use
 
 ```tsx
