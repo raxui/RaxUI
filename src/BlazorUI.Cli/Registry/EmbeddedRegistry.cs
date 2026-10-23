@@ -134,7 +134,7 @@ public class EmbeddedRegistry
         return Encoding.UTF8.GetString(bytes);
     }
 
-    public static string ComputeSha256(byte[] bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));
+    public static string ComputeSha256(byte[] bytes) => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
 
     public static void ValidatePathSafety(string path)
     {

@@ -115,6 +115,44 @@ public class InstallationWorkflowTests : IDisposable
     }
 
     [Fact]
+    public void Init_rejects_unsupported_target_frameworks()
+    {
+        CreateSampleBlazorProject();
+        var csproj = Path.Combine(_testDirectory, "TestConsumerApp.csproj");
+        File.WriteAllText(csproj, File.ReadAllText(csproj).Replace("net10.0", "net7.0"));
+
+        var error = new StringWriter();
+        Assert.Equal(1, Program.Run(["init"], _testDirectory, new StringWriter(), error));
+        Assert.Contains("targets net7.0. Supported: net8.0, net9.0, net10.0", error.ToString());
+    }
+
+    [Fact]
+    public void Init_records_the_target_framework_and_uses_plain_links_on_net8()
+    {
+        CreateSampleBlazorProject();
+        var csproj = Path.Combine(_testDirectory, "TestConsumerApp.csproj");
+        File.WriteAllText(csproj, File.ReadAllText(csproj).Replace("net10.0", "net8.0"));
+
+        Assert.Equal(0, Program.Run(["init"], _testDirectory, new StringWriter(), new StringWriter()));
+        Assert.Equal("net8.0", BlazorUiConfig.Load(_testDirectory)!.TargetFramework);
+        Assert.Contains("""<link rel="stylesheet" href="css/blazorui/blazorui.css" />""",
+            File.ReadAllText(Path.Combine(_testDirectory, "Components", "App.razor")));
+    }
+
+    [Fact]
+    public void Init_stops_on_an_unrecognized_Bootstrap_older_than_5_3()
+    {
+        CreateSampleBlazorProject();
+        var bootstrap = Path.Combine(_testDirectory, "wwwroot", "lib", "bootstrap", "bootstrap.min.css");
+        File.WriteAllText(bootstrap, "@charset \"UTF-8\";/*!\n * Bootstrap  v5.2.3 (https://getbootstrap.com/)\n */");
+
+        var error = new StringWriter();
+        Assert.Equal(1, Program.Run(["init"], _testDirectory, new StringWriter(), error));
+        Assert.Contains("needs Bootstrap 5.3 or later", error.ToString());
+        Assert.False(File.Exists(Path.Combine(_testDirectory, BlazorUiConfig.DefaultFileName)));
+    }
+
+    [Fact]
     public void Init_keeps_a_changed_layout_and_home_page_and_removes_nothing()
     {
         CreateSampleBlazorProject();

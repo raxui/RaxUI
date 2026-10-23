@@ -15,6 +15,12 @@ public static class InitCommand
     // Stylesheets from releases before the shared theme; their tokens now come from blazorui.css.
     private static readonly string[] LegacyStylesheets = ["css/blazorui/tokens.css", "css/blazorui/themes.css"];
 
+    // The theme needs Bootstrap 5.3 (data-bs-theme, --bs-btn-* variables). The .NET 8 template ships 5.1,
+    // so its unmodified copy is replaced in place with the bundled 5.3 (MIT) (ADR 009).
+    private const string Bootstrap51TemplateSha256 = "cfc391e34328c09f0680ae8ff3d63e86224ae7e71c973147ccb84540b2fdd9b8";
+    public const string BundledBootstrapSource = "bootstrap/bootstrap.min.css";
+    public const string BundledBootstrapSha256 = "d85327d99c7a3ee1f9b5d0500d1370acea3ad2db39c163c2f51f232baedbdede";
+
     public static int Execute(string workingDirectory, TextWriter output, TextWriter error)
     {
         var backup = new FileBackup();
@@ -32,7 +38,7 @@ public static class InitCommand
             var config = BlazorUiConfig.Load(workingDirectory) ?? new BlazorUiConfig
             {
                 Framework = "blazor",
-                TargetFramework = "net10.0",
+                TargetFramework = project.TargetFramework,
                 RegistryVersion = index.Version,
                 ComponentsPath = "Components/UI",
                 StylesPath = "wwwroot/css/blazorui",
@@ -45,6 +51,7 @@ public static class InitCommand
             ProjectPath.Validate(workingDirectory, Path.Combine(workingDirectory, BlazorUiConfig.DefaultFileName));
             lockFile.RegistryVersion = index.Version;
             config.RegistryVersion = index.Version;
+            config.TargetFramework = project.TargetFramework; // follows a retargeted project
 
             var stylesDir = Path.Combine(workingDirectory, config.StylesPath);
 
@@ -80,6 +87,10 @@ public static class InitCommand
 
                 plannedWrites.Add((targetPath, relTarget, bytes, hash));
             }
+
+            var bootstrapUpgrade = PlanBootstrap(workingDirectory, project, lockFile, registry);
+            if (bootstrapUpgrade != null)
+                plannedWrites.Add(bootstrapUpgrade.Value);
 
             // Starter layout and welcome page replace the unmodified template ones (ADR 008).
             var starter = StarterApp.Prepare(workingDirectory, project.ProjectName, lockFile, registry);
@@ -130,6 +141,8 @@ public static class InitCommand
             output.WriteLine($"  - Configuration: {BlazorUiConfig.DefaultFileName}");
             output.WriteLine($"  - Shared styles: {config.StylesPath}/");
             output.WriteLine($"  - Host links updated in: {Path.GetRelativePath(workingDirectory, project.AppRazorPath).Replace('\\', '/')}");
+            if (bootstrapUpgrade != null)
+                output.WriteLine($"  - Bootstrap 5.3: {bootstrapUpgrade.Value.RelTarget}");
             foreach (var write in starter.Writes)
                 output.WriteLine($"  - Starter: {write.RelativePath}");
             foreach (var path in starter.Deletes)
@@ -155,6 +168,53 @@ public static class InitCommand
             backup.Restore();
             return 1;
         }
+    }
+
+    /// <summary>
+    /// Returns a write that upgrades the unmodified .NET 8 template Bootstrap 5.1 to the bundled 5.3,
+    /// or refreshes a copy installed by an earlier init. Any other Bootstrap older than 5.3 stops init
+    /// with instructions; newer or unrecognized files are left alone.
+    /// </summary>
+    private static (string TargetPath, string RelTarget, byte[] Bytes, string Hash)? PlanBootstrap(
+        string workingDirectory, ProjectContext project, BlazorUiLock lockFile, EmbeddedRegistry registry)
+    {
+        var path = project.BootstrapCssPath;
+        ProjectPath.Validate(workingDirectory, path);
+        var relative = Path.GetRelativePath(workingDirectory, path).Replace('\\', '/');
+        var current = EmbeddedRegistry.ComputeSha256(File.ReadAllBytes(path));
+        var tracked = lockFile.FindTrackedFile(relative);
+
+        if (tracked != null || current == Bootstrap51TemplateSha256)
+        {
+            var bytes = registry.GetResourceBytes(BundledBootstrapSource);
+            var hash = EmbeddedRegistry.ComputeSha256(bytes);
+            if (hash != BundledBootstrapSha256)
+                throw new InvalidOperationException($"Integrity check failed for '{BundledBootstrapSource}'.");
+
+            if (tracked != null)
+            {
+                lockFile.EnsureSameSource(relative, hash);
+                if (!string.Equals(tracked.InstalledHash, current, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException($"File '{relative}' was modified locally. Refusing to overwrite.");
+            }
+
+            return (path, relative, bytes, hash);
+        }
+
+        var header = File.ReadLines(path).Take(5).FirstOrDefault(line => line.Contains("Bootstrap", StringComparison.Ordinal)) ?? "";
+        var match = System.Text.RegularExpressions.Regex.Match(header, @"Bootstrap\s+v(\d+)\.(\d+)");
+        if (!match.Success)
+            return null;
+
+        var version = new Version(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value));
+        if (version < new Version(5, 3))
+        {
+            throw new InvalidOperationException(
+                $"BlazorUI needs Bootstrap 5.3 or later, but '{relative}' is Bootstrap {version}. " +
+                "Replace it with Bootstrap 5.3 (https://getbootstrap.com), then run init again.");
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -187,10 +247,12 @@ public static class InitCommand
     {
         var appContent = File.ReadAllText(project.AppRazorPath);
 
-        // Same @Assets[...] form as the template's own links, so the files get fingerprinted.
+        // Same form as the template's own links: @Assets[...] (fingerprinted) on .NET 9+, a plain URL on .NET 8.
         var links = new[]
         {
-            (Path: "css/blazorui/blazorui.css", Markup: """<link rel="stylesheet" href="@Assets["css/blazorui/blazorui.css"]" />"""),
+            (Path: "css/blazorui/blazorui.css", Markup: project.UsesAssetsDirective
+                ? """<link rel="stylesheet" href="@Assets["css/blazorui/blazorui.css"]" />"""
+                : """<link rel="stylesheet" href="css/blazorui/blazorui.css" />"""),
         };
 
         var missing = links.Where(l => !appContent.Contains(l.Path, StringComparison.OrdinalIgnoreCase)).ToList();

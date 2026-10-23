@@ -435,7 +435,7 @@ This section specifies a later milestone. The first milestone only records basel
 
 BlazorUI must distinguish between component rendering and browser interactivity.
 
-The first tested support target is a .NET 10 Blazor Web App with Interactive Server, including prerendering. Static SSR-only applications, standalone WebAssembly, Interactive Auto, and additional hosting models are future support targets until tested. Reusable components do not hard-code `@rendermode`; the consumer selects interactivity at the page or application boundary.
+The tested support targets are Blazor Web Apps on .NET 8, 9, and 10 with Interactive Server, including prerendering ([ADR 009](docs/adr/009-dotnet-8-9-10.md)). `init` reads the target framework, finds the template Bootstrap (`wwwroot/bootstrap/` on .NET 8, `wwwroot/lib/bootstrap/` on 9 and 10), upgrades the unmodified .NET 8 Bootstrap 5.1 to 5.3, and writes links in each template's form (plain URLs on .NET 8, `@Assets[...]` on 9 and 10). Static SSR-only applications, standalone WebAssembly, Interactive Auto, and additional hosting models are future support targets until tested. Reusable components do not hard-code `@rendermode`; the consumer selects interactivity at the page or application boundary.
 
 ### Static SSR
 
@@ -558,6 +558,7 @@ Accepted ADRs:
 - [006 — React first milestone](docs/adr/006-react-first-milestone.md)
 - [007 — Blazor uses the shared theme](docs/adr/007-blazor-shared-theme.md)
 - [008 — Starter app replaces the template shell](docs/adr/008-starter-app.md)
+- [009 — Blazor on .NET 8, 9, and 10](docs/adr/009-dotnet-8-9-10.md)
 
 ADRs should record the context, decision, alternatives considered, and consequences.
 
