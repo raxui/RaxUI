@@ -2,15 +2,15 @@
 
 ## 1. Project Overview
 
-**BlazorUI** is an open-source, source-first UI component library for Blazor applications, built on top of Bootstrap.
+**BlazorUI** is an open-source, source-first UI component system for **Blazor** and **React** applications, built on top of Bootstrap and one shared theme.
 
 The project is inspired by the distribution model of shadcn/ui: developers install individual components directly into their applications, own the source code, and can freely customize the implementation.
 
-Instead of depending entirely on a precompiled UI component package, developers receive editable Razor components and their required assets through a dedicated .NET CLI.
+Instead of depending entirely on a precompiled UI component package, developers receive editable components and their required assets through a CLI for their ecosystem: Razor components through a .NET CLI, and React (TypeScript) components through a Node CLI. React components use Radix UI for behaviour and accessibility. Both libraries live in this repository and share one theme with `default`, `flat`, and `glass` appearances ([ADR 005](docs/adr/005-multi-framework-shared-theme.md)).
 
 ## 2. Vision
 
-Build a modern, accessible, customizable, and developer-friendly UI component system for Blazor that combines Bootstrap's familiar styling foundation with the flexibility of source-owned components.
+Build a modern, accessible, customizable, and developer-friendly UI component system for Blazor and React that combines Bootstrap's familiar styling foundation with the flexibility of source-owned components.
 
 The project aims to make building polished Blazor interfaces easier while preserving developers' control over their codebase.
 
@@ -20,7 +20,8 @@ The project aims to make building polished Blazor interfaces easier while preser
 - **Developer ownership:** Developers can modify installed components without depending on a closed implementation.
 - **Component-driven installation:** Install only the components required by the application.
 - **Bootstrap foundation:** Use Bootstrap for layout, grid, utilities, and foundational styling.
-- **Blazor-native behavior:** Prefer Razor, C#, and Blazor event handling over unnecessary JavaScript dependencies.
+- **Framework-native behavior:** In Blazor, prefer Razor, C#, and Blazor event handling over unnecessary JavaScript dependencies. In React, use Radix UI primitives for interactive behavior and accessibility.
+- **One theme:** Both libraries read their look from the same theme attributes and CSS custom properties.
 - **Accessibility:** Support semantic HTML, keyboard navigation, focus management, and appropriate ARIA attributes.
 - **Customization:** Provide component variants, CSS classes, design tokens, and theme customization.
 - **RTL support:** Support right-to-left layouts, including Arabic interfaces.
@@ -43,23 +44,25 @@ Components that require browser APIs or JavaScript interop must handle server-si
 
 Additional hosting and rendering modes are not advertised as supported until verified. Reusable components do not hard-code a render mode; the consumer application selects it.
 
+The first React milestone targets **React 18.3 and 19 with TypeScript and Vite** ([ADR 006](docs/adr/006-react-first-milestone.md)). Other React build tools (Next.js, Create React App) are future targets until tested.
+
 ## 5. Technology Stack
 
-| Area                 | Technology                                     |
-| -------------------- | ---------------------------------------------- |
-| Programming language | C#                                             |
-| UI framework         | Blazor                                         |
-| Component files      | Razor (`.razor`)                               |
-| Styling foundation   | Bootstrap                                      |
-| Custom design system | Global CSS variables/themes and isolated `.razor.css` |
-| Developer tooling    | .NET CLI tool                                  |
-| Registry format      | JSON                                           |
-| Repository           | Git and GitHub                                 |
-| Component testing    | bUnit                                          |
-| Browser testing      | Playwright                                     |
-| Documentation        | Markdown and a Blazor-based documentation site |
+| Area                 | Blazor                                          | React                                        |
+| -------------------- | ----------------------------------------------- | -------------------------------------------- |
+| Programming language | C#                                              | TypeScript                                   |
+| Component files      | Razor (`.razor`)                                | `.tsx`                                       |
+| Behavior             | Blazor event handling                           | Radix UI primitives                          |
+| Styling foundation   | Bootstrap                                       | Bootstrap 5.3 SCSS                           |
+| Custom design system | Global CSS variables/themes and isolated `.razor.css` (until migration to the shared theme) | Shared theme SCSS (`theme/scss`) |
+| Developer tooling    | .NET CLI tool                                   | Node CLI (`npx`)                             |
+| Package manager      | NuGet                                           | npm                                          |
+| Component testing    | xUnit (bUnit planned)                           | Vitest and Testing Library                   |
+| Browser testing      | Playwright                                      | Playwright                                   |
 
-Use the .NET 10 SDK as the initial development baseline, while keeping framework-specific dependencies and compatibility requirements explicit.
+Shared by both: JSON registry format, Git and GitHub, and Markdown documentation.
+
+Use the .NET 10 SDK and Node.js 22 as the development baselines, while keeping framework-specific dependencies and compatibility requirements explicit.
 
 ## 6. Source-First Distribution Model
 
@@ -99,6 +102,32 @@ MyApp/
 
 The CLI installs components to `Components/UI` and shared styles to `wwwroot/css/blazorui`. In the first milestone these paths are fixed and the namespace is derived by Razor from the folder; configurable paths and namespace are deferred ([ADR 004](docs/adr/004-simplified-first-milestone.md)). `wwwroot/lib/bootstrap/` comes from the `dotnet new blazor` template. Package publication remains future work; the commands above describe the intended experience.
 
+React workflow for the first React milestone ([ADR 006](docs/adr/006-react-first-milestone.md)):
+
+```bash
+npm create vite@latest my-app -- --template react-ts
+cd my-app
+
+npx blazorui-react init
+npx blazorui-react add button
+```
+
+Generated structure:
+
+```text
+my-app/
+├── src/
+│   ├── components/ui/button.tsx
+│   ├── lib/theme.tsx
+│   ├── lib/utils.ts
+│   ├── styles/blazorui.scss
+│   └── styles/blazorui/          (theme partials and components/_button.scss)
+├── blazorui.react.json
+└── blazorui.react.lock.json
+```
+
+The package name `blazorui-react` is provisional; nothing is published to npm in this milestone.
+
 ## 7. CLI Responsibilities
 
 The CLI is the primary developer interface for installing and maintaining components.
@@ -120,6 +149,8 @@ The first milestone provides only `init` and `add button`. Deferred commands:
 - `blazorui bootstrap update` — update the managed Bootstrap assets.
 
 The CLI must detect local modifications and avoid silently overwriting developer-owned code.
+
+Each ecosystem has its own CLI with the same commands and safety rules: the .NET tool `blazorui` for Blazor, and the Node CLI `blazorui-react` for React. The first React milestone provides only `init` and `add button` for React + Vite.
 
 ## 8. Component Registry
 
@@ -160,7 +191,21 @@ Requirements (after the first milestone):
 
 ## 10. Design System and Theming
 
-BlazorUI should provide a consistent design system built around CSS custom properties.
+BlazorUI should provide a consistent design system built around CSS custom properties, shared by the Blazor and React libraries.
+
+The shared theme lives in `theme/scss/`, copied once from boot-ui ([ADR 005](docs/adr/005-multi-framework-shared-theme.md)). Its contract is a set of attributes that any element may carry:
+
+| Attribute | Values | Purpose |
+| --- | --- | --- |
+| `data-bs-theme` | `light`, `dark` | Color mode (Bootstrap) |
+| `data-bui-appearance` | `default`, `flat`, `glass` | Visual style of surfaces and controls |
+| `data-bui-accent` | `emerald`, `indigo`, `amber` | Accent color |
+| `data-bui-density` | `comfortable`, `compact` | Control sizes |
+| `dir` | `ltr`, `rtl` | Direction |
+
+Components resolve their look from CSS custom properties under these attributes. Precedence: an explicit component value, then the nearest scope, then the application, then `default`.
+
+React consumes the theme as SCSS. Blazor keeps the rules below until its migration to the shared theme.
 
 Use `.razor.css` for component-local styling and global CSS for Bootstrap, tokens, and themes. Blazor bundles isolated styles during the consumer build. Load Bootstrap, tokens, themes, and the generated application styles bundle once, in that order; explicit consumer overrides may follow. Customize through variables and parameters. See [ADR 001](docs/adr/001-hybrid-css.md).
 
@@ -188,6 +233,17 @@ Components should support standard Blazor patterns, including `EventCallback`, p
 - Verified installation, stylesheet loading, build, click behavior, repeatability, and preservation of local edits.
 
 General dependency resolution, update/diff commands, and additional application models follow after this complete path works. See [ADR 002](docs/adr/002-first-milestone-scope.md) and [ADR 004](docs/adr/004-simplified-first-milestone.md).
+
+### React Phase 1 — Button
+
+- ADR 005 and ADR 006 accepted.
+- Shared theme in `theme/scss/`.
+- React Button and foundation in `registry/react/`, with manifests and hashes.
+- Node CLI implementing `init` and `add button` for React + Vite.
+- Component tests and an acceptance test in a real Vite application.
+- Installation, usage, and customization documentation.
+
+Moving the Blazor Button to the shared theme is a separate, later phase.
 
 ### Phase 2 — Core Components
 
@@ -230,7 +286,7 @@ The project should include:
 
 - Unit tests for registry parsing and dependency resolution.
 - CLI tests for initialization, installation, updates, and error handling.
-- Component tests using bUnit.
+- Component tests using bUnit for Blazor and Vitest with Testing Library for React.
 - Browser-based integration tests using Playwright.
 - Accessibility checks for interactive components.
 - Sample applications covering the supported Blazor application models.
@@ -264,7 +320,16 @@ The first implementation milestone is complete when a developer can:
 6. Receive a clear conflict or validation error before any partial installation; ordinary write failures roll back.
 7. Run the installed component without registry access.
 
-The broader release, after this milestone, additionally requires:
+The first React milestone is complete when a developer can:
+
+1. Run `init` and `add button` in a new React + Vite (TypeScript) application.
+2. Build and run the app, see the styled Button, and trigger its click handler.
+3. Switch `default`, `flat`, and `glass` appearances, light and dark mode, and RTL through the theme provider or attributes.
+4. Repeat both commands without duplicate imports or overwritten local changes.
+5. Inspect configuration and lock metadata containing exact versions and hashes.
+6. Receive a clear conflict or validation error before any partial installation; ordinary write failures roll back.
+
+The broader release, after these milestones, additionally requires:
 
 1. Initialize BlazorUI in a supported Blazor project.
 2. Install a component using the CLI.
