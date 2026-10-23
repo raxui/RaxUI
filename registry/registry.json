@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "name": "BlazorUI",
+  "version": "0.1.0",
+  "components": [
+    {
+      "name": "button",
+      "manifest": "components/button/manifest.json"
+    }
+  ]
+}
