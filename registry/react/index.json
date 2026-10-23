@@ -4,6 +4,7 @@
   "items": [
     { "name": "foundation", "manifest": "registry/react/foundation/manifest.json" },
     { "name": "button", "manifest": "registry/react/button/manifest.json" },
-    { "name": "starter", "manifest": "registry/react/starter/manifest.json" }
+    { "name": "starter", "manifest": "registry/react/starter/manifest.json" },
+    { "name": "starter-next", "manifest": "registry/react/starter-next/manifest.json" }
   ]
 }

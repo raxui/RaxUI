@@ -11,7 +11,7 @@ export const SCHEMA_VERSION = 1
 const SOURCE_ROOTS = ["registry/react/", "theme/scss/"]
 // Allowed target folders (relative to the consumer's src/) per file type.
 const TARGETS = {
-  tsx: ["lib/", "components/ui/", "App.tsx"], // App.tsx: the starter (ADR 008)
+  tsx: ["lib/", "components/ui/", "App.tsx", "app/page.tsx"], // App.tsx, app/page.tsx: starters (ADR 008, 011)
   ts: ["lib/", "components/ui/"],
   scss: ["styles/blazorui/"],
 }

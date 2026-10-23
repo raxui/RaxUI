@@ -77,8 +77,8 @@ Theme any part of the page with attributes; components inherit them:
 
 ## React
 
-A React library with the same theme lives in this repository: React 18.3/19 +
-Vite, Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx blazorui-react init`,
+A React library with the same theme lives in this repository: React 18.3/19 on
+Vite 6+ or Next.js 15+ (App Router, no Tailwind), Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx blazorui-react init`,
 `npx blazorui-react add button`). It is not published to npm yet. See
 [docs/react.md](docs/react.md) for installation, usage, and customization.
 
@@ -107,7 +107,8 @@ npm ci
 npm run typecheck
 npm test
 npx playwright install chromium
-npm run test:acceptance
+npm run test:acceptance       # Vite (CREATE_VITE_VERSION, default 9.3.1)
+npm run test:acceptance:next  # Next.js (CREATE_NEXT_APP_VERSION, default 16.4.3)
 ```
 
 ## Releases

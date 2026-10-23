@@ -1,4 +1,4 @@
-// blazorui-react: init and add for React + Vite projects (ADR 006).
+// blazorui-react: init and add for React projects on Vite 6+ or Next.js 15+ App Router (ADR 006, 010, 011).
 import { spawnSync } from "node:child_process"
 import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
@@ -13,11 +13,9 @@ const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const registryRoot = existsSync(path.join(packageRoot, "registry/react/index.json")) ? packageRoot : path.resolve(packageRoot, "../..")
 export const VERSION = JSON.parse(readFileSync(path.join(packageRoot, "package.json"), "utf8")).version
 
-const STYLESHEET = "src/styles/blazorui.scss"
-const STARTER = "starter"
-const STARTER_APP = "src/App.tsx"
-
+const STARTER_ITEMS = ["starter", "starter-next"]
 const MIN_VITE_MAJOR = 6 // ADR 010
+const MIN_NEXT_MAJOR = 15 // ADR 011
 
 // SHA-256 of create-vite `react-ts` files (text normalized to LF), per path: create-vite 9 (Vite 8) and
 // create-vite 6-8 (Vite 6 and 7), which share one template. The starter replaces App.tsx only when it is
@@ -41,15 +39,38 @@ const VITE_TEMPLATE = {
   "src/assets/vite.svg": ["5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f"],
   "public/icons.svg": ["b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a"],
 }
-const VITE_LEFTOVERS = Object.keys(VITE_TEMPLATE).filter((file) => file !== STARTER_APP)
-const ENTRIES = ["src/main.tsx", "src/main.jsx"]
-const BASE_IMPORTS = ['@import "blazorui/variables";', '@import "bootstrap/scss/bootstrap";', '@import "blazorui/core";']
-const STYLESHEET_TEMPLATE = `// BlazorUI theme. Set Bootstrap Sass variables above the imports, for example:
+
+// SHA-256 of create-next-app 15.x and 16.x files without Tailwind (ADR 011). Keys under app/ are relative to
+// the source root (project root, or src/ with --src-dir); public/ is always at the project root.
+const NEXT_TEMPLATE = {
+  "app/page.tsx": [
+    "4d09bbe55512b0eecad21a251893d1f9c74c3bd08af42c4226a126f940fc05c4",
+    "8b6f29326d0989b4f8ad8d5bfe990eaa6d0d71654c135639a13283cddcb552dc",
+  ],
+  "app/page.module.css": [
+    "bce0df4eaf83e53bba4426aea15753c02ded184eed40225b0083823ff43f6d9d",
+    "165ea66bc56f27938f8b512f2a51ee859be738be78bebf37adb9ec29c52415b3",
+  ],
+  "app/globals.css": [
+    "82c39fcc9632c0daab7c53a8c6c4946c0da049b13a6deb8e67a8548a182c14b4",
+    "e1c0289930d17ef10122ec7347f09b03f84e3d51dbbe982785f7316c00e49c08",
+  ],
+  "public/file.svg": ["2b67812c325c199a02536cdbeea0c593a72f707d323b72ee3e08dbab06753bd4"],
+  "public/globe.svg": ["b614b9bf183925957661ac851498fe1d8029fd43a62fbfed86f9e2624a57e7cf"],
+  "public/next.svg": ["55995dfad6ecb4945a1e856ddca03c5e16aa5bf13fd21b4df6a74ae79357bcfc"],
+  "public/vercel.svg": ["f081337b2fee635b455b63275406a3e7f39d6a014e25ad90dab5a67e62a12ac4"],
+  "public/window.svg": ["644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1"],
+}
+
+const baseImports = ({ bootstrapImport }) => ['@import "blazorui/variables";', `@import "${bootstrapImport}";`, '@import "blazorui/core";']
+const stylesheetTemplate = (project) => `// BlazorUI theme. Set Bootstrap Sass variables above the imports, for example:
 // $primary: #0a84ff;
-${BASE_IMPORTS.join("\n")}
+${baseImports(project).join("\n")}
 `
 
 export const USAGE = `blazorui-react ${VERSION}
+
+React + Vite 6 or later, or Next.js 15 or later (App Router).
 
 Usage:
   blazorui-react init [options]
@@ -84,11 +105,11 @@ export function run(args, { cwd, stdout, stderr }) {
         stdout.write(VERSION + "\n")
         return 0
       case "init":
-        // The starter requires the foundation, so this installs both (ADR 008).
-        return installItems(projectDir, STARTER, { init: true, install, stdout })
+        // The starter requires the foundation and Button, so this installs all three (ADR 008).
+        return installItems(projectDir, null, { init: true, install, stdout })
       case "add":
         if (!name) throw new Error("Missing component name. Usage: blazorui-react add <component>")
-        if (name === "foundation" || name === STARTER) throw new Error(`'${name}' is installed by 'blazorui-react init'.`)
+        if (name === "foundation" || STARTER_ITEMS.includes(name)) throw new Error(`'${name}' is installed by 'blazorui-react init'.`)
         return installItems(projectDir, name, { init: false, install, stdout })
       default:
         stderr.write(`Unknown command '${command ?? ""}'.\n\n${USAGE}`)
@@ -105,16 +126,16 @@ function installItems(projectDir, name, { init, install, stdout }) {
   const config = loadConfig(projectDir, VERSION)
   if (!init && !config) throw new Error(`BlazorUI is not initialized here. Run 'blazorui-react init' first.`)
   const lock = loadLock(projectDir, VERSION)
-  const items = resolveItems(registryRoot, name)
+  const items = resolveItems(registryRoot, name ?? project.starter)
 
   // 1. Plan every write and check every conflict before touching the disk.
   const planned = []
   const notes = []
   for (const item of items) {
     // Starter files never stop init: what the developer changed is kept and reported (ADR 008).
-    const starter = item.name === STARTER
+    const starter = STARTER_ITEMS.includes(item.name)
     for (const file of item.files) {
-      const target = `src/${file.target}`
+      const target = project.target(file.target)
       const full = path.join(projectDir, ...target.split("/"))
       assertInsideProject(projectDir, full)
       const content = rewriteImports(readFileSync(path.join(registryRoot, ...file.source.split("/"))), file)
@@ -129,9 +150,9 @@ function installItems(projectDir, name, { init, install, stdout }) {
         throw new Error(`'${target}' was installed from another registry release and differs from this CLI's version. Updating installed files is not supported yet.`)
       }
       if (existsSync(full)) {
-        if (!tracked && !(starter && isViteTemplate(projectDir, target))) {
+        if (!tracked && !(starter && isTemplate(projectDir, project, target))) {
           if (!starter) throw new Error(`'${target}' already exists and is not managed by BlazorUI. Refusing to overwrite unknown file.`)
-          notes.push(`Kept your ${target} (it differs from the Vite template), so the BlazorUI version was not installed.`)
+          notes.push(`Kept your ${target} (it differs from the ${project.label} template), so the BlazorUI version was not installed.`)
           continue
         }
         if (tracked && sha256(readFileSync(full)) !== tracked.installedHash) {
@@ -145,19 +166,19 @@ function installItems(projectDir, name, { init, install, stdout }) {
     }
   }
 
-  // Template files only the template App.tsx used go once the starter App owns the page.
+  // Template files only the template page used go once the starter owns that page.
   const deletes = []
-  if (planned.some((write) => write.target === STARTER_APP) || findTracked(lock, STARTER_APP)) {
-    for (const relative of VITE_LEFTOVERS) {
+  if (planned.some((write) => write.target === project.starterTarget) || findTracked(lock, project.starterTarget)) {
+    for (const relative of Object.keys(project.template).filter((file) => file !== project.starterTarget)) {
       const full = path.join(projectDir, ...relative.split("/"))
       assertInsideProject(projectDir, full)
-      if (isViteTemplate(projectDir, relative)) deletes.push({ full, relative })
-      else if (existsSync(full)) notes.push(`Kept your ${relative} (it differs from the Vite template); remove it if you no longer need it.`)
+      if (isTemplate(projectDir, project, relative)) deletes.push({ full, relative })
+      else if (existsSync(full)) notes.push(`Kept your ${relative} (it differs from the ${project.label} template); remove it if you no longer need it.`)
     }
   }
 
-  const stylesheet = planStylesheet(projectDir, items)
-  const entry = planEntry(project, deletes.some((entry) => entry.relative === "src/index.css"))
+  const stylesheet = planStylesheet(projectDir, project, items)
+  const entry = planEntry(project, deletes.map(({ relative }) => relative))
   const packageManifest = path.join(projectDir, "package.json")
   const lockfiles = ["package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb"].map((file) => path.join(projectDir, file))
 
@@ -192,9 +213,9 @@ function installItems(projectDir, name, { init, install, stdout }) {
       schemaVersion: STATE_SCHEMA_VERSION,
       registryVersion: VERSION,
       framework: "react",
-      bundler: "vite",
+      bundler: project.kind,
       entry: project.entry,
-      stylesheet: STYLESHEET,
+      stylesheet: project.stylesheet,
     })
 
     for (const item of items) {
@@ -226,19 +247,90 @@ function installItems(projectDir, name, { init, install, stdout }) {
   return 0
 }
 
+/** Describes where things go in a Vite or Next.js project. */
 function detectProject(projectDir) {
   const packagePath = path.join(projectDir, "package.json")
   assertInsideProject(projectDir, packagePath)
-  if (!existsSync(packagePath)) throw new Error(`No package.json in '${projectDir}'. Run this in your React + Vite project.`)
+  if (!existsSync(packagePath)) throw new Error(`No package.json in '${projectDir}'. Run this in your React project.`)
   const packageJson = JSON.parse(readFileSync(packagePath, "utf8"))
   const dependencies = { ...packageJson.dependencies, ...packageJson.devDependencies }
-  if (!dependencies.vite || !dependencies.react) throw new Error("Only React + Vite projects are supported: 'react' and 'vite' must be dependencies.")
-  const viteMajor = installedMajor(projectDir, "vite") ?? Number(/\d+/.exec(dependencies.vite)?.[0])
-  if (!(viteMajor >= MIN_VITE_MAJOR)) throw new Error(`Vite ${MIN_VITE_MAJOR} or later is required; this project uses Vite '${dependencies.vite}'.`)
-  const entry = ENTRIES.find((candidate) => existsSync(path.join(projectDir, candidate)))
-  if (!entry) throw new Error(`No ${ENTRIES.join(" or ")} found.`)
-  assertInsideProject(projectDir, path.join(projectDir, entry))
-  return { packageJson, entry, entryPath: path.join(projectDir, entry) }
+  if (!dependencies.react) throw new Error("This is not a React project: 'react' must be a dependency.")
+
+  const project = dependencies.next ? detectNext(projectDir, dependencies) : detectVite(projectDir, dependencies)
+  const entryPath = path.join(projectDir, ...project.entry.split("/"))
+  assertInsideProject(projectDir, entryPath)
+  const prefix = project.sourceRoot ? `${project.sourceRoot}/` : ""
+  return { ...project, packageJson, entryPath, target: (relative) => `${prefix}${relative}` }
+}
+
+function detectVite(projectDir, dependencies) {
+  if (!dependencies.vite) throw new Error("Only React + Vite and Next.js projects are supported: add 'vite' or 'next'.")
+  const major = installedMajor(projectDir, "vite") ?? rangeMajor(dependencies.vite)
+  if (!(major >= MIN_VITE_MAJOR)) throw new Error(`Vite ${MIN_VITE_MAJOR} or later is required; this project uses Vite '${dependencies.vite}'.`)
+  const entry = ["src/main.tsx", "src/main.jsx"].find((candidate) => existsSync(path.join(projectDir, candidate)))
+  if (!entry) throw new Error("No src/main.tsx or src/main.jsx found.")
+  return {
+    kind: "vite",
+    label: "Vite",
+    sourceRoot: "src",
+    entry,
+    entryImport: "./styles/blazorui.scss",
+    stylesheet: "src/styles/blazorui.scss",
+    bootstrapImport: "bootstrap/scss/bootstrap",
+    starter: "starter",
+    starterTarget: "src/App.tsx",
+    template: VITE_TEMPLATE,
+  }
+}
+
+function detectNext(projectDir, dependencies) {
+  const major = installedMajor(projectDir, "next") ?? rangeMajor(dependencies.next)
+  if (!(major >= MIN_NEXT_MAJOR)) throw new Error(`Next.js ${MIN_NEXT_MAJOR} or later is required; this project uses Next.js '${dependencies.next}'.`)
+  if (usesTailwind(projectDir, dependencies)) {
+    throw new Error(
+      "Next.js projects that use Tailwind are not supported: Tailwind's base styles conflict with Bootstrap (ADR 011). " +
+        "Create the app with 'npx create-next-app@latest --no-tailwind', or remove Tailwind first.",
+    )
+  }
+
+  const sourceRoot = existsSync(path.join(projectDir, "src", "app")) ? "src" : ""
+  const appDir = sourceRoot ? `${sourceRoot}/app` : "app"
+  const entry = `${appDir}/layout.tsx`
+  if (!existsSync(path.join(projectDir, ...entry.split("/")))) {
+    if (["app/layout.jsx", "app/layout.js", "src/app/layout.jsx", "src/app/layout.js"].some((file) => existsSync(path.join(projectDir, file))))
+      throw new Error("Next.js projects must use TypeScript: rename app/layout to layout.tsx.")
+    if (existsSync(path.join(projectDir, "pages")) || existsSync(path.join(projectDir, "src", "pages")))
+      throw new Error("The Next.js Pages Router is not supported; use the App Router (app/layout.tsx).")
+    throw new Error("No app/layout.tsx or src/app/layout.tsx found.")
+  }
+
+  const template = Object.fromEntries(
+    Object.entries(NEXT_TEMPLATE).map(([key, hashes]) => [key.startsWith("app/") && sourceRoot ? `${sourceRoot}/${key}` : key, hashes]),
+  )
+  const stylesheet = sourceRoot ? `${sourceRoot}/styles/blazorui.scss` : "styles/blazorui.scss"
+  return {
+    kind: "next",
+    label: "Next.js",
+    sourceRoot,
+    entry,
+    entryImport: "../styles/blazorui.scss",
+    stylesheet,
+    // Next's Sass pipeline cannot follow Bootstrap's own relative imports when it is imported by package
+    // name, so the stylesheet imports it by path. shortcut: assumes node_modules at the project root; a
+    // hoisted monorepo needs this line adjusted by hand.
+    bootstrapImport: path.posix.relative(path.posix.dirname(stylesheet), "node_modules/bootstrap/scss/bootstrap"),
+    starter: "starter-next",
+    starterTarget: `${appDir}/page.tsx`,
+    template,
+  }
+}
+
+function usesTailwind(projectDir, dependencies) {
+  if (dependencies.tailwindcss || dependencies["@tailwindcss/postcss"]) return true
+  return ["postcss.config.mjs", "postcss.config.js", "postcss.config.cjs", "postcss.config.ts", ".postcssrc", ".postcssrc.json"].some((file) => {
+    const full = path.join(projectDir, file)
+    return existsSync(full) && /tailwind/i.test(readFileSync(full, "utf8"))
+  })
 }
 
 /** Registry sources import "@/lib/x" and "@/components/ui/x"; installed files use relative imports. */
@@ -253,14 +345,16 @@ function rewriteImports(bytes, file) {
   )
 }
 
-function planStylesheet(projectDir, items) {
-  const full = path.join(projectDir, ...STYLESHEET.split("/"))
+function planStylesheet(projectDir, project, items) {
+  const { stylesheet } = project
+  const full = path.join(projectDir, ...stylesheet.split("/"))
   assertInsideProject(projectDir, full)
   const original = existsSync(full) ? readFileSync(full, "utf8") : null
-  let content = original ?? STYLESHEET_TEMPLATE
-  if (/^\s*@use\s/m.test(content) || !BASE_IMPORTS.every((line) => content.includes(line))) {
+  let content = original ?? stylesheetTemplate(project)
+  const base = baseImports(project)
+  if (/^\s*@use\s/m.test(content) || !base.every((line) => content.includes(line))) {
     throw new Error(
-      `'${STYLESHEET}' is customized in a way this CLI does not edit (@use, or missing base imports). Make sure it contains, in order:\n  ${BASE_IMPORTS.join("\n  ")}\nthen one '@import "blazorui/<style>";' line per installed component.`,
+      `'${stylesheet}' is customized in a way this CLI does not edit (@use, or missing base imports). Make sure it contains, in order:\n  ${base.join("\n  ")}\nthen one '@import "blazorui/<style>";' line per installed component.`,
     )
   }
   for (const style of items.flatMap((item) => item.styles ?? [])) {
@@ -270,18 +364,20 @@ function planStylesheet(projectDir, items) {
   return { full, content: content === original ? null : content }
 }
 
-function planEntry({ entry, entryPath }, removeIndexCss) {
+/** Imports the theme stylesheet once from the entry (main.tsx or app/layout.tsx) and drops imports of deleted template CSS. */
+function planEntry({ entry, entryPath, entryImport, stylesheet }, deleted) {
   const original = readFileSync(entryPath, "utf8")
   if (/bootstrap(\/dist\/css\/bootstrap(\.min)?\.css|\.min\.css|\.css)/.test(original))
-    throw new Error(
-      `'${entry}' imports Bootstrap CSS directly. Remove that import: Bootstrap is compiled from SCSS in '${STYLESHEET}'. Then run init again.`,
-    )
+    throw new Error(`'${entry}' imports Bootstrap CSS directly. Remove that import: Bootstrap is compiled from SCSS in '${stylesheet}'. Then run init again.`)
   const newline = original.includes("\r\n") ? "\r\n" : "\n"
   let content = original
-  // The template index.css is removed with the other starter leftovers; so is its import.
-  if (removeIndexCss) content = content.replace(/^import ['"]\.\/index\.css['"];?\r?\n/m, "")
+  const entryDir = path.posix.dirname(entry)
+  for (const relative of deleted.filter((file) => file.endsWith(".css") && path.posix.dirname(file) === entryDir)) {
+    const name = path.posix.basename(relative).replace(/\./g, "\\.")
+    content = content.replace(new RegExp(`^import ['"]\\./${name}['"];?\\r?\\n`, "m"), "")
+  }
   // First line, so the app's own CSS (imported later) can override the theme.
-  if (!content.includes("styles/blazorui.scss")) content = `import "./styles/blazorui.scss"${newline}${content}`
+  if (!content.includes("styles/blazorui.scss")) content = `import "${entryImport}"${newline}${content}`
   return { full: entryPath, content: content === original ? null : content }
 }
 
@@ -292,12 +388,14 @@ function installedMajor(projectDir, name) {
   return Number(String(JSON.parse(readFileSync(manifest, "utf8")).version).split(".")[0])
 }
 
-function isViteTemplate(projectDir, relative) {
+const rangeMajor = (range) => Number(/\d+/.exec(range ?? "")?.[0])
+
+function isTemplate(projectDir, { template }, relative) {
   const full = path.join(projectDir, ...relative.split("/"))
-  if (!existsSync(full) || !VITE_TEMPLATE[relative]) return false
+  if (!existsSync(full) || !template[relative]) return false
   const bytes = readFileSync(full)
   const normalized = relative.endsWith(".png") ? bytes : Buffer.from(bytes.toString("utf8").replace(/\r\n/g, "\n"))
-  return VITE_TEMPLATE[relative].includes(sha256(normalized))
+  return template[relative].includes(sha256(normalized))
 }
 
 function missingPackages(packageJson, items) {

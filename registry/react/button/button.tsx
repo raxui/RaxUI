@@ -1,3 +1,5 @@
+"use client"
+
 import { useBootTheme, bootThemeAttributes, type BootAppearance } from "@/lib/theme"
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"

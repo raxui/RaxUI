@@ -1,6 +1,6 @@
 # BlazorUI for React
 
-Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared BlazorUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. The first React milestone supports **React 18.3 or 19 with TypeScript and Vite 6 or later**, and the **Button** component ([ADR 006](adr/006-react-first-milestone.md), [ADR 010](adr/010-vite-6-and-later.md)).
+Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared BlazorUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. It supports **React 18.3 or 19 with TypeScript** on **Vite 6 or later** or **Next.js 15 or later (App Router, without Tailwind)**, and the **Button** component ([ADR 006](adr/006-react-first-milestone.md), [ADR 010](adr/010-vite-6-and-later.md), [ADR 011](adr/011-nextjs.md)).
 
 ## Install
 
@@ -33,6 +33,17 @@ npx blazorui-react add button
 Options: `--cwd <dir>`, `--no-install` (print the npm command instead of running it). With Yarn, pnpm, or Bun lockfiles the CLI prints the command for you to run.
 
 If your entry already imports Bootstrap CSS (for example `bootstrap/dist/css/bootstrap.min.css`), remove that import first: Bootstrap is compiled from SCSS in `src/styles/blazorui.scss`.
+
+## Next.js
+
+In a Next.js 15+ App Router project created without Tailwind (`npx create-next-app@latest --ts --app --no-tailwind`), the same commands work. The CLI detects Next.js and:
+
+- installs into the project root, or into `src/` when you used `--src-dir`;
+- creates `styles/blazorui.scss`, which imports Bootstrap by path (`../node_modules/bootstrap/scss/bootstrap`), and imports it as the first line of `app/layout.tsx`. Your layout is kept;
+- replaces the unmodified template `app/page.tsx` with the welcome page (a client component), and removes the template `page.module.css`, `globals.css` (and its import), and `public/*.svg`. Changed files are kept and reported;
+- installs `lib/theme.tsx` and `components/ui/button.tsx` with `"use client"`, so use them from client components or pass them into server components as children.
+
+Tailwind projects, the Pages Router, JavaScript layouts, and Next.js 14 or older are rejected with a message ([ADR 011](adr/011-nextjs.md)).
 
 ## Use
 
@@ -88,4 +99,4 @@ Users who set their system to reduce transparency get opaque glass automatically
 - Unknown files, locally modified files, and files from another release are never silently replaced. Paths that escape the project, including through symlinks or junctions, are rejected.
 - Ordinary write failures restore original files and remove new empty folders.
 - Sass prints `@import` deprecation warnings that come from Bootstrap 5.3 itself.
-- Only React + Vite 6 or later and the Button component are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` template App; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.
+- Only React on Vite 6+ or Next.js 15+ (App Router, no Tailwind) and the Button component are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` App or the `create-next-app` 15.x–16.x page; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.

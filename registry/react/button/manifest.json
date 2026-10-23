@@ -17,7 +17,7 @@
       "source": "registry/react/button/button.tsx",
       "target": "components/ui/button.tsx",
       "type": "tsx",
-      "sha256": "d115434dc62d773a34158e4c81c008d4d5cd9c4c811d30373385dfaae4e86968"
+      "sha256": "659000f7049bea1362785d4dbbefa8dc3df6033f6cf4c9ed97671f451c92746c"
     },
     {
       "source": "theme/scss/components/_button.scss",

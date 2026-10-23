@@ -257,6 +257,82 @@ describe("blazorui-react init and add button", () => {
     expect(result.out).toContain("Kept your src/App.tsx")
   })
 
+  describe("Next.js (App Router)", () => {
+    const NEXT_FILES = ["app/layout.tsx", "app/page.tsx", "app/page.module.css", "app/globals.css", "public/file.svg", "public/globe.svg", "public/next.svg", "public/vercel.svg", "public/window.svg"]
+
+    /** A create-next-app 16 project without Tailwind, optionally with --src-dir. */
+    function createNextApp({ srcDir = false, dependencies = {} as Record<string, string> } = {}) {
+      rmSync(file("src"), { recursive: true, force: true })
+      writeFileSync(path.join(app, "package.json"), JSON.stringify({ dependencies: { ...DEPENDENCIES, next: "16.4.3", ...dependencies } }))
+      const fixture = path.resolve("tests/react/fixtures/next-app")
+      for (const relative of NEXT_FILES) {
+        const target = srcDir && relative.startsWith("app/") ? `src/${relative}` : relative
+        mkdirSync(path.dirname(file(target)), { recursive: true })
+        writeFileSync(file(target), readFileSync(path.join(fixture, relative)))
+      }
+    }
+
+    it.each([false, true])("installs into the source root and replaces the template page (src dir: %s)", (srcDir) => {
+      createNextApp({ srcDir })
+      const root = srcDir ? "src/" : ""
+      ok(cli("init"))
+
+      expect(read(`${root}app/page.tsx`)).toMatch(/^"use client"/)
+      expect(read(`${root}app/page.tsx`)).toContain('from "../components/ui/button"')
+      expect(read(`${root}lib/theme.tsx`)).toMatch(/^"use client"/)
+      expect(existsSync(file(`${root}components/ui/button.tsx`))).toBe(true)
+      expect(read(`${root}styles/blazorui.scss`)).toContain('@import "blazorui/components/starter";')
+      expect(read(`${root}styles/blazorui.scss`)).toContain(`@import "${srcDir ? "../../" : "../"}node_modules/bootstrap/scss/bootstrap";`)
+      for (const leftover of [`${root}app/page.module.css`, `${root}app/globals.css`, "public/next.svg", "public/vercel.svg"]) {
+        expect(existsSync(file(leftover)), leftover).toBe(false)
+      }
+
+      const layout = read(`${root}app/layout.tsx`)
+      expect(layout.startsWith('import "../styles/blazorui.scss"\n')).toBe(true)
+      expect(layout).not.toContain("./globals.css")
+      expect(layout).toContain("next/font/google") // the layout itself is kept
+      expect(json("blazorui.react.json")).toMatchObject({ bundler: "next", entry: `${root}app/layout.tsx`, stylesheet: `${root}styles/blazorui.scss` })
+
+      const before = snapshot()
+      ok(cli("init"))
+      expect(snapshot()).toEqual(before)
+    })
+
+    it("keeps a changed page and its styles", () => {
+      createNextApp()
+      writeFileSync(file("app/page.tsx"), "export default function Home() { return <h1>Mine</h1> }\n")
+      const result = cli("init")
+      ok(result)
+      expect(read("app/page.tsx")).toContain("Mine")
+      expect(existsSync(file("app/globals.css"))).toBe(true)
+      expect(read("app/layout.tsx")).toContain("./globals.css")
+      expect(result.out).toContain("Kept your app/page.tsx (it differs from the Next.js template)")
+    })
+
+    it.each([
+      ["Tailwind dependency", { dependencies: { "@tailwindcss/postcss": "4.1.0" } }, /Tailwind are not supported/],
+      ["Next.js 14", { dependencies: { next: "14.2.0" } }, /Next.js 15 or later is required/],
+    ])("rejects %s", (_label, options, message) => {
+      createNextApp(options)
+      const before = snapshot()
+      expect(cli("init")).toMatchObject({ code: 1, err: expect.stringMatching(message) })
+      expect(snapshot()).toEqual(before)
+    })
+
+    it("rejects Tailwind configured in postcss", () => {
+      createNextApp()
+      writeFileSync(file("postcss.config.mjs"), 'export default { plugins: ["@tailwindcss/postcss"] }\n')
+      expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("Tailwind are not supported") })
+    })
+
+    it("rejects the Pages Router", () => {
+      writeFileSync(path.join(app, "package.json"), JSON.stringify({ dependencies: { ...DEPENDENCIES, next: "15.5.0" } }))
+      mkdirSync(file("pages"), { recursive: true })
+      writeFileSync(file("pages/index.tsx"), "export default function Home() { return null }\n")
+      expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("Pages Router is not supported") })
+    })
+  })
+
   it("keeps every packed CLI file visible to git", () => {
     // A .NET-style `bin/` ignore once hid the CLI entry point, so CI packed a CLI without its command.
     const packed = ["bin/blazorui-react.mjs", "src/cli.mjs", "src/registry.mjs", "src/safety.mjs", "src/state.mjs", "package.json"]

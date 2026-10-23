@@ -50,8 +50,8 @@ export function loadConfig(projectDir, current) {
   const config = readJson(projectDir, CONFIG_FILE)
   if (!config) return null
   ensureSupported(config.registryVersion, current, CONFIG_FILE)
-  if (config.framework !== "react" || config.bundler !== "vite")
-    throw new Error(`'${CONFIG_FILE}' must use framework 'react' and bundler 'vite'.`)
+  if (config.framework !== "react" || !["vite", "next"].includes(config.bundler))
+    throw new Error(`'${CONFIG_FILE}' must use framework 'react' and bundler 'vite' or 'next'.`)
   return config
 }
 
