@@ -188,7 +188,7 @@ Validate the complete installation plan before writing. Stage files and preserve
 
 ### 5.4 React CLI
 
-`src/react-cli` is a Node CLI (`npx blazorui-react`, provisional name) for React + Vite applications ([ADR 006](docs/adr/006-react-first-milestone.md)). The first React milestone provides only `init` and `add button`.
+`src/react-cli` is a Node CLI (`npx blazorui-react`, provisional name) for React applications on Vite 6 or later ([ADR 006](docs/adr/006-react-first-milestone.md), [ADR 010](docs/adr/010-vite-6-and-later.md)). The first React milestone provides only `init` and `add button`.
 
 - `init` checks for Vite and `src/main.tsx` or `src/main.jsx`, copies the foundation (`src/lib/theme.tsx`, `src/lib/utils.ts`, theme partials under `src/styles/blazorui/`), creates `src/styles/blazorui.scss`, adds one import to the entry, and installs pinned npm packages with `npm install --ignore-scripts`.
 - `add button` copies `src/components/ui/button.tsx` and its SCSS partial, rewrites `@/lib/*` imports to relative paths, and adds the partial to `src/styles/blazorui.scss` once.
@@ -559,6 +559,7 @@ Accepted ADRs:
 - [007 — Blazor uses the shared theme](docs/adr/007-blazor-shared-theme.md)
 - [008 — Starter app replaces the template shell](docs/adr/008-starter-app.md)
 - [009 — Blazor on .NET 8, 9, and 10](docs/adr/009-dotnet-8-9-10.md)
+- [010 — React on Vite 6 and later](docs/adr/010-vite-6-and-later.md)
 
 ADRs should record the context, decision, alternatives considered, and consequences.
 

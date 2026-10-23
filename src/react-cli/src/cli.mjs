@@ -17,16 +17,29 @@ const STYLESHEET = "src/styles/blazorui.scss"
 const STARTER = "starter"
 const STARTER_APP = "src/App.tsx"
 
-// SHA-256 of create-vite 9.3.1 `react-ts` files (text normalized to LF). The starter replaces App.tsx only
-// when it is unmodified, and then removes the template files that only App.tsx used (ADR 008).
+const MIN_VITE_MAJOR = 6 // ADR 010
+
+// SHA-256 of create-vite `react-ts` files (text normalized to LF), per path: create-vite 9 (Vite 8) and
+// create-vite 6-8 (Vite 6 and 7), which share one template. The starter replaces App.tsx only when it is
+// one of these, and then removes the template files only that App used (ADR 008). public/vite.svg stays:
+// the older template's index.html uses it as the favicon.
 const VITE_TEMPLATE = {
-  "src/App.tsx": "c7184fc9b1c36d7492093e1b5f5844c440bd3396deeace21b6699d3838f6ecb2",
-  "src/App.css": "6e25a776d3e8102da5bacb3cb99f4a5fc662a2e01e6143140671a556d28c3d5c",
-  "src/index.css": "535c25dd1f338486ab3678832fc698011c8b8d1fe4ffd3d0ef5e33181457cc9f",
-  "src/assets/hero.png": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
-  "src/assets/react.svg": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
-  "src/assets/vite.svg": "5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f",
-  "public/icons.svg": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+  "src/App.tsx": [
+    "c7184fc9b1c36d7492093e1b5f5844c440bd3396deeace21b6699d3838f6ecb2",
+    "5cb2286e66193c18f0943efb0dcecc72278cd3d92c6dd619dc3b73b73e2b9495",
+  ],
+  "src/App.css": [
+    "6e25a776d3e8102da5bacb3cb99f4a5fc662a2e01e6143140671a556d28c3d5c",
+    "a0715e0a09edbd0fbde65816a75e0fa0fc8b314c5260c0768c19bf3aac22621a",
+  ],
+  "src/index.css": [
+    "535c25dd1f338486ab3678832fc698011c8b8d1fe4ffd3d0ef5e33181457cc9f",
+    "bdba2919116e9b72ac06558f88371dc4c80fb0196da6403d239e0fb085250892",
+  ],
+  "src/assets/hero.png": ["881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c"],
+  "src/assets/react.svg": ["35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5"],
+  "src/assets/vite.svg": ["5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f"],
+  "public/icons.svg": ["b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a"],
 }
 const VITE_LEFTOVERS = Object.keys(VITE_TEMPLATE).filter((file) => file !== STARTER_APP)
 const ENTRIES = ["src/main.tsx", "src/main.jsx"]
@@ -220,6 +233,8 @@ function detectProject(projectDir) {
   const packageJson = JSON.parse(readFileSync(packagePath, "utf8"))
   const dependencies = { ...packageJson.dependencies, ...packageJson.devDependencies }
   if (!dependencies.vite || !dependencies.react) throw new Error("Only React + Vite projects are supported: 'react' and 'vite' must be dependencies.")
+  const viteMajor = installedMajor(projectDir, "vite") ?? Number(/\d+/.exec(dependencies.vite)?.[0])
+  if (!(viteMajor >= MIN_VITE_MAJOR)) throw new Error(`Vite ${MIN_VITE_MAJOR} or later is required; this project uses Vite '${dependencies.vite}'.`)
   const entry = ENTRIES.find((candidate) => existsSync(path.join(projectDir, candidate)))
   if (!entry) throw new Error(`No ${ENTRIES.join(" or ")} found.`)
   assertInsideProject(projectDir, path.join(projectDir, entry))
@@ -270,12 +285,19 @@ function planEntry({ entry, entryPath }, removeIndexCss) {
   return { full: entryPath, content: content === original ? null : content }
 }
 
+/** Major version of an installed package, or undefined before `npm install`. */
+function installedMajor(projectDir, name) {
+  const manifest = path.join(projectDir, "node_modules", ...name.split("/"), "package.json")
+  if (!existsSync(manifest)) return undefined
+  return Number(String(JSON.parse(readFileSync(manifest, "utf8")).version).split(".")[0])
+}
+
 function isViteTemplate(projectDir, relative) {
   const full = path.join(projectDir, ...relative.split("/"))
   if (!existsSync(full) || !VITE_TEMPLATE[relative]) return false
   const bytes = readFileSync(full)
   const normalized = relative.endsWith(".png") ? bytes : Buffer.from(bytes.toString("utf8").replace(/\r\n/g, "\n"))
-  return sha256(normalized) === VITE_TEMPLATE[relative]
+  return VITE_TEMPLATE[relative].includes(sha256(normalized))
 }
 
 function missingPackages(packageJson, items) {

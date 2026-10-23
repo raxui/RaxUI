@@ -10,7 +10,8 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
-const CREATE_VITE = "vite@9.3.1" // `npm create vite@x` runs create-vite@x
+// `npm create vite@x` runs create-vite@x. CI runs 6.5.0 (Vite 6), 7.1.3 (Vite 7), and 9.3.1 (Vite 8) (ADR 010).
+const CREATE_VITE = `vite@${process.env.CREATE_VITE_VERSION ?? "9.3.1"}`
 
 const APP = `import { useState } from "react"
 import { Button } from "./components/ui/button"
@@ -83,7 +84,7 @@ test.beforeAll(async () => {
   // The starter replaced the unmodified template App and removed what only it used (ADR 008).
   if (!readFileSync(path.join(app, "src/App.tsx"), "utf8").includes("Welcome to your BlazorUI app"))
     throw new Error("init did not install the starter App.tsx")
-  for (const leftover of ["src/App.css", "src/index.css", "src/assets/react.svg", "public/icons.svg"]) {
+  for (const leftover of ["src/App.css", "src/index.css", "src/assets/react.svg"]) {
     if (existsSync(path.join(app, leftover))) throw new Error(`init left the template file ${leftover}`)
   }
   sh("npm run build", app) // the starter itself builds

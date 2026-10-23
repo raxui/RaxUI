@@ -44,7 +44,7 @@ Components that require browser APIs or JavaScript interop must handle server-si
 
 Additional hosting and rendering modes are not advertised as supported until verified. Reusable components do not hard-code a render mode; the consumer application selects it.
 
-The first React milestone targets **React 18.3 and 19 with TypeScript and Vite** ([ADR 006](docs/adr/006-react-first-milestone.md)). Other React build tools (Next.js, Create React App) are future targets until tested.
+The first React milestone targets **React 18.3 and 19 with TypeScript and Vite 6 or later** ([ADR 006](docs/adr/006-react-first-milestone.md), [ADR 010](docs/adr/010-vite-6-and-later.md)). Other React build tools (Next.js, Create React App) are future targets until tested.
 
 ## 5. Technology Stack
 
