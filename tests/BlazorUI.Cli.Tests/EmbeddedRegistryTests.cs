@@ -20,6 +20,15 @@ public class EmbeddedRegistryTests
     }
 
     [Fact]
+    public void React_registry_is_not_embedded()
+    {
+        var names = typeof(EmbeddedRegistry).Assembly.GetManifestResourceNames();
+
+        Assert.DoesNotContain(names, n => n.StartsWith("BlazorUI.Cli.registry.react.", StringComparison.OrdinalIgnoreCase));
+        Assert.Contains(names, n => n.StartsWith("BlazorUI.Cli.registry.components.button.", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
     public void GetComponentManifest_returns_valid_button_manifest()
     {
         var manifest = _registry.GetComponentManifest("button");
