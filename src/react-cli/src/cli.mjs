@@ -14,6 +14,21 @@ const registryRoot = existsSync(path.join(packageRoot, "registry/react/index.jso
 export const VERSION = JSON.parse(readFileSync(path.join(packageRoot, "package.json"), "utf8")).version
 
 const STYLESHEET = "src/styles/blazorui.scss"
+const STARTER = "starter"
+const STARTER_APP = "src/App.tsx"
+
+// SHA-256 of create-vite 9.3.1 `react-ts` files (text normalized to LF). The starter replaces App.tsx only
+// when it is unmodified, and then removes the template files that only App.tsx used (ADR 008).
+const VITE_TEMPLATE = {
+  "src/App.tsx": "c7184fc9b1c36d7492093e1b5f5844c440bd3396deeace21b6699d3838f6ecb2",
+  "src/App.css": "6e25a776d3e8102da5bacb3cb99f4a5fc662a2e01e6143140671a556d28c3d5c",
+  "src/index.css": "535c25dd1f338486ab3678832fc698011c8b8d1fe4ffd3d0ef5e33181457cc9f",
+  "src/assets/hero.png": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+  "src/assets/react.svg": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+  "src/assets/vite.svg": "5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f",
+  "public/icons.svg": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+}
+const VITE_LEFTOVERS = Object.keys(VITE_TEMPLATE).filter((file) => file !== STARTER_APP)
 const ENTRIES = ["src/main.tsx", "src/main.jsx"]
 const BASE_IMPORTS = ['@import "blazorui/variables";', '@import "bootstrap/scss/bootstrap";', '@import "blazorui/core";']
 const STYLESHEET_TEMPLATE = `// BlazorUI theme. Set Bootstrap Sass variables above the imports, for example:
@@ -56,10 +71,11 @@ export function run(args, { cwd, stdout, stderr }) {
         stdout.write(VERSION + "\n")
         return 0
       case "init":
-        return installItems(projectDir, "foundation", { init: true, install, stdout })
+        // The starter requires the foundation, so this installs both (ADR 008).
+        return installItems(projectDir, STARTER, { init: true, install, stdout })
       case "add":
         if (!name) throw new Error("Missing component name. Usage: blazorui-react add <component>")
-        if (name === "foundation") throw new Error("'foundation' is installed by 'blazorui-react init'.")
+        if (name === "foundation" || name === STARTER) throw new Error(`'${name}' is installed by 'blazorui-react init'.`)
         return installItems(projectDir, name, { init: false, install, stdout })
       default:
         stderr.write(`Unknown command '${command ?? ""}'.\n\n${USAGE}`)
@@ -80,7 +96,10 @@ function installItems(projectDir, name, { init, install, stdout }) {
 
   // 1. Plan every write and check every conflict before touching the disk.
   const planned = []
+  const notes = []
   for (const item of items) {
+    // Starter files never stop init: what the developer changed is kept and reported (ADR 008).
+    const starter = item.name === STARTER
     for (const file of item.files) {
       const target = `src/${file.target}`
       const full = path.join(projectDir, ...target.split("/"))
@@ -89,19 +108,43 @@ function installItems(projectDir, name, { init, install, stdout }) {
       const installedHash = sha256(content)
       const tracked = findTracked(lock, target)
 
-      if (tracked && tracked.sourceHash !== file.sha256)
+      if (tracked && tracked.sourceHash !== file.sha256) {
+        if (starter) {
+          notes.push(`Kept ${target} from an earlier BlazorUI release.`)
+          continue
+        }
         throw new Error(`'${target}' was installed from another registry release and differs from this CLI's version. Updating installed files is not supported yet.`)
+      }
       if (existsSync(full)) {
-        if (!tracked) throw new Error(`'${target}' already exists and is not managed by BlazorUI. Refusing to overwrite unknown file.`)
-        if (sha256(readFileSync(full)) !== tracked.installedHash)
+        if (!tracked && !(starter && isViteTemplate(projectDir, target))) {
+          if (!starter) throw new Error(`'${target}' already exists and is not managed by BlazorUI. Refusing to overwrite unknown file.`)
+          notes.push(`Kept your ${target} (it differs from the Vite template), so the BlazorUI version was not installed.`)
+          continue
+        }
+        if (tracked && sha256(readFileSync(full)) !== tracked.installedHash) {
+          if (starter) continue // edited after init: it is the developer's file now
           throw new Error(`'${target}' was modified locally. Refusing to overwrite modified file.`)
+        }
+      } else if (starter && tracked) {
+        continue // deleted after init on purpose
       }
       planned.push({ item, full, target, content, sourceHash: file.sha256, installedHash })
     }
   }
 
+  // Template files only the template App.tsx used go once the starter App owns the page.
+  const deletes = []
+  if (planned.some((write) => write.target === STARTER_APP) || findTracked(lock, STARTER_APP)) {
+    for (const relative of VITE_LEFTOVERS) {
+      const full = path.join(projectDir, ...relative.split("/"))
+      assertInsideProject(projectDir, full)
+      if (isViteTemplate(projectDir, relative)) deletes.push({ full, relative })
+      else if (existsSync(full)) notes.push(`Kept your ${relative} (it differs from the Vite template); remove it if you no longer need it.`)
+    }
+  }
+
   const stylesheet = planStylesheet(projectDir, items)
-  const entry = planEntry(project)
+  const entry = planEntry(project, deletes.some((entry) => entry.relative === "src/index.css"))
   const packageManifest = path.join(projectDir, "package.json")
   const lockfiles = ["package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb"].map((file) => path.join(projectDir, file))
 
@@ -109,6 +152,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
   const backup = new FileBackup()
   try {
     for (const write of planned) backup.write(write.full, write.content)
+    for (const { full } of deletes) backup.delete(full)
     if (stylesheet.content !== null) backup.write(stylesheet.full, stylesheet.content)
     if (entry.content !== null) backup.write(entry.full, entry.content)
 
@@ -141,13 +185,16 @@ function installItems(projectDir, name, { init, install, stdout }) {
     })
 
     for (const item of items) {
+      // Keep records of files this run skipped (kept starter files) and replace the ones it wrote.
+      const files = new Map((lock.items[item.name]?.files ?? []).map((entry) => [entry.target, entry]))
+      for (const { target, sourceHash, installedHash } of planned.filter((write) => write.item === item))
+        files.set(target, { target, sourceHash, installedHash })
+      if (files.size === 0) continue
       lock.items[item.name] = {
         version: item.version,
         registryVersion: VERSION,
         manifestSha256: item.manifestSha256,
-        files: planned
-          .filter((write) => write.item === item)
-          .map(({ target, sourceHash, installedHash }) => ({ target, sourceHash, installedHash })),
+        files: [...files.values()].sort((a, b) => (a.target < b.target ? -1 : a.target > b.target ? 1 : 0)),
       }
     }
     lock.registryVersion = VERSION
@@ -157,7 +204,12 @@ function installItems(projectDir, name, { init, install, stdout }) {
     throw error
   }
 
-  stdout.write(`${init ? "BlazorUI initialized" : `Added ${name}`}:\n${planned.map((write) => `  + ${write.target}`).join("\n")}\n`)
+  const lines = [
+    ...planned.map((write) => `  + ${write.target}`),
+    ...deletes.map(({ relative }) => `  - ${relative} (template file)`),
+    ...notes.map((note) => `Note: ${note}`),
+  ]
+  stdout.write(`${init ? "BlazorUI initialized" : `Added ${name}`}:\n${lines.join("\n")}\n`)
   return 0
 }
 
@@ -174,13 +226,13 @@ function detectProject(projectDir) {
   return { packageJson, entry, entryPath: path.join(projectDir, entry) }
 }
 
-/** Registry sources import the foundation as "@/lib/x"; installed files use relative imports. */
+/** Registry sources import "@/lib/x" and "@/components/ui/x"; installed files use relative imports. */
 function rewriteImports(bytes, file) {
   if (file.type === "scss") return bytes
   const fromDir = path.posix.dirname(file.target)
   return Buffer.from(
-    bytes.toString("utf8").replace(/(["'])@\/lib\/([^"']+)\1/g, (_match, quote, module) => {
-      const relative = path.posix.relative(fromDir, `lib/${module}`)
+    bytes.toString("utf8").replace(/(["'])@\/((?:lib|components\/ui)\/[^"']+)\1/g, (_match, quote, module) => {
+      const relative = path.posix.relative(fromDir, module)
       return quote + (relative.startsWith(".") ? relative : `./${relative}`) + quote
     }),
   )
@@ -203,16 +255,27 @@ function planStylesheet(projectDir, items) {
   return { full, content: content === original ? null : content }
 }
 
-function planEntry({ entry, entryPath }) {
+function planEntry({ entry, entryPath }, removeIndexCss) {
   const original = readFileSync(entryPath, "utf8")
   if (/bootstrap(\/dist\/css\/bootstrap(\.min)?\.css|\.min\.css|\.css)/.test(original))
     throw new Error(
       `'${entry}' imports Bootstrap CSS directly. Remove that import: Bootstrap is compiled from SCSS in '${STYLESHEET}'. Then run init again.`,
     )
-  if (original.includes("styles/blazorui.scss")) return { full: entryPath, content: null }
   const newline = original.includes("\r\n") ? "\r\n" : "\n"
+  let content = original
+  // The template index.css is removed with the other starter leftovers; so is its import.
+  if (removeIndexCss) content = content.replace(/^import ['"]\.\/index\.css['"];?\r?\n/m, "")
   // First line, so the app's own CSS (imported later) can override the theme.
-  return { full: entryPath, content: `import "./styles/blazorui.scss"${newline}${original}` }
+  if (!content.includes("styles/blazorui.scss")) content = `import "./styles/blazorui.scss"${newline}${content}`
+  return { full: entryPath, content: content === original ? null : content }
+}
+
+function isViteTemplate(projectDir, relative) {
+  const full = path.join(projectDir, ...relative.split("/"))
+  if (!existsSync(full) || !VITE_TEMPLATE[relative]) return false
+  const bytes = readFileSync(full)
+  const normalized = relative.endsWith(".png") ? bytes : Buffer.from(bytes.toString("utf8").replace(/\r\n/g, "\n"))
+  return sha256(normalized) === VITE_TEMPLATE[relative]
 }
 
 function missingPackages(packageJson, items) {

@@ -18,10 +18,15 @@ blazorui init
 blazorui add button
 ```
 
-In `Components/Pages/Home.razor`, use:
+`init` replaces the template's sidebar layout and sample pages with a BlazorUI
+app shell and a welcome page where you can try the theme. It only replaces or
+removes template files you have not changed; anything you edited is kept and
+reported ([ADR 008](docs/adr/008-starter-app.md)).
+
+Use Button in any page, for example a new `Components/Pages/Counter.razor`:
 
 ```razor
-@page "/"
+@page "/counter"
 @rendermode InteractiveServer
 
 <Button OnClick="@(() => count++)">Clicked @count times</Button>

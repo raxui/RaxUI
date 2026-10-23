@@ -115,6 +115,30 @@ public class InstallationWorkflowTests : IDisposable
     }
 
     [Fact]
+    public void Init_keeps_a_changed_layout_and_home_page_and_removes_nothing()
+    {
+        CreateSampleBlazorProject();
+        var layout = Path.Combine(_testDirectory, "Components", "Layout", "MainLayout.razor");
+        var home = Path.Combine(_testDirectory, "Components", "Pages", "Home.razor");
+        var weather = Path.Combine(_testDirectory, "Components", "Pages", "Weather.razor");
+        Directory.CreateDirectory(Path.GetDirectoryName(layout)!);
+        Directory.CreateDirectory(Path.GetDirectoryName(home)!);
+        File.WriteAllText(layout, "@inherits LayoutComponentBase\n<div class=\"mine\">@Body</div>\n");
+        File.WriteAllText(home, "@page \"/\"\n<h1>My home</h1>\n");
+        File.WriteAllText(weather, "@page \"/weather\"\n");
+
+        var output = new StringWriter();
+        Assert.Equal(0, Program.Run(["init"], _testDirectory, output, new StringWriter()));
+
+        Assert.Contains("class=\"mine\"", File.ReadAllText(layout));
+        Assert.Contains("My home", File.ReadAllText(home));
+        Assert.True(File.Exists(weather)); // the template layout was not replaced, so its pages stay
+        Assert.Contains("Kept your Components/Layout/MainLayout.razor", output.ToString());
+        Assert.Contains("Kept your Components/Pages/Home.razor", output.ToString());
+        Assert.False(BlazorUiLock.LoadOrCreate(_testDirectory).Components.ContainsKey("starter"));
+    }
+
+    [Fact]
     public void Init_points_out_stylesheets_from_an_earlier_release()
     {
         CreateSampleBlazorProject();

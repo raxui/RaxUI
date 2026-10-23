@@ -3,7 +3,7 @@
 import { expect, test, type Page } from "@playwright/test"
 import { execSync, spawn, type ChildProcess } from "node:child_process"
 import { createHash } from "node:crypto"
-import { mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs"
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs"
 import { createServer } from "node:net"
 import { tmpdir } from "node:os"
 import path from "node:path"
@@ -79,6 +79,15 @@ test.beforeAll(async () => {
 
   sh("npx blazorui-react init", app)
   sh("npx blazorui-react add button", app)
+
+  // The starter replaced the unmodified template App and removed what only it used (ADR 008).
+  if (!readFileSync(path.join(app, "src/App.tsx"), "utf8").includes("Welcome to your BlazorUI app"))
+    throw new Error("init did not install the starter App.tsx")
+  for (const leftover of ["src/App.css", "src/index.css", "src/assets/react.svg", "public/icons.svg"]) {
+    if (existsSync(path.join(app, leftover))) throw new Error(`init left the template file ${leftover}`)
+  }
+  sh("npm run build", app) // the starter itself builds
+
   writeFileSync(path.join(app, "src/App.tsx"), APP)
   sh("npm run build", app)
 

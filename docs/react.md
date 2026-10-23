@@ -24,9 +24,11 @@ npx blazorui-react add button
 - copies `src/lib/theme.tsx`, `src/lib/utils.ts`, and the theme partials into `src/styles/blazorui/`;
 - creates `src/styles/blazorui.scss` (theme variables, then Bootstrap, then the theme core);
 - adds `import "./styles/blazorui.scss"` as the first line of `src/main.tsx` (or `src/main.jsx`);
-- installs missing packages (`bootstrap`, `sass`, `clsx`) with `npm install --save-exact --ignore-scripts`.
+- installs Button (`src/components/ui/button.tsx` and its style partial), used by the welcome page;
+- replaces the unmodified Vite template `src/App.tsx` with a BlazorUI app shell and welcome page where you can try the theme, and removes the template files only that App used (`App.css`, `index.css` and its import, `src/assets/*`, `public/icons.svg`). Files you changed are kept and reported ([ADR 008](adr/008-starter-app.md));
+- installs missing packages (`bootstrap`, `sass`, `clsx`, `@radix-ui/react-slot`) with `npm install --save-exact --ignore-scripts`.
 
-`add button` copies `src/components/ui/button.tsx` and `src/styles/blazorui/components/_button.scss`, adds the style import to `src/styles/blazorui.scss`, and installs `@radix-ui/react-slot`.
+`add <component>` copies a component and its style partial and adds the style import to `src/styles/blazorui.scss`. `add button` after `init` changes nothing, since Button is already installed.
 
 Options: `--cwd <dir>`, `--no-install` (print the npm command instead of running it). With Yarn, pnpm, or Bun lockfiles the CLI prints the command for you to run.
 

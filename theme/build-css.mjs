@@ -9,7 +9,7 @@ import * as sass from "sass"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const output = path.join(root, "registry/styles/blazorui.css")
-const COMPONENTS = ["button"]
+const COMPONENTS = ["button", "starter"]
 
 export function compileBlazorTheme() {
   const entry = ['@import "core";', ...COMPONENTS.map((name) => `@import "components/${name}";`)].join("\n")

@@ -12,7 +12,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "baseUrl": ".",
-    "paths": { "@/lib/*": ["registry/react/foundation/*"] }
+    "paths": {
+      "@/lib/*": ["registry/react/foundation/*"],
+      "@/components/ui/button": ["registry/react/button/button.tsx"]
+    }
   },
-  "include": ["registry/react", "tests/react"]
+  "include": ["registry/react", "tests/react"],
+  // Byte-for-byte copies of the Vite template, compared by hash, not compiled here.
+  "exclude": ["tests/react/fixtures"]
 }

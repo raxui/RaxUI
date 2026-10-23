@@ -1,3 +1,4 @@
 * text=auto
 registry/** text eol=lf
 theme/** text eol=lf
+tests/react/fixtures/** -text

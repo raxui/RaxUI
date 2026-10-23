@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "name": "starter",
+  "version": "0.1.0",
+  "description": "App shell and welcome page that replace the unmodified Vite React template App.",
+  "requires": [
+    "foundation",
+    "button"
+  ],
+  "packages": {},
+  "styles": [
+    "components/starter"
+  ],
+  "files": [
+    {
+      "source": "registry/react/starter/App.tsx",
+      "target": "App.tsx",
+      "type": "tsx",
+      "sha256": "266a09ffc956634f6fa7f0b813b872eb91e310ccc3f54d66cb2f1c41dad107af"
+    },
+    {
+      "source": "theme/scss/components/_starter.scss",
+      "target": "styles/blazorui/components/_starter.scss",
+      "type": "scss",
+      "sha256": "0c9237670d3375cb4265300d32c94650c2a5a4b710865b1f865a1eb6d28fefea"
+    }
+  ]
+}

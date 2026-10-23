@@ -49,6 +49,18 @@ function cli(...args: string[]) {
 }
 
 const file = (relative: string) => path.join(app, ...relative.split("/"))
+
+/** Copies the create-vite 9.3.1 react-ts files the starter knows into the fake app; returns their paths. */
+function createViteTemplateFiles() {
+  const fixture = path.resolve("tests/react/fixtures/vite-react-ts")
+  const files: Record<string, true> = {}
+  for (const relative of ["src/App.tsx", "src/App.css", "src/index.css", "src/assets/hero.png", "src/assets/react.svg", "src/assets/vite.svg", "public/icons.svg"]) {
+    mkdirSync(path.dirname(file(relative)), { recursive: true })
+    writeFileSync(file(relative), readFileSync(path.join(fixture, relative)))
+    files[relative] = true
+  }
+  return files
+}
 const read = (relative: string) => readFileSync(file(relative), "utf8")
 const json = (relative: string) => JSON.parse(read(relative))
 
@@ -121,11 +133,10 @@ describe("blazorui-react init and add button", () => {
   })
 
   it("refuses to overwrite an unknown file", () => {
-    ok(cli("init"))
     mkdirSync(file("src/components/ui"), { recursive: true })
     writeFileSync(file("src/components/ui/button.tsx"), "// not ours")
     const before = snapshot()
-    expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("not managed by BlazorUI") })
+    expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("not managed by BlazorUI") })
     expect(snapshot()).toEqual(before)
   })
 
@@ -167,23 +178,53 @@ describe("blazorui-react init and add button", () => {
   })
 
   it("rolls back files and new folders when a write fails midway", () => {
-    ok(cli("init"))
-    // A file where the components style folder should be makes the second write fail.
+    // A file where the components style folder should be lets the first writes succeed, then fails.
+    mkdirSync(file("src/styles/blazorui"), { recursive: true })
     writeFileSync(file("src/styles/blazorui/components"), "")
     const before = snapshot()
-    expect(cli("add", "button").code).toBe(1)
+    expect(cli("init").code).toBe(1)
     expect(snapshot()).toEqual(before)
+    expect(existsSync(file("src/lib"))).toBe(false)
     expect(existsSync(file("src/components"))).toBe(false)
   })
 
   it("rejects a folder link that escapes the project, and writes nothing outside", () => {
-    ok(cli("init"))
     const outside = path.join(root, "outside")
     mkdirSync(outside)
     mkdirSync(file("src/components"))
     symlinkSync(outside, file("src/components/ui"), "junction")
-    expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("escapes the project") })
+    expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("escapes the project") })
     expect(readdirSync(outside)).toEqual([])
+  })
+
+  it("replaces the unmodified Vite template App with the starter and removes its leftovers", () => {
+    const template = createViteTemplateFiles()
+    ok(cli("init"))
+
+    expect(read("src/App.tsx")).toContain("Welcome to your BlazorUI app")
+    expect(read("src/App.tsx")).toContain('from "./lib/theme"')
+    for (const leftover of Object.keys(template).filter((name) => name !== "src/App.tsx")) {
+      expect(existsSync(file(leftover)), leftover).toBe(false)
+    }
+    expect(read("src/main.tsx")).not.toContain("./index.css")
+    expect(read("src/styles/blazorui.scss")).toContain('@import "blazorui/components/starter";')
+    expect(json("blazorui.react.lock.json").items.starter.files.map((entry: { target: string }) => entry.target)).toContain("src/App.tsx")
+
+    const before = snapshot()
+    ok(cli("init"))
+    expect(snapshot()).toEqual(before)
+  })
+
+  it("keeps a changed App.tsx and the files it may use, and says so", () => {
+    createViteTemplateFiles()
+    writeFileSync(file("src/App.tsx"), "export default function App() { return <h1>Mine</h1> }\n")
+    const result = cli("init")
+    ok(result)
+
+    expect(read("src/App.tsx")).toContain("Mine")
+    expect(existsSync(file("src/index.css"))).toBe(true)
+    expect(read("src/main.tsx")).toContain("./index.css")
+    expect(result.out).toContain("Kept your src/App.tsx")
   })
 
   it("keeps every packed CLI file visible to git", () => {

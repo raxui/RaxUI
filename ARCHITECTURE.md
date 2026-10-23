@@ -156,6 +156,7 @@ The CLI is responsible for:
 - Managing the Bootstrap assets selected by the project.
 - Detecting file conflicts and generating diffs.
 - Reporting configuration and installation problems.
+- Replacing the unmodified framework template layout and pages with the BlazorUI starter during `init`, keeping anything the developer changed ([ADR 008](docs/adr/008-starter-app.md)).
 
 The CLI should not contain component-specific UI logic. Component definitions and dependencies belong in the registry.
 
@@ -556,6 +557,7 @@ Accepted ADRs:
 - [005 — Multi-framework repository and shared theme](docs/adr/005-multi-framework-shared-theme.md)
 - [006 — React first milestone](docs/adr/006-react-first-milestone.md)
 - [007 — Blazor uses the shared theme](docs/adr/007-blazor-shared-theme.md)
+- [008 — Starter app replaces the template shell](docs/adr/008-starter-app.md)
 
 ADRs should record the context, decision, alternatives considered, and consequences.
 

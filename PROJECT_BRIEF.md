@@ -80,7 +80,7 @@ blazorui init
 blazorui add button
 ```
 
-The CLI copies the selected component source files and required dependencies into the application.
+The CLI copies the selected component source files and required dependencies into the application. `init` also replaces the unmodified framework template layout and sample pages with a BlazorUI app shell and a welcome page that shows the theme, in both Blazor and React ([ADR 008](docs/adr/008-starter-app.md)).
 
 Planned generated structure for the first milestone:
 

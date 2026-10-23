@@ -10,12 +10,14 @@ public class EmbeddedRegistry
 {
     public const int SupportedSchemaVersion = 1;
 
+    /// <summary>Destination of component files: <c>Components/UI/&lt;Folder&gt;/</c>.</summary>
+    public const string ComponentsDestination = "components";
+
+    /// <summary>Destination of starter files: the app's <c>Components/</c> folder (ADR 008).</summary>
+    public const string AppDestination = "app";
+
     private const string ResourcePrefix = "BlazorUI.Cli.registry.";
-    private static readonly Dictionary<string, string> FileTypeDestinations = new()
-    {
-        ["razor"] = "components",
-        ["isolated-css"] = "components",
-    };
+    private static readonly HashSet<string> FileTypes = ["razor", "isolated-css"];
 
     private readonly Assembly _assembly = typeof(EmbeddedRegistry).Assembly;
 
@@ -43,12 +45,21 @@ public class EmbeddedRegistry
                    ?? throw new KeyNotFoundException(
                        $"Component '{componentName}' was not found in registry. Available: {string.Join(", ", index.Components.Select(c => c.Name))}.");
 
-        var bytes = GetResourceBytes(item.Manifest);
+        return LoadManifest(item.Manifest, ComponentsDestination);
+    }
+
+    /// <summary>The starter layout and welcome page that <c>init</c> installs (ADR 008).</summary>
+    public ComponentManifest GetStarterManifest() => LoadManifest("starter/manifest.json", AppDestination);
+
+    private ComponentManifest LoadManifest(string manifestPath, string destination)
+    {
+        var bytes = GetResourceBytes(manifestPath);
         var manifest = JsonSerializer.Deserialize<ComponentManifest>(bytes, BlazorUiConfig.JsonOptions)
-                       ?? throw new InvalidOperationException($"Failed to deserialize manifest for '{componentName}'.");
+                       ?? throw new InvalidOperationException($"Failed to deserialize manifest '{manifestPath}'.");
 
         manifest.ManifestSha256 = ComputeSha256(bytes);
-        ValidateManifest(manifest);
+        manifest.SourceDirectory = manifestPath[..manifestPath.LastIndexOf('/')];
+        ValidateManifest(manifest, destination);
         return manifest;
     }
 
@@ -56,7 +67,7 @@ public class EmbeddedRegistry
     /// Rejects unsupported schema versions, file types, destinations, unsafe paths, and hash mismatches
     /// before any file is written.
     /// </summary>
-    public void ValidateManifest(ComponentManifest manifest)
+    public void ValidateManifest(ComponentManifest manifest, string destination = ComponentsDestination)
     {
         if (manifest.SchemaVersion != SupportedSchemaVersion)
         {
@@ -74,21 +85,22 @@ public class EmbeddedRegistry
             ValidatePathSafety(file.Source);
             ValidatePathSafety(file.Target);
 
-            if (!FileTypeDestinations.TryGetValue(file.Type, out var expectedDestination))
+            if (!FileTypes.Contains(file.Type))
                 throw new InvalidOperationException($"Unsupported file type '{file.Type}' for '{file.Source}'.");
 
-            if (file.Destination != expectedDestination)
+            if (file.Destination != destination)
                 throw new InvalidOperationException($"Unsupported destination '{file.Destination}' for '{file.Source}'.");
 
             var segments = file.Target.Split('/');
             if (segments.Length != 2)
-                throw new InvalidOperationException($"Target '{file.Target}' must have the form '<ComponentFolder>/<file>'.");
+                throw new InvalidOperationException($"Target '{file.Target}' must have the form '<Folder>/<file>'.");
 
             folders.Add(segments[0]);
-            VerifyHash($"components/{manifest.Name}/{file.Source}", file.Sha256);
+            VerifyHash($"{manifest.SourceDirectory}/{file.Source}", file.Sha256);
         }
 
-        if (folders.Count != 1)
+        // A component lives in one folder; the starter spans Layout/ and Pages/.
+        if (destination == ComponentsDestination && folders.Count != 1)
             throw new InvalidOperationException($"All files of '{manifest.Name}' must target one component folder.");
 
         foreach (var asset in manifest.Assets)

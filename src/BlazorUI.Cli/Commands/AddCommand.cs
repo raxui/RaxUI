@@ -43,7 +43,7 @@ public static class AddCommand
 
             foreach (var file in manifest.Files)
             {
-                var bytes = registry.GetResourceBytes($"components/{manifest.Name}/{file.Source}");
+                var bytes = registry.GetResourceBytes($"{manifest.SourceDirectory}/{file.Source}");
                 var hash = EmbeddedRegistry.ComputeSha256(bytes);
                 var targetPath = Path.Combine(componentsDir, file.Target);
                 ProjectPath.Validate(workingDirectory, targetPath);

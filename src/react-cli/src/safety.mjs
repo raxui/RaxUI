@@ -57,6 +57,11 @@ export class FileBackup {
     writeFileSync(file, content)
   }
 
+  delete(file) {
+    this.remember(file)
+    rmSync(file)
+  }
+
   restore() {
     for (const [file, original] of this.#originals) {
       try {

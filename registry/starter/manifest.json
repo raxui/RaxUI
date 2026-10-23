@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "name": "starter",
+  "version": "0.1.0",
+  "description": "App layout and welcome page that replace the unmodified Blazor template layout and pages.",
+  "dependencies": [],
+  "assets": [],
+  "files": [
+    {
+      "source": "MainLayout.razor",
+      "destination": "app",
+      "target": "Layout/MainLayout.razor",
+      "type": "razor",
+      "sha256": "47a073535873a82dd3bb0e1691e8e263e1563465269674ec3acd9b64e04fcfeb"
+    },
+    {
+      "source": "Home.razor",
+      "destination": "app",
+      "target": "Pages/Home.razor",
+      "type": "razor",
+      "sha256": "71d97d9145f66c816f94c37df16e0e576d2e71b7ddb64f42742e046dc9254e4e"
+    }
+  ]
+}
