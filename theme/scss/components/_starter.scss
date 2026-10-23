@@ -42,10 +42,12 @@
 
 .sheen-app-header-end {
   margin-inline-start: auto;
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
 }
 
 .sheen-app-main {
-  max-width: 64rem;
+  max-width: 72rem;
   margin-inline: auto;
   padding: 2.5rem 1.5rem 4rem;
 }
@@ -59,6 +61,8 @@
 .sheen-welcome {
   display: grid;
   gap: 1.5rem;
+
+  > section { min-width: 0; }
 
   h1 {
     font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
@@ -80,6 +84,7 @@
 
   pre {
     margin: 0;
+    overflow-x: auto;
     padding: 0.75rem 1rem;
     border-radius: var(--sheen-radius-control);
     background: rgba(var(--bs-emphasis-color-rgb), 0.06);
@@ -90,6 +95,46 @@
 .sheen-welcome-lead {
   color: var(--bs-secondary-color);
   max-width: 40rem;
+  line-height: 1.7;
+  margin-block-end: 0;
+}
+
+.sheen-welcome-intro { padding-block: 0.5rem 1rem; }
+
+.sheen-preview-description,
+.sheen-preview-hint {
+  color: var(--bs-secondary-color);
+  line-height: 1.6;
+}
+
+.sheen-preview-description { margin-block-end: 1.5rem; }
+.sheen-preview-hint {
+  font-size: 0.8125rem;
+  margin-block: 1.5rem 0;
+}
+
+.sheen-preview-panel .sheen-preview-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.sheen-next-steps {
+  border-block-start: 1px solid var(--bs-border-color);
+  padding-block-start: 1.5rem;
+}
+
+@media (min-width: 64rem) {
+  .sheen-welcome { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sheen-welcome-intro,
+  .sheen-next-steps { grid-column: 1 / -1; }
+}
+
+@media (max-width: 35.999rem) {
+  .sheen-app-main { padding: 1.5rem 1rem 2.5rem; }
+  .sheen-app-header { padding-inline: 1rem; }
+  .sheen-panel { padding: 1.25rem; }
+  .sheen-welcome .sheen-theme-row { flex-direction: column; align-items: flex-start; }
 }
 
 // One row per theme dimension: a label and a group of link buttons.
@@ -114,6 +159,43 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.sheen-accent-swatch {
+  --sheen-swatch-color: var(--bs-primary);
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover { background: rgba(var(--bs-emphasis-color-rgb), 0.06); }
+
+  // Blue must remain blue even when the surrounding theme has another accent.
+  &[data-sheen-swatch="blue"] { --sheen-swatch-color: #0d6efd; }
+
+  &::before {
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    border-radius: inherit;
+    background: var(--sheen-swatch-color);
+  }
+
+  &[aria-pressed="true"],
+  &[aria-current="true"] {
+    box-shadow: inset 0 0 0 2px var(--sheen-swatch-color);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bs-emphasis-color);
+    outline-offset: 2px;
+  }
 }
 
 // Blazor's error bar (#blazor-error-ui in the starter layout). blazor.web.js shows it on an unhandled

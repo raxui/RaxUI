@@ -27,12 +27,12 @@ export default function Home() {
     <SheenThemeProvider className="sheen-app" appearance={appearance} mode={mode} direction={direction} data-sheen-accent={accent}>
       <header className="sheen-app-header">
         <Link className="sheen-app-brand" href="/">SheenUI</Link>
-        <span className="sheen-app-header-end" />
+        <span className="sheen-app-header-end">Theme playground</span>
       </header>
 
       <main className="sheen-app-main">
         <div className="sheen-welcome">
-          <section>
+          <section className="sheen-welcome-intro">
             <h1>Welcome to your SheenUI app</h1>
             <p className="sheen-welcome-lead">
               Your components live in <code>src/components/ui</code> and are yours to edit. Try the theme below: every
@@ -40,7 +40,7 @@ export default function Home() {
             </p>
           </section>
 
-          <section className="sheen-panel" aria-labelledby="theme-heading">
+          <section className="sheen-panel sheen-theme-panel" aria-labelledby="theme-heading">
             <h2 id="theme-heading">Theme</h2>
             {rows.map((row) => (
               <div className="sheen-theme-row" key={row.label}>
@@ -48,7 +48,19 @@ export default function Home() {
                 <div className="sheen-theme-options" role="group" aria-label={row.label}>
                   {row.options.map(([text, value]) => {
                     const selected = row.value === value
-                    return (
+                    return row.label === "Accent" ? (
+                      <button
+                        key={text}
+                        type="button"
+                        className="sheen-accent-swatch"
+                        data-sheen-accent={value}
+                        data-sheen-swatch={value ?? "blue"}
+                        aria-label={text}
+                        title={text}
+                        aria-pressed={selected}
+                        onClick={() => setAccent(value as Accent)}
+                      />
+                    ) : (
                       <Button
                         key={text}
                         size="sm"
@@ -65,8 +77,9 @@ export default function Home() {
             ))}
           </section>
 
-          <section className="sheen-panel" aria-labelledby="preview-heading">
+          <section className="sheen-panel sheen-preview-panel" aria-labelledby="preview-heading">
             <h2 id="preview-heading">Preview</h2>
+            <p className="sheen-preview-description">One component, six variants. Use the theme controls to compare their appearance.</p>
             <div className="sheen-preview-row">
               <Button>Primary</Button>
               <Button variant="secondary">Secondary</Button>
@@ -75,9 +88,10 @@ export default function Home() {
               <Button variant="ghost">Ghost</Button>
               <Button variant="destructive">Destructive</Button>
             </div>
+            <p className="sheen-preview-hint">Use Tab to explore keyboard focus.</p>
           </section>
 
-          <section className="sheen-panel" aria-labelledby="next-heading">
+          <section className="sheen-next-steps" aria-labelledby="next-heading">
             <h2 id="next-heading">Next steps</h2>
             <p>Button is already installed. Add more components, then use them in your pages:</p>
             <pre>
