@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore BlazorUI.slnx
+
+      - name: Check code formatting
+        run: dotnet format BlazorUI.slnx --verify-no-changes
+        if: runner.os == 'Linux'
+
+      - name: Build solution
+        run: dotnet build BlazorUI.slnx -c Release --no-restore
+
+      - name: Run tests
+        run: dotnet test BlazorUI.slnx -c Release --no-build --verbosity normal
+
+      - name: Pack CLI tool
+        run: dotnet pack src/BlazorUI.Cli/BlazorUI.Cli.csproj -c Release --no-build

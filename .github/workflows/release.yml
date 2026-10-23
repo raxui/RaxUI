@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Build & Publish Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore BlazorUI.slnx
+
+      - name: Build solution
+        run: dotnet build BlazorUI.slnx -c Release --no-restore
+
+      - name: Run tests
+        run: dotnet test BlazorUI.slnx -c Release --no-build
+
+      - name: Pack CLI
+        run: dotnet pack src/BlazorUI.Cli/BlazorUI.Cli.csproj -c Release --no-build -o ./nupkg
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./nupkg/*.nupkg
+          generate_release_notes: true
