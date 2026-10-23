@@ -97,6 +97,7 @@ Local checks are the default workflow during this development phase. After
 `npm ci`, run `npm run check` during development and `npm run check:full` before
 merging. See [local verification](docs/local-checks.md) for coverage and prerequisites.
 الدليل العربي: [استخدام أدوات الفحص المحلي](docs/local-checks.ar.md).
+ولـUbuntu وWSL 2: [الفحص على Linux](docs/local-checks-linux.ar.md).
 GitHub CI runs only through **Actions → CI → Run workflow** after this change is
 merged; pushes and pull requests do not start hosted jobs automatically.
 
