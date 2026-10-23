@@ -15,7 +15,7 @@
       "source": "registry/react/foundation/theme.tsx",
       "target": "lib/theme.tsx",
       "type": "tsx",
-      "sha256": "da278990952a3e3f6bc70ba0d8f89ab3bdf5fe6d4ecf3701d8f4e0db0c7e2a3f"
+      "sha256": "c6280190655310f4b112e2cec6e7baf5d34ed94b35fead899bfbee7cecfb93a4"
     },
     {
       "source": "registry/react/foundation/utils.ts",

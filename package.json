@@ -9,7 +9,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc -p .",
-    "test:acceptance": "playwright test -c tests/react/acceptance",
+    "test:acceptance": "playwright test -c tests/react/acceptance install.spec.ts",
+    "test:acceptance:next": "playwright test -c tests/react/acceptance next.spec.ts",
     "theme:css": "node theme/build-css.mjs"
   },
   "devDependencies": {
