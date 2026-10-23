@@ -50,6 +50,21 @@ public class EmbeddedRegistry
 
     public static string ComputeSha256(byte[] bytes)
     {
+        // Normalize CRLF to LF so checksums are deterministic across OSes and editors
+        try
+        {
+            var text = Encoding.UTF8.GetString(bytes);
+            if (text.Contains('\r'))
+            {
+                text = text.Replace("\r\n", "\n").Replace('\r', '\n');
+                bytes = Encoding.UTF8.GetBytes(text);
+            }
+        }
+        catch
+        {
+            // If binary file cannot be decoded as UTF-8, use original bytes
+        }
+
         var hash = SHA256.HashData(bytes);
         return Convert.ToHexStringLower(hash);
     }

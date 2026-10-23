@@ -10,14 +10,14 @@
       "destination": "styles",
       "target": "tokens.css",
       "type": "css",
-      "sha256": "d06aa52dd87a10abea2924a43493683468aa058f46e911312bc339c1ea7876be"
+      "sha256": "f14521c1db4ec5a43f5301026fb1580e5caa137f73976aa436dde7edb49e95df"
     },
     {
       "source": "styles/themes.css",
       "destination": "styles",
       "target": "themes.css",
       "type": "css",
-      "sha256": "53d388758426b1f8b6e0a002d5521b828dc7c7ad465a3b9a2d7e285e8ed7e2b3"
+      "sha256": "6b6c97c5b363c91be508bb7fe2929c1b5475fbc2b05b1bc8b1b7f49c4e2f100f"
     }
   ],
   "files": [
@@ -26,14 +26,14 @@
       "destination": "components",
       "target": "Button/Button.razor",
       "type": "razor",
-      "sha256": "9096a872a09073ce5a2f4c8f2da0b92571770605aa99a7ee3a0ddb1bcdb333e2"
+      "sha256": "7e6ef5b4b95fb977073aa7adc420e40cf5ba4dae300b3f6ca2ce51d5768dae2e"
     },
     {
       "source": "Button.razor.css",
       "destination": "components",
       "target": "Button/Button.razor.css",
       "type": "isolated-css",
-      "sha256": "c58d6bd0be550f2cde18e93d43d15dd6e5038d24415a369099627990748d2984"
+      "sha256": "a614e8ff4b6532f4286852e3b5f5490f48b061667f225d56561cb3a61a50a0e9"
     }
   ]
 }
