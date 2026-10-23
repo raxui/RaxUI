@@ -54,6 +54,8 @@ categories, which Bootstrap 5 still uses. This is temporary compatibility
 configuration, not a migration of Bootstrap to modern Sass. Other Sass warnings
 and compilation errors remain enabled. These category settings also apply to
 your own SCSS in the same build.
+Next.js also suppresses `legacy-js-api`, because Next 15's Turbopack loader uses
+that Sass API; this does not change the loader's implementation.
 
 For Vite the options go in `css.preprocessorOptions.scss.silenceDeprecations`;
 for Next.js they go in `sassOptions.silenceDeprecations`:

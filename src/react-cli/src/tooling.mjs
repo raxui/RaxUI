@@ -37,7 +37,9 @@ export function planTooling(projectDir, kind, notes) {
     notes.push(`Kept customized ${name}; configure Sass compatibility${kind === "next" ? " and turbopack.root" : ""} manually (docs/react.md).`)
     return null
   }
-  const options = `silenceDeprecations: ${JSON.stringify(SASS_DEPRECATIONS)}`
+  // Next 15's Turbopack Sass loader still calls the legacy JS API.
+  const deprecations = kind === "next" ? [...SASS_DEPRECATIONS, "legacy-js-api"] : SASS_DEPRECATIONS
+  const options = `silenceDeprecations: ${JSON.stringify(deprecations)}`
   const settings = kind === "next"
     ? `\n  // BlazorUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  sassOptions: { ${options} },\n  turbopack: { root: process.cwd() },\n  outputFileTracingRoot: process.cwd(),\n`
     : `\n  // BlazorUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  css: { preprocessorOptions: { scss: { ${options} } } },\n`

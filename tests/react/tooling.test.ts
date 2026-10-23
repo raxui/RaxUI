@@ -23,6 +23,7 @@ it.each([
   const dir = project(name, content)
   const planned = planTooling(dir, kind, [])!
   expect(planned.content).toContain("silenceDeprecations")
+  expect(planned.content.includes("legacy-js-api")).toBe(kind === "next")
   expect(planned.content).toContain(kind === "vite" ? "plugins: [react()]" : "turbopack: { root:")
   writeFileSync(planned.full, planned.content)
   expect(planTooling(dir, kind, [])).toBeNull()
