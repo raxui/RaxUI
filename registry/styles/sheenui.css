@@ -856,7 +856,7 @@ dialog.sheen-dialog:not([open])::backdrop {
   transition: background-color 80ms ease;
 }
 .sheen-dropdown-item:is([data-highlighted], :focus) {
-  background: rgba(var(--bs-emphasis-color-rgb), 0.08);
+  background: rgba(var(--bs-emphasis-color-rgb), 0.07);
 }
 .sheen-dropdown-item:is([data-disabled], :disabled) {
   opacity: 0.45;
