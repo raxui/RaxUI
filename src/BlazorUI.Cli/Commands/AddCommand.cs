@@ -32,6 +32,7 @@ public static class AddCommand
             output.WriteLine($"Adding component '{manifest.Name}' (v{manifest.Version})...");
 
             var lockFile = BlazorUiLock.LoadOrCreate(workingDirectory);
+            ProjectPath.Validate(workingDirectory, project.ImportsRazorPath);
             var componentsDir = Path.Combine(workingDirectory, config.ComponentsPath);
 
             // The manifest validator guarantees every target is "<ComponentFolder>/<file>" in one folder.
@@ -45,6 +46,7 @@ public static class AddCommand
                 var bytes = registry.GetResourceBytes($"components/{manifest.Name}/{file.Source}");
                 var hash = EmbeddedRegistry.ComputeSha256(bytes);
                 var targetPath = Path.Combine(componentsDir, file.Target);
+                ProjectPath.Validate(workingDirectory, targetPath);
                 var relTarget = Path.GetRelativePath(workingDirectory, targetPath).Replace('\\', '/');
 
                 if (File.Exists(targetPath))

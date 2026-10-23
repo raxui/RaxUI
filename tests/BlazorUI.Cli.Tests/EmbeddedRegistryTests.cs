@@ -13,6 +13,9 @@ public class EmbeddedRegistryTests
 
         Assert.Equal(1, index.SchemaVersion);
         Assert.Equal("BlazorUI", index.Name);
+        var version = new StringWriter();
+        Program.Run(["--version"], Directory.GetCurrentDirectory(), version, TextWriter.Null);
+        Assert.Equal(version.ToString().Trim().Split('+')[0], index.Version);
         Assert.Contains(index.Components, c => c.Name == "button");
     }
 

@@ -31,6 +31,8 @@ public class EmbeddedRegistry
                 $"Unsupported registry schema version {index.SchemaVersion}. This CLI supports version {SupportedSchemaVersion}.");
         }
 
+        // The package is the immutable registry release (ADR 004).
+        index.Version = ReleaseIdentity.Version;
         return index;
     }
 

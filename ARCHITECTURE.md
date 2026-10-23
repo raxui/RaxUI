@@ -48,7 +48,7 @@ The registry and CLI are development-time tools. The consumer application must n
 
 ## 4. Repository Structure
 
-The project uses a monorepo to keep the CLI, registry, shared assets, documentation, samples, and tests versioned together. The tree below is a long-term map, not an instruction to scaffold every project. The current phase is documentation only. The first implementation milestone is limited by [ADR 002](docs/adr/002-first-milestone-scope.md) and [ADR 004](docs/adr/004-simplified-first-milestone.md).
+The project uses a monorepo to keep the CLI, registry, shared assets, documentation, samples, and tests versioned together. The tree below is a long-term map, not an instruction to scaffold every project. The first milestone CLI and installation tests are implemented. The first implementation milestone is limited by [ADR 002](docs/adr/002-first-milestone-scope.md) and [ADR 004](docs/adr/004-simplified-first-milestone.md).
 
 ```text
 BlazorUI/
@@ -498,7 +498,7 @@ ADRs should record the context, decision, alternatives considered, and consequen
 
 Implementation should proceed in small, verifiable milestones:
 
-The current phase ends with consistent documentation and accepted ADRs. The sequence below is planned work; no implementation is claimed by this document.
+The CLI, embedded Button registry, installation tests, and browser verification implement the first milestone. The sequence below describes the development order; additional components and hosting modes remain future work.
 
 1. Finalize project conventions and repository structure.
 2. Design and validate the registry manifest schema.
