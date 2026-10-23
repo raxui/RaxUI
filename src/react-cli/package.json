@@ -1,0 +1,27 @@
+{
+  "name": "blazorui-react",
+  "version": "0.1.0-preview.1",
+  "description": "Install BlazorUI React components (Bootstrap 5.3 SCSS, Radix behavior, shared theme) into a React + Vite project.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "blazorui-react": "bin/blazorui-react.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "registry",
+    "theme"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "prepack": "node scripts/prepack.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SaadAlsaree/BlazorUI.git",
+    "directory": "src/react-cli"
+  }
+}

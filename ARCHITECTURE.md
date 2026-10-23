@@ -62,8 +62,8 @@ BlazorUI/
 │   └── button/                  button.tsx, _button.scss, manifest.json
 ├── src/react-cli/               Node CLI: init, add button
 ├── tests/react/                 component, CLI, and acceptance tests
-├── package.json                 npm workspaces (private)
-└── tsconfig.base.json
+├── package.json                 private Node tooling for tests
+└── tsconfig.json
 ```
 
 The .NET CLI embeds `registry/` but excludes `registry/react/`.
