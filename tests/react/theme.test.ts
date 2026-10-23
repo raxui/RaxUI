@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { readFileSync } from "node:fs"
 import { describe, expect, it } from "vitest"
 
 import { compileTheme } from "./compile-theme"
@@ -14,6 +15,12 @@ describe("shared theme", () => {
     '[data-bui-density=compact]',
   ])("compiles with Bootstrap and contains %s", (selector) => {
     expect(css).toContain(selector)
+  })
+
+  it("keeps the Blazor theme CSS in sync with the SCSS (run npm run theme:css after edits)", async () => {
+    // @ts-expect-error -- plain ESM build script without type declarations
+    const { compileBlazorTheme } = await import("../../theme/build-css.mjs")
+    expect(readFileSync("registry/styles/blazorui.css", "utf8")).toBe(compileBlazorTheme())
   })
 
   it("makes glass opaque when the user prefers reduced transparency", () => {

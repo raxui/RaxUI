@@ -11,7 +11,7 @@ without the CLI or a registry connection.
 Once the preview is published to NuGet:
 
 ```sh
-dotnet tool install --global BlazorUI.Cli --version 0.1.0-preview.1
+dotnet tool install --global BlazorUI.Cli --version 0.1.0-preview.2
 dotnet new blazor --interactivity Server -n MyApp
 cd MyApp
 blazorui init
@@ -31,11 +31,27 @@ In `Components/Pages/Home.razor`, use:
 }
 ```
 
-The CLI copies Razor and isolated CSS into `Components/UI/Button`, adds its
-namespace to `_Imports.razor`, and installs tokens/themes under
-`wwwroot/css/blazorui`. Keep the template Bootstrap and application styles links.
-Use `Variant` (`primary`, `secondary`, `outline`, `ghost`, `destructive`), `Size`
-(`sm`, `md`, `lg`), `Disabled`, `Type`, `Class`, and `OnClick` to customize Button.
+`init` installs the shared theme as `wwwroot/css/blazorui/blazorui.css` and links
+it after Bootstrap; `add button` copies `Components/UI/Button/Button.razor` and
+adds its namespace to `_Imports.razor`. Keep the template Bootstrap and
+application styles links. If `Program.cs` does not enable Interactive Server (an
+app created without `--interactivity Server`), `init` prints a warning with the
+two lines to add; it does not edit `Program.cs`.
+
+Button has the same options and look as the React Button:
+`Variant` (`default`, `solid`, `secondary`, `tinted`, `destructive`, `outline`,
+`ghost`, `link`), `Size` (`default`, `sm`, `lg`, `icon`, `icon-sm`, `icon-lg`),
+`Appearance` (`default`, `flat`, `glass`), `Color` (a Bootstrap theme color such
+as `success`), plus `Disabled`, `Type`, `Class`, and `OnClick`.
+
+Theme any part of the page with attributes; components inherit them:
+
+```razor
+<div data-bui-appearance="glass" data-bs-theme="dark" data-bui-accent="emerald" dir="rtl">
+    <Button>Glass</Button>
+    <Button Appearance="flat" Color="success">Flat override</Button>
+</div>
+```
 
 ## Installation guarantees and limits
 
@@ -69,7 +85,7 @@ dotnet build BlazorUI.slnx -c Release --no-restore
 pwsh tests/BlazorUI.Integration.Tests/bin/Release/net10.0/playwright.ps1 install chromium
 dotnet test BlazorUI.slnx -c Release --no-build
 dotnet pack src/BlazorUI.Cli/BlazorUI.Cli.csproj -c Release --no-build -o ./nupkg
-dotnet tool install --tool-path ./local-tools --add-source ./nupkg BlazorUI.Cli --version 0.1.0-preview.1
+dotnet tool install --tool-path ./local-tools --add-source ./nupkg BlazorUI.Cli --version 0.1.0-preview.2
 ```
 
 On Linux, use `install --with-deps chromium` to install browser system dependencies.

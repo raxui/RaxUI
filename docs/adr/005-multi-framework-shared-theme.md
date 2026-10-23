@@ -36,6 +36,8 @@ The theme attributes are the contract. Any component in either framework reads i
 
 The Blazor library keeps its current `tokens.css`, `themes.css`, and isolated `.razor.css` styles ([ADR 001](001-hybrid-css.md)) until a later ADR moves it to the shared theme. That ADR will decide how Blazor consumes the compiled theme CSS and how isolated styles give way to the shared component styles.
 
+**Update:** [ADR 007](007-blazor-shared-theme.md) completed this migration. Blazor receives the theme as the precompiled `blazorui.css`, and theme attributes reach Blazor components through DOM inheritance, so `CascadingValue` is not needed yet.
+
 ## Alternatives Considered
 
 - **Separate repositories per framework:** Theme changes cannot be verified against both libraries at once, and the looks drift.

@@ -41,6 +41,8 @@ public class GeneratedAppTests : IDisposable
             @rendermode InteractiveServer
             <Button id="bui-click" Disabled="@(!ready)" OnClick="@(() => count++)">Click</Button>
             <p id="count">@count</p>
+            <div data-bui-appearance="flat"><Button id="bui-flat">Flat</Button></div>
+            <Button id="bui-glass" Appearance="glass">Glass</Button>
             @code {
                 private int count;
                 private bool ready;
@@ -57,8 +59,8 @@ public class GeneratedAppTests : IDisposable
         var appRazor = File.ReadAllText(Path.Combine(app, "Components", "App.razor"));
         Assert.Contains("SampleApp.styles.css", appRazor);
         Assert.True(appRazor.IndexOf("bootstrap.min.css", StringComparison.Ordinal) <
-                    appRazor.IndexOf("css/blazorui/tokens.css", StringComparison.Ordinal));
-        Assert.True(appRazor.IndexOf("css/blazorui/themes.css", StringComparison.Ordinal) <
+                    appRazor.IndexOf("css/blazorui/blazorui.css", StringComparison.Ordinal));
+        Assert.True(appRazor.IndexOf("css/blazorui/blazorui.css", StringComparison.Ordinal) <
                     appRazor.IndexOf("SampleApp.styles.css", StringComparison.Ordinal));
 
         var before = InstallationWorkflowTests.SnapshotFiles(app);
@@ -105,13 +107,16 @@ public class GeneratedAppTests : IDisposable
             await button.ClickAsync();
             await button.ClickAsync();
             await Assertions.Expect(page.Locator("#count")).ToHaveTextAsync("2");
-            await Assertions.Expect(button).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bbui-btn\\b"));
+            // Same classes and look as the React Button (shared theme, ADR 007).
+            await Assertions.Expect(button).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bbtn bui-button btn-glass btn-glass-primary\\b"));
             var color = await button.EvaluateAsync<string>("el => getComputedStyle(el).backgroundColor");
             Assert.NotEqual("rgba(0, 0, 0, 0)", color);
             Assert.NotEqual("transparent", color);
             await Assertions.Expect(button).ToHaveCSSAsync("display", "inline-flex");
-            Assert.False(string.IsNullOrWhiteSpace(await button.EvaluateAsync<string>("el => getComputedStyle(el).getPropertyValue('--bui-primary')")));
-            Assert.True(await button.EvaluateAsync<bool>("el => [...el.attributes].some(a => a.name.startsWith('b-'))"));
+            Assert.False(string.IsNullOrWhiteSpace(await button.EvaluateAsync<string>("el => getComputedStyle(el).getPropertyValue('--bui-glass-blur')")));
+            Assert.NotEqual("none", await button.EvaluateAsync<string>("el => getComputedStyle(el).boxShadow"));
+            Assert.Equal("none", await page.Locator("#bui-flat").EvaluateAsync<string>("el => getComputedStyle(el).boxShadow"));
+            Assert.Contains("blur", await page.Locator("#bui-glass").EvaluateAsync<string>("el => getComputedStyle(el).backdropFilter"));
         }
         finally
         {
