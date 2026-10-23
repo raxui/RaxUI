@@ -37,49 +37,68 @@ npm --version
 
 ## 2. تجهيز الحزم المحلية
 
-نفّذ من نسخة المستودع التي تريد تجربتها:
+نفّذ الخطوات 2 و3 في **نافذة PowerShell واحدة**، من نسخة المستودع التي تريد تجربتها.
+ننشئ إصداراً محلياً مميزاً بالتاريخ والوقت لتجنب استخدام حزمة قديمة من الكاش؛
+الخيار `-p:Version` لا يغيّر رقم الإصدار المحفوظ في ملف المشروع.
+
+### إنشاء حزمة أداة Blazor
+
+```powershell
+$repo = "C:\Users\saada\source\repos\SheenUI"
+$version = "0.1.0-local.$(Get-Date -Format yyyyMMddHHmmss)"
+$tools = "$repo\local-tools\$version"
+
+cd $repo
+
+dotnet pack .\src\SheenUI.Cli\SheenUI.Cli.csproj `
+  -c Release `
+  -o .\nupkg `
+  -p:Version=$version
+```
+
+### حزمة React وNext.js (لا تلزم لتجربة Blazor)
 
 ```powershell
 cd C:\Users\saada\source\repos\SheenUI
-
-# حزمة أداة Blazor
-dotnet pack .\src\SheenUI.Cli\SheenUI.Cli.csproj -c Release -o .\nupkg
-
-# حزمة أداة React وNext.js
 npm ci
 npm pack ./src/react-cli --pack-destination .
 ```
 
-ينتج عن ذلك، وفق الإصدارات الحالية:
+ينتج عن ذلك ملف حزمة .NET يحمل قيمة `$version` التي أنشأناها، وحزمة React
+بالإصدار الحالي إذا نفّذت أوامرها:
 
 ```text
-SheenUI\nupkg\SheenUI.Cli.0.1.0-preview.2.nupkg
+SheenUI\nupkg\SheenUI.Cli.<version>.nupkg
 SheenUI\sheenui-react-0.1.0-preview.1.tgz
 ```
 
 هذه أوامر إنشاء حزم محلية فقط. لا تستخدم `npm publish` أو `dotnet nuget push`.
-إذا تغيّر رقم الإصدار في ملفات المشروع، استخدم الرقم واسم الملف الجديدين في
-الأوامر التالية.
+أوامر Blazor التالية تستخدم قيمة `$version` نفسها. إذا تغيّر إصدار أداة React،
+استخدم اسم ملف `.tgz` الناتج فعلياً في خطوات تثبيتها.
 
 ## 3. تجربة Blazor
 
-### تثبيت الأداة مرة واحدة
+### تثبيت الإصدار المحلي الجديد
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
-dotnet tool install --tool-path .\local-tools --add-source .\nupkg SheenUI.Cli --version 0.1.0-preview.2
+cd $repo
+
+dotnet tool install SheenUI.Cli `
+  --tool-path "$tools" `
+  --add-source "$repo\nupkg" `
+  --version "$version"
 ```
 
-الأداة هنا مثبتة داخل مجلد المستودع، وليست أداة عامة على الجهاز.
-إذا كانت مثبتة بالفعل، استخدمها مباشرة. لتجربة تغييرات الكود الجديدة مع بقاء
-رقم الإصدار نفسه، استخدم التشغيل من المصدر في القسم 7.
+تُثبّت الأداة داخل `local-tools/<version>` في المستودع، وليست أداة عامة على الجهاز.
+لكل بناء جديد أعد خطوة إنشاء الحزمة ثم تثبيت إصدارها في النافذة نفسها؛ لا تحتاج
+إلى إزالة إصدار سابق. يمكنك أيضاً التشغيل من المصدر كما في القسم 7.
 
 ### إنشاء تطبيق تجريبي
 
 ```powershell
 cd C:\Users\saada\source\repos
-dotnet new blazor -n blazor-test --framework net10.0 --interactivity Server
-cd blazor-test
+dotnet new blazor -n SheenDemo --framework net10.0 --interactivity Server
+cd SheenDemo
 ```
 
 لتجربة .NET 8 أو9 غيّر `net10.0` إلى `net8.0` أو `net9.0`، مع توافر متطلباته.
@@ -90,13 +109,14 @@ cd blazor-test
 انتقل إلى المجلد الذي يحتوي ملف التطبيق `.csproj`، ثم نفّذ:
 
 ```powershell
-& "C:\Users\saada\source\repos\SheenUI\local-tools\sheenui.exe" init
-& "C:\Users\saada\source\repos\SheenUI\local-tools\sheenui.exe" add button
+& "$tools\sheenui.exe" init
+& "$tools\sheenui.exe" add button
 dotnet build
 dotnet run
 ```
 
-افتح رابط التطبيق الظاهر في الطرفية. `init` يجهّز الثيم والليّاوت وصفحة الترحيب،
+افتح رابط `localhost` الظاهر في الطرفية. ستظهر صفحة الترحيب واختيار الألوان
+الدائري ومعاينة الأزرار. `init` يجهّز الثيم والليّاوت وصفحة الترحيب،
 وينظّف ملفات القالب المعروفة غير المعدّلة، بما فيها `app.css` الافتراضي.
 الملفات التي عدّلتها تُحفظ وتظهر ملاحظة عنها.
 

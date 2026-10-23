@@ -201,6 +201,15 @@ test("Dialog and DropdownMenu portal into the theme root and use the shared styl
   await page.keyboard.press("Escape")
   await expect(dialog).toBeHidden()
 
+  // Below 576px the dialog is a bottom sheet (boot-ui motion); wait for the slide-in to settle.
+  await page.setViewportSize({ width: 375, height: 700 })
+  await page.getByRole("button", { name: "Open dialog" }).click()
+  await expect(dialog).toBeVisible()
+  await expect.poll(async () => { const box = (await dialog.boundingBox())!; return Math.round(700 - box.y - box.height) }).toBe(8)
+  await page.keyboard.press("Escape")
+  await expect(dialog).toBeHidden()
+  await page.setViewportSize({ width: 1280, height: 720 })
+
   await page.getByRole("button", { name: "Options" }).click()
   const menu = page.getByRole("menu")
   await expect(menu).toHaveClass(/\bsheen-dropdown-menu\b/)

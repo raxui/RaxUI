@@ -49,6 +49,7 @@
   cursor: default;
   user-select: none;
   outline: none;
+  transition: background-color 80ms ease;
 
   // Radix marks the active item with data-highlighted; the Blazor script focuses it.
   &:is([data-highlighted], :focus) {
@@ -80,7 +81,32 @@
   background: var(--sheen-border-color);
 }
 
+// ---- Enter and exit (boot-ui motion) ----------------------------------------
+// Reduced motion keeps a short cross-fade; Radix waits for data-state="closed" to finish.
+.sheen-dropdown-menu:where(:not([popover]), :popover-open) { animation: sheen-fade-in var(--sheen-duration-fast) linear; }
+.sheen-dropdown-menu[data-state="closed"] { animation: sheen-fade-out var(--sheen-duration-fast) linear forwards; }
+
+// A closing popover hides at once; transition it out while display and the top layer wait.
+.sheen-dropdown-menu[popover] {
+  transition:
+    opacity var(--sheen-duration-fast) linear,
+    display var(--sheen-duration-fast) allow-discrete,
+    overlay var(--sheen-duration-fast) allow-discrete;
+
+  &:not(:popover-open) { opacity: 0; }
+}
+
 @include motion-safe {
-  .sheen-dropdown-menu:where(:not([popover]), :popover-open) { animation: sheen-pop-in var(--sheen-duration-fast) var(--sheen-ease-out); }
-  .sheen-dropdown-menu[data-state="closed"] { animation: sheen-pop-out var(--sheen-duration-fast) var(--sheen-ease-in); }
+  .sheen-dropdown-menu:where(:not([popover]), :popover-open) { animation: sheen-pop-in 400ms var(--sheen-ease-spring); }
+  .sheen-dropdown-menu[data-state="closed"] { animation: sheen-pop-out var(--sheen-duration-fast) var(--sheen-ease-in) forwards; }
+
+  .sheen-dropdown-menu[popover] {
+    transition:
+      opacity var(--sheen-duration-fast) var(--sheen-ease-in),
+      transform var(--sheen-duration-fast) var(--sheen-ease-in),
+      display var(--sheen-duration-fast) allow-discrete,
+      overlay var(--sheen-duration-fast) allow-discrete;
+
+    &:not(:popover-open) { transform: scale(0.96); }
+  }
 }

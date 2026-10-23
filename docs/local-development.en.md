@@ -39,49 +39,70 @@ files that you can edit.
 
 ## 2. Build the local packages
 
-Run these commands from the checkout you want to test:
+Run sections 2 and 3 in **the same PowerShell window**, using the checkout you want
+to test. A timestamp gives each local build a distinct version, avoiding reuse of
+an older cached package. `-p:Version` does not change the version saved in the
+project file.
+
+### Build the Blazor CLI package
+
+```powershell
+$repo = "C:\Users\saada\source\repos\SheenUI"
+$version = "0.1.0-local.$(Get-Date -Format yyyyMMddHHmmss)"
+$tools = "$repo\local-tools\$version"
+
+cd $repo
+
+dotnet pack .\src\SheenUI.Cli\SheenUI.Cli.csproj `
+  -c Release `
+  -o .\nupkg `
+  -p:Version=$version
+```
+
+### React and Next.js package (not required for Blazor)
 
 ```powershell
 cd C:\Users\saada\source\repos\SheenUI
-
-# Blazor CLI package
-dotnet pack .\src\SheenUI.Cli\SheenUI.Cli.csproj -c Release -o .\nupkg
-
-# React and Next.js CLI package
 npm ci
 npm pack ./src/react-cli --pack-destination .
 ```
 
-With the current versions, this produces:
+The .NET package filename includes the generated `$version`. If you also ran
+the React commands, its package uses the current React CLI version:
 
 ```text
-SheenUI\nupkg\SheenUI.Cli.0.1.0-preview.2.nupkg
+SheenUI\nupkg\SheenUI.Cli.<version>.nupkg
 SheenUI\sheenui-react-0.1.0-preview.1.tgz
 ```
 
 These commands only create local packages. Do not run `npm publish` or
-`dotnet nuget push`. If the versions in the project files change, use the new
-version numbers and filenames in the commands below.
+`dotnet nuget push`. The Blazor commands below reuse the same `$version`. If the
+React CLI version changes, use the actual generated `.tgz` filename when installing it.
 
 ## 3. Try Blazor
 
-### Install the tool once
+### Install the new local version
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
-dotnet tool install --tool-path .\local-tools --add-source .\nupkg SheenUI.Cli --version 0.1.0-preview.2
+cd $repo
+
+dotnet tool install SheenUI.Cli `
+  --tool-path "$tools" `
+  --add-source "$repo\nupkg" `
+  --version "$version"
 ```
 
-This installs the tool inside the repository rather than globally. If it is
-already installed, use it directly. To test code changes without changing the
-package version, run the CLI from source as described in section 7.
+The tool is installed under `local-tools/<version>` in the repository rather
+than globally. For a new build, repeat the package creation and installation
+steps in the same window; you do not need to uninstall an earlier version.
+Running directly from source remains an alternative in section 7.
 
 ### Create a test application
 
 ```powershell
 cd C:\Users\saada\source\repos
-dotnet new blazor -n blazor-test --framework net10.0 --interactivity Server
-cd blazor-test
+dotnet new blazor -n SheenDemo --framework net10.0 --interactivity Server
+cd SheenDemo
 ```
 
 For .NET 8 or 9, replace `net10.0` with `net8.0` or `net9.0` and install the
@@ -93,13 +114,14 @@ with Interactive Server**.
 Open the directory containing your application's `.csproj`, then run:
 
 ```powershell
-& "C:\Users\saada\source\repos\SheenUI\local-tools\sheenui.exe" init
-& "C:\Users\saada\source\repos\SheenUI\local-tools\sheenui.exe" add button
+& "$tools\sheenui.exe" init
+& "$tools\sheenui.exe" add button
 dotnet build
 dotnet run
 ```
 
-Open the application URL printed in the terminal. `init` sets up the theme,
+Open the `localhost` URL printed in the terminal to see the welcome page,
+circular accent picker, and button preview. `init` sets up the theme,
 layout, and welcome page, and cleans up recognized, unmodified template files,
 including the default `app.css`. Files you have changed are preserved and reported.
 
