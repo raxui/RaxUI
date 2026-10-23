@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "blazorui.css",
       "type": "css",
-      "sha256": "13dac4a8f02df2272b0b6de61863537fad0300e37cb707bb3dead553f4493f05"
+      "sha256": "dc8b3883833695923a696412e04e6c12d3104be74a551b8bfb9b1c6cc810f090"
     }
   ],
   "files": [
