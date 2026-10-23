@@ -36,6 +36,8 @@ public static class InitCommand
             };
 
             var lockFile = BlazorUiLock.LoadOrCreate(workingDirectory);
+            ProjectPath.Validate(workingDirectory, project.AppRazorPath);
+            ProjectPath.Validate(workingDirectory, Path.Combine(workingDirectory, BlazorUiConfig.DefaultFileName));
             lockFile.RegistryVersion = index.Version;
 
             var stylesDir = Path.Combine(workingDirectory, config.StylesPath);
@@ -48,6 +50,7 @@ public static class InitCommand
                 var bytes = registry.GetResourceBytes(asset.Source);
                 var hash = EmbeddedRegistry.ComputeSha256(bytes);
                 var targetPath = Path.Combine(stylesDir, asset.TargetName);
+                ProjectPath.Validate(workingDirectory, targetPath);
                 var relTarget = Path.GetRelativePath(workingDirectory, targetPath).Replace('\\', '/');
 
                 if (File.Exists(targetPath))

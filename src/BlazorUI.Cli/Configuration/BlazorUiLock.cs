@@ -1,5 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BlazorUI.Cli.Project;
+using BlazorUI.Cli.Registry;
 
 namespace BlazorUI.Cli.Configuration;
 
@@ -12,7 +14,7 @@ public class BlazorUiLock
     public int SchemaVersion { get; set; } = CurrentSchemaVersion;
 
     [JsonPropertyName("registryVersion")]
-    public string RegistryVersion { get; set; } = "0.1.0";
+    public string RegistryVersion { get; set; } = ReleaseIdentity.Version;
 
     [JsonPropertyName("components")]
     public Dictionary<string, LockedComponent> Components { get; set; } = new(StringComparer.OrdinalIgnoreCase);
@@ -23,11 +25,18 @@ public class BlazorUiLock
     public static BlazorUiLock LoadOrCreate(string directory)
     {
         var path = Path.Combine(directory, DefaultFileName);
+        ProjectPath.Validate(directory, path);
         if (!File.Exists(path))
             return new BlazorUiLock();
 
         var json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<BlazorUiLock>(json, BlazorUiConfig.JsonOptions) ?? new BlazorUiLock();
+        var result = JsonSerializer.Deserialize<BlazorUiLock>(json, BlazorUiConfig.JsonOptions)
+            ?? throw new InvalidOperationException("Lock file must be a JSON object.");
+        if (result.SchemaVersion != CurrentSchemaVersion || result.RegistryVersion != ReleaseIdentity.Version)
+            throw new InvalidOperationException("Lock file schema or registry version is incompatible with this CLI. Use the matching CLI version.");
+        if (result.Components == null || result.Assets == null)
+            throw new InvalidOperationException("Lock file components and assets must be objects.");
+        return result;
     }
 
     public void Save(string directory)

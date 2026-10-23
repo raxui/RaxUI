@@ -29,7 +29,7 @@ The project aims to make building polished Blazor interfaces easier while preser
 
 ## 4. Target Frameworks
 
-The first implementation milestone targets **.NET 10 Blazor Web App with Interactive Server**, including prerendering. The current phase is documentation only.
+The first implementation milestone targets **.NET 10 Blazor Web App with Interactive Server**, including prerendering. The CLI implements init and add button; preview hardening and release preparation are in progress.
 
 Long-term support targets are:
 

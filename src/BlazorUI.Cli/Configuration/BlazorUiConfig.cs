@@ -1,5 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BlazorUI.Cli.Project;
+using BlazorUI.Cli.Registry;
 
 namespace BlazorUI.Cli.Configuration;
 
@@ -18,7 +20,7 @@ public class BlazorUiConfig
     public string TargetFramework { get; set; } = "net10.0";
 
     [JsonPropertyName("registryVersion")]
-    public string RegistryVersion { get; set; } = "0.1.0";
+    public string RegistryVersion { get; set; } = ReleaseIdentity.Version;
 
     [JsonPropertyName("componentsPath")]
     public string ComponentsPath { get; set; } = "Components/UI";
@@ -42,11 +44,22 @@ public class BlazorUiConfig
     public static BlazorUiConfig? Load(string directory)
     {
         var path = Path.Combine(directory, DefaultFileName);
+        ProjectPath.Validate(directory, path);
         if (!File.Exists(path))
             return null;
 
         var json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<BlazorUiConfig>(json, JsonOptions);
+        var config = JsonSerializer.Deserialize<BlazorUiConfig>(json, JsonOptions)
+            ?? throw new InvalidOperationException("Configuration must be a JSON object.");
+        if (config.SchemaVersion != CurrentSchemaVersion)
+            throw new InvalidOperationException($"Unsupported configuration schema version {config.SchemaVersion}.");
+        if (config.RegistryVersion != ReleaseIdentity.Version)
+            throw new InvalidOperationException($"Registry version '{config.RegistryVersion}' does not match CLI '{ReleaseIdentity.Version}'. Use the matching CLI version.");
+        if (config.ComponentsPath != "Components/UI" || config.StylesPath != "wwwroot/css/blazorui")
+            throw new InvalidOperationException("Custom paths are unsupported. Use componentsPath 'Components/UI' and stylesPath 'wwwroot/css/blazorui'.");
+        if (config.Framework != "blazor" || config.TargetFramework != "net10.0" || config.Bootstrap == null || config.Bootstrap.Managed)
+            throw new InvalidOperationException("Only net10.0 Blazor with template Bootstrap is supported.");
+        return config;
     }
 
     public void Save(string directory)

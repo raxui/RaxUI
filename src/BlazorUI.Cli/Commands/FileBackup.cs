@@ -7,19 +7,37 @@ namespace BlazorUI.Cli.Commands;
 public sealed class FileBackup
 {
     // path -> original bytes, or null when the file did not exist
-    private readonly Dictionary<string, byte[]?> _originals = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, byte[]?> _originals = new(
+        OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
+    private readonly List<string> _createdDirectories = [];
+
+    private void CreateParent(string path)
+    {
+        var missing = new Stack<string>();
+        var parent = Path.GetDirectoryName(path);
+        while (parent != null && !Directory.Exists(parent))
+        {
+            missing.Push(parent);
+            parent = Path.GetDirectoryName(parent);
+        }
+        foreach (var directory in missing)
+        {
+            Directory.CreateDirectory(directory);
+            _createdDirectories.Add(directory);
+        }
+    }
 
     public void Write(string path, byte[] bytes)
     {
         Remember(path);
-        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        CreateParent(path);
         File.WriteAllBytes(path, bytes);
     }
 
     public void WriteText(string path, string content)
     {
         Remember(path);
-        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        CreateParent(path);
         File.WriteAllText(path, content);
     }
 
@@ -50,6 +68,16 @@ public sealed class FileBackup
             {
                 // Best effort: keep restoring the remaining files.
             }
+        }
+        foreach (var directory in _createdDirectories.AsEnumerable().Reverse())
+        {
+            try
+            {
+                // Non-recursive deletion preserves any files added by another process.
+                Directory.Delete(directory, recursive: false);
+            }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
         }
     }
 }
