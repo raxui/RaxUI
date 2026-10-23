@@ -1,0 +1,317 @@
+# استخدام BlazorUI محلياً على Windows 11
+
+العربية | [English](local-development.en.md)
+
+هذا الدليل لتجربة المكتبة من المستودع على جهازك، دون نشر على npm أو NuGet.
+نفّذ الأوامر في **PowerShell**. المسارات أدناه تفترض أن المستودع موجود في:
+
+```text
+C:\Users\saada\source\repos\BlazorUI
+```
+
+غيّر المسارات إذا كان موقع المستودع مختلفاً. أوامر إنشاء التطبيقات مخصّصة
+لمجلدات جديدة؛ إذا كان التطبيق موجوداً، انتقل إلى فقرة تثبيته مباشرة.
+
+## 1. المتطلبات
+
+- SDK الخاص بـ.NET 10 لبناء أدوات المستودع التي تستهدف .NET 8 و9 و10.
+- لتشغيل تطبيق Blazor يستهدف .NET 8 أو9، ثبّت runtime/SDK المطابق أيضاً.
+- Node.js 22 أو أحدث مع npm لتجربة React وNext.js.
+- اتصال بالإنترنت لتنزيل الاعتماديات أول مرة. استخدام الحزمة المحلية لا يعني
+  أن Bootstrap وReact وبقية الاعتماديات موجودة مسبقاً على الجهاز.
+
+تحقق من الأدوات:
+
+```powershell
+dotnet --list-sdks
+dotnet --list-runtimes
+node --version
+npm --version
+```
+
+المتاح حالياً: مكوّن **Button**، وثيم مشترك، وصفحة ترحيب، وأوامر `init` و`add button`.
+المكتبة تنسخ ملفات المكونات إلى التطبيق، ويمكنك تعديلها بعد التثبيت.
+
+## 2. تجهيز الحزم المحلية
+
+نفّذ من نسخة المستودع التي تريد تجربتها:
+
+```powershell
+cd C:\Users\saada\source\repos\BlazorUI
+
+# حزمة أداة Blazor
+dotnet pack .\src\BlazorUI.Cli\BlazorUI.Cli.csproj -c Release -o .\nupkg
+
+# حزمة أداة React وNext.js
+npm ci
+npm pack ./src/react-cli --pack-destination .
+```
+
+ينتج عن ذلك، وفق الإصدارات الحالية:
+
+```text
+BlazorUI\nupkg\BlazorUI.Cli.0.1.0-preview.2.nupkg
+BlazorUI\blazorui-react-0.1.0-preview.1.tgz
+```
+
+هذه أوامر إنشاء حزم محلية فقط. لا تستخدم `npm publish` أو `dotnet nuget push`.
+إذا تغيّر رقم الإصدار في ملفات المشروع، استخدم الرقم واسم الملف الجديدين في
+الأوامر التالية.
+
+## 3. تجربة Blazor
+
+### تثبيت الأداة مرة واحدة
+
+```powershell
+cd C:\Users\saada\source\repos\BlazorUI
+dotnet tool install --tool-path .\local-tools --add-source .\nupkg BlazorUI.Cli --version 0.1.0-preview.2
+```
+
+الأداة هنا مثبتة داخل مجلد المستودع، وليست أداة عامة على الجهاز.
+إذا كانت مثبتة بالفعل، استخدمها مباشرة. لتجربة تغييرات الكود الجديدة مع بقاء
+رقم الإصدار نفسه، استخدم التشغيل من المصدر في القسم 7.
+
+### إنشاء تطبيق تجريبي
+
+```powershell
+cd C:\Users\saada\source\repos
+dotnet new blazor -n blazor-test --framework net10.0 --interactivity Server
+cd blazor-test
+```
+
+لتجربة .NET 8 أو9 غيّر `net10.0` إلى `net8.0` أو `net9.0`، مع توافر متطلباته.
+الدعم الحالي لتطبيقات **Blazor Web App مع Interactive Server**.
+
+### التثبيت داخل تطبيق جديد أو موجود
+
+انتقل إلى المجلد الذي يحتوي ملف التطبيق `.csproj`، ثم نفّذ:
+
+```powershell
+& "C:\Users\saada\source\repos\BlazorUI\local-tools\blazorui.exe" init
+& "C:\Users\saada\source\repos\BlazorUI\local-tools\blazorui.exe" add button
+dotnet build
+dotnet run
+```
+
+افتح رابط التطبيق الظاهر في الطرفية. `init` يجهّز الثيم والليّاوت وصفحة الترحيب،
+وينظّف ملفات القالب المعروفة غير المعدّلة، بما فيها `app.css` الافتراضي.
+الملفات التي عدّلتها تُحفظ وتظهر ملاحظة عنها.
+
+ستجد المكوّن في `Components/UI/Button/Button.razor`، والثيم في
+`wwwroot/css/blazorui/blazorui.css`.
+
+### استخدام Button
+
+أنشئ صفحة مثل `Components/Pages/ButtonTest.razor`:
+
+```razor
+@page "/button-test"
+@rendermode InteractiveServer
+
+<Button OnClick="@(() => count++)">عدد الضغطات: @count</Button>
+<Button Variant="outline" Color="success">زر إضافي</Button>
+
+@code {
+    private int count;
+}
+```
+
+افتح `/button-test`. إذا ظهر تنبيه التفاعلية أثناء `init`، فتأكد من وجود:
+
+```csharp
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+```
+
+في `Program.cs` أضف الاستدعاءات الناقصة إلى التسجيل والربط الموجودين؛ لا تكررهما.
+الأداة تطبع التنبيه ولا تعدّل `Program.cs` بنفسها.
+
+## 4. تجربة React مع Vite
+
+القالب التالي يستخدم TypeScript وإصداراً مجرّباً من أداة إنشاء Vite:
+
+```powershell
+cd C:\Users\saada\source\repos
+npm create vite@6.5.0 react-test -- --template react-ts
+cd react-test
+npm install
+```
+
+لتثبيت المكتبة، سواء في هذا التطبيق أو في تطبيق Vite 6+ موجود:
+
+```powershell
+npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\BlazorUI\blazorui-react-0.1.0-preview.1.tgz"
+npx blazorui-react init
+npm run dev
+```
+
+افتح الرابط الظاهر في الطرفية، وعادةً يكون `http://localhost:5173`.
+`init` يثبّت Button تلقائياً؛ تشغيل `npx blazorui-react add button` بعده لا يضيف
+نسخة أخرى.
+
+الملفات الرئيسية التي تنسخها المكتبة:
+
+```text
+src/App.tsx                         صفحة الترحيب والليّاوت
+src/components/ui/button.tsx         المكوّن
+src/lib/theme.tsx                    مزوّد الثيم
+src/styles/blazorui.scss             نقطة تجميع الأنماط
+src/styles/blazorui/                 ملفات الثيم والمكونات
+```
+
+للتأكد من بناء التطبيق:
+
+```powershell
+npm run build
+```
+
+## 5. تجربة Next.js
+
+المتطلبات: **Next.js 15+، وApp Router، وTypeScript، وبدون Tailwind**.
+هذا مثال بإصدار مجرّب:
+
+```powershell
+cd C:\Users\saada\source\repos
+npx create-next-app@15.5.28 next-test --ts --app --no-tailwind --eslint --no-src-dir --import-alias "@/*" --use-npm --yes
+cd next-test
+```
+
+ثم داخل التطبيق:
+
+```powershell
+npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\BlazorUI\blazorui-react-0.1.0-preview.1.tgz"
+npx blazorui-react init
+npm run dev
+```
+
+افتح الرابط الظاهر، وعادةً يكون `http://localhost:3000`.
+المكتبة تكتشف Next.js تلقائياً وتستخدم:
+
+```text
+app/page.tsx                       صفحة الترحيب
+app/layout.tsx                     إضافة استيراد الثيم إلى الليّاوت الموجود
+components/ui/button.tsx           المكوّن
+lib/theme.tsx                      مزوّد الثيم
+styles/blazorui.scss               نقطة تجميع الأنماط
+```
+
+عند استخدام خيار `--src-dir` تكون هذه الملفات تحت `src/` بدلاً من جذر التطبيق.
+لا تستورد Bootstrap CSS مرة أخرى؛ المكتبة تجمعه من SCSS.
+
+للتحقق من نسخة الإنتاج، أوقف خادم التطوير بـ`Ctrl+C` ثم نفّذ:
+
+```powershell
+npm run build
+npm run start
+```
+
+## 6. تجربة الثيم واستخدام المكوّن
+
+صفحة الترحيب تحتوي خيارات `default` و`flat` و`glass`، والوضعين الفاتح والداكن،
+وألوان الثيم، واتجاهي LTR وRTL. جرّبها قبل البدء بتعديل الصفحة.
+
+هذا مثال React يمكن وضعه في `src/App.tsx` في Vite، أو `app/page.tsx` في Next.js
+الذي أنشأناه دون `src/`:
+
+```tsx
+"use client"
+
+// في Next.js استخدم ../components/ui/button و../lib/theme بدلاً من ./
+import { Button } from "./components/ui/button"
+import { BootThemeProvider } from "./lib/theme"
+
+export default function App() {
+  return (
+    <BootThemeProvider className="bui-app" mode="dark" appearance="glass" direction="rtl">
+      <Button onClick={() => alert("تم الحفظ")}>حفظ</Button>
+      <Button variant="outline" appearance="flat">إلغاء</Button>
+    </BootThemeProvider>
+  )
+}
+```
+
+في Blazor يمكنك استخدام خصائص HTML على حاوية المكوّن:
+
+```razor
+<div data-bs-theme="dark" data-bui-appearance="glass" dir="rtl">
+    <Button>حفظ</Button>
+</div>
+```
+
+خلفية صفحة الترحيب الداكنة سوداء مع تدرجات الزوايا. لتثبيت إعدادات الصفحة
+عدّل الحاوية `.bui-app` في الليّاوت الخاص بـBlazor، أو قيم الحالة في صفحة React.
+
+## 7. تجربة تحديثات المكتبة أثناء التطوير
+
+**تحديث الأداة لا يحدّث ملفات المكونات المثبّتة تلقائياً.** لا يوجد حالياً أمر
+`update` أو `diff`. تثبيت ملفات من نسخة Registry مختلفة قد يتوقف برسالة تعارض،
+والملفات التي عدّلتها محلياً لا تُستبدل تلقائياً.
+
+لذلك، أدق طريقة لاختبار تغيير جديد هي إنشاء تطبيق تجريبي جديد باسم آخر، ثم
+تهيئته من المصدر أو من الحزمة المحلية المعاد بناؤها. احتفظ بتطبيقك الحالي إذا
+كانت فيه تعديلات تريد الاحتفاظ بها.
+
+### Blazor: تشغيل الأداة مباشرة من المصدر
+
+هذا يتجاوز نسخة الأداة المثبّتة سابقاً ومشاكل تخزين حزمة بنفس رقم الإصدار:
+
+```powershell
+cd C:\Users\saada\source\repos\BlazorUI
+dotnet run --project .\src\BlazorUI.Cli -c Release -f net10.0 -- init --cwd "C:\Users\saada\source\repos\blazor-test-new"
+dotnet run --project .\src\BlazorUI.Cli -c Release -f net10.0 -- add button --cwd "C:\Users\saada\source\repos\blazor-test-new"
+```
+
+يجب أن يكون التطبيق الجديد موجوداً قبل تشغيل هذه الأوامر.
+
+### React وNext.js: إعادة تجهيز الحزمة
+
+```powershell
+cd C:\Users\saada\source\repos\BlazorUI
+npm pack ./src/react-cli --pack-destination .
+```
+
+بعد ذلك استخدم أوامر التثبيت والتهيئة داخل التطبيق التجريبي الجديد.
+إعادة إنشاء ملف `.tgz` وحدها لا تغيّر أي تطبيق ثُبّتت فيه الحزمة سابقاً.
+
+### عند تعديل الثيم داخل مستودع المكتبة
+
+المصدر المشترك في `theme/scss/`. بعد تغييره:
+
+```powershell
+cd C:\Users\saada\source\repos\BlazorUI
+npm run theme:css
+node src/react-cli/scripts/update-hashes.mjs
+```
+
+الأمر الأول يعيد توليد CSS الخاص بـBlazor، والثاني يحدّث بصمات ملفات React.
+يلزم أيضاً تحديث SHA-256 لأصل CSS في `registry/components/button/manifest.json`
+قبل اختبار أداة Blazor، ثم إعادة بناء الأداة أو تشغيلها من المصدر.
+لا تعدّل CSS الناتج وحده كحل دائم؛ أعد توليده من SCSS.
+
+## 8. التحذيرات والمشاكل الشائعة
+
+| الحالة | الإجراء |
+| --- | --- |
+| ظهور `DEP0190` أثناء `init` | أعد تجهيز الحزمة من المصدر المحدّث وثبّتها في التطبيق؛ الإصلاح يشغّل npm عبر Node دون shell على Windows. |
+| رسائل إهمال Sass من Bootstrap | الأداة المحدّثة تضيف إعدادات توافق للقوالب البسيطة. هذه معالجة مؤقتة لفئات التحذيرات المعروفة، وليست ترقية لكود Bootstrap. تبقى أخطاء Sass والتحذيرات الأخرى فعّالة. |
+| Next.js يختار مجلد المستخدم بسبب ملف قفل آخر | في القالب البسيط تضبط التهيئة `turbopack.root` و`outputFileTracingRoot`. لا تحذف ملف قفل خارج التطبيق لمجرد إخفاء الرسالة. |
+| الأداة تقول إنها احتفظت بملف إعداد مخصّص | ادمج الإعدادات يدوياً كما في [دليل React](react.md#tooling-diagnostics). الأداة لا تخمّن كيفية تعديل إعداداتك. |
+| خطأ عن ملفات من إصدار سابق أو ملفات معدّلة | لا تحذف ملف القفل لتجاوز الحماية. اختبر في تطبيق جديد، أو راجع التغييرات وادمجها يدوياً مع نسخة احتياطية. |
+| التطبيق يعمل لكن الشكل مختلف | تحقق من استيراد ثيم المكتبة مرة واحدة، وعدم تكرار Bootstrap CSS، ومن عدم بقاء أنماط قالب أو تخصيصات تتجاوز الثيم. |
+| زر Blazor يظهر ولا يستجيب | تحقق من Interactive Server وتفعيل render mode للصفحة أو التطبيق. |
+
+إعدادات توافق Sass تنطبق على فئات التحذيرات المحددة في كامل بناء التطبيق،
+بما فيها SCSS الخاص بك. راجع [التفاصيل والقيود](react.md#tooling-diagnostics)،
+خصوصاً عند استخدام monorepo أو حزم مرتبطة خارج جذر تطبيق Next.js.
+
+## 9. قائمة تحقق قبل اعتماد التجربة
+
+- ينجح `dotnet build` أو `npm run build`.
+- تظهر صفحة الترحيب وتعمل خيارات الثيم.
+- يعمل الزر عند الضغط عليه.
+- تعمل المظاهر الثلاثة في الوضعين الفاتح والداكن واتجاه RTL.
+- لا تؤدي إعادة `init` و`add button` بالنسخة نفسها إلى تكرار الاستيرادات.
+- تعرف أن المكونات أصبحت ملفات داخل التطبيق، وأن تحديث الأداة وحده لا يحدّثها.
+
+للتفاصيل الإضافية: [README](../README.md)، و[React](react.md)،
+و[الثيم المشترك](../theme/README.md).
