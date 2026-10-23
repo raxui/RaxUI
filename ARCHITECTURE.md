@@ -352,7 +352,7 @@ Conceptual example:
 
 `componentsPath` and `stylesPath` are relative to the explicitly selected consumer project. Detect the evaluated MSBuild `RootNamespace` and `AssemblyName` rather than inferring them from a folder name. Default `componentsNamespace` to `<RootNamespace>.Components.UI` and allow an explicit override. Generated components declare this namespace explicitly; add its `@using` once to the applicable `_Imports.razor`. Validate namespaces and safely substitute only documented template tokens. A later path or namespace change is a migration, not an implicit move during `add`.
 
-**First milestone ([ADR 004](docs/adr/004-simplified-first-milestone.md)):** `componentsPath`, `stylesPath`, and `componentsNamespace` are fixed to the defaults and not configurable. Components declare no `@namespace`; Razor derives `<RootNamespace>.Components.UI` from the folder. `bootstrap.managed` is `false`. The `@using` is still added once to `Components/_Imports.razor`.
+**First milestone ([ADR 004](docs/adr/004-simplified-first-milestone.md)):** `componentsPath`, `stylesPath`, and `componentsNamespace` are fixed to the defaults and not configurable. Each component installs into `Components/UI/<Name>/`. Components declare no `@namespace`; Razor derives `<RootNamespace>.Components.UI.<Name>` from the folder, and `add` adds that `@using` once per component to `Components/_Imports.razor`. Component source is `.razor` only. `bootstrap.managed` is `false`.
 
 ### 9.2 Lock File
 

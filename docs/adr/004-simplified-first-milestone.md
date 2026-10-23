@@ -28,9 +28,11 @@ For the first milestone:
 
 ### 3. No custom namespace
 
-- Components install to `Components/UI`; shared styles install to `wwwroot/css/blazorui`. Neither path is configurable.
-- Components declare no `@namespace`. Razor derives the namespace from the folder: `<RootNamespace>.Components.UI`. `init` adds that `@using` once to `Components/_Imports.razor`.
+- Each component installs into its own folder under `Components/UI` (for example `Components/UI/Button/Button.razor` and `Button.razor.css`); shared styles install to `wwwroot/css/blazorui`. Neither base path is configurable.
+- Components declare no `@namespace`. Razor derives the namespace from the folder, so Button lives in `<RootNamespace>.Components.UI.Button`. `add` adds that component's `@using` once to `Components/_Imports.razor`.
+- The class name repeating the last namespace segment (`...UI.Button.Button`) was verified to work: `<Button>` resolves from pages and from components in sibling folders (for example `Components/UI/Card/`), including `@ref` fields typed `Button`.
 - No template-token substitution. The installed hash equals the registry source hash; the lock file still stores both fields so later substitution needs no schema change.
+- Component source is `.razor` only. A `.cs` file would need an explicit `namespace` declaration, which requires substitution.
 - Custom `componentsPath`, `stylesPath`, and `componentsNamespace` are deferred. Brief §14 criterion 5 is removed from this milestone.
 
 ### Superseded parts of ADR 003

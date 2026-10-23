@@ -1,0 +1,92 @@
+.bui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bui-space-2);
+  padding-block: var(--bui-space-2);
+  padding-inline: var(--bui-space-4);
+  border: 1px solid transparent;
+  border-radius: var(--bui-radius);
+  font-family: var(--bui-font-family);
+  font-size: var(--bui-font-size);
+  font-weight: var(--bui-font-weight-medium);
+  line-height: 1.25rem;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--bui-transition), color var(--bui-transition), border-color var(--bui-transition);
+}
+
+.bui-btn:focus-visible {
+  outline: var(--bui-ring-width) solid var(--bui-ring);
+  outline-offset: var(--bui-ring-offset);
+}
+
+.bui-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.bui-btn--sm {
+  padding-block: var(--bui-space-1);
+  padding-inline: var(--bui-space-3);
+  font-size: 0.8125rem;
+}
+
+.bui-btn--lg {
+  padding-block: var(--bui-space-3);
+  padding-inline: var(--bui-space-6);
+  font-size: 1rem;
+}
+
+/* Variants */
+.bui-btn--primary {
+  background-color: var(--bui-primary);
+  color: var(--bui-primary-foreground);
+}
+
+.bui-btn--primary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--bui-primary) 88%, var(--bui-background));
+}
+
+.bui-btn--secondary {
+  background-color: var(--bui-secondary);
+  color: var(--bui-secondary-foreground);
+}
+
+.bui-btn--secondary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--bui-secondary) 85%, var(--bui-foreground));
+}
+
+.bui-btn--outline {
+  background-color: var(--bui-background);
+  color: var(--bui-foreground);
+  border-color: var(--bui-border);
+}
+
+.bui-btn--outline:hover:not(:disabled),
+.bui-btn--ghost:hover:not(:disabled) {
+  background-color: var(--bui-accent);
+  color: var(--bui-accent-foreground);
+}
+
+.bui-btn--ghost {
+  background-color: transparent;
+  color: var(--bui-foreground);
+}
+
+.bui-btn--destructive {
+  background-color: var(--bui-destructive);
+  color: var(--bui-destructive-foreground);
+}
+
+.bui-btn--destructive:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--bui-destructive) 88%, black);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bui-btn {
+    transition: none;
+  }
+}

@@ -1,0 +1,16 @@
+/* BlazorUI dark theme. Follows Bootstrap's color mode attribute. */
+[data-bs-theme="dark"] {
+  --bui-background: #0a0a0a;
+  --bui-foreground: #fafafa;
+  --bui-primary: #fafafa;
+  --bui-primary-foreground: #171717;
+  --bui-secondary: #27272a;
+  --bui-secondary-foreground: #fafafa;
+  --bui-accent: #27272a;
+  --bui-accent-foreground: #fafafa;
+  --bui-destructive: #ef4444;
+  --bui-destructive-foreground: #ffffff;
+  --bui-border: #3f3f46;
+
+  --bui-ring: #60a5fa;
+}
