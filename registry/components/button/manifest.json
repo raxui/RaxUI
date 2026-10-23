@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "name": "button",
+  "version": "0.1.0",
+  "description": "A customizable button component.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/tokens.css",
+      "destination": "styles",
+      "target": "tokens.css",
+      "type": "css",
+      "sha256": "d06aa52dd87a10abea2924a43493683468aa058f46e911312bc339c1ea7876be"
+    },
+    {
+      "source": "styles/themes.css",
+      "destination": "styles",
+      "target": "themes.css",
+      "type": "css",
+      "sha256": "53d388758426b1f8b6e0a002d5521b828dc7c7ad465a3b9a2d7e285e8ed7e2b3"
+    }
+  ],
+  "files": [
+    {
+      "source": "Button.razor",
+      "destination": "components",
+      "target": "Button/Button.razor",
+      "type": "razor",
+      "sha256": "9096a872a09073ce5a2f4c8f2da0b92571770605aa99a7ee3a0ddb1bcdb333e2"
+    },
+    {
+      "source": "Button.razor.css",
+      "destination": "components",
+      "target": "Button/Button.razor.css",
+      "type": "isolated-css",
+      "sha256": "c58d6bd0be550f2cde18e93d43d15dd6e5038d24415a369099627990748d2984"
+    }
+  ]
+}

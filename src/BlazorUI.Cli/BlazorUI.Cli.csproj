@@ -9,4 +9,8 @@
     <Description>Source-first Blazor UI components installed into your project.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\registry\**\*" LinkBase="registry" />
+  </ItemGroup>
+
 </Project>
