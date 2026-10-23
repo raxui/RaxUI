@@ -24,9 +24,22 @@ it.each([
   const planned = planTooling(dir, kind, [])!
   expect(planned.content).toContain("silenceDeprecations")
   expect(planned.content.includes("legacy-js-api")).toBe(kind === "next")
-  expect(planned.content).toContain(kind === "vite" ? "plugins: [react()]" : "turbopack: { root:")
+  expect(planned.content).toContain(kind === "vite" ? "plugins: [react()]" : "turbopack: { root: __dirname }")
+  expect(planned.content).not.toContain("process.cwd()")
   writeFileSync(planned.full, planned.content)
   expect(planTooling(dir, kind, [])).toBeNull()
+})
+
+it.each([
+  ["next.config.mjs", "{}", "import.meta.dirname"],
+  ["next.config.js", '{"type":"module"}', "import.meta.dirname"],
+  ["next.config.js", "{}", "__dirname"],
+])("roots %s (package %s) at the config folder with %s", (name, pkg, root) => {
+  const dir = project(name, "const nextConfig = {};\nexport default nextConfig;")
+  writeFileSync(path.join(dir, "package.json"), pkg)
+  const planned = planTooling(dir, "next", [])!
+  expect(planned.content).toContain(`turbopack: { root: ${root} }`)
+  expect(planned.content).toContain(`outputFileTracingRoot: ${root},`)
 })
 
 it.each([
