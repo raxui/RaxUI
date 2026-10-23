@@ -7,6 +7,8 @@
     "node": ">=22"
   },
   "scripts": {
+    "check": "node scripts/check.mjs",
+    "check:full": "node scripts/check.mjs --full",
     "test": "vitest run",
     "typecheck": "tsc -p .",
     "test:acceptance": "playwright test -c tests/react/acceptance install.spec.ts",
