@@ -32,8 +32,9 @@ public class BlazorUiLock
         var json = File.ReadAllText(path);
         var result = JsonSerializer.Deserialize<BlazorUiLock>(json, BlazorUiConfig.JsonOptions)
             ?? throw new InvalidOperationException("Lock file must be a JSON object.");
-        if (result.SchemaVersion != CurrentSchemaVersion || result.RegistryVersion != ReleaseIdentity.Version)
-            throw new InvalidOperationException("Lock file schema or registry version is incompatible with this CLI. Use the matching CLI version.");
+        if (result.SchemaVersion != CurrentSchemaVersion)
+            throw new InvalidOperationException($"Unsupported lock file schema version {result.SchemaVersion}.");
+        ReleaseIdentity.EnsureSupported(result.RegistryVersion, DefaultFileName);
         if (result.Components == null || result.Assets == null)
             throw new InvalidOperationException("Lock file components and assets must be objects.");
         return result;
@@ -44,6 +45,21 @@ public class BlazorUiLock
         var path = Path.Combine(directory, DefaultFileName);
         var json = JsonSerializer.Serialize(this, BlazorUiConfig.JsonOptions);
         File.WriteAllText(path, json + Environment.NewLine);
+    }
+
+    /// <summary>
+    /// Refuses to replace a tracked file with different registry content: that is an update,
+    /// which needs the deferred 'update'/'diff' workflow, not a silent overwrite by 'init' or 'add'.
+    /// </summary>
+    public void EnsureSameSource(string relativePath, string newSourceHash)
+    {
+        var tracked = FindTrackedFile(relativePath);
+        if (tracked != null && !string.Equals(tracked.SourceHash, newSourceHash, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException(
+                $"'{relativePath}' was installed from another registry release and differs from this CLI's version. " +
+                "Updating installed files is not supported yet.");
+        }
     }
 
     public LockedFile? FindTrackedFile(string relativePath)
@@ -70,6 +86,9 @@ public class LockedComponent
 {
     [JsonPropertyName("version")]
     public string Version { get; set; } = "";
+
+    [JsonPropertyName("registryVersion")]
+    public string RegistryVersion { get; set; } = "";
 
     [JsonPropertyName("manifestSha256")]
     public string ManifestSha256 { get; set; } = "";

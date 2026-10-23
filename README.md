@@ -39,8 +39,10 @@ Use `Variant` (`primary`, `secondary`, `outline`, `ghost`, `destructive`), `Size
 
 ## Installation guarantees and limits
 
-- Configuration and lock files pin the CLI's embedded registry release. Use the
-  same CLI version when repeating commands; automatic version migration is not supported.
+- Configuration and lock files record the CLI's embedded registry release. A newer
+  CLI can keep adding components to a project; an older CLI refuses files written
+  by a newer one. Files installed from another release whose content differs are
+  never silently replaced, because update commands are not supported yet.
 - Custom install paths are not supported in this preview. Destinations and
   existing symlinks/junctions must stay inside the selected project.
 - Locally edited and untracked destination files are never silently replaced.
