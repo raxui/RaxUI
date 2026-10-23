@@ -251,6 +251,21 @@ public class GeneratedAppTests : IDisposable
 
         await page.Keyboard.PressAsync("ArrowDown");
         await Focused("Delete"); // Archive is disabled
+        // The highlight glides to the active item, from the keyboard and the pointer.
+        async Task HighlightOn(string name)
+        {
+            await Assertions.Expect(menu).ToHaveAttributeAsync("data-hover", "");
+            var onItem = await menu.EvaluateAsync<bool>("""
+                (el, name) => [...el.querySelectorAll('[role=menuitem]')].find(i => i.textContent.trim() === name)
+                    .offsetTop + 'px' === el.style.getPropertyValue('--sheen-menu-hover-y')
+                """, name);
+            Assert.True(onItem, $"The highlight is on {name}.");
+        }
+        await HighlightOn("Delete");
+        await menu.GetByRole(AriaRole.Menuitem, new() { Name = "Edit" }).HoverAsync();
+        await Focused("Edit");
+        await HighlightOn("Edit");
+        await menu.GetByRole(AriaRole.Menuitem, new() { Name = "Delete" }).FocusAsync();
         await page.Keyboard.PressAsync("ArrowDown");
         await Focused("Edit");
         await page.Keyboard.PressAsync("End");

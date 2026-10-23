@@ -48,6 +48,7 @@ export default function App() {
         <DropdownMenuTrigger asChild><Button variant="secondary">Options</Button></DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem onSelect={() => setPicked("Edit")}>Edit</DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => setPicked("Delete")}>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <p id="picked">{picked}</p>
@@ -216,6 +217,15 @@ test("Dialog and DropdownMenu portal into the theme root and use the shared styl
   await expect(menu).toBeFocused() // a pointer open focuses the menu; arrows move in (ADR 013)
   await page.keyboard.press("ArrowDown")
   await expect(page.getByRole("menuitem", { name: "Edit" })).toBeFocused()
+  // The highlight glides to the item Radix highlights.
+  await expect(menu).toHaveAttribute("data-hover", "")
+  const edit = await page.getByRole("menuitem", { name: "Edit" }).evaluate((el: HTMLElement) => `${el.offsetTop}px`)
+  expect(await menu.evaluate((el) => el.style.getPropertyValue("--sheen-menu-hover-y"))).toBe(edit)
+  const remove = page.getByRole("menuitem", { name: "Delete" })
+  await remove.hover()
+  await expect(remove).toBeFocused()
+  expect(await menu.evaluate((el) => el.style.getPropertyValue("--sheen-menu-hover-y"))).toBe(await remove.evaluate((el: HTMLElement) => `${el.offsetTop}px`))
+  await page.getByRole("menuitem", { name: "Edit" }).hover()
   await page.keyboard.press("Enter")
   await expect(page.locator("#picked")).toHaveText("Edit")
   await expect(menu).toBeHidden()

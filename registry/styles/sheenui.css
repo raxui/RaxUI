@@ -810,6 +810,7 @@ dialog.sheen-dialog:not([open])::backdrop {
   }
 }
 .sheen-dropdown-menu {
+  position: relative;
   z-index: 1060;
   min-width: 10rem;
   max-width: calc(100vw - 1rem);
@@ -837,7 +838,29 @@ dialog.sheen-dialog:not([open])::backdrop {
   display: grid;
 }
 
+.sheen-dropdown-highlight {
+  position: absolute;
+  inset-inline: 0.25rem;
+  top: 0;
+  height: var(--sheen-menu-hover-h, 0);
+  border-radius: var(--sheen-radius-sm);
+  background: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(var(--sheen-menu-hover-y, 0));
+  transition: opacity 80ms ease;
+}
+.sheen-dropdown-menu[data-hover] > .sheen-dropdown-highlight {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-dropdown-highlight {
+    transition: opacity 80ms ease, transform var(--sheen-duration) var(--sheen-ease-out), height var(--sheen-duration) var(--sheen-ease-out);
+  }
+}
+
 .sheen-dropdown-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -855,7 +878,7 @@ dialog.sheen-dialog:not([open])::backdrop {
   outline: none;
   transition: background-color 80ms ease;
 }
-.sheen-dropdown-item:is([data-highlighted], :focus) {
+.sheen-dropdown-menu:not(:has(> .sheen-dropdown-highlight)) .sheen-dropdown-item:is([data-highlighted], :focus) {
   background: rgba(var(--bs-emphasis-color-rgb), 0.07);
 }
 .sheen-dropdown-item:is([data-disabled], :disabled) {
