@@ -8,25 +8,97 @@ namespace BlazorUI.Cli.Registry;
 
 public class EmbeddedRegistry
 {
+    public const int SupportedSchemaVersion = 1;
+
     private const string ResourcePrefix = "BlazorUI.Cli.registry.";
+    private static readonly Dictionary<string, string> FileTypeDestinations = new()
+    {
+        ["razor"] = "components",
+        ["isolated-css"] = "components",
+    };
+
     private readonly Assembly _assembly = typeof(EmbeddedRegistry).Assembly;
 
     public RegistryIndex GetIndex()
     {
         var json = ReadResourceAsString("registry.json");
-        return JsonSerializer.Deserialize<RegistryIndex>(json, BlazorUiConfig.JsonOptions)
-               ?? throw new InvalidOperationException("Failed to deserialize registry index.");
+        var index = JsonSerializer.Deserialize<RegistryIndex>(json, BlazorUiConfig.JsonOptions)
+                    ?? throw new InvalidOperationException("Failed to deserialize registry index.");
+
+        if (index.SchemaVersion != SupportedSchemaVersion)
+        {
+            throw new InvalidOperationException(
+                $"Unsupported registry schema version {index.SchemaVersion}. This CLI supports version {SupportedSchemaVersion}.");
+        }
+
+        return index;
     }
 
     public ComponentManifest GetComponentManifest(string componentName)
     {
         var index = GetIndex();
         var item = index.Components.FirstOrDefault(c => string.Equals(c.Name, componentName, StringComparison.OrdinalIgnoreCase))
-                   ?? throw new KeyNotFoundException($"Component '{componentName}' was not found in registry.");
+                   ?? throw new KeyNotFoundException(
+                       $"Component '{componentName}' was not found in registry. Available: {string.Join(", ", index.Components.Select(c => c.Name))}.");
 
-        var json = ReadResourceAsString(item.Manifest);
-        return JsonSerializer.Deserialize<ComponentManifest>(json, BlazorUiConfig.JsonOptions)
-               ?? throw new InvalidOperationException($"Failed to deserialize manifest for '{componentName}'.");
+        var bytes = GetResourceBytes(item.Manifest);
+        var manifest = JsonSerializer.Deserialize<ComponentManifest>(bytes, BlazorUiConfig.JsonOptions)
+                       ?? throw new InvalidOperationException($"Failed to deserialize manifest for '{componentName}'.");
+
+        manifest.ManifestSha256 = ComputeSha256(bytes);
+        ValidateManifest(manifest);
+        return manifest;
+    }
+
+    /// <summary>
+    /// Rejects unsupported schema versions, file types, destinations, unsafe paths, and hash mismatches
+    /// before any file is written.
+    /// </summary>
+    public void ValidateManifest(ComponentManifest manifest)
+    {
+        if (manifest.SchemaVersion != SupportedSchemaVersion)
+        {
+            throw new InvalidOperationException(
+                $"Unsupported manifest schema version {manifest.SchemaVersion} for '{manifest.Name}'. This CLI supports version {SupportedSchemaVersion}.");
+        }
+
+        if (manifest.Files.Count == 0)
+            throw new InvalidOperationException($"Manifest for '{manifest.Name}' declares no files.");
+
+        var folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var file in manifest.Files)
+        {
+            ValidatePathSafety(file.Source);
+            ValidatePathSafety(file.Target);
+
+            if (!FileTypeDestinations.TryGetValue(file.Type, out var expectedDestination))
+                throw new InvalidOperationException($"Unsupported file type '{file.Type}' for '{file.Source}'.");
+
+            if (file.Destination != expectedDestination)
+                throw new InvalidOperationException($"Unsupported destination '{file.Destination}' for '{file.Source}'.");
+
+            var segments = file.Target.Split('/');
+            if (segments.Length != 2)
+                throw new InvalidOperationException($"Target '{file.Target}' must have the form '<ComponentFolder>/<file>'.");
+
+            folders.Add(segments[0]);
+            VerifyHash($"components/{manifest.Name}/{file.Source}", file.Sha256);
+        }
+
+        if (folders.Count != 1)
+            throw new InvalidOperationException($"All files of '{manifest.Name}' must target one component folder.");
+
+        foreach (var asset in manifest.Assets)
+        {
+            ValidatePathSafety(asset.Source);
+            ValidatePathSafety(asset.Target);
+
+            if (asset.Type != "css" || asset.Destination != "styles")
+                throw new InvalidOperationException($"Unsupported asset '{asset.Source}' (type '{asset.Type}', destination '{asset.Destination}').");
+
+            VerifyHash(asset.Source, asset.Sha256);
+        }
     }
 
     public byte[] GetResourceBytes(string relativePath)
@@ -48,38 +120,29 @@ public class EmbeddedRegistry
         return Encoding.UTF8.GetString(bytes);
     }
 
-    public static string ComputeSha256(byte[] bytes)
-    {
-        // Normalize CRLF to LF so checksums are deterministic across OSes and editors
-        try
-        {
-            var text = Encoding.UTF8.GetString(bytes);
-            if (text.Contains('\r'))
-            {
-                text = text.Replace("\r\n", "\n").Replace('\r', '\n');
-                bytes = Encoding.UTF8.GetBytes(text);
-            }
-        }
-        catch
-        {
-            // If binary file cannot be decoded as UTF-8, use original bytes
-        }
-
-        var hash = SHA256.HashData(bytes);
-        return Convert.ToHexStringLower(hash);
-    }
+    public static string ComputeSha256(byte[] bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));
 
     public static void ValidatePathSafety(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
             throw new ArgumentException("Path cannot be empty.", nameof(path));
 
-        if (Path.IsPathRooted(path))
+        if (Path.IsPathRooted(path) || path.StartsWith('/') || path.StartsWith('\\'))
             throw new ArgumentException($"Rooted paths are not allowed: '{path}'", nameof(path));
 
         var segments = path.Split('/', '\\');
         if (segments.Any(s => s == ".."))
             throw new ArgumentException($"Directory traversal is not allowed: '{path}'", nameof(path));
+    }
+
+    private void VerifyHash(string resourcePath, string expected)
+    {
+        var actual = ComputeSha256(GetResourceBytes(resourcePath));
+        if (!string.Equals(expected, actual, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException(
+                $"Manifest integrity check failed for '{resourcePath}'. Expected hash '{expected}', but got '{actual}'.");
+        }
     }
 
     private string ResolveResourceName(string relativePath)

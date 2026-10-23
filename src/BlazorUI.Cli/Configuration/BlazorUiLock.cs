@@ -14,9 +14,6 @@ public class BlazorUiLock
     [JsonPropertyName("registryVersion")]
     public string RegistryVersion { get; set; } = "0.1.0";
 
-    [JsonPropertyName("updatedAt")]
-    public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
-
     [JsonPropertyName("components")]
     public Dictionary<string, LockedComponent> Components { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
@@ -35,7 +32,6 @@ public class BlazorUiLock
 
     public void Save(string directory)
     {
-        UpdatedAt = DateTimeOffset.UtcNow;
         var path = Path.Combine(directory, DefaultFileName);
         var json = JsonSerializer.Serialize(this, BlazorUiConfig.JsonOptions);
         File.WriteAllText(path, json + Environment.NewLine);
@@ -65,6 +61,9 @@ public class LockedComponent
 {
     [JsonPropertyName("version")]
     public string Version { get; set; } = "";
+
+    [JsonPropertyName("manifestSha256")]
+    public string ManifestSha256 { get; set; } = "";
 
     [JsonPropertyName("files")]
     public List<LockedFile> Files { get; set; } = [];

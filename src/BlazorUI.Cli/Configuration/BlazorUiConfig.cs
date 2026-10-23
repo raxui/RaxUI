@@ -23,9 +23,6 @@ public class BlazorUiConfig
     [JsonPropertyName("componentsPath")]
     public string ComponentsPath { get; set; } = "Components/UI";
 
-    [JsonPropertyName("componentsNamespace")]
-    public string ComponentsNamespace { get; set; } = "";
-
     [JsonPropertyName("stylesPath")]
     public string StylesPath { get; set; } = "wwwroot/css/blazorui";
 
