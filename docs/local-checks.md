@@ -1,5 +1,7 @@
 # Local verification / الفحص المحلي
 
+[الدليل العربي الكامل](local-checks.ar.md) | English
+
 During the current solo development phase, local verification is the default.
 GitHub Actions is optional and manual; existing hosted-runner failures do not
 represent the outcome of these local commands.

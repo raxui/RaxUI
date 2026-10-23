@@ -310,7 +310,7 @@ node src/react-cli/scripts/update-hashes.mjs
 ## 9. قائمة تحقق قبل اعتماد التجربة
 
 لفحص المستودع أثناء التطوير استخدم `npm run check`، وقبل دمج التغييرات استخدم
-`npm run check:full`. راجع [الأوامر والتغطية والمتطلبات](local-checks.md).
+`npm run check:full`. راجع [دليل أدوات الفحص المحلي](local-checks.ar.md).
 
 - ينجح `dotnet build` أو `npm run build`.
 - تظهر صفحة الترحيب وتعمل خيارات الثيم.
