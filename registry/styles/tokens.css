@@ -1,0 +1,31 @@
+/* BlazorUI design tokens (light). Override these variables to theme components. */
+:root {
+  --bui-font-family: var(--bs-body-font-family, system-ui, sans-serif);
+  --bui-font-size: 0.875rem;
+  --bui-font-weight-medium: 500;
+
+  --bui-radius: 0.5rem;
+  --bui-space-1: 0.25rem;
+  --bui-space-2: 0.5rem;
+  --bui-space-3: 0.75rem;
+  --bui-space-4: 1rem;
+  --bui-space-6: 1.5rem;
+
+  --bui-background: #ffffff;
+  --bui-foreground: #0a0a0a;
+  --bui-primary: #171717;
+  --bui-primary-foreground: #fafafa;
+  --bui-secondary: #f4f4f5;
+  --bui-secondary-foreground: #18181b;
+  --bui-accent: #f4f4f5;
+  --bui-accent-foreground: #18181b;
+  --bui-destructive: #dc2626;
+  --bui-destructive-foreground: #ffffff;
+  --bui-border: #e4e4e7;
+
+  --bui-ring: #2563eb;
+  --bui-ring-width: 2px;
+  --bui-ring-offset: 2px;
+
+  --bui-transition: 150ms ease;
+}

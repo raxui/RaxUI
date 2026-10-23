@@ -1,2 +1,8 @@
-﻿<Solution>
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BlazorUI.Cli/BlazorUI.Cli.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BlazorUI.Cli.Tests/BlazorUI.Cli.Tests.csproj" />
+  </Folder>
 </Solution>
