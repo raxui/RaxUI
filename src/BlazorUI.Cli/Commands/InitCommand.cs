@@ -81,6 +81,9 @@ public static class InitCommand
                 plannedWrites.Add((targetPath, relTarget, bytes, hash));
             }
 
+            // Starter layout and welcome page replace the unmodified template ones (ADR 008).
+            var starter = StarterApp.Prepare(workingDirectory, project.ProjectName, lockFile, registry);
+
             // 2. Write shared styles
             foreach (var write in plannedWrites)
             {
@@ -96,7 +99,28 @@ public static class InitCommand
             // 3. Update App.razor style links
             UpdateAppRazor(project, backup);
 
-            // 4. Save config, then lock last
+            // 4. Starter: write the layout and welcome page, remove template leftovers
+            foreach (var write in starter.Writes)
+                backup.Write(write.FullPath, write.Bytes);
+            foreach (var path in starter.Deletes)
+                backup.Delete(path);
+            if (starter.Writes.Count > 0)
+            {
+                var files = lockFile.Components.TryGetValue(StarterApp.ItemName, out var previous)
+                    ? previous.Files.ToDictionary(f => f.Target)
+                    : [];
+                foreach (var write in starter.Writes)
+                    files[write.RelativePath] = new LockedFile { Target = write.RelativePath, SourceHash = write.Hash, InstalledHash = write.Hash };
+                lockFile.Components[StarterApp.ItemName] = new LockedComponent
+                {
+                    Version = starter.Manifest.Version,
+                    RegistryVersion = ReleaseIdentity.Version,
+                    ManifestSha256 = starter.Manifest.ManifestSha256,
+                    Files = [.. files.Values.OrderBy(f => f.Target, StringComparer.Ordinal)],
+                };
+            }
+
+            // 5. Save config, then lock last
             backup.Remember(Path.Combine(workingDirectory, BlazorUiConfig.DefaultFileName));
             config.Save(workingDirectory);
             backup.Remember(Path.Combine(workingDirectory, BlazorUiLock.DefaultFileName));
@@ -106,6 +130,12 @@ public static class InitCommand
             output.WriteLine($"  - Configuration: {BlazorUiConfig.DefaultFileName}");
             output.WriteLine($"  - Shared styles: {config.StylesPath}/");
             output.WriteLine($"  - Host links updated in: {Path.GetRelativePath(workingDirectory, project.AppRazorPath).Replace('\\', '/')}");
+            foreach (var write in starter.Writes)
+                output.WriteLine($"  - Starter: {write.RelativePath}");
+            foreach (var path in starter.Deletes)
+                output.WriteLine($"  - Removed template file: {Path.GetRelativePath(workingDirectory, path).Replace('\\', '/')}");
+            foreach (var note in starter.Notes)
+                output.WriteLine($"Note: {note}");
             if (interactivityWarning != null)
                 output.WriteLine(interactivityWarning);
 

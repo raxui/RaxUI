@@ -41,6 +41,13 @@ public sealed class FileBackup
         File.WriteAllText(path, content);
     }
 
+    /// <summary>Deletes a file; Restore() writes it back.</summary>
+    public void Delete(string path)
+    {
+        Remember(path);
+        File.Delete(path);
+    }
+
     /// <summary>Records a file that will be created or replaced by other code (for example a JSON save).</summary>
     public void Remember(string path)
     {

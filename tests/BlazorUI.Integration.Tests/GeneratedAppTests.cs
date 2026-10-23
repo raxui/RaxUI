@@ -35,9 +35,18 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["init"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "button"], app, output, error) == 0, error.ToString());
 
-        var home = Path.Combine(app, "Components", "Pages", "Home.razor");
-        File.AppendAllText(home, """
+        // The starter replaced the unmodified template layout and home page and removed the samples (ADR 008).
+        var components = Path.Combine(app, "Components");
+        Assert.Contains("class=\"bui-app\"", File.ReadAllText(Path.Combine(components, "Layout", "MainLayout.razor")));
+        Assert.Contains("Welcome to your BlazorUI app", File.ReadAllText(Path.Combine(components, "Pages", "Home.razor")));
+        foreach (var removed in new[] { "Layout/NavMenu.razor", "Layout/NavMenu.razor.css", "Layout/MainLayout.razor.css", "Pages/Counter.razor", "Pages/Weather.razor" })
+            Assert.False(File.Exists(Path.Combine(components, removed)), removed);
+        Assert.True(File.Exists(Path.Combine(components, "Pages", "Error.razor")));
 
+        // Interactive test page; the starter pages stay as installed.
+        var testPage = Path.Combine(components, "Pages", "TestPage.razor");
+        File.WriteAllText(testPage, """
+            @page "/test"
             @rendermode InteractiveServer
             <Button id="bui-click" Disabled="@(!ready)" OnClick="@(() => count++)">Click</Button>
             <p id="count">@count</p>
@@ -101,7 +110,20 @@ public class GeneratedAppTests : IDisposable
             using var playwright = await Playwright.CreateAsync();
             await using var browser = await playwright.Chromium.LaunchAsync(new() { Headless = true });
             var page = await browser.NewPageAsync();
+
+            // Starter welcome page: theme switching through the query string, no template layout.
             await page.GotoAsync(url);
+            await Assertions.Expect(page.Locator("h1")).ToHaveTextAsync("Welcome to your BlazorUI app");
+            Assert.Equal(0, await page.Locator(".sidebar, .navbar-brand").CountAsync());
+            await page.GotoAsync(url.TrimEnd('/') + "/?appearance=glass&mode=dark&accent=emerald&dir=rtl");
+            var shell = page.Locator(".bui-app");
+            await Assertions.Expect(shell).ToHaveAttributeAsync("data-bui-appearance", "glass");
+            await Assertions.Expect(shell).ToHaveAttributeAsync("data-bs-theme", "dark");
+            await Assertions.Expect(shell).ToHaveAttributeAsync("data-bui-accent", "emerald");
+            await Assertions.Expect(shell).ToHaveAttributeAsync("dir", "rtl");
+            Assert.Contains("blur", await page.Locator(".bui-panel").First.EvaluateAsync<string>("el => getComputedStyle(el).backdropFilter"));
+
+            await page.GotoAsync(url.TrimEnd('/') + "/test");
             var button = page.Locator("#bui-click");
             await Assertions.Expect(button).ToBeEnabledAsync();
             await button.ClickAsync();

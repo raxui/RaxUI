@@ -1,0 +1,85 @@
+@page "/"
+@inject NavigationManager Navigation
+@* BlazorUI welcome page, installed by `blazorui init` (ADR 008). Source-owned: replace it with your own home page. *@
+
+<PageTitle>Welcome to BlazorUI</PageTitle>
+
+<div class="bui-welcome">
+    <section>
+        <h1>Welcome to your BlazorUI app</h1>
+        <p class="bui-welcome-lead">
+            Your components live in <code>Components/UI</code> and are yours to edit.
+            Try the theme below: every BlazorUI component follows it.
+        </p>
+    </section>
+
+    <section class="bui-panel" aria-labelledby="theme-heading">
+        <h2 id="theme-heading">Theme</h2>
+        @foreach (var (label, key, options) in ThemeRows)
+        {
+            <div class="bui-theme-row">
+                <span class="bui-theme-label">@label</span>
+                <div class="bui-theme-options" role="group" aria-label="@label">
+                    @foreach (var (text, value) in options)
+                    {
+                        var selected = Current(key) == value;
+                        <a class="btn bui-button btn-glass btn-sm @(selected ? "btn-glass-primary" : "btn-glass-secondary")"
+                           href="@Navigation.GetUriWithQueryParameter(key, value)"
+                           aria-current="@(selected ? "true" : null)">@text</a>
+                    }
+                </div>
+            </div>
+        }
+    </section>
+
+    <section class="bui-panel" aria-labelledby="preview-heading">
+        <h2 id="preview-heading">Preview</h2>
+        <div class="bui-preview-row">
+            <button type="button" class="btn bui-button btn-glass btn-glass-primary">Primary</button>
+            <button type="button" class="btn bui-button btn-glass btn-glass-secondary">Secondary</button>
+            <button type="button" class="btn bui-button btn-glass btn-glass-tinted">Tinted</button>
+            <button type="button" class="btn bui-button btn-glass btn-glass-outline">Outline</button>
+            <button type="button" class="btn bui-button btn-glass btn-glass-ghost">Ghost</button>
+            <button type="button" class="btn bui-button btn-glass btn-glass-destructive">Destructive</button>
+        </div>
+    </section>
+
+    <section class="bui-panel" aria-labelledby="next-heading">
+        <h2 id="next-heading">Next steps</h2>
+        <p>Add components, then use them in your pages:</p>
+        <pre><code>dotnet blazorui add button</code></pre>
+        <p class="mt-3 mb-0">
+            Edit this page in <code>Components/Pages/Home.razor</code> and the layout in
+            <code>Components/Layout/MainLayout.razor</code>.
+        </p>
+    </section>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "appearance")] public string? Appearance { get; set; }
+    [SupplyParameterFromQuery(Name = "mode")] public string? Mode { get; set; }
+    [SupplyParameterFromQuery(Name = "accent")] public string? Accent { get; set; }
+    [SupplyParameterFromQuery(Name = "dir")] public string? Dir { get; set; }
+
+    // The first option of each row is the default; its value is null so the link removes the query value.
+    private static readonly (string Label, string Key, (string Text, string? Value)[] Options)[] ThemeRows =
+    [
+        ("Appearance", "appearance", [("Default", null), ("Flat", "flat"), ("Glass", "glass")]),
+        ("Mode", "mode", [("Light", null), ("Dark", "dark")]),
+        ("Accent", "accent", [("Blue", null), ("Emerald", "emerald"), ("Indigo", "indigo"), ("Amber", "amber")]),
+        ("Direction", "dir", [("LTR", null), ("RTL", "rtl")]),
+    ];
+
+    private string? Current(string key)
+    {
+        var value = key switch
+        {
+            "appearance" => Appearance,
+            "mode" => Mode,
+            "accent" => Accent,
+            _ => Dir,
+        };
+        // Values that equal the default count as the default option.
+        return value is "default" or "light" or "ltr" ? null : value;
+    }
+}

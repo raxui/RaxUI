@@ -52,6 +52,10 @@ public class ComponentManifest
     /// <summary>SHA-256 of the manifest resource itself; recorded in the lock file.</summary>
     [JsonIgnore]
     public string ManifestSha256 { get; set; } = "";
+
+    /// <summary>Registry folder that holds the manifest and its sources, for example <c>components/button</c>.</summary>
+    [JsonIgnore]
+    public string SourceDirectory { get; set; } = "";
 }
 
 public class ManifestAsset

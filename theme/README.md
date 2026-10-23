@@ -4,7 +4,7 @@ The single source of the BlazorUI theme and component styles, shared by the Reac
 
 - React installs these SCSS partials and compiles them with Bootstrap.
 - Blazor gets them precompiled: `npm run theme:css` (`build-css.mjs`) writes `registry/styles/blazorui.css` from `_core.scss` and `components/`, without Bootstrap. A test fails when that file is stale.
-- Component styles live in `scss/components/` (for example `_button.scss`, from boot-ui `src/components/ui/_button.scss`).
+- Component styles live in `scss/components/` (for example `_button.scss`, from boot-ui `src/components/ui/_button.scss`). `_starter.scss` styles the app shell and welcome page that `init` installs ([ADR 008](../docs/adr/008-starter-app.md)).
 
 ## Provenance
 

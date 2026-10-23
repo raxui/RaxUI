@@ -1,0 +1,35 @@
+@inherits LayoutComponentBase
+@* BlazorUI starter layout, installed by `blazorui init` (ADR 008). Source-owned: edit freely.
+   Theme attributes come from the query string (?appearance=glass&mode=dark&accent=emerald&dir=rtl),
+   so switching works without interactivity. Put them on <html> instead to fix a theme for the whole app. *@
+
+<div class="bui-app"
+     data-bui-appearance="@Pick(Appearance, "default", "flat", "glass")"
+     data-bs-theme="@Pick(Mode, "light", "dark")"
+     data-bui-accent="@Pick(Accent, "emerald", "indigo", "amber")"
+     dir="@Pick(Dir, "ltr", "rtl")">
+    <header class="bui-app-header">
+        <a class="bui-app-brand" href="">BlazorUI</a>
+        <span class="bui-app-header-end"></span>
+    </header>
+
+    <main class="bui-app-main">
+        @Body
+    </main>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "appearance")] public string? Appearance { get; set; }
+    [SupplyParameterFromQuery(Name = "mode")] public string? Mode { get; set; }
+    [SupplyParameterFromQuery(Name = "accent")] public string? Accent { get; set; }
+    [SupplyParameterFromQuery(Name = "dir")] public string? Dir { get; set; }
+
+    // Only known values reach the attributes; anything else leaves the default.
+    private static string? Pick(string? value, params string[] allowed) => allowed.Contains(value) ? value : null;
+}
