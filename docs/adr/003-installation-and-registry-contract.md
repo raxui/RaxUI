@@ -1,6 +1,6 @@
 # ADR 003 — Installation and Registry Contract
 
-- **Status:** Accepted
+- **Status:** Accepted; partially superseded for the first milestone by [ADR 004](004-simplified-first-milestone.md)
 - **Date:** 2026-10-23
 
 ## Context

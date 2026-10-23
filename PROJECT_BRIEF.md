@@ -97,7 +97,7 @@ MyApp/
 └── blazorui.lock.json
 ```
 
-Component and style destinations are configurable in `blazorui.json`. The CLI defaults to `Components/UI` and `wwwroot/css/blazorui`; the component namespace is explicit and configurable. Package publication remains future work; the commands above describe the intended experience.
+The CLI installs components to `Components/UI` and shared styles to `wwwroot/css/blazorui`. In the first milestone these paths are fixed and the namespace is derived by Razor from the folder; configurable paths and namespace are deferred ([ADR 004](docs/adr/004-simplified-first-milestone.md)). `wwwroot/lib/bootstrap/` comes from the `dotnet new blazor` template. Package publication remains future work; the commands above describe the intended experience.
 
 ## 7. CLI Responsibilities
 
@@ -136,11 +136,11 @@ Each component manifest should describe:
 - Bootstrap and other relevant compatibility requirements.
 - File integrity information where appropriate.
 
-The initial registry should be static and hosted through a public repository or static hosting provider. A custom backend service is not required for the first release.
+In the first milestone the registry is embedded in the CLI package, and the CLI package version is the registry version ([ADR 004](docs/adr/004-simplified-first-milestone.md)). A later static registry may be hosted through a public repository or static hosting provider. A custom backend service is not required for the first release.
 
 The registry format must be versioned to support future schema changes.
 
-Published registry snapshots are immutable. Pin exact registry, component, and asset versions; never install from a floating `main` or `latest` reference. Record release identity, manifest digest, installed paths, source hashes, and hashes after template substitution in `blazorui.lock.json`. Manifest destinations are relative to configured base directories. See [ADR 003](docs/adr/003-installation-and-registry-contract.md).
+Published registry snapshots are immutable. Pin exact registry, component, and asset versions; never install from a floating `main` or `latest` reference. Record release identity, manifest digest, installed paths, source hashes, and hashes after template substitution in `blazorui.lock.json`. Manifest destinations are relative to configured base directories. See [ADR 003](docs/adr/003-installation-and-registry-contract.md), as narrowed for the first milestone by [ADR 004](docs/adr/004-simplified-first-milestone.md).
 
 ## 9. Bootstrap Management
 
@@ -148,7 +148,9 @@ BlazorUI uses Bootstrap as its foundational styling framework.
 
 The CLI should manage a pinned Bootstrap version locally by default, making application builds less dependent on external CDNs.
 
-Requirements:
+In the first milestone the CLI uses the Bootstrap shipped by the `dotnet new blazor` template and fails with an actionable message if it is missing. Managed Bootstrap is deferred ([ADR 004](docs/adr/004-simplified-first-milestone.md)).
+
+Requirements (after the first milestone):
 
 - Install and track the selected Bootstrap version.
 - Support controlled Bootstrap updates.
@@ -178,14 +180,14 @@ Components should support standard Blazor patterns, including `EventCallback`, p
 
 ### Phase 1 — Foundation
 
-- Accepted documentation and three ADRs before implementation.
+- Accepted documentation and four ADRs before implementation.
 - One CLI project implementing `init` and `add button`.
-- One static registry snapshot with Button, global tokens/themes, and pinned Bootstrap assets.
+- One registry snapshot embedded in the CLI, with Button and global tokens/themes; Bootstrap comes from the template.
 - Configuration and lock metadata from the first install.
 - One .NET 10 Blazor Web App sample with Interactive Server.
 - Verified installation, stylesheet loading, build, click behavior, repeatability, and preservation of local edits.
 
-General dependency resolution, update/diff commands, and additional application models follow after this complete path works. See [ADR 002](docs/adr/002-first-milestone-scope.md).
+General dependency resolution, update/diff commands, and additional application models follow after this complete path works. See [ADR 002](docs/adr/002-first-milestone-scope.md) and [ADR 004](docs/adr/004-simplified-first-milestone.md).
 
 ### Phase 2 — Core Components
 
@@ -258,7 +260,7 @@ The first implementation milestone is complete when a developer can:
 2. Build and run the app, see styled Button markup, and trigger its click handler under Interactive Server.
 3. Repeat both commands without duplicate links/imports or overwritten local changes.
 4. Inspect configuration and lock metadata containing exact versions and hashes.
-5. Install with custom component/style paths and a custom namespace successfully.
+5. ~~Install with custom component/style paths and a custom namespace successfully.~~ Deferred by [ADR 004](docs/adr/004-simplified-first-milestone.md).
 6. Receive a clear conflict or validation error before any partial installation; ordinary write failures roll back.
 7. Run the installed component without registry access.
 

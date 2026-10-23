@@ -48,7 +48,7 @@ The registry and CLI are development-time tools. The consumer application must n
 
 ## 4. Repository Structure
 
-The project uses a monorepo to keep the CLI, registry, shared assets, documentation, samples, and tests versioned together. The tree below is a long-term map, not an instruction to scaffold every project. The current phase is documentation only. The first implementation milestone is limited by [ADR 002](docs/adr/002-first-milestone-scope.md).
+The project uses a monorepo to keep the CLI, registry, shared assets, documentation, samples, and tests versioned together. The tree below is a long-term map, not an instruction to scaffold every project. The current phase is documentation only. The first implementation milestone is limited by [ADR 002](docs/adr/002-first-milestone-scope.md) and [ADR 004](docs/adr/004-simplified-first-milestone.md).
 
 ```text
 BlazorUI/
@@ -182,6 +182,8 @@ No custom registry backend is required for the MVP.
 
 Published registry releases are immutable, versioned snapshots. Configuration selects an exact release; installation never resolves through a mutable branch such as `main` or an unpinned `latest` URL. Each snapshot pins exact component and asset versions. Corrections require a new release. See [ADR 003](docs/adr/003-installation-and-registry-contract.md).
 
+**First milestone ([ADR 004](docs/adr/004-simplified-first-milestone.md)):** the registry is embedded in the CLI package, and the CLI package version is the registry version. No remote download or hosting is implemented; manifests are still validated and hashed before any write.
+
 ### 6.1 Registry Index
 
 `registry/registry.json` contains the list of available components and their manifest locations.
@@ -237,7 +239,7 @@ Conceptual example:
 }
 ```
 
-This abbreviated example is not an installable manifest. The schema must require SHA-256 hashes, framework requirements, shared asset references, and exact dependency versions. `destination` selects a configured base directory; `target` is relative to it. Registry templates use explicit namespace tokens, never broad text replacement. Reject unsupported schema versions and file types before writing.
+This abbreviated example is not an installable manifest. The schema must require SHA-256 hashes, framework requirements, shared asset references, and exact dependency versions. `destination` selects a configured base directory; `target` is relative to it. Registry templates use explicit namespace tokens, never broad text replacement (deferred: in the first milestone there is no substitution, per ADR 004). Reject unsupported schema versions and file types before writing.
 
 ### 6.3 Dependency Resolution
 
@@ -304,6 +306,8 @@ Bootstrap provides the foundational grid, responsive utilities, and selected sty
 
 The CLI should manage a pinned Bootstrap version locally by default.
 
+**First milestone ([ADR 004](docs/adr/004-simplified-first-milestone.md)):** `init` uses the Bootstrap shipped by the `dotnet new blazor` template in `wwwroot/lib/bootstrap/` and fails with an actionable message if it is missing. The requirements below apply once managed Bootstrap is implemented.
+
 Requirements:
 
 - Track the Bootstrap version in configuration and lock metadata.
@@ -347,6 +351,8 @@ Conceptual example:
 `PINNED_VERSION` is a placeholder. The actual Bootstrap version must be selected and validated before release.
 
 `componentsPath` and `stylesPath` are relative to the explicitly selected consumer project. Detect the evaluated MSBuild `RootNamespace` and `AssemblyName` rather than inferring them from a folder name. Default `componentsNamespace` to `<RootNamespace>.Components.UI` and allow an explicit override. Generated components declare this namespace explicitly; add its `@using` once to the applicable `_Imports.razor`. Validate namespaces and safely substitute only documented template tokens. A later path or namespace change is a migration, not an implicit move during `add`.
+
+**First milestone ([ADR 004](docs/adr/004-simplified-first-milestone.md)):** `componentsPath`, `stylesPath`, and `componentsNamespace` are fixed to the defaults and not configurable. Components declare no `@namespace`; Razor derives `<RootNamespace>.Components.UI` from the folder. `bootstrap.managed` is `false`. The `@using` is still added once to `Components/_Imports.razor`.
 
 ### 9.2 Lock File
 
@@ -483,7 +489,8 @@ Accepted ADRs:
 
 - [001 — Hybrid CSS](docs/adr/001-hybrid-css.md)
 - [002 — First milestone scope](docs/adr/002-first-milestone-scope.md)
-- [003 — Installation and registry contract](docs/adr/003-installation-and-registry-contract.md)
+- [003 — Installation and registry contract](docs/adr/003-installation-and-registry-contract.md) (partially superseded for the first milestone by 004)
+- [004 — Simplified first milestone](docs/adr/004-simplified-first-milestone.md)
 
 ADRs should record the context, decision, alternatives considered, and consequences.
 
