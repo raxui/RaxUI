@@ -2,6 +2,8 @@
 
 [الدليل العربي الكامل](local-checks.ar.md) | English
 
+Ubuntu/WSL 2 setup: [Linux verification guide (Arabic)](local-checks-linux.ar.md).
+
 During the current solo development phase, local verification is the default.
 GitHub Actions is optional and manual; existing hosted-runner failures do not
 represent the outcome of these local commands.

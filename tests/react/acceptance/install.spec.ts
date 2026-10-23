@@ -24,6 +24,7 @@ export default function App() {
   return (
     <SheenThemeProvider
       data-testid="theme"
+      data-sheen-accent={params.get("accent") ?? undefined}
       appearance={(params.get("appearance") ?? "default") as SheenAppearance}
       mode={params.get("mode") === "dark" ? "dark" : "light"}
       direction={params.get("dir") === "rtl" ? "rtl" : "ltr"}
@@ -158,6 +159,15 @@ test("dark mode and RTL apply through the theme provider", async ({ page }) => {
   await expect(theme).toHaveAttribute("data-bs-theme", "dark")
   expect(await theme.evaluate((el) => getComputedStyle(el).getPropertyValue("--bs-body-bg"))).not.toBe(lightBg)
   expect(await button(page).evaluate((el) => getComputedStyle(el).direction)).toBe("rtl")
+})
+
+test("light and dark Primary inherit the provider's accent", async ({ page }) => {
+  for (const appearance of ["default", "flat", "glass"]) {
+    for (const [mode, color] of [["light", "rgb(14, 122, 109)"], ["dark", "rgb(19, 131, 113)"]]) {
+      await page.goto(`${baseUrl}/?appearance=${appearance}&mode=${mode}&accent=emerald`)
+      await expect(button(page)).toHaveCSS("background-color", color)
+    }
+  }
 })
 
 test("running init and add again changes no files", () => {
