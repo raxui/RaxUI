@@ -1,7 +1,7 @@
 // End to end (ADR 011): a real create-next-app project (App Router, TypeScript, no Tailwind), the packed CLI,
 // init, `next build`, `next start`, and the welcome page in Chromium.
 import { expect, test, type Page } from "@playwright/test"
-import { execSync, spawn, type ChildProcess } from "node:child_process"
+import { execSync, spawnSync, spawn, type ChildProcess } from "node:child_process"
 import { createHash } from "node:crypto"
 import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from "node:fs"
 import { createServer } from "node:net"
@@ -18,7 +18,14 @@ let app: string
 let server: ChildProcess | undefined
 let baseUrl: string
 
-const sh = (command: string, cwd: string) => execSync(command, { cwd, stdio: "pipe", encoding: "utf8" })
+const sh = (command: string, cwd: string) => {
+  const result = spawnSync(command, { cwd, shell: true, encoding: "utf8" })
+  const output = (result.stdout ?? "") + (result.stderr ?? "")
+  if (result.status !== 0) throw new Error(`Command failed: ${command}\n${output}`)
+  if (/blazorui-react|npm run build/.test(command))
+    expect(output).not.toMatch(/DEP0190|Deprecation Warning|SassWarning|inferred your workspace root/i)
+  return result.stdout
+}
 
 function snapshot(dir: string) {
   const result: Record<string, string> = {}

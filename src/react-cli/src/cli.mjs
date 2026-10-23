@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url"
 import { resolveItems, sha256 } from "./registry.mjs"
 import { assertInsideProject, FileBackup } from "./safety.mjs"
 import { CONFIG_FILE, findTracked, LOCK_FILE, loadConfig, loadLock, STATE_SCHEMA_VERSION, writeState } from "./state.mjs"
+import { npmInvocation, planTooling } from "./tooling.mjs"
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 // Packed CLI carries registry/ and theme/ itself; in the repository they live two levels up.
@@ -179,6 +180,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
 
   const stylesheet = planStylesheet(projectDir, project, items)
   const entry = planEntry(project, deletes.map(({ relative }) => relative))
+  const tooling = init ? planTooling(projectDir, project.kind, notes) : null
   const packageManifest = path.join(projectDir, "package.json")
   const lockfiles = ["package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb"].map((file) => path.join(projectDir, file))
 
@@ -189,6 +191,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
     for (const { full } of deletes) backup.delete(full)
     if (stylesheet.content !== null) backup.write(stylesheet.full, stylesheet.content)
     if (entry.content !== null) backup.write(entry.full, entry.content)
+    if (tooling) backup.write(tooling.full, tooling.content)
 
     const missing = missingPackages(project.packageJson, items)
     if (missing.length > 0) {
@@ -198,10 +201,11 @@ function installItems(projectDir, name, { init, install, stdout }) {
         backup.remember(packageManifest)
         backup.remember(lockfiles[0])
         stdout.write(`Installing ${missing.join(", ")}...\n`)
-        const result = spawnSync("npm", ["install", "--save-exact", "--ignore-scripts", "--no-audit", "--no-fund", ...missing], {
+        const [executable, args] = npmInvocation(["install", "--save-exact", "--ignore-scripts", "--no-audit", "--no-fund", ...missing])
+        const result = spawnSync(executable, args, {
           cwd: projectDir,
           stdio: "inherit",
-          shell: process.platform === "win32",
+          shell: false,
         })
         if (result.status !== 0) throw new Error(`'${command}' failed.`)
       } else {
@@ -240,6 +244,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
 
   const lines = [
     ...planned.map((write) => `  + ${write.target}`),
+    ...(tooling ? [`  ~ ${path.basename(tooling.full)} (Bootstrap Sass compatibility${project.kind === "next" ? ", project root" : ""})`] : []),
     ...deletes.map(({ relative }) => `  - ${relative} (template file)`),
     ...notes.map((note) => `Note: ${note}`),
   ]
