@@ -1,0 +1,28 @@
+// -----------------------------------------------------------------------------
+// Readable colour utilities. Bootstrap's .text-primary / -success / -danger use
+// the raw brand colour, which falls under 4.5:1 on dark backgrounds. In dark
+// mode they get the same lift as the library's own coloured text
+// (--bui-text-mix toward --bui-text-ink). The default light theme is left as
+// Bootstrap has it.
+// -----------------------------------------------------------------------------
+
+// Accent surfaces are tinted, not pure white, and Bootstrap's red, green and
+// pink only just reach 4.5:1 on white; a touch more depth keeps them there.
+[data-bui-accent]:not([data-bs-theme="dark"]) {
+  --bs-form-invalid-color: color-mix(in srgb, rgb(var(--bs-danger-rgb)) 88%, #000);
+  --bs-code-color: color-mix(in srgb, #d63384 88%, #000);
+
+  @each $color in primary, success, danger {
+    .text-#{$color} {
+      color: color-mix(in srgb, rgba(var(--bs-#{$color}-rgb), var(--bs-text-opacity, 1)) 88%, #000) !important;
+    }
+  }
+}
+
+[data-bs-theme="dark"] {
+  @each $color in primary, success, danger {
+    .text-#{$color} {
+      color: color-mix(in srgb, rgba(var(--bs-#{$color}-rgb), var(--bs-text-opacity, 1)) var(--bui-text-mix), var(--bui-text-ink)) !important;
+    }
+  }
+}

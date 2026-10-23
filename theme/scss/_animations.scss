@@ -1,0 +1,63 @@
+// -----------------------------------------------------------------------------
+// boot-ui keyframes
+//
+// Radix keeps an element mounted until its exit `animation` ends, so
+// open/close states use keyframes (not transitions) for both directions.
+// All movement uses `transform`/`opacity` only — compositor friendly.
+// Components use a plain fade by default and upgrade to the spring
+// keyframes inside `@include motion-safe`.
+// -----------------------------------------------------------------------------
+
+@keyframes bui-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes bui-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+// Centered surfaces: grow from slightly small, overshoot, settle.
+@keyframes bui-zoom-in {
+  from { opacity: 0; transform: scale(0.9) translateY(0.5rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes bui-zoom-out {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: scale(0.95); }
+}
+
+// Bottom sheets (mobile dialogs).
+@keyframes bui-sheet-in {
+  from { transform: translateY(105%); }
+  to   { transform: none; }
+}
+
+@keyframes bui-sheet-out {
+  from { transform: none; }
+  to   { transform: translateY(105%); }
+}
+
+// Anchored popovers (menus, popovers, selects): scale from the trigger.
+// Pair with `transform-origin: var(--radix-*-content-transform-origin)`.
+@keyframes bui-pop-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes bui-pop-out {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: scale(0.96); }
+}
+
+// Activity indicators.
+@keyframes bui-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bui-pulse {
+  from { opacity: 1; }
+  to   { opacity: 0.45; }
+}
