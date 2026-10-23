@@ -4,7 +4,7 @@
 
 This document defines the technical architecture, project structure, component distribution model, and implementation principles for BlazorUI.
 
-BlazorUI is an open-source, source-first UI component system for Blazor applications. It uses Bootstrap as its styling foundation and provides a .NET CLI that installs individual components into consumer projects.
+BlazorUI is an open-source, source-first UI component system for Blazor and React applications. It uses Bootstrap as its styling foundation and one shared theme, and provides a CLI per ecosystem that installs individual components into consumer projects: a .NET CLI for Blazor and a Node CLI for React ([ADR 005](docs/adr/005-multi-framework-shared-theme.md), [ADR 006](docs/adr/006-react-first-milestone.md)).
 
 The architecture prioritizes simplicity, developer ownership, accessibility, maintainability, and a predictable installation experience.
 
@@ -15,8 +15,8 @@ The architecture prioritizes simplicity, developer ownership, accessibility, mai
 3. **Component-level installation:** Developers install only the components they need.
 4. **Explicit dependencies:** Every component declares its component and asset dependencies.
 5. **Bootstrap foundation:** Bootstrap provides the base grid, utilities, and selected styling conventions.
-6. **Blazor-native behavior:** Use Razor and C# for component behavior; introduce JavaScript interop only when necessary.
-7. **Hybrid CSS distribution:** Component-local styles use `.razor.css`; Bootstrap, tokens, and themes use global CSS. No Sass build is required.
+6. **Framework-native behavior:** In Blazor, use Razor and C# for component behavior and introduce JavaScript interop only when necessary. In React, use Radix UI primitives for behavior and accessibility.
+7. **Styles per ecosystem, one theme:** Blazor uses `.razor.css` for component-local styles and global CSS for Bootstrap, tokens, and themes, with no Sass build ([ADR 001](docs/adr/001-hybrid-css.md)). React compiles the shared theme SCSS with Bootstrap. Both read the same theme attributes.
 8. **Safe updates:** The CLI must detect local modifications and never silently overwrite them.
 9. **Accessibility by design:** Semantic HTML, keyboard navigation, focus management, and appropriate ARIA attributes are part of component development.
 10. **Rendering compatibility:** Components must account for static SSR and interactive Blazor rendering modes.
@@ -25,30 +25,50 @@ The architecture prioritizes simplicity, developer ownership, accessibility, mai
 
 The system consists of four main parts:
 
-- **Component Registry:** Stores component manifests, source files, styles, and dependency information.
-- **CLI:** Initializes applications, resolves dependencies, installs components, manages assets, and performs updates.
-- **Design System:** Provides shared CSS variables, themes, base styles, and Bootstrap integration.
-- **Consumer Application:** Owns the installed component source code and executes the components as part of its normal Blazor application.
+- **Component Registry:** Stores component manifests, source files, styles, and dependency information, one registry per ecosystem (`registry/` for Blazor, `registry/react/` for React).
+- **CLI:** Initializes applications, resolves dependencies, installs components, manages assets, and performs updates. One per ecosystem, with the same safety rules.
+- **Design System:** The shared theme in `theme/scss/`: CSS variables, appearances, accents, density, and Bootstrap integration. Blazor keeps its own tokens until it migrates ([ADR 005](docs/adr/005-multi-framework-shared-theme.md)).
+- **Consumer Application:** Owns the installed component source code and executes the components as part of its normal Blazor or React application.
 
 ```mermaid
 flowchart TD
-    Dev[Developer] --> CLI[BlazorUI CLI]
-    CLI --> Config[Application Configuration]
-    CLI --> Registry[Static Component Registry]
-    CLI --> Resolver[Dependency Resolver]
-    Registry --> Resolver
-    Resolver --> Installer[Source and Asset Installer]
-    Installer --> App[Consumer Blazor Application]
-    App --> Components[Razor Components]
-    App --> Styles[CSS and Theme Assets]
-    Styles --> Bootstrap[Bootstrap Assets]
+    Dev[Developer] --> DotnetCLI[blazorui .NET CLI]
+    Dev --> NodeCLI[blazorui-react Node CLI]
+    Theme[Shared theme SCSS] --> ReactRegistry
+    DotnetCLI --> BlazorRegistry[Blazor registry]
+    NodeCLI --> ReactRegistry[React registry]
+    DotnetCLI --> BlazorApp[Blazor application]
+    NodeCLI --> ReactApp[React + Vite application]
+    BlazorApp --> Razor[Razor components and CSS]
+    ReactApp --> Tsx[TSX components, Radix, SCSS]
+    Razor --> Bootstrap[Bootstrap]
+    Tsx --> Bootstrap
 ```
 
 The registry and CLI are development-time tools. The consumer application must not require either of them at runtime.
 
 ## 4. Repository Structure
 
-The project uses a monorepo to keep the CLI, registry, shared assets, documentation, samples, and tests versioned together. The tree below is a long-term map, not an instruction to scaffold every project. The first milestone CLI and installation tests are implemented. The first implementation milestone is limited by [ADR 002](docs/adr/002-first-milestone-scope.md) and [ADR 004](docs/adr/004-simplified-first-milestone.md).
+The project uses a monorepo to keep the CLI, registry, shared assets, documentation, samples, and tests versioned together. The tree below is a long-term map, not an instruction to scaffold every project. The first milestone CLI and installation tests are implemented. The first implementation milestone is limited by [ADR 002](docs/adr/002-first-milestone-scope.md) and [ADR 004](docs/adr/004-simplified-first-milestone.md); the first React milestone by [ADR 006](docs/adr/006-react-first-milestone.md).
+
+React additions for the first React milestone:
+
+```text
+BlazorUI/
+├── theme/scss/                  shared theme (tokens, appearance, accents, mixins, …)
+├── registry/react/
+│   ├── index.json
+│   ├── foundation/              theme.tsx, utils.ts, manifest.json
+│   └── button/                  button.tsx, _button.scss, manifest.json
+├── src/react-cli/               Node CLI: init, add button
+├── tests/react/                 component, CLI, and acceptance tests
+├── package.json                 npm workspaces (private)
+└── tsconfig.base.json
+```
+
+The .NET CLI embeds `registry/` but excludes `registry/react/`.
+
+Long-term Blazor map:
 
 ```text
 BlazorUI/
@@ -174,6 +194,15 @@ The `add` command follows this sequence:
 
 Validate the complete installation plan before writing. Stage files and preserve originals for rollback; write the lock file last. An ordinary failure must restore previous contents and remove newly created files. Interrupted-process recovery must be designed and tested before a public release. Repeated commands must not duplicate links or imports, adopt unknown files, or overwrite modified files.
 
+### 5.4 React CLI
+
+`src/react-cli` is a Node CLI (`npx blazorui-react`, provisional name) for React + Vite applications ([ADR 006](docs/adr/006-react-first-milestone.md)). The first React milestone provides only `init` and `add button`.
+
+- `init` checks for Vite and `src/main.tsx` or `src/main.jsx`, copies the foundation (`src/lib/theme.tsx`, `src/lib/utils.ts`, theme partials under `src/styles/blazorui/`), creates `src/styles/blazorui.scss`, adds one import to the entry, and installs pinned npm packages with `npm install --ignore-scripts`.
+- `add button` copies `src/components/ui/button.tsx` and its SCSS partial, rewrites `@/lib/*` imports to relative paths, and adds the partial to `src/styles/blazorui.scss` once.
+- Configuration is `blazorui.react.json`; the lock is `blazorui.react.lock.json`.
+- It follows the same safety rules as the .NET CLI: path and link checks, refusal of unknown or modified files, refusal of silent updates from another release, staged writes with rollback, lock written last, and refusal of files written by a newer release.
+
 ## 6. Registry Architecture
 
 The initial registry is static and version-controlled. It may be hosted on GitHub or a static hosting provider.
@@ -241,6 +270,27 @@ Conceptual example:
 
 This abbreviated example is not an installable manifest. The schema must require SHA-256 hashes, framework requirements, shared asset references, and exact dependency versions. `destination` selects a configured base directory; `target` is relative to it. Registry templates use explicit namespace tokens, never broad text replacement (deferred: in the first milestone there is no substitution, per ADR 004). Reject unsupported schema versions and file types before writing.
 
+### 6.2.1 React Manifest
+
+React manifests in `registry/react/<item>/manifest.json` share the same concepts ([ADR 006](docs/adr/006-react-first-milestone.md)):
+
+```json
+{
+  "schemaVersion": 1,
+  "name": "button",
+  "version": "0.1.0",
+  "requires": ["foundation"],
+  "packages": { "@radix-ui/react-slot": "1.1.0" },
+  "styles": ["components/button"],
+  "files": [
+    { "source": "button.tsx", "target": "components/ui/button.tsx", "type": "tsx", "sha256": "…" },
+    { "source": "_button.scss", "target": "styles/blazorui/components/_button.scss", "type": "scss", "sha256": "…" }
+  ]
+}
+```
+
+`target` is relative to the consumer's `src/`. File types are `tsx`, `ts`, and `scss`. `requires` lists other registry items, `packages` exact npm versions, and `styles` the SCSS partials to import, in order. The same rejection rules apply before writing. Values above are illustrative.
+
 ### 6.3 Dependency Resolution
 
 As the component catalog expands, the resolver must support:
@@ -271,6 +321,15 @@ Button/
 The `.razor` file defines markup, parameters, and component behavior. Its matching `.razor.css` file contains component-local styles and is copied alongside it. Blazor performs CSS isolation during the consumer application's build.
 
 Shared styles, theme tokens, and design-system rules are installed separately when required.
+
+A React component is a `.tsx` file with a matching SCSS partial:
+
+```text
+src/components/ui/button.tsx
+src/styles/blazorui/components/_button.scss
+```
+
+The `.tsx` file uses Radix primitives for behavior (Button uses `@radix-ui/react-slot` for `asChild`), reads the theme through `useBootTheme`, and renders the shared class names. The partial is compiled with Bootstrap and the theme through `src/styles/blazorui.scss`. React components forward refs, pass through native attributes, accept `className`, and default `type` to `button` where relevant.
 
 ### 7.1 Component Guidelines
 
@@ -435,6 +494,20 @@ It should support:
 
 Components should not rely on color alone to convey meaning. Interactive components must have defined keyboard and focus behavior.
 
+### 12.1 Shared Theme Contract
+
+The shared theme in `theme/scss/` ([ADR 005](docs/adr/005-multi-framework-shared-theme.md)) is driven by attributes that any element may carry:
+
+- `data-bs-theme`: `light` or `dark`.
+- `data-bui-appearance`: `default` (opaque surfaces, moderate shadow), `flat` (no elevation), or `glass` (translucent surfaces with backdrop blur; opaque where `backdrop-filter` is unsupported or the user prefers reduced transparency).
+- `data-bui-accent`: `emerald`, `indigo`, or `amber`; omitted for Bootstrap's default colors.
+- `data-bui-density`: `comfortable` or `compact`.
+- `dir`: `ltr` or `rtl`.
+
+Appearances set semantic tokens (`--bui-surface-bg`, `--bui-border-color`, `--bui-control-shadow`, `--bui-control-radius`, `--bui-surface-filter`); components consume those tokens and never test the appearance name. Precedence: explicit component value, then nearest scope, then application, then `default`.
+
+In React, `BootThemeProvider` and `BootAppearanceScope` carry the theme through context and render the attributes; a component's `appearance` prop overrides it. Blazor will use `CascadingValue` for the same purpose once it migrates.
+
 ## 13. Testing Strategy
 
 ### Unit Tests
@@ -447,7 +520,11 @@ Test initialization, installation, repeated execution, conflict detection, updat
 
 ### Component Tests
 
-Use bUnit for component rendering, parameters, event callbacks, and state behavior where appropriate.
+Use bUnit for Blazor component rendering, parameters, event callbacks, and state behavior where appropriate. Use Vitest with Testing Library for React components: rendering, props, refs, appearance inheritance, and keyboard behavior.
+
+### Theme Tests
+
+Compile `theme/scss` with Bootstrap and each component partial, and check that the output contains the appearance, mode, and reduced-transparency rules.
 
 ### Browser Tests
 
@@ -461,8 +538,9 @@ Use Playwright to validate:
 - Light and dark themes.
 - RTL layouts.
 - Representative Blazor rendering modes.
+- React: a new Vite application built after `init` and `add button`, with appearance, mode, and direction switches.
 
-CI should build and test all maintained projects and validate that generated consumer applications compile.
+CI should build and test all maintained projects and validate that generated consumer applications compile. The .NET and Node jobs both run on every change, since the shared theme can affect either library.
 
 ## 14. Security and Reliability
 
@@ -491,6 +569,8 @@ Accepted ADRs:
 - [002 — First milestone scope](docs/adr/002-first-milestone-scope.md)
 - [003 — Installation and registry contract](docs/adr/003-installation-and-registry-contract.md) (partially superseded for the first milestone by 004)
 - [004 — Simplified first milestone](docs/adr/004-simplified-first-milestone.md)
+- [005 — Multi-framework repository and shared theme](docs/adr/005-multi-framework-shared-theme.md)
+- [006 — React first milestone](docs/adr/006-react-first-milestone.md)
 
 ADRs should record the context, decision, alternatives considered, and consequences.
 
