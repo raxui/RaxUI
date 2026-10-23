@@ -1,0 +1,221 @@
+// -----------------------------------------------------------------------------
+// Button — glass variants layered on Bootstrap's `.btn` CSS-variable API.
+//
+// Markup: `btn btn-glass btn-glass-{variant} [btn-sm|btn-lg] [btn-glass-icon]`
+// Every variant only sets `--bs-btn-*` / `--bui-btn-*` variables; Bootstrap's
+// `.btn` rules do the painting, so hover/active/disabled/focus all keep working.
+// -----------------------------------------------------------------------------
+
+.btn-glass {
+  --bui-btn-tint-rgb: var(--bs-primary-rgb);
+  // Label colour for tinted / outline / link: the tint, deepened to read at 4.5:1.
+  --bui-btn-text: color-mix(in srgb, rgb(var(--bui-btn-tint-rgb)) var(--bui-text-mix), var(--bui-text-ink));
+  --bui-btn-shadow: none;
+  --bs-btn-padding-x: 1rem;
+  --bs-btn-padding-y: 0.4375rem;
+  --bs-btn-font-weight: 600;
+  --bs-btn-border-width: 1px;
+  --bs-btn-border-radius: var(--bui-radius-control);
+  --bs-btn-disabled-opacity: 0.45;
+  --bs-btn-focus-box-shadow: 0 0 0 0.25rem rgba(var(--bui-btn-tint-rgb), 0.35);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--bui-control-height); // lines up with inputs and selects
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  box-shadow: var(--bui-btn-shadow);
+  transition:
+    color var(--bui-duration) ease,
+    background-color var(--bui-duration) ease,
+    border-color var(--bui-duration) ease,
+    box-shadow var(--bui-duration) var(--bui-ease-out);
+
+  svg {
+    width: 1.125em;
+    height: 1.125em;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+
+  @include motion-safe {
+    transition:
+      color var(--bui-duration) ease,
+      background-color var(--bui-duration) ease,
+      border-color var(--bui-duration) ease,
+      box-shadow var(--bui-duration) var(--bui-ease-out),
+      transform var(--bui-duration-slow) var(--bui-ease-spring); // spring back on release
+
+    // Press: shrink quickly, then the transition above springs it back.
+    &:active:not(:disabled):not(.disabled) {
+      transform: scale(0.98);
+      transition-duration: var(--bui-duration-fast);
+      transition-timing-function: var(--bui-ease-out);
+    }
+  }
+
+  // Keep the elevation visible under the focus ring.
+  &:focus-visible {
+    box-shadow: var(--bs-btn-focus-box-shadow), var(--bui-btn-shadow);
+  }
+
+  // Sizes — reuse Bootstrap's `.btn-sm` / `.btn-lg` class names.
+  &.btn-sm {
+    --bs-btn-padding-x: 0.75rem;
+    --bs-btn-padding-y: 0.3125rem;
+    --bs-btn-font-size: 0.875rem;
+    --bs-btn-border-radius: var(--bui-radius-sm);
+    gap: 0.375rem;
+    min-height: 2rem;
+  }
+
+  &.btn-lg {
+    --bs-btn-padding-x: 1.5rem;
+    --bs-btn-padding-y: 0.6875rem;
+    --bs-btn-font-size: 1.0625rem;
+    --bs-btn-border-radius: var(--bui-radius-control);
+    min-height: var(--bui-control-height-lg);
+  }
+}
+
+// Square icon-only button; combine with `.btn-sm` / `.btn-lg`.
+.btn-glass-icon {
+  --bs-btn-padding-x: 0;
+  --bs-btn-padding-y: 0;
+  width: var(--bui-control-height);
+  height: var(--bui-control-height);
+
+  &.btn-sm { width: 2rem; height: 2rem; }
+  &.btn-lg { width: 3rem; height: 3rem; }
+}
+
+// ---- Solid: primary / destructive ------------------------------------
+.btn-glass-primary,
+.btn-glass-destructive {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-bg: rgb(var(--bui-btn-tint-rgb));
+  --bs-btn-hover-bg: rgba(var(--bui-btn-tint-rgb), 0.88);
+  --bs-btn-active-bg: rgba(var(--bui-btn-tint-rgb), 0.8);
+  --bs-btn-disabled-bg: rgb(var(--bui-btn-tint-rgb));
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-disabled-border-color: transparent;
+  // Flat fill; a faint top rim and a neutral contact shadow give depth.
+  --bui-btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), var(--bui-shadow-sm);
+}
+
+.btn-glass-destructive {
+  --bui-btn-tint-rgb: var(--bs-danger-rgb);
+}
+
+// ---- Secondary: neutral frosted glass ---------------------------------------
+.btn-glass-secondary {
+  --bs-btn-color: var(--bs-emphasis-color);
+  --bs-btn-hover-color: var(--bs-emphasis-color);
+  --bs-btn-active-color: var(--bs-emphasis-color);
+  --bs-btn-disabled-color: var(--bs-emphasis-color);
+  --bs-btn-bg: rgba(var(--bs-body-bg-rgb), var(--bui-glass-alpha-subtle));
+  --bs-btn-hover-bg: rgba(var(--bs-body-bg-rgb), var(--bui-glass-alpha));
+  --bs-btn-active-bg: rgba(var(--bs-body-bg-rgb), var(--bui-glass-alpha));
+  --bs-btn-disabled-bg: rgba(var(--bs-body-bg-rgb), var(--bui-glass-alpha-subtle));
+  --bs-btn-border-color: var(--bui-glass-border-color);
+  --bs-btn-hover-border-color: var(--bui-glass-border-color);
+  --bs-btn-active-border-color: var(--bui-glass-border-color);
+  --bs-btn-disabled-border-color: var(--bui-glass-border-color);
+  --bui-btn-shadow: var(--bui-glass-edge), var(--bui-shadow-sm);
+
+  -webkit-backdrop-filter: blur(var(--bui-glass-blur)) saturate(var(--bui-glass-saturate));
+  backdrop-filter: blur(var(--bui-glass-blur)) saturate(var(--bui-glass-saturate));
+}
+
+// ---- Tinted: iOS-style translucent tint with coloured label -----------------
+.btn-glass-tinted {
+  --bs-btn-color: var(--bui-btn-text);
+  --bs-btn-hover-color: var(--bui-btn-text);
+  --bs-btn-active-color: var(--bui-btn-text);
+  --bs-btn-disabled-color: var(--bui-btn-text);
+  --bs-btn-bg: rgba(var(--bui-btn-tint-rgb), 0.14);
+  --bs-btn-hover-bg: rgba(var(--bui-btn-tint-rgb), 0.2);
+  --bs-btn-active-bg: rgba(var(--bui-btn-tint-rgb), 0.26);
+  --bs-btn-disabled-bg: rgba(var(--bui-btn-tint-rgb), 0.14);
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-disabled-border-color: transparent;
+
+  -webkit-backdrop-filter: blur(var(--bui-glass-blur)) saturate(var(--bui-glass-saturate));
+  backdrop-filter: blur(var(--bui-glass-blur)) saturate(var(--bui-glass-saturate));
+}
+
+// ---- Outline -----------------------------------------------------------------
+.btn-glass-outline {
+  --bs-btn-color: var(--bui-btn-text);
+  --bs-btn-hover-color: var(--bui-btn-text);
+  --bs-btn-active-color: var(--bui-btn-text);
+  --bs-btn-disabled-color: var(--bui-btn-text);
+  --bs-btn-bg: transparent;
+  --bs-btn-hover-bg: rgba(var(--bui-btn-tint-rgb), 0.08);
+  --bs-btn-active-bg: rgba(var(--bui-btn-tint-rgb), 0.14);
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-border-color: rgba(var(--bui-btn-tint-rgb), 0.45);
+  --bs-btn-hover-border-color: rgba(var(--bui-btn-tint-rgb), 0.7);
+  --bs-btn-active-border-color: rgba(var(--bui-btn-tint-rgb), 0.7);
+  --bs-btn-disabled-border-color: rgba(var(--bui-btn-tint-rgb), 0.45);
+}
+
+// ---- Ghost -------------------------------------------------------------------
+.btn-glass-ghost {
+  --bs-btn-color: var(--bs-emphasis-color);
+  --bs-btn-hover-color: var(--bs-emphasis-color);
+  --bs-btn-active-color: var(--bs-emphasis-color);
+  --bs-btn-disabled-color: var(--bs-emphasis-color);
+  --bs-btn-bg: transparent;
+  --bs-btn-hover-bg: rgba(var(--bs-emphasis-color-rgb), 0.06);
+  --bs-btn-active-bg: rgba(var(--bs-emphasis-color-rgb), 0.1);
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-disabled-border-color: transparent;
+}
+
+// ---- Link --------------------------------------------------------------------
+.btn-glass-link {
+  --bs-btn-color: var(--bui-btn-text);
+  --bs-btn-hover-color: var(--bui-btn-text);
+  --bs-btn-active-color: var(--bui-btn-text);
+  --bs-btn-disabled-color: var(--bui-btn-text);
+  --bs-btn-bg: transparent;
+  --bs-btn-hover-bg: transparent;
+  --bs-btn-active-bg: transparent;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-disabled-border-color: transparent;
+  text-underline-offset: 0.25em;
+
+  &:hover { text-decoration: underline; }
+}
+
+// Semantic class; btn-glass remains a compatibility class, not an appearance.
+.bui-button {
+  --bs-btn-border-radius: var(--bui-control-radius);
+  --bui-btn-shadow: var(--bui-control-shadow);
+  -webkit-backdrop-filter: var(--bui-surface-filter);
+  backdrop-filter: var(--bui-surface-filter);
+  &.btn-glass-secondary {
+    --bs-btn-bg: var(--bui-surface-bg);
+    --bs-btn-hover-bg: var(--bui-surface-bg);
+    --bs-btn-active-bg: var(--bui-surface-bg);
+    --bs-btn-disabled-bg: var(--bui-surface-bg);
+    --bs-btn-border-color: var(--bui-border-color);
+  }
+  &:is(.btn-glass-ghost, .btn-glass-link) { --bui-btn-shadow: none; }
+}

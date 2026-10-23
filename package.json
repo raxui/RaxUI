@@ -6,6 +6,10 @@
   "engines": {
     "node": ">=22"
   },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p ."
+  },
   "devDependencies": {
     "@radix-ui/react-slot": "1.5.0",
     "@testing-library/dom": "10.4.2",
