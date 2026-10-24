@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "card",
+  "version": "0.1.0",
+  "description": "Source-owned card display components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/card"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/card/card.tsx",
+      "target": "components/ui/card.tsx",
+      "type": "tsx",
+      "sha256": "98f4ca0a5c4e146da4bce894206b5484a9175c8f637ebe096ba318509de5cb42"
+    },
+    {
+      "source": "theme/scss/components/_card.scss",
+      "target": "styles/sheenui/components/_card.scss",
+      "type": "scss",
+      "sha256": "642f792d3a21f417b33871b53d293b0af14fd319e0e8af8870eb98e4e2468365"
+    }
+  ]
+}

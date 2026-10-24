@@ -28,6 +28,15 @@
     { "name": "file-upload", "manifest": "registry/react/components/file-upload/manifest.json" },
     { "name": "popover", "manifest": "registry/react/components/popover/manifest.json" },
     { "name": "combobox", "manifest": "registry/react/components/combobox/manifest.json" },
-    { "name": "autocomplete", "manifest": "registry/react/components/autocomplete/manifest.json" }
+    { "name": "autocomplete", "manifest": "registry/react/components/autocomplete/manifest.json" },
+    { "name": "alert", "manifest": "registry/react/components/alert/manifest.json" },
+    { "name": "badge", "manifest": "registry/react/components/badge/manifest.json" },
+    { "name": "avatar", "manifest": "registry/react/components/avatar/manifest.json" },
+    { "name": "card", "manifest": "registry/react/components/card/manifest.json" },
+    { "name": "skeleton", "manifest": "registry/react/components/skeleton/manifest.json" },
+    { "name": "spinner", "manifest": "registry/react/components/spinner/manifest.json" },
+    { "name": "progress", "manifest": "registry/react/components/progress/manifest.json" },
+    { "name": "table", "manifest": "registry/react/components/table/manifest.json" },
+    { "name": "timeline", "manifest": "registry/react/components/timeline/manifest.json" }
   ]
 }

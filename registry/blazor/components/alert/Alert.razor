@@ -1,0 +1,77 @@
+@* SheenUI Alert. Source-owned: edit freely. Styled by the alert component CSS. *@
+@if (Open && !_dismissed)
+{
+    <div @attributes="AdditionalAttributes" role="@Role" class="@($"sheen-alert-box {Class}")" data-tone="@Tone" data-variant="@Variant" data-state="open" data-sheen-appearance="@Appearance">
+        <div class="sheen-alert-box-inner">
+            @if (ShowIcon)
+            {
+                <span class="sheen-alert-box-icon" aria-hidden="true">
+                    @if (Icon is not null) { @Icon }
+                    else
+                    {
+                        @* Built-in icon paths from Lucide (ISC). *@
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="@IconPath" /></svg>
+                    }
+                </span>
+            }
+            <div class="sheen-alert-box-body">
+                @if (Title is not null) { <AlertTitle>@Title</AlertTitle> }
+                @if (Description is not null) { <AlertDescription>@Description</AlertDescription> }
+                @ChildContent
+            </div>
+            @if (Dismissible && _interactive)
+            {
+                <button type="button" class="sheen-alert-box-close" aria-label="@DismissLabel" @onclick="DismissAsync">
+                    @* Built-in X path from Lucide (ISC). *@
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                </button>
+            }
+        </div>
+    </div>
+}
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+    /// <summary>Extra CSS classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    /// <summary>info, success, warning, danger, or neutral.</summary>
+    [Parameter] public string Tone { get; set; } = "info";
+    [Parameter] public string Variant { get; set; } = "tinted";
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public bool ShowIcon { get; set; } = true;
+    [Parameter] public bool Dismissible { get; set; }
+    [Parameter] public string DismissLabel { get; set; } = "Dismiss";
+    /// <summary>Use @bind-Open to observe dismissal; interactivity is required for dismissal.</summary>
+    [Parameter] public bool Open { get; set; } = true;
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    private bool _interactive;
+    private bool _dismissed;
+    private bool _previousOpen = true;
+    private string Role => Tone is "danger" or "warning" ? "alert" : "status";
+    protected override void OnParametersSet()
+    {
+        if (Open != _previousOpen) _dismissed = false;
+        _previousOpen = Open;
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) { _interactive = true; StateHasChanged(); }
+    }
+    private async Task DismissAsync()
+    {
+        _dismissed = true;
+        await OpenChanged.InvokeAsync(false);
+    }
+    private string IconPath => Tone switch
+    {
+        "success" => "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM8 12.5l2.5 2.5L16 9.5",
+        "warning" => "M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z",
+        "danger" => "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM15 9l-6 6M9 9l6 6",
+        "neutral" => "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 8v4l2.5 2.5",
+        _ => "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 11v5M12 8h.01",
+    };
+}

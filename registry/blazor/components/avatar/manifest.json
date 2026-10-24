@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "avatar",
+  "version": "0.1.0",
+  "description": "Source-owned avatar display components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/avatar.css",
+      "destination": "styles",
+      "target": "components/avatar.css",
+      "type": "css",
+      "sha256": "2ffe81048045022f4df450de43014c1f8bb44f85644e7abc1da79d932b9066b1"
+    }
+  ],
+  "files": [
+    {
+      "source": "Avatar.razor",
+      "destination": "components",
+      "target": "Avatar/Avatar.razor",
+      "type": "razor",
+      "sha256": "e4d213af711f1bae458504a6abeb46a7ba248094bd359644ba7ff869ce0a997e"
+    },
+    {
+      "source": "Avatar.razor.js",
+      "destination": "components",
+      "target": "Avatar/Avatar.razor.js",
+      "type": "js",
+      "sha256": "3727801b67a24e5b364221898b6a58b6184277193850538d57769b1b6df82ca3"
+    }
+  ]
+}

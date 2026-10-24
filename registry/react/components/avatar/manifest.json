@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "avatar",
+  "version": "0.1.0",
+  "description": "Source-owned avatar display components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-avatar": "1.3.1"
+  },
+  "styles": [
+    "components/avatar"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/avatar/avatar.tsx",
+      "target": "components/ui/avatar.tsx",
+      "type": "tsx",
+      "sha256": "07da627662f59f94ae3cd17ba6815349971828e291d8397ba589c8cd6b54759a"
+    },
+    {
+      "source": "theme/scss/components/_avatar.scss",
+      "target": "styles/sheenui/components/_avatar.scss",
+      "type": "scss",
+      "sha256": "aebe20ef5a67d7aea3d5c292d9a9c0de15f400ff488648c3a37221f3cd44c255"
+    }
+  ]
+}

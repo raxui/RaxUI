@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "name": "alert",
+  "version": "0.1.0",
+  "description": "Source-owned alert display components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/alert.css",
+      "destination": "styles",
+      "target": "components/alert.css",
+      "type": "css",
+      "sha256": "12b641e7961daf9930c739deb850517c4fd2fd4fe6eec56decf9e43552241425"
+    }
+  ],
+  "files": [
+    {
+      "source": "Alert.razor",
+      "destination": "components",
+      "target": "Alert/Alert.razor",
+      "type": "razor",
+      "sha256": "4dfc08d0a10cec59276fb5ff6f673cdacdec0343f66f9db11ab0770887520e24"
+    },
+    {
+      "source": "AlertActions.razor",
+      "destination": "components",
+      "target": "Alert/AlertActions.razor",
+      "type": "razor",
+      "sha256": "2e63fdbc62cb832df6eaeb008b4b5a1de3a17589fc1142cdd72224ef3d9ea022"
+    },
+    {
+      "source": "AlertDescription.razor",
+      "destination": "components",
+      "target": "Alert/AlertDescription.razor",
+      "type": "razor",
+      "sha256": "7f56a912affac0d11169c8f3d49c71992b69f92cf75c89fd2b6b181b45f24d0c"
+    },
+    {
+      "source": "AlertTitle.razor",
+      "destination": "components",
+      "target": "Alert/AlertTitle.razor",
+      "type": "razor",
+      "sha256": "3e0d5a6d859333433a9ecf42e4fa246c7a3dd21c38f504c109e50fc0be78deb1"
+    }
+  ]
+}

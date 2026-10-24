@@ -1,0 +1,52 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  animation: sheen-spin 0.8s steps(8, end) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheen-spinner {
+    animation-duration: 1.6s;
+  }
+}
+
+.sheen-spinner[data-size=sm] {
+  font-size: 0.75rem;
+}
+
+.sheen-spinner[data-size=lg] {
+  font-size: 1.5rem;
+}
+
+.sheen-spinner[data-color=primary] {
+  color: var(--bs-primary);
+}
+
+.sheen-spinner[data-color=secondary] {
+  color: var(--bs-secondary);
+}
+
+.sheen-spinner[data-color=success] {
+  color: var(--bs-success);
+}
+
+.sheen-spinner[data-color=warning] {
+  color: var(--bs-warning);
+}
+
+.sheen-spinner[data-color=danger] {
+  color: var(--bs-danger);
+}
+
+.sheen-spinner[data-color=info] {
+  color: var(--bs-info);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-spinner {
+    animation: none;
+  }
+}

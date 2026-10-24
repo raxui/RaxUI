@@ -1,0 +1,177 @@
+// -----------------------------------------------------------------------------
+// Avatar — Radix Avatar (image shown only once loaded, fallback otherwise).
+//
+// Image fades in; initials get a flat colour derived from the name; optional
+// status dot; groups overlap and fan out on hover.
+// -----------------------------------------------------------------------------
+
+.sheen-avatar {
+  --sheen-avatar-size: 2.5rem;
+  --sheen-avatar-radius: 50%;
+  --sheen-avatar-ring: var(--bs-body-bg);
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--sheen-avatar-size);
+  height: var(--sheen-avatar-size);
+  border-radius: var(--sheen-avatar-radius);
+  vertical-align: middle;
+  user-select: none;
+}
+
+.sheen-avatar-xs { --sheen-avatar-size: 1.5rem; }
+.sheen-avatar-sm { --sheen-avatar-size: 2rem; }
+.sheen-avatar-lg { --sheen-avatar-size: 3.5rem; }
+.sheen-avatar-xl { --sheen-avatar-size: 5rem; }
+
+// Rounded square — app-icon style, radius scales with size.
+.sheen-avatar-rounded { --sheen-avatar-radius: calc(var(--sheen-avatar-size) * 0.28); }
+
+// Highlight ring (e.g. "has a new story", "selected").
+.sheen-avatar-ring {
+  box-shadow:
+    0 0 0 2px var(--sheen-avatar-ring),
+    0 0 0 4px rgb(var(--bs-primary-rgb));
+}
+
+.sheen-avatar-image,
+.sheen-avatar-fallback.sheen-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.sheen-avatar-image {
+  object-fit: cover;
+
+  @include motion-safe {
+    animation: sheen-fade-in 300ms ease;
+  }
+}
+
+.sheen-avatar-fallback.sheen-avatar-fallback {
+  --sheen-avatar-tint-rgb: var(--bs-secondary-rgb);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // The tint deepened (or lightened in dark mode) so the initials read at 4.5:1.
+  color: color-mix(in srgb, rgb(var(--sheen-avatar-tint-rgb)) var(--sheen-avatar-text-mix), var(--sheen-text-ink));
+  // Opaque (tint mixed into the page colour) so stacked avatars don't show through.
+  background-color: rgba(var(--sheen-avatar-tint-rgb), 0.16);
+  background-color: color-mix(in srgb, rgb(var(--sheen-avatar-tint-rgb)) 16%, var(--bs-body-bg));
+  font-size: calc(var(--sheen-avatar-size) * 0.38);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+
+  svg {
+    width: 55%;
+    height: 55%;
+  }
+
+  [data-bs-theme="dark"] & {
+    background-color: rgba(var(--sheen-avatar-tint-rgb), 0.24);
+    background-color: color-mix(in srgb, rgb(var(--sheen-avatar-tint-rgb)) 24%, var(--bs-body-bg));
+  }
+}
+
+// ---- Status dot -------------------------------------------------------------------
+.sheen-avatar-badge {
+  --sheen-avatar-badge-rgb: var(--bs-secondary-rgb);
+
+  position: absolute;
+  inset-inline-end: 0;
+  bottom: 0;
+  width: max(0.5rem, calc(var(--sheen-avatar-size) * 0.28));
+  height: max(0.5rem, calc(var(--sheen-avatar-size) * 0.28));
+  border-radius: 50%;
+  background-color: rgb(var(--sheen-avatar-badge-rgb));
+  box-shadow: 0 0 0 2px var(--sheen-avatar-ring);
+
+  // Rounded squares keep the dot on the corner.
+  .sheen-avatar-rounded > & {
+    inset-inline-end: -2px;
+    bottom: -2px;
+  }
+
+  &[data-status="online"] { --sheen-avatar-badge-rgb: var(--bs-success-rgb); }
+  &[data-status="away"] { --sheen-avatar-badge-rgb: var(--bs-warning-rgb); }
+  &[data-status="busy"] { --sheen-avatar-badge-rgb: var(--bs-danger-rgb); }
+
+  &[data-status="offline"] {
+    background-color: var(--sheen-avatar-ring);
+    box-shadow:
+      0 0 0 2px var(--sheen-avatar-ring),
+      inset 0 0 0 2px rgb(var(--sheen-avatar-badge-rgb));
+  }
+
+  // A soft breathing halo for "online".
+  @include motion-safe {
+    &[data-status="online"]::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background-color: rgb(var(--sheen-avatar-badge-rgb));
+      animation: sheen-avatar-ping 2s var(--sheen-ease-out) infinite;
+    }
+  }
+}
+
+@keyframes sheen-avatar-ping {
+  0% { opacity: 0.55; transform: scale(1); }
+  70%, 100% { opacity: 0; transform: scale(2.2); }
+}
+
+// ---- Group --------------------------------------------------------------------------
+.sheen-avatar-group {
+  --sheen-avatar-overlap: 0.25;
+
+  display: inline-flex;
+  align-items: center;
+
+  > .sheen-avatar {
+    box-shadow: 0 0 0 2px var(--sheen-avatar-ring);
+    transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+
+    + .sheen-avatar {
+      margin-inline-start: calc(var(--sheen-avatar-size) * var(--sheen-avatar-overlap) * -1);
+    }
+  }
+
+  // Fan out a little on hover; the hovered one lifts.
+  @include motion-safe {
+    &:hover > .sheen-avatar + .sheen-avatar {
+      transform: translateX(calc(var(--sheen-avatar-size) * 0.12 * var(--sheen-avatar-i, 1)));
+    }
+
+    [dir="rtl"] &:hover > .sheen-avatar + .sheen-avatar {
+      transform: translateX(calc(var(--sheen-avatar-size) * -0.12 * var(--sheen-avatar-i, 1)));
+    }
+
+    > .sheen-avatar:hover {
+      z-index: 1;
+      translate: 0 -3px;
+    }
+
+    > .sheen-avatar {
+      transition:
+        transform var(--sheen-duration-slow) var(--sheen-ease-spring),
+        translate var(--sheen-duration-slow) var(--sheen-ease-spring);
+    }
+  }
+}
+
+.sheen-avatar-more {
+  .sheen-avatar-fallback.sheen-avatar-fallback {
+    color: var(--bs-secondary-color);
+    background-color: color-mix(in srgb, var(--bs-emphasis-color) 8%, var(--bs-body-bg));
+    font-size: calc(var(--sheen-avatar-size) * 0.32);
+  }
+}
+
+// Preserve native hidden even though the fallback has an explicit flex display.
+.sheen-avatar > [hidden] { display: none; }

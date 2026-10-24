@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "progress",
+  "version": "0.1.0",
+  "description": "Source-owned progress display components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-progress": "1.2.1"
+  },
+  "styles": [
+    "components/progress"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/progress/progress.tsx",
+      "target": "components/ui/progress.tsx",
+      "type": "tsx",
+      "sha256": "9586e7c8237f082ef9e794e7df0552aaf96e59f6bff3c996617b09a658e1f33d"
+    },
+    {
+      "source": "theme/scss/components/_progress.scss",
+      "target": "styles/sheenui/components/_progress.scss",
+      "type": "scss",
+      "sha256": "b7f7fe9ae33137fcf7e7521c9fedbfa1ff4db1be67c0658f0ff03569908a9f8b"
+    }
+  ]
+}

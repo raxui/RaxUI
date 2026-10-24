@@ -643,3 +643,64 @@ an autocomplete input while an aria-activedescendant identifies its suggestion.
 Autocomplete Home/End navigate while suggestions are open. Both listboxes expose
 selection with aria-selected; pending async results expose aria-busy and a Bootstrap
 spinner with translated status text. Reduced motion disables pop-in and spinner motion.
+
+## Display basics
+
+Install each item with `sheenui add <name>`: `alert`, `badge`, `avatar`, `card`,
+`skeleton`, `spinner`, `progress`, `table`, and `timeline`. Each owns its compiled
+CSS and adds exactly one import to `sheenui.css`; none installs another item.
+All roots and parts accept `Class`, `Appearance` (default/flat/glass; unset
+inherits), and additional HTML attributes. Theme, accent, dark mode, density and
+RTL inherit from `data-sheen-*`, `data-bs-theme` and `dir` ancestors.
+
+```razor
+<Alert Tone="success" Title="Saved" Description="Your changes are ready." />
+<Badge Color="success" Dot Ping>Live</Badge>
+<Avatar Name="Saad Alsaree" Src="/people/saad.jpg" Alt="Saad" Size="lg"
+        Status="online" StatusLabel="Available" />
+<Card Appearance="glass">
+    <CardHeader><CardTitle>Account</CardTitle><CardDescription>Your details</CardDescription></CardHeader>
+    <CardContent>Profile information</CardContent>
+    <CardFooter>Updated today</CardFooter>
+</Card>
+<Skeleton Shape="circle" Width="40px" />
+<SkeletonText Lines="3" LastLineWidth="60%" />
+<Spinner Label="Loading account" Size="sm" Color="primary" />
+<Progress Label="Upload" Value="25" Max="50" ShowValue />
+<Progress AccessibleLabel="Preparing files" />
+<Table Striped Density="compact">
+    <TableCaption>People</TableCaption>
+    <TableHeader><TableRow><TableHead>Name</TableHead></TableRow></TableHeader>
+    <TableBody><TableRow><TableCell>Saad</TableCell></TableRow></TableBody>
+    <TableFooter><TableRow><TableCell>One person</TableCell></TableRow></TableFooter>
+</Table>
+<Timeline CurrentLabel="Active">
+    <TimelineGroup>Today</TimelineGroup>
+    <TimelineItem Title="Placed" Status="done" Time="09:00" DateTime="2026-10-24T09:00" />
+    <TimelineItem Title="Delivery" Status="current" Description="On the way" />
+</Timeline>
+```
+
+| Item | Parameters and defaults |
+| --- | --- |
+| Alert | `Tone="info"` (success/warning/danger/neutral), `Variant="tinted"` (outline/solid/glass), `Title`, `Description`, `ShowIcon=true`, `Icon`, `ChildContent`, `Dismissible=false`, `DismissLabel="Dismiss"`, `Open=true`, `OpenChanged` / `@bind-Open`. Parts: `AlertTitle`, `AlertDescription`, `AlertActions`. Warning/danger use role alert; other tones use status. |
+| Badge | `Variant="tinted"` (solid/outline/glass), `Color="primary"` (secondary/success/warning/danger/info/neutral), `Size="default"` (sm/lg), `Shape="pill"` (rounded), `Dot=false`, `Ping=false`, `ChildContent`. Ping also shows the dot. |
+| Avatar | `Src`, `Alt` (defaults to Name or FallbackLabel), `Name`, `FallbackLabel="Avatar"`, `Size="default"` (xs/sm/lg/xl), `Shape="circle"` (rounded), `Ring=false`, `Status` (online/away/busy/offline), `StatusLabel` (defaults to Status), `ChildContent` replaces initials. Initials use the first and last word, skipping Arabic ??, and a stable name-derived tint. |
+| Card | `Variant="default"` (tinted/outline), `ChildContent`; parts: `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`. Use a heading inside CardTitle when the page hierarchy needs one. |
+| Skeleton | `Shape="rect"` (circle/pill/text), CSS-string `Width`/`Height`, `Animation="shimmer"` (pulse/none), `Loading=true`, `ChildContent`. Loading content is hidden and inert; no content means a decorative placeholder. `SkeletonText`: `Lines=3`, `LastLineWidth="60%"`, `Animation="shimmer"`. |
+| Spinner | `Label="Loading"`, `Size="default"` (sm/lg), `Color="primary"` (secondary/success/warning/danger/info/neutral). Role status; use `aria-hidden="true"` when surrounding content already announces loading. Existing inline Bootstrap spinners are unchanged. |
+| Progress | Nullable `Value` (null = indeterminate), `Max=100`, `Label`, `AccessibleLabel="Progress"`, `ShowValue=false`, `FormatValue(value,max)` (percentage), `Size="default"` (sm/lg), `Color="primary"` (success/warning/danger/info/neutral), `Segments=0`, `SuccessOnComplete=false`. Values clamp to 0..Max; invalid maxima use 100 and nonfinite values are indeterminate. |
+| Table | `Density` (inherits; comfortable/compact), `Hover=true`, `Striped=false`, `StickyHeader=false`, `ContainerClass`, `ContainerStyle`. Parts: Header, Body, Footer, Row, Head, Cell, Caption with the Table prefix. `TableHead.Scope="col"`; use row for row headings. Additional native attributes support colspan/rowspan. Give the container a max-height for sticky headers. No sorting or paging. |
+| Timeline | Vertical list; `TimePosition="inline"` (side), `Size="default"` (sm), `Animated=true`, `DoneLabel="completed"`, `CurrentLabel="in progress"`, `UpcomingLabel="upcoming"`, `ErrorLabel="failed"`. `TimelineItem`: `Status="done"` (current/upcoming/error), `Tone` (primary/success/warning/danger/info/neutral; inferred from status), `Title`, `Description`, `Time`, `DateTime`, `Marker`, `ChildContent`, optional `StatusLabel` override and zero-based `Index=0` animation stagger. `TimelineGroup` is a list heading. Current items expose aria-current=step. |
+
+All nine render in static SSR. Alert omits the dismiss button until its first
+interactive render; use `@rendermode InteractiveServer` to dismiss from C# and
+bind Open. Dismissal hides locally even without a callback; toggle Open false then
+true to reopen. It removes the alert immediately. React also animates collapse.
+Avatar renders the image when Src is supplied, or initials otherwise. Interactive
+rendering adds a disposable, collocated image-error module and shows initials on
+load failure; static SSR keeps the supplied image and its alt text. None of the
+other items imports JavaScript. Progress is an ARIA progressbar with min/max and
+an omitted current value when indeterminate. All motion has reduced-motion
+fallbacks; Spinner stops, Skeleton stays still, and indeterminate progress remains
+visible. Icon slots accept arbitrary markup with two-class sizing (ADR 014).

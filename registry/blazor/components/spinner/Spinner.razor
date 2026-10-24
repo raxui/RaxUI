@@ -1,0 +1,17 @@
+@* SheenUI Spinner. Source-owned: edit freely. Styled by the spinner component CSS. *@
+<svg @attributes="AdditionalAttributes" class="@($"sheen-spinner {Class}")" role="status" aria-label="@Label" data-size="@Size" data-color="@Color" data-sheen-appearance="@Appearance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+    @for (var i = 0; i < 8; i++)
+    {
+        <line x1="12" y1="2.75" x2="12" y2="6.75" transform="@($"rotate({i * 45} 12 12)")" opacity="@(((i + 1) / 8.0).ToString(System.Globalization.CultureInfo.InvariantCulture))" />
+    }
+</svg>
+@code {
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+    /// <summary>Extra CSS classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public string Label { get; set; } = "Loading";
+    [Parameter] public string Size { get; set; } = "default";
+    [Parameter] public string Color { get; set; } = "primary";
+}

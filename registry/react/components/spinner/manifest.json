@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "spinner",
+  "version": "0.1.0",
+  "description": "Source-owned spinner display components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {},
+  "styles": [
+    "components/spinner"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/spinner/spinner.tsx",
+      "target": "components/ui/spinner.tsx",
+      "type": "tsx",
+      "sha256": "d0b485df5abdc92f4c1aa44b92df51cbd35d5c28ece462accb0b389090eda3ba"
+    },
+    {
+      "source": "theme/scss/components/_spinner.scss",
+      "target": "styles/sheenui/components/_spinner.scss",
+      "type": "scss",
+      "sha256": "0d98b2c82d91397c3cf6eff2904a192f51cd12a29d1a71d084b79841034fdc6f"
+    }
+  ]
+}

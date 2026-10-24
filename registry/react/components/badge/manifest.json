@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "badge",
+  "version": "0.1.0",
+  "description": "Source-owned badge display components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/badge"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/badge/badge.tsx",
+      "target": "components/ui/badge.tsx",
+      "type": "tsx",
+      "sha256": "8d109a06821b8af3dab42659f3793119add7a8759b27d6aa07431b6ebe88fc66"
+    },
+    {
+      "source": "theme/scss/components/_badge.scss",
+      "target": "styles/sheenui/components/_badge.scss",
+      "type": "scss",
+      "sha256": "b8093a25ce389b2d63ce84999e10cec4980d039083cbeefef33c13a231a2bd0a"
+    }
+  ]
+}

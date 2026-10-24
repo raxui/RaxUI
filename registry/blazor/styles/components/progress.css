@@ -1,0 +1,197 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+:is(.sheen-progress, .sheen-progress-circle) {
+  --sheen-progress-rgb: var(--bs-primary-rgb);
+}
+:is(.sheen-progress, .sheen-progress-circle)[data-color=success] {
+  --sheen-progress-rgb: var(--bs-success-rgb);
+}
+:is(.sheen-progress, .sheen-progress-circle)[data-color=warning] {
+  --sheen-progress-rgb: var(--bs-warning-rgb);
+}
+:is(.sheen-progress, .sheen-progress-circle)[data-color=danger] {
+  --sheen-progress-rgb: var(--bs-danger-rgb);
+}
+:is(.sheen-progress, .sheen-progress-circle)[data-color=info] {
+  --sheen-progress-rgb: var(--bs-info-rgb);
+}
+:is(.sheen-progress, .sheen-progress-circle)[data-color=neutral] {
+  --sheen-progress-rgb: var(--bs-emphasis-color-rgb);
+}
+
+.sheen-progress {
+  --sheen-progress-height: 0.5rem;
+  --sheen-progress-track: rgba(var(--bs-emphasis-color-rgb), 0.08);
+  position: relative;
+  display: flex;
+  gap: 0.25rem;
+  width: 100%;
+  height: var(--sheen-progress-height);
+  overflow: hidden;
+  border-radius: 999px;
+  background-color: var(--sheen-progress-track);
+  box-shadow: inset 0 1px 1px rgba(var(--sheen-shadow-rgb), 0.06);
+  isolation: isolate;
+}
+.sheen-progress[data-size=sm] {
+  --sheen-progress-height: 0.25rem;
+}
+.sheen-progress[data-size=lg] {
+  --sheen-progress-height: 0.875rem;
+}
+.sheen-progress:dir(rtl) {
+  transform: scaleX(-1);
+}
+.sheen-progress[data-segmented] {
+  overflow: visible;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.sheen-progress-segment {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 999px;
+  background-color: var(--sheen-progress-track);
+  isolation: isolate;
+}
+
+.sheen-progress-indicator {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background-color: rgb(var(--sheen-progress-rgb));
+  transform: translateX(-100%);
+  transition: background-color var(--sheen-duration) ease;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-progress-indicator {
+    transition: transform 700ms cubic-bezier(0.32, 0.72, 0, 1), background-color var(--sheen-duration) ease;
+  }
+}
+.sheen-progress-indicator[data-empty], .sheen-progress[data-value="0"] > .sheen-progress-indicator {
+  opacity: 0;
+}
+.sheen-progress[data-state=indeterminate] > .sheen-progress-indicator {
+  width: 40%;
+  transform: translateX(-100%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-progress[data-state=indeterminate] > .sheen-progress-indicator {
+    animation: sheen-progress-sweep 1.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheen-progress[data-state=indeterminate] > .sheen-progress-indicator {
+    width: 100%;
+    transform: none;
+    opacity: 0.4;
+  }
+}
+
+@keyframes sheen-progress-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+.sheen-progress-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.sheen-progress-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+.sheen-progress-label {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--bs-emphasis-color);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sheen-progress-value {
+  margin-inline-start: auto;
+  color: var(--bs-secondary-color);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transition: color var(--sheen-duration) ease;
+}
+.sheen-progress-field[data-complete] .sheen-progress-value {
+  color: var(--bs-emphasis-color);
+  font-weight: 600;
+}
+
+.sheen-progress-circle {
+  position: relative;
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  vertical-align: middle;
+}
+.sheen-progress-circle svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: rotate(-90deg);
+}
+.sheen-progress-circle circle {
+  fill: none;
+}
+
+.sheen-progress-circle-track {
+  stroke: rgba(var(--bs-emphasis-color-rgb), 0.08);
+}
+
+.sheen-progress-circle-bar {
+  stroke: rgb(var(--sheen-progress-rgb));
+  stroke-dasharray: 100;
+  stroke-linecap: round;
+  transition: stroke var(--sheen-duration) ease;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-progress-circle-bar {
+    transition: stroke-dashoffset 700ms cubic-bezier(0.32, 0.72, 0, 1), stroke var(--sheen-duration) ease;
+  }
+}
+.sheen-progress-circle[data-value="0"] .sheen-progress-circle-bar {
+  stroke-opacity: 0;
+}
+.sheen-progress-circle[data-state=indeterminate] .sheen-progress-circle-bar {
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-progress-circle[data-state=indeterminate] .sheen-progress-circle-bar {
+    animation: sheen-spin 0.9s linear infinite;
+  }
+}
+
+.sheen-progress-circle-content.sheen-progress-circle-content {
+  position: relative;
+  color: var(--bs-emphasis-color);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.sheen-progress-circle-content.sheen-progress-circle-content svg {
+  position: static;
+  width: 1.1em;
+  height: 1.1em;
+  transform: none;
+}

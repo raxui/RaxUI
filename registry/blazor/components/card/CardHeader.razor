@@ -1,0 +1,10 @@
+@* SheenUI CardHeader. Source-owned: edit freely. Styled by the card component CSS. *@
+<div @attributes="AdditionalAttributes" class="@($"card-header {Class}")" data-sheen-appearance="@Appearance" >@ChildContent</div>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+    /// <summary>Extra CSS classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "alert",
+  "version": "0.1.0",
+  "description": "Source-owned alert display components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {},
+  "styles": [
+    "components/alert"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/alert/alert.tsx",
+      "target": "components/ui/alert.tsx",
+      "type": "tsx",
+      "sha256": "a1f744088d41a8d91d0830e11a1484bce2f0b7d3e87396e8d015f4d6ea97c9fb"
+    },
+    {
+      "source": "theme/scss/components/_alert.scss",
+      "target": "styles/sheenui/components/_alert.scss",
+      "type": "scss",
+      "sha256": "014b2ecbf5e4d747be56e0641c4fc231c20558728df4afe72feac84768e65983"
+    }
+  ]
+}

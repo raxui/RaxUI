@@ -63,6 +63,11 @@ export function initListbox(input, list, receiver) {
   }
   previous?.controller.abort()
   const controller = new AbortController()
+  const content = list.closest("[popover]")
+  // The listbox opens and closes the popover in the DOM; the toggle event then syncs C# through Toggled.
+  // Going through C# raced with pending renders: a close could be skipped (an unchanged Open=false
+  // parameter) or undone (a late Show), leaving the list open with focus inside it.
+  const hide = () => { if (content?.matches(":popover-open")) content.hidePopover() }
   const activate = option => {
     list.querySelectorAll("[data-active]").forEach(el => el.removeAttribute("data-active"))
     if (!option) { input.removeAttribute("aria-activedescendant"); return }
@@ -79,22 +84,24 @@ export function initListbox(input, list, receiver) {
       case "Home": next = options[0]; break
       case "End": next = options.at(-1); break
       case "Enter":
-        if (index >= 0) { event.preventDefault(); receiver.invokeMethodAsync("Select", options[index].dataset.value) }
+        if (index >= 0) { event.preventDefault(); hide(); receiver.invokeMethodAsync("Select", options[index].dataset.value) }
         return
       case "Escape":
-        event.preventDefault(); receiver.invokeMethodAsync("Close"); return
-      case "Tab": receiver.invokeMethodAsync("Close"); return
+        event.preventDefault(); hide(); receiver.invokeMethodAsync("Close"); return
+      case "Tab": hide(); receiver.invokeMethodAsync("Close"); return
       default: return // Text input itself supplies search/typeahead without intercepting IME.
     }
     if (!next || event.isComposing) return
-    event.preventDefault(); activate(next); receiver.invokeMethodAsync("Show")
+    // Open in the DOM too: a C# Show re-rendered after Enter had closed the list and reopened it.
+    event.preventDefault(); activate(next); if (content && !content.matches(":popover-open")) content.showPopover()
   }, { signal: controller.signal })
   list.addEventListener("pointerdown", event => { if (event.target.closest('[role="option"]')) event.preventDefault() }, { signal: controller.signal })
+  // A click selects through the option's own C# handler; close here for the same reason as Enter.
+  list.addEventListener("click", event => { if (event.target.closest('[role="option"]:not([aria-disabled="true"])')) hide() }, { signal: controller.signal })
   list.addEventListener("pointermove", event => {
     const option = event.target.closest('[role="option"]:not([aria-disabled="true"])')
     if (option) activate(option)
   }, { signal: controller.signal })
-  const content = list.closest("[popover]")
   const trigger = content && document.querySelector(`[popovertarget="${CSS.escape(content.id)}"]`)
   trigger?.addEventListener("keydown", event => {
     if (event.isComposing || event.ctrlKey || event.metaKey || event.altKey) return

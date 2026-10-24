@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "skeleton",
+  "version": "0.1.0",
+  "description": "Source-owned skeleton display components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/skeleton"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/skeleton/skeleton.tsx",
+      "target": "components/ui/skeleton.tsx",
+      "type": "tsx",
+      "sha256": "ebb352e6cdb9af67c915fcff7ddaeeb0567abec3f6228486fc7147f3a6d3a674"
+    },
+    {
+      "source": "theme/scss/components/_skeleton.scss",
+      "target": "styles/sheenui/components/_skeleton.scss",
+      "type": "scss",
+      "sha256": "cfa815099ab06e19c550170f57329d2fe2726e6cff28ac3178aa3bfe0fd747e8"
+    }
+  ]
+}
