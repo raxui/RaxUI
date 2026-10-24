@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "combobox",
+  "version": "0.1.0",
+  "description": "Source-owned combobox with Field integration.",
+  "requires": [
+    "foundation",
+    "field",
+    "input",
+    "popover"
+  ],
+  "packages": {},
+  "styles": [
+    "components/combobox"
+  ],
+  "files": [
+    {
+      "source": "registry/react/combobox/combobox.tsx",
+      "target": "components/ui/combobox.tsx",
+      "type": "tsx",
+      "sha256": "a40e2fd4ba25e4e2a994393453291ec7a190b4f52508dfd3ac89c7c7ec878004"
+    },
+    {
+      "source": "theme/scss/components/_combobox.scss",
+      "target": "styles/sheenui/components/_combobox.scss",
+      "type": "scss",
+      "sha256": "2c996ebfca9e596ae365207f182c866da1c1682485dfd509d38aad096b9ae8c2"
+    }
+  ]
+}

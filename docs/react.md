@@ -441,3 +441,113 @@ Users who set their system to reduce transparency get opaque glass automatically
 - Ordinary write failures restore original files and remove new empty folders.
 - Sass prints `@import` deprecation warnings that come from Bootstrap 5.3 itself.
 - Only React on Vite 6+ or Next.js 15+ (App Router, no Tailwind) and the shipped registry components are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` App or the `create-next-app` 15.x–16.x page; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.
+
+
+## Native dates and times
+
+Install `date-input`, `time-picker`, `date-time-input`, or `date-range-input`.
+These use the browser's built-in pickers, including its locale and keyboard behavior;
+custom calendars belong to #38. Bootstrap dark mode supplies `color-scheme: dark`.
+`StartIcon`, appearance, size, variant, disabled/read-only and native min/max/step
+attributes follow Input. All controls consume Field attributes automatically.
+
+Blazor: `DateInput<TValue>` accepts DateOnly, DateTime, DateTimeOffset (and nullable
+forms); `TimePicker` binds TimeOnly; `DateTimeInput<TValue>` accepts DateTime or
+DateTimeOffset. Use `@bind-Value` inside EditForm. Browser date/time values carry no
+time zone: a DateTimeOffset is interpreted as local wall time by InputDate.
+`ParsingErrorMessage` translates the built-in parsing error.
+`DateRangeInput` binds nullable DateOnly `Value` and `EndValue` with separate
+ValueExpression/EndValueExpression. It validates order in EditContext without
+silently changing either endpoint. StartLabel, EndLabel, Separator and OrderMessage
+are translatable. Native min/max prevent crossing through the picker. All these
+inputs post with generated names in static SSR; use FormName/SupplyParameterFromForm.
+
+React: DateInput, TimePicker and DateTimeInput forward their input ref and accept
+Input props. Values are native strings (`YYYY-MM-DD`, `HH:mm`, `YYYY-MM-DDTHH:mm`).
+DateRangeInput accepts `value`/`defaultValue` as `{ start, end }` and `onChange`;
+`name`/`endName` name the endpoints for native form posts. `startLabel`, `endLabel`,
+`separator` and `orderMessage` translate its text. In react-hook-form use Controller
+for the range and an order refinement in the application's schema to block submit;
+the range displays the error and sets native endpoint limits. Single inputs use
+register or Controller through Field like Input.
+
+
+## File upload
+
+Install `file-upload`. FileUpload is a native file input inside a labelled drop zone,
+with a removable list and Bootstrap progress bars. Tab to the native input and use
+its picker keys; clicking the zone also opens it. No upload request is made.
+Each selection replaces the previous batch (InputFile invalidates earlier handles).
+A rejected batch clears the list. Limits default to 1 file and 10 MiB per file.
+Accept accepts extensions, MIME types or wildcards (`.pdf,image/*`).
+
+Blazor: bind `IReadOnlyList<IBrowserFile>` with `@bind-Value` inside an EditForm/Field.
+Set `Accept`, `MaxSize` (bytes), `MaxFiles`; errors enter EditContext and block submit.
+`Progress` is `Func<IBrowserFile, double?>`: null hides the bar; 0 to 100 displays it.
+The app reads streams and updates progress. Translate `Label`, `RemoveLabel`,
+`TypeMessage`, `SizeMessage`, `CountMessage`; `OnError` reports a rejection.
+The collocated JS adds drag highlighting and synchronizes removals with native posts.
+For static SSR give the input an explicit `name`, set `enctype="multipart/form-data"`
+on EditForm and read IFormFile entries from the request in the server handler.
+InputFile's IBrowserFile callbacks and progress require interactivity. Static SSR
+posts bytes using the native input; the app must enforce accept/count/size again
+on the server. All upload endpoints must independently enforce server limits.
+
+React: `value`/`defaultValue` are File arrays; `onChange` receives the next array.
+Use Controller's `{...field}` inside Field for react-hook-form. `accept`, `maxSize`,
+`maxFiles`, `progress(file)` and `onError` mirror Blazor. Text props use camelCase.
+The forwarded ref reaches the native input for error focusing. Native multipart
+posts use `name`; controlled files, drops and removals synchronize that payload.
+
+
+## Popover, combobox and autocomplete
+
+Install `popover`, `combobox` or `autocomplete`. The latter two require popover,
+input and field; no Command item is installed. Both support a single selection.
+Options have unique string values; autocomplete permits free text. All visible
+built-in text is overridable for translation.
+
+Blazor Popover uses the native `popover` top layer and a disposable collocated JS
+module extracted from DropdownMenu (ADR 013). It aligns below the trigger's inline
+start, flips above if needed, follows scroll/resize and content size, and inherits
+its theme, accent and RTL direction. Set `Trigger` and `ChildContent` fragments,
+`@bind-Open`, `Label` (accessible panel name), `Appearance` and `Class`.
+An external input can supply `Anchor` instead of a Trigger. TriggerAttributes,
+TriggerClass, PopupRole and Role allow accessible composition. Native light dismiss
+and Escape close it; focus returns to the trigger when it was inside the panel.
+Interactivity is required for positioning and C# state synchronization.
+
+Blazor Combobox: bind string `Value` with `@bind-Value`; `Options` is an
+IReadOnlyList of `Combobox.Option(Value, Label, Disabled=false)`. Translate
+Placeholder, SearchPlaceholder and EmptyMessage. A native InputSelect is the
+static SSR fallback, with generated form names and EditContext validation.
+Interactive mode replaces the visible select with a button and searchable listbox;
+the hidden native select continues to post the selected value.
+
+Blazor Autocomplete: bind string `Value`; `Suggestions` holds strings. Optional
+`LoadSuggestions(query, cancellationToken)` returns Task<IReadOnlyList<string>>.
+Older requests are cancelled and their results ignored; `Loading` can also be
+controlled by the application. Translate SuggestionsLabel, LoadingMessage,
+EmptyMessage and ErrorMessage. Static SSR renders a named text input and datalist;
+async suggestions and the custom listbox require interactivity.
+
+React Popover exports Popover, PopoverTrigger, PopoverAnchor, PopoverContent and
+PopoverClose. Content uses Radix Popover 1.3.1 and portals into the nearest
+SheenThemeProvider, preserving theme attributes and accent. Open/defaultOpen and
+onOpenChange follow Radix. Content defaults to inline start alignment with a 4px gap.
+
+React Combobox takes `options: { value, label, disabled? }[]`, value/defaultValue,
+onChange (or onValueChange), name for a hidden native post, placeholder,
+searchPlaceholder and emptyMessage. Its ref is the button. Autocomplete takes
+string value/defaultValue, onChange(string), suggestions, optional
+loadSuggestions(query, AbortSignal), loading, loadingMessage, emptyMessage and
+errorMessage. Its ref is the input; Input props and name pass through. Use Controller
+and `{...field}` inside Field to integrate either control with react-hook-form.
+
+Keyboard: open combobox with Enter/Space, arrows or typeahead; type to filter in
+its search input. Arrows skip disabled options, Home/End jump, Enter selects,
+Escape dismisses, and Tab closes while continuing navigation. Focus stays in
+an autocomplete input while an aria-activedescendant identifies its suggestion.
+Autocomplete Home/End navigate while suggestions are open. Both listboxes expose
+selection with aria-selected; pending async results expose aria-busy and a Bootstrap
+spinner with translated status text. Reduced motion disables pop-in and spinner motion.

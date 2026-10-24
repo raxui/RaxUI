@@ -20,6 +20,14 @@
     { "name": "slider", "manifest": "registry/react/slider/manifest.json" },
     { "name": "rating", "manifest": "registry/react/rating/manifest.json" },
     { "name": "starter", "manifest": "registry/react/starter/manifest.json" },
-    { "name": "starter-next", "manifest": "registry/react/starter-next/manifest.json" }
+    { "name": "starter-next", "manifest": "registry/react/starter-next/manifest.json" },
+    { "name": "date-input", "manifest": "registry/react/date-input/manifest.json" },
+    { "name": "time-picker", "manifest": "registry/react/time-picker/manifest.json" },
+    { "name": "date-time-input", "manifest": "registry/react/date-time-input/manifest.json" },
+    { "name": "date-range-input", "manifest": "registry/react/date-range-input/manifest.json" },
+    { "name": "file-upload", "manifest": "registry/react/file-upload/manifest.json" },
+    { "name": "popover", "manifest": "registry/react/popover/manifest.json" },
+    { "name": "combobox", "manifest": "registry/react/combobox/manifest.json" },
+    { "name": "autocomplete", "manifest": "registry/react/autocomplete/manifest.json" }
   ]
 }

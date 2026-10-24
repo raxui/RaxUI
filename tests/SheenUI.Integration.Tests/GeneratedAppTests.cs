@@ -53,6 +53,14 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "select"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "slider"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "rating"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "autocomplete"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "combobox"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "popover"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "file-upload"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "date-range-input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "date-time-input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "time-picker"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "date-input"], app, output, error) == 0, error.ToString());
         Assert.True(File.Exists(Path.Combine(app, "Components", "UI", "Dialog", "Dialog.razor.js")));
 
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
@@ -127,6 +135,7 @@ public class GeneratedAppTests : IDisposable
 
         WriteFormPages(components);
         WriteBasicControlPages(components);
+        WriteAdvancedControlPages(components);
         WriteFluentForm(components);
         // Optional FluentValidation through Blazilla (#37): SheenUI controls must show its messages too.
         Dotnet(app, "add", "package", "Blazilla", "--version", "2.4.2");
@@ -167,6 +176,14 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "select"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "slider"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "rating"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "autocomplete"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "combobox"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "popover"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "file-upload"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "date-range-input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "date-time-input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "time-picker"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "date-input"], app, output, error) == 0, error.ToString());
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app);
     }
@@ -247,6 +264,7 @@ public class GeneratedAppTests : IDisposable
             await VerifyConfirmDialog(page);
             await VerifyForms(page, url);
             await VerifyBasicControls(page, url);
+            await VerifyAdvancedControls(page, url);
             await VerifyFluentForm(page, url);
         }
         catch (Exception exception)
@@ -609,7 +627,8 @@ public class GeneratedAppTests : IDisposable
         await Assertions.Expect(page.Locator("#volume[aria-invalid='true'], #score[aria-invalid='true']")).ToHaveCountAsync(0);
 
         // Disable JavaScript: this is a real server POST with FormName and SupplyParameterFromForm.
-        await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false });
+        // Reduced motion turns off Bootstrap's smooth scrolling, so long pages stay still while Playwright clicks.
+        await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false, ReducedMotion = ReducedMotion.Reduce });
         var staticPage = await context.NewPageAsync();
         await staticPage.GotoAsync(url.TrimEnd('/') + "/static-form");
         await staticPage.Locator("#save").ClickAsync();
@@ -746,7 +765,7 @@ public class GeneratedAppTests : IDisposable
         await Assertions.Expect(page.Locator("#controls-values")).ToHaveTextAsync("True|True|b|iq|12|34|7");
 
         // A real native form POST with JavaScript disabled, exercising every bound input type.
-        await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false });
+        await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false, ReducedMotion = ReducedMotion.Reduce });
         var ssr = await context.NewPageAsync();
         await ssr.GotoAsync(url.TrimEnd('/') + "/static-controls");
         await ssr.Locator("#controls-save").ClickAsync();
@@ -775,6 +794,163 @@ public class GeneratedAppTests : IDisposable
         await page.Locator("#choice input").First.FocusAsync();
         await page.Locator("#choice input").First.PressAsync("ArrowRight");
         await page.Locator("#country").SelectOptionAsync("iq");
+    }
+
+    private static void WriteAdvancedControlPages(string components)
+    {
+        const string markup = """
+            @page "/dates"
+            @rendermode InteractiveServer
+            <EditForm Model="Model" FormName="dates" OnValidSubmit="@(() => saved = true)" Context="edit">
+                <Form>
+                    <Field Id="date" For="@(() => Model!.Date)"><FieldLabel>Date</FieldLabel><DateInput @bind-Value="Model!.Date" /><FieldError /></Field>
+                    <Field Id="date-time" For="@(() => Model!.DateTime)"><FieldLabel>Date time</FieldLabel><DateInput @bind-Value="Model!.DateTime" /><FieldError /></Field>
+                    <Field Id="offset" For="@(() => Model!.Offset)"><FieldLabel>Offset</FieldLabel><DateInput @bind-Value="Model!.Offset" /><FieldError /></Field>
+                    <Field Id="time" For="@(() => Model!.Time)"><FieldLabel>Time</FieldLabel><TimePicker @bind-Value="Model!.Time" /><FieldError /></Field>
+                    <Field Id="local" For="@(() => Model!.Local)"><FieldLabel>Local</FieldLabel><DateTimeInput @bind-Value="Model!.Local" /><FieldError /></Field>
+                    <Field Id="local-offset" For="@(() => Model!.LocalOffset)"><FieldLabel>Local offset</FieldLabel><DateTimeInput @bind-Value="Model!.LocalOffset" /><FieldError /></Field>
+                    <Field Id="dates-range" For="@(() => Model!.Start)"><FieldLabel>Range</FieldLabel><DateRangeInput @bind-Value="Model!.Start" @bind-EndValue="Model!.End" /><FieldError /></Field>
+                    <Field Id="files" For="@(() => files)"><FieldLabel>Files</FieldLabel><FileUpload @bind-Value="files" MaxFiles="2" MaxSize="4" Accept=".txt" Progress="@(_ => 50)" /><FieldError /></Field>
+                    <p id="file-count">@files.Count</p>
+                    <Field Id="combo" For="@(() => Model!.Choice)"><FieldLabel>Choice</FieldLabel><Combobox Options="options" @bind-Value="Model!.Choice" /><FieldError /></Field>
+                    <Field Id="auto" For="@(() => Model!.Suggestion)"><FieldLabel>Suggestion</FieldLabel><Autocomplete Suggestions="suggestions" @bind-Value="Model!.Suggestion" /><FieldError /></Field>
+                    <Field Id="async-auto" For="@(() => Model!.AsyncSuggestion)"><FieldLabel>Async suggestion</FieldLabel><Autocomplete LoadSuggestions="LoadSuggestions" @bind-Value="Model!.AsyncSuggestion" /><FieldError /></Field>
+                    <Popover Label="Details"><Trigger>Details</Trigger><ChildContent><button type="button">Inside popover</button></ChildContent></Popover>
+                    <p id="choice-values">@($"{Model!.Choice}|{Model.Suggestion}")</p>
+                    <button id="dates-save" type="submit" disabled="@(!ready)">Save</button>
+                </Form>
+            </EditForm>
+            <p id="dates-result">@(saved ? $"{Model!.Date:yyyy-MM-dd}|{Model.Time:HH:mm}|{Model.Local:yyyy-MM-ddTHH:mm}|{Model.Start:yyyy-MM-dd}|{Model.End:yyyy-MM-dd}" : "")</p>
+            @code {
+                [SupplyParameterFromForm] private DateModel? Model { get; set; }
+                private bool saved;
+                private bool ready; // set once interactive, so the test never types into the prerendered page
+                protected override void OnAfterRender(bool firstRender) { if (firstRender) { ready = true; StateHasChanged(); } }
+                private IReadOnlyList<IBrowserFile> files = Array.Empty<IBrowserFile>();
+                private IReadOnlyList<Combobox.Option> options = new[] { new Combobox.Option("a", "Alpha"), new Combobox.Option("b", "Beta", true), new Combobox.Option("g", "Gamma") };
+                private IReadOnlyList<string> suggestions = new[] { "Alpha", "Gamma" };
+                protected override void OnInitialized() => Model ??= new();
+                private static async Task<IReadOnlyList<string>> LoadSuggestions(string query, CancellationToken token)
+                {
+                    await Task.Delay(query == "slow" ? 500 : 200, token);
+                    return query == "none" ? Array.Empty<string>() : new[] { query + " result" };
+                }
+                public class DateModel
+                {
+                    public string AsyncSuggestion { get; set; } = "";
+                    public string Choice { get; set; } = "";
+                    public string Suggestion { get; set; } = "";
+                    public DateOnly Date { get; set; } = new(2026, 1, 1);
+                    public DateTime DateTime { get; set; } = new(2026, 1, 1);
+                    public DateTimeOffset Offset { get; set; } = new(new DateTime(2026, 1, 1));
+                    public TimeOnly Time { get; set; } = new(9, 0);
+                    public DateTime Local { get; set; } = new(2026, 1, 1, 9, 0, 0);
+                    public DateTimeOffset LocalOffset { get; set; } = new(new DateTime(2026, 1, 1, 9, 0, 0));
+                    public DateOnly? Start { get; set; } = new(2026, 1, 1);
+                    public DateOnly? End { get; set; } = new(2026, 2, 1);
+                }
+            }
+            """;
+        File.WriteAllText(Path.Combine(components, "Pages", "StaticUpload.razor"), """
+            @page "/static-upload"
+            @using Microsoft.AspNetCore.Http
+            <EditForm Model="model" FormName="upload" enctype="multipart/form-data" OnSubmit="Save" Context="edit">
+                <Field Id="attachment"><FieldLabel>Attachment</FieldLabel><FileUpload Value="files" name="attachment" Accept=".txt" MaxSize="4" /><FieldError /></Field>
+                <button id="upload-save" type="submit">Save</button>
+            </EditForm>
+            <p id="upload-result">@result</p>
+            @code {
+                private object model = new();
+                private IReadOnlyList<IBrowserFile> files = Array.Empty<IBrowserFile>();
+                private string result = "";
+                [CascadingParameter] private HttpContext? HttpContext { get; set; }
+                private async Task Save()
+                {
+                    var posted = (await HttpContext!.Request.ReadFormAsync()).Files;
+                    result = posted.Count == 1 && posted[0].Length <= 4 && posted[0].FileName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase)
+                        ? posted[0].FileName : "Invalid files";
+                }
+            }
+            """);
+        File.WriteAllText(Path.Combine(components, "Pages", "Dates.razor"), markup);
+        File.WriteAllText(Path.Combine(components, "Pages", "StaticDates.razor"), markup.Replace("@page \"/dates\"", "@page \"/static-dates\"").Replace("@rendermode InteractiveServer", "").Replace("private bool ready;", "private bool ready = true;"));
+    }
+
+    private static async Task VerifyAdvancedControls(IPage page, string url)
+    {
+        await Check(page, "/dates");
+        await page.Locator("#combo").PressAsync("ArrowDown");
+        var search = page.GetByRole(AriaRole.Combobox, new() { Name = "Search options" });
+        await Assertions.Expect(search).ToBeFocusedAsync();
+        await search.PressAsync("Home");
+        await search.PressAsync("ArrowDown");
+        await Assertions.Expect(search).ToHaveAttributeAsync("aria-activedescendant", new System.Text.RegularExpressions.Regex("-option-2$"));
+        await search.PressAsync("Enter");
+        await Assertions.Expect(page.Locator("#combo")).ToBeFocusedAsync();
+        await page.Locator("#auto").FillAsync("a");
+        await page.Locator("#auto").PressAsync("End");
+        await page.Locator("#auto").PressAsync("Enter");
+        await Assertions.Expect(page.Locator("#choice-values")).ToHaveTextAsync("g|Gamma");
+        await page.Locator("#async-auto").FillAsync("slow");
+        await Assertions.Expect(page.GetByRole(AriaRole.Status)).ToHaveTextAsync("Loading suggestions");
+        await page.Locator("#async-auto").FillAsync("fast");
+        await Assertions.Expect(page.GetByRole(AriaRole.Option, new() { Name = "fast result" })).ToBeVisibleAsync();
+        await page.Locator("#async-auto").PressAsync("ArrowDown");
+        await page.Locator("#async-auto").PressAsync("Enter");
+        await Assertions.Expect(page.Locator("#async-auto")).ToHaveValueAsync("fast result");
+        await page.Locator("#dates-range").FillAsync("2026-03-01");
+        await page.Locator("#dates-range-end").FocusAsync();
+        await Assertions.Expect(page.Locator("#dates-range-range-error")).ToHaveTextAsync("Start date must be on or before end date.");
+        await Assertions.Expect(page.Locator("#dates-range")).ToHaveAttributeAsync("aria-invalid", "true");
+        await page.Locator("#dates-range").FillAsync("2026-01-01");
+        await page.Locator("#dates-range-end").FocusAsync();
+        await Assertions.Expect(page.Locator("#dates-range-range-error")).ToHaveCountAsync(0);
+        await page.GetByRole(AriaRole.Button, new() { Name = "Details", Exact = true }).ClickAsync();
+        await Assertions.Expect(page.GetByRole(AriaRole.Dialog, new() { Name = "Details" })).ToBeVisibleAsync();
+        await page.Keyboard.PressAsync("Escape");
+        await Assertions.Expect(page.GetByRole(AriaRole.Dialog, new() { Name = "Details" })).ToBeHiddenAsync();
+        var input = page.Locator("#files");
+        await input.SetInputFilesAsync(new[] { new FilePayload { Name = "notes.txt", MimeType = "text/plain", Buffer = "abc"u8.ToArray() } });
+        await Assertions.Expect(page.Locator("#file-count")).ToHaveTextAsync("1");
+        await Assertions.Expect(page.GetByRole(AriaRole.Progressbar)).ToHaveAttributeAsync("aria-valuenow", "50");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Remove notes.txt" }).ClickAsync();
+        await Assertions.Expect(page.Locator("#file-count")).ToHaveTextAsync("0");
+        await input.SetInputFilesAsync(new[] { new FilePayload { Name = "large.txt", MimeType = "text/plain", Buffer = "12345"u8.ToArray() } });
+        await Assertions.Expect(page.Locator("#files-upload-error")).ToHaveTextAsync("This file is too large.");
+        await Assertions.Expect(input).ToHaveAttributeAsync("aria-invalid", "true");
+        await input.SetInputFilesAsync(new[] { new FilePayload { Name = "wrong.png", MimeType = "image/png", Buffer = "abc"u8.ToArray() } });
+        await Assertions.Expect(page.Locator("#files-upload-error")).ToHaveTextAsync("This file type is not allowed.");
+        await input.SetInputFilesAsync(Enumerable.Range(0, 3).Select(i => new FilePayload { Name = $"file{i}.txt", MimeType = "text/plain", Buffer = "abc"u8.ToArray() }));
+        await Assertions.Expect(page.Locator("#files-upload-error")).ToHaveTextAsync("Too many files selected.");
+        await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false, ReducedMotion = ReducedMotion.Reduce });
+        await Check(await context.NewPageAsync(), "/static-dates");
+        var upload = await context.NewPageAsync();
+        await upload.GotoAsync(url.TrimEnd('/') + "/static-upload");
+        await upload.Locator("#attachment").SetInputFilesAsync(new[] { new FilePayload { Name = "notes.txt", MimeType = "text/plain", Buffer = "abc"u8.ToArray() } });
+        await upload.Locator("#upload-save").ClickAsync();
+        await Assertions.Expect(upload.Locator("#upload-result")).ToHaveTextAsync("notes.txt");
+
+        async Task Check(IPage target, string path)
+        {
+            await target.GotoAsync(url.TrimEnd('/') + path);
+            await Assertions.Expect(target.Locator("#dates-save")).ToBeEnabledAsync();
+            await Assertions.Expect(target.Locator("#date")).ToHaveAttributeAsync("aria-labelledby", "date-label");
+            await Assertions.Expect(target.Locator("#date")).ToHaveValueAsync("2026-01-01");
+            await target.Locator("#date").FillAsync("2026-10-24");
+            await target.Locator("#time").FillAsync("13:45");
+            await target.Locator("#local").FillAsync("2026-10-24T13:45");
+            await Assertions.Expect(target.Locator("#dates-range")).ToHaveAttributeAsync("max", "2026-02-01");
+            await Assertions.Expect(target.Locator("#dates-range-end")).ToHaveAttributeAsync("min", "2026-01-01");
+            if (path == "/static-dates")
+            {
+                await target.Locator("#combo").SelectOptionAsync("g");
+                await target.Locator("#auto").FillAsync("Gamma");
+                await Assertions.Expect(target.Locator("#auto")).ToHaveAttributeAsync("list", new System.Text.RegularExpressions.Regex("-datalist$"));
+            }
+            await target.Locator("#dates-save").ClickAsync();
+            await Assertions.Expect(target.Locator("#dates-result")).ToHaveTextAsync("2026-10-24|13:45|2026-10-24T13:45|2026-01-01|2026-02-01");
+            if (path == "/static-dates") await Assertions.Expect(target.Locator("#choice-values")).ToHaveTextAsync("g|Gamma");
+        }
     }
 
     private static void Dotnet(string workingDirectory, params string[] args)

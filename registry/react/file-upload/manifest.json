@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "name": "file-upload",
+  "version": "0.1.0",
+  "description": "Source-owned file-upload with Field integration.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {},
+  "styles": [
+    "components/file-upload"
+  ],
+  "files": [
+    {
+      "source": "registry/react/file-upload/file-upload.tsx",
+      "target": "components/ui/file-upload.tsx",
+      "type": "tsx",
+      "sha256": "df5fc08117aadec099168eb13dcf241dbc1612e5b441fb6c71bd2132e0f74c3e"
+    },
+    {
+      "source": "theme/scss/components/_file-upload.scss",
+      "target": "styles/sheenui/components/_file-upload.scss",
+      "type": "scss",
+      "sha256": "687610849f3a854b15e5f0092a86f329c3b2c5e35d1d8cd17e41d69d8c4ed735"
+    }
+  ]
+}

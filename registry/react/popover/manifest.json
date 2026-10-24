@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "popover",
+  "version": "0.1.0",
+  "description": "Source-owned popover with Field integration.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {
+    "@radix-ui/react-popover": "1.3.1"
+  },
+  "styles": [
+    "components/popover"
+  ],
+  "files": [
+    {
+      "source": "registry/react/popover/popover.tsx",
+      "target": "components/ui/popover.tsx",
+      "type": "tsx",
+      "sha256": "81990640cfc7964763a5375e03c4ff1acadadecb758379f6d75487da45a4e245"
+    },
+    {
+      "source": "theme/scss/components/_popover.scss",
+      "target": "styles/sheenui/components/_popover.scss",
+      "type": "scss",
+      "sha256": "0f22856959fba2679a45179a61b1fb1e14c865c6b347e34d18eeb140d2604d29"
+    }
+  ]
+}

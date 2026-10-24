@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "file-upload",
+  "version": "0.1.0",
+  "description": "Source-owned file-upload with Field integration.",
+  "dependencies": [
+    "field"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+    }
+  ],
+  "files": [
+    {
+      "source": "FileUpload.razor",
+      "destination": "components",
+      "target": "FileUpload/FileUpload.razor",
+      "type": "razor",
+      "sha256": "dbf17b50b7396ec67af0c389d4c8423e7d2d9b41dff502143ec4e2d34b773c65"
+    },
+    {
+      "source": "FileUpload.razor.js",
+      "destination": "components",
+      "target": "FileUpload/FileUpload.razor.js",
+      "type": "js",
+      "sha256": "2590b725450ffabf6e5fd4a068d670c7c1ddd7a1df4e272b3db33519bb1e5426"
+    }
+  ]
+}

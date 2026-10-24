@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "autocomplete",
+  "version": "0.1.0",
+  "description": "Source-owned autocomplete with Field integration.",
+  "dependencies": [
+    "field",
+    "input",
+    "popover"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+    }
+  ],
+  "files": [
+    {
+      "source": "Autocomplete.razor",
+      "destination": "components",
+      "target": "Autocomplete/Autocomplete.razor",
+      "type": "razor",
+      "sha256": "427c474b834c7244360335feed329668d234ae26554500dddce06c162014ecfa"
+    }
+  ]
+}
