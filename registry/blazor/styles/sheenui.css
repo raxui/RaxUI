@@ -451,7 +451,7 @@ body {
   box-shadow: var(--sheen-btn-shadow);
   transition: color var(--sheen-duration) ease, background-color var(--sheen-duration) ease, border-color var(--sheen-duration) ease, box-shadow var(--sheen-duration) var(--sheen-ease-out);
 }
-.btn-glass svg {
+.btn-glass.btn svg {
   width: 1.125em;
   height: 1.125em;
   flex-shrink: 0;
@@ -1093,7 +1093,7 @@ dialog.sheen-confirm:not([open])::backdrop {
   opacity: 0.45;
   pointer-events: none;
 }
-.sheen-dropdown-item svg {
+.sheen-dropdown-item.sheen-dropdown-item svg {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;

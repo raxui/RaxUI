@@ -23,7 +23,7 @@
       "source": "theme/scss/components/_dropdown-menu.scss",
       "target": "styles/sheenui/components/_dropdown-menu.scss",
       "type": "scss",
-      "sha256": "5ed4503ab83b89e105c133cbc1df659e394151b10c7661c65be07a3a888302d7"
+      "sha256": "57cdb9af129bb9bc133d5c167ad359772ea051fa8d556ba2064c461f5ecd087e"
     }
   ]
 }

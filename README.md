@@ -69,6 +69,17 @@ Theme any part of the page with attributes; components inherit them:
 </div>
 ```
 
+### Icons
+
+Components take any icon markup. For your own icons, SheenUI recommends Lucide
+through [`Blazicons.Lucide`](https://github.com/kyleherzog/Blazicons.Lucide)
+([ADR 014](docs/adr/014-icons.md)); icons follow the text color and the slot's size:
+
+```razor
+@* dotnet add package Blazicons.Lucide, then @using Blazicons in _Imports.razor *@
+<Button><Blazicon Svg="Lucide.Trash" aria-hidden="true" /> Delete</Button>
+```
+
 ### Dialog and DropdownMenu
 
 `sheenui add dialog` and `sheenui add dropdown-menu` install overlays built on the

@@ -33,7 +33,9 @@
     border-color var(--sheen-duration) ease,
     box-shadow var(--sheen-duration) var(--sheen-ease-out);
 
-  svg {
+  // Two classes, so icon libraries' own sizing (Blazicons' `svg[blazicon] { width: 1em }`, loaded later in
+  // the app's styles.css) does not win (ADR 014).
+  &.btn svg {
     width: 1.125em;
     height: 1.125em;
     flex-shrink: 0;

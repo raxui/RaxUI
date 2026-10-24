@@ -110,6 +110,16 @@ Button props:
 
 Plus every native `<button>` attribute and a forwarded `ref`. `type` defaults to `button`, so buttons do not submit forms unless you pass `type="submit"`.
 
+### Icons
+
+Components take any icon node. For your own icons, SheenUI recommends [`lucide-react`](https://lucide.dev) ([ADR 014](adr/014-icons.md)); icons follow the text color and the slot's size:
+
+```tsx
+import { Trash2 } from "lucide-react"
+
+<Button variant="destructive"><Trash2 aria-hidden /> Delete</Button>
+```
+
 ### Dialog and DropdownMenu
 
 `npx sheenui-react add dialog` and `npx sheenui-react add dropdown-menu` install wrappers over Radix with the shared styles ([ADR 013](adr/013-overlay-primitives.md)). Their content renders inside the nearest `SheenThemeProvider`, so mode, appearance, accent, and direction apply to it.
