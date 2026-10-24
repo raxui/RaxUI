@@ -34,6 +34,7 @@ $sheen-dialog-sm: 576px; // Bootstrap's sm breakpoint
   height: fit-content;
   max-height: calc(100dvh - 2rem);
   margin: auto auto 0.5rem;
+  gap: 1rem; // here, not with display below: close() drops [open] before the exit transition (#33)
   padding: 1.5rem;
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   overflow: auto;
@@ -53,10 +54,10 @@ $sheen-dialog-sm: 576px; // Bootstrap's sm breakpoint
   }
 }
 
-// A closed native <dialog> must stay hidden; Radix only mounts the panel while open.
+// A closed native <dialog> must stay hidden; Radix only mounts the panel while open. Only display
+// may depend on [open]: the exit transition holds it, so the layout stays put while closing.
 .sheen-dialog:where(:not(dialog), [open]) {
   display: grid;
-  gap: 1rem;
 }
 
 // Grab handle, shown only on the mobile sheet.
