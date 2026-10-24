@@ -1,0 +1,53 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-context-menu {
+  max-height: var(--radix-context-menu-content-available-height);
+  transform-origin: var(--radix-context-menu-content-transform-origin);
+}
+
+.sheen-context-target {
+  border-radius: var(--sheen-radius);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  -webkit-touch-callout: none;
+  transition: outline-color var(--sheen-duration-fast) ease, background-color var(--sheen-duration-fast) ease;
+}
+.sheen-context-target[data-state=open] {
+  outline-color: rgba(var(--bs-primary-rgb), 0.55);
+  background-color: rgba(var(--bs-primary-rgb), 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*=sheen-context-menu] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+.sheen-context-menu[data-state=closed] {
+  animation: sheen-fade-out 120ms ease forwards;
+}
+
+.sheen-context-menu .sheen-dropdown-inset {
+  padding-inline-start: 2rem;
+}
+.sheen-context-menu .sheen-dropdown-item-destructive {
+  color: var(--bs-danger);
+}
+.sheen-context-menu .sheen-dropdown-indicator {
+  position: absolute;
+  inset-inline-start: 0.5rem;
+  display: inline-flex;
+}
+.sheen-context-menu .sheen-dropdown-chevron, .sheen-context-menu .sheen-dropdown-shortcut {
+  margin-inline-start: auto;
+}
+.sheen-context-menu .sheen-dropdown-shortcut {
+  color: var(--bs-secondary-color);
+  font-size: 0.75rem;
+}
+.sheen-context-menu .sheen-dropdown-chevron:dir(rtl) {
+  rotate: 180deg;
+}
+
+.sheen-context-menu .sheen-dropdown-item {
+  min-height: var(--sheen-control-height-sm);
+}

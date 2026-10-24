@@ -810,3 +810,91 @@ motion when the range shifts. Tabs and pagination each own a disposable collocat
 JS module with resize/mutation observers. Initial placement is instant, resize
 remeasures, and reduced motion disables glide and FLIP. Static CSS marks the
 active item before measurement and with JavaScript disabled.
+
+
+## Overlays and feedback (phase 3)
+
+Install `tooltip`, `hover-card`, `toast`, `sheet`, `drawer`, `context-menu`, or
+`command` with `sheenui add <name>`. These items use manual native popovers or
+native modal dialogs and require an interactive render mode. Each installs its
+own compiled CSS and declared dependencies. Theme appearance, dark mode, accent,
+density, and direction inherit from ancestors.
+
+Tooltip and HoverCard render a real trigger button during static SSR; their
+`popover="manual"` content stays hidden. Do not put essential information only
+in these previews. The trigger fragments contain button content, not nested
+buttons or links. Other overlays remain closed without JavaScript. Toaster is
+interactive-only; place it once inside the same interactive layout/circuit as
+its callers (for per-page interactivity, put the outlet in that page).
+
+```razor
+@rendermode InteractiveServer
+@inject Toaster.ToastService Toasts
+
+<Tooltip Side="top" Align="center" OpenDelay="400">
+    <Trigger>Help</Trigger><ChildContent>Save your work first.</ChildContent>
+</Tooltip>
+<HoverCard Side="bottom" Label="Author preview">
+    <Trigger>Author</Trigger>
+    <ChildContent><p>Author details</p><a href="/author">View profile</a></ChildContent>
+</HoverCard>
+<button @onclick="@(() => Toasts.Show("Saved", "success", actionLabel: "Undo", action: Undo))">Save</button>
+<Toaster DismissLabel="Dismiss notification" />
+<button @onclick="@(() => sheetOpen = true)">Show settings</button>
+<Sheet @bind-Open="sheetOpen" Side="end" Title="Settings" Description="Your preferences">
+    <ChildContent>Settings content</ChildContent><Footer><button @onclick="@(() => sheetOpen = false)">Done</button></Footer>
+</Sheet>
+<button @onclick="@(() => drawerOpen = true)">Show actions</button>
+<Drawer @bind-Open="drawerOpen" Title="Actions">Drawer content</Drawer>
+<ContextMenu Label="File actions">
+    <Target>Right-click or press Shift+F10 here</Target>
+    <ChildContent><DropdownMenuItem OnSelect="OpenFile">Open file</DropdownMenuItem></ChildContent>
+</ContextMenu>
+<button @onclick="@(() => commandOpen = true)">Search commands</button>
+<Command @bind-Open="commandOpen" Items="commands" OnSelect="RunCommand" />
+
+@code {
+    private bool sheetOpen, drawerOpen, commandOpen;
+    private List<Command.Item> commands = new() { new("open", "Open file", "Files"), new("save", "Save file", "Files") };
+    private Task Undo() => Task.CompletedTask;
+    private void OpenFile() { /* Open the selected file. */ }
+    private void RunCommand(string value) { /* Dispatch the command value. */ }
+}
+```
+
+Register the service in **Program.cs**, before `builder.Build()` (replace
+`YourApp` with your app's root namespace):
+
+```csharp
+builder.Services.AddScoped<YourApp.Components.UI.Toast.Toaster.ToastService>();
+```
+
+The nested service ships in `Toaster.razor`, so it needs no package or installer
+extension. Scoped lifetime isolates Blazor Server circuits; never register it as
+a singleton. Call it on the component's renderer dispatcher, using `InvokeAsync`
+when reporting work from a background thread. `Show(title, tone="info",
+description=null, duration=5000, actionLabel=null, action=null)` returns an ID.
+Tones are info/success/warning/danger; duration is milliseconds, and zero or a
+negative value disables auto-dismiss. Actions are `Func<Task>` and require a
+nonempty action label. Auto-dismiss pauses for pointer hover, focus, and dragging;
+horizontal swipes over 60px dismiss. Danger announces assertively, other tones
+politely. The outlet waits for exit motion before removing each message.
+
+| Item | Parameters and behavior |
+| --- | --- |
+| Tooltip | `Trigger`, `ChildContent`, `OpenDelay=400`, `CloseDelay=0`, `Side="top"` (bottom/left/right/start/end), `Align="center"` (start/end), `TriggerClass`, `Class`, `Appearance`, additional content attributes. The button's aria-describedby points to the content. Hover/focus opens; Escape, blur and leaving close. |
+| HoverCard | Same preview parameters, `CloseDelay=200`, `Label="Preview"`. Pointer and keyboard focus may move into the content; Tab from the trigger enters its first control. Escape dismisses. |
+| Toaster | `Position="top-center"` (top/bottom with center/right/left), `Label="Notifications"`, `DismissLabel="Dismiss"`, `Class`, `Appearance`. One outlet per interactive scope. |
+| Sheet | `Open` / `OpenChanged`, `Title`, `Description`, `ChildContent`, `Footer`, `Side="end"` (start/top/bottom), `CloseLabel="Close"`, `Class`, `Appearance`, native attributes. Logical sides flip in RTL. |
+| Drawer | Same panel parameters, bottom placement and a drag handle. Drag down past the greater of 60px and 25% of panel height to dismiss; shorter/cancelled drags spring back. Content remains scrollable because dragging starts only on the handle. |
+| ContextMenu | `Target`, `ChildContent` composed of DropdownMenuItem/Label/Separator, `Label="Actions"`, `TargetClass`, `Class`, `Appearance`, content attributes. Right-click, Shift+F10 and the context-menu key open; arrows, Home/End, character typeahead, Enter/Space, Escape and Tab work like DropdownMenu. |
+| Command | `Open` / `OpenChanged`, `Items: List<Command.Item>` (`Value`, `Label`, `Group=""`, `Disabled=false`, `Keywords=""`), `OnSelect(string)`, `Title="Command palette"`, `SearchPlaceholder="Search commands..."`, `EmptyMessage="No results found."`, `Class`, `Appearance`, native dialog attributes. Case-insensitive label/keyword filtering; arrows and Home/End skip disabled items, Enter runs and closes. Values should be unique. |
+
+Sheet, Drawer and Command can also be opened through `@ref` and `ShowAsync()`
+without binding. Sheet/Drawer expose `CloseAsync()`; Command exposes `Close()`.
+They never mutate their Open parameter. Closing runs in the DOM, then reports
+`OpenChanged(false)`; a parent controls subsequent parameter transitions.
+Sheet and Drawer share the dialog item's native focus containment, Escape and
+backdrop dismissal, and animation-aware closing. Reduced motion removes motion.
+Blazor's command matcher uses ordinary case-insensitive substring matching;
+React also retains boot-ui's accent/Arabic folding and subsequence matching.

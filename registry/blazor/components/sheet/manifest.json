@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "sheet",
+  "version": "0.1.0",
+  "description": "Source-owned sheet overlay.",
+  "dependencies": [
+    "dialog"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/sheet.css",
+      "destination": "styles",
+      "target": "components/sheet.css",
+      "type": "css",
+      "sha256": "b495b846d8fe985b980ec266200342672361332a8c59caac061062a3f3796269"
+    }
+  ],
+  "files": [
+    {
+      "source": "Sheet.razor",
+      "destination": "components",
+      "target": "Sheet/Sheet.razor",
+      "type": "razor",
+      "sha256": "d80f6be215d8387321215be5acf34694154c4610c651e473cf1b9b1798a01f67"
+    },
+    {
+      "source": "Sheet.razor.js",
+      "destination": "components",
+      "target": "Sheet/Sheet.razor.js",
+      "type": "js",
+      "sha256": "4534ada6558946f868b6cd4d8c9c25f9f776d73018bf948728ae0db77d72477b"
+    }
+  ]
+}

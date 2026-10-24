@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "sheet",
+  "version": "0.1.0",
+  "description": "Source-owned sheet overlay.",
+  "requires": [
+    "foundation",
+    "dialog"
+  ],
+  "packages": {
+    "@radix-ui/react-dialog": "1.3.1"
+  },
+  "styles": [
+    "components/sheet"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/sheet/sheet.tsx",
+      "target": "components/ui/sheet.tsx",
+      "type": "tsx",
+      "sha256": "5d796ca8e55dbad9e3940c8d438382bc7b73b7d8dba991d9be7c9be9b320c2f0"
+    },
+    {
+      "source": "theme/scss/components/_sheet.scss",
+      "target": "styles/sheenui/components/_sheet.scss",
+      "type": "scss",
+      "sha256": "9d1f008adbce0e3508ff09579f0bb55d98ba317331b12c7a44c26b963fa48ce5"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "context-menu",
+  "version": "0.1.0",
+  "description": "Source-owned context-menu overlay.",
+  "requires": [
+    "foundation",
+    "dropdown-menu"
+  ],
+  "packages": {
+    "@radix-ui/react-context-menu": "2.4.1"
+  },
+  "styles": [
+    "components/context-menu"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/context-menu/context-menu.tsx",
+      "target": "components/ui/context-menu.tsx",
+      "type": "tsx",
+      "sha256": "35a4c1050e0b4c9a56a9b5b0a3fe043e09ede9571f7ee89028b3f8961f7ddbee"
+    },
+    {
+      "source": "theme/scss/components/_context-menu.scss",
+      "target": "styles/sheenui/components/_context-menu.scss",
+      "type": "scss",
+      "sha256": "578c5cdaa8e412d4c294cc72eaeecf16ff2fead9aff33a708d3d84efaf48e529"
+    }
+  ]
+}

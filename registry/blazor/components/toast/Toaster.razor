@@ -1,0 +1,85 @@
+@* SheenUI Toaster. Source-owned: edit freely. Register Toaster.ToastService as scoped and mount once in an interactive layout. *@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+@inject ToastService Toasts
+
+<ol @ref="_outlet" class="sheen-toast-viewport @Class" data-position="@Position" aria-label="@Label" data-sheen-appearance="@Appearance">
+    @foreach (var toast in Toasts.Items)
+    {
+        <li @key="toast.Id" id="@toast.Id" class="sheen-toast" data-state="open" data-duration="@toast.Duration"
+            data-variant="@(toast.Tone == "danger" ? "destructive" : toast.Tone)" role="@(toast.Tone == "danger" ? "alert" : "status")"
+            aria-live="@(toast.Tone == "danger" ? "assertive" : "polite")" aria-atomic="true">
+            <span class="sheen-toast-icon" aria-hidden="true">
+                @* Lucide status icons, ISC license. *@
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="@IconPath(toast.Tone)" /></svg>
+            </span>
+            <div class="sheen-toast-body"><div class="sheen-toast-title">@toast.Title</div>
+                @if (toast.Description is not null) { <div class="sheen-toast-description">@toast.Description</div> }
+            </div>
+            @if (toast.Action is not null) { <button type="button" class="btn sheen-button btn-glass btn-glass-secondary sheen-toast-action" @onclick="@(() => Act(toast))">@toast.ActionLabel</button> }
+            <button type="button" class="sheen-toast-close" aria-label="@DismissLabel" @onclick="@(() => Dismiss(toast.Id))">
+                @* Lucide X, ISC license. *@
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+            </button>
+        </li>
+    }
+</ol>
+
+@code {
+    private ElementReference _outlet;
+    private IJSObjectReference? _module;
+    private DotNetObjectReference<Toaster>? _reference;
+    [Parameter] public string Position { get; set; } = "top-center";
+    [Parameter] public string Label { get; set; } = "Notifications";
+    [Parameter] public string DismissLabel { get; set; } = "Dismiss";
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    protected override void OnInitialized() => Toasts.Changed += Changed;
+    private void Changed() => _ = InvokeAsync(StateHasChanged);
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _reference = DotNetObjectReference.Create(this);
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Toast/Toaster.razor.js");
+        }
+        if (_module is not null) await _module.InvokeVoidAsync("init", _outlet, _reference);
+    }
+    private async Task Act(Message toast) { if (toast.Action is not null) await toast.Action(); await Dismiss(toast.Id); }
+    private async Task Dismiss(string id) { if (_module is not null) await _module.InvokeVoidAsync("dismiss", _outlet, id); }
+    [JSInvokable] public void Remove(string id) => Toasts.Remove(id);
+    public async ValueTask DisposeAsync()
+    {
+        Toasts.Changed -= Changed;
+        if (_module is not null)
+        {
+            try { await _module.InvokeVoidAsync("dispose", _outlet); await _module.DisposeAsync(); }
+            catch (JSDisconnectedException) { }
+        }
+        _reference?.Dispose();
+    }
+    private static string IconPath(string tone) => tone switch
+    {
+        "success" => "M20 6 9 17l-5-5",
+        "danger" => "M18 6 6 18M6 6l12 12",
+        "warning" => "M12 9v4M12 17h.01M10.3 3.9 2.4 17.5A2 2 0 0 0 4.1 20.5h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z",
+        _ => "M12 16v-4M12 8h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z"
+    };
+    public record Message(string Id, string Title, string? Description, string Tone, int Duration, string? ActionLabel, Func<Task>? Action);
+    // Scoped lifetime isolates Blazor Server circuits; no singleton or static notification state.
+    public sealed class ToastService
+    {
+        private readonly List<Message> _items = new();
+        public IReadOnlyList<Message> Items => _items;
+        public event Action? Changed;
+        public string Show(string title, string tone = "info", string? description = null, int duration = 5000, string? actionLabel = null, Func<Task>? action = null)
+        {
+            if (action is not null && string.IsNullOrWhiteSpace(actionLabel)) throw new ArgumentException("An action requires a label.", nameof(actionLabel));
+            var id = "sheen-toast-" + Guid.NewGuid().ToString("N");
+            _items.Add(new Message(id, title, description, tone, duration, actionLabel, action));
+            Changed?.Invoke();
+            return id;
+        }
+        public void Remove(string id) { _items.RemoveAll(item => item.Id == id); Changed?.Invoke(); }
+    }
+}

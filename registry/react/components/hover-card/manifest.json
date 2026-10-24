@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "hover-card",
+  "version": "0.1.0",
+  "description": "Source-owned hover-card overlay.",
+  "requires": [
+    "foundation",
+    "popover"
+  ],
+  "packages": {
+    "@radix-ui/react-hover-card": "1.2.1"
+  },
+  "styles": [
+    "components/hover-card"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/hover-card/hover-card.tsx",
+      "target": "components/ui/hover-card.tsx",
+      "type": "tsx",
+      "sha256": "ba1e1c12e13238f91a418b9c84a0f56e6c962b3c66fbe06a5841a6d9a2a7947b"
+    },
+    {
+      "source": "theme/scss/components/_hover-card.scss",
+      "target": "styles/sheenui/components/_hover-card.scss",
+      "type": "scss",
+      "sha256": "eef45f78e14b9c7cc0141639c1cbdd79c6b5db56633819130d2e3057a0077e2f"
+    }
+  ]
+}

@@ -1,17 +1,27 @@
-// SheenUI Dialog: the behavior the native <dialog> lacks (ADR 013). Source-owned: edit freely.
-
+// SheenUI native dialog lifecycle. Source-owned: edit freely.
+const states = new WeakMap()
 export function init(dialog) {
-  // A press on the backdrop targets the <dialog> itself, outside its box; close like Radix does.
-  dialog.addEventListener("pointerdown", (event) => {
+  if (states.has(dialog)) return
+  const controller = new AbortController()
+  const state = { controller, generation: 0 }
+  states.set(dialog, state)
+  dialog.addEventListener("cancel", event => { event.preventDefault(); setOpen(dialog, false) }, { signal: controller.signal })
+  dialog.addEventListener("pointerdown", event => {
     if (event.target !== dialog) return
-    const box = dialog.getBoundingClientRect()
-    const inside = event.clientX >= box.left && event.clientX <= box.right &&
-      event.clientY >= box.top && event.clientY <= box.bottom
-    if (!inside) dialog.close()
-  })
+    const r = dialog.getBoundingClientRect()
+    if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) setOpen(dialog, false)
+  }, { signal: controller.signal })
 }
-
-export function setOpen(dialog, open) {
-  if (open && !dialog.open) dialog.showModal()
-  else if (!open && dialog.open) dialog.close()
+export async function setOpen(dialog, open) {
+  init(dialog)
+  const state = states.get(dialog), generation = ++state.generation
+  if (open) {
+    dialog.dataset.state = "open"
+    if (!dialog.open) dialog.showModal()
+  } else if (dialog.open) {
+    dialog.dataset.state = "closed"
+    await Promise.allSettled(dialog.getAnimations().map(animation => animation.finished))
+    if (state.generation === generation && dialog.open) dialog.close()
+  }
 }
+export function dispose(dialog) { const state = states.get(dialog); if (state) { state.generation++; state.controller.abort() }; states.delete(dialog) }

@@ -77,6 +77,13 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "stepper"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "toggle"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "menu-toggle"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "tooltip"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "hover-card"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "toast"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "sheet"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "drawer"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "context-menu"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "command"], app, output, error) == 0, error.ToString());
         Assert.True(File.Exists(Path.Combine(app, "Components", "UI", "Dialog", "Dialog.razor.js")));
 
         // Exactly the installed styled components, each imported once; the starter is separate.
@@ -90,7 +97,7 @@ public class GeneratedAppTests : IDisposable
         Assert.Equal(expectedStyles.Select(target => $"@import url(\"{target}\");"), imports.Order());
         Assert.Equal(expectedStyles, Directory.GetFiles(Path.Combine(stylesDir, "components"))
             .Select(file => "components/" + Path.GetFileName(file)).Order());
-        foreach (var displayItem in new[] { "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline", "tabs", "accordion", "breadcrumb", "pagination", "stepper", "toggle", "menu-toggle" })
+        foreach (var displayItem in new[] { "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline", "tabs", "accordion", "breadcrumb", "pagination", "stepper", "toggle", "menu-toggle", "tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command" })
             Assert.Contains($"@import url(\"components/{displayItem}.css\");", imports);
 
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
@@ -168,6 +175,7 @@ public class GeneratedAppTests : IDisposable
         WriteAdvancedControlPages(components);
         WriteDisplayPages(components);
         WriteNavigationPages(components);
+        WriteOverlayPages(components);
         WriteFluentForm(components);
         // Optional FluentValidation through Blazilla (#37): SheenUI controls must show its messages too.
         Dotnet(app, "add", "package", "Blazilla", "--version", "2.4.2");
@@ -176,6 +184,7 @@ public class GeneratedAppTests : IDisposable
         var programPath = Path.Combine(app, "Program.cs");
         File.WriteAllText(programPath, "using Microsoft.AspNetCore.DataProtection;\n" + File.ReadAllText(programPath)
             .Replace("var app = builder.Build();", """
+                builder.Services.AddScoped<SampleApp.Components.UI.Toast.Toaster.ToastService>();
                 builder.Services.AddDataProtection().UseEphemeralDataProtectionProvider();
                 builder.Logging.ClearProviders();
                 builder.Logging.AddConsole();
@@ -232,6 +241,13 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "stepper"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "toggle"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "menu-toggle"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "tooltip"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "hover-card"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "toast"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "sheet"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "drawer"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "context-menu"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "command"], app, output, error) == 0, error.ToString());
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app);
     }
@@ -322,6 +338,7 @@ public class GeneratedAppTests : IDisposable
             await VerifyAdvancedControls(page, url);
             await VerifyDisplayBasics(page, url);
             await VerifyNavigation(page, url);
+            await VerifyOverlays(page, url);
             await VerifyFluentForm(page, url);
         }
         catch (Exception exception)
@@ -1043,6 +1060,109 @@ public class GeneratedAppTests : IDisposable
         }
     }
 
+
+    private static void WriteOverlayPages(string components)
+    {
+        File.WriteAllText(Path.Combine(components, "Pages", "Overlays.razor"), """
+            @page "/overlays"
+            @rendermode InteractiveServer
+            @inject Toaster.ToastService Toasts
+            <p id="overlays-ready">@ready</p>
+            <Tooltip OpenDelay="50"><Trigger>Tooltip target</Trigger><ChildContent>Tooltip information</ChildContent></Tooltip>
+            <HoverCard OpenDelay="50"><Trigger>Preview target</Trigger><ChildContent><button>Preview action</button></ChildContent></HoverCard>
+            <button @onclick="ShowToast">Notify</button><button @onclick="@(() => Toasts.Show("Temporary toast", duration: 300))">Brief notification</button>
+            <Toaster />
+            @foreach (var side in new[] { "start", "end", "top", "bottom" })
+            {
+                <button @onclick="@(() => OpenSheet(side))">Open @side</button>
+            }
+            <Sheet @bind-Open="sheetOpen" Side="@sheetSide" Title="Side panel">Sheet content</Sheet>
+            <button @onclick="@(() => drawerOpen = true)">Open drawer</button>
+            <Drawer @bind-Open="drawerOpen" Title="Bottom panel">Drawer content</Drawer>
+            <ContextMenu><Target>Context target</Target><ChildContent><DropdownMenuItem Disabled>Disabled action</DropdownMenuItem><DropdownMenuItem OnSelect="@(() => result = "Context selected")">Context action</DropdownMenuItem></ChildContent></ContextMenu>
+            <button @onclick="@(() => commandOpen = true)">Open commands</button>
+            <Command @bind-Open="commandOpen" Items="commands" OnSelect="@((string value) => result = value)" />
+            <p id="overlay-result">@result</p>
+            @code {
+                private bool ready, sheetOpen, drawerOpen, commandOpen;
+                private string sheetSide = "end", result = "";
+                private readonly List<Command.Item> commands = new() { new("Open", "Open file", "Files"), new("Save", "Save file", "Files"), new("Disabled", "Disabled", "Files", true) };
+                private void OpenSheet(string side) { sheetSide = side; sheetOpen = true; }
+                private void ShowToast() => Toasts.Show("Saved toast", "success", duration: 5000, actionLabel: "Undo", action: () => { result = "Undone"; StateHasChanged(); return Task.CompletedTask; });
+                protected override void OnAfterRender(bool firstRender) { if (firstRender) { ready = true; StateHasChanged(); } }
+            }
+            """);
+        File.WriteAllText(Path.Combine(components, "Pages", "StaticOverlays.razor"), """
+            @page "/static-overlays"
+            <Tooltip><Trigger>Static tooltip target</Trigger><ChildContent>Static tooltip information</ChildContent></Tooltip>
+            <HoverCard><Trigger>Static preview target</Trigger><ChildContent>Static preview information</ChildContent></HoverCard>
+            """);
+    }
+
+    private static async Task VerifyOverlays(IPage page, string url)
+    {
+        await page.GotoAsync(url + "/overlays");
+        await Assertions.Expect(page.Locator("#overlays-ready")).ToHaveTextAsync("True");
+        var tooltip = page.GetByRole(AriaRole.Button, new() { Name = "Tooltip target" });
+        await tooltip.HoverAsync();
+        await page.Locator(".sheen-tooltip-content:popover-open").WaitForAsync();
+        await Assertions.Expect(page.GetByRole(AriaRole.Tooltip)).ToHaveTextAsync("Tooltip information");
+        await page.Keyboard.PressAsync("Escape");
+        await Assertions.Expect(page.GetByRole(AriaRole.Tooltip)).ToBeHiddenAsync();
+        await tooltip.FocusAsync();
+        await page.Locator(".sheen-tooltip-content:popover-open").WaitForAsync();
+        await Assertions.Expect(tooltip).ToHaveAttributeAsync("aria-describedby", (await page.GetByRole(AriaRole.Tooltip).GetAttributeAsync("id"))!);
+        await page.Keyboard.PressAsync("Escape");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Preview target" }).FocusAsync();
+        await page.Locator(".sheen-hover-card:popover-open").WaitForAsync();
+        await page.Keyboard.PressAsync("Tab");
+        await Assertions.Expect(page.GetByRole(AriaRole.Button, new() { Name = "Preview action" })).ToBeFocusedAsync();
+        await page.Keyboard.PressAsync("Escape");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Notify", Exact = true }).ClickAsync();
+        await Assertions.Expect(page.GetByRole(AriaRole.Status)).ToContainTextAsync("Saved toast");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Undo", Exact = true }).ClickAsync();
+        await Assertions.Expect(page.Locator("#overlay-result")).ToHaveTextAsync("Undone");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Brief notification" }).ClickAsync();
+        await Assertions.Expect(page.GetByText("Temporary toast", new() { Exact = true })).ToBeVisibleAsync();
+        await Assertions.Expect(page.GetByText("Temporary toast", new() { Exact = true })).ToHaveCountAsync(0);
+        foreach (var side in new[] { "start", "end", "top", "bottom" })
+        {
+            await page.GetByRole(AriaRole.Button, new() { Name = "Open " + side, Exact = true }).ClickAsync();
+            await page.Locator(".sheen-sheet-content[open]").WaitForAsync();
+            await Assertions.Expect(page.GetByRole(AriaRole.Dialog, new() { Name = "Side panel" })).ToHaveAttributeAsync("data-side", side);
+            await page.Keyboard.PressAsync("Escape");
+            await Assertions.Expect(page.Locator(".sheen-sheet-content")).Not.ToHaveAttributeAsync("open", "");
+        }
+        await page.GetByRole(AriaRole.Button, new() { Name = "Open drawer" }).ClickAsync();
+        await page.Locator(".sheen-drawer-content[open]").WaitForAsync();
+        await page.Locator(".sheen-drawer-content").EvaluateAsync("async el => { await Promise.allSettled(el.getAnimations().map(animation => animation.finished)); }");
+        var handle = (await page.Locator(".sheen-drawer-handle").BoundingBoxAsync())!;
+        await page.Mouse.MoveAsync(handle.X + handle.Width / 2, handle.Y + handle.Height / 2);
+        await page.Mouse.DownAsync();
+        await page.Mouse.MoveAsync(handle.X + handle.Width / 2, handle.Y + 200, new() { Steps = 10 });
+        await page.Mouse.UpAsync();
+        await Assertions.Expect(page.Locator(".sheen-drawer-content")).Not.ToHaveAttributeAsync("open", "");
+        await page.GetByText("Context target", new() { Exact = true }).ClickAsync(new() { Button = MouseButton.Right });
+        await page.Locator(".sheen-context-menu:popover-open").WaitForAsync();
+        await page.Keyboard.PressAsync("ArrowDown");
+        await page.Keyboard.PressAsync("Enter");
+        await Assertions.Expect(page.Locator("#overlay-result")).ToHaveTextAsync("Context selected");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Open commands" }).ClickAsync();
+        await page.Locator(".sheen-command-dialog[open]").WaitForAsync();
+        var search = page.GetByRole(AriaRole.Combobox);
+        await search.FillAsync("Save");
+        await Assertions.Expect(page.GetByRole(AriaRole.Option)).ToHaveCountAsync(1);
+        await search.PressAsync("ArrowDown");
+        await search.PressAsync("Enter");
+        await Assertions.Expect(page.Locator("#overlay-result")).ToHaveTextAsync("Save");
+        await Assertions.Expect(page.Locator(".sheen-command-dialog")).Not.ToHaveAttributeAsync("open", "");
+        await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false, ReducedMotion = ReducedMotion.Reduce });
+        var staticPage = await context.NewPageAsync();
+        await staticPage.GotoAsync(url + "/static-overlays");
+        await Assertions.Expect(staticPage.GetByRole(AriaRole.Button, new() { Name = "Static tooltip target" })).ToBeVisibleAsync();
+        await Assertions.Expect(staticPage.Locator(".sheen-tooltip-content")).ToBeHiddenAsync();
+        await Assertions.Expect(staticPage.Locator(".sheen-hover-card")).ToBeHiddenAsync();
+    }
 
     private static void WriteNavigationPages(string components)
     {

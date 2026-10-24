@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "name": "command",
+  "version": "0.1.0",
+  "description": "Source-owned command overlay.",
+  "requires": [
+    "foundation",
+    "dialog",
+    "spinner"
+  ],
+  "packages": {
+    "@radix-ui/react-dialog": "1.3.1"
+  },
+  "styles": [
+    "components/command"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/command/command.tsx",
+      "target": "components/ui/command.tsx",
+      "type": "tsx",
+      "sha256": "21983ca99b2726397ec1c4059832662671c8b8baf6af285e840f9800584c758f"
+    },
+    {
+      "source": "theme/scss/components/_command.scss",
+      "target": "styles/sheenui/components/_command.scss",
+      "type": "scss",
+      "sha256": "361b4652224e2a391e9a34c314f17c1b99e9a5c1c052ff6e622b5045842d9d91"
+    }
+  ]
+}

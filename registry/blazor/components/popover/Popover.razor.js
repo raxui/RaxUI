@@ -71,6 +71,7 @@ export function initListbox(input, list, receiver) {
   const activate = option => {
     list.querySelectorAll("[data-active]").forEach(el => el.removeAttribute("data-active"))
     if (!option) { input.removeAttribute("aria-activedescendant"); return }
+    if (list.hasAttribute("data-command-list")) list.querySelectorAll('[role="option"]').forEach(el => el.setAttribute("aria-selected", String(el === option)))
     option.dataset.active = "true"; input.setAttribute("aria-activedescendant", option.id)
     option.scrollIntoView({ block: "nearest" })
   }

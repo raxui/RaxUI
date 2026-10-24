@@ -1,0 +1,201 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  background-color: rgba(var(--sheen-overlay-rgb), var(--sheen-overlay-alpha));
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.sheen-drawer-content {
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  position: fixed;
+  z-index: 1045;
+  display: flex;
+  flex-direction: column;
+  color: var(--bs-body-color);
+  outline: none;
+}
+.sheen-drawer-content[data-vaul-drawer-direction=bottom] {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-width: 40rem;
+  max-height: 96dvh;
+  margin-inline: auto;
+  border-bottom: 0;
+  border-radius: var(--sheen-radius-lg) var(--sheen-radius-lg) 0 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.sheen-drawer-content[data-vaul-drawer-direction=top] {
+  top: 0;
+  right: 0;
+  left: 0;
+  max-width: 40rem;
+  max-height: 96dvh;
+  margin-inline: auto;
+  border-top: 0;
+  border-radius: 0 0 var(--sheen-radius-lg) var(--sheen-radius-lg);
+}
+.sheen-drawer-content[data-vaul-snap-points=true]:is([data-vaul-drawer-direction=bottom], [data-vaul-drawer-direction=top]) {
+  height: 100dvh;
+  max-height: none;
+}
+.sheen-drawer-content[data-vaul-snap-points=true]:is([data-vaul-drawer-direction=bottom], [data-vaul-drawer-direction=top]) .sheen-drawer-body {
+  padding-bottom: 4dvh;
+}
+.sheen-drawer-content:is([data-vaul-drawer-direction=left], [data-vaul-drawer-direction=right]) {
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: min(22rem, 100% - 3rem);
+  border-radius: var(--sheen-radius-lg);
+}
+.sheen-drawer-content[data-vaul-drawer-direction=left] {
+  left: 0.5rem;
+}
+.sheen-drawer-content[data-vaul-drawer-direction=right] {
+  right: 0.5rem;
+}
+
+.sheen-drawer-handle[data-vaul-handle] {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 0.3125rem;
+  margin-top: 0.625rem;
+  border-radius: calc(1rem * var(--sheen-radius-scale));
+  background: rgba(var(--bs-emphasis-color-rgb), 0.22);
+  opacity: 1;
+  transition: background-color var(--sheen-duration-fast) ease;
+}
+.sheen-drawer-handle[data-vaul-handle]:hover, .sheen-drawer-handle[data-vaul-handle]:active {
+  background: rgba(var(--bs-emphasis-color-rgb), 0.35);
+}
+[data-vaul-drawer-direction=top] > .sheen-drawer-handle[data-vaul-handle] {
+  order: 99;
+  margin-block: 0 0.625rem;
+}
+:is([data-vaul-drawer-direction=left], [data-vaul-drawer-direction=right]) > .sheen-drawer-handle[data-vaul-handle] {
+  display: none;
+}
+
+.sheen-drawer-header {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem 1.25rem 0.75rem;
+  text-align: center;
+}
+:is([data-vaul-drawer-direction=left], [data-vaul-drawer-direction=right]) > .sheen-drawer-header {
+  padding-top: 1.25rem;
+  text-align: start;
+}
+
+.sheen-drawer-title {
+  margin: 0;
+  color: var(--bs-emphasis-color);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.sheen-drawer-description {
+  margin: 0;
+  color: var(--bs-secondary-color);
+  font-size: 0.9375rem;
+}
+
+.sheen-drawer-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 1.25rem;
+}
+
+.sheen-drawer-footer {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-drawer-tick {
+    animation: sheen-pop-in 300ms var(--sheen-ease-spring);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*=sheen-drawer] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+dialog.sheen-drawer-content {
+  top: auto;
+  margin-block: 0;
+  padding: 0;
+  width: 100%;
+  transition: transform 300ms var(--sheen-ease-spring);
+}
+
+dialog.sheen-drawer-content:not([open]) {
+  display: none;
+}
+
+dialog.sheen-drawer-content::backdrop {
+  background: rgba(var(--sheen-overlay-rgb), var(--sheen-overlay-alpha));
+}
+
+dialog.sheen-drawer-content[data-dragging] {
+  transition: none;
+}
+
+dialog.sheen-drawer-content .sheen-drawer-handle {
+  align-self: center;
+  touch-action: none;
+  cursor: grab;
+  padding: 8px 0;
+  background-clip: content-box;
+  box-sizing: content-box;
+}
+
+.sheen-drawer-close {
+  position: absolute;
+  top: 1rem;
+  inset-inline-end: 1rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.sheen-drawer-close.sheen-drawer-close svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.sheen-drawer-content[data-state=open] {
+    animation: sheen-drawer-in 500ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  dialog.sheen-drawer-content[data-state=closed] {
+    animation: sheen-drawer-out 300ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+}
+@keyframes sheen-drawer-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+@keyframes sheen-drawer-out {
+  to {
+    transform: translateY(100%);
+  }
+}
+.sheen-drawer-header {
+  padding-block: calc(var(--sheen-control-height, 2.5rem) * 0.4) calc(var(--sheen-control-height, 2.5rem) * 0.3);
+}

@@ -1,0 +1,59 @@
+@* SheenUI Drawer. Source-owned: edit freely. Native modal panel; requires interactivity. *@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<dialog @ref="_element" @attributes="AdditionalAttributes" class="sheen-drawer-content @Class" data-sheen-appearance="@Appearance"
+        data-side="@Side" data-vaul-drawer-direction="bottom" aria-labelledby="@(_id + "-title")"
+        aria-describedby="@(Description is null ? null : _id + "-description")" @onclose="Closed">
+    <div class="sheen-drawer-handle" data-vaul-handle aria-hidden="true"></div>
+    <div class="sheen-drawer-header">
+        <h2 id="@(_id + "-title")" class="sheen-drawer-title">@Title</h2>
+        @if (Description is not null) { <p id="@(_id + "-description")" class="sheen-drawer-description">@Description</p> }
+    </div>
+    <div class="sheen-drawer-body">@ChildContent</div>
+    @if (Footer is not null) { <div class="sheen-drawer-footer">@Footer</div> }
+    <button type="button" class="sheen-drawer-close" aria-label="@CloseLabel" @onclick="CloseAsync">
+        @* Lucide X, ISC license. *@
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+    </button>
+</dialog>
+
+@code {
+    private readonly string _id = "sheen-drawer-" + Guid.NewGuid().ToString("N");
+    private ElementReference _element;
+    private IJSObjectReference? _module;
+    private bool _lastOpen;
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
+    [Parameter] public string CloseLabel { get; set; } = "Close";
+    [Parameter] public string Side { get; set; } = "bottom";
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Drawer/Drawer.razor.js");
+            await _module.InvokeVoidAsync("init", _element);
+        }
+        if (_module is not null && (firstRender || Open != _lastOpen))
+        {
+            _lastOpen = Open;
+            await _module.InvokeVoidAsync("setOpen", _element, Open);
+        }
+    }
+    public async Task ShowAsync() { if (_module is not null) await _module.InvokeVoidAsync("setOpen", _element, true); await OpenChanged.InvokeAsync(true); }
+    public async Task CloseAsync() { if (_module is not null) await _module.InvokeVoidAsync("setOpen", _element, false); }
+    private Task Closed() => OpenChanged.InvokeAsync(false);
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is null) return;
+        try { await _module.InvokeVoidAsync("dispose", _element); await _module.DisposeAsync(); }
+        catch (JSDisconnectedException) { }
+    }
+}
