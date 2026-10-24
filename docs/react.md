@@ -1,6 +1,92 @@
 # SheenUI for React
 
-Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared SheenUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. It supports **React 18.3 or 19 with TypeScript** on **Vite 6 or later** or **Next.js 15 or later (App Router, without Tailwind)**, and the **Button** component ([ADR 006](adr/006-react-first-milestone.md), [ADR 010](adr/010-vite-6-and-later.md), [ADR 011](adr/011-nextjs.md)).
+Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared SheenUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. It supports **React 18.3 or 19 with TypeScript** on **Vite 6 or later** or **Next.js 15 or later (App Router, without Tailwind)**, with buttons, overlays, fields, forms and basic controls ([ADR 006](adr/006-react-first-milestone.md), [ADR 010](adr/010-vite-6-and-later.md), [ADR 011](adr/011-nextjs.md)).
+
+## Basic controls
+
+Install `input`, `input-group`, `textarea`, `checkbox`, `radio-group`, `switch`,
+or `select` with `npx sheenui-react add <name>`. They require `foundation` and
+`field`; `input-group` also installs `input`. Selection controls pin Radix
+Checkbox **1.4.1**, RadioGroup **1.5.1**, Switch **1.4.1**, and Select **2.4.1**.
+The installer adds each control's SCSS import; input and textarea share a mixin
+partial owned by foundation, so either works when installed alone.
+
+```tsx
+import { Field, FieldControl, FieldLabel, FieldError } from "@/components/ui/field"
+import { Input, PasswordInput } from "@/components/ui/input"
+import { InputGroup, InputGroupItem } from "@/components/ui/input-group"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Switch } from "@/components/ui/switch"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+
+export function BasicControls() {
+  return <>
+    <Field id="email"><FieldLabel>Email</FieldLabel>
+      <FieldControl><Input type="email" clearable startIcon={<i className="your-mail-icon" aria-hidden="true" />} /></FieldControl>
+      <FieldError />
+    </Field>
+    <Field><FieldLabel>Password</FieldLabel><FieldControl><PasswordInput /></FieldControl></Field>
+    <Field><FieldLabel>Quantity</FieldLabel><FieldControl><Input type="number" defaultValue="1" /></FieldControl></Field>
+    <Field><FieldLabel>Search</FieldLabel><FieldControl><Input type="search" /></FieldControl></Field>
+    <Field><FieldLabel>Phone</FieldLabel>
+      <FieldControl><InputGroup autoAdvance>
+        <InputGroupItem aria-label="Prefix" maxLength={3} />
+        <InputGroupItem aria-label="Number" maxLength={7} />
+      </InputGroup></FieldControl>
+    </Field>
+    <Field><FieldLabel>Notes</FieldLabel><FieldControl><Textarea autoResize minRows={3} maxRows={10} /></FieldControl></Field>
+    <Field orientation="inline"><FieldControl><Checkbox defaultChecked="indeterminate" /></FieldControl><FieldLabel>Select all</FieldLabel></Field>
+    <Field orientation="inline"><FieldControl><Switch /></FieldControl><FieldLabel>Updates</FieldLabel></Field>
+    <Field><FieldLabel>Plan</FieldLabel><FieldControl><RadioGroup defaultValue="personal">
+      <label><RadioGroupItem value="personal" /> Personal</label>
+      <label><RadioGroupItem value="team" /> Team</label>
+    </RadioGroup></FieldControl></Field>
+    <Select defaultValue="iq"><Field><FieldLabel>Country</FieldLabel>
+      <FieldControl><SelectTrigger><SelectValue placeholder="Choose" /></SelectTrigger></FieldControl>
+    </Field><SelectContent><SelectItem value="iq">Iraq</SelectItem><SelectItem value="gb">United Kingdom</SelectItem></SelectContent></Select>
+  </>
+}
+```
+
+Controls also read `useFieldControlProps` directly, so they work with
+`FieldControl` and react-hook-form's `FormControl` without duplicate description
+IDs. For Select, put the trigger inside Field; Root has no DOM element. Each
+joined-input member gets its own identity. Supply individual member labels.
+Wrap themed areas in `SheenThemeProvider`; Select portals into its nearest
+element to preserve appearance, mode, accent, density and direction.
+
+| Control | Props beyond native / Radix props and forwarded refs |
+| --- | --- |
+| `Input` | `appearance`, `size="default"` (sm/lg), `variant="outline"` (filled/glass alias), `startIcon`, `endIcon`, `clearable`, `onClear`, `clearLabel="Clear"`, `invalid`, `wrapperClassName` |
+| `PasswordInput` | Input props except type/endIcon; `showLabel="Show password"`, `hideLabel="Hide password"`. Eye action toggles visibility and aria-pressed; defaults autocomplete to current-password. |
+| `InputGroup` | `size`, `variant`, `orientation="horizontal"` (vertical), `disabled`, `invalid`, `required`, `autoAdvance=false`. Members accept Input props except size/icons/clear and wrapper options. |
+| `Textarea` | `appearance`, `variant="glass"` (filled), `autoResize=false`, `minRows=3`, `maxRows=10`, `showCount=false`, `limitLabel="Character limit reached"`, `footer`, `footerEnd`, `invalid`, `wrapperClassName`. Counter requires maxLength. |
+| `Checkbox` | `appearance`, `size="default"` (sm/lg), `shape="square"` (circle); Radix checked/defaultChecked allow true, false or indeterminate. |
+| `RadioGroup` | `appearance`; Radix value/defaultValue, onValueChange, orientation, dir, disabled, required, name. `RadioGroupItem` takes value, appearance and size. |
+| `Switch` | `appearance`, `size="default"` (sm/lg), `loading=false` (disables changes and shows a Bootstrap spinner); checked/defaultChecked and onCheckedChange. |
+| `Select` | `appearance`; Radix value/defaultValue, onValueChange, open/defaultOpen, onOpenChange, disabled, required, name and dir. |
+| `SelectTrigger` | `appearance`, `size="default"` (sm/lg), className and Radix trigger props. |
+| `SelectContent` | `appearance`, `position="popper"` (item-aligned), `sideOffset=6`, `collisionPadding=8` and Radix content props. |
+
+Select also exports `SelectGroup`, `SelectLabel`, `SelectSeparator`,
+`SelectScrollUpButton` and `SelectScrollDownButton` with their Radix props.
+All visible built-in text has an English default that can be translated through
+the corresponding label prop. Decorative slot clicks focus Input; icon sizing
+covers SVG and font icons with selectors stronger than Blazicons defaults.
+
+Use `value`/`onChange` or `defaultValue` for input, textarea and each joined
+segment; `checked`/`onCheckedChange` or `defaultChecked` for checkbox/switch;
+`value`/`onValueChange` or `defaultValue` for radio/select. Example controlled
+checkbox: `checked={checked} onCheckedChange={setChecked}`, where state is
+`boolean | "indeterminate"`. `Input type="password"` renders a native masked
+input; use `PasswordInput` for the eye action. Joined inputs move at maxlength,
+on empty Backspace and boundary arrows (following direction), and distribute
+long pastes. Each retains its own value and form name. Radix owns selection
+keyboard behavior, including Space, radio arrows, and Select typeahead,
+arrows, Home/End, Enter and Escape. Focus rings stay visible and decorative
+motion respects reduced-motion preferences.
 
 ## Fields and forms
 

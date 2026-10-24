@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "select",
+  "version": "0.1.0",
+  "description": "Native select with Field and EditForm integration.",
+  "dependencies": [
+    "field"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "c62aff1451f96b1cb83c155e2a2e80d2f64090de670ab86be2bd108fced528cd"
+    }
+  ],
+  "files": [
+    {
+      "source": "Select.razor",
+      "destination": "components",
+      "target": "Select/Select.razor",
+      "type": "razor",
+      "sha256": "20e3759923e12c3b242e1a78de5759681b694a38f70b267e7b470fcdc4b072fd"
+    }
+  ]
+}

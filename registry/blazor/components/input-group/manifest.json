@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "name": "input-group",
+  "version": "0.1.0",
+  "description": "Native input-group with Field and EditForm integration.",
+  "dependencies": [
+    "field"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "c62aff1451f96b1cb83c155e2a2e80d2f64090de670ab86be2bd108fced528cd"
+    }
+  ],
+  "files": [
+    {
+      "source": "InputGroup.razor",
+      "destination": "components",
+      "target": "InputGroup/InputGroup.razor",
+      "type": "razor",
+      "sha256": "ec165901689919933ee3f8a9c7769e6ad2835e1dd5caec2f14c012c22d7102cb"
+    },
+    {
+      "source": "InputGroup.razor.js",
+      "destination": "components",
+      "target": "InputGroup/InputGroup.razor.js",
+      "type": "js",
+      "sha256": "bd5679344d17346f349ca77a996fa744b47d48d270d4ca3d55f3c1526cd9774b"
+    },
+    {
+      "source": "InputGroupItem.razor",
+      "destination": "components",
+      "target": "InputGroup/InputGroupItem.razor",
+      "type": "razor",
+      "sha256": "974cfb8fe945515fafed3d5bec2e151704cf64bf6a95e13b5db30a67eb235c88"
+    }
+  ]
+}

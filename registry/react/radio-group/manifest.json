@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "radio-group",
+  "version": "0.1.0",
+  "description": "Source-owned radio-group with Field integration.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {
+    "@radix-ui/react-radio-group": "1.5.1"
+  },
+  "styles": [
+    "components/radio-group"
+  ],
+  "files": [
+    {
+      "source": "registry/react/radio-group/radio-group.tsx",
+      "target": "components/ui/radio-group.tsx",
+      "type": "tsx",
+      "sha256": "4dc92cd7370f1274b4fc09ad37e24e8c783fcecd2d0c703c3d31dd336fc4290f"
+    },
+    {
+      "source": "theme/scss/components/_radio-group.scss",
+      "target": "styles/sheenui/components/_radio-group.scss",
+      "type": "scss",
+      "sha256": "cd13f7508617d6851ad713830734fb442bc4b4796b7b6e8f29c352fea4c7208e"
+    }
+  ]
+}

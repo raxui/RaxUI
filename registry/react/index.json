@@ -10,6 +10,13 @@
     { "name": "field", "manifest": "registry/react/field/manifest.json" },
     { "name": "form", "manifest": "registry/react/form/manifest.json" },
     { "name": "form-section", "manifest": "registry/react/form-section/manifest.json" },
+    { "name": "input", "manifest": "registry/react/input/manifest.json" },
+    { "name": "input-group", "manifest": "registry/react/input-group/manifest.json" },
+    { "name": "textarea", "manifest": "registry/react/textarea/manifest.json" },
+    { "name": "checkbox", "manifest": "registry/react/checkbox/manifest.json" },
+    { "name": "radio-group", "manifest": "registry/react/radio-group/manifest.json" },
+    { "name": "switch", "manifest": "registry/react/switch/manifest.json" },
+    { "name": "select", "manifest": "registry/react/select/manifest.json" },
     { "name": "starter", "manifest": "registry/react/starter/manifest.json" },
     { "name": "starter-next", "manifest": "registry/react/starter-next/manifest.json" }
   ]

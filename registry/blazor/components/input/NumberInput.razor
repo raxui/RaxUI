@@ -1,0 +1,34 @@
+@* SheenUI NumberInput. Source-owned: edit freely. Native form behavior also works in static SSR. *@
+@using Microsoft.AspNetCore.Components.Forms
+@typeparam TValue
+<InputNumber TValue="TValue" @attributes="ControlAttributes" class="@($"form-control sheen-input {Class} {ExtraClass}".TrimEnd())"
+             data-sheen-appearance="@Appearance" Value="@Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression" />
+@code {
+
+    /// <summary>Bound value, including EditContext validation and static SSR form mapping.</summary>
+    [Parameter] public TValue Value { get; set; } = default!;
+    [Parameter] public EventCallback<TValue> ValueChanged { get; set; }
+    [Parameter] public System.Linq.Expressions.Expression<Func<TValue>>? ValueExpression { get; set; }
+
+    [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+    /// <summary>Extra CSS classes appended to the control.</summary>
+    [Parameter] public string? Class { get; set; }
+    private string? ExtraClass => AdditionalAttributes is not null && AdditionalAttributes.TryGetValue("class", out var value) ? Convert.ToString(value) : null;
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private readonly string _autoId = $"sheen-control-{Guid.NewGuid():N}";
+    private Dictionary<string, object> ControlAttributes
+    {
+        get
+        {
+            var attrs = FieldContext is null ? new Dictionary<string, object>() : new(FieldContext.ControlAttributes);
+            if (AdditionalAttributes is not null)
+                foreach (var pair in AdditionalAttributes) attrs[pair.Key] = pair.Value;
+            if (!attrs.ContainsKey("id")) attrs["id"] = _autoId;
+            return attrs;
+        }
+    }
+    private string ControlId => Convert.ToString(ControlAttributes["id"])!;
+
+}

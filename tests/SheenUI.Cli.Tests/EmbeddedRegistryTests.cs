@@ -115,6 +115,13 @@ public class EmbeddedRegistryTests
     [InlineData("field")]
     [InlineData("form")]
     [InlineData("form-section")]
+    [InlineData("input")]
+    [InlineData("input-group")]
+    [InlineData("textarea")]
+    [InlineData("checkbox")]
+    [InlineData("radio-group")]
+    [InlineData("switch")]
+    [InlineData("select")]
     public void All_manifest_files_match_their_sha256_checksums(string name)
     {
         var manifest = _registry.GetComponentManifest(name);

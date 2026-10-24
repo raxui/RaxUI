@@ -233,15 +233,14 @@ export function useFieldControlProps<P extends Record<string, unknown>>(own: P):
     own["aria-describedby"] as string | undefined,
     field.hasDescription ? field.descriptionId : undefined,
     field.invalid && field.hasError ? field.errorId : undefined,
-  ]
-    .filter(Boolean)
-    .join(" ")
+  ].filter(Boolean).join(" ").split(/\s+/)
+  const descriptions = [...new Set(describedBy.filter(Boolean))].join(" ")
   return {
     ...own,
     id: (own.id as string | undefined) ?? field.controlId,
     // Explicit labelling works for every control, labelable or not.
     "aria-labelledby": (own["aria-labelledby"] as string | undefined) ?? (own["aria-label"] ? undefined : field.labelId),
-    "aria-describedby": describedBy || undefined,
+    "aria-describedby": descriptions || undefined,
     "aria-invalid": field.invalid || (own["aria-invalid"] as boolean | undefined) || undefined,
     "aria-required": field.required || (own["aria-required"] as boolean | undefined) || undefined,
     ...(field.disabled && { disabled: true }),

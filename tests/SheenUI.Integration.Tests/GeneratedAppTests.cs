@@ -44,6 +44,13 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "form"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "field"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "form-section"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "input-group"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "textarea"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "checkbox"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "radio-group"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "switch"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "select"], app, output, error) == 0, error.ToString());
         Assert.True(File.Exists(Path.Combine(app, "Components", "UI", "Dialog", "Dialog.razor.js")));
 
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
@@ -117,6 +124,7 @@ public class GeneratedAppTests : IDisposable
             """);
 
         WriteFormPages(components);
+        WriteBasicControlPages(components);
         WriteFluentForm(components);
         // Optional FluentValidation through Blazilla (#37): SheenUI controls must show its messages too.
         Dotnet(app, "add", "package", "Blazilla", "--version", "2.4.2");
@@ -148,6 +156,13 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "confirm-dialog"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "form"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "form-section"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "input-group"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "textarea"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "checkbox"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "radio-group"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "switch"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "select"], app, output, error) == 0, error.ToString());
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app);
     }
@@ -227,6 +242,7 @@ public class GeneratedAppTests : IDisposable
             await VerifyDropdownMenu(page);
             await VerifyConfirmDialog(page);
             await VerifyForms(page, url);
+            await VerifyBasicControls(page, url);
             await VerifyFluentForm(page, url);
         }
         catch (Exception exception)
@@ -562,6 +578,157 @@ public class GeneratedAppTests : IDisposable
         await staticPage.Locator("#name").FillAsync("Grace");
         await staticPage.Locator("#save").ClickAsync();
         await Assertions.Expect(staticPage.Locator("#saved")).ToHaveTextAsync("Saved");
+    }
+
+
+    private static void WriteBasicControlPages(string components)
+    {
+        const string page = """
+            @page "/controls"
+            @rendermode InteractiveServer
+            @using System.ComponentModel.DataAnnotations
+
+            <EditForm Model="Model" FormName="controls" OnValidSubmit="Saved" Context="edit">
+                <Form>
+                    <DataAnnotationsValidator />
+                    <Field Id="text" For="@(() => Model!.Text)">
+                        <ChildContent>
+                            <FieldLabel>Name</FieldLabel>
+                            <Input @bind-Value="Model!.Text" Clearable>
+                                <StartIcon><svg blazicon="" viewBox="0 0 24 24"><path d="M1 1h2" /></svg></StartIcon>
+                            </Input>
+                            <FieldError />
+                        </ChildContent>
+                        <Description>Your name</Description>
+                    </Field>
+                    <Field Id="email" For="@(() => Model!.Email)"><FieldLabel>Email</FieldLabel><Input Type="email" @bind-Value="Model!.Email" /><FieldError /></Field>
+                    <Field Id="password" For="@(() => Model!.Password)"><FieldLabel>Password</FieldLabel><Input Type="password" @bind-Value="Model!.Password" /><FieldError /></Field>
+                    <Field Id="number" For="@(() => Model!.Number)"><FieldLabel>Number</FieldLabel><NumberInput @bind-Value="Model!.Number" /><FieldError /></Field>
+                    <Field Id="search" For="@(() => Model!.Search)"><FieldLabel>Search</FieldLabel><Input Type="search" @bind-Value="Model!.Search" /><FieldError /></Field>
+                    <Field Id="joined" For="@(() => Model!.Part1)">
+                        <FieldLabel>Card</FieldLabel>
+                        <InputGroup AutoAdvance><InputGroupItem id="part1" aria-label="First part" maxlength="2" @bind-Value="Model!.Part1" /><InputGroupItem id="part2" aria-label="Second part" maxlength="2" @bind-Value="Model!.Part2" /></InputGroup>
+                        <FieldError />
+                    </Field>
+                    <Field Id="notes" For="@(() => Model!.Notes)"><FieldLabel>Notes</FieldLabel><Textarea @bind-Value="Model!.Notes" AutoResize /><FieldError /></Field>
+                    <Field Id="accepted" For="@(() => Model!.Accepted)" Orientation="inline"><Checkbox @bind-Value="Model!.Accepted" /><FieldLabel>Accept</FieldLabel><FieldError /></Field>
+                    <Field Id="mixed" Optional Orientation="inline"><Checkbox @bind-Value="Model!.Mixed" @bind-Indeterminate="mixed" /><FieldLabel>Select all</FieldLabel></Field>
+                    <Field Id="updates" For="@(() => Model!.Updates)" Orientation="inline"><Switch @bind-Value="Model!.Updates" /><FieldLabel>Updates</FieldLabel><FieldError /></Field>
+                    <Field Id="choice" For="@(() => Model!.Choice)">
+                        <FieldLabel>Plan</FieldLabel>
+                        <RadioGroup @bind-Value="Model!.Choice"><label><RadioGroupItem TValue="string" Value="@("a")" />Alpha</label><label><RadioGroupItem TValue="string" Value="@("b")" />Beta</label></RadioGroup>
+                        <FieldError />
+                    </Field>
+                    <Field Id="country" For="@(() => Model!.Country)"><FieldLabel>Country</FieldLabel><Select @bind-Value="Model!.Country"><option value="">Choose</option><option value="iq">Iraq</option><option value="gb">United Kingdom</option></Select><FieldError /></Field>
+                    <button id="controls-save" type="submit" disabled="@(!ready)">Save controls</button>
+                </Form>
+            </EditForm>
+            <p id="controls-result">@result</p>
+            <p id="controls-values">@($"{Model!.Accepted}|{Model.Updates}|{Model.Choice}|{Model.Country}|{Model.Part1}|{Model.Part2}|{Model.Number}")</p>
+            @code {
+                [SupplyParameterFromForm] private ControlsModel? Model { get; set; }
+                private bool ready;
+                private bool mixed = true;
+                private string result = "";
+                protected override void OnInitialized() => Model ??= new();
+                protected override void OnAfterRender(bool firstRender) { if (firstRender) { ready = true; StateHasChanged(); } }
+                private void Saved() => result = "Saved " + Model!.Text;
+                public class ControlsModel
+                {
+                    [Required] public string Text { get; set; } = "";
+                    [Required, EmailAddress] public string Email { get; set; } = "";
+                    [Required] public string Password { get; set; } = "";
+                    [Range(1, 99)] public int Number { get; set; }
+                    public string Search { get; set; } = "";
+                    [Required] public string Part1 { get; set; } = "";
+                    public string Part2 { get; set; } = "";
+                    [Required] public string Notes { get; set; } = "";
+                    [Range(typeof(bool), "true", "true")] public bool Accepted { get; set; }
+                    public bool Mixed { get; set; }
+                    [Range(typeof(bool), "true", "true")] public bool Updates { get; set; }
+                    [Required] public string Choice { get; set; } = "";
+                    [Required] public string Country { get; set; } = "";
+                }
+            }
+            """;
+        File.WriteAllText(Path.Combine(components, "Pages", "Controls.razor"), page);
+        File.WriteAllText(Path.Combine(components, "Pages", "StaticControls.razor"), page
+            .Replace("@page \"/controls\"", "@page \"/static-controls\"")
+            .Replace("@rendermode InteractiveServer", "")
+            .Replace("private bool ready;", "private bool ready = true;"));
+    }
+
+    private static async Task VerifyBasicControls(IPage page, string url)
+    {
+        await page.GotoAsync(url.TrimEnd('/') + "/controls");
+        await Assertions.Expect(page.Locator("#controls-save")).ToBeEnabledAsync();
+        await Assertions.Expect(page.Locator("#mixed")).ToHaveAttributeAsync("aria-checked", "mixed");
+        await page.Locator("#controls-save").ClickAsync();
+        foreach (var id in new[] { "text", "email", "password", "number", "notes", "accepted", "updates", "country" })
+        {
+            await Assertions.Expect(page.Locator("#" + id)).ToHaveAttributeAsync("aria-invalid", "true");
+            await Assertions.Expect(page.Locator("#" + id)).ToHaveClassAsync(new System.Text.RegularExpressions.Regex(@"\bis-invalid\b"));
+            await Assertions.Expect(page.Locator("#" + id)).ToHaveAttributeAsync("aria-describedby", new System.Text.RegularExpressions.Regex(id + "-error"));
+        }
+        foreach (var id in new[] { "choice", "joined" })
+            await Assertions.Expect(page.Locator("#" + id)).ToHaveAttributeAsync("aria-invalid", "true");
+        await Assertions.Expect(page.Locator("#choice input").First).ToHaveClassAsync(new System.Text.RegularExpressions.Regex(@"\bis-invalid\b"));
+        await Assertions.Expect(page.Locator("#part1")).ToHaveClassAsync(new System.Text.RegularExpressions.Regex(@"\bis-invalid\b"));
+        await Assertions.Expect(page.Locator("#text")).ToBeFocusedAsync();
+        await page.AddStyleTagAsync(new() { Content = "svg[blazicon] { width: 1em; height: 1em; }" });
+        Assert.Equal("18px", await page.Locator(".sheen-input-slot svg[blazicon]").EvaluateAsync<string>("el => getComputedStyle(el).width"));
+        await page.Locator(".sheen-input-slot svg[blazicon]").ClickAsync();
+        await Assertions.Expect(page.Locator("#text")).ToBeFocusedAsync();
+        await page.Locator("#text").FillAsync("Ada");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Clear", Exact = true }).ClickAsync();
+        await Assertions.Expect(page.Locator("#text")).ToHaveValueAsync("");
+        await Assertions.Expect(page.Locator("#text")).ToBeFocusedAsync();
+        await page.Locator("#text").FillAsync("Ada");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Show password" }).ClickAsync();
+        await Assertions.Expect(page.Locator("#password")).ToHaveAttributeAsync("type", "text");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Hide password" }).ClickAsync();
+        await Assertions.Expect(page.Locator("#password")).ToHaveAttributeAsync("type", "password");
+        await page.Locator("#part1").PressSequentiallyAsync("12");
+        await Assertions.Expect(page.Locator("#part2")).ToBeFocusedAsync();
+        await page.Locator("#part2").PressAsync("Backspace");
+        await Assertions.Expect(page.Locator("#part1")).ToBeFocusedAsync();
+        await page.Locator("#part2").FillAsync("34");
+        await FillBasicControls(page);
+        await page.Locator("#controls-save").ClickAsync();
+        await Assertions.Expect(page.Locator("#controls-result")).ToHaveTextAsync("Saved Ada");
+        await Assertions.Expect(page.Locator("#text")).ToHaveClassAsync(new System.Text.RegularExpressions.Regex(@"\bis-valid\b"));
+        await Assertions.Expect(page.Locator("#controls-values")).ToHaveTextAsync("True|True|b|iq|12|34|7");
+
+        // A real native form POST with JavaScript disabled, exercising every bound input type.
+        await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false });
+        var ssr = await context.NewPageAsync();
+        await ssr.GotoAsync(url.TrimEnd('/') + "/static-controls");
+        await ssr.Locator("#controls-save").ClickAsync();
+        await Assertions.Expect(ssr.Locator("#text")).ToHaveAttributeAsync("aria-invalid", "true");
+        await Assertions.Expect(ssr.Locator("#text")).ToHaveClassAsync(new System.Text.RegularExpressions.Regex(@"\bis-invalid\b"));
+        await ssr.Locator("#text").FillAsync("Grace");
+        await ssr.Locator("#part1").FillAsync("12");
+        await ssr.Locator("#part2").FillAsync("34");
+        await FillBasicControls(ssr);
+        await ssr.Locator("#controls-save").ClickAsync();
+        await Assertions.Expect(ssr.Locator("#controls-result")).ToHaveTextAsync("Saved Grace");
+        await Assertions.Expect(ssr.Locator("#controls-values")).ToHaveTextAsync("True|True|b|iq|12|34|7");
+    }
+
+    private static async Task FillBasicControls(IPage page)
+    {
+        await page.Locator("#email").FillAsync("ada@example.com");
+        await page.Locator("#password").FillAsync("secret");
+        await page.Locator("#number").FillAsync("7");
+        await page.Locator("#search").FillAsync("query");
+        await page.Locator("#notes").FillAsync("Notes");
+        await page.Locator("#accepted").FocusAsync();
+        await page.Locator("#accepted").PressAsync("Space");
+        await page.Locator("#updates").FocusAsync();
+        await page.Locator("#updates").PressAsync("Space");
+        await page.Locator("#choice input").First.FocusAsync();
+        await page.Locator("#choice input").First.PressAsync("ArrowRight");
+        await page.Locator("#country").SelectOptionAsync("iq");
     }
 
     private static void Dotnet(string workingDirectory, params string[] args)

@@ -29,6 +29,34 @@
     {
       "name": "form-section",
       "manifest": "components/form-section/manifest.json"
+    },
+    {
+      "name": "input",
+      "manifest": "components/input/manifest.json"
+    },
+    {
+      "name": "input-group",
+      "manifest": "components/input-group/manifest.json"
+    },
+    {
+      "name": "textarea",
+      "manifest": "components/textarea/manifest.json"
+    },
+    {
+      "name": "checkbox",
+      "manifest": "components/checkbox/manifest.json"
+    },
+    {
+      "name": "radio-group",
+      "manifest": "components/radio-group/manifest.json"
+    },
+    {
+      "name": "switch",
+      "manifest": "components/switch/manifest.json"
+    },
+    {
+      "name": "select",
+      "manifest": "components/select/manifest.json"
     }
   ]
 }

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "name": "input",
+  "version": "0.1.0",
+  "description": "Native input with Field and EditForm integration.",
+  "dependencies": [
+    "field"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "c62aff1451f96b1cb83c155e2a2e80d2f64090de670ab86be2bd108fced528cd"
+    }
+  ],
+  "files": [
+    {
+      "source": "Input.razor",
+      "destination": "components",
+      "target": "Input/Input.razor",
+      "type": "razor",
+      "sha256": "c760d15661bba0486c7f7d6149989ba9e9bfe049ce39414767d5dd8f1479dc41"
+    },
+    {
+      "source": "Input.razor.js",
+      "destination": "components",
+      "target": "Input/Input.razor.js",
+      "type": "js",
+      "sha256": "fa775511377e0d90dca0bf92341dda2c426351dbdada4bcefad9dea6fc3d804b"
+    },
+    {
+      "source": "NumberInput.razor",
+      "destination": "components",
+      "target": "Input/NumberInput.razor",
+      "type": "razor",
+      "sha256": "6cf820bd697f705b590a207b1664a95c42a070fec01b137914e14be96771c905"
+    }
+  ]
+}

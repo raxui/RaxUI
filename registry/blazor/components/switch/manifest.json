@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "switch",
+  "version": "0.1.0",
+  "description": "Native switch with Field and EditForm integration.",
+  "dependencies": [
+    "field"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "c62aff1451f96b1cb83c155e2a2e80d2f64090de670ab86be2bd108fced528cd"
+    }
+  ],
+  "files": [
+    {
+      "source": "Switch.razor",
+      "destination": "components",
+      "target": "Switch/Switch.razor",
+      "type": "razor",
+      "sha256": "d2314caeeb7d04f7408fe9b247befbb12a2d9c7e15f8ac65c907b3f0c4c249c1"
+    }
+  ]
+}
