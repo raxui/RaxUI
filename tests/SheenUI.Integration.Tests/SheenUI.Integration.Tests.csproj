@@ -16,6 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- A tiny registry (alpha depends on beta) for dependency installs, read with EmbeddedRegistry(assembly, prefix). -->
+    <EmbeddedResource Include="TestRegistry\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\SheenUI.Cli\SheenUI.Cli.csproj" />
   </ItemGroup>
 

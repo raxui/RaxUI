@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "name": "alpha",
+  "version": "1.0.0",
+  "description": "Test component.",
+  "dependencies": [
+    "beta"
+  ],
+  "assets": [],
+  "files": [
+    {
+      "source": "Alpha.razor",
+      "destination": "components",
+      "target": "Alpha/Alpha.razor",
+      "type": "razor",
+      "sha256": "0bc3e93a04e698b7aac34d0fe0c9c8e135ebf3fc5252356e55184ad3b4ea9da9"
+    }
+  ]
+}

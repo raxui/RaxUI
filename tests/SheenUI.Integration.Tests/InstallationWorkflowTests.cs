@@ -26,7 +26,9 @@ public class InstallationWorkflowTests : IDisposable
         }
     }
 
-    private void CreateSampleBlazorProject(bool includeBootstrap = true)
+    private void CreateSampleBlazorProject(bool includeBootstrap = true) => CreateSampleBlazorProject(_testDirectory, includeBootstrap);
+
+    internal static void CreateSampleBlazorProject(string _testDirectory, bool includeBootstrap = true)
     {
         var csprojContent = """
             <Project Sdk="Microsoft.NET.Sdk.Web">

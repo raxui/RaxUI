@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "beta",
+  "version": "1.0.0",
+  "description": "Test component.",
+  "dependencies": [],
+  "assets": [],
+  "files": [
+    {
+      "source": "Beta.razor",
+      "destination": "components",
+      "target": "Beta/Beta.razor",
+      "type": "razor",
+      "sha256": "19772f241fd5fce80784c4b4f7ddcb01e5d256ea0f62066783b26f09252b88e5"
+    }
+  ]
+}
