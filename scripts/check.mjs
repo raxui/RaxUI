@@ -1,6 +1,6 @@
 // Local validation entry point. Run acceptance suites sequentially: each packs the same CLI.
 import { spawnSync } from "node:child_process"
-import { existsSync } from "node:fs"
+import { existsSync, readdirSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { npmInvocation } from "../src/react-cli/src/tooling.mjs"
@@ -32,6 +32,19 @@ function npm(label, args, env = {}) {
   const [command, argv] = npmInvocation(args)
   run(label, command, argv, env)
 }
+
+// Registry paths and byte-level line endings are part of the manifest contract.
+const reactEntries = readdirSync(path.join(root, "registry/react")).sort()
+if (JSON.stringify(reactEntries) !== JSON.stringify(["components", "foundation", "index.json", "starter-next", "starter-react"]))
+  throw new Error("Unexpected React registry layout (ADR 015).")
+function checkLf(folder) {
+  for (const entry of readdirSync(folder, { withFileTypes: true })) {
+    const file = path.join(folder, entry.name)
+    if (entry.isDirectory()) checkLf(file)
+    else if (readFileSync(file).includes(13)) throw new Error(`CR byte in ${file}; registry and theme require LF.`)
+  }
+}
+for (const tree of ["registry", "theme"]) checkLf(path.join(root, tree))
 
 run("Shared CSS is current", process.execPath, ["theme/build-css.mjs", "--check"])
 npm("TypeScript", ["run", "typecheck"])

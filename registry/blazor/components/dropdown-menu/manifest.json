@@ -6,11 +6,11 @@
   "dependencies": [],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/dropdown-menu.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/dropdown-menu.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "14580d8e7a4975465cfd43e2b1f98194d51a8c64cd75eca820063e363abebe04"
     }
   ],
   "files": [

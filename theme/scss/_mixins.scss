@@ -30,3 +30,11 @@
     @content;
   }
 }
+
+@mixin sheen-surface {
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+}

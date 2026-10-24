@@ -2,7 +2,7 @@ import * as React from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
-import { Switch } from "../../registry/react/switch/switch"
+import { Switch } from "../../registry/react/components/switch/switch"
 import { Wired, expectWiring } from "./control-test-utils"
 
 describe("Switch", () => {

@@ -8,11 +8,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/popover.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/popover.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "e07a8ebb2b473a6d2692387e0b297df52c148eb1073a1c0e9170fdfe23022060"
     }
   ],
   "files": [

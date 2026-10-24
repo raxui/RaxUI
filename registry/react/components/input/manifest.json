@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "input",
+  "version": "0.1.0",
+  "description": "Source-owned input with Field integration.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {},
+  "styles": [
+    "components/input"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/input/input.tsx",
+      "target": "components/ui/input.tsx",
+      "type": "tsx",
+      "sha256": "86e09d579003c8900d632664ae4af560a9177b4180f095e259d354ee86b2edbe"
+    },
+    {
+      "source": "theme/scss/components/_input-mixins.scss",
+      "target": "styles/sheenui/components/_input-mixins.scss",
+      "type": "scss",
+      "sha256": "171c5185c2c7ad0e7347ff57ad8003d7c1423260c29f3f0a259932f03cc41eaf"
+    },
+    {
+      "source": "theme/scss/components/_input.scss",
+      "target": "styles/sheenui/components/_input.scss",
+      "type": "scss",
+      "sha256": "db40495c6ed94e1d3a68bb63f0487853261f2ac04d3965eba6138bf8b8e75c0a"
+    }
+  ]
+}

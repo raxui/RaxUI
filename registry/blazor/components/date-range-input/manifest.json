@@ -9,11 +9,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/date-range-input.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/date-range-input.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "77cf3d5719da53bfb3a291edfc0214126fb12b6a00aa3ac571bb6f4cc629a985"
     }
   ],
   "files": [

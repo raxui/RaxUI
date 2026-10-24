@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../registry/react/dialog/dialog"
+} from "../../registry/react/components/dialog/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../registry/react/dropdown-menu/dropdown-menu"
+} from "../../registry/react/components/dropdown-menu/dropdown-menu"
 
 // Radix's popper measures with ResizeObserver, which jsdom lacks.
 beforeAll(() => {

@@ -9,11 +9,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/time-picker.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/time-picker.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "1aade40b07b8357591a1f65f4b36f33a555bfc2f3aaa8fac43cb26515f88af10"
     }
   ],
   "files": [

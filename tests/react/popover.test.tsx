@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
-import { Popover, PopoverTrigger, PopoverContent } from "../../registry/react/popover/popover"
+import { Popover, PopoverTrigger, PopoverContent } from "../../registry/react/components/popover/popover"
 import { SheenThemeProvider } from "../../registry/react/foundation/theme"
 
 describe("Popover", () => {

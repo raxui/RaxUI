@@ -323,9 +323,14 @@ Use Button in any page, for example a new `Components/Pages/Counter.razor`:
 }
 ```
 
-`init` installs the shared theme as `wwwroot/css/sheenui/sheenui.css` and links
-it after Bootstrap; `add button` copies `Components/UI/Button/Button.razor` and
-adds its namespace to `_Imports.razor`. Keep the template Bootstrap and
+`init` installs the core theme as `wwwroot/css/sheenui/sheenui.css`, plus the
+starter's `starter.css`, and links the core after Bootstrap. `add button` copies
+`Components/UI/Button/Button.razor` and `wwwroot/css/sheenui/components/button.css`,
+adds its namespace to `_Imports.razor`, and adds one CSS import to `sheenui.css`.
+Only installed components' CSS is loaded. Edit `components/button.css` to customize
+Button independently; the CLI keeps those edits. Keep custom core overrides in a
+separate stylesheet: the CLI manages the core's leading import list and refuses
+manual changes to `sheenui.css` ([ADR 015](docs/adr/015-per-component-css.md)). Keep the template Bootstrap and
 application styles links. If `Program.cs` does not enable Interactive Server (an
 app created without `--interactivity Server`), `init` prints a warning with the
 two lines to add; it does not edit `Program.cs`.

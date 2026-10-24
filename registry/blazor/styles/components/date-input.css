@@ -1,0 +1,18 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity var(--sheen-duration) ease;
+}
+.sheen-date-input:focus::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+.sheen-date-input:disabled::-webkit-calendar-picker-indicator {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-date-input::-webkit-calendar-picker-indicator {
+    transition: none;
+  }
+}

@@ -1,6 +1,6 @@
 import * as React from "react"
 import { expect } from "vitest"
-import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "../../registry/react/field/field"
+import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "../../registry/react/components/field/field"
 
 export function Wired({ children }: { children: React.ReactElement }) {
   return <Field id="control" invalid required>

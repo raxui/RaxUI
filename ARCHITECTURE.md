@@ -16,7 +16,7 @@ The architecture prioritizes simplicity, developer ownership, accessibility, mai
 4. **Explicit dependencies:** Every component declares its component and asset dependencies.
 5. **Bootstrap foundation:** Bootstrap provides the base grid, utilities, and selected styling conventions.
 6. **Framework-native behavior:** In Blazor, use Razor and C# for component behavior and introduce JavaScript interop only when necessary. In React, use Radix UI primitives for behavior and accessibility.
-7. **One theme, delivered per ecosystem:** React compiles the shared theme SCSS with Bootstrap. Blazor receives it precompiled as `sheenui.css`, with no Sass build ([ADR 007](docs/adr/007-blazor-shared-theme.md)). Both render the same classes and read the same theme attributes.
+7. **One theme, delivered per ecosystem:** React compiles the shared theme SCSS with Bootstrap. Blazor receives core `sheenui.css`, starter CSS, and per-component compiled CSS, with no consumer Sass build ([ADR 015](docs/adr/015-per-component-css.md)). Both render the same classes and read the same theme attributes.
 8. **Safe updates:** The CLI must detect local modifications and never silently overwrite them.
 9. **Accessibility by design:** Semantic HTML, keyboard navigation, focus management, and appropriate ARIA attributes are part of component development.
 10. **Rendering compatibility:** Components must account for static SSR and interactive Blazor rendering modes.
@@ -59,12 +59,14 @@ SheenUI/
 ├── registry/react/
 │   ├── index.json
 │   ├── foundation/              theme.tsx, utils.ts, manifest.json
-│   └── button/                  button.tsx, _button.scss, manifest.json
+│   └── components/button/       button.tsx, manifest.json
 ├── src/react-cli/               Node CLI: init, add button
 ├── tests/react/                 component, CLI, and acceptance tests
 ├── package.json                 private Node tooling for tests
 └── tsconfig.json
 ```
+
+React starters live at `registry/react/starter-react/` (Vite) and `registry/react/starter-next/` (Next.js).
 
 The .NET CLI embeds `registry/blazor/` (as `registry/` resources); the Node CLI bundles `registry/react/`.
 
@@ -96,7 +98,8 @@ SheenUI/
 ├── registry/
 │   ├── registry.json
 │   ├── styles/
-│   │   └── sheenui.css         generated from theme/scss (ADR 007)
+│   │   └── sheenui.css         core plus managed import list (ADR 015)
+│   │   └── components/         generated per-component CSS
 │   └── components/
 │       ├── button/
 │       │   ├── manifest.json
@@ -242,7 +245,9 @@ Conceptual example:
   "version": "0.1.0",
   "description": "A customizable button component.",
   "dependencies": [],
-  "assets": [],
+  "assets": [
+    { "source": "styles/components/button.css", "destination": "styles", "target": "components/button.css", "type": "css" }
+  ],
   "files": [
     {
       "source": "Button.razor",
@@ -254,13 +259,13 @@ Conceptual example:
 }
 ```
 
-Since [ADR 007](docs/adr/007-blazor-shared-theme.md), themed components ship no `.razor.css`; their styles are in the shared `sheenui.css` asset.
+Since [ADR 007](docs/adr/007-blazor-shared-theme.md), themed components ship no `.razor.css`; their styles are component-owned assets in `wwwroot/css/sheenui/components/<name>.css`, imported by the core stylesheet ([ADR 015](docs/adr/015-per-component-css.md)).
 
 This abbreviated example is not an installable manifest. The schema must require SHA-256 hashes, framework requirements, shared asset references, and exact dependency versions. `destination` selects a configured base directory; `target` is relative to it. Registry templates use explicit namespace tokens, never broad text replacement (deferred: in the first milestone there is no substitution, per ADR 004). Reject unsupported schema versions and file types before writing.
 
 ### 6.2.1 React Manifest
 
-React manifests in `registry/react/<item>/manifest.json` share the same concepts ([ADR 006](docs/adr/006-react-first-milestone.md)):
+React component manifests in `registry/react/components/<item>/manifest.json` share the same concepts ([ADR 006](docs/adr/006-react-first-milestone.md)):
 
 ```json
 {
@@ -271,7 +276,7 @@ React manifests in `registry/react/<item>/manifest.json` share the same concepts
   "packages": { "@radix-ui/react-slot": "1.5.0" },
   "styles": ["components/button"],
   "files": [
-    { "source": "registry/react/button/button.tsx", "target": "components/ui/button.tsx", "type": "tsx", "sha256": "…" },
+    { "source": "registry/react/components/button/button.tsx", "target": "components/ui/button.tsx", "type": "tsx", "sha256": "…" },
     { "source": "theme/scss/components/_button.scss", "target": "styles/sheenui/components/_button.scss", "type": "scss", "sha256": "…" }
   ]
 }
@@ -305,7 +310,7 @@ Button/
 └── Button.razor
 ```
 
-The `.razor` file defines markup, parameters, and component behavior. It renders the shared class names; its styles come from the shared theme stylesheet `sheenui.css`, which `init` installs once ([ADR 007](docs/adr/007-blazor-shared-theme.md)).
+The `.razor` file defines markup, parameters, and component behavior. It renders the shared class names; its styles come from `components/<name>.css`, installed by `add` and imported once by the core `sheenui.css` ([ADR 015](docs/adr/015-per-component-css.md)).
 
 A React component is a `.tsx` file with a matching SCSS partial:
 
@@ -335,7 +340,7 @@ Components should:
 Blazor follows [ADR 001](docs/adr/001-hybrid-css.md) for link rules and [ADR 007](docs/adr/007-blazor-shared-theme.md) for component styles:
 
 - Global Bootstrap CSS from the template provides layout, utilities, and `.btn`.
-- Global `sheenui.css`, compiled from `theme/scss` by `theme/build-css.mjs`, provides tokens, appearances, accents, density, and every component's styles.
+- Global `sheenui.css`, compiled from `theme/scss` by `theme/build-css.mjs`, provides tokens, appearances, accents, density, and a leading managed import list. `init` imports the starter CSS; `add` imports only installed styled components, dependencies first. Each component owns its CSS in the lock. Edited component CSS is kept; manually edited core CSS is refused before writes. `FileBackup` restores both assets and imports on failure, and the lock is written last.
 - The application's own `.razor.css` files keep working through the generated bundle.
 
 The supported host loads styles in this order: Bootstrap, `sheenui.css`, the application's generated `{AssemblyName}.styles.css`, then any explicit consumer overrides. Source order does not override CSS specificity; CSS variables and component parameters are the primary customization API.
@@ -562,6 +567,8 @@ Accepted ADRs:
 - [010 — React on Vite 6 and later](docs/adr/010-vite-6-and-later.md)
 - [011 — Next.js 15+ (App Router)](docs/adr/011-nextjs.md)
 - [012 — SheenUI identity and existing applications](docs/adr/012-sheenui-identity.md)
+
+- [015 — Per-component CSS and aligned React registry layout](docs/adr/015-per-component-css.md)
 
 ADRs should record the context, decision, alternatives considered, and consequences.
 

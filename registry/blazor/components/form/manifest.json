@@ -6,15 +6,7 @@
   "dependencies": [
     "field"
   ],
-  "assets": [
-    {
-      "source": "styles/sheenui.css",
-      "destination": "styles",
-      "target": "sheenui.css",
-      "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
-    }
-  ],
+  "assets": [],
   "files": [
     {
       "source": "Form.razor",

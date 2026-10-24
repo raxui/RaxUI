@@ -1,0 +1,231 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-app {
+  min-height: 100vh;
+  color: var(--bs-body-color);
+  background: radial-gradient(60rem 30rem at 0% 0%, rgba(var(--bs-primary-rgb), 0.18), transparent 60%), radial-gradient(50rem 30rem at 100% 100%, rgba(var(--bs-info-rgb), 0.14), transparent 60%), var(--sheen-page-bg, var(--bs-body-bg));
+}
+
+.sheen-app[data-bs-theme=dark] {
+  background-color: #000;
+}
+
+.sheen-app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 0.75rem;
+  padding-inline: 1.5rem;
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  border-inline: 0;
+  border-block-start: 0;
+}
+
+.sheen-app-brand {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: inherit;
+  text-decoration: none;
+}
+
+.sheen-app-header-end {
+  margin-inline-start: auto;
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
+}
+
+.sheen-app-main {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.sheen-panel {
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  border-radius: var(--sheen-radius-lg, 1rem);
+  padding: 1.5rem;
+}
+
+.sheen-welcome {
+  display: grid;
+  gap: 1.5rem;
+}
+.sheen-welcome > section {
+  min-width: 0;
+}
+.sheen-welcome h1 {
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-block-end: 0.5rem;
+}
+.sheen-welcome h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-block-end: 1rem;
+}
+.sheen-welcome code,
+.sheen-welcome pre {
+  font-size: 0.875rem;
+}
+.sheen-welcome pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 0.75rem 1rem;
+  border-radius: var(--sheen-radius-control);
+  background: rgba(var(--bs-emphasis-color-rgb), 0.06);
+  color: var(--bs-body-color);
+}
+
+.sheen-welcome-lead {
+  color: var(--bs-secondary-color);
+  max-width: 40rem;
+  line-height: 1.7;
+  margin-block-end: 0;
+}
+
+.sheen-welcome-intro {
+  padding-block: 0.5rem 1rem;
+}
+
+.sheen-preview-description,
+.sheen-preview-hint {
+  color: var(--bs-secondary-color);
+  line-height: 1.6;
+}
+
+.sheen-preview-description {
+  margin-block-end: 1.5rem;
+}
+
+.sheen-preview-hint {
+  font-size: 0.8125rem;
+  margin-block: 1.5rem 0;
+}
+
+.sheen-preview-panel .sheen-preview-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.sheen-next-steps {
+  border-block-start: 1px solid var(--bs-border-color);
+  padding-block-start: 1.5rem;
+}
+
+@media (min-width: 64rem) {
+  .sheen-welcome {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sheen-welcome-intro,
+  .sheen-next-steps {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 35.999rem) {
+  .sheen-app-main {
+    padding: 1.5rem 1rem 2.5rem;
+  }
+  .sheen-app-header {
+    padding-inline: 1rem;
+  }
+  .sheen-panel {
+    padding: 1.25rem;
+  }
+  .sheen-welcome .sheen-theme-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.sheen-theme-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+.sheen-theme-row + .sheen-theme-row {
+  margin-block-start: 0.75rem;
+}
+
+.sheen-theme-label {
+  min-width: 7rem;
+  font-weight: 600;
+  color: var(--bs-secondary-color);
+}
+
+.sheen-theme-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sheen-accent-swatch {
+  --sheen-swatch-color: var(--bs-primary);
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.sheen-accent-swatch:hover {
+  background: rgba(var(--bs-emphasis-color-rgb), 0.06);
+}
+.sheen-accent-swatch[data-sheen-swatch=blue] {
+  --sheen-swatch-color: #0d6efd;
+}
+.sheen-accent-swatch::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  border-radius: inherit;
+  background: var(--sheen-swatch-color);
+}
+.sheen-accent-swatch[aria-pressed=true], .sheen-accent-swatch[aria-current=true] {
+  box-shadow: inset 0 0 0 2px var(--sheen-swatch-color);
+}
+.sheen-accent-swatch:focus-visible {
+  outline: 2px solid var(--bs-emphasis-color);
+  outline-offset: 2px;
+}
+
+#blazor-error-ui {
+  display: none;
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1000;
+  padding: 0.6rem 1.25rem 0.7rem;
+  background: var(--bs-warning-bg-subtle);
+  color: var(--bs-warning-text-emphasis);
+  border-block-start: 1px solid var(--bs-warning-border-subtle);
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+}
+#blazor-error-ui .dismiss {
+  position: absolute;
+  inset-inline-end: 0.75rem;
+  top: 0.5rem;
+  cursor: pointer;
+}
+
+.sheen-preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}

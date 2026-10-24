@@ -1,0 +1,180 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+}
+
+.sheen-dialog::backdrop,
+.sheen-dialog-overlay {
+  background: rgba(var(--sheen-overlay-rgb, 15, 23, 42), var(--sheen-overlay-alpha, 0.3));
+  -webkit-backdrop-filter: blur(4px) saturate(120%);
+  backdrop-filter: blur(4px) saturate(120%);
+}
+
+.sheen-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  width: calc(100% - 1rem);
+  max-width: none;
+  height: fit-content;
+  max-height: calc(100dvh - 2rem);
+  margin: auto auto 0.5rem;
+  gap: 1rem;
+  padding: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  overflow: auto;
+  overscroll-behavior: contain;
+  color: var(--bs-body-color);
+  border-radius: var(--sheen-radius-lg);
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  box-shadow: var(--sheen-surface-shadow), var(--sheen-shadow-lg);
+}
+.sheen-dialog:focus-visible {
+  outline: none;
+}
+@media (min-width: 576px) {
+  .sheen-dialog {
+    width: min(32rem, 100% - 2rem);
+    margin: auto;
+    padding-bottom: 1.5rem;
+  }
+}
+
+.sheen-dialog:where(:not(dialog), [open]) {
+  display: grid;
+}
+
+.sheen-dialog::before {
+  content: "";
+  justify-self: center;
+  width: 2.25rem;
+  height: 0.3125rem;
+  margin-block-start: -0.5rem;
+  border-radius: calc(1rem * var(--sheen-radius-scale));
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.18);
+}
+@media (min-width: 576px) {
+  .sheen-dialog::before {
+    display: none;
+  }
+}
+
+.sheen-dialog-header {
+  display: grid;
+  gap: 0.375rem;
+  text-align: center;
+}
+@media (min-width: 576px) {
+  .sheen-dialog-header {
+    padding-inline-end: 2rem;
+    text-align: start;
+  }
+}
+
+.sheen-dialog-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.sheen-dialog-description {
+  margin: 0;
+  color: var(--bs-secondary-color);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.sheen-dialog-footer {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+}
+@media (min-width: 576px) {
+  .sheen-dialog-footer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+
+.sheen-dialog-close {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-dialog-close {
+    transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+  }
+  .sheen-dialog-close:active {
+    transform: scale(0.88);
+    transition-duration: var(--sheen-duration-fast);
+  }
+}
+
+:root:has(dialog.sheen-dialog:modal) {
+  overflow: hidden;
+}
+
+.sheen-dialog-overlay[data-state=open],
+.sheen-dialog[open]::backdrop {
+  animation: sheen-fade-in var(--sheen-duration) var(--sheen-ease-out);
+}
+
+.sheen-dialog-overlay[data-state=closed] {
+  animation: sheen-fade-out var(--sheen-duration) var(--sheen-ease-in) forwards;
+}
+
+.sheen-dialog:where(:not(dialog), [open]) {
+  animation: sheen-fade-in var(--sheen-duration-fast) linear;
+}
+
+.sheen-dialog[data-state=closed] {
+  animation: sheen-fade-out var(--sheen-duration-fast) linear forwards;
+}
+
+dialog.sheen-dialog,
+dialog.sheen-dialog::backdrop {
+  transition: opacity var(--sheen-duration-fast) linear, display var(--sheen-duration-fast) allow-discrete, overlay var(--sheen-duration-fast) allow-discrete;
+}
+
+dialog.sheen-dialog:not([open]),
+dialog.sheen-dialog:not([open])::backdrop {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-dialog:where(:not(dialog), [open]) {
+    animation: sheen-sheet-in var(--sheen-duration-slow) var(--sheen-ease-out);
+  }
+  .sheen-dialog[data-state=closed] {
+    animation: sheen-sheet-out var(--sheen-duration) var(--sheen-ease-in) forwards;
+  }
+  dialog.sheen-dialog,
+  dialog.sheen-dialog::backdrop {
+    transition: opacity var(--sheen-duration) var(--sheen-ease-in), transform var(--sheen-duration) var(--sheen-ease-in), display var(--sheen-duration) allow-discrete, overlay var(--sheen-duration) allow-discrete;
+  }
+  dialog.sheen-dialog:not([open]) {
+    opacity: 1;
+    transform: translateY(105%);
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 576px) {
+  .sheen-dialog:where(:not(dialog), [open]) {
+    animation: sheen-zoom-in var(--sheen-duration-slow) var(--sheen-ease-spring);
+  }
+  .sheen-dialog[data-state=closed] {
+    animation: sheen-zoom-out var(--sheen-duration) var(--sheen-ease-in) forwards;
+  }
+  dialog.sheen-dialog:not([open]) {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}

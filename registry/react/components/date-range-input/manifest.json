@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "date-range-input",
+  "version": "0.1.0",
+  "description": "Source-owned date-range-input with Field integration.",
+  "requires": [
+    "foundation",
+    "field",
+    "input"
+  ],
+  "packages": {},
+  "styles": [
+    "components/date-range-input"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/date-range-input/date-range-input.tsx",
+      "target": "components/ui/date-range-input.tsx",
+      "type": "tsx",
+      "sha256": "cd86b3e3889985140c510a02f82f1e4ad1cb7c1c455d61400dc5ababbaf2ea6f"
+    },
+    {
+      "source": "theme/scss/components/_date-range-input.scss",
+      "target": "styles/sheenui/components/_date-range-input.scss",
+      "type": "scss",
+      "sha256": "fc1d620516ad5e0d7ba81a38927ef46fabb144f94fdf4edd843575a2602e2c56"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import * as React from "react"
 import { describe, expect, it, vi } from "vitest"
 
 import { SheenAppearanceScope, SheenThemeProvider } from "@/lib/theme"
-import { Button, buttonVariants } from "../../registry/react/button/button"
+import { Button, buttonVariants } from "../../registry/react/components/button/button"
 import { compileTheme } from "./compile-theme"
 
 describe("Button", () => {

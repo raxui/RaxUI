@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "form-section",
+  "version": "0.1.0",
+  "description": "Grouped settings sections, control rows, and navigation rows.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/form-section"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/form-section/form-section.tsx",
+      "target": "components/ui/form-section.tsx",
+      "type": "tsx",
+      "sha256": "9ff22baf7a1e69485faee1e60f36fdd795f8fbd2cd0b01c08b7db6053dce9984"
+    },
+    {
+      "source": "theme/scss/components/_form-section.scss",
+      "target": "styles/sheenui/components/_form-section.scss",
+      "type": "scss",
+      "sha256": "20b075da1844bd891e24641d590f20b06cb2b00c2808cabb398ace4efbdf0a3b"
+    }
+  ]
+}

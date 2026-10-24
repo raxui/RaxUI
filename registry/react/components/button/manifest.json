@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "button",
+  "version": "0.1.0",
+  "description": "Button with variants, sizes, semantic colors, asChild, and appearance.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/button"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/button/button.tsx",
+      "target": "components/ui/button.tsx",
+      "type": "tsx",
+      "sha256": "5510058e1d3f0d5e56076aa4f8c7155b2bee73c0004b479c526f9c6b8ea1a97a"
+    },
+    {
+      "source": "theme/scss/components/_button.scss",
+      "target": "styles/sheenui/components/_button.scss",
+      "type": "scss",
+      "sha256": "ad15e47ef1cbee512dd699971dba6ac896a28c2cfa51b86c0af8a4e0ca6ca7b7"
+    }
+  ]
+}

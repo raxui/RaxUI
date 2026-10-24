@@ -6,7 +6,7 @@ namespace SheenUI.Cli.Commands;
 
 public static class AddCommand
 {
-    private sealed record PlannedWrite(string TargetPath, string RelTarget, byte[] Bytes, string Hash);
+    private sealed record PlannedWrite(string TargetPath, string RelTarget, byte[] Bytes, string Hash, bool Keep = false);
 
     private sealed record PlannedComponent(ComponentManifest Manifest, string Folder, List<PlannedWrite> Writes);
 
@@ -60,11 +60,34 @@ public static class AddCommand
                 planned.Add(new PlannedComponent(manifest, folder, PlanWrites(workingDirectory, componentsDir, manifest, registry, lockFile)));
             }
 
+            // Plan the core edit too, before any component write.
+            var styleTargets = components.SelectMany(m => m.Assets).Select(a => a.Target).ToList();
+            var corePath = Path.Combine(workingDirectory, config.StylesPath, "sheenui.css");
+            byte[]? coreBytes = null;
+            LockedFile? coreTracked = null;
+            if (styleTargets.Count > 0)
+            {
+                ProjectPath.Validate(workingDirectory, corePath);
+                var relative = Path.GetRelativePath(workingDirectory, corePath).Replace('\\', '/');
+                var source = new EmbeddedRegistry().GetResourceBytes("styles/sheenui.css");
+                lockFile.EnsureSameSource(relative, EmbeddedRegistry.ComputeSha256(source));
+                coreTracked = lockFile.FindTrackedFile(relative);
+                var current = File.ReadAllBytes(corePath);
+                StyleImports.Verify(current, coreTracked, source);
+                coreBytes = StyleImports.Append(current, styleTargets);
+            }
+
             // 2. Write files, keeping originals for rollback
             foreach (var component in planned)
             {
                 foreach (var write in component.Writes)
-                    backup.Write(write.TargetPath, write.Bytes);
+                    if (!write.Keep) backup.Write(write.TargetPath, write.Bytes);
+            }
+
+            if (coreBytes != null)
+            {
+                backup.Write(corePath, coreBytes);
+                coreTracked!.InstalledHash = EmbeddedRegistry.ComputeSha256(coreBytes);
             }
 
             // 3. Update Components/_Imports.razor
@@ -80,7 +103,7 @@ public static class AddCommand
                     RegistryVersion = ReleaseIdentity.Version,
                     ManifestSha256 = component.Manifest.ManifestSha256,
                     Files = component.Writes
-                        .Select(w => new LockedFile { Target = w.RelTarget, SourceHash = w.Hash, InstalledHash = w.Hash })
+                        .Select(w => new LockedFile { Target = w.RelTarget, SourceHash = w.Hash, InstalledHash = w.Keep ? lockFile.FindTrackedFile(w.RelTarget)!.InstalledHash : w.Hash })
                         .ToList()
                 };
             }
@@ -101,7 +124,7 @@ public static class AddCommand
                 var role = component.Manifest == requested ? "Component" : "Dependency";
                 output.WriteLine($"{role} '{component.Manifest.Name}' installed successfully:");
                 foreach (var w in component.Writes)
-                    output.WriteLine($"  + {w.RelTarget}");
+                    output.WriteLine(w.Keep ? $"  = Kept local edits: {w.RelTarget}" : $"  + {w.RelTarget}");
             }
             foreach (var name in kept)
                 output.WriteLine($"Dependency '{name}' is already installed; kept as is.");
@@ -122,11 +145,14 @@ public static class AddCommand
     {
         var writes = new List<PlannedWrite>();
 
-        foreach (var file in manifest.Files)
+        var files = manifest.Files.Select(f => (Source: $"{manifest.SourceDirectory}/{f.Source}", f.Target, Style: false))
+            .Concat(manifest.Assets.Select(a => (Source: a.Source, a.Target, Style: true)));
+        var config = SheenUiConfig.Load(workingDirectory)!;
+        foreach (var file in files)
         {
-            var bytes = registry.GetResourceBytes($"{manifest.SourceDirectory}/{file.Source}");
+            var bytes = registry.GetResourceBytes(file.Source);
             var hash = EmbeddedRegistry.ComputeSha256(bytes);
-            var targetPath = Path.Combine(componentsDir, file.Target);
+            var targetPath = Path.Combine(file.Style ? Path.Combine(workingDirectory, config.StylesPath) : componentsDir, file.Target);
             ProjectPath.Validate(workingDirectory, targetPath);
             var relTarget = Path.GetRelativePath(workingDirectory, targetPath).Replace('\\', '/');
             lockFile.EnsureSameSource(relTarget, hash);
@@ -144,6 +170,11 @@ public static class AddCommand
 
                 if (!string.Equals(tracked.InstalledHash, existingHash, StringComparison.OrdinalIgnoreCase))
                 {
+                    if (file.Style)
+                    {
+                        writes.Add(new PlannedWrite(targetPath, relTarget, File.ReadAllBytes(targetPath), hash, Keep: true));
+                        continue;
+                    }
                     throw new InvalidOperationException(
                         $"Destination file '{relTarget}' was modified locally. Refusing to overwrite modified file.");
                 }

@@ -6,8 +6,8 @@ import { fileURLToPath } from "node:url"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../registry/blazor")
 const digest = file => createHash("sha256").update(readFileSync(file)).digest("hex")
-for (const name of readdirSync(path.join(root, "components"))) {
-  const folder = path.join(root, "components", name)
+for (const relative of ["starter", ...readdirSync(path.join(root, "components")).map(name => `components/${name}`)]) {
+  const folder = path.join(root, relative)
   const file = path.join(folder, "manifest.json")
   const manifest = JSON.parse(readFileSync(file, "utf8"))
   for (const entry of manifest.files) entry.sha256 = digest(path.join(folder, entry.source))

@@ -2,7 +2,7 @@ import * as React from "react"
 import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
-import { InputGroup, InputGroupItem } from "../../registry/react/input-group/input-group"
+import { InputGroup, InputGroupItem } from "../../registry/react/components/input-group/input-group"
 import { Wired, expectWiring } from "./control-test-utils"
 import { SheenThemeProvider } from "../../registry/react/foundation/theme"
 

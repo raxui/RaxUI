@@ -113,7 +113,7 @@ public class InstallationWorkflowTests : IDisposable
 
         lockFile = SheenUiLock.LoadOrCreate(_testDirectory);
         Assert.True(lockFile.Components.ContainsKey("button"));
-        Assert.Single(lockFile.Components["button"].Files);
+        Assert.Equal(2, lockFile.Components["button"].Files.Count);
     }
 
     [Fact]
@@ -175,7 +175,7 @@ public class InstallationWorkflowTests : IDisposable
         Assert.True(File.Exists(weather)); // the template layout was not replaced, so its pages stay
         Assert.Contains("Kept your Components/Layout/MainLayout.razor", output.ToString());
         Assert.Contains("Kept your Components/Pages/Home.razor", output.ToString());
-        Assert.False(SheenUiLock.LoadOrCreate(_testDirectory).Components.ContainsKey("starter"));
+        Assert.Equal("wwwroot/css/sheenui/starter.css", Assert.Single(SheenUiLock.LoadOrCreate(_testDirectory).Components["starter"].Files).Target);
     }
 
     [Fact]

@@ -2,7 +2,7 @@ import * as React from "react"
 import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
-import { Textarea } from "../../registry/react/textarea/textarea"
+import { Textarea } from "../../registry/react/components/textarea/textarea"
 import { Wired, expectWiring } from "./control-test-utils"
 
 describe("Textarea", () => {

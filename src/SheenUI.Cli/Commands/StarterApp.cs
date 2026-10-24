@@ -83,11 +83,15 @@ public static class StarterApp
         var deletes = new List<string>();
         var notes = new List<string>();
 
-        foreach (var file in manifest.Files)
+        var stylesPath = SheenUiConfig.Load(workingDirectory)?.StylesPath ?? "wwwroot/css/sheenui";
+        var files = manifest.Files.Select(f => (Source: $"{manifest.SourceDirectory}/{f.Source}",
+                Relative: f.Destination == "wwwroot" ? $"wwwroot/{f.Target}" : $"Components/{f.Target}", Style: false))
+            .Concat(manifest.Assets.Select(a => (Source: a.Source, Relative: $"{stylesPath}/{a.Target}", Style: true)));
+        foreach (var file in files)
         {
-            var relative = file.Destination == "wwwroot" ? $"wwwroot/{file.Target}" : $"Components/{file.Target}";
+            var relative = file.Relative;
             var fullPath = Resolve(workingDirectory, relative);
-            var bytes = registry.GetResourceBytes($"{manifest.SourceDirectory}/{file.Source}");
+            var bytes = registry.GetResourceBytes(file.Source);
             var hash = EmbeddedRegistry.ComputeSha256(bytes);
             var tracked = lockFile.FindTrackedFile(relative);
 
@@ -99,7 +103,7 @@ public static class StarterApp
                 else if (File.Exists(fullPath) && Hash(fullPath) == tracked.InstalledHash)
                     writes.Add(new Write(fullPath, relative, bytes, hash));
             }
-            else if (IsTemplate(fullPath, relative))
+            else if ((file.Style && !File.Exists(fullPath)) || IsTemplate(fullPath, relative))
             {
                 writes.Add(new Write(fullPath, relative, bytes, hash));
             }

@@ -13,11 +13,11 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/ui/popover": ["registry/react/popover/popover.tsx"],
-      "@/components/ui/input": ["registry/react/input/input.tsx"],
-      "@/components/ui/field": ["registry/react/field/field.tsx"],
+      "@/components/ui/popover": ["registry/react/components/popover/popover.tsx"],
+      "@/components/ui/input": ["registry/react/components/input/input.tsx"],
+      "@/components/ui/field": ["registry/react/components/field/field.tsx"],
       "@/lib/*": ["registry/react/foundation/*"],
-      "@/components/ui/button": ["registry/react/button/button.tsx"]
+      "@/components/ui/button": ["registry/react/components/button/button.tsx"]
     }
   },
   "include": ["registry/react", "tests/react"],

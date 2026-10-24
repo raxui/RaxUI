@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import { SheenThemeProvider } from "@/lib/theme"
 import { Button } from "@/components/ui/button"
-import { ConfirmDialog } from "../../registry/react/confirm-dialog/confirm-dialog"
+import { ConfirmDialog } from "../../registry/react/components/confirm-dialog/confirm-dialog"
 
 describe("ConfirmDialog", () => {
   it("is a named alert dialog in the theme root, focuses Cancel, and cancels on Escape", async () => {

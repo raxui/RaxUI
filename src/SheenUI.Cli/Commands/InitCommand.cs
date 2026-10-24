@@ -6,7 +6,7 @@ namespace SheenUI.Cli.Commands;
 
 public static class InitCommand
 {
-    // The shared theme compiled for Blazor: tokens, appearances, accents, and component styles (ADR 007).
+    // Core theme only; component and starter assets are separately owned (ADR 015).
     private static readonly (string Source, string TargetName)[] SharedAssets =
     [
         ("styles/sheenui.css", "sheenui.css"),
@@ -69,7 +69,6 @@ public static class InitCommand
 
                 if (File.Exists(targetPath))
                 {
-                    var existingHash = EmbeddedRegistry.ComputeSha256(File.ReadAllBytes(targetPath));
                     var tracked = lockFile.FindTrackedFile(relTarget);
 
                     if (tracked == null)
@@ -78,13 +77,11 @@ public static class InitCommand
                             $"File '{relTarget}' already exists and is not managed by SheenUI. Refusing to overwrite unknown file.");
                     }
 
-                    if (!string.Equals(tracked.InstalledHash, existingHash, StringComparison.OrdinalIgnoreCase))
-                    {
-                        throw new InvalidOperationException(
-                            $"File '{relTarget}' was modified locally. Refusing to overwrite.");
-                    }
+                    StyleImports.Verify(File.ReadAllBytes(targetPath), tracked, bytes);
+                    bytes = File.ReadAllBytes(targetPath);
                 }
 
+                bytes = StyleImports.Append(bytes, ["starter.css"]);
                 plannedWrites.Add((targetPath, relTarget, bytes, hash));
             }
 
@@ -103,7 +100,7 @@ public static class InitCommand
                 {
                     Target = write.RelTarget,
                     SourceHash = write.Hash,
-                    InstalledHash = write.Hash
+                    InstalledHash = EmbeddedRegistry.ComputeSha256(write.Bytes)
                 };
             }
 

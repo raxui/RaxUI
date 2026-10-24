@@ -10,11 +10,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/autocomplete.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/autocomplete.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "349615785e18d5209d0480a3f67d3fe08912cff334517c49752ac7c34e40c8e0"
     }
   ],
   "files": [

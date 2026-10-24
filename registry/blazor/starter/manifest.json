@@ -4,7 +4,15 @@
   "version": "0.1.0",
   "description": "App layout, welcome page, and a minimal app.css that replace the unmodified Blazor template files.",
   "dependencies": [],
-  "assets": [],
+  "assets": [
+    {
+      "source": "starter/starter.css",
+      "destination": "styles",
+      "target": "starter.css",
+      "type": "css",
+      "sha256": "027cb5b55ea5e1c45aa3f82edf1e31bc3d4be6e3da344ff19578f6bc1f4ace2d"
+    }
+  ],
   "files": [
     {
       "source": "MainLayout.razor",

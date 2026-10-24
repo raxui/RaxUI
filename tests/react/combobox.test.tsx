@@ -2,7 +2,7 @@ import * as React from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
-import { Combobox } from "../../registry/react/combobox/combobox"
+import { Combobox } from "../../registry/react/components/combobox/combobox"
 import { Wired, expectWiring } from "./control-test-utils"
 
 const options = [{ value: "a", label: "Alpha" }, { value: "b", label: "Beta", disabled: true }, { value: "g", label: "Gamma" }]

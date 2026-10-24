@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "select",
+  "version": "0.1.0",
+  "description": "Source-owned select with Field integration.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {
+    "@radix-ui/react-select": "2.4.1"
+  },
+  "styles": [
+    "components/select"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/select/select.tsx",
+      "target": "components/ui/select.tsx",
+      "type": "tsx",
+      "sha256": "e91723efa691846b94d07c9b762fceb0486a178c46abaf8e6f07ab69809e5bcc"
+    },
+    {
+      "source": "theme/scss/components/_select.scss",
+      "target": "styles/sheenui/components/_select.scss",
+      "type": "scss",
+      "sha256": "2965fc439eddfbc54e8d494883de5cc60064e0706d8c2dc779cb8f741e6a8c7d"
+    }
+  ]
+}

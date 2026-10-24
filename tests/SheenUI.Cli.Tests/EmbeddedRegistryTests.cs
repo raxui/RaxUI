@@ -109,7 +109,13 @@ public class EmbeddedRegistryTests
         var manifest = _registry.GetComponentManifest(name);
 
         Assert.Contains(manifest.Files, f => f.Type == "js" && f.Target == module);
-        Assert.Equal(_registry.GetComponentManifest("button").Assets.Single().Sha256, manifest.Assets.Single().Sha256);
+        if (name == "form") Assert.Empty(manifest.Assets);
+        else
+        {
+            var asset = Assert.Single(manifest.Assets);
+            Assert.Equal($"components/{name}.css", asset.Target);
+            Assert.Equal(EmbeddedRegistry.ComputeSha256(_registry.GetResourceBytes(asset.Source)), asset.Sha256);
+        }
     }
 
     [Theory]
@@ -215,6 +221,19 @@ public class EmbeddedRegistryTests
 
         var ex = Assert.Throws<InvalidOperationException>(() => _registry.ValidateManifest(manifest));
         Assert.Contains("integrity check failed", ex.Message);
+    }
+
+    [Theory]
+    [InlineData("styles/sheenui.css", "sheenui.css")]
+    [InlineData("styles/components/dialog.css", "components/dialog.css")]
+    [InlineData("styles/components/button.css", "button.css")]
+    public void ValidateManifest_rejects_assets_outside_the_components_own_css(string source, string target)
+    {
+        var manifest = _registry.GetComponentManifest("button");
+        manifest.Assets[0].Source = source;
+        manifest.Assets[0].Target = target;
+        var ex = Assert.Throws<InvalidOperationException>(() => _registry.ValidateManifest(manifest));
+        Assert.Contains("Unsupported CSS asset path", ex.Message);
     }
 
     [Fact]

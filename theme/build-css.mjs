@@ -1,34 +1,46 @@
-// Compiles the shared theme for the Blazor library (ADR 007): theme core plus every component's
-// styles, without Bootstrap, which the Blazor template already ships precompiled.
-//   node theme/build-css.mjs          writes registry/blazor/styles/sheenui.css
-//   node theme/build-css.mjs --check  exits 1 when the committed file is stale
-import { readFileSync, writeFileSync } from "node:fs"
+// Blazor core and independently compiled component assets (ADR 015).
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as sass from "sass"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
-const output = path.join(root, "registry/blazor/styles/sheenui.css")
-const COMPONENTS = ["button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form-section", "starter", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "slider", "rating", "date-input", "time-picker", "date-time-input", "date-range-input", "file-upload", "popover", "combobox", "autocomplete"]
-
-export function compileBlazorTheme() {
-  const entry = ['@import "core";', ...COMPONENTS.map((name) => `@import "components/${name}";`)].join("\n")
-  const css = sass.compileString(entry, {
+const header = "/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */\n"
+function compile(entry) {
+  return header + sass.compileString(entry, {
     loadPaths: [path.join(root, "theme/scss")],
     silenceDeprecations: ["import", "global-builtin", "color-functions", "if-function"],
-  }).css
-  return `/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */\n${css}\n`
+  }).css.trimEnd() + "\n"
 }
-
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const css = compileBlazorTheme()
-  if (process.argv.includes("--check")) {
-    if (readFileSync(output, "utf8") !== css) {
-      console.error("registry/blazor/styles/sheenui.css is stale. Run: npm run theme:css")
-      process.exit(1)
-    }
-  } else {
-    writeFileSync(output, css)
-    console.log("wrote registry/blazor/styles/sheenui.css")
+export function compileBlazorTheme() {
+  // Imports must precede every CSS rule. The CLI edits only this marked list.
+  return "/* sheenui:imports:start */\n/* sheenui:imports:end */\n" + compile('@import "core";')
+}
+export function compileBlazorAssets() {
+  const assets = new Map([["registry/blazor/styles/sheenui.css", compileBlazorTheme()]])
+  for (const file of readdirSync(path.join(root, "theme/scss/components"))) {
+    if (!/^_.+\.scss$/.test(file) || file === "_input-mixins.scss") continue
+    const name = file.slice(1, -5)
+    const target = name === "starter" ? "registry/blazor/starter/starter.css" : `registry/blazor/styles/components/${name}.css`
+    // These partials contain definitions only; runtime tokens are emitted once by core.
+    assets.set(target, compile(`@import "variables"; @import "mixins"; @import "components/${name}";`))
   }
+  return assets
+}
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  let stale = false
+  for (const [relative, css] of compileBlazorAssets()) {
+    const target = path.join(root, relative)
+    if (process.argv.includes("--check")) {
+      if (!existsSync(target) || readFileSync(target, "utf8") !== css) {
+        console.error(`${relative} is stale. Run: npm run theme:css`)
+        stale = true
+      }
+    } else {
+      mkdirSync(path.dirname(target), { recursive: true })
+      writeFileSync(target, css)
+      console.log(`wrote ${relative}`)
+    }
+  }
+  if (stale) process.exitCode = 1
 }

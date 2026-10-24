@@ -2,7 +2,7 @@ import * as React from "react"
 import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
-import { Input, PasswordInput } from "../../registry/react/input/input"
+import { Input, PasswordInput } from "../../registry/react/components/input/input"
 import { Wired, expectWiring } from "./control-test-utils"
 
 describe("Input", () => {
