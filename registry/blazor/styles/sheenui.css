@@ -3727,3 +3727,310 @@ select.sheen-select-trigger {
 .sheen-rating-option .sheen-rating-star, .sheen-rating-option .sheen-rating-clear {
   pointer-events: none;
 }
+
+.sheen-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity var(--sheen-duration) ease;
+}
+.sheen-date-input:focus::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+.sheen-date-input:disabled::-webkit-calendar-picker-indicator {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-date-input::-webkit-calendar-picker-indicator {
+    transition: none;
+  }
+}
+.sheen-time-picker::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity var(--sheen-duration) ease;
+}
+.sheen-time-picker:focus::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+.sheen-time-picker:disabled::-webkit-calendar-picker-indicator {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-time-picker::-webkit-calendar-picker-indicator {
+    transition: none;
+  }
+}
+.sheen-date-time-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity var(--sheen-duration) ease;
+}
+.sheen-date-time-input:focus::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+.sheen-date-time-input:disabled::-webkit-calendar-picker-indicator {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-date-time-input::-webkit-calendar-picker-indicator {
+    transition: none;
+  }
+}
+.sheen-date-range-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sheen-date-range-input > .sheen-input {
+  min-width: 0;
+  flex: 1;
+}
+
+.sheen-date-range-input input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.sheen-date-range-input input:focus::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+.sheen-date-range-input > .sheen-input-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.sheen-file-upload {
+  color: var(--bs-body-color);
+}
+
+.sheen-upload-zone {
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: calc(var(--sheen-control-height) * 0.65);
+  border: 2px dashed var(--sheen-border-color);
+  border-radius: var(--sheen-radius);
+  cursor: pointer;
+  text-align: center;
+}
+.sheen-upload-zone:focus-within, .sheen-upload-zone[data-dragging] {
+  border-color: var(--bs-primary);
+  background-color: rgba(var(--bs-primary-rgb), 0.08);
+}
+.sheen-upload-zone:focus-within {
+  outline: 3px solid rgba(var(--bs-primary-rgb), 0.25);
+  outline-offset: 2px;
+}
+.sheen-upload-zone[data-disabled] {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.sheen-file-upload .sheen-upload-zone > svg {
+  width: 2rem;
+  height: 2rem;
+  color: var(--bs-primary);
+}
+
+.sheen-upload-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.sheen-upload-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.sheen-upload-file {
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: var(--sheen-radius-sm);
+}
+.sheen-upload-file > span {
+  overflow-wrap: anywhere;
+}
+.sheen-upload-file > button {
+  background: transparent;
+  border: 0;
+  color: var(--bs-secondary-color);
+  border-radius: var(--sheen-radius-sm);
+}
+.sheen-upload-file > .progress {
+  grid-column: 1/-1;
+  height: 0.25rem;
+}
+
+@keyframes sheen-upload-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes sheen-upload-float {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-upload-file {
+    animation: sheen-upload-in 240ms var(--sheen-ease-out);
+  }
+  .sheen-upload-zone[data-dragging] > svg {
+    animation: sheen-upload-float 700ms ease-in-out infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheen-file-upload .progress-bar {
+    transition: none;
+  }
+}
+.sheen-upload-file button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.sheen-popover {
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  z-index: 1060;
+  min-width: 12rem;
+  max-width: calc(100vw - 1rem);
+  max-height: min(24rem, 100vh - 1rem);
+  margin: 0;
+  padding: 0.75rem;
+  border-radius: var(--sheen-radius);
+  color: var(--bs-body-color);
+  box-shadow: var(--sheen-surface-shadow), var(--sheen-shadow-md);
+  overflow: auto;
+  transform-origin: var(--radix-popover-content-transform-origin, top);
+}
+.sheen-popover[popover] {
+  position: fixed;
+  inset: auto;
+}
+
+@keyframes sheen-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-popover:popover-open, .sheen-popover[data-state=open] {
+    animation: sheen-popover-in 180ms var(--sheen-ease-spring);
+  }
+}
+.sheen-choice-option {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--sheen-radius-sm);
+  cursor: default;
+}
+
+.sheen-choice-option[data-active] {
+  background: rgba(var(--bs-primary-rgb), 0.12);
+}
+
+.sheen-choice-option[aria-selected=true] {
+  color: var(--bs-primary);
+  font-weight: 600;
+}
+
+.sheen-choice-option[aria-disabled=true] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.sheen-choice-empty {
+  margin: 0;
+  padding: 0.75rem;
+  color: var(--bs-secondary-color);
+}
+
+.sheen-combobox-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: start;
+}
+
+.sheen-combobox-trigger > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sheen-combobox-trigger.sheen-input > svg {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  margin-inline-start: 0.5rem;
+}
+
+.sheen-combobox-panel {
+  padding: 0.25rem;
+  min-width: var(--radix-popover-trigger-width, 14rem);
+}
+
+.sheen-combobox-panel > .sheen-input {
+  margin-block-end: 0.25rem;
+}
+
+.sheen-combobox-panel [role=listbox] {
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+.sheen-autocomplete-panel {
+  padding: 0.25rem;
+  min-width: var(--radix-popover-trigger-width, 14rem);
+}
+
+.sheen-autocomplete-panel [role=listbox] {
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-autocomplete-panel .spinner-border {
+    animation: none;
+  }
+}

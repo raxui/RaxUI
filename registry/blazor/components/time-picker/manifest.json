@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "name": "time-picker",
+  "version": "0.1.0",
+  "description": "Source-owned time-picker with Field integration.",
+  "dependencies": [
+    "field",
+    "input"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+    }
+  ],
+  "files": [
+    {
+      "source": "TimePicker.razor",
+      "destination": "components",
+      "target": "TimePicker/TimePicker.razor",
+      "type": "razor",
+      "sha256": "3d8c077ad1b58a75c24357567f7098fe731cc195c013b0e42e1b6f6abfca5ec6"
+    }
+  ]
+}

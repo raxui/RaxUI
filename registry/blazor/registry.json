@@ -59,6 +59,14 @@
     {
       "name": "select",
       "manifest": "components/select/manifest.json"
-    }
+    },
+    { "name": "date-input", "manifest": "components/date-input/manifest.json" },
+    { "name": "time-picker", "manifest": "components/time-picker/manifest.json" },
+    { "name": "date-time-input", "manifest": "components/date-time-input/manifest.json" },
+    { "name": "date-range-input", "manifest": "components/date-range-input/manifest.json" },
+    { "name": "file-upload", "manifest": "components/file-upload/manifest.json" },
+    { "name": "popover", "manifest": "components/popover/manifest.json" },
+    { "name": "combobox", "manifest": "components/combobox/manifest.json" },
+    { "name": "autocomplete", "manifest": "components/autocomplete/manifest.json" }
   ]
 }

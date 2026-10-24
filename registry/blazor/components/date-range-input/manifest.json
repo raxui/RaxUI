@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "name": "date-range-input",
+  "version": "0.1.0",
+  "description": "Source-owned date-range-input with Field integration.",
+  "dependencies": [
+    "field",
+    "input"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+    }
+  ],
+  "files": [
+    {
+      "source": "DateRangeInput.razor",
+      "destination": "components",
+      "target": "DateRangeInput/DateRangeInput.razor",
+      "type": "razor",
+      "sha256": "bb411fe55dff867462f51f093f5b186ee9134a718088b5913a8285660127fc4f"
+    }
+  ]
+}

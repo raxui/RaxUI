@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "popover",
+  "version": "0.1.0",
+  "description": "Source-owned popover with Field integration.",
+  "dependencies": [
+    "field"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+    }
+  ],
+  "files": [
+    {
+      "source": "Popover.razor",
+      "destination": "components",
+      "target": "Popover/Popover.razor",
+      "type": "razor",
+      "sha256": "415af61b5649acc196c2f5380c451036cf5fe68f708b04170dfdcd9c8bbe5a13"
+    },
+    {
+      "source": "Popover.razor.js",
+      "destination": "components",
+      "target": "Popover/Popover.razor.js",
+      "type": "js",
+      "sha256": "a87d666bc1a46e323a5c4c7a9c1b37f330043e3865f0b1df5bb2e9f4a813fa8c"
+    }
+  ]
+}

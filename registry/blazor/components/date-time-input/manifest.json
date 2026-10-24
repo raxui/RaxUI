@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "name": "date-time-input",
+  "version": "0.1.0",
+  "description": "Source-owned date-time-input with Field integration.",
+  "dependencies": [
+    "field",
+    "input"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+    }
+  ],
+  "files": [
+    {
+      "source": "DateTimeInput.razor",
+      "destination": "components",
+      "target": "DateTimeInput/DateTimeInput.razor",
+      "type": "razor",
+      "sha256": "983447cb6c7224c47a1d26af2bd42cad2ad6de7abaa86a2bbed61526099ca4e3"
+    }
+  ]
+}

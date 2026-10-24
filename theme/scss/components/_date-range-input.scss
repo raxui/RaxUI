@@ -1,0 +1,7 @@
+.sheen-date-range-input { display: flex; align-items: center; gap: 0.5rem; }
+.sheen-date-range-input > .sheen-input { min-width: 0; flex: 1; }
+
+.sheen-date-range-input input::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.65; }
+.sheen-date-range-input input:focus::-webkit-calendar-picker-indicator { opacity: 1; }
+
+.sheen-date-range-input > .sheen-input-group { flex: 1; min-width: 0; }

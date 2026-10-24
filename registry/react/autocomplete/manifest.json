@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "autocomplete",
+  "version": "0.1.0",
+  "description": "Source-owned autocomplete with Field integration.",
+  "requires": [
+    "foundation",
+    "field",
+    "input",
+    "popover"
+  ],
+  "packages": {},
+  "styles": [
+    "components/autocomplete"
+  ],
+  "files": [
+    {
+      "source": "registry/react/autocomplete/autocomplete.tsx",
+      "target": "components/ui/autocomplete.tsx",
+      "type": "tsx",
+      "sha256": "eb2aeea0d4febda6a058e1446c5b9482d9461ca6f391c10f333a2b859834ee0f"
+    },
+    {
+      "source": "theme/scss/components/_autocomplete.scss",
+      "target": "styles/sheenui/components/_autocomplete.scss",
+      "type": "scss",
+      "sha256": "3d7623e43c35eeea638cc667558ce314093eb2bd1c1a19d0c7730a0cb678565e"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "combobox",
+  "version": "0.1.0",
+  "description": "Source-owned combobox with Field integration.",
+  "dependencies": [
+    "field",
+    "input",
+    "popover"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+    }
+  ],
+  "files": [
+    {
+      "source": "Combobox.razor",
+      "destination": "components",
+      "target": "Combobox/Combobox.razor",
+      "type": "razor",
+      "sha256": "9456cca24cc097867b9389fed9308dd1c24c90c38adea39020a22d5e0a0239e7"
+    }
+  ]
+}

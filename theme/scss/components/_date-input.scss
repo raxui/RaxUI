@@ -1,0 +1,7 @@
+.sheen-date-input {
+  &::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.65; transition: opacity var(--sheen-duration) ease; }
+  &:focus::-webkit-calendar-picker-indicator { opacity: 1; }
+  &:disabled::-webkit-calendar-picker-indicator { cursor: default; }
+}
+// Bootstrap's data-bs-theme="dark" supplies color-scheme: dark; Firefox keeps its native icon.
+@media (prefers-reduced-motion: reduce) { .sheen-date-input::-webkit-calendar-picker-indicator { transition: none; } }
