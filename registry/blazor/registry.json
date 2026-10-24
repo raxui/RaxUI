@@ -67,6 +67,15 @@
     { "name": "file-upload", "manifest": "components/file-upload/manifest.json" },
     { "name": "popover", "manifest": "components/popover/manifest.json" },
     { "name": "combobox", "manifest": "components/combobox/manifest.json" },
-    { "name": "autocomplete", "manifest": "components/autocomplete/manifest.json" }
+    { "name": "autocomplete", "manifest": "components/autocomplete/manifest.json" },
+    { "name": "alert", "manifest": "components/alert/manifest.json" },
+    { "name": "badge", "manifest": "components/badge/manifest.json" },
+    { "name": "avatar", "manifest": "components/avatar/manifest.json" },
+    { "name": "card", "manifest": "components/card/manifest.json" },
+    { "name": "skeleton", "manifest": "components/skeleton/manifest.json" },
+    { "name": "spinner", "manifest": "components/spinner/manifest.json" },
+    { "name": "progress", "manifest": "components/progress/manifest.json" },
+    { "name": "table", "manifest": "components/table/manifest.json" },
+    { "name": "timeline", "manifest": "components/timeline/manifest.json" }
   ]
 }

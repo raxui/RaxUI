@@ -556,3 +556,78 @@ an autocomplete input while an aria-activedescendant identifies its suggestion.
 Autocomplete Home/End navigate while suggestions are open. Both listboxes expose
 selection with aria-selected; pending async results expose aria-busy and a Bootstrap
 spinner with translated status text. Reduced motion disables pop-in and spinner motion.
+
+## Display basics
+
+Install `alert`, `badge`, `avatar`, `card`, `skeleton`, `spinner`, `progress`,
+`table`, or `timeline` with `npx sheenui-react add <name>`. Each requires only
+foundation. Avatar pins Radix Avatar **1.3.1**; Progress pins Radix Progress
+**1.2.1**; Badge, Card and Skeleton reuse Radix Slot **1.5.0**. No icon package is
+required. Roots accept `appearance` (default/flat/glass; unset inherits),
+`className`, native attributes and forwarded refs. Theme, accents, dark mode,
+density and RTL inherit from the enclosing provider or DOM boundary. These
+components have no portals.
+
+```tsx
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarImage, AvatarFallback, AvatarBadge } from "@/components/ui/avatar"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
+import { Skeleton, SkeletonText } from "@/components/ui/skeleton"
+import { Spinner } from "@/components/ui/spinner"
+import { Progress } from "@/components/ui/progress"
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableCaption } from "@/components/ui/table"
+import { Timeline, TimelineItem } from "@/components/ui/timeline"
+
+export function DisplayBasics() {
+  return <>
+    <Alert tone="success" title="Saved" dismissible dismissLabel="Dismiss message">
+      <AlertDescription>Your changes are ready.</AlertDescription>
+    </Alert>
+    <Badge color="success" dot="pulse">Live</Badge>
+    <Avatar size="lg">
+      <AvatarImage src="/people/saad.jpg" alt="Saad" />
+      <AvatarFallback name="Saad Alsaree" />
+      <AvatarBadge status="online" label="Available" />
+    </Avatar>
+    <Card appearance="glass"><CardHeader><CardTitle>Account</CardTitle>
+      <CardDescription>Your details</CardDescription></CardHeader>
+      <CardContent>Profile information</CardContent><CardFooter>Updated today</CardFooter>
+    </Card>
+    <Skeleton shape="circle" width={40} />
+    <SkeletonText lines={3} />
+    <Spinner label="Loading account" size="sm" color="primary" />
+    <Progress label="Upload" value={25} max={50} showValue />
+    <Progress accessibleLabel="Preparing files" value={null} />
+    <Table density="compact" striped><TableCaption>People</TableCaption>
+      <TableHeader><TableRow><TableHead>Name</TableHead></TableRow></TableHeader>
+      <TableBody><TableRow><TableCell>Saad</TableCell></TableRow></TableBody>
+    </Table>
+    <Timeline labels={{ current: "Active" }}>
+      <TimelineItem title="Placed" status="done" time="09:00" dateTime="2026-10-24T09:00" />
+      <TimelineItem title="Delivery" status="current" description="On the way" />
+    </Timeline>
+  </>
+}
+```
+
+| Item | Props and defaults |
+| --- | --- |
+| Alert | `tone="info"` (success/warning/danger/neutral), `variant="tinted"` (outline/solid/glass), `icon=true` (false or custom node), `title`, `dismissible=false`, `open` / `defaultOpen=true` / `onOpenChange`, `dismissLabel="Dismiss"`. Parts: AlertTitle, AlertDescription, AlertActions. Warning/danger announce assertively; other tones politely. Dismissal collapses then unmounts; reduced motion removes it immediately. |
+| Badge | `variant="tinted"` (solid/outline/glass), `color="primary"` (secondary/success/warning/danger/info/neutral), `size="default"` (sm/lg), `shape="pill"` (rounded), `dot` (true or pulse), `onRemove`, `removeLabel="Remove"`, `asChild=false`. With asChild supply dot/remove content yourself. `BadgeCount`: required count, `max=99`, dot, showZero, `color="danger"`, `placement="top-end"` (bottom-end), `getLabel(count)` defaults to ?N notifications?. |
+| Avatar | `size="default"` (xs/sm/lg/xl), `shape="circle"` (rounded), `ring=false`. AvatarImage takes native image props including alt; Radix shows it after successful loading. AvatarFallback takes name (initials and stable tint), `fallbackLabel="Avatar"`, optional children and delayMs. AvatarBadge takes required status (online/away/busy/offline) and label (defaults to status). AvatarGroup takes max, size, and `getMoreLabel(count)` (defaults to ?N more?). `getInitials(name)` supports Unicode and skips Arabic ??. |
+| Card | `variant="default"` (tinted/outline), `interactive=false`, `asChild=false`. Parts: CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter. For an interactive card use asChild with a native link/button; interactive supplies visual feedback only. CardTitle is a div; supply a heading when needed. |
+| Skeleton | `shape="rect"` (circle/pill/text), width/height (numbers in px or CSS strings), `animation="shimmer"` (pulse/none), `loading=true`. With children, loading hides and makes content inert, then reveals it; without children it is decorative. SkeletonText takes `lines=3`, `lastLineWidth="60%"`, animation. |
+| Spinner | `label="Loading"`, `size="default"` (sm/lg), `color="primary"` (secondary/success/warning/danger/info/neutral), native SVG attributes. Role status; pass aria-hidden when the parent announces loading. Stops with reduced motion. Existing inline Bootstrap spinners remain unchanged. |
+| Progress | Nullable value (null/undefined = indeterminate), `max=100`, label, `accessibleLabel="Progress"`, showValue, `formatValue(value,max)` (percentage), Radix getValueLabel, `size="default"` (sm/lg), `color="primary"` (success/warning/danger/info/neutral), segments, successOnComplete. Values clamp to 0..max; invalid maxima use 100, nonfinite values are indeterminate. Indeterminate bars omit aria-valuenow and stay visible without motion. ProgressCircle takes value/max/color, `size=56` px, thickness, showValue (true at 40px+), formatValue, successOnComplete and center children; supply aria-label. |
+| Table | density (inherits; comfortable/compact), `hover=true`, `striped=false`, `stickyHeader=false`, containerClassName/containerStyle. Parts: TableHeader, TableBody, TableFooter, TableRow, TableHead (`scope="col"`), TableCell, TableCaption. Native table attributes and refs pass through; row headers use scope=row. Give the container maxHeight for sticky headers. No sorting or paging. |
+| Timeline | `layout="start"` (alternate/horizontal), `timePosition="inline"` (side), `size="default"` (sm), `animated=true`, labels overrides for done/current/upcoming/error (completed/in progress/upcoming/failed). TimelineItem takes `status="done"`, tone (primary/success/warning/danger/info/neutral; inferred), marker, time, dateTime, title, description and children. Current events expose aria-current=step. TimelineGroup supplies list headings. `relativeTime(date, {locale, now, maxDays=30})` formats relative times; pass an explicit now for deterministic SSR. |
+
+All built-in words are translatable through props, including removal/dismiss
+labels, avatar fallback/presence/overflow labels, progress formatting, and timeline
+statuses. Inline built-in icons use Lucide paths (ISC); custom slots accept any
+markup and use two-class sizing. Reduced motion disables shimmer, pulsing,
+entrance, collapse and spinner motion. Table and Timeline keep their native list
+and table semantics. React retains boot-ui's optional helpers (BadgeCount,
+AvatarGroup, ProgressCircle); Blazor's phase-one API focuses on the display basics
+and vertical timeline.

@@ -1,0 +1,18 @@
+@* SheenUI Table. Source-owned: edit freely. Styled by the table component CSS. *@
+<div class="@($"sheen-table-container {ContainerClass}")" style="@ContainerStyle">
+    <table data-density="@Density" @attributes="AdditionalAttributes" class="@($"table sheen-table {(Hover ? "table-hover" : "")} {(Striped ? "table-striped" : "")} {(Density == "compact" ? "sheen-table-compact" : "")} {(StickyHeader ? "sheen-table-sticky" : "")} {Class}")" data-sheen-appearance="@Appearance">@ChildContent</table>
+</div>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+    /// <summary>Extra CSS classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public string? Density { get; set; }
+    [Parameter] public bool Hover { get; set; } = true;
+    [Parameter] public bool Striped { get; set; }
+    [Parameter] public bool StickyHeader { get; set; }
+    [Parameter] public string? ContainerClass { get; set; }
+    [Parameter] public string? ContainerStyle { get; set; }
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "timeline",
+  "version": "0.1.0",
+  "description": "Source-owned timeline display components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {},
+  "styles": [
+    "components/timeline"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/timeline/timeline.tsx",
+      "target": "components/ui/timeline.tsx",
+      "type": "tsx",
+      "sha256": "177f31de2f02665156b9af460bb8114d89426990d3adc99ad2a0e86cd7b995aa"
+    },
+    {
+      "source": "theme/scss/components/_timeline.scss",
+      "target": "styles/sheenui/components/_timeline.scss",
+      "type": "scss",
+      "sha256": "763f3ead950cc4a741ccd5412b0661867c9140591c55105aab8cb2c41aa476ab"
+    }
+  ]
+}

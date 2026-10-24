@@ -1,0 +1,14 @@
+@* SheenUI SkeletonText. Source-owned: edit freely. Styled by the skeleton component CSS. *@
+<span @attributes="AdditionalAttributes" class="@($"sheen-skeleton-text {Class}")" aria-hidden="true" data-sheen-appearance="@Appearance">
+    @for (var i = 0; i < Lines; i++) { <Skeleton Shape="text" Animation="@Animation" Width="@(i == Lines - 1 && Lines > 1 ? LastLineWidth : "100%")" /> }
+</span>
+@code {
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+    /// <summary>Extra CSS classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public int Lines { get; set; } = 3;
+    [Parameter] public string LastLineWidth { get; set; } = "60%";
+    [Parameter] public string Animation { get; set; } = "shimmer";
+}

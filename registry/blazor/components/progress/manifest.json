@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "name": "progress",
+  "version": "0.1.0",
+  "description": "Source-owned progress display components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/progress.css",
+      "destination": "styles",
+      "target": "components/progress.css",
+      "type": "css",
+      "sha256": "bce9d749e353310f88ca979729e136ac430a3615d1cb33315fc1211801c08035"
+    }
+  ],
+  "files": [
+    {
+      "source": "Progress.razor",
+      "destination": "components",
+      "target": "Progress/Progress.razor",
+      "type": "razor",
+      "sha256": "9f5edb4195294140f7562f0aff0d76d9711a3e7d7b2e282912932567779230bf"
+    }
+  ]
+}

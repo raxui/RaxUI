@@ -1,0 +1,123 @@
+// -----------------------------------------------------------------------------
+// Skeleton — calm placeholders. The shimmer is a soft band of light (not a
+// colour gradient) painted with `background-attachment: fixed`, so one sweep
+// travels across every skeleton on screen in sync instead of each flashing on
+// its own. Content mode hides real children in place (exact layout) and fades
+// them in when loading ends.
+// -----------------------------------------------------------------------------
+
+:root,
+[data-bs-theme="light"] {
+  --sheen-skeleton-base: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  --sheen-skeleton-highlight: rgba(255, 255, 255, 0.65);
+}
+
+[data-bs-theme="dark"] {
+  --sheen-skeleton-base: rgba(255, 255, 255, 0.08);
+  --sheen-skeleton-highlight: rgba(255, 255, 255, 0.07);
+}
+
+@mixin skeleton-shimmer($important: null) {
+  background-image: linear-gradient(100deg, transparent 30%, var(--sheen-skeleton-highlight) 50%, transparent 70%) $important;
+  background-repeat: no-repeat $important;
+  background-size: 60vw 100% $important;
+  background-attachment: fixed $important;
+  animation: sheen-skeleton-shimmer 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+.sheen-skeleton {
+  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  background-color: var(--sheen-skeleton-base);
+  user-select: none;
+  pointer-events: none;
+
+  &:not([data-content]) {
+    display: block;
+    flex-shrink: 0;
+    max-width: 100%;
+    height: 1rem;
+  }
+
+  &[data-shape="circle"] {
+    align-self: flex-start;
+    aspect-ratio: 1;
+    width: 2.5rem;
+    height: auto;
+    border-radius: 50%;
+  }
+
+  &[data-shape="pill"] {
+    border-radius: 999px;
+  }
+
+  // One line of text: sized from the font so it lines up with real copy.
+  &[data-shape="text"] {
+    height: 0.75em;
+    margin-block: 0.375em;
+    border-radius: calc(0.25rem * var(--sheen-radius-scale));
+  }
+
+  // Content mode: keep the element's box, hide everything inside it.
+  &[data-content] {
+    border-color: transparent !important;
+    color: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background-color: var(--sheen-skeleton-base) !important;
+    background-image: none !important;
+    cursor: default;
+
+    * {
+      visibility: hidden;
+    }
+
+    // Replaced elements have no children to hide: push their pixels out of the box.
+    &:is(img, video, canvas, svg, picture) {
+      object-position: -99999px 99999px;
+    }
+  }
+
+  @include motion-safe {
+    &[data-animation="shimmer"] {
+      @include skeleton-shimmer;
+    }
+
+    // Wrapped components bring their own backgrounds; the skeleton must win.
+    &[data-content][data-animation="shimmer"] {
+      @include skeleton-shimmer(!important);
+    }
+
+    &[data-animation="pulse"] {
+      animation: sheen-skeleton-pulse 1.6s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes sheen-skeleton-shimmer {
+  from { background-position: -60vw 0; }
+  to { background-position: 100vw 0; }
+}
+
+@keyframes sheen-skeleton-pulse {
+  50% { opacity: 0.45; }
+}
+
+.sheen-skeleton-text {
+  display: block;
+  width: 100%;
+}
+
+// Real content arriving: a short fade with a hint of focus-pull.
+.sheen-skeleton-reveal {
+  @include motion-safe {
+    animation: sheen-skeleton-reveal 450ms var(--sheen-ease-out) both;
+  }
+}
+
+@keyframes sheen-skeleton-reveal {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+}

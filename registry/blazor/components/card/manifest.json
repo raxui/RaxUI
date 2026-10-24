@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "name": "card",
+  "version": "0.1.0",
+  "description": "Source-owned card display components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/card.css",
+      "destination": "styles",
+      "target": "components/card.css",
+      "type": "css",
+      "sha256": "8b3917f2a3096a9de6455c86fa1fde07e5239e8e13851675ce6e153430232940"
+    }
+  ],
+  "files": [
+    {
+      "source": "Card.razor",
+      "destination": "components",
+      "target": "Card/Card.razor",
+      "type": "razor",
+      "sha256": "563775269c740e757d1da86176f5bb92e69906568a9072ac8d1ea39a85a1af66"
+    },
+    {
+      "source": "CardAction.razor",
+      "destination": "components",
+      "target": "Card/CardAction.razor",
+      "type": "razor",
+      "sha256": "0691beeb82972590fe3cdb653fac365fbe251500fed3d85e1b79682746f92d70"
+    },
+    {
+      "source": "CardContent.razor",
+      "destination": "components",
+      "target": "Card/CardContent.razor",
+      "type": "razor",
+      "sha256": "55dbda21225b110c71889743426131df897230eb3d188053868023b164cc53f4"
+    },
+    {
+      "source": "CardDescription.razor",
+      "destination": "components",
+      "target": "Card/CardDescription.razor",
+      "type": "razor",
+      "sha256": "a02c4300fc087be0415165e0d4dd16a8513b3c8ebc348271ff35523c14956b04"
+    },
+    {
+      "source": "CardFooter.razor",
+      "destination": "components",
+      "target": "Card/CardFooter.razor",
+      "type": "razor",
+      "sha256": "3b5b75e6e0e6b9ed8e526b795f0f59e67c1b3c539db353bbe50fdb063c86209c"
+    },
+    {
+      "source": "CardHeader.razor",
+      "destination": "components",
+      "target": "Card/CardHeader.razor",
+      "type": "razor",
+      "sha256": "9fed16211941c83eb1a8d4e30347ac48738af0a7b879947fea031c41fd12aa2b"
+    },
+    {
+      "source": "CardTitle.razor",
+      "destination": "components",
+      "target": "Card/CardTitle.razor",
+      "type": "razor",
+      "sha256": "f8d20701a24cfc35a7353436c39c22bb25bbe6106d6b3e1fb2af8b04c60a7118"
+    }
+  ]
+}

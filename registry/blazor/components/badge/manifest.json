@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "name": "badge",
+  "version": "0.1.0",
+  "description": "Source-owned badge display components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/badge.css",
+      "destination": "styles",
+      "target": "components/badge.css",
+      "type": "css",
+      "sha256": "47ac457671d488a4eeee8ac5d57c7d29dd25af13585b92746d26c2e22495c59b"
+    }
+  ],
+  "files": [
+    {
+      "source": "Badge.razor",
+      "destination": "components",
+      "target": "Badge/Badge.razor",
+      "type": "razor",
+      "sha256": "ba88ab68851b95f627d0728b576f98e345317f99f5e5976feb04dd1d29eaca73"
+    }
+  ]
+}

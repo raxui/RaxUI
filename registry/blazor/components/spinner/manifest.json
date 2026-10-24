@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "name": "spinner",
+  "version": "0.1.0",
+  "description": "Source-owned spinner display components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/spinner.css",
+      "destination": "styles",
+      "target": "components/spinner.css",
+      "type": "css",
+      "sha256": "29e18a1b798b117dfb3b035e850037fbc7b574df3df406268361052b703eb3c3"
+    }
+  ],
+  "files": [
+    {
+      "source": "Spinner.razor",
+      "destination": "components",
+      "target": "Spinner/Spinner.razor",
+      "type": "razor",
+      "sha256": "4d3e571301acfd61fb6e034e239b90fd75c55f2a690a669ff41a58ef4de74018"
+    }
+  ]
+}

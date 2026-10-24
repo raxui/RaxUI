@@ -1,0 +1,76 @@
+@* SheenUI Avatar. Source-owned: edit freely. Styled by the avatar component CSS. *@
+@using Microsoft.JSInterop
+@using System.Text
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<span @ref="_element" @attributes="AdditionalAttributes" class="@CssClass" data-sheen-appearance="@Appearance">
+    @if (!string.IsNullOrWhiteSpace(Src))
+    {
+        <img class="sheen-avatar-image" src="@Src" alt="@(Alt ?? Name ?? FallbackLabel)" />
+    }
+    <span class="sheen-avatar-fallback" style="@($"--sheen-avatar-tint-rgb:{Tint}")" role="img" aria-label="@(Name ?? FallbackLabel)" hidden="@(!string.IsNullOrWhiteSpace(Src))">
+        @if (ChildContent is not null) { @ChildContent }
+        else if (!string.IsNullOrWhiteSpace(Name)) { @Initials }
+        else
+        {
+            @* Built-in UserRound paths from Lucide (ISC). *@
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="5" /><path d="M20 21a8 8 0 0 0-16 0" /></svg>
+        }
+    </span>
+    @if (Status is not null) { <span class="sheen-avatar-badge" data-status="@Status" role="img" aria-label="@(StatusLabel ?? Status)"></span> }
+</span>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+    /// <summary>Extra CSS classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public string? Src { get; set; }
+    [Parameter] public string? Alt { get; set; }
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public string FallbackLabel { get; set; } = "Avatar";
+    /// <summary>xs, sm, default, lg, or xl.</summary>
+    [Parameter] public string Size { get; set; } = "default";
+    [Parameter] public string Shape { get; set; } = "circle";
+    [Parameter] public bool Ring { get; set; }
+    /// <summary>online, away, busy, or offline; null hides presence.</summary>
+    [Parameter] public string? Status { get; set; }
+    [Parameter] public string? StatusLabel { get; set; }
+    private string CssClass => $"sheen-avatar {(Size == "default" ? "" : $"sheen-avatar-{Size}")} {(Shape == "rounded" ? "sheen-avatar-rounded" : "")} {(Ring ? "sheen-avatar-ring" : "")} {Class}";
+    private string Initials
+    {
+        get
+        {
+            var words = (Name ?? "").Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+            string First(string word) => System.Globalization.StringInfo.GetNextTextElement(word.Length > 3 && word.StartsWith("??", StringComparison.Ordinal) ? word[2..] : word);
+            return words.Length == 0 ? "" : (First(words[0]) + (words.Length > 1 ? First(words[^1]) : "")).ToUpperInvariant();
+        }
+    }
+    // Same stable palette as React; unchecked hashing preserves JavaScript's 32-bit behavior.
+    private string Tint
+    {
+        get
+        {
+            var palette = new[] { "primary", "success", "danger", "warning", "info", "indigo", "purple", "pink", "orange", "teal" };
+            var hash = 0;
+            foreach (var rune in (Name ?? "").EnumerateRunes()) hash = unchecked(hash * 31 + rune.Value);
+            var color = palette[(int)(Math.Abs((long)hash) % palette.Length)];
+            return color switch { "indigo" => "102, 16, 242", "purple" => "111, 66, 193", "pink" => "214, 51, 132", "orange" => "253, 126, 20", "teal" => "32, 201, 151", _ => $"var(--bs-{color}-rgb)" };
+        }
+    }
+    private ElementReference _element;
+    private IJSObjectReference? _module;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (string.IsNullOrWhiteSpace(Src) && _module is null) return;
+        _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Avatar/Avatar.razor.js");
+        await _module.InvokeVoidAsync("init", _element);
+    }
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is null) return;
+        try { await _module.InvokeVoidAsync("dispose", _element); await _module.DisposeAsync(); }
+        catch (JSDisconnectedException) { }
+    }
+}

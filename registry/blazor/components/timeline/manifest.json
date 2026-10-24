@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "name": "timeline",
+  "version": "0.1.0",
+  "description": "Source-owned timeline display components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/timeline.css",
+      "destination": "styles",
+      "target": "components/timeline.css",
+      "type": "css",
+      "sha256": "023d04779be3cfc991eb696905045d3c794512d40488cd38dc2a41051ee552ff"
+    }
+  ],
+  "files": [
+    {
+      "source": "Timeline.razor",
+      "destination": "components",
+      "target": "Timeline/Timeline.razor",
+      "type": "razor",
+      "sha256": "2f0c5839c2e54a4b9c45d4737685c3e8666593b0ca9dc4150a3594fdac811ec0"
+    },
+    {
+      "source": "TimelineGroup.razor",
+      "destination": "components",
+      "target": "Timeline/TimelineGroup.razor",
+      "type": "razor",
+      "sha256": "c39720f87a84c989c4e145fec26106dfbebdd3e53bfe9eb37da8973a0f516ec1"
+    },
+    {
+      "source": "TimelineItem.razor",
+      "destination": "components",
+      "target": "Timeline/TimelineItem.razor",
+      "type": "razor",
+      "sha256": "f73455f0d4c2d6e0059aad84758b3349fe1450cae96b54ecb0899ac0f676c79c"
+    }
+  ]
+}

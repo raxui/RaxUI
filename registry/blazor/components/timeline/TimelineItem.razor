@@ -1,0 +1,31 @@
+@* SheenUI TimelineItem. Source-owned: edit freely. Styled by the timeline component CSS. *@
+<li @attributes="AdditionalAttributes" class="@($"sheen-timeline-item {Class}")" style="@($"--sheen-timeline-i:{Index};{(AdditionalAttributes?.TryGetValue("style", out var style) == true ? style : null)}")" data-status="@Status" data-tone="@(Tone ?? (Status == "error" ? "danger" : Status == "upcoming" ? "neutral" : "primary"))" data-marker="@(Marker is null ? "dot" : "icon")" aria-current="@(Status == "current" ? "step" : null)" data-sheen-appearance="@Appearance">
+    @if (TimelineContext?.TimePosition == "side") { <div class="sheen-timeline-side">@TimeMarkup</div> }
+    <div class="sheen-timeline-rail" aria-hidden="true"><span class="sheen-timeline-marker">@Marker</span><span class="sheen-timeline-line"></span></div>
+    <div class="sheen-timeline-body">
+        @if (TimelineContext?.TimePosition != "side") { @TimeMarkup }
+        @if (Title is not null) { <div class="sheen-timeline-title">@Title<span class="visually-hidden"> (@(StatusLabel ?? TimelineContext?.StatusLabel(Status) ?? Status))</span></div> }
+        @if (Description is not null) { <div class="sheen-timeline-description">@Description</div> }
+        @if (ChildContent is not null) { <div class="sheen-timeline-content">@ChildContent</div> }
+    </div>
+</li>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+    /// <summary>Extra CSS classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [CascadingParameter] private Timeline? TimelineContext { get; set; }
+    /// <summary>Optional zero-based entrance animation stagger.</summary>
+    [Parameter] public int Index { get; set; }
+    [Parameter] public string Status { get; set; } = "done";
+    [Parameter] public string? Tone { get; set; }
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Time { get; set; }
+    [Parameter] public string? DateTime { get; set; }
+    [Parameter] public RenderFragment? Marker { get; set; }
+    [Parameter] public string? StatusLabel { get; set; }
+    private RenderFragment TimeMarkup => @<text>@if (Time is not null) { <time class="sheen-timeline-time" datetime="@DateTime">@Time</time> }</text>;
+}

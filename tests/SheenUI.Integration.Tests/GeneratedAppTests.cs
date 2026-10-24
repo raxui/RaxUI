@@ -61,6 +61,15 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "date-time-input"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "time-picker"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "date-input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "alert"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "badge"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "avatar"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "card"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "skeleton"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "spinner"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "progress"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "table"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "timeline"], app, output, error) == 0, error.ToString());
         Assert.True(File.Exists(Path.Combine(app, "Components", "UI", "Dialog", "Dialog.razor.js")));
 
         // Exactly the installed styled components, each imported once; the starter is separate.
@@ -74,6 +83,8 @@ public class GeneratedAppTests : IDisposable
         Assert.Equal(expectedStyles.Select(target => $"@import url(\"{target}\");"), imports.Order());
         Assert.Equal(expectedStyles, Directory.GetFiles(Path.Combine(stylesDir, "components"))
             .Select(file => "components/" + Path.GetFileName(file)).Order());
+        foreach (var displayItem in new[] { "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline" })
+            Assert.Contains($"@import url(\"components/{displayItem}.css\");", imports);
 
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
         var bootstrap = Directory.GetFiles(Path.Combine(app, "wwwroot"), "bootstrap.min.css", SearchOption.AllDirectories).Single();
@@ -148,6 +159,7 @@ public class GeneratedAppTests : IDisposable
         WriteFormPages(components);
         WriteBasicControlPages(components);
         WriteAdvancedControlPages(components);
+        WriteDisplayPages(components);
         WriteFluentForm(components);
         // Optional FluentValidation through Blazilla (#37): SheenUI controls must show its messages too.
         Dotnet(app, "add", "package", "Blazilla", "--version", "2.4.2");
@@ -196,6 +208,15 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "date-time-input"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "time-picker"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "date-input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "alert"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "badge"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "avatar"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "card"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "skeleton"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "spinner"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "progress"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "table"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "timeline"], app, output, error) == 0, error.ToString());
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app);
     }
@@ -284,6 +305,7 @@ public class GeneratedAppTests : IDisposable
             await VerifyForms(page, url);
             await VerifyBasicControls(page, url);
             await VerifyAdvancedControls(page, url);
+            await VerifyDisplayBasics(page, url);
             await VerifyFluentForm(page, url);
         }
         catch (Exception exception)
@@ -898,6 +920,8 @@ public class GeneratedAppTests : IDisposable
     private static async Task VerifyAdvancedControls(IPage page, string url)
     {
         await Check(page, "/dates");
+        // Combobox swaps its static-SSR <select> for the button once it is interactive; press the button.
+        await Assertions.Expect(page.Locator("button#combo")).ToBeVisibleAsync();
         await page.Locator("#combo").PressAsync("ArrowDown");
         var search = page.GetByRole(AriaRole.Combobox, new() { Name = "Search options" });
         await Assertions.Expect(search).ToBeFocusedAsync();
@@ -969,6 +993,84 @@ public class GeneratedAppTests : IDisposable
             await target.Locator("#dates-save").ClickAsync();
             await Assertions.Expect(target.Locator("#dates-result")).ToHaveTextAsync("2026-10-24|13:45|2026-10-24T13:45|2026-01-01|2026-02-01");
             if (path == "/static-dates") await Assertions.Expect(target.Locator("#choice-values")).ToHaveTextAsync("g|Gamma");
+        }
+    }
+
+    private static void WriteDisplayPages(string components)
+    {
+        const string content = """
+            <div data-bs-theme="dark" data-sheen-appearance="glass" dir="rtl" data-sheen-density="compact" style="background:var(--bs-body-bg);color:var(--bs-body-color);padding:1rem">
+                <Alert id="display-alert" Tone="warning" Title="Heads up" Description="Check your details" Dismissible @bind-Open="alertOpen" DismissLabel="Close message" />
+                <Badge id="display-badge" Color="success" Variant="solid" Ping>Live</Badge>
+                <Avatar id="display-avatar" Name="Saad Alsaree" Size="lg" Status="online" StatusLabel="Available" />
+                <Avatar id="display-broken-avatar" Src="/missing-avatar.png" Name="Saad Alsaree" />
+                <Card id="display-card" Appearance="flat"><CardHeader><CardTitle>Account</CardTitle><CardDescription>Details</CardDescription></CardHeader><CardContent>Profile</CardContent><CardFooter>Updated</CardFooter></Card>
+                <Skeleton id="display-skeleton" Shape="circle" Width="40px" />
+                <SkeletonText Lines="2" />
+                <Spinner id="display-spinner" Label="Working" Size="lg" Color="success" />
+                <Progress id="display-progress" Label="Upload" Value="25" Max="50" ShowValue />
+                <Progress id="display-pending" AccessibleLabel="Pending" />
+                <Table id="display-table" Density="compact" Striped><TableCaption>People</TableCaption><TableHeader><TableRow><TableHead>Name</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell>Saad</TableCell></TableRow></TableBody><TableFooter><TableRow><TableCell>One person</TableCell></TableRow></TableFooter></Table>
+                <Timeline id="display-timeline" CurrentLabel="Active"><TimelineGroup>Today</TimelineGroup><TimelineItem Title="Placed" Time="09:00" DateTime="2026-10-24T09:00" /><TimelineItem Title="Delivery" Status="current" Description="On the way"><Marker><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /></svg></Marker></TimelineItem></Timeline>
+            </div>
+            <p id="display-ready">@ready</p>
+            <p id="display-alert-state">@alertOpen</p>
+            @code {
+                private bool alertOpen = true;
+                private bool ready;
+                protected override void OnAfterRender(bool firstRender)
+                {
+                    if (firstRender) { ready = true; StateHasChanged(); }
+                }
+            }
+            """;
+        File.WriteAllText(Path.Combine(components, "Pages", "DisplayPage.razor"), "@page \"/display\"\n@rendermode InteractiveServer\n" + content);
+        File.WriteAllText(Path.Combine(components, "Pages", "StaticDisplayPage.razor"), "@page \"/static-display\"\n" + content);
+    }
+
+    private static async Task VerifyDisplayBasics(IPage page, string url)
+    {
+        await Check(page, "/display");
+        await Assertions.Expect(page.Locator("#display-ready")).ToHaveTextAsync("True");
+        await Assertions.Expect(page.Locator("#display-broken-avatar .sheen-avatar-fallback")).ToBeVisibleAsync();
+        await page.GetByRole(AriaRole.Button, new() { Name = "Close message" }).ClickAsync();
+        await Assertions.Expect(page.Locator("#display-alert")).ToHaveCountAsync(0);
+        await Assertions.Expect(page.Locator("#display-alert-state")).ToHaveTextAsync("False");
+        await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false, ReducedMotion = ReducedMotion.Reduce });
+        var staticPage = await context.NewPageAsync();
+        await Check(staticPage, "/static-display");
+        await Assertions.Expect(staticPage.GetByRole(AriaRole.Button, new() { Name = "Close message" })).ToHaveCountAsync(0);
+        await Assertions.Expect(staticPage.Locator("#display-broken-avatar img")).ToBeVisibleAsync();
+        await Assertions.Expect(staticPage.Locator("#display-broken-avatar .sheen-avatar-fallback")).ToBeHiddenAsync();
+        // The interactive route's prerendered response is useful without JS as well.
+        await Check(staticPage, "/display");
+        await Assertions.Expect(staticPage.GetByRole(AriaRole.Button, new() { Name = "Close message" })).ToHaveCountAsync(0);
+
+        async Task Check(IPage target, string path)
+        {
+            await target.GotoAsync(url.TrimEnd('/') + path);
+            await Assertions.Expect(target.Locator("#display-alert")).ToHaveAttributeAsync("role", "alert");
+            await Assertions.Expect(target.Locator("#display-alert")).ToContainTextAsync("Heads up");
+            await Assertions.Expect(target.Locator("#display-alert")).ToHaveCSSAsync("display", "grid");
+            await Assertions.Expect(target.Locator("#display-badge")).ToHaveCSSAsync("display", "inline-flex");
+            await Assertions.Expect(target.Locator("#display-avatar")).ToHaveCSSAsync("width", "56px");
+            await Assertions.Expect(target.Locator("#display-avatar .sheen-avatar-fallback")).ToHaveTextAsync("SA");
+            await Assertions.Expect(target.GetByRole(AriaRole.Img, new() { Name = "Available" })).ToBeVisibleAsync();
+            await Assertions.Expect(target.Locator("#display-card")).ToHaveAttributeAsync("data-sheen-appearance", "flat");
+            await Assertions.Expect(target.Locator("#display-card")).ToHaveCSSAsync("backdrop-filter", "none");
+            await Assertions.Expect(target.Locator("#display-skeleton")).ToHaveAttributeAsync("aria-hidden", "true");
+            await Assertions.Expect(target.Locator("#display-skeleton")).ToHaveCSSAsync("border-radius", "50%");
+            await Assertions.Expect(target.GetByRole(AriaRole.Status, new() { Name = "Working" })).ToHaveCSSAsync("width", "24px");
+            var progress = target.GetByRole(AriaRole.Progressbar, new() { Name = "Upload" });
+            await Assertions.Expect(progress).ToHaveAttributeAsync("aria-valuenow", "25");
+            await Assertions.Expect(progress).ToHaveAttributeAsync("aria-valuemax", "50");
+            await Assertions.Expect(progress).ToHaveCSSAsync("height", "8px");
+            await Assertions.Expect(target.GetByRole(AriaRole.Progressbar, new() { Name = "Pending" })).Not.ToHaveAttributeAsync("aria-valuenow", new System.Text.RegularExpressions.Regex(".+"));
+            await Assertions.Expect(target.GetByRole(AriaRole.Table, new() { Name = "People" })).ToHaveCSSAsync("font-size", "14px");
+            await Assertions.Expect(target.GetByRole(AriaRole.Columnheader, new() { Name = "Name" })).ToHaveAttributeAsync("scope", "col");
+            await Assertions.Expect(target.Locator("#display-timeline")).ToHaveCSSAsync("list-style-type", "none");
+            await Assertions.Expect(target.Locator("#display-timeline [aria-current=step]")).ToContainTextAsync("Active");
+            await Assertions.Expect(target.Locator("#display-timeline time").First).ToHaveAttributeAsync("datetime", "2026-10-24T09:00");
         }
     }
 

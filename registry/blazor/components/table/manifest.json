@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "name": "table",
+  "version": "0.1.0",
+  "description": "Source-owned table display components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/table.css",
+      "destination": "styles",
+      "target": "components/table.css",
+      "type": "css",
+      "sha256": "19ded7639d4a34eec1f603ea4894e53d0ea1b852778c4b92c15f936b70e32e15"
+    }
+  ],
+  "files": [
+    {
+      "source": "Table.razor",
+      "destination": "components",
+      "target": "Table/Table.razor",
+      "type": "razor",
+      "sha256": "e7bcfa13d591ca52e7b36e75f12400c1fa8db68e02180207b4b7658d09f69be7"
+    },
+    {
+      "source": "TableBody.razor",
+      "destination": "components",
+      "target": "Table/TableBody.razor",
+      "type": "razor",
+      "sha256": "610afb3ab399d25364e9cc1f95509ecc738f33f492f303bc33abd21f10f0c7ce"
+    },
+    {
+      "source": "TableCaption.razor",
+      "destination": "components",
+      "target": "Table/TableCaption.razor",
+      "type": "razor",
+      "sha256": "22b2af3ca39c30bf9b36cebeb1618c0aa1a55c4165d114da6dcb92a30dcd409a"
+    },
+    {
+      "source": "TableCell.razor",
+      "destination": "components",
+      "target": "Table/TableCell.razor",
+      "type": "razor",
+      "sha256": "b1b8a14a67ecce61569e89c0d3eccf35e31d285c6b059c8b4f054e99ee46add6"
+    },
+    {
+      "source": "TableFooter.razor",
+      "destination": "components",
+      "target": "Table/TableFooter.razor",
+      "type": "razor",
+      "sha256": "67d13c634d421af8aef61b03148718aa788c6d3cfb17458bb289712b9be88ede"
+    },
+    {
+      "source": "TableHead.razor",
+      "destination": "components",
+      "target": "Table/TableHead.razor",
+      "type": "razor",
+      "sha256": "068b5b402c7db485b1f5192595e98428651346edfa175d284a366167a135c95d"
+    },
+    {
+      "source": "TableHeader.razor",
+      "destination": "components",
+      "target": "Table/TableHeader.razor",
+      "type": "razor",
+      "sha256": "3c379b321d749593b7766eb8aa1e1105ad88217b1e372377cbef504cea27db89"
+    },
+    {
+      "source": "TableRow.razor",
+      "destination": "components",
+      "target": "Table/TableRow.razor",
+      "type": "razor",
+      "sha256": "88279bf89a55e0ccd24176a68093724b53de5351f15b6314c22f067e718cccb4"
+    }
+  ]
+}

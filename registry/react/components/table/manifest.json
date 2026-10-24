@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "table",
+  "version": "0.1.0",
+  "description": "Source-owned table display components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {},
+  "styles": [
+    "components/table"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/table/table.tsx",
+      "target": "components/ui/table.tsx",
+      "type": "tsx",
+      "sha256": "7929f32eb0213a5eaf7c9ef5831e2c63845fe97ec81a43cb5f04b76889b6e390"
+    },
+    {
+      "source": "theme/scss/components/_table.scss",
+      "target": "styles/sheenui/components/_table.scss",
+      "type": "scss",
+      "sha256": "a18c2e5596eddc6429e7e4afd4e40ac6dcd074aea4b8480e2ac1739264cce361"
+    }
+  ]
+}
