@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "checkbox",
+  "version": "0.1.0",
+  "description": "Native checkbox with Field and EditForm integration.",
+  "dependencies": [
+    "field"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "c62aff1451f96b1cb83c155e2a2e80d2f64090de670ab86be2bd108fced528cd"
+    }
+  ],
+  "files": [
+    {
+      "source": "Checkbox.razor",
+      "destination": "components",
+      "target": "Checkbox/Checkbox.razor",
+      "type": "razor",
+      "sha256": "5c2dd6c7627092a187e4db8b97c830c10679537fb91989ea8da7ced353e7781a"
+    }
+  ]
+}

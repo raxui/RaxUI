@@ -9,8 +9,9 @@ Licensed under [MIT](LICENSE).
 
 For local usage without publishing packages: [Windows local usage guide in English](docs/local-development.en.md).
 
-The first preview supports **Blazor Web Apps on .NET 8, 9, and 10 with
-Interactive Server**, the template's Bootstrap, and the **Button** component.
+The preview supports **Blazor Web Apps on .NET 8, 9, and 10**, the template's
+Bootstrap, buttons, overlays, fields, forms, and basic controls. JavaScript
+enhancements require an interactive render mode such as Interactive Server.
 On .NET 8, `init` upgrades the template's unmodified Bootstrap 5.1 to 5.3, which
 the theme needs ([ADR 009](docs/adr/009-dotnet-8-9-10.md)). Installed components
 run without the CLI or a registry connection.
@@ -194,6 +195,102 @@ callback. FormRowLink renders an anchor when `Href` is set, otherwise a button;
 it accepts `Label`, `Value`, `Description`, `Icon`, `IconColor`, `Destructive`,
 `OnClick`, and button `Disabled`. `Destructive` removes the chevron.
 
+## Basic controls
+
+Install `input`, `input-group`, `textarea`, `checkbox`, `radio-group`, `switch`,
+or `select` with `sheenui add <name>`. Each installs `field`. All controls wrap
+Blazor's built-in form inputs: `@bind-Value`, `ValueChanged`, `ValueExpression`,
+EditContext validation, and native static SSR posting work on .NET 8, 9 and 10.
+They read the cascading Field attributes themselves; no splat is needed.
+Explicit HTML attributes override Field defaults. Give Field the control's `Id`
+so its label still points to the right element.
+
+Inside an `EditForm` and `Form` (with a validator), use:
+
+```razor
+<Field Id="email" For="@(() => model.Email)">
+    <FieldLabel>Email</FieldLabel>
+    <Input Type="email" @bind-Value="model.Email" Clearable>
+        <StartIcon><i class="your-mail-icon" aria-hidden="true"></i></StartIcon>
+    </Input>
+    <FieldError />
+</Field>
+<Field Id="password" For="@(() => model.Password)">
+    <FieldLabel>Password</FieldLabel><Input Type="password" @bind-Value="model.Password" /><FieldError />
+</Field>
+<Field Id="age" For="@(() => model.Age)">
+    <FieldLabel>Age</FieldLabel><NumberInput @bind-Value="model.Age" /><FieldError />
+</Field>
+<Field Id="search" For="@(() => model.Search)">
+    <FieldLabel>Search</FieldLabel><Input Type="search" @bind-Value="model.Search" />
+</Field>
+<Field Id="notes" For="@(() => model.Notes)">
+    <FieldLabel>Notes</FieldLabel><Textarea @bind-Value="model.Notes" AutoResize MinRows="3" MaxRows="10" /><FieldError />
+</Field>
+<Field Id="accepted" For="@(() => model.Accepted)" Orientation="inline">
+    <Checkbox @bind-Value="model.Accepted" /><FieldLabel>Accept terms</FieldLabel><FieldError />
+</Field>
+<Field Id="all" Orientation="inline">
+    <Checkbox @bind-Value="model.All" @bind-Indeterminate="mixed" /><FieldLabel>Select all</FieldLabel>
+</Field>
+<Field Id="updates" For="@(() => model.Updates)" Orientation="inline">
+    <Switch @bind-Value="model.Updates" /><FieldLabel>Email updates</FieldLabel><FieldError />
+</Field>
+<Field Id="plan" For="@(() => model.Plan)">
+    <FieldLabel>Plan</FieldLabel>
+    <RadioGroup @bind-Value="model.Plan">
+        <label><RadioGroupItem TValue="string" Value="@("personal")" /> Personal</label>
+        <label><RadioGroupItem TValue="string" Value="@("team")" /> Team</label>
+    </RadioGroup>
+    <FieldError />
+</Field>
+<Field Id="country" For="@(() => model.Country)">
+    <FieldLabel>Country</FieldLabel>
+    <Select @bind-Value="model.Country"><option value="">Choose</option><option value="iq">Iraq</option></Select>
+    <FieldError />
+</Field>
+<Field Id="phone" For="@(() => model.PhonePrefix)">
+    <FieldLabel>Phone</FieldLabel>
+    <InputGroup AutoAdvance>
+        <InputGroupItem aria-label="Prefix" maxlength="3" @bind-Value="model.PhonePrefix" />
+        <InputGroupItem aria-label="Number" maxlength="7" @bind-Value="model.PhoneNumber" />
+    </InputGroup>
+    <FieldError />
+</Field>
+```
+
+Declare the illustrated model properties (`Age` is an `int`, the checkboxes and
+switch use `bool`, and the other values are strings) and a `bool mixed = true`.
+Decorative icon slots accept SVG, Blazicons or font icons; clicking them focuses
+the input through a native label. Built-in icons are inline Lucide SVG (ISC).
+
+| Component | Parameters beyond binding and common attributes |
+| --- | --- |
+| `Input` | `Type="text"` (also email, password, number, search), `StartIcon`, `EndIcon`, `Clearable=false`, `ClearLabel="Clear"`, `ShowLabel="Show password"`, `HideLabel="Hide password"`, `Size="default"` (sm/lg), `Variant="outline"` (filled/glass alias) |
+| `NumberInput<TValue>` | Typed numeric binding through `InputNumber<TValue>`; nullable numbers supported. `Input Type="number"` instead binds a string. |
+| `InputGroup` | `ChildContent`, `AutoAdvance=false`, `Orientation="horizontal"` (vertical). Each `InputGroupItem` has its own binding, `Class`, and native attributes such as maxlength, id and aria-label. |
+| `Textarea` | `AutoResize=false`, `MinRows=3`, `MaxRows=10` |
+| `Checkbox` | `Indeterminate=false`, `IndeterminateChanged` / `@bind-Indeterminate`. Mixed state uses role checkbox and aria-checked=mixed; interactive activation clears mixed state. |
+| `RadioGroup<TValue>` | `ChildContent`, `Orientation="vertical"` (horizontal). `RadioGroupItem<TValue>` takes `Value`, `Class` and native attributes. |
+| `Switch` | Boolean binding; native checkbox with role switch. |
+| `Select<TValue>` | `ChildContent` containing native option/optgroup elements; native Bootstrap form-select, including browser keyboard and mobile picker support. |
+
+All root controls accept `Appearance` (default/flat/glass, unset inherits),
+`Class` and additional HTML attributes (`disabled`, `readonly`, `autocomplete`,
+`placeholder`, ARIA, etc.). Validation classes come from `Form`. Radio and
+joined-input groups apply Field's identity to a native fieldset, whose disabled
+state disables its children. Give each member a separate label or aria-label;
+the group's ID must not be copied onto every member.
+
+Password visibility, clearing, textarea auto-grow, and joined-input enhancements
+require an interactive render mode such as `@rendermode InteractiveServer`.
+They use disposable collocated `.razor.js` modules. Joined inputs advance at
+maxlength, go back on empty Backspace, follow RTL at caret boundaries, and
+distribute long pastes. Password and clear buttons stay hidden during static
+SSR; all values still post through their generated native form names. For static
+SSR, use `FormName` and `[SupplyParameterFromForm]` as shown above. Keep normal
+submit buttons and validators; no JavaScript is needed for server validation.
+
 ## Quick start
 
 Once the preview is published to NuGet:
@@ -321,8 +418,10 @@ keys, `Home`/`End`, and typeahead.
 - Ordinary write failures restore original files and remove newly created empty
   directories. Concurrent edits and process termination during installation are
   not covered by that rollback guarantee.
-- `init` and `add` for `button`, `dialog`, `confirm-dialog`, and `dropdown-menu` are supported. Additional components, update commands,
-  WebAssembly, and configurable paths remain future work.
+- `init` and `add` support `button`, `dialog`, `confirm-dialog`, `dropdown-menu`,
+  `field`, `form`, `form-section`, `input`, `input-group`, `textarea`, `checkbox`,
+  `radio-group`, `switch`, and `select`. Update commands, WebAssembly testing,
+  and configurable paths remain future work.
 
 ## React
 

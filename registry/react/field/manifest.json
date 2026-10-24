@@ -17,7 +17,7 @@
       "source": "registry/react/field/field.tsx",
       "target": "components/ui/field.tsx",
       "type": "tsx",
-      "sha256": "edf7f3d9a1ef002d5607ac1af99b87a022a17e22476b0948cf88d76f1c931b38"
+      "sha256": "11a569c614f95c4c88d42d0bbdf0aef921c70cdd67fcb95a4512d07e0490ded6"
     },
     {
       "source": "theme/scss/components/_field.scss",

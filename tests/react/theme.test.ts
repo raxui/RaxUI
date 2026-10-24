@@ -32,6 +32,15 @@ describe("shared theme", () => {
     expect(withButton).toMatch(/\.btn\.sheen-button:focus:not\(:focus-visible\)\s*\{\s*box-shadow: var\(--sheen-btn-shadow\);/)
   })
 
+  it("sizes SVG and font icons with two classes to outrank Blazicons", () => {
+    const withInput = compileTheme(['@import "components/input";'])
+    expect(withInput).toMatch(/\.sheen-input-group \.sheen-input-slot :is\(svg, i\)\s*\{[^}]*width: 1.125rem;[^}]*font-size: 1.125rem;[^}]*color: currentColor;/)
+  })
+
+  it.each(["input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select"])("compiles %s independently of other component imports", name => {
+    expect(compileTheme([`@import "components/${name}";`])).toContain(".sheen-")
+  })
+
   it("keeps Blazor's error bar hidden until blazor.web.js shows it", () => {
     const withStarter = compileTheme(['@import "components/starter";'])
     expect(withStarter).toMatch(/#blazor-error-ui\s*\{\s*display: none;/)

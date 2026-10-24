@@ -1,0 +1,184 @@
+// -----------------------------------------------------------------------------
+// Select — Radix Select with a Bootstrap `.form-select` trigger and a glass
+// listbox.
+//
+// The trigger keeps Bootstrap's form API: `.form-select-sm/-lg`, `:disabled`,
+// `.is-invalid` / `.is-valid` and the theme-aware chevron all just work.
+// -----------------------------------------------------------------------------
+
+.sheen-select-trigger {
+  @include sheen-surface;
+  box-shadow: var(--sheen-control-shadow);
+  border-radius: var(--sheen-control-radius);
+  display: flex;
+  min-height: var(--sheen-control-height); // same height as inputs and buttons
+  align-items: center;
+  gap: 0.5rem;
+  text-align: start;
+  cursor: default;
+
+  // Truncate long values instead of growing the control.
+  > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &[data-placeholder] {
+    color: var(--bs-secondary-color);
+  }
+
+  // Keep the focus look while the list is open (focus moves into the list).
+  // Focus / open look follows the theme colour (Bootstrap compiles $primary in).
+  &:focus,
+  &[data-state="open"] {
+    border-color: rgba(var(--bs-primary-rgb), 0.65);
+    box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.16);
+  }
+
+  // aria-invalid (set by FieldControl) looks like Bootstrap's .is-invalid.
+  &[aria-invalid="true"] {
+    border-color: var(--bs-form-invalid-border-color);
+
+    &:focus {
+      box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+    }
+  }
+
+  &:is(.is-invalid, [aria-invalid="true"])[data-state="open"] {
+    border-color: var(--bs-form-invalid-border-color);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+  }
+}
+
+.sheen-select-content {
+  @include sheen-surface;
+
+  position: relative;
+  z-index: 1070;
+  min-width: 8rem;
+  max-height: var(--radix-select-content-available-height);
+  overflow: hidden;
+  border-radius: var(--sheen-radius-control);
+  color: var(--bs-body-color);
+  font-size: 0.9375rem;
+  transform-origin: var(--radix-select-content-transform-origin, center);
+
+  &[data-state="open"] {
+    animation: sheen-fade-in var(--sheen-duration-fast) linear;
+  }
+
+  &[data-state="closed"] {
+    animation: sheen-fade-out var(--sheen-duration-fast) linear forwards;
+  }
+
+  @include motion-safe {
+    &[data-state="open"] {
+      animation: sheen-pop-in 400ms var(--sheen-ease-spring);
+    }
+
+    &[data-state="closed"] {
+      animation: sheen-pop-out var(--sheen-duration-fast) var(--sheen-ease-in) forwards;
+    }
+  }
+}
+
+// `position="popper"`: at least as wide as the trigger.
+.sheen-select-content-popper .sheen-select-viewport {
+  width: 100%;
+  min-width: var(--radix-select-trigger-width);
+  height: var(--radix-select-trigger-height);
+}
+
+.sheen-select-viewport {
+  padding: 0.375rem;
+}
+
+.sheen-select-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.25rem;
+  padding-block: 0.4375rem;
+  padding-inline: 0.625rem 2rem; // room for the checkmark
+  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  color: var(--bs-emphasis-color);
+  line-height: 1.3;
+  cursor: default;
+  user-select: none;
+  outline: none;
+  transition: background-color 80ms ease;
+
+  svg {
+    width: 1.0625rem;
+    height: 1.0625rem;
+    flex-shrink: 0;
+    color: var(--bs-secondary-color);
+  }
+
+  &[data-highlighted] {
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  }
+
+  &[data-state="checked"] {
+    font-weight: 500;
+  }
+
+  &[data-disabled] {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+// Checkmark sits at the end, iOS-style.
+.sheen-select-indicator {
+  position: absolute;
+  inset-inline-end: 0.625rem;
+  display: inline-flex;
+
+  svg {
+    width: 0.9375rem;
+    height: 0.9375rem;
+    color: var(--sheen-primary-text);
+  }
+}
+
+.sheen-select-label {
+  padding: 0.375rem 0.625rem 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--bs-secondary-color);
+}
+
+.sheen-select-separator {
+  height: 1px;
+  margin: 0.375rem -0.375rem;
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
+}
+
+.sheen-select-scroll-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  color: var(--bs-secondary-color);
+  cursor: default;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.sheen-select-trigger.form-select-sm {
+  min-height: var(--sheen-control-height-sm);
+}
+
+.sheen-select-trigger.form-select-lg {
+  min-height: var(--sheen-control-height-lg);
+}
+
+select.sheen-select-trigger { display: block; }
+@media (prefers-reduced-motion: reduce) { .sheen-select-content { animation: none !important; } }

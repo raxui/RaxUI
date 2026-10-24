@@ -1,0 +1,57 @@
+@* SheenUI InputGroup. Source-owned: edit freely. Native form behavior also works in static SSR. *@
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<fieldset @ref="_element" @attributes="ControlAttributes" class="@($"sheen-joined-inputs {Class} {ExtraClass}".TrimEnd())"
+          data-auto-advance="@(AutoAdvance ? "true" : null)" data-orientation="@Orientation" data-sheen-appearance="@Appearance">
+    @ChildContent
+</fieldset>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Advance at maxlength, distribute paste, and move at caret boundaries. Interactive only.</summary>
+    [Parameter] public bool AutoAdvance { get; set; }
+    [Parameter] public string Orientation { get; set; } = "horizontal";
+
+    [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+    /// <summary>Extra CSS classes appended to the control.</summary>
+    [Parameter] public string? Class { get; set; }
+    private string? ExtraClass => AdditionalAttributes is not null && AdditionalAttributes.TryGetValue("class", out var value) ? Convert.ToString(value) : null;
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private readonly string _autoId = $"sheen-control-{Guid.NewGuid():N}";
+    private Dictionary<string, object> ControlAttributes
+    {
+        get
+        {
+            var attrs = FieldContext is null ? new Dictionary<string, object>() : new(FieldContext.ControlAttributes);
+            if (AdditionalAttributes is not null)
+                foreach (var pair in AdditionalAttributes) attrs[pair.Key] = pair.Value;
+            if (!attrs.ContainsKey("id")) attrs["id"] = _autoId;
+            return attrs;
+        }
+    }
+    private string ControlId => Convert.ToString(ControlAttributes["id"])!;
+
+    private ElementReference _element;
+    private Microsoft.JSInterop.IJSObjectReference? _module;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!AutoAdvance)
+        {
+            if (_module is not null) await _module.InvokeVoidAsync("dispose", _element);
+            return;
+        }
+        _module ??= await JS.InvokeAsync<Microsoft.JSInterop.IJSObjectReference>("import", "./Components/UI/InputGroup/InputGroup.razor.js");
+        await _module.InvokeVoidAsync("init", _element);
+    }
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is null) return;
+        try { await _module.InvokeVoidAsync("dispose", _element); await _module.DisposeAsync(); }
+        catch (Microsoft.JSInterop.JSDisconnectedException) { /* The circuit has already gone away. */ }
+    }
+
+}

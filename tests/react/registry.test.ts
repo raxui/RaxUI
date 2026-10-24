@@ -18,13 +18,30 @@ describe("React registry", () => {
   it("has a supported index listing every item", () => {
     const index = loadIndex(root)
     expect(index.schemaVersion).toBe(1)
-    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "starter", "starter-next"])
+    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "starter", "starter-next"])
   })
 
   it("has up-to-date hashes for every file (run src/react-cli/scripts/update-hashes.mjs after edits)", () => {
     for (const { name } of loadIndex(root).items) {
       for (const file of loadManifest(root, name).files) {
         expect(file.sha256, file.source).toBe(sha256(readSource(root, file.source)))
+      }
+    }
+  })
+
+  // Apps keep an installed foundation as it was (#41), so a partial's @import must ship with the item
+  // itself or with a required item other than the foundation.
+  it("ships every partial a component's SCSS imports with that component", () => {
+    for (const { name } of loadIndex(root).items) {
+      if (name === "foundation") continue
+      const items = resolveItems(root, name).filter((item: { name: string }) => item.name !== "foundation")
+      const targets = new Set(items.flatMap((item: { files: { target: string }[] }) => item.files.map((file) => file.target)))
+      for (const file of loadManifest(root, name).files.filter((f: { type: string }) => f.type === "scss")) {
+        const dir = file.target.slice(0, file.target.lastIndexOf("/") + 1)
+        for (const [, imported] of readSource(root, file.source).toString("utf8").matchAll(/^\s*@import\s+"([^"]+)"/gm)) {
+          const partial = `${dir}_${imported.split("/").pop()}.scss`
+          expect(targets.has(partial), `${name}: ${file.target} imports '${imported}'`).toBe(true)
+        }
       }
     }
   })
@@ -38,7 +55,7 @@ describe("React registry", () => {
   })
 
   it("names the available items for an unknown one", () => {
-    expect(() => loadManifest(root, "tooltip")).toThrow(/Available: foundation, button, dialog, confirm-dialog, dropdown-menu, field, form, form-section, starter, starter-next/)
+    expect(() => loadManifest(root, "tooltip")).toThrow(/Available: foundation, button, dialog, confirm-dialog, dropdown-menu, field, form, form-section, input, input-group, textarea, checkbox, radio-group, switch, select, starter, starter-next/)
   })
 
   it.each([

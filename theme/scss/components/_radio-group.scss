@@ -1,0 +1,181 @@
+// -----------------------------------------------------------------------------
+// Radio Group — Radix RadioGroup, sibling of Checkbox.
+//
+// Selecting fills the circle and grows a white dot on the spring curve, with
+// the same pop + ring as Checkbox (only when it *becomes* selected — the
+// component sets [data-animate]). The previous choice shrinks its dot away.
+// -----------------------------------------------------------------------------
+
+.sheen-radio-group {
+  display: grid;
+  gap: 0.75rem;
+
+  &[data-orientation="horizontal"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+  }
+}
+
+.sheen-radio {
+  --sheen-radio-rgb: var(--bs-primary-rgb);
+  --sheen-radio-size: calc(var(--sheen-control-height) * 0.45);
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--sheen-radio-size);
+  height: var(--sheen-radio-size);
+  padding: 0;
+  border: 1.5px solid rgba(var(--bs-emphasis-color-rgb), 0.28);
+  border-radius: 50%;
+  vertical-align: middle;
+  background-color: var(--sheen-surface-bg);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--sheen-duration-fast) ease,
+    border-color var(--sheen-duration-fast) ease,
+    box-shadow var(--sheen-duration-fast) ease;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(var(--sheen-radio-rgb), 0.65);
+  }
+
+  &[data-state="checked"] {
+    border-color: rgb(var(--sheen-radio-rgb));
+    background-color: rgb(var(--sheen-radio-rgb));
+  }
+
+  &:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(var(--sheen-radio-rgb), 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  // Bootstrap validation — put .is-invalid on the group or on an item.
+  .is-invalid > &,
+  .is-invalid &,
+  &.is-invalid,
+  [aria-invalid="true"] & {
+    &[data-state="unchecked"] {
+      border-color: var(--bs-form-invalid-border-color);
+    }
+  }
+
+  @include motion-safe {
+    transition:
+      background-color var(--sheen-duration-fast) ease,
+      border-color var(--sheen-duration-fast) ease,
+      box-shadow var(--sheen-duration-fast) ease,
+      transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+
+    &:active:not(:disabled) {
+      transform: scale(0.86);
+      transition-duration: var(--sheen-duration-fast);
+    }
+
+    &[data-animate][data-state="checked"] {
+      animation:
+        sheen-radio-pop 450ms var(--sheen-ease-spring),
+        sheen-radio-ring 600ms var(--sheen-ease-out);
+    }
+  }
+}
+
+.sheen-radio-sm { --sheen-radio-size: 1rem; }
+.sheen-radio-lg { --sheen-radio-size: 1.375rem; }
+
+// The white dot. Always mounted (forceMount) so it can shrink away too.
+.sheen-radio-indicator {
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  background-color: #fff;
+  transform: scale(0);
+  transition: transform 120ms ease-in;
+
+  &[data-state="checked"] {
+    transform: scale(1);
+    transition: transform 400ms var(--sheen-ease-spring) 40ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none !important;
+  }
+}
+
+@keyframes sheen-radio-pop {
+  0%   { transform: scale(0.82); }
+  100% { transform: scale(1); }
+}
+
+@keyframes sheen-radio-ring {
+  from { box-shadow: 0 0 0 0 rgba(var(--sheen-radio-rgb), 0.4); }
+  to   { box-shadow: 0 0 0 0.5rem rgba(var(--sheen-radio-rgb), 0); }
+}
+
+// ---- Selectable card ---------------------------------------------------------
+// <label class="sheen-radio-card"><RadioGroupItem /> …</label>
+.sheen-radio-card {
+  --sheen-radio-rgb: var(--bs-primary-rgb);
+
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.12);
+  border-radius: var(--sheen-radius);
+  background-color: var(--sheen-surface-bg);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  cursor: pointer;
+  transition:
+    border-color var(--sheen-duration) ease,
+    background-color var(--sheen-duration) ease,
+    box-shadow var(--sheen-duration) ease;
+
+  &:hover {
+    border-color: rgba(var(--sheen-radio-rgb), 0.45);
+  }
+
+  &:has(.sheen-radio[data-state="checked"]) {
+    border-color: rgb(var(--sheen-radio-rgb));
+    background-color: rgba(var(--sheen-radio-rgb), 0.06);
+    box-shadow: 0 0 0 1px rgb(var(--sheen-radio-rgb));
+  }
+
+  &:has(.sheen-radio:focus-visible) {
+    box-shadow: 0 0 0 0.25rem rgba(var(--sheen-radio-rgb), 0.3);
+  }
+
+  &:has(.sheen-radio:disabled) {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .sheen-radio {
+    margin-top: 0.125rem;
+  }
+}
+
+fieldset.sheen-radio-group { min-width: 0; margin: 0; padding: 0; border: 0; }
+.form-check-input.sheen-radio-native {
+  width: calc(var(--sheen-control-height) * 0.45);
+  height: calc(var(--sheen-control-height) * 0.45);
+  margin: 0;
+  border-color: var(--sheen-border-color);
+  background-color: var(--sheen-surface-bg);
+  &:checked { background-color: var(--bs-primary); border-color: var(--bs-primary); }
+  &:focus-visible { box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.3); }
+  @include motion-safe { &:checked { --sheen-radio-rgb: var(--bs-primary-rgb); animation: sheen-radio-pop 450ms var(--sheen-ease-spring), sheen-radio-ring 600ms var(--sheen-ease-out); } }
+}
