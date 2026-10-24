@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "name": "stepper",
+  "version": "0.1.0",
+  "description": "Source-owned stepper navigation components.",
+  "requires": [
+    "foundation",
+    "button"
+  ],
+  "packages": {},
+  "styles": [
+    "components/stepper"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/stepper/stepper.tsx",
+      "target": "components/ui/stepper.tsx",
+      "type": "tsx",
+      "sha256": "dfc39df4f6ae6f9f74cffcfbd11df234532c31b5f66c4dbf333f55b3a0f6e576"
+    },
+    {
+      "source": "theme/scss/components/_stepper.scss",
+      "target": "styles/sheenui/components/_stepper.scss",
+      "type": "scss",
+      "sha256": "fb1b03fa5620bbd0e39bff743c1ec3d0da43a92176ed74d88ca5ee88b04d02fe"
+    }
+  ]
+}

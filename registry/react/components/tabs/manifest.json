@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "tabs",
+  "version": "0.1.0",
+  "description": "Source-owned tabs navigation components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-tabs": "1.2.1"
+  },
+  "styles": [
+    "components/tabs"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/tabs/tabs.tsx",
+      "target": "components/ui/tabs.tsx",
+      "type": "tsx",
+      "sha256": "df43fe193b76659650b4772ca78d636b6ec271a23b75c4fa1dcfb37be20d74e3"
+    },
+    {
+      "source": "theme/scss/components/_tabs.scss",
+      "target": "styles/sheenui/components/_tabs.scss",
+      "type": "scss",
+      "sha256": "de9d9c57b31007274af6d28f0691b94c0194f9d9357e9f7f547ee4f73a33fcd7"
+    }
+  ]
+}

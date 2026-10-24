@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "pagination",
+  "version": "0.1.0",
+  "description": "Source-owned pagination navigation components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/pagination"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/pagination/pagination.tsx",
+      "target": "components/ui/pagination.tsx",
+      "type": "tsx",
+      "sha256": "f4cd0e0a310a1156e56718b3c30bb12d84f4c689f6c2e7f3ed12183de4e83822"
+    },
+    {
+      "source": "theme/scss/components/_pagination.scss",
+      "target": "styles/sheenui/components/_pagination.scss",
+      "type": "scss",
+      "sha256": "ad8093f233959093ae5c3ecaaf55fade81aea650036b5aba18b932d137cb9096"
+    }
+  ]
+}

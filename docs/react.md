@@ -631,3 +631,70 @@ entrance, collapse and spinner motion. Table and Timeline keep their native list
 and table semantics. React retains boot-ui's optional helpers (BadgeCount,
 AvatarGroup, ProgressCircle); Blazor's phase-one API focuses on the display basics
 and vertical timeline.
+
+## Navigation
+
+Install `tabs`, `accordion`, `breadcrumb`, `pagination`, `stepper`, `toggle`, or
+`menu-toggle`. Tabs pins Radix Tabs 1.2.1; Accordion pins Accordion 1.3.1;
+Toggle pins Toggle and ToggleGroup 1.2.1. Breadcrumb requires dropdown-menu;
+Stepper and MenuToggle require button. Slot users pin 1.5.0. No icon package is
+needed. Each item imports from `@/components/ui/<name>` and ships its own SCSS.
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import { BreadcrumbTrail } from "@/components/ui/breadcrumb"
+import { PaginationControl } from "@/components/ui/pagination"
+import { Stepper, StepperNav, StepperStep, StepperPanel, StepperNext, StepperPrevious } from "@/components/ui/stepper"
+import { Toggle, ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle"
+import { MenuToggle } from "@/components/ui/menu-toggle"
+
+export function NavigationExamples() {
+  return <>
+    <Tabs defaultValue="profile">
+      <TabsList aria-label="Account"><TabsTrigger value="profile">Profile</TabsTrigger><TabsTrigger value="security">Security</TabsTrigger></TabsList>
+      <TabsContent value="profile">Profile content</TabsContent><TabsContent value="security">Security content</TabsContent>
+    </Tabs>
+    <Accordion type="single" collapsible variant="inset">
+      <AccordionItem value="delivery"><AccordionTrigger description="Shipping information">Delivery</AccordionTrigger><AccordionContent>Ships tomorrow.</AccordionContent></AccordionItem>
+    </Accordion>
+    <BreadcrumbTrail maxItems={3} items={[{ label: "Home", href: "/" }, { label: "Account", href: "/account" }]} />
+    <PaginationControl pageCount={20} defaultPage={1} />
+    <Stepper>
+      <StepperNav aria-label="Checkout"><StepperStep title="Cart" /><StepperStep title="Payment" /></StepperNav>
+      <StepperPanel index={0}>Cart contents</StepperPanel><StepperPanel index={1}>Payment details</StepperPanel>
+      <StepperPrevious /><StepperNext />
+    </Stepper>
+    <Toggle aria-label="Bold">B</Toggle>
+    <ToggleGroup type="multiple" aria-label="Formatting"><ToggleGroupItem value="bold">Bold</ToggleGroupItem><ToggleGroupItem value="italic">Italic</ToggleGroupItem></ToggleGroup>
+    <MenuToggle aria-controls="site-navigation" />
+  </>
+}
+```
+
+Roots accept `appearance` (default/flat/glass, unset inherits), `className`, native
+attributes and refs. Accent, dark mode, density and RTL inherit the theme.
+Tabs and groups accept explicit `dir`; tabs additionally reads the theme direction.
+Breadcrumb's collapsed menu reuses DropdownMenu and portals into the nearest
+SheenThemeProvider. All built-in text is overridable, and icons use inline Lucide
+paths (ISC). Custom icon slots support SVG or other markup with two-class sizing.
+
+| Item | Props and defaults |
+| --- | --- |
+| Tabs | Radix root props: `value`/`defaultValue`/`onValueChange`, `orientation`, `dir`, `activationMode` (automatic default). TabsList `variant="segmented"` (underline/pills); TabsTrigger `value`, `disabled`; TabsContent `value`, `forceMount`. Automatic roving arrows, Home/End and RTL. One measured indicator glides; panels enter from the direction of travel. |
+| Accordion | Radix `type="single"` or `"multiple"`, value/defaultValue/onValueChange (string or string array), collapsible for single, orientation, dir, disabled; `variant="default"` (inset/cards), `icon="chevron"` (plus). AccordionItem value/disabled; AccordionTrigger icon/description/children; AccordionContent children. Native Radix keyboard navigation and measured height animation. |
+| Breadcrumb | `label="Breadcrumb"`, `variant="default"` (glass), `separator="chevron"` (slash/dot). Parts: BreadcrumbList, BreadcrumbItem, BreadcrumbLink (href or button, asChild), BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis (children overrides "More"). BreadcrumbTrail: items `{label,href?,onClick?,icon?,key?}`, maxItems, itemsBeforeCollapse=1, itemsAfterCollapse=2, collapsedLabel="Show hidden pages". |
+| Pagination | `label="Pagination"`, `variant="glass"` (plain), `size="default"` (sm). Parts: PaginationContent, PaginationItem, PaginationLink (isActive, disabled, href, asChild), PaginationPrevious/Next (iconOnly, children replaces Previous/Next), PaginationEllipsis. PaginationControl: pageCount, page/defaultPage=1/onPageChange, siblings=1, boundaries=1, layout="pages" (compact), getHref, iconOnly, previousLabel, nextLabel, formatPage=String, getPageLabel defaults to "Page N". Exported paginationRange returns stable ranges with start/end ellipsis keys. |
+| Stepper | value/defaultValue=0/onValueChange, orientation="horizontal" (vertical), labelPlacement="end" (bottom), linear=false, size="default" (sm), labels overrides optional/completed/current/error/stepOf/previous/next. StepperNav wraps StepperStep (title, description, icon, optional, error, completed, disabled, children for vertical content). StepperPanel index/unmountOnHide=false. StepperPrevious/Next use Button props; preventDefault in onClick blocks advancement. useStepper exposes value/count/isFirst/isLast/isComplete/goTo/next/previous. Value equal to count means complete. |
+| Toggle | Radix pressed/defaultPressed/onPressedChange, disabled; variant="default" (outline), size="default" (sm/lg/icon/icon-sm/icon-lg). ToggleGroup: type single/multiple, value/defaultValue/onValueChange (string/string array), variant (also segmented), size, required (defaults true for segmented), orientation, dir, disabled. ToggleGroupItem value, variant/size overrides. Single segmented groups glide a thumb; multiple groups highlight each selection. |
+| MenuToggle | open/defaultOpen=false/onOpenChange, openLabel="Open menu", closeLabel="Close menu", icon="close" (arrow), Button variant="ghost", size="default" (sm/lg), children. Explicit aria-label overrides both state labels; aria-controls associates the menu. Supports asChild use by a Radix trigger. |
+
+PaginationControl uses buttons without getHref and links when it is supplied.
+Ordinary link clicks update its local/controlled state; modified clicks retain
+native navigation. Use onPageChange to synchronize your router when controlling
+page. Disabled previous/next links have no destination. All page links expose
+aria-current on the selected page. Indicators place instantly at first render,
+remeasure on resize, and animate subsequent changes. Pagination keeps keyed
+numbers so shifted ranges FLIP and new numbers pop in. Reduced motion disables
+transitions, FLIP, pop-in and smooth scrolling. Server-rendered active tabs and
+pages retain a static highlight until measurement.

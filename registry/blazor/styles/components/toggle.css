@@ -1,0 +1,260 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-toggle {
+  --sheen-toggle-rgb: var(--bs-primary-rgb);
+  --sheen-toggle-text: color-mix(in srgb, rgb(var(--sheen-toggle-rgb)) var(--sheen-text-mix), var(--sheen-text-ink));
+  --sheen-toggle-height: var(--sheen-control-height);
+  --sheen-toggle-radius: var(--sheen-radius-control);
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--sheen-toggle-height);
+  padding: 0.375rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--sheen-toggle-radius);
+  color: rgba(var(--bs-emphasis-color-rgb), 0.72);
+  background-color: transparent;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--sheen-duration) ease, background-color var(--sheen-duration) ease, border-color var(--sheen-duration) ease, box-shadow var(--sheen-duration) var(--sheen-ease-out);
+}
+.sheen-toggle svg {
+  width: 1.125em;
+  height: 1.125em;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+.sheen-toggle:hover:not(:disabled) {
+  color: var(--bs-emphasis-color);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+}
+.sheen-toggle:focus-visible {
+  z-index: 2;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(var(--sheen-toggle-rgb), 0.35);
+}
+.sheen-toggle:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.sheen-toggle[data-state=on] {
+  color: var(--sheen-toggle-text);
+  background-color: rgba(var(--sheen-toggle-rgb), 0.12);
+}
+.sheen-toggle[data-state=on]:hover:not(:disabled) {
+  color: var(--sheen-toggle-text);
+  background-color: rgba(var(--sheen-toggle-rgb), 0.17);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-toggle {
+    transition: color var(--sheen-duration) ease, background-color var(--sheen-duration) ease, border-color var(--sheen-duration) ease, box-shadow var(--sheen-duration) var(--sheen-ease-out), transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+  }
+  .sheen-toggle:active:not(:disabled) {
+    transform: scale(0.95);
+    transition-duration: var(--sheen-duration-fast);
+  }
+  .sheen-toggle[data-state=on] svg {
+    animation: sheen-toggle-pop 420ms var(--sheen-ease-spring);
+  }
+}
+.sheen-toggle.sheen-toggle-sm {
+  --sheen-toggle-height: 2rem;
+  --sheen-toggle-radius: var(--sheen-radius-sm);
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.875rem;
+}
+.sheen-toggle.sheen-toggle-lg {
+  --sheen-toggle-height: var(--sheen-control-height-lg);
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+.sheen-toggle.sheen-toggle-icon {
+  width: var(--sheen-toggle-height);
+  padding: 0;
+}
+
+.sheen-toggle-outline {
+  border-color: rgba(var(--bs-emphasis-color-rgb), 0.14);
+}
+.sheen-toggle-outline[data-state=on] {
+  border-color: rgba(var(--sheen-toggle-rgb), 0.4);
+}
+
+.sheen-toggle-group {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 100%;
+}
+.sheen-toggle-group[data-orientation=vertical] {
+  flex-direction: column;
+  align-items: stretch;
+}
+.sheen-toggle-group[data-variant=outline] {
+  flex-wrap: nowrap;
+  gap: 0;
+}
+.sheen-toggle-group[data-variant=outline] > .sheen-toggle {
+  border-radius: 0;
+}
+.sheen-toggle-group[data-variant=outline] > .sheen-toggle:first-of-type {
+  border-start-start-radius: var(--sheen-toggle-radius);
+  border-end-start-radius: var(--sheen-toggle-radius);
+}
+.sheen-toggle-group[data-variant=outline] > .sheen-toggle:last-of-type {
+  border-start-end-radius: var(--sheen-toggle-radius);
+  border-end-end-radius: var(--sheen-toggle-radius);
+}
+.sheen-toggle-group[data-variant=outline] > .sheen-toggle + .sheen-toggle {
+  margin-inline-start: -1px;
+}
+.sheen-toggle-group[data-variant=outline] > .sheen-toggle[data-state=on] {
+  z-index: 1;
+}
+.sheen-toggle-group[data-variant=outline][data-orientation=vertical] > .sheen-toggle:first-of-type {
+  border-radius: var(--sheen-toggle-radius) var(--sheen-toggle-radius) 0 0;
+}
+.sheen-toggle-group[data-variant=outline][data-orientation=vertical] > .sheen-toggle:last-of-type {
+  border-radius: 0 0 var(--sheen-toggle-radius) var(--sheen-toggle-radius);
+}
+.sheen-toggle-group[data-variant=outline][data-orientation=vertical] > .sheen-toggle + .sheen-toggle {
+  margin-inline-start: 0;
+  margin-top: -1px;
+}
+
+.sheen-toggle-group[data-variant=segmented] {
+  --sheen-thumb-bg: rgb(var(--bs-body-bg-rgb));
+  --sheen-thumb-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 3px 8px rgba(0, 0, 0, 0.06);
+  flex-wrap: nowrap;
+  gap: 0.125rem;
+  padding: 0.1875rem;
+  border-radius: var(--sheen-radius-control);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+}
+[data-bs-theme=dark] .sheen-toggle-group[data-variant=segmented] {
+  --sheen-thumb-bg: rgba(255, 255, 255, 0.14);
+}
+.sheen-toggle-group[data-variant=segmented] > .sheen-toggle {
+  --sheen-toggle-height: calc(var(--sheen-control-height) - 0.375rem);
+  --sheen-toggle-radius: calc(var(--sheen-radius-control) - 0.1875rem);
+  flex: 1 1 auto;
+  background-color: transparent;
+}
+.sheen-toggle-group[data-variant=segmented] > .sheen-toggle.sheen-toggle-sm {
+  --sheen-toggle-height: calc(2rem - 0.375rem);
+}
+.sheen-toggle-group[data-variant=segmented] > .sheen-toggle.sheen-toggle-lg {
+  --sheen-toggle-height: calc(var(--sheen-control-height-lg) - 0.375rem);
+}
+.sheen-toggle-group[data-variant=segmented] > .sheen-toggle:hover:not(:disabled) {
+  background-color: transparent;
+}
+.sheen-toggle-group[data-variant=segmented] > .sheen-toggle[data-state=on] {
+  color: var(--bs-emphasis-color);
+  background-color: var(--sheen-thumb-bg);
+  box-shadow: var(--sheen-thumb-shadow);
+}
+.sheen-toggle-group[data-variant=segmented] > .sheen-toggle[data-state=on] svg {
+  color: rgb(var(--sheen-toggle-rgb));
+}
+.sheen-toggle-group[data-variant=segmented] > .sheen-toggle[data-state=on]:focus-visible {
+  box-shadow: 0 0 0 0.25rem rgba(var(--sheen-toggle-rgb), 0.35), var(--sheen-thumb-shadow);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-toggle-group[data-variant=segmented] > .sheen-toggle[data-state=on] {
+    animation: sheen-toggle-thumb-in 360ms var(--sheen-ease-spring);
+  }
+}
+.sheen-toggle-group[data-variant=segmented][data-sliding][data-ready] > .sheen-toggle[data-state=on] {
+  background-color: transparent;
+  box-shadow: none;
+  animation: none;
+}
+.sheen-toggle-group[data-variant=segmented][data-sliding][data-ready] > .sheen-toggle[data-state=on]:focus-visible {
+  box-shadow: 0 0 0 0.25rem rgba(var(--sheen-toggle-rgb), 0.35);
+}
+
+.sheen-toggle-group-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: var(--sheen-thumb-w, 0);
+  height: var(--sheen-thumb-h, 0);
+  border-radius: calc(var(--sheen-radius-control) - 0.1875rem);
+  background-color: var(--sheen-thumb-bg);
+  box-shadow: var(--sheen-thumb-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(var(--sheen-thumb-x, 0), var(--sheen-thumb-y, 0));
+}
+.sheen-toggle-group[data-ready] > .sheen-toggle-group-thumb {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-toggle-group[data-animate] > .sheen-toggle-group-thumb {
+    transition: transform 450ms var(--sheen-ease-spring), width 450ms var(--sheen-ease-spring), height 450ms var(--sheen-ease-spring);
+  }
+}
+
+@keyframes sheen-toggle-pop {
+  40% {
+    transform: scale(1.22);
+  }
+}
+@keyframes sheen-toggle-thumb-in {
+  from {
+    transform: scale(0.85);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheen-toggle, .sheen-toggle * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+.sheen-toggle .sheen-toggle svg {
+  width: 1em;
+  height: 1em;
+}
+
+.sheen-toggle.sheen-toggle svg {
+  width: 1em;
+  height: 1em;
+}
+
+.sheen-toggle-group[data-variant=segmented] {
+  background: var(--sheen-surface-bg);
+  box-shadow: var(--sheen-control-shadow);
+  backdrop-filter: var(--sheen-surface-filter);
+}
+
+.sheen-toggle-group-thumb {
+  box-shadow: var(--sheen-control-shadow);
+}
+
+.sheen-toggle-icon-sm {
+  width: var(--sheen-control-height-sm);
+  padding-inline: 0;
+}
+
+.sheen-toggle-icon-lg {
+  width: var(--sheen-control-height-lg);
+  padding-inline: 0;
+}

@@ -2,13 +2,16 @@
 @using Microsoft.AspNetCore.Components.Forms
 @typeparam TValue
 <InputNumber TValue="TValue" @attributes="ControlAttributes" class="@($"form-control sheen-input {Class} {ExtraClass}".TrimEnd())"
-             data-sheen-appearance="@Appearance" Value="@Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression" />
+             data-sheen-appearance="@Appearance" Value="@Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression" />
 @code {
 
     /// <summary>Bound value, including EditContext validation and static SSR form mapping.</summary>
     [Parameter] public TValue Value { get; set; } = default!;
     [Parameter] public EventCallback<TValue> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<TValue>>? ValueExpression { get; set; }
+    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
+    private System.Linq.Expressions.Expression<Func<TValue>>? _ownValueExpression;
+    private System.Linq.Expressions.Expression<Func<TValue>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
 
     [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
     /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>

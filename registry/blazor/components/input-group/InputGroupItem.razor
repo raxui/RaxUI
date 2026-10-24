@@ -2,13 +2,16 @@
 @using Microsoft.AspNetCore.Components.Forms
 
 <InputText @attributes="AdditionalAttributes" class="@($"form-control sheen-input sheen-joined-input {Class} {ExtraClass}".TrimEnd())"
-           Value="@Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression" />
+           Value="@Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression" />
 @code {
 
     /// <summary>Bound value, including EditContext validation and static SSR form mapping.</summary>
     [Parameter] public string? Value { get; set; } = "";
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<string?>>? ValueExpression { get; set; }
+    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
+    private System.Linq.Expressions.Expression<Func<string?>>? _ownValueExpression;
+    private System.Linq.Expressions.Expression<Func<string?>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
 
     /// <summary>Extra classes. Set a distinct id and aria-label for each segment.</summary>
     [Parameter] public string? Class { get; set; }

@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Textarea/Textarea.razor",
       "type": "razor",
-      "sha256": "b72f2646a3e18f45df5fcce9f32a4d46b897793dd306836091e910cac8a29281"
+      "sha256": "d90344b72b0ee0ddff6f1aae67d58e29da1f9eeb7b1ad690837d41d1d8bc9d25"
     },
     {
       "source": "Textarea.razor.js",

@@ -13,6 +13,7 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@/components/ui/dropdown-menu": ["registry/react/components/dropdown-menu/dropdown-menu.tsx"],
       "@/components/ui/popover": ["registry/react/components/popover/popover.tsx"],
       "@/components/ui/input": ["registry/react/components/input/input.tsx"],
       "@/components/ui/field": ["registry/react/components/field/field.tsx"],

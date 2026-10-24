@@ -37,6 +37,13 @@
     { "name": "spinner", "manifest": "registry/react/components/spinner/manifest.json" },
     { "name": "progress", "manifest": "registry/react/components/progress/manifest.json" },
     { "name": "table", "manifest": "registry/react/components/table/manifest.json" },
-    { "name": "timeline", "manifest": "registry/react/components/timeline/manifest.json" }
+    { "name": "timeline", "manifest": "registry/react/components/timeline/manifest.json" },
+    { "name": "tabs", "manifest": "registry/react/components/tabs/manifest.json" },
+    { "name": "accordion", "manifest": "registry/react/components/accordion/manifest.json" },
+    { "name": "breadcrumb", "manifest": "registry/react/components/breadcrumb/manifest.json" },
+    { "name": "pagination", "manifest": "registry/react/components/pagination/manifest.json" },
+    { "name": "stepper", "manifest": "registry/react/components/stepper/manifest.json" },
+    { "name": "toggle", "manifest": "registry/react/components/toggle/manifest.json" },
+    { "name": "menu-toggle", "manifest": "registry/react/components/menu-toggle/manifest.json" }
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "name": "menu-toggle",
+  "version": "0.1.0",
+  "description": "Source-owned menu-toggle navigation components.",
+  "requires": [
+    "foundation",
+    "button"
+  ],
+  "packages": {},
+  "styles": [
+    "components/menu-toggle"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/menu-toggle/menu-toggle.tsx",
+      "target": "components/ui/menu-toggle.tsx",
+      "type": "tsx",
+      "sha256": "da834164192b8c004ffeb218780adb41d7eeb37782fc756b7279be70f8b76c93"
+    },
+    {
+      "source": "theme/scss/components/_menu-toggle.scss",
+      "target": "styles/sheenui/components/_menu-toggle.scss",
+      "type": "scss",
+      "sha256": "20cce542f137be71d1f852e31386045a46abcf3c285f0185b9fa55ce50595bfe"
+    }
+  ]
+}

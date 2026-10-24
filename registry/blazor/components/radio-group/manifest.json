@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "RadioGroup/RadioGroup.razor",
       "type": "razor",
-      "sha256": "ca2c783d2b2908269f6c42c62160cb0716a09a8b479a5d9d8dd07783e83fe58f"
+      "sha256": "fb3c65134af29ac9d8e2504a2af66d4cff101b461e606fed7163b7696ea6e349"
     },
     {
       "source": "RadioGroupItem.razor",

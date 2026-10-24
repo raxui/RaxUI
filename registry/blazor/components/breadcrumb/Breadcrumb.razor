@@ -1,0 +1,35 @@
+@* SheenUI Breadcrumb. Source-owned: edit freely. Native collapsed details preserve links without JavaScript. *@
+<nav @attributes="AdditionalAttributes" aria-label="@Label" class="@($"sheen-breadcrumb {Class}")" data-variant="@Variant" data-sheen-appearance="@Appearance">
+    <ol class="sheen-breadcrumb-list">
+        @for (var i = 0; i < Items.Count; i++)
+        {
+            @if (i > 0) { <li class="sheen-breadcrumb-separator" role="presentation" aria-hidden="true">@Separator</li> }
+            @if (MaxItems >= 2 && Items.Count > MaxItems && i == 1)
+            {
+                <li class="sheen-breadcrumb-item"><details class="sheen-breadcrumb-collapse"><summary class="sheen-breadcrumb-link" aria-label="@CollapsedLabel">&hellip;</summary><ul>
+                    @for (; i < Items.Count - 1; i++) { <li><a class="sheen-breadcrumb-link" href="@Items[i].Href">@Items[i].Label</a></li> }
+                </ul></details></li>
+                i--;
+            }
+            else
+            {
+                <li class="sheen-breadcrumb-item">
+                    @if (i == Items.Count - 1) { <span class="sheen-breadcrumb-page" aria-current="page">@Items[i].Label</span> }
+                    else { <a class="sheen-breadcrumb-link" href="@Items[i].Href">@Items[i].Label</a> }
+                </li>
+            }
+        }
+    </ol>
+</nav>
+@code {
+    public record Item(string Label, string Href);
+    [Parameter] public IReadOnlyList<Item> Items { get; set; } = Array.Empty<Item>();
+    [Parameter] public string Label { get; set; } = "Breadcrumb";
+    [Parameter] public string CollapsedLabel { get; set; } = "Show hidden pages";
+    [Parameter] public string Separator { get; set; } = "/";
+    [Parameter] public int MaxItems { get; set; }
+    [Parameter] public string Variant { get; set; } = "default";
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

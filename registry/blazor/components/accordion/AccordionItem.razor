@@ -1,0 +1,20 @@
+@* SheenUI AccordionItem. Source-owned: edit freely. Built-in icon paths from Lucide (ISC). *@
+<details @attributes="AdditionalAttributes" class="@($"sheen-accordion-item {Class}")" name="@(Group?.Multiple == false ? Group.Name : null)" open="@DefaultOpen">
+    <summary class="sheen-accordion-trigger">
+        @if (Icon is not null) { <span class="sheen-accordion-leading">@Icon</span> }
+        <span class="sheen-accordion-text"><span>@Title</span>@if (Description is not null) { <span class="sheen-accordion-description">@Description</span> }</span>
+        <span class="sheen-accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg></span>
+    </summary>
+    <div class="sheen-accordion-content"><div class="sheen-accordion-content-inner">@ChildContent</div></div>
+</details>
+@code {
+    [CascadingParameter] public Accordion? Group { get; set; }
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public bool DefaultOpen { get; set; }
+    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

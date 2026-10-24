@@ -6,20 +6,25 @@
     <div class="sheen-input-group" data-start="@(StartIcon is not null ? "" : null)">
         @if (StartIcon is not null) { <label for="@ControlId" class="sheen-input-slot" data-side="start" aria-hidden="true">@StartIcon</label> }
     <InputDate TValue="DateOnly?" Type="InputDateType.Date" @attributes="StartAttributes" class="@($"form-control sheen-input {Class}")"
-               Value="Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression" max="@Format(EndValue)" ParsingErrorMessage="@ParsingErrorMessage" />
+               Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression" max="@Format(EndValue)" ParsingErrorMessage="@ParsingErrorMessage" />
     </div>
     <span aria-hidden="true">@Separator</span>
     <InputDate TValue="DateOnly?" Type="InputDateType.Date" @attributes="EndAttributes" class="@($"form-control sheen-input {Class}")"
-               Value="EndValue" ValueChanged="EndValueChanged" ValueExpression="EndValueExpression" min="@Format(Value)" ParsingErrorMessage="@ParsingErrorMessage" />
+               Value="EndValue" ValueChanged="EndValueChanged" ValueExpression="OwnEndValueExpression" min="@Format(Value)" ParsingErrorMessage="@ParsingErrorMessage" />
 </div>
 @if (OutOfOrder) { <p id="@(ControlId + "-range-error")" class="sheen-field-error" role="alert">@OrderMessage</p> }
 @code {
     [Parameter] public DateOnly? Value { get; set; }
     [Parameter] public EventCallback<DateOnly?> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<DateOnly?>>? ValueExpression { get; set; }
+    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
+    private System.Linq.Expressions.Expression<Func<DateOnly?>>? _ownValueExpression;
+    private System.Linq.Expressions.Expression<Func<DateOnly?>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
     [Parameter] public DateOnly? EndValue { get; set; }
     [Parameter] public EventCallback<DateOnly?> EndValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<DateOnly?>>? EndValueExpression { get; set; }
+    private System.Linq.Expressions.Expression<Func<DateOnly?>>? _ownEndValueExpression;
+    private System.Linq.Expressions.Expression<Func<DateOnly?>> OwnEndValueExpression => EndValueExpression ?? (_ownEndValueExpression ??= () => EndValue);
     [Parameter] public RenderFragment? StartIcon { get; set; }
     [Parameter] public string StartLabel { get; set; } = "Start date";
     [Parameter] public string EndLabel { get; set; } = "End date";

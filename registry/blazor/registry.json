@@ -76,6 +76,13 @@
     { "name": "spinner", "manifest": "components/spinner/manifest.json" },
     { "name": "progress", "manifest": "components/progress/manifest.json" },
     { "name": "table", "manifest": "components/table/manifest.json" },
-    { "name": "timeline", "manifest": "components/timeline/manifest.json" }
+    { "name": "timeline", "manifest": "components/timeline/manifest.json" },
+    { "name": "tabs", "manifest": "components/tabs/manifest.json" },
+    { "name": "accordion", "manifest": "components/accordion/manifest.json" },
+    { "name": "breadcrumb", "manifest": "components/breadcrumb/manifest.json" },
+    { "name": "pagination", "manifest": "components/pagination/manifest.json" },
+    { "name": "stepper", "manifest": "components/stepper/manifest.json" },
+    { "name": "toggle", "manifest": "components/toggle/manifest.json" },
+    { "name": "menu-toggle", "manifest": "components/menu-toggle/manifest.json" }
   ]
 }

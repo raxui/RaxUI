@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "pagination",
+  "version": "0.1.0",
+  "description": "Source-owned pagination navigation components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/pagination.css",
+      "destination": "styles",
+      "target": "components/pagination.css",
+      "type": "css",
+      "sha256": "7392537c387b7f817689fd041ccd1892ea91c11e0dc74b18ccd519a0162924e3"
+    }
+  ],
+  "files": [
+    {
+      "source": "Pagination.razor",
+      "destination": "components",
+      "target": "Pagination/Pagination.razor",
+      "type": "razor",
+      "sha256": "a25bdbeda0ae01bf8c9d213ad3371640108b4e7e290c4028580ee53dc84e82af"
+    },
+    {
+      "source": "Pagination.razor.js",
+      "destination": "components",
+      "target": "Pagination/Pagination.razor.js",
+      "type": "js",
+      "sha256": "0eabb17dbda3c043baadf56d5f390ade5ca6ee43e28528770981afbdfc9b4999"
+    }
+  ]
+}

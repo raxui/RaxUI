@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 
 <InputCheckbox @attributes="Attributes" role="checkbox" class="@($"form-check-input sheen-checkbox-native {Class} {ExtraClass}".TrimEnd())"
-               data-sheen-appearance="@Appearance" Value="Value" ValueChanged="Changed" ValueExpression="ValueExpression" />
+               data-sheen-appearance="@Appearance" Value="Value" ValueChanged="Changed" ValueExpression="OwnValueExpression" />
 @code {
     /// <summary>Mixed state, announced as aria-checked=mixed; activating the native checkbox selects it.</summary>
     [Parameter] public bool Indeterminate { get; set; }
@@ -17,6 +17,9 @@
     [Parameter] public bool Value { get; set; }
     [Parameter] public EventCallback<bool> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<bool>>? ValueExpression { get; set; }
+    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
+    private System.Linq.Expressions.Expression<Func<bool>>? _ownValueExpression;
+    private System.Linq.Expressions.Expression<Func<bool>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
 
     [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
     /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "accordion",
+  "version": "0.1.0",
+  "description": "Source-owned accordion navigation components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-accordion": "1.3.1"
+  },
+  "styles": [
+    "components/accordion"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/accordion/accordion.tsx",
+      "target": "components/ui/accordion.tsx",
+      "type": "tsx",
+      "sha256": "c9d3ef8aee07586d68c44f3db7d6b700fa3d3fe7c2323e6ccdd048601148a87e"
+    },
+    {
+      "source": "theme/scss/components/_accordion.scss",
+      "target": "styles/sheenui/components/_accordion.scss",
+      "type": "scss",
+      "sha256": "be5896f2d4584ee5f7aceb7de5cab4b4e62f10946fe6495ce61e7cb5bca7c157"
+    }
+  ]
+}

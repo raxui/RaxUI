@@ -1,0 +1,28 @@
+@* SheenUI MenuToggle. Source-owned: edit freely. Animated CSS bars; requires interactivity. *@
+<button @attributes="AdditionalAttributes" type="button" class="@($"btn sheen-button btn-glass btn-glass-{Variant} sheen-menu-toggle btn-glass-icon {Class}")"
+        data-sheen-appearance="@Appearance" data-icon="@Icon" data-open="@(Current ? "" : null)" disabled="@Disabled"
+        aria-expanded="@(Current ? "true" : "false")" aria-label="@(Current ? CloseLabel : OpenLabel)" @onclick="ToggleOpen">
+    <span class="sheen-menu-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>@ChildContent
+</button>
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public bool DefaultOpen { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string OpenLabel { get; set; } = "Open menu";
+    [Parameter] public string CloseLabel { get; set; } = "Close menu";
+    [Parameter] public string Icon { get; set; } = "close";
+    [Parameter] public string Variant { get; set; } = "ghost";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private bool? _open;
+    private bool Current => OpenChanged.HasDelegate ? Open : _open ?? (Open || DefaultOpen);
+    private async Task ToggleOpen()
+    {
+        var next = !Current;
+        if (!OpenChanged.HasDelegate) _open = next;
+        await OpenChanged.InvokeAsync(next);
+    }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

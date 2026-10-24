@@ -5,6 +5,7 @@ export default defineConfig({
   resolve: {
     // Registry sources import the foundation as "@/lib/*", like an installed app.
     alias: {
+      "@/components/ui/dropdown-menu": fileURLToPath(new URL("./registry/react/components/dropdown-menu/dropdown-menu.tsx", import.meta.url)),
       "@/components/ui/popover": fileURLToPath(new URL("./registry/react/components/popover/popover.tsx", import.meta.url)),
       "@/components/ui/input": fileURLToPath(new URL("./registry/react/components/input/input.tsx", import.meta.url)),
       "@/components/ui/field": fileURLToPath(new URL("./registry/react/components/field/field.tsx", import.meta.url)),

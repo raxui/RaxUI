@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Input/Input.razor",
       "type": "razor",
-      "sha256": "c760d15661bba0486c7f7d6149989ba9e9bfe049ce39414767d5dd8f1479dc41"
+      "sha256": "63321dff172128ffc2b29b92a959999b0a0b285332c14976fa0778ebcdf2f4f6"
     },
     {
       "source": "Input.razor.js",
@@ -35,7 +35,7 @@
       "destination": "components",
       "target": "Input/NumberInput.razor",
       "type": "razor",
-      "sha256": "6cf820bd697f705b590a207b1664a95c42a070fec01b137914e14be96771c905"
+      "sha256": "84293bf2f47bdbea404d21c2d26955c4be28529b45e291bc62a6b636ea7fa065"
     }
   ]
 }

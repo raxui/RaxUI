@@ -1,0 +1,63 @@
+@* SheenUI Pagination. Source-owned: edit freely. Links work in static SSR; interactivity adds indicator motion. *@
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+<nav @attributes="AdditionalAttributes" class="@($"sheen-pagination {Class}")" aria-label="@Label" data-variant="@Variant" data-size="@Size" data-sheen-appearance="@Appearance">
+    <ul @ref="_root" class="sheen-pagination-content">
+        <li class="sheen-pagination-indicator" aria-hidden="true" role="presentation"></li>
+        <li class="sheen-pagination-item"><a class="sheen-pagination-link sheen-pagination-step" href="@(Current > 1 ? Href(Current - 1) : null)" aria-disabled="@(Current <= 1 ? "true" : null)">@PreviousLabel</a></li>
+        @foreach (var item in Range())
+        {
+            <li @key="item" class="sheen-pagination-item">
+                @if (item > 0) { <a class="sheen-pagination-link" href="@Href(item)" aria-label="@GetPageLabel(item)" aria-current="@(item == Current ? "page" : null)">@FormatPage(item)</a> }
+                else { <span class="sheen-pagination-ellipsis" aria-label="@MoreLabel">&hellip;</span> }
+            </li>
+        }
+        <li class="sheen-pagination-item"><a class="sheen-pagination-link sheen-pagination-step" href="@(Current < PageCount ? Href(Current + 1) : null)" aria-disabled="@(Current >= PageCount ? "true" : null)">@NextLabel</a></li>
+    </ul>
+</nav>
+@code {
+    [Parameter] public int Page { get; set; } = 1;
+    [Parameter] public int PageCount { get; set; } = 1;
+    [Parameter] public int Siblings { get; set; } = 1;
+    [Parameter] public int Boundaries { get; set; } = 1;
+    [Parameter] public Func<int, string>? GetHref { get; set; }
+    private string Href(int page) => GetHref?.Invoke(page) ?? Navigation.GetUriWithQueryParameter("page", page);
+    [Parameter] public Func<int, string> GetPageLabel { get; set; } = page => $"Page {page}";
+    [Parameter] public Func<int, string> FormatPage { get; set; } = page => page.ToString();
+    [Parameter] public string Label { get; set; } = "Pagination";
+    [Parameter] public string PreviousLabel { get; set; } = "Previous";
+    [Parameter] public string NextLabel { get; set; } = "Next";
+    [Parameter] public string MoreLabel { get; set; } = "More pages";
+    [Parameter] public string Variant { get; set; } = "glass";
+    [Parameter] public string Size { get; set; } = "default";
+    private int Current => Math.Clamp(Page, 1, Math.Max(1, PageCount));
+    private IEnumerable<int> Range()
+    {
+        var siblings = Math.Max(0, Siblings); var boundaries = Math.Max(1, Boundaries);
+        var slots = siblings * 2 + 3 + boundaries * 2;
+        if (PageCount <= slots) return Enumerable.Range(1, Math.Max(0, PageCount));
+        var start = Math.Max(Current - siblings, boundaries + 1);
+        var end = Math.Min(Current + siblings, PageCount - boundaries);
+        if (start <= boundaries + 2) return Enumerable.Range(1, slots - boundaries - 1).Append(-2).Concat(Enumerable.Range(PageCount - boundaries + 1, boundaries));
+        if (end >= PageCount - boundaries - 1) return Enumerable.Range(1, boundaries).Append(-1).Concat(Enumerable.Range(PageCount - (slots - boundaries - 2), slots - boundaries - 1));
+        return Enumerable.Range(1, boundaries).Append(-1).Concat(Enumerable.Range(start, end - start + 1)).Append(-2).Concat(Enumerable.Range(PageCount - boundaries + 1, boundaries));
+    }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private ElementReference _root;
+    private IJSObjectReference? _module;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Pagination/Pagination.razor.js");
+        await _module.InvokeVoidAsync("init", _root);
+    }
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is null) return;
+        try { await _module.InvokeVoidAsync("dispose", _root); await _module.DisposeAsync(); }
+        catch (JSDisconnectedException) { }
+    }
+}

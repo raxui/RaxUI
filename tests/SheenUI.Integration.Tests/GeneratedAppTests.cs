@@ -70,6 +70,13 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "progress"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "table"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "timeline"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "tabs"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "accordion"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "breadcrumb"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "pagination"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "stepper"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "toggle"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "menu-toggle"], app, output, error) == 0, error.ToString());
         Assert.True(File.Exists(Path.Combine(app, "Components", "UI", "Dialog", "Dialog.razor.js")));
 
         // Exactly the installed styled components, each imported once; the starter is separate.
@@ -83,7 +90,7 @@ public class GeneratedAppTests : IDisposable
         Assert.Equal(expectedStyles.Select(target => $"@import url(\"{target}\");"), imports.Order());
         Assert.Equal(expectedStyles, Directory.GetFiles(Path.Combine(stylesDir, "components"))
             .Select(file => "components/" + Path.GetFileName(file)).Order());
-        foreach (var displayItem in new[] { "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline" })
+        foreach (var displayItem in new[] { "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline", "tabs", "accordion", "breadcrumb", "pagination", "stepper", "toggle", "menu-toggle" })
             Assert.Contains($"@import url(\"components/{displayItem}.css\");", imports);
 
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
@@ -160,6 +167,7 @@ public class GeneratedAppTests : IDisposable
         WriteBasicControlPages(components);
         WriteAdvancedControlPages(components);
         WriteDisplayPages(components);
+        WriteNavigationPages(components);
         WriteFluentForm(components);
         // Optional FluentValidation through Blazilla (#37): SheenUI controls must show its messages too.
         Dotnet(app, "add", "package", "Blazilla", "--version", "2.4.2");
@@ -217,6 +225,13 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "progress"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "table"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "timeline"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "tabs"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "accordion"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "breadcrumb"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "pagination"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "stepper"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "toggle"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "menu-toggle"], app, output, error) == 0, error.ToString());
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app);
     }
@@ -306,6 +321,7 @@ public class GeneratedAppTests : IDisposable
             await VerifyBasicControls(page, url);
             await VerifyAdvancedControls(page, url);
             await VerifyDisplayBasics(page, url);
+            await VerifyNavigation(page, url);
             await VerifyFluentForm(page, url);
         }
         catch (Exception exception)
@@ -694,6 +710,16 @@ public class GeneratedAppTests : IDisposable
             @rendermode InteractiveServer
             @using System.ComponentModel.DataAnnotations
 
+            @* Unbound controls (no @bind-Value, outside any EditForm) must render without ValueExpression. *@
+            <div id="unbound">
+                <Switch id="unbound-switch" Value="true" disabled />
+                <Switch id="press-switch" Value="false" />
+                <Checkbox id="unbound-check" Value="true" />
+                <Input id="unbound-input" Value="Read only" readonly />
+                <Slider id="unbound-slider" Value="30" />
+                <Rating Value="3" ReadOnly />
+            </div>
+
             <EditForm Model="Model" FormName="controls" OnValidSubmit="Saved" Context="edit">
                 <Form>
                     <DataAnnotationsValidator />
@@ -835,6 +861,23 @@ public class GeneratedAppTests : IDisposable
         await page.Locator("#choice input").First.FocusAsync();
         await page.Locator("#choice input").First.PressAsync("ArrowRight");
         await page.Locator("#country").SelectOptionAsync("iq");
+
+        // Unbound controls render with their own values (no ValueExpression from @bind-Value).
+        await Assertions.Expect(page.Locator("#unbound-switch")).ToBeCheckedAsync();
+        await Assertions.Expect(page.Locator("#unbound-switch")).ToBeDisabledAsync();
+        await Assertions.Expect(page.Locator("#unbound-check")).ToBeCheckedAsync();
+        await Assertions.Expect(page.Locator("#unbound-input")).ToHaveValueAsync("Read only");
+        await Assertions.Expect(page.Locator("#unbound-slider")).ToHaveValueAsync("30");
+
+        // Like boot-ui, the switch thumb stretches while pressed and returns on release.
+        var thumb = page.Locator("#press-switch + .sheen-switch-thumb");
+        var restWidth = (await thumb.BoundingBoxAsync())!.Width;
+        await page.Locator("#press-switch").HoverAsync();
+        await page.Mouse.DownAsync();
+        await page.WaitForTimeoutAsync(400);
+        Assert.True((await thumb.BoundingBoxAsync())!.Width > restWidth * 1.15, "The thumb stretches while pressed.");
+        await page.Mouse.UpAsync();
+        await Assertions.Expect(page.Locator("#press-switch")).ToBeCheckedAsync();
     }
 
     private static void WriteAdvancedControlPages(string components)
@@ -994,6 +1037,93 @@ public class GeneratedAppTests : IDisposable
             await Assertions.Expect(target.Locator("#dates-result")).ToHaveTextAsync("2026-10-24|13:45|2026-10-24T13:45|2026-01-01|2026-02-01");
             if (path == "/static-dates") await Assertions.Expect(target.Locator("#choice-values")).ToHaveTextAsync("g|Gamma");
         }
+    }
+
+
+    private static void WriteNavigationPages(string components)
+    {
+        const string content = """
+            <Tabs id="navigation-tabs" Items="tabs" @bind-Value="tab"><Panel Context="value"><p>@value panel</p></Panel></Tabs>
+            <Accordion><AccordionItem Title="Delivery">Delivery details</AccordionItem><AccordionItem Title="Returns">Returns details</AccordionItem></Accordion>
+            <Breadcrumb Items="crumbs" MaxItems="2" />
+            <Pagination Page="@(PageNumber ?? 1)" PageCount="20" />
+            <Stepper Items="steps" Value="1" />
+            <Toggle id="nav-toggle" @bind-Pressed="pressed">Bold</Toggle>
+            <ToggleGroup @bind-Value="selected" Label="Formatting" Multiple><ToggleGroupItem Value="bold">Strong</ToggleGroupItem><ToggleGroupItem Value="italic">Italic</ToggleGroupItem></ToggleGroup>
+            <MenuToggle aria-controls="site-nav" />
+            <p id="navigation-ready">@ready</p>
+            @code {
+                [SupplyParameterFromQuery(Name = "page")] public int? PageNumber { get; set; }
+                private readonly Tabs.Item[] tabs = [new("one", "One"), new("two", "Two"), new("three", "Three")];
+                private readonly Breadcrumb.Item[] crumbs = [new("Home", "/"), new("Parent", "/static-navigation?page=2"), new("Current", "/static-navigation")];
+                private readonly Stepper.Item[] steps = [new("Cart"), new("Payment"), new("Done")];
+                private string tab = "one";
+                private bool pressed;
+                private IReadOnlyList<string> selected = Array.Empty<string>();
+                private bool ready;
+                protected override void OnAfterRender(bool firstRender) { if (firstRender) { ready = true; StateHasChanged(); } }
+            }
+            """;
+        File.WriteAllText(Path.Combine(components, "Pages", "NavigationPage.razor"), "@page \"/navigation\"\n@rendermode InteractiveServer\n" + content);
+        File.WriteAllText(Path.Combine(components, "Pages", "StaticNavigationPage.razor"), "@page \"/static-navigation\"\n" + content);
+    }
+
+    private static async Task VerifyNavigation(IPage page, string url)
+    {
+        await page.GotoAsync(url + "/navigation");
+        await Assertions.Expect(page.Locator("#navigation-ready")).ToHaveTextAsync("True");
+        var tabs = page.Locator("#navigation-tabs");
+        var one = tabs.GetByRole(AriaRole.Tab, new() { Name = "One" });
+        await one.FocusAsync();
+        await one.PressAsync("ArrowRight");
+        await Assertions.Expect(tabs.GetByRole(AriaRole.Tab, new() { Name = "Two" })).ToHaveAttributeAsync("aria-selected", "true");
+        await CheckIndicator(page, ".sheen-tabs-list", "[aria-selected=true]", "--sheen-tabs-indicator-x", "--sheen-tabs-indicator-width");
+        await page.Keyboard.PressAsync("End");
+        await Assertions.Expect(tabs.GetByRole(AriaRole.Tab, new() { Name = "Three" })).ToHaveAttributeAsync("aria-selected", "true");
+        await page.Keyboard.PressAsync("Home");
+        await Assertions.Expect(one).ToHaveAttributeAsync("aria-selected", "true");
+        await page.GetByText("Delivery", new() { Exact = true }).ClickAsync();
+        await Assertions.Expect(page.GetByText("Delivery details", new() { Exact = true })).ToBeVisibleAsync();
+        await page.GetByText("Returns", new() { Exact = true }).ClickAsync();
+        await Assertions.Expect(page.GetByText("Delivery details", new() { Exact = true })).Not.ToBeVisibleAsync();
+        await page.GetByText("Returns", new() { Exact = true }).ClickAsync();
+        await Assertions.Expect(page.GetByText("Returns details", new() { Exact = true })).Not.ToBeVisibleAsync();
+        await page.Locator("#nav-toggle").ClickAsync();
+        await Assertions.Expect(page.Locator("#nav-toggle")).ToHaveAttributeAsync("aria-pressed", "true");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Strong", Exact = true }).ClickAsync();
+        await page.GetByRole(AriaRole.Button, new() { Name = "Italic", Exact = true }).ClickAsync();
+        await Assertions.Expect(page.GetByRole(AriaRole.Button, new() { Name = "Strong", Exact = true })).ToHaveAttributeAsync("aria-pressed", "true");
+        await Assertions.Expect(page.GetByRole(AriaRole.Button, new() { Name = "Italic", Exact = true })).ToHaveAttributeAsync("aria-pressed", "true");
+        await page.GetByRole(AriaRole.Button, new() { Name = "Open menu" }).ClickAsync();
+        await Assertions.Expect(page.GetByRole(AriaRole.Button, new() { Name = "Close menu" })).ToHaveAttributeAsync("aria-expanded", "true");
+        await CheckIndicator(page, ".sheen-pagination-content", "[aria-current=page]", "--sheen-pagination-x", "--sheen-pagination-w");
+        await page.GetByRole(AriaRole.Link, new() { Name = "Page 2", Exact = true }).ClickAsync();
+        await Assertions.Expect(page.GetByRole(AriaRole.Link, new() { Name = "Page 2", Exact = true })).ToHaveAttributeAsync("aria-current", "page");
+        await CheckIndicator(page, ".sheen-pagination-content", "[aria-current=page]", "--sheen-pagination-x", "--sheen-pagination-w");
+
+        await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false, ReducedMotion = ReducedMotion.Reduce });
+        var staticPage = await context.NewPageAsync();
+        await staticPage.GotoAsync(url + "/static-navigation");
+        await Assertions.Expect(staticPage.GetByRole(AriaRole.Tabpanel)).ToHaveTextAsync("one panel");
+        await staticPage.GetByText("Delivery", new() { Exact = true }).ClickAsync();
+        await Assertions.Expect(staticPage.GetByText("Delivery details", new() { Exact = true })).ToBeVisibleAsync();
+        await staticPage.GetByRole(AriaRole.Link, new() { Name = "Page 2", Exact = true }).ClickAsync();
+        await Assertions.Expect(staticPage.GetByRole(AriaRole.Link, new() { Name = "Page 2", Exact = true })).ToHaveAttributeAsync("aria-current", "page");
+        await staticPage.Locator(".sheen-breadcrumb-collapse summary").ClickAsync();
+        await staticPage.GetByRole(AriaRole.Link, new() { Name = "Parent", Exact = true }).ClickAsync();
+        await Assertions.Expect(staticPage).ToHaveURLAsync(url + "/static-navigation?page=2");
+    }
+
+    private static async Task CheckIndicator(IPage page, string selector, string active, string x, string width)
+    {
+        await page.WaitForFunctionAsync("""
+            ({ selector, active, x, width }) => {
+                const root = document.querySelector(selector), item = root?.querySelector(active);
+                return item && root.hasAttribute('data-ready') &&
+                    root.style.getPropertyValue(x) === `${item.offsetLeft}px` &&
+                    root.style.getPropertyValue(width) === `${item.offsetWidth}px`;
+            }
+            """, new { selector, active, x, width });
     }
 
     private static void WriteDisplayPages(string components)

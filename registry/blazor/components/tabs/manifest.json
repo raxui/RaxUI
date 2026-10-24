@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "tabs",
+  "version": "0.1.0",
+  "description": "Source-owned tabs navigation components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/tabs.css",
+      "destination": "styles",
+      "target": "components/tabs.css",
+      "type": "css",
+      "sha256": "bd2e5e5fc1232f6b7a29d477879f915745a6ee2785e02a4002b4205c8aa233e6"
+    }
+  ],
+  "files": [
+    {
+      "source": "Tabs.razor",
+      "destination": "components",
+      "target": "Tabs/Tabs.razor",
+      "type": "razor",
+      "sha256": "17285138466f6d8f84c66c4ed3b522a58c3c8be9a7267ccf0d982a288707224d"
+    },
+    {
+      "source": "Tabs.razor.js",
+      "destination": "components",
+      "target": "Tabs/Tabs.razor.js",
+      "type": "js",
+      "sha256": "3280a1f6d6f81a2c449ada70e04a5de3d05b97a708cbda4fa335658fd119177a"
+    }
+  ]
+}
