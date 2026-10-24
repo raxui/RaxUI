@@ -6,11 +6,11 @@
      style="@($"--sheen-slider-start: {Percent(Range ? Value : Min)}; --sheen-slider-end: {Percent(Range ? EndValue : Value)}")">
     <span class="sheen-slider-track" aria-hidden="true"><span class="sheen-slider-range"></span></span>
     <SliderInput @attributes="StartAttributes" class="sheen-slider-input" Min="Min" Max="@(Range ? Math.Clamp(EndValue, Min, Max) : Max)" Step="Step"
-                 Value="Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression" />
+                 Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression" />
     @if (Range)
     {
         <SliderInput @attributes="EndAttributes" class="sheen-slider-input" Min="@Math.Clamp(Value, Min, Max)" Max="Max" Step="Step"
-                     Value="EndValue" ValueChanged="EndValueChanged" ValueExpression="EndValueExpression" />
+                     Value="EndValue" ValueChanged="EndValueChanged" ValueExpression="OwnEndValueExpression" />
     }
 </div>
 @code {
@@ -28,10 +28,15 @@
     [Parameter] public double Value { get; set; }
     [Parameter] public EventCallback<double> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<double>>? ValueExpression { get; set; }
+    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
+    private System.Linq.Expressions.Expression<Func<double>>? _ownValueExpression;
+    private System.Linq.Expressions.Expression<Func<double>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
     [Parameter] public bool Range { get; set; }
     [Parameter] public double EndValue { get; set; } = 100;
     [Parameter] public EventCallback<double> EndValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<double>>? EndValueExpression { get; set; }
+    private System.Linq.Expressions.Expression<Func<double>>? _ownEndValueExpression;
+    private System.Linq.Expressions.Expression<Func<double>> OwnEndValueExpression => EndValueExpression ?? (_ownEndValueExpression ??= () => EndValue);
     [Parameter] public double Min { get; set; }
     [Parameter] public double Max { get; set; } = 100;
     [Parameter] public double Step { get; set; } = 1;

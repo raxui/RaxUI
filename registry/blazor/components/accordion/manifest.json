@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "accordion",
+  "version": "0.1.0",
+  "description": "Source-owned accordion navigation components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/accordion.css",
+      "destination": "styles",
+      "target": "components/accordion.css",
+      "type": "css",
+      "sha256": "1dfe9b0fe4b3f831b294bd59807cf5b6a2ff44b3996b0c00a59f9a8bd720e2ba"
+    }
+  ],
+  "files": [
+    {
+      "source": "Accordion.razor",
+      "destination": "components",
+      "target": "Accordion/Accordion.razor",
+      "type": "razor",
+      "sha256": "505e60a595664f18e6a94875b4b64d73005499509bde920cff6b4139da1f2e26"
+    },
+    {
+      "source": "AccordionItem.razor",
+      "destination": "components",
+      "target": "Accordion/AccordionItem.razor",
+      "type": "razor",
+      "sha256": "68d9b00fd5379798623de35685abd65e17de89b76118e405e75de85431fe20e2"
+    }
+  ]
+}

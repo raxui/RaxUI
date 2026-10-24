@@ -4,7 +4,7 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 <InputSelect TValue="string" @attributes="NativeAttributes" hidden="@_interactive" class="@($"form-select {Class}")"
-             Value="Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression">
+             Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression">
     <option value="">@Placeholder</option>
     @foreach (var option in Options) { <option value="@option.Value" disabled="@option.Disabled">@option.Label</option> }
 </InputSelect>
@@ -38,6 +38,9 @@
     [Parameter] public string Value { get; set; } = "";
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<string>>? ValueExpression { get; set; }
+    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
+    private System.Linq.Expressions.Expression<Func<string>>? _ownValueExpression;
+    private System.Linq.Expressions.Expression<Func<string>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
     [Parameter] public string Placeholder { get; set; } = "Choose an option";
     [Parameter] public string SearchPlaceholder { get; set; } = "Search options";
     [Parameter] public string EmptyMessage { get; set; } = "No options found.";

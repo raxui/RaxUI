@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "toggle",
+  "version": "0.1.0",
+  "description": "Source-owned toggle navigation components.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-toggle": "1.2.1",
+    "@radix-ui/react-toggle-group": "1.2.1"
+  },
+  "styles": [
+    "components/toggle"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/toggle/toggle.tsx",
+      "target": "components/ui/toggle.tsx",
+      "type": "tsx",
+      "sha256": "a23239df72c2ff0c971731e81c159870f4cf82efc2ac49e98b5a598b312e00a9"
+    },
+    {
+      "source": "theme/scss/components/_toggle.scss",
+      "target": "styles/sheenui/components/_toggle.scss",
+      "type": "scss",
+      "sha256": "56a3b2971cee004737478429c9d3c9b975bf2f1e98d0c1ec75e14f3c9a28dc13"
+    }
+  ]
+}

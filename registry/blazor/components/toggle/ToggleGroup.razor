@@ -1,0 +1,29 @@
+@* SheenUI ToggleGroup. Source-owned: edit freely. Value is a list in both single and multiple modes. *@
+<CascadingValue Value="this">
+    <div @attributes="AdditionalAttributes" role="group" aria-label="@Label" class="@($"sheen-toggle-group {Class}")" data-variant="@Variant" data-size="@Size" data-sheen-appearance="@Appearance">@ChildContent</div>
+</CascadingValue>
+@code {
+    [Parameter] public IReadOnlyList<string> Value { get; set; } = Array.Empty<string>();
+    [Parameter] public EventCallback<IReadOnlyList<string>> ValueChanged { get; set; }
+    [Parameter] public bool Multiple { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string Label { get; set; } = "Options";
+    [Parameter] public string Variant { get; set; } = "default";
+    [Parameter] public string Size { get; set; } = "default";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private IReadOnlyList<string>? _value;
+    private IReadOnlyList<string> Current => ValueChanged.HasDelegate ? Value : _value ?? Value;
+    public bool Contains(string value) => Current.Contains(value);
+    public async Task Select(string value)
+    {
+        var next = Contains(value) ? Current.Where(v => v != value).ToArray() : Multiple ? Current.Append(value).ToArray() : new[] { value };
+        if (Required && next.Length == 0) return;
+        if (!ValueChanged.HasDelegate) _value = next;
+        await ValueChanged.InvokeAsync(next);
+        StateHasChanged();
+    }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

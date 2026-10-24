@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "menu-toggle",
+  "version": "0.1.0",
+  "description": "Source-owned menu-toggle navigation components.",
+  "dependencies": [
+    "button"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/menu-toggle.css",
+      "destination": "styles",
+      "target": "components/menu-toggle.css",
+      "type": "css",
+      "sha256": "caa1ea3d1cffaf24b4a394e3405d279cd9ff9f41b26c1c0845f91fa042be1b67"
+    }
+  ],
+  "files": [
+    {
+      "source": "MenuToggle.razor",
+      "destination": "components",
+      "target": "MenuToggle/MenuToggle.razor",
+      "type": "razor",
+      "sha256": "a05e39bf7518461ee4a5a44e04b227b8b0f580fca3ec49a34d850fca1e69e38c"
+    }
+  ]
+}

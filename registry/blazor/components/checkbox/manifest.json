@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Checkbox/Checkbox.razor",
       "type": "razor",
-      "sha256": "5c2dd6c7627092a187e4db8b97c830c10679537fb91989ea8da7ced353e7781a"
+      "sha256": "4cc07a8c6bf505f16cdbfed786266ebbf4e34d935e01886a0f03cca73599446a"
     }
   ]
 }

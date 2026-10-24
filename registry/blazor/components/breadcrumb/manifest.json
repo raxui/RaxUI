@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "name": "breadcrumb",
+  "version": "0.1.0",
+  "description": "Source-owned breadcrumb navigation components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/breadcrumb.css",
+      "destination": "styles",
+      "target": "components/breadcrumb.css",
+      "type": "css",
+      "sha256": "8b8850cff09fc8857cdd471e7d02c7c9cfec0d756608e7c8749b1c227fce427e"
+    }
+  ],
+  "files": [
+    {
+      "source": "Breadcrumb.razor",
+      "destination": "components",
+      "target": "Breadcrumb/Breadcrumb.razor",
+      "type": "razor",
+      "sha256": "37716bba5e505cb97a1515ad7fe170e560f089f74be8b4042799ce68f5186cbd"
+    }
+  ]
+}

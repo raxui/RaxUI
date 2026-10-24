@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "breadcrumb",
+  "version": "0.1.0",
+  "description": "Source-owned breadcrumb navigation components.",
+  "requires": [
+    "foundation",
+    "dropdown-menu"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/breadcrumb"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/breadcrumb/breadcrumb.tsx",
+      "target": "components/ui/breadcrumb.tsx",
+      "type": "tsx",
+      "sha256": "83089ca0c6b5f115d2415b3e491fb1124ca98c9855cf08db85c1cde2cd7b082e"
+    },
+    {
+      "source": "theme/scss/components/_breadcrumb.scss",
+      "target": "styles/sheenui/components/_breadcrumb.scss",
+      "type": "scss",
+      "sha256": "dda1bee9def42c83d3f57e4a068f8f7d09c52cda503b740d6dd6b9c9f474f68c"
+    }
+  ]
+}

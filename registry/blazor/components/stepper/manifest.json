@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "name": "stepper",
+  "version": "0.1.0",
+  "description": "Source-owned stepper navigation components.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/stepper.css",
+      "destination": "styles",
+      "target": "components/stepper.css",
+      "type": "css",
+      "sha256": "df52a09217aebb7ae40c7e2513525681ac1b0ade91084f736387cf74200e4efa"
+    }
+  ],
+  "files": [
+    {
+      "source": "Stepper.razor",
+      "destination": "components",
+      "target": "Stepper/Stepper.razor",
+      "type": "razor",
+      "sha256": "96ecf77d60b1b96e3ec992cbe45bf0c44878f746c3043d0667cd25fcc1d5e7e7"
+    }
+  ]
+}

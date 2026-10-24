@@ -35,7 +35,7 @@
       "destination": "components",
       "target": "InputGroup/InputGroupItem.razor",
       "type": "razor",
-      "sha256": "974cfb8fe945515fafed3d5bec2e151704cf64bf6a95e13b5db30a67eb235c88"
+      "sha256": "5f6d8b79536053f9018fc99723b1db3164eb8fce322905aea7c1bf60d90a97f3"
     }
   ]
 }

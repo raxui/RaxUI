@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Slider/Slider.razor",
       "type": "razor",
-      "sha256": "af7bb508be06c33de2ba98fdfd04a8b70a79c128b8469b694387083a2d21de10"
+      "sha256": "78673971240482164cfa7af9e73dfa40ee48ad46de37e7f9a4dfcbb9bbd796a0"
     },
     {
       "source": "SliderInput.razor",

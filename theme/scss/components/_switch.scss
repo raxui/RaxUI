@@ -108,21 +108,36 @@
   }
 }
 
-.form-check-input.sheen-switch-native {
-  width: calc(var(--sheen-control-height) * 1.1);
-  height: calc(var(--sheen-control-height) * 0.65);
+// Blazor: the same track and thumb around a real checkbox, which covers the track invisibly (static SSR posts,
+// keyboard, and labels come for free). :has() stands in for Radix's data-state on the track.
+.sheen-switch-native {
+  &:has(> .sheen-switch-input:checked) { background-color: rgb(var(--sheen-switch-on-rgb)); }
+  &:has(> .sheen-switch-input:focus-visible) { box-shadow: 0 0 0 0.25rem rgba(var(--sheen-switch-on-rgb), 0.35); }
+  &:has(> .sheen-switch-input[aria-invalid="true"]) { outline: 1px solid var(--bs-form-invalid-border-color); }
+
+  // A label is never :disabled, so undo the press stretch here too.
+  &:has(> .sheen-switch-input:disabled) {
+    --sheen-switch-thumb-w: var(--sheen-switch-thumb);
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.sheen-switch-input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
   margin: 0;
-  flex-shrink: 0;
-  border: 0;
-  border-radius: 999px;
-  background-color: rgba(var(--bs-emphasis-color-rgb), 0.14);
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3ccircle cx='10' cy='10' r='9' fill='%23fff'/%3e%3c/svg%3e");
-  background-size: auto 92%;
-  background-position: left center;
-  transition: background-position 450ms var(--sheen-ease-spring), background-color var(--sheen-duration) ease;
-  &:checked { background-color: var(--bs-success); background-position: right center; }
-  &:dir(rtl) { background-position: right center; &:checked { background-position: left center; } }
-  &:focus-visible { box-shadow: 0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.35); }
-  &[aria-invalid="true"] { outline: 1px solid var(--bs-form-invalid-border-color); }
+  appearance: none;
+  opacity: 0;
+  cursor: inherit;
+
+  &:checked + .sheen-switch-thumb {
+    transform: translateX(
+      calc((var(--sheen-switch-w) - 2 * var(--sheen-switch-p) - var(--sheen-switch-thumb-w)) * var(--sheen-switch-dir))
+    );
+  }
 }
 @media (prefers-reduced-motion: reduce) { .sheen-switch, .sheen-switch-thumb, .sheen-switch-native { transition: none; } }

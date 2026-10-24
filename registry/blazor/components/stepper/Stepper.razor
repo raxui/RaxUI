@@ -1,0 +1,39 @@
+@* SheenUI Stepper. Source-owned: edit freely. Static progress and optional native destination links. Built-in icon paths from Lucide (ISC). *@
+<div @attributes="AdditionalAttributes" class="@($"sheen-stepper {Class}")" data-orientation="@Orientation" data-size="@Size" data-sheen-appearance="@Appearance">
+    <div class="sheen-stepper-nav" data-orientation="@Orientation" data-labels="@LabelPlacement"><ol class="sheen-stepper-list" aria-label="@Label">
+        @for (var i = 0; i < Items.Count; i++)
+        {
+            var item = Items[i]; var state = item.Error ? "error" : i == Value ? "active" : item.Completed || i < Value ? "complete" : "upcoming";
+            <li class="sheen-step" data-state="@state" aria-current="@(i == Value ? "step" : null)">
+                <a class="sheen-step-trigger" href="@item.Href">
+                    <span class="sheen-step-indicator" aria-hidden="true">
+                        @if (state == "complete") { <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" /></svg> }
+                        else if (state == "error") { <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 7v6M12 17h.01" /></svg> }
+                        else { @(i + 1) }
+                    </span>
+                    <span class="sheen-step-text"><span class="sheen-step-title">@item.Title</span><span class="sheen-step-description">@item.Description</span></span>
+                    <span class="visually-hidden">@(state == "error" ? ErrorLabel : state == "complete" ? CompletedLabel : state == "active" ? CurrentLabel : UpcomingLabel)</span>
+                </a>
+                @if (i < Items.Count - 1) { <span class="sheen-step-connector" data-filled="@(i < Value ? "true" : null)" aria-hidden="true"></span> }
+            </li>
+        }
+    </ol></div>
+    @ChildContent
+</div>
+@code {
+    public record Item(string Title, string? Description = null, string? Href = null, bool Completed = false, bool Error = false);
+    [Parameter] public IReadOnlyList<Item> Items { get; set; } = Array.Empty<Item>();
+    [Parameter] public int Value { get; set; }
+    [Parameter] public string Orientation { get; set; } = "horizontal";
+    [Parameter] public string LabelPlacement { get; set; } = "end";
+    [Parameter] public string Size { get; set; } = "default";
+    [Parameter] public string Label { get; set; } = "Progress";
+    [Parameter] public string CompletedLabel { get; set; } = "Completed";
+    [Parameter] public string CurrentLabel { get; set; } = "Current step";
+    [Parameter] public string UpcomingLabel { get; set; } = "Upcoming";
+    [Parameter] public string ErrorLabel { get; set; } = "Has an error";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

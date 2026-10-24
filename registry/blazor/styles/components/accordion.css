@@ -1,0 +1,278 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-accordion {
+  --sheen-accordion-rgb: var(--bs-primary-rgb);
+  --sheen-accordion-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --sheen-accordion-pad-x: 0;
+}
+
+.sheen-accordion-item {
+  border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
+}
+
+.sheen-accordion-header {
+  display: flex;
+  margin: 0;
+}
+
+.sheen-accordion-trigger {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem var(--sheen-accordion-pad-x);
+  border: 0;
+  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  color: var(--bs-emphasis-color);
+  background: none;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: start;
+  cursor: pointer;
+  transition: color var(--sheen-duration-fast) ease;
+}
+.sheen-accordion-trigger:focus-visible {
+  outline: 0;
+  box-shadow: inset 0 0 0 2px rgba(var(--sheen-accordion-rgb), 0.45);
+}
+.sheen-accordion-trigger[data-disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.sheen-accordion-trigger:hover:not([data-disabled]) .sheen-accordion-icon {
+  color: var(--bs-emphasis-color);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.09);
+}
+
+.sheen-accordion-leading {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: calc(0.625rem * var(--sheen-radius-scale));
+  color: rgb(var(--sheen-accordion-rgb));
+  background-color: rgba(var(--sheen-accordion-rgb), 0.12);
+}
+.sheen-accordion-leading svg {
+  width: 1.0625rem;
+  height: 1.0625rem;
+}
+
+.sheen-accordion-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.sheen-accordion-description {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--bs-secondary-color);
+}
+
+.sheen-accordion-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 1.625rem;
+  height: 1.625rem;
+  margin-inline-start: auto;
+  border-radius: 50%;
+  color: var(--bs-secondary-color);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.05);
+  transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring), color var(--sheen-duration) ease, background-color var(--sheen-duration) ease;
+}
+.sheen-accordion-icon svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  overflow: visible;
+}
+[data-state=open] > .sheen-accordion-icon {
+  color: rgb(var(--sheen-accordion-rgb));
+  background-color: rgba(var(--sheen-accordion-rgb), 0.12);
+}
+[data-state=open] > .sheen-accordion-icon[data-icon=chevron] {
+  transform: rotate(180deg);
+}
+.sheen-accordion-icon .sheen-accordion-plus-v {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+}
+[data-state=open] > .sheen-accordion-icon .sheen-accordion-plus-v {
+  transform: rotate(90deg);
+}
+
+.sheen-accordion-content {
+  overflow: hidden;
+  color: var(--bs-body-color);
+  font-size: 0.9375rem;
+}
+.sheen-accordion-content[data-state=open] {
+  animation: sheen-accordion-down 320ms var(--sheen-accordion-ease);
+}
+.sheen-accordion-content[data-state=closed] {
+  animation: sheen-accordion-up 260ms var(--sheen-accordion-ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheen-accordion-content {
+    animation-duration: 1ms !important;
+  }
+}
+
+.sheen-accordion-content-inner {
+  padding: 0 var(--sheen-accordion-pad-x) 1.125rem;
+}
+.sheen-accordion-item:has(.sheen-accordion-leading) .sheen-accordion-content-inner {
+  padding-inline-start: calc(var(--sheen-accordion-pad-x) + 2.875rem);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-accordion-content[data-state=open] > .sheen-accordion-content-inner {
+    animation: sheen-accordion-inner-in 360ms var(--sheen-ease-out) 40ms both;
+  }
+}
+
+@keyframes sheen-accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+@keyframes sheen-accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+@keyframes sheen-accordion-inner-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.375rem);
+  }
+}
+.sheen-accordion[data-variant=inset] {
+  --sheen-accordion-pad-x: 1rem;
+  background-color: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.15));
+  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  border: 1px solid var(--sheen-glass-border-color);
+  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sheen-accordion[data-variant=inset] {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.96);
+  }
+}
+.sheen-accordion[data-variant=inset] {
+  overflow: hidden;
+  border-radius: var(--sheen-radius);
+}
+.sheen-accordion[data-variant=inset] .sheen-accordion-item {
+  border-bottom: 0;
+}
+.sheen-accordion[data-variant=inset] .sheen-accordion-item + .sheen-accordion-item {
+  box-shadow: inset 0 1px 0 rgba(var(--bs-emphasis-color-rgb), 0.08);
+}
+.sheen-accordion[data-variant=inset] .sheen-accordion-trigger {
+  border-radius: 0;
+}
+.sheen-accordion[data-variant=inset] .sheen-accordion-trigger:hover:not([data-disabled]) {
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.025);
+}
+
+.sheen-accordion[data-variant=cards] {
+  --sheen-accordion-pad-x: 1.125rem;
+  display: grid;
+  gap: 0.625rem;
+}
+.sheen-accordion[data-variant=cards] .sheen-accordion-item {
+  background-color: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.15));
+  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  border: 1px solid var(--sheen-glass-border-color);
+  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sheen-accordion[data-variant=cards] .sheen-accordion-item {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.96);
+  }
+}
+.sheen-accordion[data-variant=cards] .sheen-accordion-item {
+  overflow: hidden;
+  border-radius: var(--sheen-radius);
+  transition: box-shadow var(--sheen-duration) ease, border-color var(--sheen-duration) ease;
+}
+.sheen-accordion[data-variant=cards] .sheen-accordion-item[data-state=open] {
+  border-color: rgba(var(--sheen-accordion-rgb), 0.25);
+  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-md);
+}
+.sheen-accordion[data-variant=cards] .sheen-accordion-trigger {
+  border-radius: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-accordion, .sheen-accordion * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+.sheen-accordion-item > summary {
+  list-style: none;
+}
+
+.sheen-accordion-item > summary::-webkit-details-marker {
+  display: none;
+}
+
+.sheen-accordion-item[open] > summary .sheen-accordion-icon {
+  transform: rotate(180deg);
+}
+
+@supports (interpolate-size: allow-keywords) {
+  details.sheen-accordion-item {
+    interpolate-size: allow-keywords;
+  }
+  details.sheen-accordion-item::details-content {
+    height: 0;
+    overflow: clip;
+    transition: height 320ms ease, content-visibility 320ms allow-discrete;
+  }
+  details.sheen-accordion-item[open]::details-content {
+    height: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  details.sheen-accordion-item::details-content {
+    transition: none;
+  }
+}
+.sheen-accordion .sheen-accordion-leading svg {
+  width: 1.0625rem;
+  height: 1.0625rem;
+}
+
+.sheen-accordion[data-variant=inset], .sheen-accordion[data-variant=cards] .sheen-accordion-item {
+  background: var(--sheen-surface-bg);
+  border-color: var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  backdrop-filter: var(--sheen-surface-filter);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+}
+
+.sheen-accordion-trigger {
+  padding-block: calc(var(--sheen-control-height) * 0.4);
+}
+
+.sheen-accordion .sheen-accordion-icon svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}

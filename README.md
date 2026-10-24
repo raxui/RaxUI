@@ -704,3 +704,77 @@ other items imports JavaScript. Progress is an ARIA progressbar with min/max and
 an omitted current value when indeterminate. All motion has reduced-motion
 fallbacks; Spinner stops, Skeleton stays still, and indeterminate progress remains
 visible. Icon slots accept arbitrary markup with two-class sizing (ADR 014).
+
+## Navigation
+
+Install `tabs`, `accordion`, `breadcrumb`, `pagination`, `stepper`, `toggle`,
+or `menu-toggle` with `sheenui add <name>`. Menu-toggle installs button;
+all seven install their own compiled CSS. Roots accept `Appearance`, `Class`
+and additional HTML attributes. Appearance, accent, density, dark mode and RTL
+inherit from the surrounding theme. Built-in text is overridable.
+
+```razor
+@rendermode InteractiveServer
+
+<Tabs Items="tabs" @bind-Value="tab" Label="Account sections">
+    <Panel Context="value"><p>Content for @value</p></Panel>
+</Tabs>
+<Accordion Variant="inset">
+    <AccordionItem Title="Delivery" Description="Shipping information">Ships tomorrow.</AccordionItem>
+    <AccordionItem Title="Returns">Return within 30 days.</AccordionItem>
+</Accordion>
+<Breadcrumb Items="crumbs" MaxItems="3" />
+<Pagination Page="@(PageNumber ?? 1)" PageCount="20" />
+<Stepper Items="steps" Value="1" />
+<Toggle @bind-Pressed="bold">Bold</Toggle>
+<ToggleGroup @bind-Value="formats" Multiple Label="Formatting">
+    <ToggleGroupItem Value="bold">Bold</ToggleGroupItem>
+    <ToggleGroupItem Value="italic">Italic</ToggleGroupItem>
+</ToggleGroup>
+<MenuToggle @bind-Open="menuOpen" aria-controls="navigation" />
+
+@code {
+    [SupplyParameterFromQuery(Name = "page")] public int? PageNumber { get; set; }
+    private readonly Tabs.Item[] tabs = [new("profile", "Profile"), new("security", "Security")];
+    private readonly Breadcrumb.Item[] crumbs = [new("Home", "/"), new("Account", "/account")];
+    private readonly Stepper.Item[] steps = [new("Cart"), new("Payment"), new("Done")];
+    private string tab = "profile";
+    private bool bold, menuOpen;
+    private IReadOnlyList<string> formats = Array.Empty<string>();
+}
+```
+
+| Component | Parameters and defaults |
+| --- | --- |
+| Tabs | `Items`: unique `Item(Value, Label, Disabled=false)` values; `Panel`: content template receiving the value; `Value`/`ValueChanged`, `DefaultValue` (otherwise first enabled item), `Id`, `Label="Tabs"`, `Variant="segmented"` (underline/pills), `Orientation="horizontal"` (vertical). |
+| Accordion | `Multiple=false`, unique `Name` (generated), `Variant="default"` (inset/cards), `ChildContent`. AccordionItem: `Title`, `Description`, `Icon`, `DefaultOpen=false`, `ChildContent`, `Class`, native attributes. |
+| Breadcrumb | `Items`: `Item(Label, Href)`; last item is current, `Label="Breadcrumb"`, `Separator="/"`, `MaxItems=0` (no collapse; 2+ collapses middle links), `CollapsedLabel="Show hidden pages"`, `Variant="default"` (glass). |
+| Pagination | `Page=1`, `PageCount=1`, `Siblings=1`, `Boundaries=1`, `GetHref(page)` defaults to the current URL with `page=N`, `GetPageLabel(page)` defaults to `Page N`, `FormatPage`, `Label="Pagination"`, `PreviousLabel="Previous"`, `NextLabel="Next"`, `MoreLabel="More pages"`, `Variant="glass"` (plain), `Size="default"` (sm). |
+| Stepper | `Items`: `Item(Title, Description=null, Href=null, Completed=false, Error=false)`; zero-based `Value=0`, `Orientation="horizontal"` (vertical), `LabelPlacement="end"` (bottom), `Size="default"` (sm), `Label="Progress"`, `CompletedLabel`, `CurrentLabel`, `UpcomingLabel`, `ErrorLabel`, `ChildContent`. Earlier steps are complete; error overrides current/complete. Optional destinations are native links. |
+| Toggle | `Pressed`/`PressedChanged` (`@bind-Pressed`), `DefaultPressed=false`, `Disabled=false`, `Variant="default"` (outline), `Size="default"` (sm/lg/icon/icon-sm/icon-lg), `ChildContent`. |
+| ToggleGroup | `Value`/`ValueChanged` (`@bind-Value`, `IReadOnlyList<string>` in both modes), `Multiple=false`, `Required=false`, `Disabled=false`, `Label="Options"`, `Variant="default"` (outline/segmented), `Size="default"`, `ChildContent`. ToggleGroupItem: unique `Value`, `Disabled`, `ChildContent`, `Class`, native attributes. Single mode selects at most one item; required prevents clearing the last selection. |
+| MenuToggle | `Open`/`OpenChanged`, `DefaultOpen=false`, `Disabled=false`, `OpenLabel="Open menu"`, `CloseLabel="Close menu"`, `Icon="close"` (arrow), `Variant="ghost"`, `ChildContent`; supply `aria-controls` for your navigation. |
+
+Tabs, toggles and menu-toggle require interactivity for state changes. Bind state
+when the parent owns it; unbound controls keep separate internal state. Tabs use
+roving focus, automatic activation, Home/End, orientation-aware arrows and RTL.
+In static SSR the initial enabled tab is selected and its panel is visible; the
+other panels are hidden. This intentionally chooses the initial-panel fallback,
+so use separate links if every section must be navigable without JavaScript.
+
+Accordion uses native details/summary and works without JavaScript. Single-open
+mode shares the HTML `name` attribute: browsers supporting named details enforce
+exclusivity; older browsers allow multiple open items. No JavaScript polyfill is
+installed. `DefaultOpen` is initial native state, not a binding. CSS height
+animation uses `::details-content` and `interpolate-size` where supported;
+other browsers open/close instantly. Reduced motion disables animation.
+
+Breadcrumb collapse uses native details so hidden links remain reachable in
+static SSR. Pagination always renders real URLs and `aria-current="page"`.
+Bind `Page` from the query string as above, or provide your own `GetHref`. The default preserves the current path and other
+query parameters. Interactive query navigation can retain the list and glide its indicator;
+a full document navigation places it instantly. Page numbers use FLIP and pop-in
+motion when the range shifts. Tabs and pagination each own a disposable collocated
+JS module with resize/mutation observers. Initial placement is instant, resize
+remeasures, and reduced motion disables glide and FLIP. Static CSS marks the
+active item before measurement and with JavaScript disabled.

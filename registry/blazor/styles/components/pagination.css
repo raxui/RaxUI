@@ -1,0 +1,280 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-pagination {
+  --sheen-pagination-size: 2.25rem;
+  --sheen-pagination-font-size: 0.9375rem;
+  --sheen-pagination-thumb-bg: rgb(var(--bs-body-bg-rgb));
+  --sheen-pagination-active-color: rgb(var(--bs-primary-rgb));
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+}
+.sheen-pagination[data-size=sm] {
+  --sheen-pagination-size: 1.875rem;
+  --sheen-pagination-font-size: 0.8125rem;
+}
+.sheen-pagination[data-variant=plain] {
+  --sheen-pagination-thumb-bg: rgb(var(--bs-primary-rgb));
+  --sheen-pagination-active-color: #fff;
+}
+[data-bs-theme=dark] .sheen-pagination[data-variant=glass], .sheen-pagination[data-bs-theme=dark][data-variant=glass] {
+  --sheen-pagination-thumb-bg: rgba(255, 255, 255, 0.16);
+  --sheen-pagination-active-color: #fff;
+}
+
+.sheen-pagination-content {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sheen-pagination[data-variant=glass] .sheen-pagination-content {
+  background-color: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha-subtle));
+  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  border: 1px solid var(--sheen-glass-border-color);
+  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sheen-pagination[data-variant=glass] .sheen-pagination-content {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.96);
+  }
+}
+.sheen-pagination[data-variant=glass] .sheen-pagination-content {
+  background-image: linear-gradient(rgba(var(--bs-emphasis-color-rgb), 0.035), rgba(var(--bs-emphasis-color-rgb), 0.035));
+  padding: 0.25rem;
+  border-radius: 999px;
+}
+
+.sheen-pagination-item {
+  display: flex;
+}
+
+.sheen-pagination-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: var(--sheen-pagination-w, 0);
+  height: var(--sheen-pagination-h, 0);
+  border-radius: 999px;
+  background-color: var(--sheen-pagination-thumb-bg);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(var(--sheen-pagination-x, 0), var(--sheen-pagination-y, 0));
+}
+.sheen-pagination[data-variant=glass] .sheen-pagination-indicator {
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.08), 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+.sheen-pagination[data-variant=plain] .sheen-pagination-indicator {
+  box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.3);
+}
+.sheen-pagination-content[data-ready] .sheen-pagination-indicator {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-pagination-content[data-animate] .sheen-pagination-indicator {
+    transition: transform 500ms var(--sheen-ease-spring), width 500ms var(--sheen-ease-spring);
+  }
+}
+
+.sheen-pagination-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-width: var(--sheen-pagination-size);
+  height: var(--sheen-pagination-size);
+  padding: 0 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  color: rgba(var(--bs-emphasis-color-rgb), 0.7);
+  background: none;
+  font: inherit;
+  font-size: var(--sheen-pagination-font-size);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--sheen-duration) ease, background-color var(--sheen-duration-fast) ease;
+}
+.sheen-pagination-link:hover:not([aria-current=page]):not([data-disabled]) {
+  color: var(--bs-emphasis-color);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+}
+.sheen-pagination-link[aria-current=page] {
+  color: var(--sheen-pagination-active-color);
+  font-weight: 600;
+  cursor: default;
+}
+.sheen-pagination-content:not([data-ready]) .sheen-pagination-link[aria-current=page] {
+  background-color: var(--sheen-pagination-thumb-bg);
+}
+.sheen-pagination-link:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.35);
+}
+.sheen-pagination-link[data-disabled] {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-pagination-link {
+    transition: color var(--sheen-duration) ease, background-color var(--sheen-duration-fast) ease, transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+  }
+  .sheen-pagination-link:active:not([data-disabled]):not([aria-current=page]) {
+    transform: scale(0.9);
+  }
+}
+
+.sheen-pagination-step {
+  padding-inline: 0.625rem 0.875rem;
+}
+.sheen-pagination-step[data-step=next] {
+  padding-inline: 0.875rem 0.625rem;
+}
+.sheen-pagination-step[data-step=next] svg {
+  transform: scaleX(-1);
+}
+.sheen-pagination-step svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
+[dir=rtl] .sheen-pagination-step svg {
+  transform: scaleX(-1);
+}
+[dir=rtl] .sheen-pagination-step[data-step=next] svg {
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-pagination-step svg {
+    transition: translate var(--sheen-duration-slow) var(--sheen-ease-spring);
+  }
+  .sheen-pagination-step[data-step=previous]:hover svg {
+    translate: -2px 0;
+  }
+  .sheen-pagination-step[data-step=next]:hover svg {
+    translate: 2px 0;
+  }
+  [dir=rtl] .sheen-pagination-step[data-step=previous]:hover svg {
+    translate: 2px 0;
+  }
+  [dir=rtl] .sheen-pagination-step[data-step=next]:hover svg {
+    translate: -2px 0;
+  }
+}
+
+.sheen-pagination-icon-only {
+  width: var(--sheen-pagination-size);
+  padding: 0;
+}
+.sheen-pagination-icon-only .sheen-pagination-step-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+  .sheen-pagination[data-layout=pages] .sheen-pagination-step {
+    width: var(--sheen-pagination-size);
+    padding: 0;
+  }
+  .sheen-pagination[data-layout=pages] .sheen-pagination-step .sheen-pagination-step-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+.sheen-pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--sheen-pagination-size);
+  height: var(--sheen-pagination-size);
+  color: var(--bs-secondary-color);
+}
+.sheen-pagination-ellipsis svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.sheen-pagination-status {
+  align-items: baseline;
+  gap: 0.3125rem;
+  padding-inline: 0.5rem;
+  font-size: var(--sheen-pagination-font-size);
+  font-variant-numeric: tabular-nums;
+  color: var(--bs-secondary-color);
+}
+
+.sheen-pagination-status-current {
+  display: inline-block;
+  min-width: 1ch;
+  color: var(--bs-emphasis-color);
+  font-weight: 600;
+  text-align: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-pagination-status-current[data-tick] {
+    animation: sheen-pagination-tick var(--sheen-duration-slow) var(--sheen-ease-spring);
+  }
+}
+
+.sheen-pagination-status-sep {
+  opacity: 0.5;
+}
+
+@keyframes sheen-pagination-tick {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em) scale(0.85);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheen-pagination, .sheen-pagination * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+.sheen-pagination .sheen-pagination-link svg {
+  width: 1em;
+  height: 1em;
+}
+
+.sheen-pagination {
+  --sheen-pagination-size: var(--sheen-control-height-sm);
+}
+
+.sheen-pagination[data-variant=glass] .sheen-pagination-content {
+  background: var(--sheen-surface-bg);
+  border-color: var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  backdrop-filter: var(--sheen-surface-filter);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+}
+
+.sheen-pagination-indicator {
+  box-shadow: var(--sheen-control-shadow);
+}
+
+.sheen-pagination-link[aria-disabled=true] {
+  pointer-events: none;
+  opacity: 0.4;
+}

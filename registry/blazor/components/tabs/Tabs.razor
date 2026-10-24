@@ -1,0 +1,58 @@
+@* SheenUI Tabs. Source-owned: edit freely. Static SSR shows the initial panel; switching requires interactivity. *@
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @attributes="AdditionalAttributes" id="@Id" class="@($"sheen-tabs {Class}")" data-sheen-appearance="@Appearance" data-orientation="@Orientation">
+    <div @ref="_root" class="sheen-tabs-list" role="tablist" aria-label="@Label" aria-orientation="@Orientation" data-orientation="@Orientation" data-variant="@Variant">
+        <span class="sheen-tabs-indicator" aria-hidden="true"></span>
+        @foreach (var item in Items)
+        {
+            <button type="button" role="tab" id="@(Id + "-tab-" + item.Value)" aria-controls="@(Id + "-panel-" + item.Value)"
+                    aria-selected="@(Current == item.Value ? "true" : "false")" tabindex="@(Current == item.Value ? 0 : -1)"
+                    disabled="@item.Disabled" data-disabled="@(item.Disabled ? "" : null)" class="sheen-tabs-trigger" data-state="@(Current == item.Value ? "active" : "inactive")"
+                    @onclick="@(() => Select(item.Value))">@item.Label</button>
+        }
+    </div>
+    @foreach (var item in Items)
+    {
+        <div role="tabpanel" id="@(Id + "-panel-" + item.Value)" aria-labelledby="@(Id + "-tab-" + item.Value)" tabindex="0"
+             class="sheen-tabs-content" hidden="@(Current != item.Value)" data-state="@(Current == item.Value ? "active" : "inactive")">
+            @if (Panel is not null) { @Panel(item.Value) }
+        </div>
+    }
+</div>
+@code {
+    public record Item(string Value, string Label, bool Disabled = false);
+    [Parameter] public IReadOnlyList<Item> Items { get; set; } = Array.Empty<Item>();
+    [Parameter] public RenderFragment<string>? Panel { get; set; }
+    [Parameter] public string Id { get; set; } = $"sheen-tabs-{Guid.NewGuid():N}";
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public string? DefaultValue { get; set; }
+    [Parameter] public string Label { get; set; } = "Tabs";
+    [Parameter] public string Orientation { get; set; } = "horizontal";
+    [Parameter] public string Variant { get; set; } = "segmented";
+    private string? _value;
+    private string? Current => Value ?? _value ?? DefaultValue ?? Items.FirstOrDefault(i => !i.Disabled)?.Value;
+    private async Task Select(string value)
+    {
+        if (!ValueChanged.HasDelegate) _value = value;
+        await ValueChanged.InvokeAsync(value);
+    }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private ElementReference _root;
+    private IJSObjectReference? _module;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Tabs/Tabs.razor.js");
+        await _module.InvokeVoidAsync("init", _root);
+    }
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is null) return;
+        try { await _module.InvokeVoidAsync("dispose", _root); await _module.DisposeAsync(); }
+        catch (JSDisconnectedException) { }
+    }
+}

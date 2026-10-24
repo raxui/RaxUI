@@ -22,7 +22,7 @@
       "destination": "components",
       "target": "DateRangeInput/DateRangeInput.razor",
       "type": "razor",
-      "sha256": "bb411fe55dff867462f51f093f5b186ee9134a718088b5913a8285660127fc4f"
+      "sha256": "3ab91b08c043741e5f5fd001041b953fef9cfa78645f8d8963798f8588e239a6"
     }
   ]
 }

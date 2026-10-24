@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Rating/Rating.razor",
       "type": "razor",
-      "sha256": "e2356ce64fe23887b8bb69b933b13dcf5d3f5f6f73cd9a8e60b556f9c4fb5593"
+      "sha256": "651d45f9ad6b387cb48ff2e69d3213806c4e22bc020b24024c03d94473da1255"
     }
   ]
 }

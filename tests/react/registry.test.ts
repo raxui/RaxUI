@@ -18,7 +18,7 @@ describe("React registry", () => {
   it("has a supported index listing every item", () => {
     const index = loadIndex(root)
     expect(index.schemaVersion).toBe(1)
-    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "slider", "rating", "starter-react", "starter-next", "date-input", "time-picker", "date-time-input", "date-range-input", "file-upload", "popover", "combobox", "autocomplete", "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline"])
+    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "slider", "rating", "starter-react", "starter-next", "date-input", "time-picker", "date-time-input", "date-range-input", "file-upload", "popover", "combobox", "autocomplete", "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline", "tabs", "accordion", "breadcrumb", "pagination", "stepper", "toggle", "menu-toggle"])
   })
 
   it("has up-to-date hashes for every file (run src/react-cli/scripts/update-hashes.mjs after edits)", () => {

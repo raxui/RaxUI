@@ -22,7 +22,7 @@
       "destination": "components",
       "target": "TimePicker/TimePicker.razor",
       "type": "razor",
-      "sha256": "3d8c077ad1b58a75c24357567f7098fe731cc195c013b0e42e1b6f6abfca5ec6"
+      "sha256": "13408cf84f6a460ef195a7e7a584d9a8ef34d53259cbeca8844cec0796c74f9c"
     }
   ]
 }

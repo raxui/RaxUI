@@ -98,6 +98,8 @@ public class EmbeddedRegistryTests
     // Overlays ship a collocated JavaScript module (ADR 013); "dropdown-menu" also checks MSBuild's '-' to '_'
     // resource naming for folders.
     [Theory]
+    [InlineData("tabs", "Tabs/Tabs.razor.js")]
+    [InlineData("pagination", "Pagination/Pagination.razor.js")]
     [InlineData("form", "Form/Form.razor.js")]
     [InlineData("dialog", "Dialog/Dialog.razor.js")]
     [InlineData("confirm-dialog", "ConfirmDialog/ConfirmDialog.razor.js")]
@@ -141,6 +143,13 @@ public class EmbeddedRegistryTests
     [InlineData("progress")]
     [InlineData("table")]
     [InlineData("timeline")]
+    [InlineData("tabs")]
+    [InlineData("accordion")]
+    [InlineData("breadcrumb")]
+    [InlineData("pagination")]
+    [InlineData("stepper")]
+    [InlineData("toggle")]
+    [InlineData("menu-toggle")]
     [InlineData("date-input")]
     [InlineData("time-picker")]
     [InlineData("date-time-input")]

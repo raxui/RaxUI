@@ -6,7 +6,7 @@
         <label for="@ControlId" class="sheen-input-slot" data-side="start" aria-hidden="true">@StartIcon</label>
     }
     <InputDate TValue="TimeOnly" Type="InputDateType.Time" @attributes="ControlAttributes" class="@($"form-control sheen-input sheen-time-picker {(Size == "default" ? "" : $"form-control-{Size}")} {Class} {ExtraClass}".TrimEnd())"
-             data-sheen-appearance="@Appearance" Value="@Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression" ParsingErrorMessage="@ParsingErrorMessage" data-variant="@Variant" />
+             data-sheen-appearance="@Appearance" Value="@Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression" ParsingErrorMessage="@ParsingErrorMessage" data-variant="@Variant" />
 </div>
 @code {
     [Parameter] public RenderFragment? StartIcon { get; set; }
@@ -18,6 +18,9 @@
     [Parameter] public TimeOnly Value { get; set; } = default!;
     [Parameter] public EventCallback<TimeOnly> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<TimeOnly>>? ValueExpression { get; set; }
+    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
+    private System.Linq.Expressions.Expression<Func<TimeOnly>>? _ownValueExpression;
+    private System.Linq.Expressions.Expression<Func<TimeOnly>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
 
     [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
     /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>

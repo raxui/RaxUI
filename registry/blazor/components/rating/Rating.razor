@@ -1,6 +1,6 @@
 @* SheenUI Rating. Source-owned: edit freely. Native radios in a fieldset (posts without JS, arrow keys), drawn as stars. *@
 @using Microsoft.AspNetCore.Components.Forms
-<InputRadioGroup TValue="int" Value="Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression">
+<InputRadioGroup TValue="int" Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression">
     <fieldset @attributes="ControlAttributes" class="@($"sheen-rating sheen-rating-native {Class}")" data-size="@Size" data-color="@Color" data-sheen-appearance="@Appearance">
         @for (var i = 0; i <= Max; i++)
         {
@@ -26,6 +26,9 @@
     [Parameter] public int Value { get; set; }
     [Parameter] public EventCallback<int> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<int>>? ValueExpression { get; set; }
+    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
+    private System.Linq.Expressions.Expression<Func<int>>? _ownValueExpression;
+    private System.Linq.Expressions.Expression<Func<int>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
     [Parameter] public int Max { get; set; } = 5;
     [Parameter] public bool Clearable { get; set; } = true;
     [Parameter] public bool ReadOnly { get; set; }

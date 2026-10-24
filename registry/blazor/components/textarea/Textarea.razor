@@ -6,7 +6,7 @@
 
 <div @ref="_element" data-auto-resize="@(AutoResize ? "true" : null)" data-min-rows="@MinRows" data-max-rows="@MaxRows">
     <InputTextArea @attributes="ControlAttributes" class="@($"form-control sheen-textarea {Class} {ExtraClass}".TrimEnd())"
-                   rows="@MinRows" data-sheen-appearance="@Appearance" Value="@Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression" />
+                   rows="@MinRows" data-sheen-appearance="@Appearance" Value="@Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression" />
 </div>
 @code {
     /// <summary>Grow between MinRows and MaxRows after an interactive render.</summary>
@@ -18,6 +18,9 @@
     [Parameter] public string? Value { get; set; } = "";
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<string?>>? ValueExpression { get; set; }
+    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
+    private System.Linq.Expressions.Expression<Func<string?>>? _ownValueExpression;
+    private System.Linq.Expressions.Expression<Func<string?>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
 
     [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
     /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
