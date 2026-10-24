@@ -221,6 +221,16 @@ public class GeneratedAppTests : IDisposable
         await Assertions.Expect(dialog).ToBeHiddenAsync();
         await Assertions.Expect(page.Locator("#dialog-state")).ToHaveTextAsync("False");
 
+        // Closing keeps the panel's layout while it animates out (#33).
+        await opener.ClickAsync();
+        await Assertions.Expect(dialog).ToBeVisibleAsync();
+        var heights = await page.EvaluateAsync<double[]>("""
+            () => { const d = document.querySelector('dialog.sheen-dialog'); const before = d.offsetHeight; d.close(); return [before, d.offsetHeight]; }
+            """);
+        Assert.Equal(heights[0], heights[1]);
+        await Assertions.Expect(dialog).ToBeHiddenAsync();
+        await Assertions.Expect(page.Locator("#dialog-state")).ToHaveTextAsync("False");
+
         await opener.ClickAsync();
         await dialog.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
         await Assertions.Expect(dialog).ToBeHiddenAsync();

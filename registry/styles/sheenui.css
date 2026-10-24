@@ -652,6 +652,7 @@ body {
   height: fit-content;
   max-height: calc(100dvh - 2rem);
   margin: auto auto 0.5rem;
+  gap: 1rem;
   padding: 1.5rem;
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   overflow: auto;
@@ -678,7 +679,6 @@ body {
 
 .sheen-dialog:where(:not(dialog), [open]) {
   display: grid;
-  gap: 1rem;
 }
 
 .sheen-dialog::before {
