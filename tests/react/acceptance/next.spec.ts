@@ -3,12 +3,13 @@
 import { expect, test, type Page } from "@playwright/test"
 import { execSync, spawnSync, spawn, type ChildProcess } from "node:child_process"
 import { createHash } from "node:crypto"
-import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from "node:fs"
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs"
 import { createServer } from "node:net"
 import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
+const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command"]
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
 // CI runs 15.5.28 and 16.4.3.
 const CREATE_NEXT_APP = `create-next-app@${process.env.CREATE_NEXT_APP_VERSION ?? "16.4.3"}`
@@ -68,6 +69,52 @@ test.beforeAll(async () => {
     if (existsSync(path.join(app, leftover))) throw new Error(`init left the template file ${leftover}`)
   }
 
+  // Phase 3 overlays under Next.js: a server page renders the client components across their
+  // "use client" boundaries, and a client button raises a toast.
+  for (const item of OVERLAYS) sh(`npx sheenui-react add ${item}`, app)
+  mkdirSync(path.join(app, "app/overlays"))
+  writeFileSync(path.join(app, "app/overlays/toast-button.tsx"), `"use client"
+import { toast } from "@/components/ui/use-toast"
+
+export function ToastButton() {
+  return <button type="button" onClick={() => toast({ title: "Saved", tone: "success" })}>Save</button>
+}
+`)
+  writeFileSync(path.join(app, "app/overlays/page.tsx"), `import { SheenThemeProvider } from "@/lib/theme"
+import { Tooltip } from "@/components/ui/tooltip"
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card"
+import { Toaster } from "@/components/ui/toaster"
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetBody } from "@/components/ui/sheet"
+import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription, DrawerClose } from "@/components/ui/drawer"
+import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "@/components/ui/context-menu"
+import { CommandDialog, CommandInput, CommandList, CommandGroup, CommandItem, CommandEmpty } from "@/components/ui/command"
+import { ToastButton } from "./toast-button"
+
+export default function Overlays() {
+  return (
+    <SheenThemeProvider className="sheen-app">
+      <Tooltip content="Save your work" side="top"><button type="button">Help</button></Tooltip>
+      <HoverCard><HoverCardTrigger href="#author">Author</HoverCardTrigger><HoverCardContent><p>Author details</p></HoverCardContent></HoverCard>
+      <ToastButton />
+      <Toaster />
+      <Sheet><SheetTrigger>Settings</SheetTrigger><SheetContent side="end">
+        <SheetHeader><SheetTitle>Settings</SheetTitle><SheetDescription>Your preferences</SheetDescription></SheetHeader>
+        <SheetBody>Settings content</SheetBody>
+      </SheetContent></Sheet>
+      <Drawer><DrawerTrigger>Actions</DrawerTrigger><DrawerContent>
+        <DrawerTitle>Actions</DrawerTitle><DrawerDescription>Choose an action</DrawerDescription><DrawerClose>Done</DrawerClose>
+      </DrawerContent></Drawer>
+      <ContextMenu><ContextMenuTrigger>Right-click here</ContextMenuTrigger><ContextMenuContent>
+        <ContextMenuItem>Open file</ContextMenuItem>
+      </ContextMenuContent></ContextMenu>
+      <CommandDialog><CommandInput /><CommandList><CommandGroup heading="Files">
+        <CommandItem value="Open file">Open file</CommandItem>
+      </CommandGroup><CommandEmpty /></CommandList></CommandDialog>
+    </SheenThemeProvider>
+  )
+}
+`)
+
   sh("npm run build", app)
 
   const port = await freePort()
@@ -94,6 +141,22 @@ test.afterAll(() => {
 })
 
 const shell = (page: Page) => page.locator(".sheen-app")
+
+test("phase 3 overlays render from a server page and open", async ({ page }) => {
+  const errors: string[] = []
+  page.on("pageerror", (error) => errors.push(error.message))
+  await page.goto(`${baseUrl}/overlays`)
+  await page.getByRole("button", { name: "Help" }).hover()
+  await expect(page.getByRole("tooltip")).toContainText("Save your work")
+  await page.getByRole("button", { name: "Save", exact: true }).click()
+  await expect(page.getByText("Saved", { exact: true }).first()).toBeVisible()
+  await page.getByRole("button", { name: "Settings" }).click()
+  await expect(page.getByRole("dialog", { name: "Settings" })).toBeVisible()
+  await page.keyboard.press("Escape")
+  await page.getByText("Right-click here").click({ button: "right" })
+  await expect(page.getByRole("menuitem", { name: "Open file" })).toBeVisible()
+  expect(errors).toEqual([])
+})
 
 test("the welcome page renders in the SheenUI shell with Bootstrap and the theme", async ({ page }) => {
   await page.goto(baseUrl)
@@ -161,5 +224,6 @@ test("running init and add again changes no files", () => {
   const before = snapshot(app)
   sh("npx sheenui-react init", app)
   sh("npx sheenui-react add button", app)
+  for (const item of OVERLAYS) sh(`npx sheenui-react add ${item}`, app)
   expect(snapshot(app)).toEqual(before)
 })
