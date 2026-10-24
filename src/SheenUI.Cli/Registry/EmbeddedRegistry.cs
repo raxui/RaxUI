@@ -16,7 +16,7 @@ public class EmbeddedRegistry
     /// <summary>Destination of starter files: the app's <c>Components/</c> folder (ADR 008).</summary>
     public const string AppDestination = "app";
 
-    private const string ResourcePrefix = "SheenUI.Cli.registry.";
+    private const string DefaultResourcePrefix = "SheenUI.Cli.registry.";
 
     // Allowed file types and target depth per destination: components go to Components/UI/<Folder>/, with
     // collocated .razor.js modules for overlays (ADR 013); the starter writes Components/<Folder>/ pages and
@@ -31,7 +31,19 @@ public class EmbeddedRegistry
         ["wwwroot"] = (["css"], 1),
     };
 
-    private readonly Assembly _assembly = typeof(EmbeddedRegistry).Assembly;
+    private readonly Assembly _assembly;
+    private readonly string _resourcePrefix;
+
+    public EmbeddedRegistry() : this(typeof(EmbeddedRegistry).Assembly, DefaultResourcePrefix)
+    {
+    }
+
+    /// <summary>A registry embedded in another assembly, for example a test registry.</summary>
+    public EmbeddedRegistry(Assembly assembly, string resourcePrefix)
+    {
+        _assembly = assembly;
+        _resourcePrefix = resourcePrefix;
+    }
 
     public RegistryIndex GetIndex()
     {
@@ -58,6 +70,44 @@ public class EmbeddedRegistry
                        $"Component '{componentName}' was not found in registry. Available: {string.Join(", ", index.Components.Select(c => c.Name))}.");
 
         return LoadManifest(item.Manifest, ComponentsDestination);
+    }
+
+    /// <summary>
+    /// The component and everything it depends on, dependencies first, each once; the same order as the
+    /// React CLI's <c>resolveItems</c>.
+    /// </summary>
+    public List<ComponentManifest> ResolveComponents(string componentName) => ResolveOrder(componentName, GetComponentManifest);
+
+    public static List<ComponentManifest> ResolveOrder(string componentName, Func<string, ComponentManifest> load)
+    {
+        var resolved = new List<ComponentManifest>();
+        Resolve(componentName, requiredBy: null, new HashSet<string>(StringComparer.OrdinalIgnoreCase), resolved, load);
+        return resolved;
+    }
+
+    private static void Resolve(string name, string? requiredBy, HashSet<string> visiting, List<ComponentManifest> resolved,
+        Func<string, ComponentManifest> load)
+    {
+        if (resolved.Any(m => string.Equals(m.Name, name, StringComparison.OrdinalIgnoreCase)))
+            return;
+        if (!visiting.Add(name))
+            throw new InvalidOperationException($"Circular component dependency through '{name}'.");
+
+        ComponentManifest manifest;
+        try
+        {
+            manifest = load(name);
+        }
+        catch (KeyNotFoundException) when (requiredBy is not null)
+        {
+            throw new InvalidOperationException($"Component '{requiredBy}' depends on unknown component '{name}'.");
+        }
+
+        foreach (var dependency in manifest.Dependencies)
+            Resolve(dependency, manifest.Name, visiting, resolved, load);
+
+        visiting.Remove(name);
+        resolved.Add(manifest);
     }
 
     /// <summary>The starter layout and welcome page that <c>init</c> installs (ADR 008).</summary>
@@ -183,7 +233,7 @@ public class EmbeddedRegistry
         var slash = normalized.LastIndexOf('/');
         if (slash >= 0)
             normalized = normalized[..slash].Replace('-', '_') + normalized[slash..];
-        var candidate = ResourcePrefix + normalized.Replace('/', '.');
+        var candidate = _resourcePrefix + normalized.Replace('/', '.');
 
         var existingNames = _assembly.GetManifestResourceNames();
         var match = existingNames.FirstOrDefault(n => string.Equals(n, candidate, StringComparison.OrdinalIgnoreCase));

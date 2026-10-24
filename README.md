@@ -136,6 +136,9 @@ keys, `Home`/`End`, and typeahead.
 - Custom install paths are not supported in this preview. Destinations and
   existing symlinks/junctions must stay inside the selected project.
 - Locally edited and untracked destination files are never silently replaced.
+- `add` installs a component's dependencies first, in one transaction with a
+  single lock-file write. A dependency that is already installed is kept as it
+  is, including your edits.
 - Ordinary write failures restore original files and remove newly created empty
   directories. Concurrent edits and process termination during installation are
   not covered by that rollback guarantee.

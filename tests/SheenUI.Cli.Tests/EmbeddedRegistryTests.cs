@@ -6,6 +6,53 @@ public class EmbeddedRegistryTests
 {
     private readonly EmbeddedRegistry _registry = new();
 
+    private static Func<string, ComponentManifest> Loader(params (string Name, string[] Dependencies)[] components) => name =>
+    {
+        var match = components.FirstOrDefault(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase));
+        if (match.Name is null)
+            throw new KeyNotFoundException($"Component '{name}' was not found in registry.");
+        return new ComponentManifest { Name = match.Name, Dependencies = [.. match.Dependencies] };
+    };
+
+    [Fact]
+    public void ResolveOrder_puts_dependencies_first_and_each_component_once()
+    {
+        // form -> (input, field); input -> field: a diamond on field.
+        var order = EmbeddedRegistry.ResolveOrder("form", Loader(("form", ["input", "field"]), ("input", ["field"]), ("field", [])));
+
+        Assert.Equal(["field", "input", "form"], order.Select(m => m.Name));
+    }
+
+    [Fact]
+    public void ResolveOrder_rejects_a_cycle()
+    {
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            EmbeddedRegistry.ResolveOrder("a", Loader(("a", ["b"]), ("b", ["c"]), ("c", ["a"]))));
+
+        Assert.Contains("Circular component dependency through 'a'", ex.Message);
+    }
+
+    [Fact]
+    public void ResolveOrder_names_the_component_with_an_unknown_dependency()
+    {
+        var ex = Assert.Throws<InvalidOperationException>(() => EmbeddedRegistry.ResolveOrder("input", Loader(("input", ["field"]))));
+
+        Assert.Equal("Component 'input' depends on unknown component 'field'.", ex.Message);
+    }
+
+    [Fact]
+    public void ResolveOrder_keeps_the_unknown_component_error_for_the_requested_name()
+    {
+        Assert.Throws<KeyNotFoundException>(() => EmbeddedRegistry.ResolveOrder("nope", Loader(("input", []))));
+    }
+
+    [Fact]
+    public void Every_shipped_component_resolves_with_itself_last()
+    {
+        foreach (var component in _registry.GetIndex().Components)
+            Assert.Equal(component.Name, _registry.ResolveComponents(component.Name)[^1].Name);
+    }
+
     [Fact]
     public void GetIndex_returns_valid_registry_index()
     {
