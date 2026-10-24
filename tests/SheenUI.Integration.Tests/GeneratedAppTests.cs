@@ -878,6 +878,10 @@ public class GeneratedAppTests : IDisposable
         Assert.True((await thumb.BoundingBoxAsync())!.Width > restWidth * 1.15, "The thumb stretches while pressed.");
         await page.Mouse.UpAsync();
         await Assertions.Expect(page.Locator("#press-switch")).ToBeCheckedAsync();
+
+        // The React indicators around the native inputs: the check is drawn, the selected radio grows its dot.
+        await Assertions.Expect(page.Locator("#unbound-check ~ .sheen-checkbox-indicator .sheen-checkbox-check")).ToHaveCSSAsync("stroke-dashoffset", "0px");
+        await Assertions.Expect(page.Locator("#choice .sheen-radio-input:checked + .sheen-radio-indicator")).ToHaveCSSAsync("transform", "matrix(1, 0, 0, 1, 0, 0)");
     }
 
     private static void WriteAdvancedControlPages(string components)

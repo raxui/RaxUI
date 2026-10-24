@@ -1,8 +1,17 @@
-@* SheenUI Checkbox. Source-owned: edit freely. Native form behavior also works in static SSR. *@
+@* SheenUI Checkbox. Source-owned: edit freely. The React box and self-drawing check (with boot-ui's press and ring)
+   around a real checkbox, so it posts in static SSR and needs no JavaScript. *@
 @using Microsoft.AspNetCore.Components.Forms
 
-<InputCheckbox @attributes="Attributes" role="checkbox" class="@($"form-check-input sheen-checkbox-native {Class} {ExtraClass}".TrimEnd())"
-               data-sheen-appearance="@Appearance" Value="Value" ValueChanged="Changed" ValueExpression="OwnValueExpression" />
+<span class="@($"sheen-checkbox sheen-checkbox-native {Class} {ExtraClass}".TrimEnd())" data-sheen-appearance="@Appearance">
+    <InputCheckbox @attributes="Attributes" role="checkbox" class="sheen-checkbox-input"
+                   Value="Value" ValueChanged="Changed" ValueExpression="OwnValueExpression" />
+    <span class="sheen-checkbox-indicator" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.25" stroke-linecap="round" stroke-linejoin="round">
+            <path class="sheen-checkbox-check" d="M5.5 12.5 10 17l8.5-9.5" pathLength="1" />
+            <path class="sheen-checkbox-dash" d="M7 12h10" />
+        </svg>
+    </span>
+</span>
 @code {
     /// <summary>Mixed state, announced as aria-checked=mixed; activating the native checkbox selects it.</summary>
     [Parameter] public bool Indeterminate { get; set; }

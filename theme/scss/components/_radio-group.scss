@@ -169,13 +169,49 @@
 }
 
 fieldset.sheen-radio-group { min-width: 0; margin: 0; padding: 0; border: 0; }
-.form-check-input.sheen-radio-native {
-  width: calc(var(--sheen-control-height) * 0.45);
-  height: calc(var(--sheen-control-height) * 0.45);
+// Blazor: the same circle and dot around a real radio (see the Blazor checkbox for the ring transition).
+.sheen-radio-native {
+  box-shadow: 0 0 0 0 rgba(var(--sheen-radio-rgb), 0.4);
+
+  &:has(> .sheen-radio-input:checked) {
+    border-color: rgb(var(--sheen-radio-rgb));
+    background-color: rgb(var(--sheen-radio-rgb));
+  }
+  &:has(> .sheen-radio-input:focus-visible) { box-shadow: 0 0 0 0.25rem rgba(var(--sheen-radio-rgb), 0.3); }
+  [aria-invalid="true"] &:not(:has(> :checked)) { border-color: var(--bs-form-invalid-border-color); }
+  &:has(> .sheen-radio-input:disabled) { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+
+  @include motion-safe {
+    // Unchecking drops the ring at once rather than running it backwards.
+    transition:
+      background-color var(--sheen-duration-fast) ease,
+      border-color var(--sheen-duration-fast) ease,
+      transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+
+    &:has(> .sheen-radio-input:checked:not(:focus-visible)) {
+      box-shadow: 0 0 0 0.5rem rgba(var(--sheen-radio-rgb), 0);
+      transition:
+        background-color var(--sheen-duration-fast) ease,
+        border-color var(--sheen-duration-fast) ease,
+        box-shadow 600ms var(--sheen-ease-out),
+        transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+    }
+  }
+
+  .sheen-radio-input:checked + .sheen-radio-indicator {
+    transform: scale(1);
+    transition: transform 400ms var(--sheen-ease-spring) 40ms;
+  }
+}
+
+.sheen-radio-input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
   margin: 0;
-  border-color: var(--sheen-border-color);
-  background-color: var(--sheen-surface-bg);
-  &:checked { background-color: var(--bs-primary); border-color: var(--bs-primary); }
-  &:focus-visible { box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.3); }
-  @include motion-safe { &:checked { --sheen-radio-rgb: var(--bs-primary-rgb); animation: sheen-radio-pop 450ms var(--sheen-ease-spring), sheen-radio-ring 600ms var(--sheen-ease-out); } }
+  appearance: none;
+  opacity: 0;
+  cursor: inherit;
 }
