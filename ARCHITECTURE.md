@@ -25,7 +25,7 @@ The architecture prioritizes simplicity, developer ownership, accessibility, mai
 
 The system consists of four main parts:
 
-- **Component Registry:** Stores component manifests, source files, styles, and dependency information, one registry per ecosystem (`registry/` for Blazor, `registry/react/` for React).
+- **Component Registry:** Stores component manifests, source files, styles, and dependency information, one registry per ecosystem (`registry/blazor/` for Blazor, `registry/react/` for React).
 - **CLI:** Initializes applications, resolves dependencies, installs components, manages assets, and performs updates. One per ecosystem, with the same safety rules.
 - **Design System:** The shared theme in `theme/scss/`: CSS variables, appearances, accents, density, component styles, and Bootstrap integration, used by both libraries ([ADR 005](docs/adr/005-multi-framework-shared-theme.md), [ADR 007](docs/adr/007-blazor-shared-theme.md)).
 - **Consumer Application:** Owns the installed component source code and executes the components as part of its normal Blazor or React application.
@@ -66,7 +66,7 @@ SheenUI/
 └── tsconfig.json
 ```
 
-The .NET CLI embeds `registry/` but excludes `registry/react/`.
+The .NET CLI embeds `registry/blazor/` (as `registry/` resources); the Node CLI bundles `registry/react/`.
 
 Long-term Blazor map:
 
@@ -207,7 +207,7 @@ Published registry releases are immutable, versioned snapshots. Configuration se
 
 ### 6.1 Registry Index
 
-`registry/registry.json` contains the list of available components and their manifest locations.
+`registry/blazor/registry.json` contains the list of available components and their manifest locations.
 
 Conceptual example:
 

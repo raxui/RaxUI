@@ -318,7 +318,7 @@ node src/react-cli/scripts/update-hashes.mjs
 
 The first command regenerates Blazor's CSS; the second updates React file hashes.
 Also update the CSS asset's SHA-256 in
-`registry/components/button/manifest.json` before testing the Blazor CLI, then
+`registry/blazor/components/button/manifest.json` before testing the Blazor CLI, then
 rebuild the tool or run it from source. Make lasting style changes in SCSS and
 regenerate the output rather than editing only the generated CSS.
 
