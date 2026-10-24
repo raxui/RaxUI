@@ -49,7 +49,7 @@ public class SheenUiLock
 
     /// <summary>
     /// Refuses to replace a tracked file with different registry content: that is an update,
-    /// which needs the deferred 'update'/'diff' workflow, not a silent overwrite by 'init' or 'add'.
+    /// which needs the explicit 'update' workflow, not a silent overwrite by 'init' or 'add'.
     /// </summary>
     public void EnsureSameSource(string relativePath, string newSourceHash)
     {
@@ -58,7 +58,7 @@ public class SheenUiLock
         {
             throw new InvalidOperationException(
                 $"'{relativePath}' was installed from another registry release and differs from this CLI's version. " +
-                "Updating installed files is not supported yet.");
+                "Run 'sheenui update --dry-run' to review changes, then 'sheenui update' to apply them safely.");
         }
     }
 

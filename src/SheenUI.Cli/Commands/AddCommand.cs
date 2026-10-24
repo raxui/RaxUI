@@ -192,19 +192,24 @@ public static class AddCommand
         var usingDirective = $"@using {project.RootNamespace}.Components.UI.{componentFolder}";
 
         var currentContent = File.Exists(importsPath) ? File.ReadAllText(importsPath) : "";
-        var alreadyPresent = currentContent
-            .Split(["\r\n", "\n"], StringSplitOptions.None)
-            .Any(line => line.Trim() == usingDirective);
-
-        if (alreadyPresent)
+        var updated = AppendImports(currentContent, [usingDirective]);
+        if (updated == currentContent)
             return;
 
-        var separator = currentContent.Contains("\r\n") ? "\r\n" : "\n";
-        var newContent = currentContent.TrimEnd();
-        if (!string.IsNullOrEmpty(newContent))
-            newContent += separator;
-        newContent += usingDirective + separator;
+        backup.WriteText(importsPath, updated);
+    }
 
-        backup.WriteText(importsPath, newContent);
+    internal static string AppendImports(string currentContent, IEnumerable<string> directives)
+    {
+        var separator = currentContent.Contains("\r\n") ? "\r\n" : "\n";
+        foreach (var directive in directives.Distinct(StringComparer.Ordinal))
+        {
+            if (currentContent.Split(["\r\n", "\n"], StringSplitOptions.None).Any(line => line.Trim() == directive))
+                continue;
+            currentContent = currentContent.TrimEnd();
+            if (currentContent.Length > 0) currentContent += separator;
+            currentContent += directive + separator;
+        }
+        return currentContent;
     }
 }

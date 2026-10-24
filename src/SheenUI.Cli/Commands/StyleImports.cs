@@ -36,4 +36,25 @@ public static class StyleImports
             Start + text[end..] != Encoding.UTF8.GetString(source))
             throw new InvalidOperationException("sheenui.css core differs from this release. Restore the CLI-installed file and retry; automatic migration is not supported.");
     }
+
+    /// <summary>Replaces the tracked core while keeping its installed import list and adjusting component assets.</summary>
+    public static byte[] UpdateCore(byte[] current, LockedFile? tracked, byte[] source,
+        IEnumerable<string> additions, IEnumerable<string> removals)
+    {
+        if (tracked == null || EmbeddedRegistry.ComputeSha256(current) != tracked.InstalledHash)
+            throw new InvalidOperationException("sheenui.css was modified locally or is not managed by SheenUI. Merge or restore it before updating; keep custom rules in another stylesheet.");
+
+        var text = Encoding.UTF8.GetString(current);
+        var end = text.IndexOf(End, StringComparison.Ordinal);
+        var next = Encoding.UTF8.GetString(source);
+        if (!text.StartsWith(Start, StringComparison.Ordinal) || end < Start.Length ||
+            !next.StartsWith(Start + End, StringComparison.Ordinal))
+            throw new InvalidOperationException("sheenui.css has no supported import list. A manual migration is required.");
+
+        var removedLines = removals.Select(target => $"@import url(\"{target}\");").ToHashSet(StringComparer.Ordinal);
+        var lines = text[Start.Length..end].Split('\n')
+            .Where(line => line.Length > 0 && !removedLines.Contains(line));
+        var list = string.Concat(lines.Select(line => line + "\n"));
+        return Append(Encoding.UTF8.GetBytes(Start + list + next[Start.Length..]), additions);
+    }
 }
