@@ -44,6 +44,13 @@
     { "name": "pagination", "manifest": "registry/react/components/pagination/manifest.json" },
     { "name": "stepper", "manifest": "registry/react/components/stepper/manifest.json" },
     { "name": "toggle", "manifest": "registry/react/components/toggle/manifest.json" },
-    { "name": "menu-toggle", "manifest": "registry/react/components/menu-toggle/manifest.json" }
+    { "name": "menu-toggle", "manifest": "registry/react/components/menu-toggle/manifest.json" },
+    { "name": "tooltip", "manifest": "registry/react/components/tooltip/manifest.json" },
+    { "name": "hover-card", "manifest": "registry/react/components/hover-card/manifest.json" },
+    { "name": "toast", "manifest": "registry/react/components/toast/manifest.json" },
+    { "name": "sheet", "manifest": "registry/react/components/sheet/manifest.json" },
+    { "name": "drawer", "manifest": "registry/react/components/drawer/manifest.json" },
+    { "name": "context-menu", "manifest": "registry/react/components/context-menu/manifest.json" },
+    { "name": "command", "manifest": "registry/react/components/command/manifest.json" }
   ]
 }

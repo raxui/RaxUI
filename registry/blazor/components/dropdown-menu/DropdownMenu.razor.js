@@ -67,7 +67,7 @@ function glide(menu, item) {
   menu.setAttribute("data-hover", "")
 }
 
-function onKeyDown(event, menu) {
+export function onKeyDown(event, menu, hide = () => menu.hidePopover()) {
   const items = [...menu.querySelectorAll(ITEM)]
   const index = items.indexOf(document.activeElement)
   let next
@@ -78,7 +78,7 @@ function onKeyDown(event, menu) {
     case "End": next = items.at(-1); break
     case "Tab":
       event.preventDefault()
-      menu.hidePopover()
+      hide()
       return
     default: {
       // Typeahead: jump to the next item that starts with the typed character.

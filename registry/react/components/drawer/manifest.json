@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "drawer",
+  "version": "0.1.0",
+  "description": "Source-owned drawer overlay.",
+  "requires": [
+    "foundation",
+    "dialog"
+  ],
+  "packages": {
+    "vaul": "1.1.2"
+  },
+  "styles": [
+    "components/drawer"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/drawer/drawer.tsx",
+      "target": "components/ui/drawer.tsx",
+      "type": "tsx",
+      "sha256": "1a8a47c2f52cb32763562038610846d52cfa447bbfa3e28d517df09a7b125ec4"
+    },
+    {
+      "source": "theme/scss/components/_drawer.scss",
+      "target": "styles/sheenui/components/_drawer.scss",
+      "type": "scss",
+      "sha256": "d687b120b5f934eb5d6f717df8b13548e50298221666b89d6d511f68303ea546"
+    }
+  ]
+}

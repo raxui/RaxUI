@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "tooltip",
+  "version": "0.1.0",
+  "description": "Source-owned tooltip overlay.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/tooltip.css",
+      "destination": "styles",
+      "target": "components/tooltip.css",
+      "type": "css",
+      "sha256": "119c9fd4b2998c3461263f71f3294e680131530167f1b862ae07e2161e2cf306"
+    }
+  ],
+  "files": [
+    {
+      "source": "Tooltip.razor",
+      "destination": "components",
+      "target": "Tooltip/Tooltip.razor",
+      "type": "razor",
+      "sha256": "7af714dea6998a37feb52c1be1ac1453ac6bc86c7719cadb2bc6910f442471c9"
+    },
+    {
+      "source": "Tooltip.razor.js",
+      "destination": "components",
+      "target": "Tooltip/Tooltip.razor.js",
+      "type": "js",
+      "sha256": "b61174689142ee858058af75f2e88080f1d618dc838fc104ed6632a576106c33"
+    }
+  ]
+}

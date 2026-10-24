@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "context-menu",
+  "version": "0.1.0",
+  "description": "Source-owned context-menu overlay.",
+  "dependencies": [
+    "dropdown-menu"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/context-menu.css",
+      "destination": "styles",
+      "target": "components/context-menu.css",
+      "type": "css",
+      "sha256": "705bf9e869cfbb80058900490ef082ca77ff186138c832a20ef5f178e54af7d0"
+    }
+  ],
+  "files": [
+    {
+      "source": "ContextMenu.razor",
+      "destination": "components",
+      "target": "ContextMenu/ContextMenu.razor",
+      "type": "razor",
+      "sha256": "7bab4ded52b1ade965fcc9d3c93a90bd82cf9ff37ca539aad4dabc1c745314b1"
+    },
+    {
+      "source": "ContextMenu.razor.js",
+      "destination": "components",
+      "target": "ContextMenu/ContextMenu.razor.js",
+      "type": "js",
+      "sha256": "6dc535ecc06c0118a66355001241b608e65be55b895e03b1d2dd4b5ce53a16f5"
+    }
+  ]
+}

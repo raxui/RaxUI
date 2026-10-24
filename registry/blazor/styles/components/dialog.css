@@ -136,7 +136,7 @@
   animation: sheen-fade-in var(--sheen-duration-fast) linear;
 }
 
-.sheen-dialog[data-state=closed] {
+.sheen-dialog:not(dialog)[data-state=closed] {
   animation: sheen-fade-out var(--sheen-duration-fast) linear forwards;
 }
 
@@ -154,7 +154,7 @@ dialog.sheen-dialog:not([open])::backdrop {
   .sheen-dialog:where(:not(dialog), [open]) {
     animation: sheen-sheet-in var(--sheen-duration-slow) var(--sheen-ease-out);
   }
-  .sheen-dialog[data-state=closed] {
+  .sheen-dialog:not(dialog)[data-state=closed] {
     animation: sheen-sheet-out var(--sheen-duration) var(--sheen-ease-in) forwards;
   }
   dialog.sheen-dialog,
@@ -170,7 +170,7 @@ dialog.sheen-dialog:not([open])::backdrop {
   .sheen-dialog:where(:not(dialog), [open]) {
     animation: sheen-zoom-in var(--sheen-duration-slow) var(--sheen-ease-spring);
   }
-  .sheen-dialog[data-state=closed] {
+  .sheen-dialog:not(dialog)[data-state=closed] {
     animation: sheen-zoom-out var(--sheen-duration) var(--sheen-ease-in) forwards;
   }
   dialog.sheen-dialog:not([open]) {

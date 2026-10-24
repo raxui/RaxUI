@@ -137,7 +137,8 @@ $sheen-dialog-sm: 576px; // Bootstrap's sm breakpoint
 .sheen-dialog[open]::backdrop { animation: sheen-fade-in var(--sheen-duration) var(--sheen-ease-out); }
 .sheen-dialog-overlay[data-state="closed"] { animation: sheen-fade-out var(--sheen-duration) var(--sheen-ease-in) forwards; }
 .sheen-dialog:where(:not(dialog), [open]) { animation: sheen-fade-in var(--sheen-duration-fast) linear; }
-.sheen-dialog[data-state="closed"] { animation: sheen-fade-out var(--sheen-duration-fast) linear forwards; }
+// Radix only: a native <dialog> leaves through its own transition below, not this animation as well.
+.sheen-dialog:not(dialog)[data-state="closed"] { animation: sheen-fade-out var(--sheen-duration-fast) linear forwards; }
 
 // close() hides a native <dialog> at once; transition it out while display and the top layer wait.
 dialog.sheen-dialog,
@@ -153,7 +154,7 @@ dialog.sheen-dialog:not([open])::backdrop { opacity: 0; }
 
 @include motion-safe {
   .sheen-dialog:where(:not(dialog), [open]) { animation: sheen-sheet-in var(--sheen-duration-slow) var(--sheen-ease-out); }
-  .sheen-dialog[data-state="closed"] { animation: sheen-sheet-out var(--sheen-duration) var(--sheen-ease-in) forwards; }
+  .sheen-dialog:not(dialog)[data-state="closed"] { animation: sheen-sheet-out var(--sheen-duration) var(--sheen-ease-in) forwards; }
 
   dialog.sheen-dialog,
   dialog.sheen-dialog::backdrop {
@@ -169,7 +170,7 @@ dialog.sheen-dialog:not([open])::backdrop { opacity: 0; }
 
   @media (min-width: $sheen-dialog-sm) {
     .sheen-dialog:where(:not(dialog), [open]) { animation: sheen-zoom-in var(--sheen-duration-slow) var(--sheen-ease-spring); }
-    .sheen-dialog[data-state="closed"] { animation: sheen-zoom-out var(--sheen-duration) var(--sheen-ease-in) forwards; }
+    .sheen-dialog:not(dialog)[data-state="closed"] { animation: sheen-zoom-out var(--sheen-duration) var(--sheen-ease-in) forwards; }
     dialog.sheen-dialog:not([open]) { opacity: 0; transform: scale(0.95); }
   }
 }

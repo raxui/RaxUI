@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "drawer",
+  "version": "0.1.0",
+  "description": "Source-owned drawer overlay.",
+  "dependencies": [
+    "dialog"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/drawer.css",
+      "destination": "styles",
+      "target": "components/drawer.css",
+      "type": "css",
+      "sha256": "5170c75ad6e81c79fa14cebf7d1e901e388f7fe7331a91186d02b99e225d214f"
+    }
+  ],
+  "files": [
+    {
+      "source": "Drawer.razor",
+      "destination": "components",
+      "target": "Drawer/Drawer.razor",
+      "type": "razor",
+      "sha256": "88daf9b9abf30d7266b4d72d6bde6d4485cf24a6cb294577edda5c694e75490c"
+    },
+    {
+      "source": "Drawer.razor.js",
+      "destination": "components",
+      "target": "Drawer/Drawer.razor.js",
+      "type": "js",
+      "sha256": "4b2c9a2351ec8f388444d72712b8a9bb471998554d11f09ae0fcfd3851d61b80"
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-tooltip-content {
+  --sheen-tooltip-bg: rgba(28, 28, 30, 0.9);
+  --sheen-tooltip-fg: #fff;
+  --sheen-tooltip-kbd-bg: rgba(255, 255, 255, 0.16);
+  z-index: 1080;
+  max-width: 18rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  color: var(--sheen-tooltip-fg);
+  background-color: var(--sheen-tooltip-bg);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.08), var(--sheen-shadow-md);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-wrap: balance;
+  user-select: none;
+  transform-origin: var(--radix-tooltip-content-transform-origin);
+}
+[data-bs-theme=dark] .sheen-tooltip-content {
+  --sheen-tooltip-bg: rgba(58, 58, 60, 0.9);
+}
+.sheen-tooltip-content kbd {
+  margin-inline-start: 0.5rem;
+  padding: 0.0625rem 0.3125rem;
+  border-radius: calc(0.25rem * var(--sheen-radius-scale));
+  color: inherit;
+  background-color: var(--sheen-tooltip-kbd-bg);
+  box-shadow: none;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+.sheen-tooltip-content[data-state=delayed-open] {
+  animation: sheen-fade-in var(--sheen-duration-fast) ease;
+}
+.sheen-tooltip-content[data-state=instant-open] {
+  animation: sheen-fade-in 80ms linear;
+}
+.sheen-tooltip-content[data-state=closed] {
+  animation: sheen-fade-out 100ms ease forwards;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-tooltip-content[data-state=closed] {
+    animation: sheen-tooltip-out 120ms ease forwards;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-tooltip-content[data-state=delayed-open][data-side=top] {
+    animation: sheen-tooltip-in-top 300ms var(--sheen-ease-spring);
+  }
+  .sheen-tooltip-content[data-state=delayed-open][data-side=right] {
+    animation: sheen-tooltip-in-right 300ms var(--sheen-ease-spring);
+  }
+  .sheen-tooltip-content[data-state=delayed-open][data-side=bottom] {
+    animation: sheen-tooltip-in-bottom 300ms var(--sheen-ease-spring);
+  }
+  .sheen-tooltip-content[data-state=delayed-open][data-side=left] {
+    animation: sheen-tooltip-in-left 300ms var(--sheen-ease-spring);
+  }
+}
+
+.sheen-tooltip-glass {
+  --sheen-tooltip-fg: var(--bs-emphasis-color);
+  --sheen-tooltip-kbd-bg: rgba(var(--bs-emphasis-color-rgb), 0.08);
+  --sheen-tooltip-bg: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.25));
+  border: 1px solid var(--sheen-glass-border-color);
+  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-md);
+  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+}
+[data-bs-theme=dark] .sheen-tooltip-glass {
+  --sheen-tooltip-bg: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.25));
+}
+
+.sheen-tooltip-content:has(.sheen-tooltip-title) {
+  padding: 0.5rem 0.75rem;
+  font-weight: 400;
+  text-wrap: pretty;
+}
+
+.sheen-tooltip-title {
+  display: block;
+  margin-bottom: 0.125rem;
+  font-weight: 600;
+}
+
+.sheen-tooltip-wide {
+  max-width: min(28rem, 100vw - 1rem);
+  text-wrap: pretty;
+  user-select: text;
+}
+
+.sheen-tooltip-arrow {
+  fill: var(--sheen-tooltip-bg);
+}
+
+@keyframes sheen-tooltip-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+.sheen-tooltip-disabled {
+  display: inline-flex;
+  border-radius: var(--sheen-radius-control);
+  cursor: not-allowed;
+}
+.sheen-tooltip-disabled > * {
+  pointer-events: none;
+}
+.sheen-tooltip-disabled:focus-visible {
+  outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+  outline-offset: 2px;
+}
+
+[data-state][aria-describedby],
+.sheen-truncate {
+  -webkit-touch-callout: none;
+}
+
+.sheen-truncate {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sheen-truncate[data-lines] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+@keyframes sheen-tooltip-in-top {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.94);
+  }
+}
+@keyframes sheen-tooltip-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(-4px) scale(0.94);
+  }
+}
+@keyframes sheen-tooltip-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.94);
+  }
+}
+@keyframes sheen-tooltip-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(4px) scale(0.94);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*=sheen-tooltip] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+.sheen-tooltip-content[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  border: 0;
+  max-height: calc(100dvh - 1rem);
+  overflow: auto;
+}
+
+.sheen-tooltip-content[popover]:not(:popover-open) {
+  display: none;
+}
+
+.sheen-tooltip-content {
+  padding-block: calc(var(--sheen-control-height, 2.5rem) * 0.15);
+}
+
+[data-sheen-appearance=flat] .sheen-tooltip-content, .sheen-tooltip-content[data-sheen-appearance=flat] {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+[data-sheen-appearance=glass] .sheen-tooltip-content, .sheen-tooltip-content[data-sheen-appearance=glass] {
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  color: var(--bs-emphasis-color);
+}

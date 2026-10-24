@@ -698,3 +698,81 @@ remeasure on resize, and animate subsequent changes. Pagination keeps keyed
 numbers so shifted ranges FLIP and new numbers pop in. Reduced motion disables
 transitions, FLIP, pop-in and smooth scrolling. Server-rendered active tabs and
 pages retain a static highlight until measurement.
+
+
+## Overlays and feedback (phase 3)
+
+Install `tooltip`, `hover-card`, `toast`, `sheet`, `drawer`, `context-menu`, and
+`command` with `npx sheenui-react add <name>`. The toast item includes `toast.tsx`,
+`toaster.tsx`, and `use-toast.ts`. Exact pins: Radix Tooltip 1.4.1, HoverCard 1.2.1,
+Toast 1.3.1, ContextMenu 2.4.1, and Vaul 1.1.2. Sheet and Command use the existing
+Radix Dialog 1.3.1. Declared dependencies install shared button, spinner, dialog,
+popover, or dropdown-menu items as needed. No new icon package is needed.
+
+```tsx
+import { Tooltip } from "@/components/ui/tooltip"
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card"
+import { toast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster"
+import { ToastAction } from "@/components/ui/toast"
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetBody } from "@/components/ui/sheet"
+import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription, DrawerClose } from "@/components/ui/drawer"
+import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "@/components/ui/context-menu"
+import { CommandDialog, CommandInput, CommandList, CommandGroup, CommandItem, CommandEmpty } from "@/components/ui/command"
+
+export function Feedback() {
+  return <>
+    <Tooltip content="Save your work" side="top"><button>Help</button></Tooltip>
+    <HoverCard><HoverCardTrigger href="/author">Author</HoverCardTrigger>
+      <HoverCardContent><p>Author details</p><a href="/author">View profile</a></HoverCardContent>
+    </HoverCard>
+    <button onClick={() => toast({ title: "Saved", tone: "success", action: <ToastAction altText="Undo save" onClick={() => {}}>Undo</ToastAction> })}>Save</button>
+    <Toaster />
+    <Sheet><SheetTrigger>Settings</SheetTrigger><SheetContent side="end">
+      <SheetHeader><SheetTitle>Settings</SheetTitle><SheetDescription>Your preferences</SheetDescription></SheetHeader>
+      <SheetBody>Settings content</SheetBody>
+    </SheetContent></Sheet>
+    <Drawer><DrawerTrigger>Actions</DrawerTrigger><DrawerContent>
+      <DrawerTitle>Actions</DrawerTitle><DrawerDescription>Choose an action</DrawerDescription><DrawerClose>Done</DrawerClose>
+    </DrawerContent></Drawer>
+    <ContextMenu><ContextMenuTrigger>Right-click here</ContextMenuTrigger><ContextMenuContent>
+      <ContextMenuItem onSelect={() => {}}>Open file</ContextMenuItem>
+    </ContextMenuContent></ContextMenu>
+    <CommandDialog><CommandInput /><CommandList><CommandGroup heading="Files">
+      <CommandItem value="Open file" onSelect={() => {}}>Open file</CommandItem>
+    </CommandGroup><CommandEmpty /></CommandList></CommandDialog>
+  </>
+}
+```
+
+Place the example under `SheenThemeProvider`; every overlay portals into the
+nearest provider, inheriting its appearance, mode, accent, density and direction.
+DOM parts forward refs and native attributes. Radix/Vaul roots support their
+controlled/uncontrolled contracts (`open`, `defaultOpen`, `onOpenChange`);
+ContextMenu has Radix's `onOpenChange` and submenu control. It opens through a
+pointer or keyboard context-menu gesture rather than an `open` root prop.
+
+| Item | Props and defaults |
+| --- | --- |
+| Tooltip | Compound Tooltip/TooltipTrigger/TooltipContent, or shorthand `content`, `title`, `shortcut`, `side`, `align`, `variant="dark"` (glass), `showArrow=false`, `contentProps`. TooltipProvider has `delayDuration=400`, `skipDelayDuration=300`; an implicit provider is supplied if absent. Content gap 6px, collision padding 8px. Disabled child controls get a focusable wrapper; touch supports long-press. TooltipTitle, TooltipShortcut, TruncatedText (`lines=1`, tooltip, side, variant) are included. |
+| HoverCard | `openDelay=400`, `closeDelay=200`; Trigger supports asChild, Content has align=center, sideOffset=8, collisionPadding=8. Keep essential information in the trigger link too. |
+| Toast | `toast({title, description, tone, variant, duration, action, icon})` returns `{id, update, dismiss}`. Tone info/success/warning/danger; boot-ui variants default/success/destructive/warning/info/loading remain available. Default duration 5000ms, loading Infinity. `toast.success/error/warning/info/loading`, `toast.promise`, `toast.dismiss(id?)` and `useToast()` are included. Mount one Toaster per application; call toast only in browser events/effects. At most three notifications remain open; dismissed entries stay briefly for exit motion. |
+| Toaster | `position="top-center"` (top/bottom with center/right/left), `dismissLabel="Dismiss"`, `label="Notification"`, `viewportLabel="Notifications ({hotkey})"`. Radix handles hover/focus pausing, swipe, Escape, live announcements and F8 viewport focus. ToastAction requires `altText`; translate that descriptive alternative too. Raw ToastClose's aria-label overrides its default Dismiss label. |
+| Sheet | SheetTrigger/Close, Content `side="end"` (start/top/bottom; logical sides flip with provider direction), `draggable=true`, `showCloseButton=true`, `closeLabel="Close"`, `showHandle` defaults true for bottom. Header, Body, Footer, Title, Description, Portal and Overlay compose the panel. Drag threshold and velocity follow boot-ui. |
+| Drawer | Vaul Root props including snapPoints, activeSnapPoint, direction, dismissible, and NestedRoot via DrawerNested. Content `showHandle=true`, `handleLabel="Resize drawer"`. Trigger, Close, Header, Body, Footer, Title, Description, Portal and Overlay are included. Native Vaul gesture physics manage drag, scroll handoff and dismissal. |
+| Command | Inline Command with `search` / `onSearchChange`, `filter=true`, `loop=true`, `label="Command palette"`. CommandInput `placeholder="Search commands..."` supplies its default accessible name (override aria-label); leading/loading optional. CommandItem takes value, keywords, disabled, onSelect(value), forceMount. CommandGroup heading, CommandList, CommandEmpty (`children="No results found."`), Separator, Shortcut, Footer and Loading (children overrides Loading?) are included. |
+| CommandDialog | `open`/`defaultOpen`/`onOpenChange`, `shortcut="k"` (Ctrl/Command+K, false disables), `title="Command palette"`, `description="Search for a command to run"`, `commandProps`, className. To close after selection, control open and set it false in the item's onSelect. |
+
+ContextMenu includes Group, Label, Separator, Shortcut, CheckboxItem, RadioGroup,
+RadioItem, Sub, SubTrigger and SubContent. Items accept `inset` and
+`variant="destructive"`. Its styles reuse DropdownMenu; arrows, Home/End,
+typeahead, Enter and Escape are handled by Radix. The focusable trigger also
+supports Shift+F10 and the context-menu key.
+
+Command keeps focus in the search input with aria-activedescendant pointing to
+an enabled option. Arrows, Home/End and Enter work across groups. Matching retains
+boot-ui's accent and Arabic normalization plus subsequence matching. Empty groups
+and the empty-state display follow the supplied CSS. Reduced motion disables
+motion; Radix retains mounted content until CSS exit animations finish. Vaul owns
+drawer enter/exit and swipe physics. Optional boot-ui page-receding effects are
+not part of this port.

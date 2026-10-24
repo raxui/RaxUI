@@ -83,6 +83,34 @@
     { "name": "pagination", "manifest": "components/pagination/manifest.json" },
     { "name": "stepper", "manifest": "components/stepper/manifest.json" },
     { "name": "toggle", "manifest": "components/toggle/manifest.json" },
-    { "name": "menu-toggle", "manifest": "components/menu-toggle/manifest.json" }
+    { "name": "menu-toggle", "manifest": "components/menu-toggle/manifest.json" },
+    {
+      "name": "tooltip",
+      "manifest": "components/tooltip/manifest.json"
+    },
+    {
+      "name": "hover-card",
+      "manifest": "components/hover-card/manifest.json"
+    },
+    {
+      "name": "toast",
+      "manifest": "components/toast/manifest.json"
+    },
+    {
+      "name": "sheet",
+      "manifest": "components/sheet/manifest.json"
+    },
+    {
+      "name": "drawer",
+      "manifest": "components/drawer/manifest.json"
+    },
+    {
+      "name": "context-menu",
+      "manifest": "components/context-menu/manifest.json"
+    },
+    {
+      "name": "command",
+      "manifest": "components/command/manifest.json"
+    }
   ]
 }

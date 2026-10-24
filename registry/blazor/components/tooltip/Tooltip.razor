@@ -1,0 +1,36 @@
+@* SheenUI Tooltip. Source-owned: edit freely. Manual popover; requires interactivity. Static SSR keeps content hidden. *@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<button @ref="_trigger" type="button" class="@TriggerClass" aria-describedby="@_id">@Trigger</button>
+<div @ref="_content" @attributes="AdditionalAttributes" id="@_id" popover="manual" role="tooltip"
+     class="sheen-tooltip-content @Class" data-sheen-appearance="@Appearance" tabindex="-1">@ChildContent</div>
+
+@code {
+    private readonly string _generatedId = "sheen-tooltip-" + Guid.NewGuid().ToString("N");
+    private ElementReference _trigger, _content;
+    private IJSObjectReference? _module;
+    private string _id => Id ?? _generatedId;
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public RenderFragment? Trigger { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? TriggerClass { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string Side { get; set; } = "top";
+    [Parameter] public string Align { get; set; } = "center";
+    [Parameter] public int OpenDelay { get; set; } = 400;
+    [Parameter] public int CloseDelay { get; set; } = 0;
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) _module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Tooltip/Tooltip.razor.js");
+        if (_module is not null) await _module.InvokeVoidAsync("init", _trigger, _content, Side, Align, OpenDelay, CloseDelay, false);
+    }
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is null) return;
+        try { await _module.InvokeVoidAsync("dispose", _content); await _module.DisposeAsync(); }
+        catch (JSDisconnectedException) { }
+    }
+}

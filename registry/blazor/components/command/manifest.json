@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "name": "command",
+  "version": "0.1.0",
+  "description": "Source-owned command overlay.",
+  "dependencies": [
+    "dialog",
+    "popover"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/command.css",
+      "destination": "styles",
+      "target": "components/command.css",
+      "type": "css",
+      "sha256": "b0fedc497ad1edab41edbb8db7edc5713349a29e3b50cd3334d7f1553d653ff6"
+    }
+  ],
+  "files": [
+    {
+      "source": "Command.razor",
+      "destination": "components",
+      "target": "Command/Command.razor",
+      "type": "razor",
+      "sha256": "8f309c850102b82520e2db1556de47f95e4060629401fede1a69ca4bd827f36e"
+    },
+    {
+      "source": "Command.razor.js",
+      "destination": "components",
+      "target": "Command/Command.razor.js",
+      "type": "js",
+      "sha256": "32c8cbaa42d31b522c4a990a2fb1d79687ae3a2fe628ffc1132f90997c8ca5f3"
+    }
+  ]
+}

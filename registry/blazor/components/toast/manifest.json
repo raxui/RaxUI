@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "toast",
+  "version": "0.1.0",
+  "description": "Source-owned toast overlay.",
+  "dependencies": [
+    "button"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/toast.css",
+      "destination": "styles",
+      "target": "components/toast.css",
+      "type": "css",
+      "sha256": "23f8daa3ee4afff5608826e6bc3e4fb80dca787986694b128a43aa9aa7c5940e"
+    }
+  ],
+  "files": [
+    {
+      "source": "Toaster.razor",
+      "destination": "components",
+      "target": "Toast/Toaster.razor",
+      "type": "razor",
+      "sha256": "d2eed1a36cf52571383084f4debfc00f0410855777a41441e38ffb201fa84d61"
+    },
+    {
+      "source": "Toaster.razor.js",
+      "destination": "components",
+      "target": "Toast/Toaster.razor.js",
+      "type": "js",
+      "sha256": "4d7f0be769f892054d1426bb86b9c993e4ac63a8258684cb484f69d8c1237f6b"
+    }
+  ]
+}

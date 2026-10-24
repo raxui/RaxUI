@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "hover-card",
+  "version": "0.1.0",
+  "description": "Source-owned hover-card overlay.",
+  "dependencies": [
+    "tooltip"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/hover-card.css",
+      "destination": "styles",
+      "target": "components/hover-card.css",
+      "type": "css",
+      "sha256": "55bc95fc49c34fd9651b3423ed7e5d18e97e7607653fea6ade4d451482f60919"
+    }
+  ],
+  "files": [
+    {
+      "source": "HoverCard.razor",
+      "destination": "components",
+      "target": "HoverCard/HoverCard.razor",
+      "type": "razor",
+      "sha256": "b3bdd140925b647c4e2dbcd5494d5ef4ae4ab37d56bc5dfc87b7310f340bb9f8"
+    }
+  ]
+}

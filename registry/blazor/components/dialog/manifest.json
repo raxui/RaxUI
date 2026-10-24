@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/dialog.css",
       "type": "css",
-      "sha256": "b362e2861aad39c7331a9c9cd09f365c27db7e489a2477592ea8ab14ca756d5b"
+      "sha256": "c1a89ebd11d2154834a53ed029577f96d6980b1fcacfdcafbce709720ba51da3"
     }
   ],
   "files": [
@@ -19,14 +19,14 @@
       "destination": "components",
       "target": "Dialog/Dialog.razor",
       "type": "razor",
-      "sha256": "a84b032587f5d9a2edec5bdd43771ab8021903d3cb0bafd7c54d812a9f93f3f4"
+      "sha256": "fdeae493693c8284a7d6617fb29755cb573c0c3ea0eb41a8188843e9fdb11574"
     },
     {
       "source": "Dialog.razor.js",
       "destination": "components",
       "target": "Dialog/Dialog.razor.js",
       "type": "js",
-      "sha256": "55bfb54a14a93195aaecf1ca074059953295bf5bca3b45aa55f657261ef7cda7"
+      "sha256": "ea8badfa712f260dc24fb7979b371f722a06db22a1b801f57eee7c29b8269664"
     }
   ]
 }
