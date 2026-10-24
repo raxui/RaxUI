@@ -40,6 +40,7 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "button"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "dialog"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "dropdown-menu"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "confirm-dialog"], app, output, error) == 0, error.ToString());
         Assert.True(File.Exists(Path.Combine(app, "Components", "UI", "Dialog", "Dialog.razor.js")));
 
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
@@ -86,7 +87,21 @@ public class GeneratedAppTests : IDisposable
                 </ChildContent>
             </DropdownMenu>
             <p id="picked">@picked</p>
+            <Button id="open-confirm" Disabled="@(!ready)" OnClick="@(() => confirmOpen = true)">Delete project</Button>
+            <p id="confirm-result">@confirmResult</p>
+            <ConfirmDialog @bind-Open="confirmOpen" Title="Delete project?" Description="This removes my-app for everyone."
+                           Tone="destructive" ConfirmText="Delete" ConfirmationText="my-app"
+                           OnConfirm="DeleteProject" OnCancel="@(() => confirmResult = "Cancelled")" />
             @code {
+                private bool confirmOpen;
+                private string confirmResult = "";
+                private int attempts;
+                private async Task DeleteProject()
+                {
+                    await Task.Delay(300);
+                    if (++attempts == 1) throw new InvalidOperationException("Network error");
+                    confirmResult = "Deleted";
+                }
                 private int count;
                 private bool ready;
                 private bool dialogOpen;
@@ -113,6 +128,7 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "button"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "dialog"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "dropdown-menu"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "confirm-dialog"], app, output, error) == 0, error.ToString());
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app);
     }
@@ -190,6 +206,7 @@ public class GeneratedAppTests : IDisposable
 
             await VerifyDialog(page);
             await VerifyDropdownMenu(page);
+            await VerifyConfirmDialog(page);
         }
         finally
         {
@@ -300,6 +317,49 @@ public class GeneratedAppTests : IDisposable
         await menu.GetByRole(AriaRole.Menuitem, new() { Name = "Edit" }).ClickAsync();
         await Assertions.Expect(page.Locator("#picked")).ToHaveTextAsync("Edit");
         await Assertions.Expect(menu).ToBeHiddenAsync();
+    }
+
+    // boot-ui's AlertDialog behavior: a click outside nudges instead of closing, Esc cancels, type-to-confirm,
+    // and a failed async confirm keeps the dialog open with its message.
+    private static async Task VerifyConfirmDialog(IPage page)
+    {
+        var opener = page.Locator("#open-confirm");
+        var dialog = page.GetByRole(AriaRole.Alertdialog, new() { Name = "Delete project?" });
+        var field = dialog.GetByLabel("Type my-app to confirm");
+        var delete = dialog.GetByRole(AriaRole.Button, new() { Name = "Delete" });
+        var result = page.Locator("#confirm-result");
+
+        await opener.ClickAsync();
+        await Assertions.Expect(dialog).ToBeVisibleAsync();
+        await Assertions.Expect(dialog).ToHaveAttributeAsync("data-tone", "destructive");
+        await Assertions.Expect(dialog).ToHaveAccessibleDescriptionAsync("This removes my-app for everyone.");
+        await Assertions.Expect(field).ToBeFocusedAsync();
+        await page.Mouse.ClickAsync(5, 5); // the backdrop
+        await Assertions.Expect(dialog).ToBeVisibleAsync();
+        await page.Keyboard.PressAsync("Escape");
+        await Assertions.Expect(dialog).ToBeHiddenAsync();
+        await Assertions.Expect(result).ToHaveTextAsync("Cancelled");
+        await Assertions.Expect(opener).ToBeFocusedAsync();
+
+        await opener.ClickAsync();
+        await Assertions.Expect(delete).ToBeDisabledAsync();
+        await field.FillAsync("my-app");
+        await Assertions.Expect(delete).ToBeEnabledAsync();
+        await delete.ClickAsync();
+        await Assertions.Expect(dialog).ToHaveAttributeAsync("aria-busy", "true");
+        await Assertions.Expect(dialog.GetByRole(AriaRole.Alert)).ToHaveTextAsync("Network error");
+        await Assertions.Expect(dialog).ToBeVisibleAsync();
+        await delete.ClickAsync();
+        await Assertions.Expect(dialog).ToBeHiddenAsync();
+        await Assertions.Expect(result).ToHaveTextAsync("Deleted");
+
+        // Reopening starts clean.
+        await opener.ClickAsync();
+        await Assertions.Expect(field).ToHaveValueAsync("");
+        await Assertions.Expect(dialog.GetByRole(AriaRole.Alert)).ToHaveCountAsync(0);
+        await dialog.GetByRole(AriaRole.Button, new() { Name = "Cancel" }).ClickAsync();
+        await Assertions.Expect(dialog).ToBeHiddenAsync();
+        await Assertions.Expect(result).ToHaveTextAsync("Cancelled");
     }
 
     private static void Dotnet(string workingDirectory, params string[] args)

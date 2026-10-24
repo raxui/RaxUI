@@ -98,6 +98,20 @@ They need an interactive render mode, for example `@rendermode InteractiveServer
 
 `Dialog` also takes `ShowCloseButton`, `CloseLabel`, `Appearance`, and `Class`;
 `Esc`, a click outside, and the close button set `Open` to `false`.
+`sheenui add confirm-dialog` installs a centred confirmation (from boot-ui's
+AlertDialog). A click outside nudges it instead of closing; Esc or Cancel run
+`OnCancel`. `OnConfirm` may be async: the dialog shows a spinner, closes when it
+finishes, and shows the message if it throws:
+
+```razor
+<ConfirmDialog @bind-Open="confirm" Title="Delete project?" Description="This removes it for everyone."
+               Tone="destructive" ConfirmText="Delete" ConfirmationText="my-app" OnConfirm="DeleteAsync" />
+```
+
+`Tone` is `default`, `destructive`, `warning`, or `success`; also `ShowIcon`,
+`CancelText`, `ConfirmationLabel`, `Layout` (`inline` or `stacked`), `OnCancel`,
+`Appearance`, and `Class`.
+
 `DropdownMenu` takes `TriggerVariant` (a Button variant, `secondary` by default),
 `TriggerClass`, `Disabled`, `Appearance`, and `Class`; the menu supports arrow
 keys, `Home`/`End`, and typeahead.
@@ -114,7 +128,7 @@ keys, `Home`/`End`, and typeahead.
 - Ordinary write failures restore original files and remove newly created empty
   directories. Concurrent edits and process termination during installation are
   not covered by that rollback guarantee.
-- `init` and `add` for `button`, `dialog`, and `dropdown-menu` are supported. Additional components, update commands,
+- `init` and `add` for `button`, `dialog`, `confirm-dialog`, and `dropdown-menu` are supported. Additional components, update commands,
   WebAssembly, and configurable paths remain future work.
 
 ## React

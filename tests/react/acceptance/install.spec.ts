@@ -16,6 +16,7 @@ const CREATE_VITE = `vite@${process.env.CREATE_VITE_VERSION ?? "9.3.1"}`
 const APP = `import { useState } from "react"
 import { Button } from "./components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./components/ui/dialog"
+import { ConfirmDialog } from "./components/ui/confirm-dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./components/ui/dropdown-menu"
 import { SheenThemeProvider, type SheenAppearance } from "./lib/theme"
 
@@ -52,6 +53,13 @@ export default function App() {
         </DropdownMenuContent>
       </DropdownMenu>
       <p id="picked">{picked}</p>
+      <ConfirmDialog
+        trigger={<Button variant="destructive">Delete project</Button>}
+        title="Delete project?"
+        tone="destructive"
+        confirmText="Delete"
+        onConfirm={() => setPicked("Deleted")}
+      />
     </SheenThemeProvider>
   )
 }
@@ -110,6 +118,7 @@ test.beforeAll(async () => {
   sh("npx sheenui-react add button", app)
   sh("npx sheenui-react add dialog", app)
   sh("npx sheenui-react add dropdown-menu", app)
+  sh("npx sheenui-react add confirm-dialog", app)
 
   // The starter replaced the unmodified template App and removed what only it used (ADR 008).
   if (!readFileSync(path.join(app, "src/App.tsx"), "utf8").includes("Welcome to your SheenUI app"))
@@ -231,11 +240,26 @@ test("Dialog and DropdownMenu portal into the theme root and use the shared styl
   await expect(menu).toBeHidden()
 })
 
+test("ConfirmDialog nudges on an outside click and confirms (boot-ui AlertDialog)", async ({ page }) => {
+  await page.goto(`${baseUrl}/?accent=emerald`)
+  await page.getByRole("button", { name: "Delete project" }).click()
+  const dialog = page.getByRole("alertdialog", { name: "Delete project?" })
+  await expect(dialog).toHaveClass(/\bsheen-confirm\b/)
+  await expect(page.getByRole("button", { name: "Cancel" })).toBeFocused()
+  expect(await dialog.evaluate((el) => !!el.closest('[data-sheen-accent="emerald"]'))).toBe(true)
+  await page.mouse.click(5, 5)
+  await expect(dialog).toBeVisible()
+  await page.getByRole("button", { name: "Delete", exact: true }).click()
+  await expect(dialog).toBeHidden()
+  await expect(page.locator("#picked")).toHaveText("Deleted")
+})
+
 test("running init and add again changes no files", () => {
   const before = snapshot(app)
   sh("npx sheenui-react init", app)
   sh("npx sheenui-react add button", app)
   sh("npx sheenui-react add dialog", app)
   sh("npx sheenui-react add dropdown-menu", app)
+  sh("npx sheenui-react add confirm-dialog", app)
   expect(snapshot(app)).toEqual(before)
 })
