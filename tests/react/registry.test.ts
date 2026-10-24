@@ -18,7 +18,7 @@ describe("React registry", () => {
   it("has a supported index listing every item", () => {
     const index = loadIndex(root)
     expect(index.schemaVersion).toBe(1)
-    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "starter", "starter-next"])
+    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "slider", "rating", "starter", "starter-next"])
   })
 
   it("has up-to-date hashes for every file (run src/react-cli/scripts/update-hashes.mjs after edits)", () => {
@@ -55,7 +55,7 @@ describe("React registry", () => {
   })
 
   it("names the available items for an unknown one", () => {
-    expect(() => loadManifest(root, "tooltip")).toThrow(/Available: foundation, button, dialog, confirm-dialog, dropdown-menu, field, form, form-section, input, input-group, textarea, checkbox, radio-group, switch, select, starter, starter-next/)
+    expect(() => loadManifest(root, "tooltip")).toThrow(/Available: foundation, button, dialog, confirm-dialog, dropdown-menu, field, form, form-section, input, input-group, textarea, checkbox, radio-group, switch, select, slider, rating, starter, starter-next/)
   })
 
   it.each([

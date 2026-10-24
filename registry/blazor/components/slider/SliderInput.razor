@@ -1,0 +1,23 @@
+@* SheenUI SliderInput. Source-owned: edit freely. One native range input bound through InputBase<double>, used by Slider. *@
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
+@inherits InputBase<double>
+<input @attributes="AdditionalAttributes" type="range" name="@NameAttributeValue" class="@CssClass"
+       min="@Min.ToString(CultureInfo.InvariantCulture)" max="@Max.ToString(CultureInfo.InvariantCulture)"
+       step="@Step.ToString(CultureInfo.InvariantCulture)" value="@CurrentValueAsString" @oninput="Changed" />
+@code {
+    [Parameter] public double Min { get; set; }
+    [Parameter] public double Max { get; set; } = 100;
+    [Parameter] public double Step { get; set; } = 1;
+    private void Changed(ChangeEventArgs args) => CurrentValueAsString = Convert.ToString(args.Value, CultureInfo.InvariantCulture);
+    protected override string FormatValueAsString(double value) => value.ToString(CultureInfo.InvariantCulture);
+    protected override bool TryParseValueFromString(string? value, out double result, [System.Diagnostics.CodeAnalysis.NotNullWhen(false)] out string? validationErrorMessage)
+    {
+        validationErrorMessage = null;
+        if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out result) && double.IsFinite(result))
+        { result = Math.Clamp(result, Min, Max); return true; }
+        validationErrorMessage = InvalidValueText;
+        return false;
+    }
+    [Parameter] public string InvalidValueText { get; set; } = "Enter a number.";
+}

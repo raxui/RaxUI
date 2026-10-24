@@ -54,6 +54,8 @@
       "name": "switch",
       "manifest": "components/switch/manifest.json"
     },
+    { "name": "slider", "manifest": "components/slider/manifest.json" },
+    { "name": "rating", "manifest": "components/rating/manifest.json" },
     {
       "name": "select",
       "manifest": "components/select/manifest.json"

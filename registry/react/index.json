@@ -17,6 +17,8 @@
     { "name": "radio-group", "manifest": "registry/react/radio-group/manifest.json" },
     { "name": "switch", "manifest": "registry/react/switch/manifest.json" },
     { "name": "select", "manifest": "registry/react/select/manifest.json" },
+    { "name": "slider", "manifest": "registry/react/slider/manifest.json" },
+    { "name": "rating", "manifest": "registry/react/rating/manifest.json" },
     { "name": "starter", "manifest": "registry/react/starter/manifest.json" },
     { "name": "starter-next", "manifest": "registry/react/starter-next/manifest.json" }
   ]

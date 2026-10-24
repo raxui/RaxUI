@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "rating",
+  "version": "0.1.0",
+  "description": "Native rating with Field and EditForm integration.",
+  "dependencies": [
+    "field"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "a8009da1e8b9ecc9851205c5fa26c469aec2e30bd658caeb0d97c58b53ddf6a5"
+    }
+  ],
+  "files": [
+    {
+      "source": "Rating.razor",
+      "destination": "components",
+      "target": "Rating/Rating.razor",
+      "type": "razor",
+      "sha256": "e2356ce64fe23887b8bb69b933b13dcf5d3f5f6f73cd9a8e60b556f9c4fb5593"
+    }
+  ]
+}

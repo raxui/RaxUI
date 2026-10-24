@@ -375,6 +375,56 @@ Props: `tone` (`default`, `destructive`, `warning`, `success`), `icon`, `cancelT
 
 Appearance precedence: the component's `appearance`, then the nearest `SheenAppearanceScope`, then `SheenThemeProvider`, then `default`. `mode`, `direction`, and `density` travel the same way.
 
+## Slider and rating
+
+`npx sheenui-react add slider` installs `@radix-ui/react-slider` **1.6.1**;
+`npx sheenui-react add rating` adds no packages. Both require `foundation` and
+`field`. Import `Slider` from `@/components/ui/slider` and `Rating` (or
+`RatingBreakdown`) from `@/components/ui/rating`.
+
+```tsx
+<Field id="volume">
+  <FieldLabel>Volume</FieldLabel>
+  <Slider defaultValue={[40]} name="volume" />
+  <FieldDescription>Choose your listening level.</FieldDescription>
+</Field>
+<Slider value={price} onValueChange={setPrice} min={0} max={100} step={1}
+        thumbLabels={["Minimum price", "Maximum price"]} />
+<Field id="score">
+  <FieldLabel>Score</FieldLabel>
+  <Rating value={score} onValueChange={setScore} name="score" allowHalf />
+  <FieldError />
+</Field>
+<RatingBreakdown counts={[4, 8, 12, 40, 86]} />
+```
+
+Slider takes all Radix root props, including `value`/`defaultValue` (arrays: one
+value or two for a range), `onValueChange`, `onValueCommit`, `min`, `max`, `step`,
+`disabled`, `name`, `dir`, and `orientation`. Additional props: `size`
+(`sm`, `default`, `lg`), `variant` (`default`, `bar`), `showValue` (true, false,
+`always`), `formatValue`, `marks` (numbers or `{ value, label }`), `icon`,
+`thumbLabels`, and `appearance`. Its ref is the root span; Field ids and ARIA are
+applied to the focusable thumb (both thumbs receive descriptions and errors).
+Arrows, Home/End and PageUp/PageDown are native Radix behavior; range values
+stay ordered. Marks are horizontal only. RTL mirrors fill, keys and marks.
+
+Rating takes numeric `value`/`defaultValue` (default 0), `onValueChange`, `onChange`
+(an alias for form libraries), `onBlur`, `max` (5), `allowHalf`, `clearable` (true),
+`disabled`, `readOnly`, `invalid`, `size`, `color` (`warning`, `primary`, `danger`,
+`success`), `icon`, `labels`, `showLabel`, `showValue`, `count`, `locale`, `name`,
+`dir`, `appearance`, and standard div attributes. The ref points to its focusable
+slider. Pointer hover previews a score; clicking the current score clears it.
+Arrows step by one or half (horizontal arrows mirror in RTL), Home/End choose
+zero/max, and digits choose a score. `name` adds a hidden input for form posts.
+Read-only mode displays fractional scores as an accessible image.
+
+All English text is overridable: `getValueText(value, max, label)` defaults to
+"4 out of 5 stars, Great"; `RatingBreakdown.formatTotal(total, formatted)` defaults
+to "1,284 ratings", and `formatBar(stars, count, percent)` names each summary bar.
+`labels` supplies app-defined score words. Supply `thumbLabels` for distinct
+range endpoint names. Appearance, density, dark mode and accents inherit the
+shared theme; direction uses `useSheenTheme` and falls back to computed CSS direction.
+
 ## Customize
 
 - **Bootstrap variables:** set them at the top of `src/styles/sheenui.scss`, above the imports, for example `$primary: #0a84ff;`.
@@ -390,4 +440,4 @@ Users who set their system to reduce transparency get opaque glass automatically
 - Unknown files, locally modified files, and files from another release are never silently replaced. Paths that escape the project, including through symlinks or junctions, are rejected.
 - Ordinary write failures restore original files and remove new empty folders.
 - Sass prints `@import` deprecation warnings that come from Bootstrap 5.3 itself.
-- Only React on Vite 6+ or Next.js 15+ (App Router, no Tailwind) and the Button, Dialog, ConfirmDialog, and DropdownMenu components are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` App or the `create-next-app` 15.x–16.x page; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.
+- Only React on Vite 6+ or Next.js 15+ (App Router, no Tailwind) and the shipped registry components are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` App or the `create-next-app` 15.x–16.x page; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.
