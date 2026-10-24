@@ -4,8 +4,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, isRequiredInSchema } from "../../registry/react/form/form"
-import { FormRow, FormRowLink, FormSection } from "../../registry/react/form-section/form-section"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, isRequiredInSchema } from "../../registry/react/components/form/form"
+import { FormRow, FormRowLink, FormSection } from "../../registry/react/components/form-section/form-section"
 
 const schema = z.object({ name: z.string().min(1, "Name is required"), nickname: z.string().optional() })
 function Example({ onSubmit = vi.fn() }: { onSubmit?: (values: z.infer<typeof schema>) => void }) {

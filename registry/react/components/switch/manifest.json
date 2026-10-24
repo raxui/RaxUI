@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "switch",
+  "version": "0.1.0",
+  "description": "Source-owned switch with Field integration.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {
+    "@radix-ui/react-switch": "1.4.1"
+  },
+  "styles": [
+    "components/switch"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/switch/switch.tsx",
+      "target": "components/ui/switch.tsx",
+      "type": "tsx",
+      "sha256": "24cf390ed8a266e4703d7351631940d49ca266b270629f95038868678424a824"
+    },
+    {
+      "source": "theme/scss/components/_switch.scss",
+      "target": "styles/sheenui/components/_switch.scss",
+      "type": "scss",
+      "sha256": "e037a4c02a4bac8fabd41ecd6301e0bec4621862aaed15211ef34ad387e70002"
+    }
+  ]
+}

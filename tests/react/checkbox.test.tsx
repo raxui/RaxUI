@@ -2,7 +2,7 @@ import * as React from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
-import { Checkbox } from "../../registry/react/checkbox/checkbox"
+import { Checkbox } from "../../registry/react/components/checkbox/checkbox"
 import { Wired, expectWiring } from "./control-test-utils"
 
 describe("Checkbox", () => {

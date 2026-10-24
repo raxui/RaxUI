@@ -178,6 +178,10 @@ public class EmbeddedRegistry
             if (asset.Type != "css" || asset.Destination != "styles")
                 throw new InvalidOperationException($"Unsupported asset '{asset.Source}' (type '{asset.Type}', destination '{asset.Destination}').");
 
+            var expected = destination == ComponentsDestination ? $"components/{manifest.Name}.css" : "starter.css";
+            var expectedSource = destination == ComponentsDestination ? $"styles/{expected}" : "starter/starter.css";
+            if (asset.Target != expected || asset.Source != expectedSource)
+                throw new InvalidOperationException($"Unsupported CSS asset path '{asset.Source}' or target '{asset.Target}'.");
             VerifyHash(asset.Source, asset.Sha256);
         }
     }

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "checkbox",
+  "version": "0.1.0",
+  "description": "Source-owned checkbox with Field integration.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {
+    "@radix-ui/react-checkbox": "1.4.1"
+  },
+  "styles": [
+    "components/checkbox"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/checkbox/checkbox.tsx",
+      "target": "components/ui/checkbox.tsx",
+      "type": "tsx",
+      "sha256": "9353bd6465ae142b025fa72c3c13ecb3a95044355de629c62e6277aa16d536d5"
+    },
+    {
+      "source": "theme/scss/components/_checkbox.scss",
+      "target": "styles/sheenui/components/_checkbox.scss",
+      "type": "scss",
+      "sha256": "389b8c0e971e6b210f42846bd7c575e2f4b66fd6cb763313f30af84cf5b91d99"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # ADR 007 — Blazor Uses the Shared Theme
 
+> The single-file CSS delivery decision is superseded by [ADR 015](015-per-component-css.md). The shared theme and global styling decisions remain in effect.
+
 - **Status:** Accepted
 - **Date:** 2026-10-23
 - **Supersedes:** The component-styling part of [ADR 001](001-hybrid-css.md). Completes the Blazor migration deferred by [ADR 005](005-multi-framework-shared-theme.md).

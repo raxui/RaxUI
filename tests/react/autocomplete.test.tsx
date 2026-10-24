@@ -2,7 +2,7 @@ import * as React from "react"
 import { act, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
-import { Autocomplete } from "../../registry/react/autocomplete/autocomplete"
+import { Autocomplete } from "../../registry/react/components/autocomplete/autocomplete"
 import { Wired, expectWiring } from "./control-test-utils"
 
 describe("Autocomplete", () => {

@@ -6,11 +6,11 @@
   "dependencies": [],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/button.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/button.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "14610a41264fc3fb893a946d74a555a3da6285a62e01b145c652673b9187a7fc"
     }
   ],
   "files": [

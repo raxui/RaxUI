@@ -45,7 +45,7 @@
       "source": "theme/scss/_mixins.scss",
       "target": "styles/sheenui/_mixins.scss",
       "type": "scss",
-      "sha256": "fac0d1c695400ffa5237a7ae0b7349807b50e01839eba547b38cae5ad41bb7d8"
+      "sha256": "317c46cd1dd961dae6715ab1da21866edf62c617568de5ae1155da346fc6e33e"
     },
     {
       "source": "theme/scss/_animations.scss",
@@ -69,7 +69,7 @@
       "source": "theme/scss/_appearance.scss",
       "target": "styles/sheenui/_appearance.scss",
       "type": "scss",
-      "sha256": "1a4ced201172601dd1cf3537820cd96cc6d48b74505012769151ac20b5950fa6"
+      "sha256": "3fc01906f6c521f03b87980e75dcb94763cbcbe06286e9ebc68bf13aa79c3bed"
     },
     {
       "source": "theme/scss/_core.scss",

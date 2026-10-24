@@ -1,0 +1,16 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-autocomplete-panel {
+  padding: 0.25rem;
+  min-width: var(--radix-popover-trigger-width, 14rem);
+}
+
+.sheen-autocomplete-panel [role=listbox] {
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-autocomplete-panel .spinner-border {
+    animation: none;
+  }
+}

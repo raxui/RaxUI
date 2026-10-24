@@ -2,6 +2,11 @@
 
 Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared SheenUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. It supports **React 18.3 or 19 with TypeScript** on **Vite 6 or later** or **Next.js 15 or later (App Router, without Tailwind)**, with buttons, overlays, fields, forms and basic controls ([ADR 006](adr/006-react-first-milestone.md), [ADR 010](adr/010-vite-6-and-later.md), [ADR 011](adr/011-nextjs.md)).
 
+The registry keeps components under `registry/react/components/<name>/`, the
+foundation under `registry/react/foundation/`, and starters under `starter-react/`
+(Vite) and `starter-next/` (Next.js). The Vite starter item is named `starter-react`.
+Installed component and SCSS paths in your app are unchanged.
+
 ## Basic controls
 
 Install `input`, `input-group`, `textarea`, `checkbox`, `radio-group`, `switch`,
@@ -9,7 +14,7 @@ or `select` with `npx sheenui-react add <name>`. They require `foundation` and
 `field`; `input-group` also installs `input`. Selection controls pin Radix
 Checkbox **1.4.1**, RadioGroup **1.5.1**, Switch **1.4.1**, and Select **2.4.1**.
 The installer adds each control's SCSS import; input and textarea share a mixin
-partial owned by foundation, so either works when installed alone.
+partial shipped with each item, so either works when installed alone.
 
 ```tsx
 import { Field, FieldControl, FieldLabel, FieldError } from "@/components/ui/field"

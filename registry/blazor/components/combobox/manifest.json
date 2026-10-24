@@ -10,11 +10,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/combobox.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/combobox.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "679a48b3bb153efdd7289eaefe1579380596f0040cb15cec0a765d07381ddb22"
     }
   ],
   "files": [

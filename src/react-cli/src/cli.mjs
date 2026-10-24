@@ -14,7 +14,7 @@ const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const registryRoot = existsSync(path.join(packageRoot, "registry/react/index.json")) ? packageRoot : path.resolve(packageRoot, "../..")
 export const VERSION = JSON.parse(readFileSync(path.join(packageRoot, "package.json"), "utf8")).version
 
-const STARTER_ITEMS = ["starter", "starter-next"]
+const STARTER_ITEMS = ["starter-react", "starter-next"]
 const MIN_VITE_MAJOR = 6 // ADR 010
 const MIN_NEXT_MAJOR = 15 // ADR 011
 
@@ -289,7 +289,7 @@ function detectVite(projectDir, dependencies) {
     entryImport: "./styles/sheenui.scss",
     stylesheet: "src/styles/sheenui.scss",
     bootstrapImport: "bootstrap/scss/bootstrap",
-    starter: "starter",
+    starter: "starter-react",
     starterTarget: "src/App.tsx",
     template: VITE_TEMPLATE,
   }

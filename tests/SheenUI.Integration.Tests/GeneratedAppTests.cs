@@ -63,6 +63,18 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "date-input"], app, output, error) == 0, error.ToString());
         Assert.True(File.Exists(Path.Combine(app, "Components", "UI", "Dialog", "Dialog.razor.js")));
 
+        // Exactly the installed styled components, each imported once; the starter is separate.
+        var registry = new SheenUI.Cli.Registry.EmbeddedRegistry();
+        var installed = SheenUI.Cli.Configuration.SheenUiLock.LoadOrCreate(app).Components.Keys;
+        var expectedStyles = installed.Where(name => name != "starter")
+            .SelectMany(name => registry.GetComponentManifest(name).Assets).Select(a => a.Target).Order().ToArray();
+        var stylesDir = Path.Combine(app, "wwwroot/css/sheenui");
+        var imports = File.ReadLines(Path.Combine(stylesDir, "sheenui.css"))
+            .Where(line => line.StartsWith("@import url(\"components/", StringComparison.Ordinal)).ToArray();
+        Assert.Equal(expectedStyles.Select(target => $"@import url(\"{target}\");"), imports.Order());
+        Assert.Equal(expectedStyles, Directory.GetFiles(Path.Combine(stylesDir, "components"))
+            .Select(file => "components/" + Path.GetFileName(file)).Order());
+
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
         var bootstrap = Directory.GetFiles(Path.Combine(app, "wwwroot"), "bootstrap.min.css", SearchOption.AllDirectories).Single();
         Assert.Matches(@"Bootstrap\s+v5\.3\.", string.Join(" ", File.ReadLines(bootstrap).Take(3)));
@@ -254,6 +266,13 @@ public class GeneratedAppTests : IDisposable
             Assert.NotEqual("rgba(0, 0, 0, 0)", color);
             Assert.NotEqual("transparent", color);
             await Assertions.Expect(button).ToHaveCSSAsync("display", "inline-flex");
+            // This property comes from button.css, proving the @import loaded in the browser.
+            Assert.Equal("600", await button.EvaluateAsync<string>("el => getComputedStyle(el).fontWeight"));
+            Assert.True(await page.EvaluateAsync<bool>("""
+                () => [...document.styleSheets].some(sheet => sheet.href?.includes('/css/sheenui/sheenui') &&
+                    [...sheet.cssRules].some(rule => rule.type === CSSRule.IMPORT_RULE &&
+                        rule.href === 'components/button.css' && rule.styleSheet?.cssRules.length > 0))
+                """));
             Assert.False(string.IsNullOrWhiteSpace(await button.EvaluateAsync<string>("el => getComputedStyle(el).getPropertyValue('--sheen-glass-blur')")));
             Assert.NotEqual("none", await button.EvaluateAsync<string>("el => getComputedStyle(el).boxShadow"));
             Assert.Equal("none", await page.Locator("#sheen-flat").EvaluateAsync<string>("el => getComputedStyle(el).boxShadow"));

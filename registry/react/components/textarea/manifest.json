@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "textarea",
+  "version": "0.1.0",
+  "description": "Source-owned textarea with Field integration.",
+  "requires": [
+    "foundation",
+    "field",
+    "input"
+  ],
+  "packages": {},
+  "styles": [
+    "components/textarea"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/textarea/textarea.tsx",
+      "target": "components/ui/textarea.tsx",
+      "type": "tsx",
+      "sha256": "e397088444d039ca4564675758ff104197212800f91fea3376d4e91e9cda84a1"
+    },
+    {
+      "source": "theme/scss/components/_textarea.scss",
+      "target": "styles/sheenui/components/_textarea.scss",
+      "type": "scss",
+      "sha256": "9594872f6d1b80e98fa8e3dd663abd4076c3ca389ddbf81b12087e38c476f71b"
+    }
+  ]
+}

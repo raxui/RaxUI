@@ -233,7 +233,7 @@ describe("sheenui-react init and add button", () => {
     }
     expect(read("src/main.tsx")).not.toContain("./index.css")
     expect(read("src/styles/sheenui.scss")).toContain('@import "sheenui/components/starter";')
-    expect(json("sheenui.react.lock.json").items.starter.files.map((entry: { target: string }) => entry.target)).toContain("src/App.tsx")
+    expect(json("sheenui.react.lock.json").items["starter-react"].files.map((entry: { target: string }) => entry.target)).toContain("src/App.tsx")
 
     const before = snapshot()
     ok(cli("init"))

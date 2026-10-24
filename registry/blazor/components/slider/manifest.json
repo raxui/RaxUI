@@ -8,11 +8,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/slider.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/slider.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "2220c96def5d827341983aa9e7d8c122250d5ea3fd3bccc2101578144f4b5ba0"
     }
   ],
   "files": [

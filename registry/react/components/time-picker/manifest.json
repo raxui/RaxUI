@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "time-picker",
+  "version": "0.1.0",
+  "description": "Source-owned time-picker with Field integration.",
+  "requires": [
+    "foundation",
+    "field",
+    "input"
+  ],
+  "packages": {},
+  "styles": [
+    "components/time-picker"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/time-picker/time-picker.tsx",
+      "target": "components/ui/time-picker.tsx",
+      "type": "tsx",
+      "sha256": "8edecb959fb83d05fc177397d8731bc970ec9ae53a1f3c81d2fdc27465629137"
+    },
+    {
+      "source": "theme/scss/components/_time-picker.scss",
+      "target": "styles/sheenui/components/_time-picker.scss",
+      "type": "scss",
+      "sha256": "0db426b26655160c30abd4ecc5a05f52c57e040d44c26887fdf6a0b99291c544"
+    }
+  ]
+}

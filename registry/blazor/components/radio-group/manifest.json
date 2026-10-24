@@ -8,11 +8,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/radio-group.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/radio-group.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "f20a7559460011169419ec22e1042fa61e12079724c45421bf46e3b83de5dc14"
     }
   ],
   "files": [

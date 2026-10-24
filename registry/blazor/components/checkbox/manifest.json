@@ -8,11 +8,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/checkbox.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/checkbox.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "36a348e9a1200327d7b6aad4039c6a08d1b18871a10ad1cc8425616ed735f862"
     }
   ],
   "files": [

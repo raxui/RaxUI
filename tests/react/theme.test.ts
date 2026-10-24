@@ -23,6 +23,24 @@ describe("shared theme", () => {
     expect(readFileSync("registry/blazor/styles/sheenui.css", "utf8")).toBe(compileBlazorTheme())
   })
 
+  it("builds every Blazor asset independently without duplicating core rules", async () => {
+    // @ts-expect-error -- plain ESM build script without type declarations
+    const { compileBlazorAssets } = await import("../../theme/build-css.mjs")
+    const assets: Map<string, string> = compileBlazorAssets()
+    for (const [file, css] of assets) {
+      expect(readFileSync(file, "utf8"), file).toBe(css)
+      if (file.endsWith("/sheenui.css")) {
+        expect(css).not.toContain(".sheen-button")
+        expect(css).not.toContain(".sheen-dialog")
+      } else {
+        expect(css, file).not.toContain("--sheen-font-sans:")
+        expect(css, file).not.toContain(".glass-ultrathin")
+      }
+    }
+    expect(assets.has("registry/blazor/starter/starter.css")).toBe(true)
+    expect(assets.has("registry/blazor/styles/components/input-mixins.css")).toBe(false)
+  })
+
   it("re-declares the default surfaces where the mode changes without an appearance", () => {
     expect(css).toMatch(/:where\(\[data-bs-theme\]:not\(\[data-sheen-appearance=flat\] \*, \[data-sheen-appearance=glass\] \*\)\)\s*\{[^}]*--sheen-surface-bg: var\(--bs-body-bg\)/)
   })

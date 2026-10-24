@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { Field, FieldControl, FieldDescription, FieldError, FieldLabel, FieldLegend, FieldSet, focusFirstInvalid } from "../../registry/react/field/field"
+import { Field, FieldControl, FieldDescription, FieldError, FieldLabel, FieldLegend, FieldSet, focusFirstInvalid } from "../../registry/react/components/field/field"
 
 beforeEach(() => {
   vi.stubGlobal("matchMedia", vi.fn().mockReturnValue({ matches: false }))

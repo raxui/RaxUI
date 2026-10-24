@@ -6,11 +6,11 @@
   "dependencies": [],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/confirm-dialog.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/confirm-dialog.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "1511202f7b46efc65f6c92f8d174f657aef28b13c0e321470235b45f38b63594"
     }
   ],
   "files": [

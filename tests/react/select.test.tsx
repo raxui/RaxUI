@@ -2,7 +2,7 @@ import * as React from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../../registry/react/select/select"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../../registry/react/components/select/select"
 import { Wired, expectWiring } from "./control-test-utils"
 
 const options = <SelectContent><SelectItem value="a">Alpha</SelectItem><SelectItem value="b">Beta</SelectItem></SelectContent>

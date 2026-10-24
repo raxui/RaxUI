@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "input-group",
+  "version": "0.1.0",
+  "description": "Source-owned input-group with Field integration.",
+  "requires": [
+    "foundation",
+    "field",
+    "input"
+  ],
+  "packages": {},
+  "styles": [
+    "components/input-group"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/input-group/input-group.tsx",
+      "target": "components/ui/input-group.tsx",
+      "type": "tsx",
+      "sha256": "2670efedd9445653636dfc541f4428d8508c2b9a7bf2f7f546862ff08540af31"
+    },
+    {
+      "source": "theme/scss/components/_input-group.scss",
+      "target": "styles/sheenui/components/_input-group.scss",
+      "type": "scss",
+      "sha256": "0b6bf30188b3daec8b358c4ea3efc106b84617389e7721037cab77db0ccf0ad2"
+    }
+  ]
+}

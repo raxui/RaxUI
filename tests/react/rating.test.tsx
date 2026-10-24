@@ -2,7 +2,7 @@ import * as React from "react"
 import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
-import { Rating } from "../../registry/react/rating/rating"
+import { Rating } from "../../registry/react/components/rating/rating"
 import { Wired, expectWiring } from "./control-test-utils"
 import { SheenThemeProvider } from "../../registry/react/foundation/theme"
 

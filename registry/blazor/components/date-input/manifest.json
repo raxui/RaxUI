@@ -9,11 +9,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/date-input.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/date-input.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "9c3e34bf59900687fd3b64cdec69de36a664efb1ffd177e34b0d7ef3555be794"
     }
   ],
   "files": [

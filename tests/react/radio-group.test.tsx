@@ -2,7 +2,7 @@ import * as React from "react"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
-import { RadioGroup, RadioGroupItem } from "../../registry/react/radio-group/radio-group"
+import { RadioGroup, RadioGroupItem } from "../../registry/react/components/radio-group/radio-group"
 import { Wired, expectWiring } from "./control-test-utils"
 
 const items = <><RadioGroupItem value="a" aria-label="A" /><RadioGroupItem value="b" aria-label="B" /></>

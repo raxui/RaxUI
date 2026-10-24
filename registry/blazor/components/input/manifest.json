@@ -8,11 +8,11 @@
   ],
   "assets": [
     {
-      "source": "styles/sheenui.css",
+      "source": "styles/components/input.css",
       "destination": "styles",
-      "target": "sheenui.css",
+      "target": "components/input.css",
       "type": "css",
-      "sha256": "f838b0882264829f94a9066e1fd9ceee0392cfcf09c629fc55044eb26a1f69a1"
+      "sha256": "c1a5e41d4a83e645c5154646918872ad9b108fd763c1a1e20b2d5f3c94994db4"
     }
   ],
   "files": [

@@ -3,8 +3,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { useForm, Controller } from "react-hook-form"
 import { describe, expect, it, vi } from "vitest"
-import { FileUpload } from "../../registry/react/file-upload/file-upload"
-import { Field, FieldLabel, FieldError } from "../../registry/react/field/field"
+import { FileUpload } from "../../registry/react/components/file-upload/file-upload"
+import { Field, FieldLabel, FieldError } from "../../registry/react/components/field/field"
 import { Wired, expectWiring } from "./control-test-utils"
 
 const file = (name = "notes.txt", content = "abc", type = "text/plain") => new File([content], name, { type })
