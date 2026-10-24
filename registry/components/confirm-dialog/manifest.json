@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "confirm-dialog",
+  "version": "0.1.0",
+  "description": "Centred confirmation on the native <dialog>: tones with icons, async confirm, and type-to-confirm.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "f91b3fa5f2b380dc3b05e599c76e555b348d9151b91b4db7356edb93137b0c71"
+    }
+  ],
+  "files": [
+    {
+      "source": "ConfirmDialog.razor",
+      "destination": "components",
+      "target": "ConfirmDialog/ConfirmDialog.razor",
+      "type": "razor",
+      "sha256": "ac879905bc0369257d83a7ff233de3a3afd0eaf27efdccce53819f44209e75e7"
+    },
+    {
+      "source": "ConfirmDialog.razor.js",
+      "destination": "components",
+      "target": "ConfirmDialog/ConfirmDialog.razor.js",
+      "type": "js",
+      "sha256": "46c9070feca42786272b7bc1261636733010a775137e51bdffd01e440009d5c1"
+    }
+  ]
+}

@@ -11,6 +11,10 @@
       "manifest": "components/dialog/manifest.json"
     },
     {
+      "name": "confirm-dialog",
+      "manifest": "components/confirm-dialog/manifest.json"
+    },
+    {
       "name": "dropdown-menu",
       "manifest": "components/dropdown-menu/manifest.json"
     }

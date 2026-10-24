@@ -52,6 +52,7 @@ public class EmbeddedRegistryTests
     // resource naming for folders.
     [Theory]
     [InlineData("dialog", "Dialog/Dialog.razor.js")]
+    [InlineData("confirm-dialog", "ConfirmDialog/ConfirmDialog.razor.js")]
     [InlineData("dropdown-menu", "DropdownMenu/DropdownMenu.razor.js")]
     public void Overlay_manifests_load_with_their_javascript_module(string name, string module)
     {

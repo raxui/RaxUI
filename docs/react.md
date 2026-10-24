@@ -142,6 +142,24 @@ Plus every native `<button>` attribute and a forwarded `ref`. `type` defaults to
 
 `DialogContent` also takes `appearance`, `showCloseButton`, and `closeLabel`; `DropdownMenuContent` takes `appearance` and every Radix content prop (it defaults to `align="start"` and `sideOffset={4}`).
 
+### ConfirmDialog
+
+`npx sheenui-react add confirm-dialog` installs boot-ui's confirmation on Radix AlertDialog (it also installs Button). A click outside nudges it instead of closing; focus starts on Cancel.
+
+```tsx
+<ConfirmDialog
+  trigger={<Button variant="destructive">Delete project</Button>}
+  title="Delete project?"
+  description="This removes it for everyone."
+  tone="destructive"
+  confirmText="Delete"
+  confirmationText="my-app"
+  onConfirm={() => api.deleteProject()} // a promise keeps it open with a spinner; a rejection shows its message
+/>
+```
+
+Props: `tone` (`default`, `destructive`, `warning`, `success`), `icon`, `cancelText`, `confirmationLabel`, `layout` (`inline` or `stacked`), `appearance`, `open`/`defaultOpen`/`onOpenChange`, and `onCancel`. The file also exports the `AlertDialog*` parts for custom layouts.
+
 Appearance precedence: the component's `appearance`, then the nearest `SheenAppearanceScope`, then `SheenThemeProvider`, then `default`. `mode`, `direction`, and `density` travel the same way.
 
 ## Customize
@@ -159,4 +177,4 @@ Users who set their system to reduce transparency get opaque glass automatically
 - Unknown files, locally modified files, and files from another release are never silently replaced. Paths that escape the project, including through symlinks or junctions, are rejected.
 - Ordinary write failures restore original files and remove new empty folders.
 - Sass prints `@import` deprecation warnings that come from Bootstrap 5.3 itself.
-- Only React on Vite 6+ or Next.js 15+ (App Router, no Tailwind) and the Button, Dialog, and DropdownMenu components are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` App or the `create-next-app` 15.x–16.x page; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.
+- Only React on Vite 6+ or Next.js 15+ (App Router, no Tailwind) and the Button, Dialog, ConfirmDialog, and DropdownMenu components are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` App or the `create-next-app` 15.x–16.x page; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.

@@ -9,7 +9,7 @@ import * as sass from "sass"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const output = path.join(root, "registry/styles/sheenui.css")
-const COMPONENTS = ["button", "dialog", "dropdown-menu", "starter"]
+const COMPONENTS = ["button", "dialog", "confirm-dialog", "dropdown-menu", "starter"]
 
 export function compileBlazorTheme() {
   const entry = ['@import "core";', ...COMPONENTS.map((name) => `@import "components/${name}";`)].join("\n")

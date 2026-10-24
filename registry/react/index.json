@@ -5,6 +5,7 @@
     { "name": "foundation", "manifest": "registry/react/foundation/manifest.json" },
     { "name": "button", "manifest": "registry/react/button/manifest.json" },
     { "name": "dialog", "manifest": "registry/react/dialog/manifest.json" },
+    { "name": "confirm-dialog", "manifest": "registry/react/confirm-dialog/manifest.json" },
     { "name": "dropdown-menu", "manifest": "registry/react/dropdown-menu/manifest.json" },
     { "name": "starter", "manifest": "registry/react/starter/manifest.json" },
     { "name": "starter-next", "manifest": "registry/react/starter-next/manifest.json" }
