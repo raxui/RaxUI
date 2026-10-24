@@ -98,6 +98,7 @@ public class EmbeddedRegistryTests
     // Overlays ship a collocated JavaScript module (ADR 013); "dropdown-menu" also checks MSBuild's '-' to '_'
     // resource naming for folders.
     [Theory]
+    [InlineData("form", "Form/Form.razor.js")]
     [InlineData("dialog", "Dialog/Dialog.razor.js")]
     [InlineData("confirm-dialog", "ConfirmDialog/ConfirmDialog.razor.js")]
     [InlineData("dropdown-menu", "DropdownMenu/DropdownMenu.razor.js")]
@@ -109,14 +110,18 @@ public class EmbeddedRegistryTests
         Assert.Equal(_registry.GetComponentManifest("button").Assets.Single().Sha256, manifest.Assets.Single().Sha256);
     }
 
-    [Fact]
-    public void All_manifest_files_match_their_sha256_checksums()
+    [Theory]
+    [InlineData("button")]
+    [InlineData("field")]
+    [InlineData("form")]
+    [InlineData("form-section")]
+    public void All_manifest_files_match_their_sha256_checksums(string name)
     {
-        var manifest = _registry.GetComponentManifest("button");
+        var manifest = _registry.GetComponentManifest(name);
 
         foreach (var file in manifest.Files)
         {
-            var bytes = _registry.GetResourceBytes($"components/button/{file.Source}");
+            var bytes = _registry.GetResourceBytes($"components/{name}/{file.Source}");
             var hash = EmbeddedRegistry.ComputeSha256(bytes);
             Assert.Equal(file.Sha256, hash);
         }

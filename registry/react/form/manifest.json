@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "name": "form",
+  "version": "0.1.0",
+  "description": "React Hook Form bindings with schema hints and invalid-submit feedback.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {
+    "react-hook-form": "7.91.0",
+    "zod": "4.6.7",
+    "@hookform/resolvers": "5.9.2"
+  },
+  "styles": [],
+  "files": [
+    {
+      "source": "registry/react/form/form.tsx",
+      "target": "components/ui/form.tsx",
+      "type": "tsx",
+      "sha256": "75444a10bc2b07f6c8a0efa5138f9795962b16e5a2c9ea0e34e9531babfcc16e"
+    }
+  ]
+}

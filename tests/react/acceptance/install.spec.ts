@@ -19,12 +19,19 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { ConfirmDialog } from "./components/ui/confirm-dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./components/ui/dropdown-menu"
 import { SheenThemeProvider, type SheenAppearance } from "./lib/theme"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "./components/ui/form"
+import { FormSection, FormRowLink } from "./components/ui/form-section"
 
 const params = new URLSearchParams(window.location.search)
+const schema = z.object({ name: z.string().min(1, "Name is required") })
 
 export default function App() {
   const [count, setCount] = useState(0)
   const [picked, setPicked] = useState("")
+  const form = useForm({ resolver: zodResolver(schema), defaultValues: { name: "" }, shouldFocusError: false })
   return (
     <SheenThemeProvider
       data-testid="theme"
@@ -60,6 +67,20 @@ export default function App() {
         confirmText="Delete"
         onConfirm={() => setPicked("Deleted")}
       />
+      <Form {...form} schema={schema}>
+        <form onSubmit={form.handleSubmit(() => setPicked("Saved"))} noValidate>
+          <FormField control={form.control} name="name" render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl><input className="form-control" {...field} /></FormControl>
+              <FormDescription>Your full name</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )} />
+          <button type="submit">Save</button>
+        </form>
+      </Form>
+      <FormSection title="Preferences"><FormRowLink label="Language" value="English" /></FormSection>
     </SheenThemeProvider>
   )
 }
@@ -119,6 +140,8 @@ test.beforeAll(async () => {
   sh("npx sheenui-react add dialog", app)
   sh("npx sheenui-react add dropdown-menu", app)
   sh("npx sheenui-react add confirm-dialog", app)
+  sh("npx sheenui-react add form", app)
+  sh("npx sheenui-react add form-section", app)
 
   // The starter replaced the unmodified template App and removed what only it used (ADR 008).
   if (!readFileSync(path.join(app, "src/App.tsx"), "utf8").includes("Welcome to your SheenUI app"))
@@ -254,6 +277,22 @@ test("ConfirmDialog nudges on an outside click and confirms (boot-ui AlertDialog
   await expect(page.locator("#picked")).toHaveText("Deleted")
 })
 
+test("the installed form wires schema hints, errors and focus through Field", async ({ page }) => {
+  await page.goto(baseUrl)
+  const name = page.getByRole("textbox", { name: "Name" })
+  await expect(name).toHaveAttribute("aria-required", "true")
+  await expect(page.locator(".sheen-field-required")).toHaveText("*")
+  await expect(name).toHaveAccessibleDescription("Your full name")
+  await page.getByRole("button", { name: "Save", exact: true }).click()
+  await expect(page.locator(".sheen-field-error")).toHaveText("Name is required")
+  await expect(name).toHaveAttribute("aria-invalid", "true")
+  await expect(name).toBeFocused()
+  await name.fill("Ada")
+  await page.getByRole("button", { name: "Save", exact: true }).click()
+  await expect(page.locator("#picked")).toHaveText("Saved")
+  await expect(page.locator(".sheen-field-error")).toHaveCount(0)
+})
+
 test("running init and add again changes no files", () => {
   const before = snapshot(app)
   sh("npx sheenui-react init", app)
@@ -261,5 +300,7 @@ test("running init and add again changes no files", () => {
   sh("npx sheenui-react add dialog", app)
   sh("npx sheenui-react add dropdown-menu", app)
   sh("npx sheenui-react add confirm-dialog", app)
+  sh("npx sheenui-react add form", app)
+  sh("npx sheenui-react add form-section", app)
   expect(snapshot(app)).toEqual(before)
 })

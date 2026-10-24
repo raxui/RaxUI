@@ -1,0 +1,24 @@
+@* SheenUI FieldLabel. Source-owned: edit freely. Names the surrounding field's control. *@
+<label @attributes="AdditionalAttributes" id="@Context?.LabelId" for="@Context?.ControlId" class="@($"sheen-field-label {Class}".TrimEnd())">
+    @ChildContent
+    @if (Context?.Required == true && !Context.Optional && RequiredIndicator is not null)
+    {
+        <span class="sheen-field-required" aria-hidden="true">@RequiredIndicator</span>
+    }
+    @if (Context?.Optional == true)
+    {
+        <span class="sheen-field-optional">@OptionalText</span>
+    }
+</label>
+
+@code {
+    [CascadingParameter] private Field.FieldContext? Context { get; set; }
+    /// <summary>Translate the optional hint for your app.</summary>
+    [Parameter] public string OptionalText { get; set; } = "(Optional)";
+    /// <summary>Visual required marker; null hides it. The control still has aria-required.</summary>
+    [Parameter] public string? RequiredIndicator { get; set; } = "*";
+    /// <summary>Extra CSS classes appended after the component's own classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

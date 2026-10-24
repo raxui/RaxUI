@@ -2,6 +2,123 @@
 
 Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared SheenUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. It supports **React 18.3 or 19 with TypeScript** on **Vite 6 or later** or **Next.js 15 or later (App Router, without Tailwind)**, and the **Button** component ([ADR 006](adr/006-react-first-milestone.md), [ADR 010](adr/010-vite-6-and-later.md), [ADR 011](adr/011-nextjs.md)).
 
+## Fields and forms
+
+Install with `npx sheenui-react add field`, `add form`, or `add form-section`.
+Dependencies are installed first: Form and FormSection require Field and the
+foundation. Form pins `react-hook-form` **7.91.0**, `zod` **4.6.7**, and
+`@hookform/resolvers` **5.9.2**. All new sources are client components.
+
+### Field
+
+`Field`, `FieldLabel`, `FieldControl`, `FieldDescription`, `FieldError`,
+`FieldSet`, and `FieldLegend` work with plain state or a form library.
+
+```tsx
+import { Field, FieldLabel, FieldControl, FieldDescription, FieldError,
+  FieldSet, FieldLegend } from "./components/ui/field"
+
+<Field id="email" required invalid={!!error}>
+  <FieldLabel requiredIndicator="*">Email</FieldLabel>
+  <FieldControl><input className="form-control" value={email} onChange={e => setEmail(e.target.value)} /></FieldControl>
+  <FieldDescription>We'll never share it.</FieldDescription>
+  <FieldError>{error}</FieldError>
+</Field>
+
+<Field optional>
+  <FieldLabel optionalText="Optional">Nickname</FieldLabel>
+  <FieldControl><input className="form-control" /></FieldControl>
+</Field>
+
+<FieldSet disabled>
+  <FieldLegend>Notifications</FieldLegend>
+  <label><input type="checkbox" /> Email updates</label>
+</FieldSet>
+```
+
+Use your own `email`, `setEmail`, and `error` state. `FieldControl` wraps one
+control and merges its props with `id`, `aria-labelledby`, `aria-describedby`,
+`aria-invalid`, `aria-required`, and `disabled`. Description and error IDs are
+included only while their parts exist. Custom controls can instead call
+`useFieldControlProps(ownProps)` or read `useField()`. Pass the control ID to
+Field so its label targets the same ID. Inputs must forward props and refs.
+
+`orientation` is `vertical`, `horizontal`, or `inline` (control before label).
+`required` shows an asterisk, `optional` shows `"(Optional)"` instead;
+`requiredIndicator={false}` hides the visual marker. FieldError supports
+`forceMount`. FieldSet renders a native fieldset for grouped controls.
+All parts accept `className` and native HTML attributes. Theme with ancestor
+`data-sheen-appearance`, `data-bs-theme`, `data-sheen-accent`, and `dir`.
+
+### Form
+
+```tsx
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormField, FormItem, FormLabel, FormControl,
+  FormDescription, FormMessage } from "./components/ui/form"
+
+const schema = z.object({ name: z.string().min(1, "Name is required") })
+
+export function ProfileForm() {
+  const form = useForm({ resolver: zodResolver(schema), defaultValues: { name: "" } })
+  return <Form {...form} schema={schema}>
+    <form noValidate onSubmit={form.handleSubmit(values => console.log(values))}>
+      <FormField control={form.control} name="name" render={({ field }) => (
+        <FormItem>
+          <FormLabel>Name</FormLabel>
+          <FormControl><input className="form-control" {...field} /></FormControl>
+          <FormDescription>Your full name</FormDescription>
+          <FormMessage />
+        </FormItem>
+      )} />
+      <button type="submit">Save</button>
+    </form>
+  </Form>
+}
+```
+
+Form provides React Hook Form context; you own the actual `<form>` and submit
+handler. FormField wraps Controller and supplies error, disabled and required
+state to the next Field. FormItem, FormLabel, FormControl, FormDescription and
+FormMessage are the corresponding Field parts. A FormRow inside FormField
+receives the same defaults. `useFormField()` exposes the current field state
+and IDs. `form.setError("name", { type: "server", message: "Already used" })`
+displays server errors through FormMessage.
+
+`isRequiredInSchema(schema, name)` follows boot-ui: a field is required only
+when none of `undefined`, `""`, `false`, `[]`, or `null` pass its schema. Thus
+`z.string().min(1)` is required, while `z.string()` and `.optional()` are not.
+Nested object and array paths are supported. FormField's `required` prop can
+override inference. Set `optional` on FormItem/FormRow to show the optional
+hint. After an invalid submit, Form focuses the first invalid control and
+shakes its Field. Reduced motion disables the shake and smooth scrolling.
+Plain forms can call `focusFirstInvalid(formElement)` from the field module.
+
+### FormSection
+
+```tsx
+import { FormSection, FormRow, FormRowLink } from "./components/ui/form-section"
+
+<FormSection title="Account" footer="Manage your public profile.">
+  <FormRow label="Nickname" optional description="Visible to friends">
+    <input className="form-control" />
+  </FormRow>
+  <FormRow label="Biography" layout="stacked"><textarea className="form-control" /></FormRow>
+  <FormRowLink label="Language" value="English" asChild><a href="/language" /></FormRowLink>
+  <FormRowLink label="Sign out" destructive onClick={signOut} />
+</FormSection>
+```
+
+Supply your `signOut` callback. FormRow takes one control and wires it through
+FieldControl. It accepts `id`, `required`, `optional`, `disabled`, `invalid`,
+`error`, `description`, `icon`, `iconColor`, and `layout` (`inline` or `stacked`).
+FormRowLink is a button by default, or your link with `asChild`; `destructive`
+makes its text red and hides the chevron. It also accepts `label`, `value`,
+`description`, `icon`, `iconColor`, and native button props. Icon colors are
+blue, green, red, orange, yellow, teal, indigo, purple, pink, and gray.
+
 ## Install
 
 The CLI is not published to npm yet; install it from a packed tarball. From this repository:

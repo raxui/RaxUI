@@ -1,0 +1,22 @@
+@* SheenUI FieldError. Source-owned: edit freely. Validation text is described by the control on focus.
+   Set Field.HasError when supplying custom content without Field.Error or validation messages. *@
+@if ((ForceMount || Context?.Invalid == true) && (ChildContent is not null || !string.IsNullOrEmpty(Context?.Error)))
+{
+    <p @attributes="AdditionalAttributes" id="@Context?.ErrorId" class="@($"sheen-field-error {Class}".TrimEnd())">
+        @* CircleAlert paths from Lucide (ISC). *@
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" />
+        </svg>
+        <span>@if (ChildContent is not null) { @ChildContent } else { @Context?.Error }</span>
+    </p>
+}
+
+@code {
+    [CascadingParameter] private Field.FieldContext? Context { get; set; }
+    /// <summary>Show custom content even while the field is valid.</summary>
+    [Parameter] public bool ForceMount { get; set; }
+    /// <summary>Extra CSS classes appended after the component's own classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "form",
+  "version": "0.1.0",
+  "description": "Bootstrap validation classes and interactive invalid-submit feedback for EditForm.",
+  "dependencies": [
+    "field"
+  ],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "e63166c58565739b0f4629c89c31d3ec5deb8c31d283f58585026b3cc4142fe1"
+    }
+  ],
+  "files": [
+    {
+      "source": "Form.razor",
+      "destination": "components",
+      "target": "Form/Form.razor",
+      "type": "razor",
+      "sha256": "e4f92f3a49fcd3a1d8dc0577d8b79b309f653eeab52997a9f4d8993326306095"
+    },
+    {
+      "source": "Form.razor.js",
+      "destination": "components",
+      "target": "Form/Form.razor.js",
+      "type": "js",
+      "sha256": "8bcfaa29bb4920699c87db3b0cf71bcca0245fabcf9c607e4d027570a48856b7"
+    }
+  ]
+}

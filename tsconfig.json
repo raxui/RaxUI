@@ -13,6 +13,7 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@/components/ui/field": ["registry/react/field/field.tsx"],
       "@/lib/*": ["registry/react/foundation/*"],
       "@/components/ui/button": ["registry/react/button/button.tsx"]
     }

@@ -17,6 +17,18 @@
     {
       "name": "dropdown-menu",
       "manifest": "components/dropdown-menu/manifest.json"
+    },
+    {
+      "name": "field",
+      "manifest": "components/field/manifest.json"
+    },
+    {
+      "name": "form",
+      "manifest": "components/form/manifest.json"
+    },
+    {
+      "name": "form-section",
+      "manifest": "components/form-section/manifest.json"
     }
   ]
 }
