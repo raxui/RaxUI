@@ -87,7 +87,8 @@
     pointer-events: none;
   }
 
-  svg {
+  // Doubled class, so icon libraries' own sizing (Blazicons' `svg[blazicon]`) does not win (ADR 014).
+  &#{&} svg {
     width: 1rem;
     height: 1rem;
     flex-shrink: 0;
