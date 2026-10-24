@@ -5,15 +5,16 @@
 :root, [data-sheen-appearance="default"], [data-sheen-appearance="flat"], [data-sheen-appearance="glass"],
 :where([data-bs-theme]:not([data-sheen-appearance="flat"] *, [data-sheen-appearance="glass"] *)) {
   --sheen-surface-bg: var(--bs-body-bg);
-  --sheen-border-color: var(--bs-border-color);
-  --sheen-control-shadow: 0 1px 3px rgba(var(--sheen-shadow-rgb), 0.12);
+  --sheen-border-color: var(--sheen-surface-border-color);
+  --sheen-control-shadow: var(--sheen-surface-edge), 0 1px 3px rgba(var(--sheen-shadow-rgb), 0.12);
   --sheen-surface-shadow: var(--sheen-control-shadow);
   --sheen-control-radius: var(--sheen-radius-control);
   --sheen-surface-filter: none;
 }
 [data-sheen-appearance="flat"] {
-  --sheen-control-shadow: none;
-  --sheen-surface-shadow: none;
+  // No drop shadows; dark keeps the glass rim so edges match the other appearances.
+  --sheen-control-shadow: var(--sheen-flat-shadow);
+  --sheen-surface-shadow: var(--sheen-flat-shadow);
 }
 [data-sheen-appearance="glass"] {
   --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);

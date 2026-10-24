@@ -33,7 +33,7 @@
       "source": "theme/scss/_tokens.scss",
       "target": "styles/sheenui/_tokens.scss",
       "type": "scss",
-      "sha256": "e34c070e91b052ffc9202e42eb0fbccd9907b2c8ac2fb909f6e88ee373082756"
+      "sha256": "3fb14591d7950d3e17293c3f547ef5e4e95bb2381c3c62fca4100e7a9d1265c8"
     },
     {
       "source": "theme/scss/_accents.scss",
@@ -69,7 +69,7 @@
       "source": "theme/scss/_appearance.scss",
       "target": "styles/sheenui/_appearance.scss",
       "type": "scss",
-      "sha256": "3fc01906f6c521f03b87980e75dcb94763cbcbe06286e9ebc68bf13aa79c3bed"
+      "sha256": "532587b576b9e0b88245bd759a80ffae2a626bbfc45bcbe5cefb6da5ecc68df9"
     },
     {
       "source": "theme/scss/_core.scss",
