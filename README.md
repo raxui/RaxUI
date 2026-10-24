@@ -160,9 +160,13 @@ required rule exists only in FluentValidation. For asynchronous rules, follow
 Blazilla's `AsyncMode`/`OnSubmit`/`ValidateAsync` guidance instead of relying on
 synchronous `OnValidSubmit`.
 
-The optional Blazilla browser case was skipped during this implementation:
-Blazilla 2.4.2 was not cached and package restore was unavailable offline.
-Its integration is documented but has not been browser-verified here.
+FieldError shows every message for the field, joined. Use
+`.Cascade(CascadeMode.Stop)` on a rule to show only its first failure, for
+example "required" before "not a valid email".
+
+Blazilla 2.4.2 is covered by the browser tests on .NET 8, 9, and 10: its
+messages reach Field and FieldError, set `is-invalid`/`aria-invalid`, focus the
+first invalid control, and block submit until the form is valid.
 
 ### Settings sections
 

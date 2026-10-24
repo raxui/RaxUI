@@ -117,6 +117,9 @@ public class GeneratedAppTests : IDisposable
             """);
 
         WriteFormPages(components);
+        WriteFluentForm(components);
+        // Optional FluentValidation through Blazilla (#37): SheenUI controls must show its messages too.
+        Dotnet(app, "add", "package", "Blazilla", "--version", "2.4.2");
         // Test-only services: antiforgery keys live for this process, not in the user's profile.
         // Keep diagnostics on stdout instead of requiring access to the Windows event log.
         var programPath = Path.Combine(app, "Program.cs");
@@ -224,6 +227,7 @@ public class GeneratedAppTests : IDisposable
             await VerifyDropdownMenu(page);
             await VerifyConfirmDialog(page);
             await VerifyForms(page, url);
+            await VerifyFluentForm(page, url);
         }
         catch (Exception exception)
         {
@@ -446,6 +450,75 @@ public class GeneratedAppTests : IDisposable
             .Replace("@page \"/forms\"", "@page \"/static-form\"")
             .Replace("@rendermode InteractiveServer", "")
             .Replace("private bool ready;", "private bool ready = true;"));
+    }
+
+    private static void WriteFluentForm(string components) =>
+        File.WriteAllText(Path.Combine(components, "Pages", "FluentForm.razor"), """
+            @page "/fluent-form"
+            @rendermode InteractiveServer
+            @using Blazilla
+            @using FluentValidation
+
+            <EditForm Model="model" OnValidSubmit="@(() => saved = "Saved")" Context="edit">
+                <Form>
+                    <FluentValidator Validator="@(new SignUpValidator())" />
+                    <Field Id="email" For="@(() => model.Email)" Required="true" Context="field">
+                        <FieldLabel>Email</FieldLabel>
+                        <InputText @attributes="field.ControlAttributes" class="form-control" @bind-Value="model.Email" />
+                        <FieldError />
+                    </Field>
+                    <button id="fluent-save" type="submit" disabled="@(!ready)">Save</button>
+                </Form>
+            </EditForm>
+            <p id="fluent-saved">@saved</p>
+
+            @code {
+                private readonly SignUp model = new();
+                private string saved = "";
+                private bool ready;
+                protected override void OnAfterRender(bool firstRender)
+                {
+                    if (firstRender) { ready = true; StateHasChanged(); }
+                }
+                public class SignUp
+                {
+                    public string Email { get; set; } = "";
+                }
+                public class SignUpValidator : AbstractValidator<SignUp>
+                {
+                    public SignUpValidator() => RuleFor(x => x.Email)
+                        .Cascade(CascadeMode.Stop)
+                        .NotEmpty().WithMessage("Email is required")
+                        .EmailAddress().WithMessage("Enter a valid email");
+                }
+            }
+            """);
+
+    // FluentValidation (Blazilla) messages reach Field, FieldError, and Form like DataAnnotations ones.
+    private static async Task VerifyFluentForm(IPage page, string url)
+    {
+        await page.GotoAsync(url.TrimEnd('/') + "/fluent-form");
+        var email = page.Locator("#email");
+        var save = page.Locator("#fluent-save");
+        await Assertions.Expect(save).ToBeEnabledAsync();
+        await Assertions.Expect(page.Locator("#email-label .sheen-field-required")).ToHaveTextAsync("*");
+
+        await save.ClickAsync();
+        await Assertions.Expect(page.Locator("#email-error")).ToHaveTextAsync("Email is required");
+        await Assertions.Expect(email).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bis-invalid\\b"));
+        await Assertions.Expect(email).ToHaveAttributeAsync("aria-invalid", "true");
+        await Assertions.Expect(email).ToBeFocusedAsync();
+        await Assertions.Expect(page.Locator("#fluent-saved")).ToHaveTextAsync("");
+
+        await email.FillAsync("not-an-email");
+        await save.ClickAsync();
+        await Assertions.Expect(page.Locator("#email-error")).ToHaveTextAsync("Enter a valid email");
+
+        await email.FillAsync("ada@example.com");
+        await save.ClickAsync();
+        await Assertions.Expect(page.Locator("#fluent-saved")).ToHaveTextAsync("Saved");
+        await Assertions.Expect(page.Locator("#email-error")).ToHaveCountAsync(0);
+        await Assertions.Expect(email).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bis-valid\\b"));
     }
 
     private static async Task VerifyForms(IPage page, string url)
