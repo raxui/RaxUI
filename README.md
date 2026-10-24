@@ -420,8 +420,56 @@ keys, `Home`/`End`, and typeahead.
   not covered by that rollback guarantee.
 - `init` and `add` support `button`, `dialog`, `confirm-dialog`, `dropdown-menu`,
   `field`, `form`, `form-section`, `input`, `input-group`, `textarea`, `checkbox`,
-  `radio-group`, `switch`, and `select`. Update commands, WebAssembly testing,
+  `radio-group`, `switch`, `select`, `slider`, and `rating`. Update commands, WebAssembly testing,
   and configurable paths remain future work.
+
+## Slider and rating
+
+Add either item with `sheenui add slider` or `sheenui add rating`; both install `field`.
+Inside an `EditForm`, bind numeric model properties just like other inputs:
+
+```razor
+<Field Id="volume" For="@(() => model.Volume)" Context="volumeField">
+    <FieldLabel>Volume</FieldLabel>
+    <Slider @bind-Value="model.Volume" Min="0" Max="100" Step="1" />
+    <FieldError />
+</Field>
+<Slider Range @bind-Value="model.Minimum" @bind-EndValue="model.Maximum"
+        StartLabel="Minimum price" EndLabel="Maximum price" />
+<Field Id="score" For="@(() => model.Score)" Context="scoreField">
+    <FieldLabel>Score</FieldLabel>
+    <Rating @bind-Value="model.Score" ClearLabel="Clear rating"
+            GetValueText="@(score => $"{score} stars")" />
+    <FieldError />
+</Field>
+```
+
+`Slider.Value` and `EndValue` are `double`; `Rating.Value` is `int`. The usual
+`ValueChanged`/`ValueExpression` and `EndValueChanged`/`EndValueExpression`
+parameters support explicit binding. Use `Form` inside `EditForm` for Bootstrap
+`is-valid`/`is-invalid` classes. Field supplies id, labels, descriptions, errors,
+required state and disabled state. Unmatched attributes go to the input or fieldset.
+
+Slider parameters: `Min` (0), `Max` (100), `Step` (1), `Range` (false), `EndValue`
+(100), `StartLabel` ("Minimum"), `EndLabel` ("Maximum"), `Variant` (`default` or
+`bar`), `Size` (`default`, `sm`, `lg`), `Appearance`, and `Class`. Two native inputs
+share a track and constrain each endpoint to its neighbor; incoming values are
+normalized to `Min <= Value <= EndValue <= Max`. Bounds and step must be finite,
+with `Min < Max` and `Step > 0`. Native arrows, Home/End and PageUp/PageDown work
+without JavaScript. Range endpoint labels override the shared Field label so each
+thumb has a distinct name. Bubble values, marks and icons are React-only.
+
+Rating parameters: `Max` (5), `Clearable` (true), `ClearLabel` ("Clear rating"),
+`ReadOnly` (false), `Color` (`warning`, `primary`, `danger`, `success`), `Size`,
+`Appearance`, `Class`, and `GetValueText` (English "No rating", "1 star", "2 stars",
+etc.). Translate both label parameters for your app. Native radio arrows select
+whole stars; the zero option clears the rating and posts a real zero. Read-only
+radios are disabled and therefore do not post. Half steps, hover previews and the
+rating summary are React-only.
+
+Both controls support static SSR posts through `EditForm FormName="..."` and
+`[SupplyParameterFromForm]`. CSS provides theme accents, dark mode, density, RTL
+and reduced-motion behavior; no collocated JavaScript is required for these controls.
 
 ## React
 

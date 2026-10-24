@@ -122,6 +122,8 @@ public class EmbeddedRegistryTests
     [InlineData("radio-group")]
     [InlineData("switch")]
     [InlineData("select")]
+    [InlineData("slider")]
+    [InlineData("rating")]
     public void All_manifest_files_match_their_sha256_checksums(string name)
     {
         var manifest = _registry.GetComponentManifest(name);

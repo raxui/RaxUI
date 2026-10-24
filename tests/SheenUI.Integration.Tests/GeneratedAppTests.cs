@@ -51,6 +51,8 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "radio-group"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "switch"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "select"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "slider"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "rating"], app, output, error) == 0, error.ToString());
         Assert.True(File.Exists(Path.Combine(app, "Components", "UI", "Dialog", "Dialog.razor.js")));
 
         // The .NET 8 template's Bootstrap 5.1 is upgraded in place to 5.3; 9 and 10 already ship 5.3.
@@ -163,6 +165,8 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "radio-group"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "switch"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "select"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "slider"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "rating"], app, output, error) == 0, error.ToString());
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app);
     }
@@ -421,6 +425,21 @@ public class GeneratedAppTests : IDisposable
                         </ChildContent>
                         <Description>Your full name</Description>
                     </Field>
+                    <Field Id="volume" For="@(() => Model!.Volume)" Context="volumeField">
+                        <FieldLabel>Volume</FieldLabel>
+                        <Slider @bind-Value="Model!.Volume" />
+                        <FieldError />
+                    </Field>
+                    <Field Id="score" For="@(() => Model!.Score)" Context="scoreField">
+                        <FieldLabel>Score</FieldLabel>
+                        <Rating @bind-Value="Model!.Score" />
+                        <FieldError />
+                    </Field>
+                    <Field Id="price" For="@(() => Model!.Start)" Context="priceField">
+                        <FieldLabel>Price range</FieldLabel>
+                        <Slider Range @bind-Value="Model!.Start" @bind-EndValue="Model!.End" />
+                        <FieldError />
+                    </Field>
                     <FormSection Title="Account">
                         <ChildContent>
                             <FormRow Id="nickname" Label="Nickname" For="@(() => Model!.Nickname)" Optional Context="row">
@@ -441,6 +460,7 @@ public class GeneratedAppTests : IDisposable
             </EditForm>
             <p id="saved">@saved</p>
             <p id="signed-out">@signedOut</p>
+            <p id="range-values">@RangeValues</p>
 
             @code {
                 [SupplyParameterFromForm] private ProfileModel? Model { get; set; }
@@ -449,6 +469,7 @@ public class GeneratedAppTests : IDisposable
                 private string saved = "";
                 private int signedOut;
                 private void Saved() => saved = "Saved";
+                private string RangeValues => $"{Model!.Volume}:{Model.Score}:{Model.Start}:{Model.End}";
                 protected override void OnAfterRender(bool firstRender)
                 {
                     if (firstRender) { ready = true; StateHasChanged(); }
@@ -458,6 +479,10 @@ public class GeneratedAppTests : IDisposable
                     [Required(ErrorMessage = "Name is required")]
                     public string Name { get; set; } = "";
                     public string Nickname { get; set; } = "";
+                    [Range(1, 100)] public double Volume { get; set; }
+                    [Range(1, 5)] public int Score { get; set; }
+                    public double Start { get; set; } = 20;
+                    public double End { get; set; } = 80;
                 }
             }
             """;
@@ -561,11 +586,27 @@ public class GeneratedAppTests : IDisposable
         await Assertions.Expect(name).ToHaveAttributeAsync("aria-invalid", "true");
         await Assertions.Expect(name).ToHaveAccessibleDescriptionAsync("Your full name Name is required");
         await Assertions.Expect(name).ToBeFocusedAsync();
+        await Assertions.Expect(page.Locator("#volume")).ToHaveAttributeAsync("aria-invalid", "true");
+        await Assertions.Expect(page.Locator("#volume")).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bis-invalid\\b"));
+        await Assertions.Expect(page.Locator("#score")).ToHaveAttributeAsync("aria-invalid", "true");
+        await Assertions.Expect(page.Locator("#score input").First).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bis-invalid\\b"));
+        await page.Locator("#volume").FocusAsync();
+        await page.Locator("#volume").PressAsync("ArrowRight");
+        await page.Locator("#score input").First.FocusAsync();
+        await page.Locator("#score input").First.PressAsync("ArrowRight");
+        await Assertions.Expect(page.Locator("#range-values")).ToHaveTextAsync("1:1:20:80");
+        await page.Locator("#price").PressAsync("End");
+        await Assertions.Expect(page.Locator("#price")).ToHaveValueAsync("80");
+        await page.Locator("#price-end").PressAsync("Home");
+        await Assertions.Expect(page.Locator("#price-end")).ToHaveValueAsync("80");
         await name.FillAsync("Ada");
         await page.Locator("#save").ClickAsync();
         await Assertions.Expect(page.Locator("#saved")).ToHaveTextAsync("Saved");
         await Assertions.Expect(name).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bis-valid\\b"));
         await Assertions.Expect(page.Locator("#name-error")).ToHaveCountAsync(0);
+        await Assertions.Expect(page.Locator("#volume")).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bis-valid\\b"));
+        await Assertions.Expect(page.Locator("#score input").First).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bis-valid\\b"));
+        await Assertions.Expect(page.Locator("#volume[aria-invalid='true'], #score[aria-invalid='true']")).ToHaveCountAsync(0);
 
         // Disable JavaScript: this is a real server POST with FormName and SupplyParameterFromForm.
         await using var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false });
@@ -576,8 +617,13 @@ public class GeneratedAppTests : IDisposable
         await Assertions.Expect(staticPage.Locator("#name")).ToHaveAttributeAsync("aria-invalid", "true");
         await Assertions.Expect(staticPage.Locator("#name")).ToHaveClassAsync(new System.Text.RegularExpressions.Regex("\\bis-invalid\\b"));
         await staticPage.Locator("#name").FillAsync("Grace");
+        await staticPage.Locator("#volume").PressAsync("ArrowRight");
+        await staticPage.GetByRole(AriaRole.Radio, new() { Name = "2 stars", Exact = true }).CheckAsync();
+        await staticPage.Locator("#price").PressAsync("ArrowRight");
+        await staticPage.Locator("#price-end").PressAsync("ArrowLeft");
         await staticPage.Locator("#save").ClickAsync();
         await Assertions.Expect(staticPage.Locator("#saved")).ToHaveTextAsync("Saved");
+        await Assertions.Expect(staticPage.Locator("#range-values")).ToHaveTextAsync("1:2:21:79");
     }
 
 

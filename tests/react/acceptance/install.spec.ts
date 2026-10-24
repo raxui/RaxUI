@@ -147,6 +147,8 @@ test.beforeAll(async () => {
   sh("npx sheenui-react add radio-group", app)
   sh("npx sheenui-react add switch", app)
   sh("npx sheenui-react add select", app)
+  sh("npx sheenui-react add slider", app)
+  sh("npx sheenui-react add rating", app)
   sh("npx sheenui-react add form", app)
   sh("npx sheenui-react add form-section", app)
 
@@ -314,6 +316,8 @@ test("running init and add again changes no files", () => {
   sh("npx sheenui-react add radio-group", app)
   sh("npx sheenui-react add switch", app)
   sh("npx sheenui-react add select", app)
+  sh("npx sheenui-react add slider", app)
+  sh("npx sheenui-react add rating", app)
   sh("npx sheenui-react add form", app)
   sh("npx sheenui-react add form-section", app)
   expect(snapshot(app)).toEqual(before)

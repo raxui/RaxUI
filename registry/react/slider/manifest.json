@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "slider",
+  "version": "0.1.0",
+  "description": "Source-owned slider with Field integration.",
+  "requires": [
+    "foundation",
+    "field"
+  ],
+  "packages": {
+    "@radix-ui/react-slider": "1.6.1"
+  },
+  "styles": [
+    "components/slider"
+  ],
+  "files": [
+    {
+      "source": "registry/react/slider/slider.tsx",
+      "target": "components/ui/slider.tsx",
+      "type": "tsx",
+      "sha256": "8cac555ff27714069ec42d59eaea5aff9caa27d7c5462801cca9c9c118ee4db0"
+    },
+    {
+      "source": "theme/scss/components/_slider.scss",
+      "target": "styles/sheenui/components/_slider.scss",
+      "type": "scss",
+      "sha256": "c6bfd1f369e29ea7821bf260148506d7b08c32d5ce7a311d23b1fad92141ef4c"
+    }
+  ]
+}

@@ -37,7 +37,7 @@ describe("shared theme", () => {
     expect(withInput).toMatch(/\.sheen-input-group \.sheen-input-slot :is\(svg, i\)\s*\{[^}]*width: 1.125rem;[^}]*font-size: 1.125rem;[^}]*color: currentColor;/)
   })
 
-  it.each(["input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select"])("compiles %s independently of other component imports", name => {
+  it.each(["input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "slider", "rating"])("compiles %s independently of other component imports", name => {
     expect(compileTheme([`@import "components/${name}";`])).toContain(".sheen-")
   })
 

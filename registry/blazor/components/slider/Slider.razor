@@ -1,0 +1,67 @@
+@* SheenUI Slider. Source-owned: edit freely. Native range inputs (static SSR and keyboard without JS); a Range uses
+   two inputs whose limits stop the thumbs crossing, sized in CSS so both thumbs line up with one track. *@
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Globalization
+<div class="@($"sheen-slider sheen-slider-native sheen-slider-{Size} {(Variant == "bar" ? "sheen-slider-bar" : "")} {Class}")" data-sheen-appearance="@Appearance"
+     style="@($"--sheen-slider-start: {Percent(Range ? Value : Min)}; --sheen-slider-end: {Percent(Range ? EndValue : Value)}")">
+    <span class="sheen-slider-track" aria-hidden="true"><span class="sheen-slider-range"></span></span>
+    <SliderInput @attributes="StartAttributes" class="sheen-slider-input" Min="Min" Max="@(Range ? Math.Clamp(EndValue, Min, Max) : Max)" Step="Step"
+                 Value="Value" ValueChanged="ValueChanged" ValueExpression="ValueExpression" />
+    @if (Range)
+    {
+        <SliderInput @attributes="EndAttributes" class="sheen-slider-input" Min="@Math.Clamp(Value, Min, Max)" Max="Max" Step="Step"
+                     Value="EndValue" ValueChanged="EndValueChanged" ValueExpression="EndValueExpression" />
+    }
+</div>
+@code {
+    private string Percent(double value) => (Math.Clamp((value - Min) / (Max - Min), 0, 1)).ToString(CultureInfo.InvariantCulture);
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!double.IsFinite(Min) || !double.IsFinite(Max) || Min >= Max || !double.IsFinite(Step) || Step <= 0)
+            throw new ArgumentOutOfRangeException(nameof(Max), "Use finite Min < Max and Step > 0.");
+        // Normalize incoming values as well as native changes, including static SSR form mapping.
+        var end = double.IsFinite(EndValue) ? Math.Clamp(EndValue, Min, Max) : Max;
+        var start = double.IsFinite(Value) ? Math.Clamp(Value, Min, Range ? end : Max) : Min;
+        if (Range && end != EndValue) { EndValue = end; await EndValueChanged.InvokeAsync(end); }
+        if (start != Value) { Value = start; await ValueChanged.InvokeAsync(start); }
+    }
+    [Parameter] public double Value { get; set; }
+    [Parameter] public EventCallback<double> ValueChanged { get; set; }
+    [Parameter] public System.Linq.Expressions.Expression<Func<double>>? ValueExpression { get; set; }
+    [Parameter] public bool Range { get; set; }
+    [Parameter] public double EndValue { get; set; } = 100;
+    [Parameter] public EventCallback<double> EndValueChanged { get; set; }
+    [Parameter] public System.Linq.Expressions.Expression<Func<double>>? EndValueExpression { get; set; }
+    [Parameter] public double Min { get; set; }
+    [Parameter] public double Max { get; set; } = 100;
+    [Parameter] public double Step { get; set; } = 1;
+    [Parameter] public string Variant { get; set; } = "default";
+    [Parameter] public string StartLabel { get; set; } = "Minimum";
+    [Parameter] public string EndLabel { get; set; } = "Maximum";
+    private Dictionary<string, object> StartAttributes
+    {
+        get { var attrs = ControlAttributes; if (Range) { attrs.Remove("aria-labelledby"); attrs["aria-label"] = StartLabel; attrs["data-endpoint"] = "start"; } return attrs; }
+    }
+    private Dictionary<string, object> EndAttributes
+    {
+        get { var attrs = ControlAttributes; attrs["id"] = $"{attrs["id"]}-end"; attrs.Remove("aria-labelledby"); attrs["aria-label"] = EndLabel; attrs["data-endpoint"] = "end"; return attrs; }
+    }
+
+    [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string Size { get; set; } = "default";
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private readonly string _autoId = $"sheen-control-{Guid.NewGuid():N}";
+    private Dictionary<string, object> ControlAttributes
+    {
+        get
+        {
+            var attrs = FieldContext is null ? new Dictionary<string, object>() : new(FieldContext.ControlAttributes);
+            if (AdditionalAttributes is not null)
+                foreach (var pair in AdditionalAttributes) attrs[pair.Key] = pair.Value;
+            if (!attrs.ContainsKey("id")) attrs["id"] = _autoId;
+            return attrs;
+        }
+    }
+}
