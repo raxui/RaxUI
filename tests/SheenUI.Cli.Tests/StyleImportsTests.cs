@@ -29,4 +29,16 @@ public class StyleImportsTests
         Assert.Throws<InvalidOperationException>(() => StyleImports.Verify(installed, null, Core));
         Assert.Throws<InvalidOperationException>(() => StyleImports.Verify(installed, tracked, Encoding.UTF8.GetBytes("other core")));
     }
+
+    [Fact]
+    public void Updates_core_retaining_unrelated_imports_and_adding_and_removing_component_assets()
+    {
+        var installed = StyleImports.Append(Core, ["starter.css", "components/old.css", "components/other.css"]);
+        var tracked = new LockedFile { InstalledHash = EmbeddedRegistry.ComputeSha256(installed) };
+        var next = Encoding.UTF8.GetBytes(StyleImports.Start + StyleImports.End + ":root { --token: 2; }\n");
+        var result = StyleImports.UpdateCore(installed, tracked, next, ["components/new.css"], ["components/old.css"]);
+        Assert.Equal(StyleImports.Append(next, ["starter.css", "components/other.css", "components/new.css"]), result);
+        Assert.Throws<InvalidOperationException>(() => StyleImports.UpdateCore(Core, tracked, next, [], []));
+        Assert.Throws<InvalidOperationException>(() => StyleImports.UpdateCore(installed, null, next, [], []));
+    }
 }

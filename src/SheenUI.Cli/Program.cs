@@ -11,15 +11,18 @@ public static class Program
         Usage:
           sheenui init [options]
           sheenui add <component> [options]
+          sheenui update [component] [--dry-run] [options]
 
         Commands:
           init              Initialize SheenUI in the current Blazor project
           add <component>   Install a component and its assets into your project
+          update            Update installed Blazor components and the shared theme
 
         Options:
           -c, --cwd <dir>   Working directory (defaults to current directory)
           -v, --version     Display CLI version
           -h, --help        Show help information
+          --dry-run         Preview an update without writing files
         """;
 
     public static int Main(string[] args)
@@ -52,7 +55,7 @@ public static class Program
 
         var command = cleanArgs.FirstOrDefault();
 
-        if ((command is "init" or "add") &&
+        if ((command is "init" or "add" or "update") &&
             new[] { "blazorui.json", "blazorui.lock.json" }.Any(file => File.Exists(Path.Combine(cwd, file))))
         {
             error.WriteLine("Error: This app uses the former BlazorUI registry. SheenUI uses different files and theme APIs. Test in a new app or follow docs/adr/012-sheenui-identity.md; existing files were not changed.");
@@ -89,6 +92,17 @@ public static class Program
                     return 1;
                 }
                 return AddCommand.Execute(cwd, component, output, error);
+
+            case "update":
+                var updateArgs = cleanArgs.Skip(1).ToArray();
+                var names = updateArgs.Where(arg => !arg.StartsWith('-')).ToArray();
+                if (names.Length > 1 || updateArgs.Any(arg => arg.StartsWith('-') && arg != "--dry-run") ||
+                    updateArgs.Count(arg => arg == "--dry-run") > 1)
+                {
+                    error.WriteLine("Usage: sheenui update [component] [--dry-run] [--cwd <dir>]");
+                    return 1;
+                }
+                return UpdateCommand.Execute(cwd, names.FirstOrDefault(), updateArgs.Contains("--dry-run"), output, error);
 
             default:
                 error.WriteLine($"Unknown command or option: '{command}'");

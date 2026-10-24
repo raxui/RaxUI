@@ -7,6 +7,8 @@ public class ProgramTests
     [InlineData("init", "blazorui.lock.json")]
     [InlineData("add", "blazorui.json")]
     [InlineData("add", "blazorui.lock.json")]
+    [InlineData("update", "blazorui.json")]
+    [InlineData("update", "blazorui.lock.json")]
     public void Former_identity_is_rejected_without_writing(string command, string legacyFile)
     {
         var root = Path.Combine(Path.GetTempPath(), "SheenUI_legacy_" + Guid.NewGuid().ToString("N"));
@@ -68,5 +70,16 @@ public class ProgramTests
 
         Assert.Equal(0, exitCode);
         Assert.Contains("0.1.0", output.ToString());
+    }
+
+    [Theory]
+    [InlineData("button", "dialog")]
+    [InlineData("--force")]
+    [InlineData("--dry-run", "--dry-run")]
+    public void Unsupported_update_arguments_fail_before_accessing_the_project(params string[] args)
+    {
+        var error = new StringWriter();
+        Assert.Equal(1, Program.Run(["update", .. args], Directory.GetCurrentDirectory(), new StringWriter(), error));
+        Assert.Contains("Usage: sheenui update", error.ToString());
     }
 }

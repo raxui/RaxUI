@@ -275,13 +275,31 @@ state values in the React page.
 ## 7. Test library changes during development
 
 **Updating the CLI does not automatically update installed component files.**
-There is currently no `update` or `diff` command. Installing files from another
-registry snapshot can report a conflict, and locally modified files are not
-automatically overwritten.
+Blazor now has an explicit `update` command. Preview its plan before applying it.
+React and Next.js still require a separate test app or a reviewed manual merge.
 
-The most reliable way to test a new change is to create a separate test
-application, then initialize it from source or a freshly built local package.
-Keep your existing application if it contains changes you want to preserve.
+### Blazor: update an installed application
+
+After rebuilding the theme as described below, run the current CLI from source:
+
+```powershell
+cd C:\Users\saada\source\repos\SheenUI
+dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- update --dry-run --cwd "C:\Users\saada\source\repos\SheenDemo"
+dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- update --cwd "C:\Users\saada\source\repos\SheenDemo"
+dotnet build ..\SheenDemo\SheenDemo.csproj
+```
+
+Use `update button` to update one installed component and its dependencies. Both
+forms refresh the shared theme. The current CLI must be at least as new as the
+release recorded in the app's lockfile. Keep increasing the package version for
+new registry releases.
+
+The update keeps starter pages, app layout, app styles and Bootstrap. Locally
+edited component files are kept when their upstream source is unchanged. If both
+changed, the complete operation stops without writing. Save your edits separately,
+restore the installed bytes, update, then reapply the edits; or replace the file
+with the exact new registry source and retry. Keep `sheenui.lock.json`. There is no force overwrite.
+See [the full update contract](../README.md#updating-an-existing-blazor-application).
 
 ### Blazor: run the CLI from source
 
@@ -330,7 +348,7 @@ regenerate the output rather than editing only the generated CSS.
 | Sass deprecation warnings from Bootstrap | The updated CLI adds compatibility settings to plain template configs. These temporarily suppress known deprecation categories; they do not upgrade Bootstrap's source. Other Sass warnings and errors remain enabled. |
 | Next.js selects your user directory because of another lockfile | For plain templates, initialization sets `turbopack.root` and `outputFileTracingRoot`. Do not delete an unrelated parent lockfile just to suppress the message. |
 | The CLI reports that it kept a customized config | Merge the options manually using the [React guide](react.md#tooling-diagnostics). The CLI does not guess how to edit custom configuration. |
-| A conflict mentions an earlier registry release or modified files | Keep the lockfile. Test in a new app, or back up and manually review and merge changes. |
+| A conflict mentions an earlier registry release or modified files | In Blazor, run `update --dry-run`, then resolve local/upstream conflicts before applying. Keep the lockfile. In React, use a new app or a reviewed manual merge. |
 | The app runs but styling differs | Check that the library theme is loaded once, Bootstrap CSS is not duplicated, and template or custom CSS is not overriding the theme. |
 | A Blazor button renders but does not respond | Check Interactive Server registration and the page or application's render mode. |
 

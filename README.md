@@ -413,7 +413,7 @@ keys, `Home`/`End`, and typeahead.
 - Configuration and lock files record the CLI's embedded registry release. A newer
   CLI can keep adding components to a project; an older CLI refuses files written
   by a newer one. Files installed from another release whose content differs are
-  never silently replaced, because update commands are not supported yet.
+  never silently replaced by `init` or `add`; use the explicit Blazor `update` command.
 - Custom install paths are not supported in this preview. Destinations and
   existing symlinks/junctions must stay inside the selected project.
 - Locally edited and untracked destination files are never silently replaced.
@@ -425,8 +425,40 @@ keys, `Home`/`End`, and typeahead.
   not covered by that rollback guarantee.
 - `init` and `add` support `button`, `dialog`, `confirm-dialog`, `dropdown-menu`,
   `field`, `form`, `form-section`, `input`, `input-group`, `textarea`, `checkbox`,
-  `radio-group`, `switch`, `select`, `slider`, and `rating`. Update commands, WebAssembly testing,
+  `radio-group`, `switch`, `select`, `slider`, and `rating`. WebAssembly testing
   and configurable paths remain future work.
+
+### Updating an existing Blazor application
+
+Install or build the newer CLI first: its embedded registry is the update source.
+From your app directory, preview and apply the changes:
+
+```powershell
+sheenui update --dry-run
+sheenui update
+dotnet build
+```
+
+Use `sheenui update button` to update one installed component and its dependencies;
+the shared theme is refreshed with either form. `--cwd <app-directory>` works on
+both commands. A new dependency is installed automatically. Existing imports are
+retained, new imports are added once, and obsolete, unmodified component files are
+removed. The lockfile is written last; ordinary write failures roll the operation
+back. A dry run never writes files and returns a nonzero exit code on conflicts.
+
+Local changes are kept when the corresponding registry file is unchanged. If
+both changed, the entire update stops before writing and reports every conflict.
+Save your edits separately, restore the previous installed bytes, update, then
+reapply the edits. Alternatively, replace the app file with the exact new registry
+source and retry; this refreshes its baseline. Automatic three-way merges are not
+provided. There is no force-overwrite option. Locally deleted managed files,
+untracked destination files, and edits to the shared `sheenui.css` also require
+explicit recovery; keep custom theme rules in a separate app stylesheet.
+
+Starter pages, layouts, `wwwroot/app.css`, and Bootstrap are not updated. Your
+demo pages therefore remain app-owned. Keep `sheenui.lock.json`: it supplies the
+baseline needed to distinguish your changes from registry changes. React's Node
+CLI does not yet provide this update workflow.
 
 ## Slider and rating
 

@@ -104,7 +104,7 @@ public class InstallSafetyTests : IDisposable
         var result = command == "init" ? Run("init") : Run("add", "button");
 
         Assert.Equal(1, result.Code);
-        Assert.Contains("Updating installed files is not supported yet", result.Error);
+        Assert.Contains("sheenui update --dry-run", result.Error);
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(App));
     }
 
