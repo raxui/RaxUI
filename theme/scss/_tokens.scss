@@ -24,6 +24,7 @@
   --sheen-surface-border-color: var(--bs-border-color);
   --sheen-surface-edge: 0 0 #0000;
   --sheen-flat-shadow: none;
+  --sheen-glass-card-tint: var(--bs-body-bg); // what glass cards are frosted from
   --sheen-shadow-rgb: 15, 23, 42;
   --sheen-shadow-opacity: 0.1;
   --sheen-overlay-rgb: 15, 23, 42;
@@ -46,6 +47,8 @@
   --sheen-surface-border-color: var(--sheen-glass-border-color);
   --sheen-surface-edge: var(--sheen-glass-edge);
   --sheen-flat-shadow: var(--sheen-glass-edge);
+  // Dark glass cards sit just below the page, so they read as part of it rather than raised panels.
+  --sheen-glass-card-tint: color-mix(in srgb, var(--sheen-page-bg, var(--bs-body-bg)) 85%, #000);
   --sheen-shadow-rgb: 0, 0, 0;
   --sheen-shadow-opacity: 0.35;
   --sheen-overlay-rgb: 0, 0, 0;

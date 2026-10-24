@@ -122,7 +122,7 @@
 }
 
 .sheen-card {
-  --bs-card-bg: var(--sheen-surface-bg);
+  --bs-card-bg: var(--sheen-card-bg);
   --bs-card-border-color: var(--sheen-border-color);
   --sheen-card-shadow: var(--sheen-surface-shadow);
   -webkit-backdrop-filter: var(--sheen-surface-filter);
