@@ -1,0 +1,55 @@
+@* SheenUI FormRowLink. Source-owned: edit freely. A navigation link or an action button in a settings group. *@
+@if (Href is not null)
+{
+    <a @attributes="AdditionalAttributes" href="@Href" class="@CssClass" data-has-icon="@(Icon is not null ? "" : null)"
+       data-destructive="@(Destructive ? "true" : null)">@Content</a>
+}
+else
+{
+    <button @attributes="AdditionalAttributes" type="button" class="@CssClass" disabled="@Disabled" @onclick="OnClick"
+            data-has-icon="@(Icon is not null ? "" : null)" data-destructive="@(Destructive ? "true" : null)">@Content</button>
+}
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    /// <summary>Current value, dimmed beside the chevron.</summary>
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public string? Description { get; set; }
+    /// <summary>Render a native link when set; otherwise render an action button.</summary>
+    [Parameter] public string? Href { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Red text and no chevron.</summary>
+    [Parameter] public bool Destructive { get; set; }
+    [Parameter] public RenderFragment? Icon { get; set; }
+    /// <summary>blue, green, red, orange, yellow, teal, indigo, purple, pink, or gray.</summary>
+    [Parameter] public string IconColor { get; set; } = "blue";
+    /// <summary>Extra CSS classes appended after the component's own classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private string CssClass => $"sheen-form-row sheen-form-row-link {Class}".TrimEnd();
+    private RenderFragment Content => @<text>
+        @if (Icon is not null)
+        {
+            <span class="sheen-form-row-icon" data-color="@IconColor" aria-hidden="true">@Icon</span>
+        }
+        <span class="sheen-form-row-text">
+            <span class="sheen-form-row-link-label">@Label</span>
+            @if (Description is not null)
+            {
+                <span class="sheen-field-description">@Description</span>
+            }
+        </span>
+        @if (Value is not null)
+        {
+            <span class="sheen-form-row-value">@Value</span>
+        }
+        @if (!Destructive)
+        {
+            <span class="sheen-form-row-chevron">
+                @* ChevronRight path from Lucide (ISC). *@
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+            </span>
+        }
+    </text>;
+}

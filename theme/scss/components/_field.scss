@@ -1,0 +1,174 @@
+// -----------------------------------------------------------------------------
+// Field — layout and type for label · control · description · error.
+// Orientations: vertical (default) · horizontal (label beside, collapses to
+// vertical on phones) · inline (control first: checkbox, switch, radio).
+// -----------------------------------------------------------------------------
+
+.sheen-field {
+  display: grid;
+  gap: 0.375rem;
+  min-width: 0;
+
+  // ---- Horizontal: label column + control column --------------------------
+  &[data-orientation="horizontal"] {
+    @media (min-width: 576px) {
+      grid-template-columns: minmax(7rem, 32%) minmax(0, 1fr);
+      column-gap: 1.25rem;
+
+      > * {
+        grid-column: 2;
+      }
+
+      > .sheen-field-label {
+        grid-row: 1;
+        grid-column: 1;
+        align-self: start;
+        // Vertically centre the label on a default-height control.
+        min-height: var(--sheen-control-height);
+        align-items: center;
+      }
+    }
+  }
+
+  // ---- Inline: [control] Label, description and error under the label -------
+  &[data-orientation="inline"] {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.75rem;
+    row-gap: 0.125rem;
+    align-items: center;
+
+    > * {
+      grid-column: 2;
+    }
+
+    > :first-child:not(.sheen-field-label) {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    > .sheen-field-label {
+      grid-row: 1;
+      font-weight: 400;
+      font-size: 0.9375rem;
+      cursor: pointer;
+    }
+  }
+
+  &[data-disabled] {
+    .sheen-field-label,
+    .sheen-field-description {
+      opacity: 0.55;
+    }
+  }
+
+  // focusFirstInvalid(): a short "no" shake on submit.
+  @include motion-safe {
+    &[data-shake] {
+      animation: sheen-field-shake 420ms var(--sheen-ease-out);
+    }
+  }
+}
+
+.sheen-field-label,
+.sheen-field-legend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem;
+  margin: 0;
+  color: var(--bs-emphasis-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.sheen-field-optional {
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.sheen-field-description {
+  margin: 0;
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.sheen-field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.375rem;
+  margin: 0;
+  color: var(--bs-form-invalid-color);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+
+  svg {
+    flex-shrink: 0;
+    width: 0.9375rem;
+    height: 0.9375rem;
+    margin-top: 0.0625rem;
+  }
+
+  @include motion-safe {
+    animation: sheen-field-error-in 260ms var(--sheen-ease-out);
+  }
+}
+
+@keyframes sheen-field-error-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+@keyframes sheen-field-shake {
+  15%,
+  55% {
+    translate: -5px 0;
+  }
+
+  35%,
+  75% {
+    translate: 5px 0;
+  }
+}
+
+// ---- FieldSet -------------------------------------------------------------------
+.sheen-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  > .sheen-field-legend {
+    float: none;
+    width: auto;
+    margin-bottom: 0.625rem;
+    padding: 0;
+  }
+
+  > .sheen-field-description {
+    margin-top: -0.375rem;
+    margin-bottom: 0.625rem;
+  }
+
+  > .sheen-field-error {
+    margin-top: 0.5rem;
+  }
+
+  @include motion-safe {
+    &[data-shake] {
+      animation: sheen-field-shake 420ms var(--sheen-ease-out);
+    }
+  }
+}
+
+// Required marker (visual only; aria-required carries the meaning).
+.sheen-field-required {
+  margin-inline-start: -0.125rem;
+  color: var(--bs-form-invalid-color);
+  font-weight: 500;
+}

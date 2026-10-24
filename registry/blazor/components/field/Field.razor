@@ -1,0 +1,162 @@
+@* SheenUI Field. Source-owned: edit freely. The cascading FieldContext is the control contract:
+   future inputs read ControlAttributes (id, ARIA and disabled), while native/InputBase controls can
+   splat it explicitly through ChildContent's context. No DOM rewriting or dependency on Form.
+   Description is a slot so its presence is known during static SSR, before the control is rendered. *@
+@using System.Linq.Expressions
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@implements IDisposable
+
+<CascadingValue Value="_context">
+    @if (IsFieldSet)
+    {
+        <fieldset @attributes="AdditionalAttributes" class="@CssClass" disabled="@Disabled"
+                  aria-describedby="@_context.DescribedBy" aria-invalid="@(_context.Invalid ? "true" : null)"
+                  data-invalid="@(_context.Invalid ? "true" : null)" data-sheen-appearance="@Appearance">
+            @Content
+        </fieldset>
+    }
+    else
+    {
+        <div @attributes="AdditionalAttributes" class="@CssClass" data-orientation="@Orientation"
+             data-invalid="@(_context.Invalid ? "true" : null)" data-disabled="@(Disabled ? "true" : null)"
+             data-sheen-appearance="@Appearance">
+            @Content
+        </div>
+    }
+</CascadingValue>
+
+@code {
+    private readonly string _autoId = $"sheen-field-{Guid.NewGuid():N}";
+    private EditContext? _subscribed;
+    private FieldContext _context = new();
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    /// <summary>Bound property for validation messages and the DataAnnotations Required hint.</summary>
+    [Parameter] public Expression<Func<object?>>? For { get; set; }
+
+    /// <summary>Control id; label, description and error ids derive from it.</summary>
+    [Parameter] public string? Id { get; set; }
+
+    /// <summary>Overrides the validation state from EditContext.</summary>
+    [Parameter] public bool? Invalid { get; set; }
+
+    /// <summary>Overrides the Required attribute on the bound property.</summary>
+    [Parameter] public bool? Required { get; set; }
+
+    /// <summary>Show an optional hint instead of the required marker.</summary>
+    [Parameter] public bool Optional { get; set; }
+
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>vertical, horizontal, or inline (control before label).</summary>
+    [Parameter] public string Orientation { get; set; } = "vertical";
+
+    /// <summary>Used by FieldSet to render a native group.</summary>
+    [Parameter] public bool IsFieldSet { get; set; }
+
+    /// <summary>Description slot, rendered in FieldDescription after the content.</summary>
+    [Parameter] public RenderFragment? Description { get; set; }
+
+    /// <summary>Set when composing FieldDescription manually inside ChildContent.</summary>
+    [Parameter] public bool HasDescription { get; set; }
+
+    /// <summary>Set when FieldError has custom content instead of Error or validation messages.</summary>
+    [Parameter] public bool HasError { get; set; }
+
+    /// <summary>Explicit error text, or the messages for For when null. Render it with FieldError.</summary>
+    [Parameter] public string? Error { get; set; }
+
+    /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
+    [Parameter] public string? Appearance { get; set; }
+
+    /// <summary>Extra CSS classes appended after the component's own classes.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter] public RenderFragment<FieldContext>? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => $"{(IsFieldSet ? "sheen-fieldset" : "sheen-field")} {Class}".TrimEnd();
+    private RenderFragment Content => @<text>
+        @ChildContent?.Invoke(_context)
+        @if (Description is not null)
+        {
+            <FieldDescription>@Description</FieldDescription>
+        }
+    </text>;
+
+    protected override void OnParametersSet()
+    {
+        if (_subscribed != EditContext)
+        {
+            Dispose();
+            _subscribed = EditContext;
+            if (_subscribed is not null) _subscribed.OnValidationStateChanged += ValidationChanged;
+        }
+        UpdateContext();
+    }
+
+    private void UpdateContext()
+    {
+        var identifier = For is null ? (FieldIdentifier?)null : FieldIdentifier.Create(For);
+        var error = Error ?? (identifier.HasValue && EditContext is not null
+            ? string.Join(" ", EditContext.GetValidationMessages(identifier.Value)) : null);
+        var required = identifier?.Model.GetType().GetProperty(identifier.Value.FieldName)?
+            .IsDefined(typeof(RequiredAttribute), inherit: true) == true;
+        _context = new FieldContext
+        {
+            ControlId = Id ?? _autoId,
+            Invalid = Invalid ?? !string.IsNullOrEmpty(error),
+            Required = Required ?? required,
+            Optional = Optional,
+            Disabled = Disabled,
+            HasDescription = HasDescription || Description is not null,
+            HasError = HasError || !string.IsNullOrEmpty(error),
+            Error = error,
+        };
+    }
+
+    private void ValidationChanged(object? sender, ValidationStateChangedEventArgs args)
+    {
+        UpdateContext();
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        if (_subscribed is not null) _subscribed.OnValidationStateChanged -= ValidationChanged;
+        _subscribed = null;
+    }
+
+    /// <summary>Shared field state for source-owned controls. Values are replaced when validation changes.</summary>
+    public sealed class FieldContext
+    {
+        public string ControlId { get; init; } = "";
+        public string LabelId => $"{ControlId}-label";
+        public string DescriptionId => $"{ControlId}-description";
+        public string ErrorId => $"{ControlId}-error";
+        public bool Invalid { get; init; }
+        public bool Required { get; init; }
+        public bool Optional { get; init; }
+        public bool Disabled { get; init; }
+        public bool HasDescription { get; init; }
+        public bool HasError { get; init; }
+        public string? Error { get; init; }
+        public string? DescribedBy => string.Join(" ", new[] { HasDescription ? DescriptionId : null,
+            Invalid && HasError ? ErrorId : null }.Where(id => id is not null)) is { Length: > 0 } ids ? ids : null;
+
+        /// <summary>Splat on the control; explicit app attributes may override these defaults.</summary>
+        public IReadOnlyDictionary<string, object> ControlAttributes => new Dictionary<string, object>
+        {
+            ["id"] = ControlId,
+            ["aria-labelledby"] = LabelId,
+            ["aria-describedby"] = DescribedBy!,
+            ["aria-invalid"] = Invalid ? "true" : null!,
+            ["aria-required"] = Required ? "true" : null!,
+            ["disabled"] = Disabled,
+        };
+    }
+}

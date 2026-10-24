@@ -1,0 +1,47 @@
+@* SheenUI FormRow. Source-owned: edit freely. A Field in a settings row; ChildContent receives the control attributes. *@
+@using System.Linq.Expressions
+
+<Field For="For" Id="@Id" Invalid="Invalid" Required="Required" Optional="Optional" Disabled="Disabled"
+       Error="@Error" HasDescription="@(Description is not null)" Class="@($"sheen-form-row {Class}".TrimEnd())"
+       data-layout="@Layout" data-has-icon="@(Icon is not null ? "" : null)" @attributes="AdditionalAttributes">
+    <ChildContent Context="field">
+        @if (Icon is not null)
+        {
+            <span class="sheen-form-row-icon" data-color="@IconColor" aria-hidden="true">@Icon</span>
+        }
+        <div class="sheen-form-row-text">
+            <FieldLabel OptionalText="@OptionalText" RequiredIndicator="@RequiredIndicator">@Label</FieldLabel>
+            @if (Description is not null)
+            {
+                <FieldDescription>@Description</FieldDescription>
+            }
+        </div>
+        <div class="sheen-form-row-control">@ChildContent?.Invoke(field)</div>
+        <FieldError />
+    </ChildContent>
+</Field>
+
+@code {
+    /// <summary>Bound property for validation and the Required hint.</summary>
+    [Parameter] public Expression<Func<object?>>? For { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    /// <summary>Leading icon; accepts any markup.</summary>
+    [Parameter] public RenderFragment? Icon { get; set; }
+    /// <summary>blue, green, red, orange, yellow, teal, indigo, purple, pink, or gray.</summary>
+    [Parameter] public string IconColor { get; set; } = "blue";
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Error { get; set; }
+    [Parameter] public bool? Invalid { get; set; }
+    [Parameter] public bool? Required { get; set; }
+    [Parameter] public bool Optional { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string OptionalText { get; set; } = "(Optional)";
+    [Parameter] public string? RequiredIndicator { get; set; } = "*";
+    /// <summary>inline (label beside control) or stacked (control below).</summary>
+    [Parameter] public string Layout { get; set; } = "inline";
+    /// <summary>Extra CSS classes appended after the component's own classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment<Field.FieldContext>? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "field",
+  "version": "0.1.0",
+  "description": "Accessible field, label, control, description, error, and fieldset.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/field"
+  ],
+  "files": [
+    {
+      "source": "registry/react/field/field.tsx",
+      "target": "components/ui/field.tsx",
+      "type": "tsx",
+      "sha256": "edf7f3d9a1ef002d5607ac1af99b87a022a17e22476b0948cf88d76f1c931b38"
+    },
+    {
+      "source": "theme/scss/components/_field.scss",
+      "target": "styles/sheenui/components/_field.scss",
+      "type": "scss",
+      "sha256": "278e977cfa93f554dd9fd8dd71c11aa37f43c13026afc4a5a2cca9173cea3a77"
+    }
+  ]
+}

@@ -7,6 +7,9 @@
     { "name": "dialog", "manifest": "registry/react/dialog/manifest.json" },
     { "name": "confirm-dialog", "manifest": "registry/react/confirm-dialog/manifest.json" },
     { "name": "dropdown-menu", "manifest": "registry/react/dropdown-menu/manifest.json" },
+    { "name": "field", "manifest": "registry/react/field/manifest.json" },
+    { "name": "form", "manifest": "registry/react/form/manifest.json" },
+    { "name": "form-section", "manifest": "registry/react/form-section/manifest.json" },
     { "name": "starter", "manifest": "registry/react/starter/manifest.json" },
     { "name": "starter-next", "manifest": "registry/react/starter-next/manifest.json" }
   ]

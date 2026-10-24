@@ -1,0 +1,10 @@
+@* SheenUI FieldDescription. Source-owned: edit freely. Set Field.HasDescription when composing manually. *@
+<p @attributes="AdditionalAttributes" id="@Context?.DescriptionId" class="@($"sheen-field-description {Class}".TrimEnd())">@ChildContent</p>
+
+@code {
+    [CascadingParameter] private Field.FieldContext? Context { get; set; }
+    /// <summary>Extra CSS classes appended after the component's own classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

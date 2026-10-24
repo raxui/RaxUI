@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "name": "field",
+  "version": "0.1.0",
+  "description": "Accessible fields with a cascading control contract and validation hints.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/sheenui.css",
+      "destination": "styles",
+      "target": "sheenui.css",
+      "type": "css",
+      "sha256": "e63166c58565739b0f4629c89c31d3ec5deb8c31d283f58585026b3cc4142fe1"
+    }
+  ],
+  "files": [
+    {
+      "source": "Field.razor",
+      "destination": "components",
+      "target": "Field/Field.razor",
+      "type": "razor",
+      "sha256": "3e8dd0bf60baa59244eddc0f6e2e04b4fc13fb70bee964ffc97e0cdd0eb4d382"
+    },
+    {
+      "source": "FieldDescription.razor",
+      "destination": "components",
+      "target": "Field/FieldDescription.razor",
+      "type": "razor",
+      "sha256": "770f726c7454e5a27cb0dd00d060e2ca2e1c6b77999f627fbedac7e445b01400"
+    },
+    {
+      "source": "FieldError.razor",
+      "destination": "components",
+      "target": "Field/FieldError.razor",
+      "type": "razor",
+      "sha256": "edc396dc7e434fd926aeb5d1c40dca74a1f2f5565f235cca31a679ec8030a751"
+    },
+    {
+      "source": "FieldLabel.razor",
+      "destination": "components",
+      "target": "Field/FieldLabel.razor",
+      "type": "razor",
+      "sha256": "6afff8528c6c31dd5d64edc511fcdea2f2e2cdd63d18a2ac124062ff69e6e399"
+    },
+    {
+      "source": "FieldLegend.razor",
+      "destination": "components",
+      "target": "Field/FieldLegend.razor",
+      "type": "razor",
+      "sha256": "ff5a2c006d6ea87de7fff313f1e74e318242e8d027582efe2b31f8c70168eb03"
+    },
+    {
+      "source": "FieldSet.razor",
+      "destination": "components",
+      "target": "Field/FieldSet.razor",
+      "type": "razor",
+      "sha256": "2daba9c28341135a6d56083489f1c736d4b129eb15468e93006087ccce90ca49"
+    }
+  ]
+}

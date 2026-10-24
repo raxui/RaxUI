@@ -1,0 +1,76 @@
+@* SheenUI Form. Source-owned: edit freely. Place inside EditForm; keep the app's validator and submit callbacks.
+   OnAfterRender does not run in static SSR, so ordinary server posts never require JavaScript. *@
+@using Microsoft.AspNetCore.Components.Forms
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<div @ref="_element" @attributes="AdditionalAttributes" class="@($"sheen-form {Class}".TrimEnd())">
+    @ChildContent
+</div>
+
+@code {
+    private ElementReference _element;
+    private IJSObjectReference? _module;
+    private EditContext? _subscribed;
+    private bool _submitRequested;
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+    /// <summary>Extra CSS classes appended after the component's own classes.</summary>
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is null) throw new InvalidOperationException("Form must be inside an EditForm.");
+        if (_subscribed == EditContext) return;
+        Unsubscribe();
+        _subscribed = EditContext;
+        EditContext.SetFieldCssClassProvider(new BootstrapFieldCssClassProvider());
+        EditContext.OnValidationRequested += ValidationRequested;
+    }
+
+    private void ValidationRequested(object? sender, ValidationRequestedEventArgs args)
+    {
+        _submitRequested = true;
+        // ValidationRequested can reach us before the validator. Render after all synchronous
+        // subscribers have populated their message stores, regardless of their markup order.
+        _ = InvokeAsync(async () =>
+        {
+            await Task.Yield();
+            StateHasChanged();
+        });
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_submitRequested) return;
+        _submitRequested = false;
+        if (_subscribed?.GetValidationMessages().Any() != true) return;
+        _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Form/Form.razor.js");
+        await _module.InvokeVoidAsync("focusFirstInvalid", _element);
+    }
+
+    private void Unsubscribe()
+    {
+        if (_subscribed is null) return;
+        _subscribed.OnValidationRequested -= ValidationRequested;
+        _subscribed = null;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        Unsubscribe();
+        if (_module is null) return;
+        try { await _module.DisposeAsync(); }
+        catch (JSDisconnectedException) { /* The circuit has already gone away. */ }
+    }
+
+    /// <summary>Errors are invalid; modified fields without errors are valid; untouched fields have no class.</summary>
+    public sealed class BootstrapFieldCssClassProvider : FieldCssClassProvider
+    {
+        public override string GetFieldCssClass(EditContext editContext, in FieldIdentifier fieldIdentifier)
+            => editContext.GetValidationMessages(fieldIdentifier).Any() ? "is-invalid"
+                : editContext.IsModified(fieldIdentifier) ? "is-valid" : "";
+    }
+}
