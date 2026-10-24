@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/radio-group.css",
       "type": "css",
-      "sha256": "f20a7559460011169419ec22e1042fa61e12079724c45421bf46e3b83de5dc14"
+      "sha256": "88e9e38ff0fb928adc8963042080a1a84769c33547443f1000d0d9fb7fed79ad"
     }
   ],
   "files": [
@@ -28,7 +28,7 @@
       "destination": "components",
       "target": "RadioGroup/RadioGroupItem.razor",
       "type": "razor",
-      "sha256": "6f21ebed88b33b41c082c91be9bec70a66cecae2da02ed8199463b549de2f0ad"
+      "sha256": "53e0a25ef9529271b780f9b5d37e77503b7c3df124cb4170d6b9c097f7b47a82"
     }
   ]
 }

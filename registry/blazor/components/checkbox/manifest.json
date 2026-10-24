@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/checkbox.css",
       "type": "css",
-      "sha256": "36a348e9a1200327d7b6aad4039c6a08d1b18871a10ad1cc8425616ed735f862"
+      "sha256": "a901f3fdb93cef2d7090787c86561c2ed65cf348f3ad6905ee998bace74a14af"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Checkbox/Checkbox.razor",
       "type": "razor",
-      "sha256": "4cc07a8c6bf505f16cdbfed786266ebbf4e34d935e01886a0f03cca73599446a"
+      "sha256": "8fb612d569bea60c11225ba54de228e3b4841b6cab8236db3a40163b68f1944f"
     }
   ]
 }
