@@ -147,6 +147,16 @@ describe("sheenui-react init and add button", () => {
     expect(snapshot()).toEqual(before)
   })
 
+  it("keeps an installed dependency as it is, local edits included", () => {
+    ok(cli("init"))
+    writeFileSync(file("src/lib/theme.tsx"), "// my theme")
+    const foundation = json("sheenui.react.lock.json").items.foundation
+    ok(cli("add", "dialog")) // dialog requires the foundation
+    expect(readFileSync(file("src/lib/theme.tsx"), "utf8")).toBe("// my theme")
+    expect(existsSync(file("src/components/ui/dialog.tsx"))).toBe(true)
+    expect(json("sheenui.react.lock.json").items.foundation).toEqual(foundation)
+  })
+
   it("refuses to overwrite an unknown file", () => {
     mkdirSync(file("src/components/ui"), { recursive: true })
     writeFileSync(file("src/components/ui/button.tsx"), "// not ours")

@@ -134,7 +134,11 @@ function installItems(projectDir, name, { init, install, stdout }) {
   // 1. Plan every write and check every conflict before touching the disk.
   const planned = []
   const notes = []
+  // An installed dependency stays as it is, local edits included; only the requested item is (re)installed.
+  const requested = items[items.length - 1]
+  const kept = new Set(items.filter((item) => item !== requested && lock.items[item.name]).map((item) => item.name))
   for (const item of items) {
+    if (kept.has(item.name)) continue
     // Starter files never stop init: what the developer changed is kept and reported (ADR 008).
     const starter = STARTER_ITEMS.includes(item.name)
     for (const file of item.files) {
@@ -225,6 +229,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
     })
 
     for (const item of items) {
+      if (kept.has(item.name)) continue // its record stays as installed
       // Keep records of files this run skipped (kept starter files) and replace the ones it wrote.
       const files = new Map((lock.items[item.name]?.files ?? []).map((entry) => [entry.target, entry]))
       for (const { target, sourceHash, installedHash } of planned.filter((write) => write.item === item))
