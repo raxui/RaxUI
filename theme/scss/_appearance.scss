@@ -5,6 +5,7 @@
 :root, [data-sheen-appearance="default"], [data-sheen-appearance="flat"], [data-sheen-appearance="glass"],
 :where([data-bs-theme]:not([data-sheen-appearance="flat"] *, [data-sheen-appearance="glass"] *)) {
   --sheen-surface-bg: var(--bs-body-bg);
+  --sheen-card-bg: var(--sheen-surface-bg);
   --sheen-border-color: var(--sheen-surface-border-color);
   --sheen-control-shadow: var(--sheen-surface-edge), 0 1px 3px rgba(var(--sheen-shadow-rgb), 0.12);
   --sheen-surface-shadow: var(--sheen-control-shadow);
@@ -18,6 +19,7 @@
 }
 [data-sheen-appearance="glass"] {
   --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
+  --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) 96%, transparent);
   // Keep glass close to the page: subtle contact shadows, without a broad halo.
   --sheen-control-shadow: var(--sheen-glass-edge),
     0 2px 4px -1px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.6));
@@ -26,6 +28,7 @@
   --sheen-border-color: var(--sheen-glass-border-color);
   @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);
+    --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) 82%, transparent);
     --sheen-surface-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
   }
 }
@@ -50,6 +53,7 @@
     --sheen-glass-alpha-subtle: 1 !important;
     --sheen-glass-blur: 0px !important;
     --sheen-surface-bg: var(--bs-body-bg) !important;
+    --sheen-card-bg: var(--bs-body-bg) !important;
     --sheen-surface-filter: none !important;
   }
 }

@@ -12,6 +12,7 @@
   --sheen-surface-border-color: var(--bs-border-color);
   --sheen-surface-edge: 0 0 #0000;
   --sheen-flat-shadow: none;
+  --sheen-glass-card-tint: var(--bs-body-bg);
   --sheen-shadow-rgb: 15, 23, 42;
   --sheen-shadow-opacity: 0.1;
   --sheen-overlay-rgb: 15, 23, 42;
@@ -31,6 +32,7 @@
   --sheen-surface-border-color: var(--sheen-glass-border-color);
   --sheen-surface-edge: var(--sheen-glass-edge);
   --sheen-flat-shadow: var(--sheen-glass-edge);
+  --sheen-glass-card-tint: color-mix(in srgb, var(--sheen-page-bg, var(--bs-body-bg)) 85%, #000);
   --sheen-shadow-rgb: 0, 0, 0;
   --sheen-shadow-opacity: 0.35;
   --sheen-overlay-rgb: 0, 0, 0;
@@ -388,6 +390,7 @@ body {
 :root, [data-sheen-appearance=default], [data-sheen-appearance=flat], [data-sheen-appearance=glass],
 :where([data-bs-theme]:not([data-sheen-appearance=flat] *, [data-sheen-appearance=glass] *)) {
   --sheen-surface-bg: var(--bs-body-bg);
+  --sheen-card-bg: var(--sheen-surface-bg);
   --sheen-border-color: var(--sheen-surface-border-color);
   --sheen-control-shadow: var(--sheen-surface-edge), 0 1px 3px rgba(var(--sheen-shadow-rgb), 0.12);
   --sheen-surface-shadow: var(--sheen-control-shadow);
@@ -402,6 +405,7 @@ body {
 
 [data-sheen-appearance=glass] {
   --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
+  --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) 96%, transparent);
   --sheen-control-shadow: var(--sheen-glass-edge),
     0 2px 4px -1px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.6));
   --sheen-surface-shadow: var(--sheen-glass-edge),
@@ -411,6 +415,7 @@ body {
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
   [data-sheen-appearance=glass] {
     --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);
+    --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) 82%, transparent);
     --sheen-surface-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
   }
 }
@@ -435,6 +440,7 @@ body {
     --sheen-glass-alpha-subtle: 1 !important;
     --sheen-glass-blur: 0px !important;
     --sheen-surface-bg: var(--bs-body-bg) !important;
+    --sheen-card-bg: var(--bs-body-bg) !important;
     --sheen-surface-filter: none !important;
   }
 }
