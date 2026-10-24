@@ -3,7 +3,7 @@
 The single source of the SheenUI theme and component styles, shared by the React and Blazor libraries ([ADR 005](../docs/adr/005-multi-framework-shared-theme.md), [ADR 007](../docs/adr/007-blazor-shared-theme.md)).
 
 - React installs these SCSS partials and compiles them with Bootstrap.
-- Blazor gets them precompiled: `npm run theme:css` (`build-css.mjs`) writes `registry/styles/sheenui.css` from `_core.scss` and `components/`, without Bootstrap. A test fails when that file is stale.
+- Blazor gets them precompiled: `npm run theme:css` (`build-css.mjs`) writes `registry/blazor/styles/sheenui.css` from `_core.scss` and `components/`, without Bootstrap. A test fails when that file is stale.
 - Component styles live in `scss/components/` (for example `_button.scss`, from boot-ui `src/components/ui/_button.scss`). `_starter.scss` styles the app shell and welcome page that `init` installs ([ADR 008](../docs/adr/008-starter-app.md)).
 
 ## Provenance

@@ -307,7 +307,7 @@ node src/react-cli/scripts/update-hashes.mjs
 ```
 
 الأمر الأول يعيد توليد CSS الخاص بـBlazor، والثاني يحدّث بصمات ملفات React.
-يلزم أيضاً تحديث SHA-256 لأصل CSS في `registry/components/button/manifest.json`
+يلزم أيضاً تحديث SHA-256 لأصل CSS في `registry/blazor/components/button/manifest.json`
 قبل اختبار أداة Blazor، ثم إعادة بناء الأداة أو تشغيلها من المصدر.
 لا تعدّل CSS الناتج وحده كحل دائم؛ أعد توليده من SCSS.
 

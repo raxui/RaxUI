@@ -20,7 +20,7 @@ describe("shared theme", () => {
   it("keeps the Blazor theme CSS in sync with the SCSS (run npm run theme:css after edits)", async () => {
     // @ts-expect-error -- plain ESM build script without type declarations
     const { compileBlazorTheme } = await import("../../theme/build-css.mjs")
-    expect(readFileSync("registry/styles/sheenui.css", "utf8")).toBe(compileBlazorTheme())
+    expect(readFileSync("registry/blazor/styles/sheenui.css", "utf8")).toBe(compileBlazorTheme())
   })
 
   it("re-declares the default surfaces where the mode changes without an appearance", () => {

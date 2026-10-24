@@ -21,8 +21,9 @@
   <ItemGroup>
     <None Include="../../README.md" Pack="true" PackagePath="/" />
     <AssemblyMetadata Include="RegistryVersion" Value="$(Version)" />
-    <!-- The React registry ships with the Node CLI, not this tool (ADR 006). -->
-    <EmbeddedResource Include="..\..\registry\**\*" Exclude="..\..\registry\react\**" LinkBase="registry" />
+    <!-- The Blazor registry; React's (registry/react) ships with the Node CLI (ADR 006). LinkBase keeps
+         resource names at SheenUI.Cli.registry.*, as before the move to registry/blazor/. -->
+    <EmbeddedResource Include="..\..\registry\blazor\**\*" LinkBase="registry" />
   </ItemGroup>
 
 </Project>
