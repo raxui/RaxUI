@@ -9,6 +9,9 @@
   --sheen-glass-highlight: rgba(255, 255, 255, 0.85);
   --sheen-glass-sheen: rgba(255, 255, 255, 0.25);
   --sheen-glass-hairline: rgba(0, 0, 0, 0.06);
+  --sheen-surface-border-color: var(--bs-border-color);
+  --sheen-surface-edge: 0 0 #0000;
+  --sheen-flat-shadow: none;
   --sheen-shadow-rgb: 15, 23, 42;
   --sheen-shadow-opacity: 0.1;
   --sheen-overlay-rgb: 15, 23, 42;
@@ -25,6 +28,9 @@
   --sheen-glass-highlight: rgba(255, 255, 255, 0.2);
   --sheen-glass-sheen: rgba(255, 255, 255, 0.05);
   --sheen-glass-hairline: rgba(0, 0, 0, 0.4);
+  --sheen-surface-border-color: var(--sheen-glass-border-color);
+  --sheen-surface-edge: var(--sheen-glass-edge);
+  --sheen-flat-shadow: var(--sheen-glass-edge);
   --sheen-shadow-rgb: 0, 0, 0;
   --sheen-shadow-opacity: 0.35;
   --sheen-overlay-rgb: 0, 0, 0;
@@ -382,16 +388,16 @@ body {
 :root, [data-sheen-appearance=default], [data-sheen-appearance=flat], [data-sheen-appearance=glass],
 :where([data-bs-theme]:not([data-sheen-appearance=flat] *, [data-sheen-appearance=glass] *)) {
   --sheen-surface-bg: var(--bs-body-bg);
-  --sheen-border-color: var(--bs-border-color);
-  --sheen-control-shadow: 0 1px 3px rgba(var(--sheen-shadow-rgb), 0.12);
+  --sheen-border-color: var(--sheen-surface-border-color);
+  --sheen-control-shadow: var(--sheen-surface-edge), 0 1px 3px rgba(var(--sheen-shadow-rgb), 0.12);
   --sheen-surface-shadow: var(--sheen-control-shadow);
   --sheen-control-radius: var(--sheen-radius-control);
   --sheen-surface-filter: none;
 }
 
 [data-sheen-appearance=flat] {
-  --sheen-control-shadow: none;
-  --sheen-surface-shadow: none;
+  --sheen-control-shadow: var(--sheen-flat-shadow);
+  --sheen-surface-shadow: var(--sheen-flat-shadow);
 }
 
 [data-sheen-appearance=glass] {

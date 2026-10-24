@@ -20,6 +20,10 @@
   --sheen-glass-highlight: rgba(255, 255, 255, 0.85); // top inner rim light
   --sheen-glass-sheen: rgba(255, 255, 255, 0.25);     // faint inner glow on all edges
   --sheen-glass-hairline: rgba(0, 0, 0, 0.06);        // keeps edges visible on white
+  // Default and flat surfaces: Bootstrap's border, no rim (dark takes the glass edge).
+  --sheen-surface-border-color: var(--bs-border-color);
+  --sheen-surface-edge: 0 0 #0000;
+  --sheen-flat-shadow: none;
   --sheen-shadow-rgb: 15, 23, 42;
   --sheen-shadow-opacity: 0.1;
   --sheen-overlay-rgb: 15, 23, 42;
@@ -39,6 +43,9 @@
   --sheen-glass-highlight: rgba(255, 255, 255, 0.2);
   --sheen-glass-sheen: rgba(255, 255, 255, 0.05);
   --sheen-glass-hairline: rgba(0, 0, 0, 0.4);
+  --sheen-surface-border-color: var(--sheen-glass-border-color);
+  --sheen-surface-edge: var(--sheen-glass-edge);
+  --sheen-flat-shadow: var(--sheen-glass-edge);
   --sheen-shadow-rgb: 0, 0, 0;
   --sheen-shadow-opacity: 0.35;
   --sheen-overlay-rgb: 0, 0, 0;
