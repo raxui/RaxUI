@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "speed-dial",
+  "version": "0.1.0",
+  "description": "Source-owned speed-dial ported from boot-ui.",
+  "requires": [
+    "foundation",
+    "button"
+  ],
+  "packages": {},
+  "styles": [
+    "components/speed-dial"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/speed-dial/speed-dial.tsx",
+      "target": "components/ui/speed-dial.tsx",
+      "type": "tsx",
+      "sha256": "13ff35f89f18dd76a42f8c905e83299845665431af22d5b088a992c17d52fc3e"
+    },
+    {
+      "source": "theme/scss/components/_speed-dial.scss",
+      "target": "styles/sheenui/components/_speed-dial.scss",
+      "type": "scss",
+      "sha256": "5302bc034910b2e565d94cb170e30d5423db348cfb6393b67136fe6c1c07c430"
+    },
+    {
+      "source": "registry/react/foundation/app-shell-utils.ts",
+      "target": "lib/app-shell-utils.ts",
+      "type": "ts",
+      "sha256": "a77779ef90233c68a95c0bc3ced8f27ea768a4a57bba30ceb297b94598ddaeb4"
+    }
+  ]
+}

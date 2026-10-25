@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url"
 // Keep keyboard/selection checks independent of spring animation timing.
 test.use({ reducedMotion: "reduce", actionTimeout: 15_000 })
 
-const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "date-picker", "date-range-picker", "combobox", "autocomplete", "select", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "data-table", "data-grid", "sortable", "resizable"]
+const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "date-picker", "date-range-picker", "combobox", "autocomplete", "select", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "data-table", "data-grid", "sortable", "resizable", "carousel", "chat", "ai", "text-editor", "qr-code", "speed-dial", "kanban"]
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
 // CI runs 15.5.28 and 16.4.3.
 const CREATE_NEXT_APP = `create-next-app@${process.env.CREATE_NEXT_APP_VERSION ?? "16.4.3"}`
@@ -141,6 +141,9 @@ export default function Overlays() {
   mkdirSync(path.join(app, "app/shell"))
   writeFileSync(path.join(app, "app/shell/demo.tsx"), readFileSync(path.join(repo, "tests/react/fixtures/app-shell.tsx"), "utf8"))
   writeFileSync(path.join(app, "app/shell/page.tsx"), 'import ShellDemo from "./demo"; export default function Page() { return <ShellDemo /> }')
+  mkdirSync(path.join(app, "app/advanced-components"))
+  writeFileSync(path.join(app, "app/advanced-components/demo.tsx"), readFileSync(path.join(repo,"tests/react/fixtures/advanced-components.tsx"),"utf8"))
+  writeFileSync(path.join(app, "app/advanced-components/page.tsx"), `import Demo from "./demo"; export default function Page(){return <Demo/>}`)
   mkdirSync(path.join(app, "app/data-components"))
   writeFileSync(path.join(app, "app/data-components/demo.tsx"), readFileSync(path.join(repo,"tests/react/fixtures/data-components.tsx"),"utf8"))
   writeFileSync(path.join(app, "app/data-components/page.tsx"), 'import DataDemo from "./demo"; export default function Page(){ return <DataDemo/> }')
@@ -385,3 +388,15 @@ test("data components hydrate and handle table state, safe grid edits, reorderin
  await page.evaluate(()=>sessionStorage.setItem("layout-tested","true"));await page.reload();await expect(page.getByRole("separator",{name:"Resize panels"})).toHaveAttribute("aria-valuenow",changed!)
  await page.getByRole("button",{name:"Toggle direction"}).click();await expect(page.locator('.sheen-resizable')).toHaveAttribute("data-mirrored","");expect(errors).toEqual([])
 })
+
+ test("advanced components hydrate and support keyboard, editor, QR and conversation flows",async({page})=>{
+ const errors:string[]=[];page.on("pageerror",e=>errors.push(e.message));page.on("console",m=>{if(m.type()==="error")errors.push(m.text())})
+ await page.goto(baseUrl+"/advanced-components");await expect(page.getByRole("heading",{name:"Advanced components"})).toBeVisible();await expect(page.locator(".sheen-carousel-counter")).toHaveText("1 / 3");await page.getByRole("button",{name:"Next slide"}).click();await expect(page.locator(".sheen-carousel-counter")).toHaveText("2 / 3")
+ await page.getByPlaceholder("Compose message").fill("Hello chat");await page.getByPlaceholder("Compose message").press("Enter");await expect(page.locator(".sheen-chat-bubble").filter({hasText:"Hello chat"})).toHaveText("Hello chat")
+ await page.getByPlaceholder("Ask assistant").fill("Answer");await page.getByPlaceholder("Ask assistant").press("Enter");await expect(page.locator(".sheen-ai-response")).toHaveAttribute("data-streaming","");await page.getByRole("button",{name:"Stop",exact:true}).click();await expect(page.locator(".sheen-ai-response")).not.toHaveAttribute("data-streaming","")
+ const editor=page.getByRole("textbox",{name:"Document",exact:true});await editor.fill("Edited");await expect(page.getByLabel("Saved HTML")).toContainText("Edited");await editor.press("ControlOrMeta+a");await page.getByRole("button",{name:"Bold",exact:true}).first().click();await expect(page.getByLabel("Saved HTML")).toContainText("<strong>")
+ await expect(page.getByRole("img",{name:"Scan code"}).locator("path")).toHaveAttribute("d",/.+/);const download=page.waitForEvent("download");await page.getByRole("button",{name:"Download SVG"}).click();expect((await download).suggestedFilename()).toMatch(/\.svg$/)
+ const trigger=page.getByRole("button",{name:"More actions"});await trigger.focus();await trigger.press("ArrowUp");await expect(page.getByRole("menuitem",{name:"Share",exact:true})).toBeFocused();await page.keyboard.press("Enter");await expect(page.getByText("Shared",{exact:true})).toBeVisible()
+ const handle=page.getByRole("button",{name:"Move Alpha",exact:true});await handle.scrollIntoViewIfNeeded();await handle.focus();await page.keyboard.press("Space");await page.waitForTimeout(80);await page.keyboard.press("ArrowRight");await page.waitForTimeout(150);await page.keyboard.press("Space");await expect(page.getByLabel("Board state")).toHaveText('{"todo":["Beta"],"done":["Alpha"]}')
+ await page.getByRole("button",{name:"Toggle direction"}).click();await page.getByRole("button",{name:"Toggle mode"}).click();await expect(page.locator(".sheen-kanban")).toHaveCSS("direction","rtl");expect(errors).toEqual([])
+ })

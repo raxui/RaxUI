@@ -1,0 +1,166 @@
+// -----------------------------------------------------------------------------
+// Speed Dial — a round trigger whose plus turns into a cross, and actions that
+// spring out from it one after another (nearest first) and fold back in
+// reverse. Top and bottom keep the actions on the trigger's end edge with the
+// labels before them, so RTL mirrors it; left and right are physical sides.
+// -----------------------------------------------------------------------------
+
+.sheen-speed-dial {
+  --sheen-speed-dial-trigger-size: 3rem;
+  --sheen-speed-dial-action-size: 2.5rem;
+
+  position: relative;
+  display: inline-flex;
+  z-index: 1030;
+
+  // An open dial rises above closed ones nearby.
+  &[data-state="open"] {
+    z-index: 1031;
+  }
+}
+
+.btn-glass.sheen-speed-dial-trigger {
+  border-radius: 50%;
+  box-shadow: var(--sheen-shadow-lg);
+
+  svg {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+
+  [data-speed-dial-icon] {
+    transition: transform 420ms var(--sheen-ease-spring);
+  }
+
+  &[data-state="open"] [data-speed-dial-icon] {
+    transform: rotate(135deg);
+  }
+}
+
+// ---- Content -----------------------------------------------------------------------------
+
+.sheen-speed-dial-content {
+  position: absolute;
+  display: flex;
+  gap: var(--sheen-speed-dial-gap);
+
+  &[data-state="closed"] {
+    pointer-events: none;
+  }
+
+  &[data-side="top"],
+  &[data-side="bottom"] {
+    inset-inline-end: 0;
+    align-items: flex-end;
+    padding-inline-end: calc((var(--sheen-speed-dial-trigger-size) - var(--sheen-speed-dial-action-size)) / 2);
+  }
+
+  &[data-side="top"] {
+    bottom: calc(100% + var(--sheen-speed-dial-offset));
+    flex-direction: column-reverse;
+  }
+
+  &[data-side="bottom"] {
+    top: calc(100% + var(--sheen-speed-dial-offset));
+    flex-direction: column;
+  }
+
+  &[data-side="left"],
+  &[data-side="right"] {
+    top: calc((var(--sheen-speed-dial-trigger-size) - var(--sheen-speed-dial-action-size)) / 2);
+    align-items: flex-start;
+  }
+
+  &[data-side="left"] {
+    right: calc(100% + var(--sheen-speed-dial-offset));
+    flex-direction: row-reverse;
+  }
+
+  &[data-side="right"] {
+    left: calc(100% + var(--sheen-speed-dial-offset));
+    flex-direction: row;
+  }
+}
+
+// ---- Items ---------------------------------------------------------------------------------
+
+.sheen-speed-dial-item {
+  --sheen-speed-dial-from: translateY(0.75rem);
+
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  transition:
+    opacity 180ms ease,
+    transform 420ms var(--sheen-ease-spring);
+  // Open: nearest first. Closed: farthest first, a little quicker.
+  transition-delay: calc(var(--sheen-speed-dial-index) * 40ms);
+
+  .sheen-speed-dial-content[data-side="bottom"] > & {
+    --sheen-speed-dial-from: translateY(-0.75rem);
+  }
+  .sheen-speed-dial-content[data-side="left"] > & {
+    --sheen-speed-dial-from: translateX(0.75rem);
+  }
+  .sheen-speed-dial-content[data-side="right"] > & {
+    --sheen-speed-dial-from: translateX(-0.75rem);
+  }
+
+  // Beside the trigger, labels go under their action.
+  .sheen-speed-dial-content[data-side="left"] > &,
+  .sheen-speed-dial-content[data-side="right"] > & {
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  &[data-state="closed"] {
+    opacity: 0;
+    transform: var(--sheen-speed-dial-from) scale(0.4);
+    transition-delay: calc((var(--sheen-speed-dial-count) - 1 - var(--sheen-speed-dial-index)) * 25ms);
+    transition-duration: 160ms, 220ms;
+    transition-timing-function: ease, var(--sheen-ease-in);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition-property: opacity;
+
+    &[data-state="closed"] {
+      transform: none;
+    }
+  }
+}
+
+.btn-glass.sheen-speed-dial-action {
+  flex-shrink: 0;
+  width: var(--sheen-speed-dial-action-size);
+  height: var(--sheen-speed-dial-action-size);
+  border-radius: 50%;
+  box-shadow: var(--sheen-shadow-md);
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+
+.sheen-speed-dial-label {
+  order: -1; // before the action whatever the markup order
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--sheen-glass-border-color);
+  border-radius: var(--sheen-radius-sm);
+  color: var(--bs-emphasis-color);
+  background-color: rgba(var(--bs-body-bg-rgb), 0.82);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: var(--sheen-shadow-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+
+  .sheen-speed-dial-content[data-side="left"] &,
+  .sheen-speed-dial-content[data-side="right"] & {
+    order: 1;
+    font-size: 0.75rem;
+  }
+}

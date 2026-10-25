@@ -1,0 +1,287 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-kanban {
+  --sheen-kanban-column-width: 18rem;
+  --sheen-kanban-gap: 0.875rem;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sheen-kanban-gap);
+  min-height: 0;
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+.sheen-kanban[data-orientation=vertical] {
+  flex-direction: column;
+  align-items: stretch;
+  overflow-x: visible;
+}
+.sheen-kanban[data-dragging] {
+  user-select: none;
+  -webkit-user-select: none;
+}
+@media (max-width: 575.98px) {
+  .sheen-kanban {
+    --sheen-kanban-column-width: 82vw;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0.25rem;
+  }
+}
+
+.sheen-kanban-column {
+  position: relative;
+  display: flex;
+  flex: 0 0 var(--sheen-kanban-column-width);
+  flex-direction: column;
+  max-height: 100%;
+  min-width: 0;
+  border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.07);
+  border-radius: var(--sheen-radius-lg);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.035);
+  scroll-snap-align: start;
+  transition: background-color var(--sheen-duration) ease, border-color var(--sheen-duration) ease, box-shadow var(--sheen-duration) ease;
+}
+.sheen-kanban[data-orientation=vertical] > .sheen-kanban-column {
+  flex-basis: auto;
+}
+.sheen-kanban-column[data-over] {
+  border-color: rgba(var(--bs-primary-rgb), 0.35);
+  background-color: rgba(var(--bs-primary-rgb), 0.06);
+  box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.08);
+}
+.sheen-kanban-column[data-handle]:not([data-disabled]) {
+  cursor: grab;
+  touch-action: none;
+}
+.sheen-kanban-column[data-disabled] {
+  opacity: 0.6;
+}
+.sheen-kanban-column[data-overlay] {
+  height: 100%;
+  background-color: rgba(var(--bs-body-bg-rgb), 0.92);
+  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  box-shadow: var(--sheen-shadow-lg);
+  cursor: grabbing;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-kanban-column[data-overlay] {
+    animation: sheen-kanban-lift 220ms var(--sheen-ease-out) forwards;
+    transform-origin: 50% 1.5rem;
+  }
+}
+
+.sheen-kanban-column-header {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.625rem 0.25rem;
+}
+
+.sheen-kanban-column-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--bs-emphasis-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sheen-kanban-column-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.375rem;
+  height: 1.375rem;
+  padding-inline: 0.375rem;
+  border-radius: 999px;
+  color: var(--bs-secondary-color);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.sheen-kanban-column-count[data-over-limit] {
+  color: var(--bs-danger-text-emphasis);
+  background-color: var(--bs-danger-bg-subtle);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-kanban-column-count {
+    animation: sheen-kanban-count 360ms var(--sheen-ease-spring);
+  }
+}
+
+.sheen-kanban-column-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 4.5rem;
+  padding: 0.25rem 0.5rem 0.5rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.sheen-kanban[data-orientation=vertical] .sheen-kanban-column-content {
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.sheen-kanban-empty {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  min-height: 4rem;
+  padding: 0.75rem;
+  border: 1.5px dashed rgba(var(--bs-emphasis-color-rgb), 0.12);
+  border-radius: var(--sheen-radius);
+  color: var(--bs-tertiary-color);
+  font-size: 0.8125rem;
+  text-align: center;
+  transition: border-color var(--sheen-duration) ease, color var(--sheen-duration) ease;
+}
+.sheen-kanban-column[data-over] .sheen-kanban-empty {
+  border-color: rgba(var(--bs-primary-rgb), 0.4);
+  color: var(--sheen-primary-text);
+}
+
+.sheen-kanban-item {
+  position: relative;
+  padding: 0.75rem;
+  border: 1px solid var(--sheen-glass-border-color);
+  border-radius: var(--sheen-radius);
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  box-shadow: 0 0 0 1px var(--sheen-glass-hairline), var(--sheen-shadow-sm);
+  font-size: 0.875rem;
+  transition: box-shadow var(--sheen-duration) ease, border-color var(--sheen-duration) ease;
+}
+.sheen-kanban-item[data-handle]:not([data-disabled]) {
+  cursor: grab;
+  touch-action: manipulation;
+}
+.sheen-kanban-item:hover:not([data-overlay]) {
+  box-shadow: 0 0 0 1px var(--sheen-glass-hairline), var(--sheen-shadow-md);
+}
+.sheen-kanban-item:focus-visible {
+  outline: 2px solid rgba(var(--bs-primary-rgb), 0.55);
+  outline-offset: 2px;
+}
+.sheen-kanban-item[data-disabled] {
+  opacity: 0.55;
+}
+.sheen-kanban-item[data-dragging]:not([data-placeholder]) {
+  z-index: 10;
+  cursor: grabbing;
+  box-shadow: var(--sheen-shadow-lg);
+}
+.sheen-kanban-item[data-overlay] {
+  cursor: grabbing;
+  box-shadow: var(--sheen-shadow-lg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-kanban-item[data-overlay] {
+    animation: sheen-kanban-pick 240ms var(--sheen-ease-out) forwards;
+  }
+}
+
+.sheen-kanban-item[data-placeholder],
+.sheen-kanban-column[data-placeholder] {
+  opacity: 1 !important;
+  border-color: transparent;
+  background-color: rgba(var(--bs-primary-rgb), 0.05);
+  box-shadow: none;
+  color: transparent;
+}
+.sheen-kanban-item[data-placeholder] > *,
+.sheen-kanban-column[data-placeholder] > * {
+  visibility: hidden;
+}
+.sheen-kanban-item[data-placeholder]::after,
+.sheen-kanban-column[data-placeholder]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed rgba(var(--bs-primary-rgb), 0.45);
+  border-radius: inherit;
+}
+
+.sheen-kanban-overlay {
+  cursor: grabbing;
+}
+.sheen-kanban-overlay.sheen-kanban-overlay-flat {
+  cursor: default;
+}
+
+.sheen-kanban-handle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.625rem;
+  height: 1.625rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--sheen-radius-sm);
+  color: var(--bs-tertiary-color);
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  transition: color var(--sheen-duration-fast) ease, background-color var(--sheen-duration-fast) ease;
+}
+.sheen-kanban-handle svg {
+  width: 1rem;
+  height: 1rem;
+}
+.sheen-kanban-handle:hover {
+  color: var(--bs-secondary-color);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
+}
+.sheen-kanban-handle:focus-visible {
+  outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+  outline-offset: 1px;
+}
+.sheen-kanban-handle[data-dragging] {
+  color: var(--sheen-primary-text);
+  cursor: grabbing;
+}
+.sheen-kanban-handle:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+[data-flat-cursor],
+[data-flat-cursor] .sheen-kanban-handle {
+  cursor: default !important;
+}
+
+@keyframes sheen-kanban-pick {
+  to {
+    rotate: 1.5deg;
+    scale: 1.03;
+  }
+}
+@keyframes sheen-kanban-lift {
+  to {
+    scale: 1.02;
+  }
+}
+@keyframes sheen-kanban-count {
+  from {
+    scale: 0.6;
+  }
+}
+:dir(rtl) .sheen-kanban-item[data-overlay] {
+  animation-name: sheen-kanban-pick-rtl;
+}
+
+@keyframes sheen-kanban-pick-rtl {
+  to {
+    rotate: -1.5deg;
+    scale: 1.03;
+  }
+}

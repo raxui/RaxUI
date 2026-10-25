@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "name": "chat",
+  "version": "0.1.0",
+  "description": "Source-owned chat ported from boot-ui.",
+  "requires": [
+    "foundation",
+    "button"
+  ],
+  "packages": {},
+  "styles": [
+    "components/chat"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/chat/chat.tsx",
+      "target": "components/ui/chat.tsx",
+      "type": "tsx",
+      "sha256": "0fbb9e3d528cd25bb294fbb924064f8a3ccecfa4f6dbebb060ba956f2ddd97dc"
+    },
+    {
+      "source": "theme/scss/components/_chat.scss",
+      "target": "styles/sheenui/components/_chat.scss",
+      "type": "scss",
+      "sha256": "fc14974e6eeb0232cc3c67f26706cf8322c01d46fe0b08f98e83176b93bf2076"
+    },
+    {
+      "source": "registry/react/components/chat/chat-composer.tsx",
+      "target": "components/ui/chat-composer.tsx",
+      "type": "tsx",
+      "sha256": "ee501b7d8b70b4b81f8f73661868af832753e6c935f89ef5d1ab5c01010fc5e4"
+    },
+    {
+      "source": "registry/react/foundation/app-shell-utils.ts",
+      "target": "lib/app-shell-utils.ts",
+      "type": "ts",
+      "sha256": "a77779ef90233c68a95c0bc3ced8f27ea768a4a57bba30ceb297b94598ddaeb4"
+    }
+  ]
+}

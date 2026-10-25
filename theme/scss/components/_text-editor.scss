@@ -1,0 +1,590 @@
+@import "input-mixins";
+// -----------------------------------------------------------------------------
+// TextEditor — Input / Textarea surface around a Tiptap editor: a sticky
+// toolbar, the editable `.sheen-prose` area, an optional footer (tools, counter,
+// send button) and a glass bubble menu over selections.
+// `.sheen-prose` is also usable on its own to display saved HTML.
+// Requires _input.scss (surface mixin) and _textarea.scss (counter ring).
+// -----------------------------------------------------------------------------
+
+.sheen-editor {
+  @include sheen-input-surface("&:focus-within");
+
+  --sheen-editor-min-h: 140px;
+  --sheen-editor-max-h: none;
+  --sheen-editor-pad-x: 1rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+
+  &[data-invalid] {
+    --sheen-input-border: rgba(var(--bs-danger-rgb), 0.6);
+    --sheen-input-ring-rgb: var(--bs-danger-rgb);
+  }
+
+  &[data-disabled] {
+    opacity: 0.55;
+  }
+
+  &[data-readonly] {
+    --sheen-input-bg: transparent;
+
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+}
+
+// ---- Toolbar ---------------------------------------------------------------------------
+
+.sheen-editor-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.125rem;
+  flex-wrap: wrap;
+  padding: 0.375rem;
+  border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+  border-radius: calc(var(--sheen-input-radius) - 1px) calc(var(--sheen-input-radius) - 1px) 0 0;
+  background-color: rgba(var(--bs-body-bg-rgb), 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  // Phones: one row that scrolls sideways (like iOS Notes); wider screens wrap.
+  @media (max-width: 575.98px) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .sheen-editor[data-variant="filled"] & {
+    background-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .sheen-editor[data-readonly] & {
+    display: none;
+  }
+}
+
+// Toolbar in the footer (composer): no bar of its own.
+.sheen-editor-toolbar-inline {
+  position: static;
+  flex-wrap: nowrap;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.sheen-editor-tool {
+  --sheen-editor-tool-size: 2rem;
+
+  flex-shrink: 0;
+  color: var(--bs-secondary-color);
+
+  &.btn-glass-icon {
+    width: var(--sheen-editor-tool-size);
+    height: var(--sheen-editor-tool-size);
+    min-height: 0;
+    padding: 0;
+    border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  }
+
+  svg {
+    width: 1.0625rem;
+    height: 1.0625rem;
+  }
+
+  &:hover {
+    color: var(--bs-emphasis-color);
+  }
+
+  // On: tinted chip, like iOS Notes' format buttons.
+  &[data-active] {
+    color: var(--bs-primary);
+    background-color: rgba(var(--bs-primary-rgb), 0.12);
+
+    [data-bs-theme="dark"] & {
+      color: var(--bs-primary-text-emphasis);
+    }
+  }
+
+  &[aria-disabled="true"] {
+    opacity: 0.35;
+    cursor: default;
+
+    &:hover {
+      color: var(--bs-secondary-color);
+      background-color: transparent;
+    }
+  }
+
+  @include motion-safe {
+    transition:
+      color var(--sheen-duration-fast) ease,
+      background-color var(--sheen-duration-fast) ease,
+      transform var(--sheen-duration) var(--sheen-ease-spring);
+
+    &:active:not([aria-disabled="true"]) {
+      transform: scale(0.88);
+    }
+  }
+}
+
+// Text-style and alignment pickers: label / icon + chevron.
+.sheen-editor-heading-trigger,
+.sheen-editor-align-trigger {
+  &.btn-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    height: 2rem;
+    min-height: 0;
+    padding: 0 0.375rem 0 0.5rem;
+    border-radius: calc(0.5rem * var(--sheen-radius-scale));
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  > svg:last-child {
+    width: 0.875rem;
+    height: 0.875rem;
+    opacity: 0.6;
+  }
+
+  &[data-state="open"] {
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  }
+}
+
+.sheen-editor-heading-trigger {
+  width: 7.75rem;
+  justify-content: space-between;
+}
+
+.sheen-editor-align-trigger > svg:first-child {
+  width: 1.0625rem;
+  height: 1.0625rem;
+}
+
+.sheen-editor-sep {
+  flex-shrink: 0;
+  width: 1px;
+  height: 1.25rem;
+  margin-inline: 0.25rem;
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.12);
+}
+
+[dir="rtl"] .sheen-editor-flip,
+.sheen-editor-flip:dir(rtl) {
+  transform: scaleX(-1);
+}
+
+// Menus: items preview the style they apply.
+.sheen-editor-menu {
+  min-width: 13rem;
+
+  .sheen-menu-item {
+    gap: 0.5rem;
+  }
+}
+
+.sheen-editor-menu-icon {
+  display: inline-flex;
+  color: var(--bs-secondary-color);
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.sheen-editor-menu-kbd {
+  margin-inline-start: auto;
+  padding-inline-start: 1rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.sheen-editor-menu-h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
+.sheen-editor-menu-h2 { font-size: 1.0625rem; font-weight: 650; }
+.sheen-editor-menu-h3 { font-size: 0.9375rem; font-weight: 600; }
+
+// ---- Editable area -----------------------------------------------------------------
+
+.sheen-editor-scroll {
+  flex: 1;
+  min-height: var(--sheen-editor-min-h);
+  max-height: var(--sheen-editor-max-h);
+  overflow-y: auto;
+  cursor: text;
+  scrollbar-width: thin;
+
+  .sheen-editor[data-readonly] & {
+    min-height: 0;
+    cursor: default;
+  }
+}
+
+.sheen-editor-content {
+  min-height: var(--sheen-editor-min-h);
+  padding: 0.875rem var(--sheen-editor-pad-x);
+  outline: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  caret-color: var(--bs-primary);
+
+  .sheen-editor[data-readonly] & {
+    min-height: 0;
+  }
+
+  // Placeholder on the first empty line.
+  > p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: inline-start;
+    height: 0;
+    color: var(--bs-secondary-color);
+    opacity: 0.75;
+    pointer-events: none;
+  }
+
+  ::selection {
+    background-color: rgba(var(--bs-primary-rgb), 0.22);
+  }
+
+  // Selected node (divider, …)
+  .ProseMirror-selectednode {
+    outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+    outline-offset: 2px;
+    border-radius: calc(0.25rem * var(--sheen-radius-scale));
+  }
+
+  // Gap cursor (between blocks that can't hold a caret).
+  .ProseMirror-gapcursor {
+    position: relative;
+    display: none;
+    pointer-events: none;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: -2px;
+      display: block;
+      width: 20px;
+      border-top: 1px solid var(--bs-emphasis-color);
+      animation: sheen-editor-blink 1.1s steps(2, start) infinite;
+    }
+  }
+
+  &.ProseMirror-focused .ProseMirror-gapcursor {
+    display: block;
+  }
+}
+
+@keyframes sheen-editor-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+// ---- Footer -------------------------------------------------------------------------
+
+.sheen-editor-footer {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.25rem 0.375rem 0.375rem;
+}
+
+.sheen-editor-footer-start {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+// ---- Bubble menu --------------------------------------------------------------------
+
+.sheen-editor-bubble {
+  @include glass($alpha: calc(var(--sheen-glass-alpha) + 0.3), $shadow: var(--sheen-shadow-lg));
+
+  z-index: 1060;
+  padding: 0.25rem;
+  border-radius: calc(0.875rem * var(--sheen-radius-scale));
+  transform-origin: bottom center;
+
+  @include motion-safe {
+    animation: sheen-editor-bubble-in 280ms var(--sheen-ease-spring);
+  }
+
+  &[data-mode="link"] {
+    width: min(22rem, calc(100vw - 1rem)) !important; // the plugin sets max-content
+  }
+
+  .sheen-editor-tool {
+    --sheen-editor-tool-size: 1.875rem;
+  }
+
+  .sheen-editor-sep {
+    height: 1.125rem;
+    margin-inline: 0.1875rem;
+  }
+}
+
+.sheen-editor-bubble-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.0625rem;
+}
+
+@keyframes sheen-editor-bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.92);
+  }
+}
+
+// ---- Link form (bubble + toolbar popover) --------------------------------------------
+
+.sheen-editor-link-popover.sheen-popover-content {
+  width: 22rem;
+  padding: 0.375rem;
+}
+
+.sheen-editor-link-form {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  .sheen-input-group,
+  .form-control {
+    min-width: 0;
+  }
+
+  .btn-glass-icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+// ---- Prose: shared typography for the editor and for displaying saved HTML ------------
+
+.sheen-prose {
+  color: var(--bs-emphasis-color);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin: 0 0 0.625em;
+  }
+
+  h1,
+  h2,
+  h3 {
+    margin: 1.1em 0 0.4em;
+    color: var(--bs-emphasis-color);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  h1 { font-size: 1.625rem; }
+  h2 { font-size: 1.3125rem; }
+  h3 { font-size: 1.0625rem; font-weight: 650; letter-spacing: 0; }
+
+  a {
+    color: var(--bs-link-color);
+    text-decoration: underline;
+    text-decoration-color: rgba(var(--bs-link-color-rgb), 0.35);
+    text-underline-offset: 0.18em;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  strong { font-weight: 650; }
+
+  mark {
+    padding: 0.05em 0.15em;
+    border-radius: 0.2em;
+    color: inherit;
+    background-color: rgba(var(--bs-warning-rgb), 0.35);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  code {
+    padding: 0.125em 0.375em;
+    border-radius: calc(0.375rem * var(--sheen-radius-scale));
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
+    font-size: 0.875em;
+  }
+
+  pre {
+    margin: 0.75em 0;
+    padding: 0.875rem 1rem;
+    overflow-x: auto;
+    border-radius: calc(0.75rem * var(--sheen-radius-scale));
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.055);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+
+    code {
+      padding: 0;
+      background: none;
+      font-size: inherit;
+    }
+  }
+
+  blockquote {
+    margin: 0.75em 0;
+    padding: 0.125em 0;
+    padding-inline-start: 1rem;
+    border-inline-start: 3px solid rgba(var(--bs-primary-rgb), 0.5);
+    color: var(--bs-secondary-color);
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ul,
+  ol {
+    margin: 0 0 0.625em;
+    padding-inline-start: 1.5em;
+
+    p {
+      margin: 0;
+    }
+
+    li + li,
+    li > ul,
+    li > ol {
+      margin-top: 0.2em;
+    }
+
+    li > ul,
+    li > ol {
+      margin-bottom: 0;
+    }
+  }
+
+  ul li::marker {
+    color: var(--bs-secondary-color);
+  }
+
+  ol li::marker {
+    color: var(--bs-secondary-color);
+    font-variant-numeric: tabular-nums;
+  }
+
+  hr {
+    margin: 1.25em 0;
+    border: 0;
+    border-top: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.15);
+    opacity: 1;
+  }
+
+  // Checklist: round checks like Reminders.
+  ul[data-type="taskList"] {
+    padding-inline-start: 0.125em;
+    list-style: none;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+
+      > label {
+        display: inline-flex;
+        flex-shrink: 0;
+        margin-top: 0.2em;
+        user-select: none;
+      }
+
+      > div {
+        flex: 1;
+        min-width: 0;
+      }
+
+      &[data-checked="true"] > div {
+        color: var(--bs-secondary-color);
+        text-decoration: line-through;
+        text-decoration-color: rgba(var(--bs-emphasis-color-rgb), 0.35);
+      }
+    }
+
+    input[type="checkbox"] {
+      width: 1.125rem;
+      height: 1.125rem;
+      margin: 0;
+      border: 1.5px solid rgba(var(--bs-emphasis-color-rgb), 0.3);
+      border-radius: 50%;
+      background-color: transparent;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 0.75rem;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+
+      &:checked {
+        border-color: var(--bs-primary);
+        background-color: var(--bs-primary);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+      }
+
+      &:focus-visible {
+        outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+        outline-offset: 2px;
+      }
+
+      @include motion-safe {
+        transition:
+          background-color var(--sheen-duration-fast) ease,
+          border-color var(--sheen-duration-fast) ease,
+          transform var(--sheen-duration) var(--sheen-ease-spring);
+
+        &:active {
+          transform: scale(0.85);
+        }
+      }
+    }
+  }
+}
