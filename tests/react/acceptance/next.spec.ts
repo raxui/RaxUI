@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url"
 // Keep keyboard/selection checks independent of spring animation timing.
 test.use({ reducedMotion: "reduce", actionTimeout: 15_000 })
 
-const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "date-picker", "date-range-picker", "combobox", "autocomplete", "select", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner"]
+const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "date-picker", "date-range-picker", "combobox", "autocomplete", "select", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "data-table", "data-grid", "sortable", "resizable"]
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
 // CI runs 15.5.28 and 16.4.3.
 const CREATE_NEXT_APP = `create-next-app@${process.env.CREATE_NEXT_APP_VERSION ?? "16.4.3"}`
@@ -141,6 +141,9 @@ export default function Overlays() {
   mkdirSync(path.join(app, "app/shell"))
   writeFileSync(path.join(app, "app/shell/demo.tsx"), readFileSync(path.join(repo, "tests/react/fixtures/app-shell.tsx"), "utf8"))
   writeFileSync(path.join(app, "app/shell/page.tsx"), 'import ShellDemo from "./demo"; export default function Page() { return <ShellDemo /> }')
+  mkdirSync(path.join(app, "app/data-components"))
+  writeFileSync(path.join(app, "app/data-components/demo.tsx"), readFileSync(path.join(repo,"tests/react/fixtures/data-components.tsx"),"utf8"))
+  writeFileSync(path.join(app, "app/data-components/page.tsx"), 'import DataDemo from "./demo"; export default function Page(){ return <DataDemo/> }')
   sh("npm run build", app)
 
   const port = await freePort()
@@ -365,4 +368,20 @@ test("app shell hydrates with stored preferences, keeps theme portals and handle
  await sidebar.click();const dialog=page.getByRole("dialog",{name:"Workspace"});await expect(dialog).toBeVisible();await expect(dialog).toHaveAttribute("data-side","right");await page.keyboard.press("Escape");await expect(sidebar).toBeFocused()
  const footer=page.getByRole("button",{name:"Resources",exact:true});await footer.click();await expect(page.getByRole("link",{name:"Guide",exact:true})).toBeVisible()
  expect(errors).toEqual([])
+})
+
+test("data components hydrate and handle table state, safe grid edits, reordering and persisted panels",async({page})=>{
+ const errors:string[]=[];page.on("pageerror",e=>errors.push(e.message));page.on("console",m=>{if(m.type()==="error")errors.push(m.text())})
+ await page.addInitScript(()=>{if(!sessionStorage.getItem("layout-tested"))localStorage.setItem("react-resizable-panels:acceptance-split","not-json")})
+ await page.goto(baseUrl+"/data-components")
+ const table=page.getByRole("region",{name:"Table demo"});await table.getByRole("searchbox").fill("Row 0002");await expect(table.getByRole("cell",{name:"Row 0002",exact:true})).toBeVisible();await table.getByRole("button",{name:"Reset",exact:true}).click()
+ await table.getByRole("checkbox",{name:"Select row",exact:true}).first().click();await page.getByRole("button",{name:"Use selection"}).click();await expect(page.getByLabel("Last edit")).toHaveText("1 selected");await page.getByRole("button",{name:"Clear selection"}).click()
+ const grid=page.getByRole("grid",{name:"Inventory"});await expect(grid.getByRole("gridcell",{name:"Row 0001",exact:true})).toBeVisible();await grid.getByRole("gridcell",{name:"Row 0001",exact:true}).click();await grid.press("Enter");const editor=grid.getByRole("textbox",{name:"Name, row 1",exact:true});await editor.fill("Edited row");await editor.press("Enter");await expect(page.getByLabel("Last edit")).toHaveText("0:name:Edited row")
+ await grid.press("Control+Home");await grid.press("ArrowRight");await grid.press("Enter");const number=grid.getByRole("textbox",{name:"Amount, row 1",exact:true});await number.fill("invalid");await number.press("Enter");await expect(grid.getByRole("alert")).toHaveText("Enter a number.");await number.press("Escape")
+ await grid.press("Control+End");await expect.poll(()=>grid.getAttribute("aria-activedescendant")).toMatch(/r9999-c4$/);await expect(grid.locator('.sheen-grid-body [role=row]')).not.toHaveCount(10000)
+ const tasks=page.getByRole("region",{name:"Sortable demo"}),handle=tasks.locator('button[aria-label="Move Alpha"]');await handle.focus();await page.keyboard.press("Space");await expect(handle).toHaveAttribute("data-dragging","");await page.waitForTimeout(60);await page.keyboard.press("ArrowDown");await page.waitForTimeout(100);await page.keyboard.press("Space");await expect(page.getByLabel("Task order")).toHaveText("Beta,Alpha,Gamma");await expect(handle).toBeFocused()
+ const separator=page.getByRole("separator",{name:"Resize panels"});await separator.focus();const old=await separator.getAttribute("aria-valuenow");await separator.press("ArrowRight");await expect(separator).not.toHaveAttribute("aria-valuenow",old!);const changed=await separator.getAttribute("aria-valuenow");await expect.poll(()=>page.evaluate(()=>localStorage.getItem("react-resizable-panels:acceptance-split"))).not.toBe("not-json")
+ // Do not reset storage on reload: verify the saved layout hydrates without a mismatch.
+ await page.evaluate(()=>sessionStorage.setItem("layout-tested","true"));await page.reload();await expect(page.getByRole("separator",{name:"Resize panels"})).toHaveAttribute("aria-valuenow",changed!)
+ await page.getByRole("button",{name:"Toggle direction"}).click();await expect(page.locator('.sheen-resizable')).toHaveAttribute("data-mirrored","");expect(errors).toEqual([])
 })

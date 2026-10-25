@@ -1,5 +1,7 @@
 "use client"
 
+// Built-in SVG paths from Lucide (ISC).
+
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 
@@ -53,7 +55,7 @@ const DropdownMenuContent = React.forwardRef<React.ElementRef<typeof DropdownMen
         // Radix focuses the highlighted item (pointer and keyboard) and the menu itself when none is.
         onFocus={(event) => {
           onFocus?.(event)
-          glide(event.currentTarget, (event.target as HTMLElement).closest<HTMLElement>('[role="menuitem"]'))
+          glide(event.currentTarget, (event.target as HTMLElement).closest<HTMLElement>('[role^="menuitem"]'))
         }}
         {...props}
       >
@@ -89,7 +91,23 @@ const DropdownMenuSeparator = React.forwardRef<
 ))
 DropdownMenuSeparator.displayName = "DropdownMenuSeparator"
 
+
+const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
+const DropdownMenuCheckboxItem = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>, React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>>(({className,children,...props},ref)=>(
+  <DropdownMenuPrimitive.CheckboxItem ref={ref} className={cn("sheen-dropdown-item sheen-dropdown-inset",className)} {...props}>
+    <span className="sheen-dropdown-indicator"><DropdownMenuPrimitive.ItemIndicator><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth={3}><path d="m5 12 4 4L19 6"/></svg></DropdownMenuPrimitive.ItemIndicator></span>{children}
+  </DropdownMenuPrimitive.CheckboxItem>
+))
+DropdownMenuCheckboxItem.displayName="DropdownMenuCheckboxItem"
+const DropdownMenuRadioItem = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>, React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>>(({className,children,...props},ref)=>(
+  <DropdownMenuPrimitive.RadioItem ref={ref} className={cn("sheen-dropdown-item sheen-dropdown-inset",className)} {...props}>
+    <span className="sheen-dropdown-indicator"><DropdownMenuPrimitive.ItemIndicator><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg></DropdownMenuPrimitive.ItemIndicator></span>{children}
+  </DropdownMenuPrimitive.RadioItem>
+))
+DropdownMenuRadioItem.displayName="DropdownMenuRadioItem"
+
 export {
+  DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuGroup,

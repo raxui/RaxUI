@@ -1,0 +1,136 @@
+// -----------------------------------------------------------------------------
+// Sortable — the dragged item lifts (a little larger, a deeper shadow) and its
+// neighbours glide out of the way. With an overlay, the original stays behind
+// as a dashed placeholder while the lifted copy follows the pointer.
+// -----------------------------------------------------------------------------
+
+.sheen-sortable-item {
+  position: relative;
+  touch-action: manipulation;
+
+  &[data-handle]:not([data-disabled]) {
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  &[data-flat-cursor] {
+    cursor: default !important;
+  }
+
+  &[data-disabled] {
+    opacity: 0.5;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+    outline-offset: 2px;
+    border-radius: var(--sheen-radius-sm);
+  }
+
+  // Moving itself (no overlay): lift it above the rest.
+  &[data-dragging]:not([data-placeholder]) {
+    z-index: 10;
+    cursor: grabbing;
+    box-shadow: var(--sheen-shadow-lg);
+    scale: 1.02;
+  }
+
+  // Left behind (with an overlay): a dashed slot where it will land.
+  &[data-placeholder] {
+    opacity: 1 !important;
+    color: transparent;
+
+    > * {
+      visibility: hidden;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1.5px dashed rgba(var(--bs-primary-rgb), 0.45);
+      border-radius: inherit;
+      background-color: rgba(var(--bs-primary-rgb), 0.05);
+    }
+  }
+
+  // The copy in the overlay.
+  &[data-overlay] {
+    cursor: grabbing;
+    box-shadow: var(--sheen-shadow-lg);
+
+    @include motion-safe {
+      animation: sheen-sortable-lift 220ms var(--sheen-ease-out) forwards;
+    }
+  }
+}
+
+.sheen-sortable-overlay {
+  cursor: grabbing;
+
+  &.sheen-sortable-overlay-flat {
+    cursor: default;
+  }
+}
+
+.sheen-sortable-handle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--sheen-radius-sm);
+  color: var(--bs-tertiary-color);
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  transition:
+    color var(--sheen-duration-fast) ease,
+    background-color var(--sheen-duration-fast) ease;
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  &:hover {
+    color: var(--bs-secondary-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+    outline-offset: 1px;
+  }
+
+  &[data-dragging] {
+    cursor: grabbing;
+    color: var(--sheen-primary-text);
+  }
+
+  &[data-flat-cursor] {
+    cursor: default;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// While sorting, text doesn't get selected along the way.
+.sheen-sortable[data-sorting] {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@keyframes sheen-sortable-lift {
+  to {
+    scale: 1.03;
+  }
+}
