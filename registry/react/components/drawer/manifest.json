@@ -24,7 +24,7 @@
       "source": "theme/scss/components/_drawer.scss",
       "target": "styles/sheenui/components/_drawer.scss",
       "type": "scss",
-      "sha256": "4b29c1b124d3a110719c9e0a0cbd43916a9734fa58474e1e8711f711b984d015"
+      "sha256": "316ac689bb2d8fc1a4532ddcb0721fc7ed490784a8ac5181155a412f52be12a6"
     }
   ]
 }
