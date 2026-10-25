@@ -2,11 +2,14 @@
   "schemaVersion": 1,
   "name": "date-range-input",
   "version": "0.1.0",
-  "description": "Source-owned date-range-input with Field integration.",
+  "description": "Segmented date range with responsive calendar, presets, booking constraints and Field integration.",
   "requires": [
     "foundation",
     "field",
-    "input"
+    "date-input",
+    "calendar",
+    "button",
+    "popover"
   ],
   "packages": {},
   "styles": [
@@ -17,13 +20,19 @@
       "source": "registry/react/components/date-range-input/date-range-input.tsx",
       "target": "components/ui/date-range-input.tsx",
       "type": "tsx",
-      "sha256": "cd86b3e3889985140c510a02f82f1e4ad1cb7c1c455d61400dc5ababbaf2ea6f"
+      "sha256": "88fc3411782a22ea5dd177fbd8ca4a23ac4e87ae13f6ad1b8b213f58426df71d"
     },
     {
       "source": "theme/scss/components/_date-range-input.scss",
       "target": "styles/sheenui/components/_date-range-input.scss",
       "type": "scss",
-      "sha256": "fc1d620516ad5e0d7ba81a38927ef46fabb144f94fdf4edd843575a2602e2c56"
+      "sha256": "bd6f1ef3efc797bee51f5562e22e6caa77714065fcac1e1a71d6688d40a5bcb0"
+    },
+    {
+      "source": "registry/react/components/date-range-input/native-date-range-input.tsx",
+      "target": "components/ui/native-date-range-input.tsx",
+      "type": "tsx",
+      "sha256": "879647872433a925a0c137179fd51f8a2cb60e542b1d97515784d5d7fb100623"
     }
   ]
 }

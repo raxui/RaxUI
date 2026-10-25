@@ -1,10 +1,10 @@
 import * as React from "react"
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
-import { DateInput } from "../../registry/react/components/date-input/date-input"
-import { TimePicker } from "../../registry/react/components/time-picker/time-picker"
-import { DateTimeInput } from "../../registry/react/components/date-time-input/date-time-input"
-import { DateRangeInput } from "../../registry/react/components/date-range-input/date-range-input"
+import { NativeDateInput as DateInput } from "../../registry/react/components/date-input/date-input"
+import { NativeTimePicker as TimePicker } from "../../registry/react/components/time-picker/time-picker"
+import { NativeDateTimeInput as DateTimeInput } from "../../registry/react/components/date-time-input/date-time-input"
+import { NativeDateRangeInput as DateRangeInput } from "../../registry/react/components/date-range-input/date-range-input"
 import { Wired, expectWiring } from "./control-test-utils"
 
 describe("native dates and times", () => {

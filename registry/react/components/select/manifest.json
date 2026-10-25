@@ -31,13 +31,13 @@
       "source": "registry/react/foundation/choice-highlight.tsx",
       "target": "lib/choice-highlight.tsx",
       "type": "tsx",
-      "sha256": "fd197ff7b216fb9af5bb0b988fe1010996cbf0b39063be39000c81247aaf2647"
+      "sha256": "974ca86748703edd32d38c6e09ab872dccb62ede87b8d095bb655f0569a851cc"
     },
     {
       "source": "theme/scss/components/_choice-highlight.scss",
       "target": "styles/sheenui/components/_choice-highlight.scss",
       "type": "scss",
-      "sha256": "11f41547e5f9c852b055ba1a5ab46a7bf95b34b34ff8a7213cf91f56c7c7a1d3"
+      "sha256": "91f69af6a94fc8be6b00a87c0f07ec24fa47335ec2dd4cf7af2c748f5d12f6e0"
     }
   ]
 }

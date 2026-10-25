@@ -448,13 +448,13 @@ Users who set their system to reduce transparency get opaque glass automatically
 - Only React on Vite 6+ or Next.js 15+ (App Router, no Tailwind) and the shipped registry components are supported. The welcome page replaces the `create-vite` 6.x–9.x `react-ts` App or the `create-next-app` 15.x–16.x page; other templates are kept and reported. Other components, `update`/`diff`, path aliases, and other build tools are future work.
 
 
-## Native dates and times
+## Dates and times
 
 Install `date-input`, `time-picker`, `date-time-input`, or `date-range-input`.
-These use the browser's built-in pickers, including its locale and keyboard behavior;
-custom calendars belong to #38. Bootstrap dark mode supplies `color-scheme: dark`.
-`StartIcon`, appearance, size, variant, disabled/read-only and native min/max/step
-attributes follow Input. All controls consume Field attributes automatically.
+Blazor retains native browser pickers; React provides the boot-ui segmented fields,
+custom calendar and time wheels described below, with explicit Native exports for
+compatibility. Bootstrap dark mode supplies color-scheme for native pickers.
+All controls integrate with Field; React and Blazor value types differ.
 
 Blazor: `DateInput<TValue>` accepts DateOnly, DateTime, DateTimeOffset (and nullable
 forms); `TimePicker` binds TimeOnly; `DateTimeInput<TValue>` accepts DateTime or
@@ -467,14 +467,38 @@ silently changing either endpoint. StartLabel, EndLabel, Separator and OrderMess
 are translatable. Native min/max prevent crossing through the picker. All these
 inputs post with generated names in static SSR; use FormName/SupplyParameterFromForm.
 
-React: DateInput, TimePicker and DateTimeInput forward their input ref and accept
-Input props. Values are native strings (`YYYY-MM-DD`, `HH:mm`, `YYYY-MM-DDTHH:mm`).
-DateRangeInput accepts `value`/`defaultValue` as `{ start, end }` and `onChange`;
-`name`/`endName` name the endpoints for native form posts. `startLabel`, `endLabel`,
-`separator` and `orderMessage` translate its text. In react-hook-form use Controller
-for the range and an order refinement in the application's schema to block submit;
-the range displays the error and sets native endpoint limits. Single inputs use
-register or Controller through Field like Input.
+React: DateInput and DateTimeInput now match boot-ui's segmented fields. Their
+value/defaultValue and onChange use Date | null, refs point to the field group
+(focus() moves to the first empty segment), and name posts a local ISO string.
+DateInput also exports TimeInput, DateTimeInput and their prop types. DateTimeInput
+is available from the date-time-input entry as well. Segment order, numerals and
+labels follow locale; Arabic/Persian digits, arrow stepping, visual left/right
+navigation, clearable, picker, min/max, isDateDisabled, sizes and field variants
+are supported. Time fields add hourCycle (12 or 24) and minuteStep. Picker content
+uses the shared calendar and time wheels inside the nearest SheenThemeProvider.
+clearLabel, pickerLabel, nowLabel and doneLabel customize picker actions.
+
+TimePicker is the standalone wheel group: value/defaultValue are
+{ hours: number, minutes: number } | null and onChange receives TimeValue.
+It supports locale, hourCycle, minuteStep, disabled and autoFocus. Use TimeInput
+for an editable time field with hidden form submission. Current-time defaults are
+read after hydration to support deterministic static Next.js prerendering. Calendar is independently
+installable and supports single/range selection, min/max/disabled dates, localized
+week starts, keyboard navigation, month/year selection and optional day content.
+
+Migration: the old native string/ChangeEvent/HTMLInputElement APIs remain available
+as NativeDateInput, NativeTimePicker and NativeDateTimeInput from the corresponding
+entries. Existing applications can alias those exports to keep their old behavior.
+Use Controller with Date | null for the new segmented fields instead of native
+register handlers. No implicit UTC conversion is performed.
+
+DateRangeInput now uses { from?: Date, to?: Date }, typed start/end segments, a
+responsive one/two-month calendar, presets, minDays/maxDays, excludeDisabled,
+renderDayContent, days/nights summaries and closeOnComplete. name posts
+name_from/name_to local ISO date strings. It exports defaultRangePresets and
+DateRangePreset without installing a separate picker. The native { start, end }
+string contract, name/endName and orderMessage remain available through
+NativeDateRangeInput and NativeDateRangeValue.
 
 
 ## File upload
@@ -508,9 +532,9 @@ posts use `name`; controlled files, drops and removals synchronize that payload.
 ## Popover, combobox and autocomplete
 
 Install `popover`, `combobox` or `autocomplete`. The latter two require popover,
-input and field; no Command item is installed. Both support a single selection.
-Options have unique string values; autocomplete permits free text. All visible
-built-in text is overridable for translation.
+input and field. React Combobox additionally installs Command for searchable
+grouped results and multiple selection. Blazor retains its existing single-value
+controls. Options use unique values; the React APIs below describe both modes.
 
 Blazor Popover uses the native `popover` top layer and a disposable collocated JS
 module extracted from DropdownMenu (ADR 013). It aligns below the trigger's inline
@@ -541,21 +565,36 @@ PopoverClose. Content uses Radix Popover 1.3.1 and portals into the nearest
 SheenThemeProvider, preserving theme attributes and accent. Open/defaultOpen and
 onOpenChange follow Radix. Content defaults to inline start alignment with a 4px gap.
 
-React Combobox takes `options: { value, label, disabled? }[]`, value/defaultValue,
-onChange (or onValueChange), name for a hidden native post, placeholder,
-searchPlaceholder and emptyMessage. Its ref is the button. Autocomplete takes
-string value/defaultValue, onChange(string), suggestions, optional
-loadSuggestions(query, AbortSignal), loading, loadingMessage, emptyMessage and
-errorMessage. Its ref is the input; Input props and name pass through. Use Controller
-and `{...field}` inside Field to integrate either control with react-hook-form.
+React Combobox composes Popover and Command. Options support value, label,
+disabled, description, icon, group and keywords. Single selection uses string | null;
+multiple=true uses string[] with removable chips and maxChips. onValueChange
+receives the matching value shape. clearable, onCreate(label), onSearchChange(query)
+and loading cover clearing, creation and remote results (remote mode disables
+client filtering). name posts one hidden input per selected value; disabled values
+are not submitted. Field-level onBlur, invalid, size, variant and appearance are
+supported. Translate placeholder/searchPlaceholder/emptyText, clearLabel,
+removeLabel, createLabel and selectedText. The old single-value onChange callback
+and emptyMessage alias remain available. The ref still points to the trigger.
 
-Keyboard: open combobox with Enter/Space, arrows or typeahead; type to filter in
-its search input. Arrows skip disabled options, Home/End jump, Enter selects,
-Escape dismisses, and Tab closes while continuing navigation. Focus stays in
-an autocomplete input while an aria-activedescendant identifies its suggestion.
-Autocomplete Home/End navigate while suggestions are open. Both listboxes expose
-selection with aria-selected; pending async results expose aria-busy and a Bootstrap
-spinner with translated status text. Reduced motion disables pop-in and spinner motion.
+React Autocomplete has two explicit modes. With options, each option has a distinct
+value/label plus description, icon and disabled. value/defaultValue/onValueChange
+control selection, while inputValue/defaultInputValue/onInputValueChange control
+the text. minChars, custom filter (or false for server filtering), renderOption,
+emptyMessage(query), loading, clearLabel, loadingMessage, wrapperClassName and
+contentClassName customize the reference behavior. Ref and standard input/Field
+attributes reach the search input. Editing clears selection; choosing shows its
+label. Without options, the existing suggestions:string[] and onChange(string)
+free-text API is retained, including loadSuggestions(query, AbortSignal), loading,
+loadingMessage, emptyMessage, errorMessage, cancellation and stale-result guards.
+
+Combobox and Autocomplete retain gliding pointer/keyboard highlights, disabled-item
+skipping, Home/End, Enter, Escape, focus management and nearest-theme portals.
+Combobox uses Command's highlight for grouped results. Select remains Radix-based
+with groups, scrolling, form wiring and the shared gliding highlight. Command
+retains matching/keywords, groups, loading/empty, shortcuts, dialog/focus support,
+explicit IDs, Home/End and accessibility improvements; listId optionally connects
+an external trigger with its list. No new external runtime dependency is needed.
+
 
 ## Display basics
 

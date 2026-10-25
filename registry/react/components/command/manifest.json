@@ -19,7 +19,7 @@
       "source": "registry/react/components/command/command.tsx",
       "target": "components/ui/command.tsx",
       "type": "tsx",
-      "sha256": "21983ca99b2726397ec1c4059832662671c8b8baf6af285e840f9800584c758f"
+      "sha256": "164bcf1b96cd012d4c88d6441d750cb12072147c84b7eed950aa4e68029437ca"
     },
     {
       "source": "theme/scss/components/_command.scss",
