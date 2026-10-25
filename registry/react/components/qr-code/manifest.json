@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "name": "qr-code",
+  "version": "0.1.0",
+  "description": "Source-owned qr-code ported from boot-ui.",
+  "requires": [
+    "foundation",
+    "button"
+  ],
+  "packages": {
+    "qrcode": "1.5.4",
+    "@types/qrcode": "1.5.6",
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/qr-code"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/qr-code/qr-code.tsx",
+      "target": "components/ui/qr-code.tsx",
+      "type": "tsx",
+      "sha256": "2d3a7a3be1dd7f6b7f9250d1ddec74c5e0b5a70eafb05628f85bf9c18166b3ee"
+    },
+    {
+      "source": "theme/scss/components/_qr-code.scss",
+      "target": "styles/sheenui/components/_qr-code.scss",
+      "type": "scss",
+      "sha256": "9ea96645c9167e4b064834c20825522f7c51831360f19c88f16c56193eec6821"
+    },
+    {
+      "source": "registry/react/components/qr-code/qr-code-drawing.tsx",
+      "target": "components/ui/qr-code-drawing.tsx",
+      "type": "tsx",
+      "sha256": "6d3a3bd8565b7d94ad6cd592dcf8eb6e710c1a3652ce088c44460ce2ca6088b3"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+// -----------------------------------------------------------------------------
+// QR Code — the code sits on its own tile (its quiet zone is part of the image),
+// fades in once generated, and an overlay logo sits on a cleared centre tile.
+// Overlay and skeleton are placed against the first --sheen-qr-size of the root.
+// -----------------------------------------------------------------------------
+
+.sheen-qr-code {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: var(--sheen-qr-size);
+  min-height: var(--sheen-qr-size);
+}
+
+.sheen-qr-code-frame {
+  display: block;
+  flex-shrink: 0;
+  width: var(--sheen-qr-size);
+  height: var(--sheen-qr-size);
+  border-radius: var(--sheen-radius-sm);
+  box-shadow:
+    0 0 0 1px var(--sheen-glass-hairline),
+    var(--sheen-shadow-sm);
+  overflow: hidden;
+
+  > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  @include motion-safe {
+    animation: sheen-qr-in 420ms var(--sheen-ease-out);
+  }
+}
+
+.sheen-qr-code-overlay {
+  position: absolute;
+  top: calc(var(--sheen-qr-size) / 2);
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: var(--sheen-qr-hole);
+  height: var(--sheen-qr-hole);
+  padding: calc(var(--sheen-qr-hole) * 0.12);
+  border-radius: calc(var(--sheen-qr-hole) * 0.24);
+  background-color: var(--sheen-qr-bg);
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+
+  > img,
+  > svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  @include motion-safe {
+    animation: sheen-qr-pop 520ms var(--sheen-ease-spring) 120ms backwards;
+  }
+}
+
+.sheen-qr-code-skeleton {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--sheen-qr-size);
+  height: var(--sheen-qr-size);
+  border-radius: var(--sheen-radius-sm);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+  transform: translateX(-50%);
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(var(--bs-emphasis-color-rgb), 0.06), transparent);
+    transform: translateX(-100%);
+
+    @include motion-safe {
+      animation: sheen-qr-shimmer 1.4s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes sheen-qr-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes sheen-qr-pop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+}
+
+@keyframes sheen-qr-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}

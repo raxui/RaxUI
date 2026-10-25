@@ -911,3 +911,36 @@ Sortable keyboard: Space/Enter pick up and drop, arrows move, Escape cancels. To
 Resizable separators accept aria-label and keyboard arrows/Home/End. Pass percentages as strings such as `"40%"`; numbers are pixels. Persisted groups first hydrate the same initial markup, then remount once with their saved layout; unsaved groups remain mounted. Avoid sharing autoSaveId across unrelated groups. The underlying v4 imperative APIs remain available through usePanelRef/useGroupRef and the panelRef/groupRef props.
 
 DataTable labels translate controls, summaries and selection names; column helpers also accept label overrides. DataGrid labels translate menus, errors, cell names, counts and aggregates, while meta.validate can return application-specific messages. react-test contains reference-based examples for all four components, including a 10,000-row editable employee grid and RTL products. Data is local demo state; applications supply their own persistence/server callbacks. Existing Table and public source imports remain available. New Blazor counterparts are deferred in #74.
+
+## Advanced components
+
+Install individually with `npx sheenui-react add carousel` (or chat, ai, text-editor, qr-code, speed-dial, kanban). The CLI installs the complete local source/style closure and exact dependency pins. All components inherit SheenUI tokens, appearance, mode, accent and density from the provider. Direction follows the nearest DOM section; overlays inherit the nearest theme provider. Public composition parts forward DOM refs; controllers expose callbacks rather than calling services.
+
+| Component | Public API and behavior |
+| --- | --- |
+| Carousel | Carousel, Content, Item, Previous/Next, Dots, Counter, PlayPause and Thumbs. Embla 8.6.0; horizontal/vertical layouts, responsive slideSize, gap, loop/options, setApi, autoplay with focus/hover pause, fade and custom plugins. Arrow keys mirror in RTL. label/labels translate region, slides and controls. Motion preferences disable built-in autoplay and slide animation. |
+| Chat | Chat, Messages, DaySeparator, MessageGroup, Bubble, Typing and Composer. Grouped self/other bubbles, delivery/retry state, translated labels, per-message auto direction, follow-newest scrolling with a jump button when reading older messages. Composer supports controlled value/onValueChange, onSend, disabled, maxRows, actions and sendLabel. Enter sends, Shift+Enter adds a line, and IME composition never submits early. |
+| AI | Conversation, Message, Response, Shimmer, Reasoning, ToolCall, Sources, CodeBlock, Actions, Suggestions and PromptInput. Streaming caret and partial Markdown, GFM tables/task lists/code, copy/regenerate/vote actions, reasoning/tool disclosures, sources and send/stop callbacks. Translate each part through its label props. react-markdown 10.1.0 / remark-gfm 4.0.1 render no raw HTML and filter unsafe Markdown URLs. Clipboard failure never shows a false success. This is presentation only: consumers supply model requests, streaming text, stop logic and persistence. |
+| TextEditor | Tiptap 3.31.4 rich HTML editor: controlled value/onChange or defaultValue, toolbar full/basic/none/custom tools and top/bottom placement, selection bubble menu, links, headings, lists/tasks, alignment, formatting, undo/redo, maxLength/showCount, disabled/readOnly, footerEnd, hidden form name, extensions and editorRef. ref targets the editable element. Labels are configurable. htmlToText extracts inert plain text. Text blocks detect their own direction; toolbar arrows follow the local direction. |
+| QRCode | QRCode, Svg, Canvas, Image, Overlay, Skeleton and Download. Lazy qrcode 1.5.4 encoder, L/M/Q/H correction, square/rounded/dots shapes, quiet margin, size/colors and overlay hole. onGenerated/onError report status; Download supports SVG and high-resolution PNG. Use strong correction and adequate contrast/quiet zone when adding a logo. Image/SVG accessible labels and download text are configurable. |
+| SpeedDial | SpeedDial, Trigger, Content, Item, Action and Label. Controlled open/onOpenChange or defaultOpen, click/hover activation with delay, four physical sides, disabled actions, staggered motion and reduced-motion fallback. Arrow toward the actions opens/focuses them; arrows, Home/End and Escape navigate. Actions close the menu and Escape restores focus; outside click/Tab closes it. Provide translated trigger/action labels. |
+| Kanban | Kanban, Board, Column, ColumnHeader/Title/Count/Content/Handle, Item/Handle and Overlay. Controlled value is a record of column IDs to card arrays; onValueChange handles live movement, onCommit saves completed moves. Objects require getItemValue. Cards and columns support mouse/touch/keyboard, handles, disabled state, custom overlay, orientation and translated announcements. IDs must be unique across columns/cards. Crossing columns previews a move; Escape or dropping outside restores the original board. Sortable shares sensors, overlay placement, drag styling and motion settings. |
+
+The editor defers Tiptap hook construction until hydration because that dependency allocates random instance IDs during render, including with immediatelyRender:false. The server and first client render share an inert busy shell (and hidden form value); the interactive editor mounts afterward. This also supports strict Next.js prerendering without a consumer Suspense workaround. Store HTML as application data and sanitize untrusted saved HTML before displaying it outside the editor. AI components do not add an AI SDK or make network requests.
+
+Complex components are split by responsibility: editor configuration/icons/state/link/toolbar, AI response/reasoning/tools/sources/code/actions/prompt, QR drawing, chat composer, and Kanban context/keyboard/board/columns/cards/handles/overlay. Public imports remain `@/components/ui/<name>`.
+
+```tsx
+import { Chat, ChatMessages, ChatComposer, ChatMessageGroup, ChatBubble } from "@/components/ui/chat"
+import { AIResponse } from "@/components/ui/ai"
+import { TextEditor } from "@/components/ui/text-editor"
+
+<Chat style={{ height: 400 }}>
+  <ChatMessages>{messages.map(message => <ChatMessageGroup key={message.id} from="self"><ChatBubble>{message.text}</ChatBubble></ChatMessageGroup>)}</ChatMessages>
+  <ChatComposer onSend={sendMessage} placeholder="Message" />
+</Chat>
+<AIResponse markdown streaming={isStreaming}>{answer}</AIResponse>
+<TextEditor aria-label="Document" value={html} onChange={setHtml} maxLength={2000} showCount />
+```
+
+react-test includes the boot-ui usage examples for all seven components. Permanent Vite/Next acceptance fixtures cover registry installation and real browser interaction; unit tests cover value/validation, safe Markdown and SVG, clipboard errors, IME, editor SSR and keyboard state. New Blazor components are tracked separately in #75.

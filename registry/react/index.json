@@ -64,6 +64,13 @@
     { "name": "data-table", "manifest": "registry/react/components/data-table/manifest.json" },
     { "name": "data-grid", "manifest": "registry/react/components/data-grid/manifest.json" },
     { "name": "sortable", "manifest": "registry/react/components/sortable/manifest.json" },
-    { "name": "resizable", "manifest": "registry/react/components/resizable/manifest.json" }
+    { "name": "resizable", "manifest": "registry/react/components/resizable/manifest.json" },
+    { "name": "carousel", "manifest": "registry/react/components/carousel/manifest.json" },
+    { "name": "chat", "manifest": "registry/react/components/chat/manifest.json" },
+    { "name": "ai", "manifest": "registry/react/components/ai/manifest.json" },
+    { "name": "text-editor", "manifest": "registry/react/components/text-editor/manifest.json" },
+    { "name": "qr-code", "manifest": "registry/react/components/qr-code/manifest.json" },
+    { "name": "speed-dial", "manifest": "registry/react/components/speed-dial/manifest.json" },
+    { "name": "kanban", "manifest": "registry/react/components/kanban/manifest.json" }
   ]
 }

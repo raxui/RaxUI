@@ -5,6 +5,15 @@ export default defineConfig({
   resolve: {
     // Registry sources import the foundation as "@/lib/*", like an installed app.
     alias: {
+      "@/components/ui/carousel": fileURLToPath(new URL("./registry/react/components/carousel/carousel.tsx", import.meta.url)),
+      "@/components/ui/chat": fileURLToPath(new URL("./registry/react/components/chat/chat.tsx", import.meta.url)),
+      "@/components/ui/ai": fileURLToPath(new URL("./registry/react/components/ai/ai.tsx", import.meta.url)),
+      "@/components/ui/text-editor": fileURLToPath(new URL("./registry/react/components/text-editor/text-editor.tsx", import.meta.url)),
+      "@/components/ui/qr-code": fileURLToPath(new URL("./registry/react/components/qr-code/qr-code.tsx", import.meta.url)),
+      "@/components/ui/speed-dial": fileURLToPath(new URL("./registry/react/components/speed-dial/speed-dial.tsx", import.meta.url)),
+      "@/components/ui/kanban": fileURLToPath(new URL("./registry/react/components/kanban/kanban.tsx", import.meta.url)),
+      "@/components/ui/toggle": fileURLToPath(new URL("./registry/react/components/toggle/toggle.tsx", import.meta.url)),
+      "@/components/ui/textarea": fileURLToPath(new URL("./registry/react/components/textarea/textarea.tsx", import.meta.url)),
       "@/components/ui/select": fileURLToPath(new URL("./registry/react/components/select/select.tsx", import.meta.url)),
       "@/components/ui/checkbox": fileURLToPath(new URL("./registry/react/components/checkbox/checkbox.tsx", import.meta.url)),
       "@/components/ui/data-table": fileURLToPath(new URL("./registry/react/components/data-table/data-table.tsx", import.meta.url)),

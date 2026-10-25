@@ -1,0 +1,350 @@
+// -----------------------------------------------------------------------------
+// Carousel — Embla viewport + flex track. Slide width comes from CSS vars per
+// breakpoint (set by `slideSize`), spacing from --sheen-carousel-gap. Glass
+// arrows appear on hover / focus; dots stretch into a pill for the current
+// slide and fill with autoplay progress.
+// -----------------------------------------------------------------------------
+
+.sheen-carousel {
+  --sheen-carousel-gap: 1rem;
+  --sheen-carousel-size: var(--sheen-carousel-size-base, 100%);
+
+  position: relative;
+  min-width: 0;
+
+  @media (min-width: 576px) {
+    --sheen-carousel-size: var(--sheen-carousel-size-sm, var(--sheen-carousel-size-base, 100%));
+  }
+
+  @media (min-width: 768px) {
+    --sheen-carousel-size: var(--sheen-carousel-size-md, var(--sheen-carousel-size-sm, var(--sheen-carousel-size-base, 100%)));
+  }
+
+  @media (min-width: 992px) {
+    --sheen-carousel-size: var(--sheen-carousel-size-lg, var(--sheen-carousel-size-md, var(--sheen-carousel-size-sm, var(--sheen-carousel-size-base, 100%))));
+  }
+
+  @media (min-width: 1200px) {
+    --sheen-carousel-size: var(
+      --sheen-carousel-size-xl,
+      var(--sheen-carousel-size-lg, var(--sheen-carousel-size-md, var(--sheen-carousel-size-sm, var(--sheen-carousel-size-base, 100%))))
+    );
+  }
+}
+
+.sheen-carousel-viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.sheen-carousel-container {
+  display: flex;
+  margin-inline-start: calc(var(--sheen-carousel-gap) * -1);
+  touch-action: pan-y pinch-zoom;
+  backface-visibility: hidden;
+
+  [data-orientation="vertical"] & {
+    flex-direction: column;
+    height: 100%;
+    margin-inline-start: 0;
+    margin-top: calc(var(--sheen-carousel-gap) * -1);
+    touch-action: pan-x pinch-zoom;
+  }
+}
+
+.sheen-carousel-item {
+  flex: 0 0 var(--sheen-carousel-size);
+  min-width: 0;
+  padding-inline-start: var(--sheen-carousel-gap);
+
+  [data-orientation="vertical"] & {
+    min-height: 0;
+    padding-inline-start: 0;
+    padding-top: var(--sheen-carousel-gap);
+  }
+
+  // Fade stacks the slides: no spacing between them.
+  [data-effect="fade"] & {
+    flex-basis: 100%;
+  }
+}
+
+.sheen-carousel[data-effect="fade"] .sheen-carousel-container {
+  margin-inline-start: 0;
+
+  > .sheen-carousel-item {
+    padding-inline-start: 0;
+  }
+}
+
+// Scale: neighbours shrink and dim (App Store cards).
+.sheen-carousel[data-effect="scale"] .sheen-carousel-item > * {
+  transition:
+    transform var(--sheen-duration-slow) var(--sheen-ease-spring),
+    opacity var(--sheen-duration-slow) ease;
+}
+
+.sheen-carousel[data-effect="scale"] .sheen-carousel-item:not([data-active]) > * {
+  opacity: 0.55;
+  transform: scale(0.9);
+}
+
+// ---- Arrows ---------------------------------------------------------------------------
+
+.sheen-carousel-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  translate: 0 -50%;
+
+  &.btn-glass-icon {
+    border-radius: 50%;
+  }
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  &:disabled {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+
+  // Hover devices: arrows show up with the pointer (or keyboard focus).
+  @media (hover: hover) {
+    opacity: 0;
+    scale: 0.9;
+    transition:
+      opacity var(--sheen-duration) ease,
+      scale var(--sheen-duration) var(--sheen-ease-spring);
+
+    .sheen-carousel:hover &,
+    .sheen-carousel:focus-within & {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+}
+
+.sheen-carousel-prev {
+  inset-inline-start: 0.75rem;
+
+  svg {
+    transform: scaleX(-1);
+  }
+
+  &:dir(rtl) svg {
+    transform: none;
+  }
+}
+
+.sheen-carousel-next {
+  inset-inline-end: 0.75rem;
+
+  &:dir(rtl) svg {
+    transform: scaleX(-1);
+  }
+}
+
+.sheen-carousel-nav[data-orientation="vertical"] {
+  inset-inline: 0;
+  margin-inline: auto;
+  translate: none;
+
+  &.sheen-carousel-prev {
+    top: 0.75rem;
+
+    svg {
+      transform: rotate(-90deg);
+    }
+  }
+
+  &.sheen-carousel-next {
+    top: auto;
+    bottom: 0.75rem;
+
+    svg {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+// ---- Dots -----------------------------------------------------------------------------
+
+.sheen-carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  margin-top: 0.875rem;
+
+  &[data-variant="overlay"] {
+    position: absolute;
+    bottom: 0.875rem;
+    inset-inline: 0;
+    z-index: 2;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0.4375rem 0.625rem;
+    border-radius: 999px;
+    background-color: rgba(0, 0, 0, 0.28);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(160%);
+  }
+}
+
+.sheen-carousel-dot {
+  --sheen-dot-rgb: var(--bs-emphasis-color-rgb);
+  --sheen-dot-active: var(--bs-primary-rgb);
+
+  position: relative;
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 999px;
+  background-color: rgba(var(--sheen-dot-rgb), 0.22);
+  cursor: pointer;
+  transition:
+    width var(--sheen-duration-slow) var(--sheen-ease-spring),
+    background-color var(--sheen-duration) ease;
+
+  [data-variant="overlay"] & {
+    --sheen-dot-rgb: 255, 255, 255;
+    --sheen-dot-active: 255, 255, 255;
+
+    background-color: rgba(255, 255, 255, 0.45);
+  }
+
+  &:hover {
+    background-color: rgba(var(--sheen-dot-rgb), 0.4);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(var(--bs-primary-rgb), 0.6);
+    outline-offset: 2px;
+  }
+
+  &[data-active] {
+    width: 1.5rem;
+    background-color: rgb(var(--sheen-dot-active));
+  }
+
+  // Autoplaying: the pill is a track that fills until the next slide.
+  &[data-active]:has(.sheen-carousel-dot-progress) {
+    background-color: rgba(var(--sheen-dot-rgb), 0.25);
+
+    [data-variant="overlay"] & {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+}
+
+.sheen-carousel-dot-progress {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: rgb(var(--sheen-dot-active));
+  transform-origin: left center;
+  animation: sheen-carousel-progress linear forwards;
+
+  &:dir(rtl) {
+    transform-origin: right center;
+  }
+}
+
+@keyframes sheen-carousel-progress {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+// ---- Counter / play-pause --------------------------------------------------------------
+
+.sheen-carousel-counter {
+  position: absolute;
+  top: 0.75rem;
+  inset-inline-end: 0.75rem;
+  z-index: 2;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.32);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.sheen-carousel-playpause {
+  &.btn-glass-icon {
+    border-radius: 50%;
+  }
+
+  svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
+
+// ---- Thumbnails -----------------------------------------------------------------------
+
+.sheen-carousel-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.sheen-carousel-thumb {
+  flex: 0 0 4rem;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: calc(0.75rem * var(--sheen-radius-scale));
+  background: rgba(var(--bs-emphasis-color-rgb), 0.06);
+  opacity: 0.5;
+  cursor: pointer;
+  transition:
+    opacity var(--sheen-duration) ease,
+    transform var(--sheen-duration) var(--sheen-ease-spring),
+    box-shadow var(--sheen-duration) ease;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.5);
+  }
+
+  &[data-active] {
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--bs-body-bg), 0 0 0 4px rgb(var(--bs-primary-rgb));
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+}
