@@ -11,7 +11,7 @@ export function ChoiceHighlight() {
     if (!highlight || !list) return
     let observed: HTMLElement | null = null
     const update = () => {
-      const active = list.querySelector<HTMLElement>('.sheen-select-item[data-highlighted]:not([data-disabled]), .sheen-choice-option[data-active]:not([aria-disabled="true"])')
+      const active = list.querySelector<HTMLElement>('.sheen-autocomplete-option[data-highlighted]:not([data-disabled]), .sheen-select-item[data-highlighted]:not([data-disabled]), .sheen-choice-option[data-active]:not([aria-disabled="true"])')
       if (active !== observed) {
         if (observed) resize?.unobserve(observed)
         if (active) resize?.observe(active)

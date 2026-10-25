@@ -2,12 +2,13 @@
   "schemaVersion": 1,
   "name": "autocomplete",
   "version": "0.1.0",
-  "description": "Source-owned autocomplete with Field integration.",
+  "description": "Source-owned autocomplete with boot-ui feature parity and SheenUI theme integration.",
   "requires": [
     "foundation",
     "field",
     "input",
-    "popover"
+    "popover",
+    "spinner"
   ],
   "packages": {},
   "styles": [
@@ -19,25 +20,43 @@
       "source": "registry/react/components/autocomplete/autocomplete.tsx",
       "target": "components/ui/autocomplete.tsx",
       "type": "tsx",
-      "sha256": "2ada58e4a280d01b1205f482a463c42398d8f1d8b484c51bc26764c65d7f61ea"
+      "sha256": "89eba0e80da76000dd496b320277a459eacb549e8af8fa5b766002a43a7d9b26"
     },
     {
       "source": "theme/scss/components/_autocomplete.scss",
       "target": "styles/sheenui/components/_autocomplete.scss",
       "type": "scss",
-      "sha256": "3d7623e43c35eeea638cc667558ce314093eb2bd1c1a19d0c7730a0cb678565e"
+      "sha256": "01c9a0e3bf84ce66302cda842a83deace0e7630364866c2db8cdc763c61d4539"
     },
     {
       "source": "registry/react/foundation/choice-highlight.tsx",
       "target": "lib/choice-highlight.tsx",
       "type": "tsx",
-      "sha256": "fd197ff7b216fb9af5bb0b988fe1010996cbf0b39063be39000c81247aaf2647"
+      "sha256": "974ca86748703edd32d38c6e09ab872dccb62ede87b8d095bb655f0569a851cc"
     },
     {
       "source": "theme/scss/components/_choice-highlight.scss",
       "target": "styles/sheenui/components/_choice-highlight.scss",
       "type": "scss",
-      "sha256": "11f41547e5f9c852b055ba1a5ab46a7bf95b34b34ff8a7213cf91f56c7c7a1d3"
+      "sha256": "91f69af6a94fc8be6b00a87c0f07ec24fa47335ec2dd4cf7af2c748f5d12f6e0"
+    },
+    {
+      "source": "registry/react/components/autocomplete/autocomplete-text.tsx",
+      "target": "components/ui/autocomplete-text.tsx",
+      "type": "tsx",
+      "sha256": "2df3342032b005a5c3a4ff983e7d984d7202bafa0432cb73d7dc56050a0e46e6"
+    },
+    {
+      "source": "registry/react/foundation/direction.ts",
+      "target": "lib/direction.ts",
+      "type": "ts",
+      "sha256": "9dbcabe1790b4f04f38440dcec3bc8a62505b4a78b3f70a3a2ac233f4c849c1f"
+    },
+    {
+      "source": "registry/react/foundation/refs.ts",
+      "target": "lib/refs.ts",
+      "type": "ts",
+      "sha256": "86ea0968d61008bfe87bd9b6af3314cdaac26c290915d61fc09965ae5964b299"
     }
   ]
 }
