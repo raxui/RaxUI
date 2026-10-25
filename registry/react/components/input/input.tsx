@@ -41,7 +41,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       className,
       wrapperClassName,
       size = "default",
-      variant = "outline",
+      variant = "filled",
       appearance,
       startIcon,
       endIcon,

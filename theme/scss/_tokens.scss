@@ -25,6 +25,14 @@
   --sheen-surface-edge: 0 0 #0000;
   --sheen-flat-shadow: none;
   --sheen-glass-card-tint: var(--bs-body-bg); // what glass cards are frosted from
+  // Fields are recessed: translucent fills shade whatever surface holds them,
+  // with the shadow on the top inner edge and a faint light on the bottom one.
+  --sheen-field-fill: rgba(15, 23, 42, 0.045);
+  --sheen-field-fill-flat: rgba(15, 23, 42, 0.06);
+  --sheen-field-fill-glass: rgba(255, 255, 255, 0.55);
+  --sheen-field-border-color: rgba(15, 23, 42, 0.16);
+  --sheen-field-inset: inset 0 1px 2px rgba(15, 23, 42, 0.08);
+  --sheen-field-light: inset 0 -1px 0 rgba(255, 255, 255, 0.7);
   --sheen-shadow-rgb: 15, 23, 42;
   --sheen-shadow-opacity: 0.1;
   --sheen-overlay-rgb: 15, 23, 42;
@@ -38,8 +46,8 @@
 
 // 1. Primitives — dark
 [data-bs-theme="dark"] {
-  --sheen-glass-alpha: 0.42;
-  --sheen-glass-alpha-subtle: 0.3;
+  --sheen-glass-alpha: 0.55;
+  --sheen-glass-alpha-subtle: 0.4;
   --sheen-glass-border-color: rgba(255, 255, 255, 0.14);
   --sheen-glass-highlight: rgba(255, 255, 255, 0.2);
   --sheen-glass-sheen: rgba(255, 255, 255, 0.05);
@@ -49,6 +57,13 @@
   --sheen-flat-shadow: var(--sheen-glass-edge);
   // Dark glass cards sit just below the page, so they read as part of it rather than raised panels.
   --sheen-glass-card-tint: color-mix(in srgb, var(--sheen-page-bg, var(--bs-body-bg)) 85%, #000);
+  // Flat has no inset shadow, so its dark field is lighter: a darker one reads as a hole.
+  --sheen-field-fill: rgba(0, 0, 0, 0.25);
+  --sheen-field-fill-flat: rgba(255, 255, 255, 0.06);
+  --sheen-field-fill-glass: rgba(0, 0, 0, 0.38);
+  --sheen-field-border-color: rgba(255, 255, 255, 0.12);
+  --sheen-field-inset: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+  --sheen-field-light: inset 0 -1px 0 rgba(255, 255, 255, 0.07);
   --sheen-shadow-rgb: 0, 0, 0;
   --sheen-shadow-opacity: 0.35;
   --sheen-overlay-rgb: 0, 0, 0;
@@ -60,8 +75,8 @@
 
 // Theme-independent
 :root {
-  --sheen-glass-blur: 32px;
-  --sheen-glass-saturate: 190%;
+  --sheen-glass-blur: 16px;
+  --sheen-glass-saturate: 140%;
 
 
   // Control heights shared by inputs, selects and buttons (40px by default).

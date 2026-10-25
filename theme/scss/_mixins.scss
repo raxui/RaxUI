@@ -2,20 +2,22 @@
 // boot-ui mixins
 // -----------------------------------------------------------------------------
 
-/// Live frosted-glass surface (HyperOS / iOS material).
-/// @param $alpha   Surface opacity. Defaults to the themed surface token.
+/// Frosted-glass surface (HyperOS / iOS material) that follows the appearance:
+/// translucent and blurred under `glass`, opaque under `default` and `flat`
+/// (whose --sheen-material-* tokens also drop the edge and shadow).
+/// @param $alpha   Surface opacity under glass. Defaults to the themed surface token.
 /// @param $tint    An RGB triplet (e.g. `var(--bs-primary-rgb)`) to tint with.
-/// @param $shadow  Elevation shadow appended after the glass edge.
+/// @param $shadow  Elevation shadow appended after the edge.
 @mixin glass(
   $alpha: var(--sheen-glass-alpha),
   $tint: var(--bs-body-bg-rgb),
   $shadow: var(--sheen-shadow-md)
 ) {
-  background-color: rgba($tint, $alpha);
-  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  border: 1px solid var(--sheen-glass-border-color);
-  box-shadow: var(--sheen-glass-edge), $shadow;
+  background-color: rgba($tint, #{"max(#{$alpha}, var(--sheen-material-floor, 0))"});
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-material-edge), var(--sheen-material-shadow, #{$shadow});
 
   // No backdrop-filter (older Firefox ESR, some WebViews): go nearly opaque so
   // text contrast never depends on what's behind the surface.

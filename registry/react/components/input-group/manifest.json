@@ -17,7 +17,7 @@
       "source": "registry/react/components/input-group/input-group.tsx",
       "target": "components/ui/input-group.tsx",
       "type": "tsx",
-      "sha256": "2670efedd9445653636dfc541f4428d8508c2b9a7bf2f7f546862ff08540af31"
+      "sha256": "2bdba172ce6a69e95d4e6df957a369f9a401b8257dd091807814820d2c371c78"
     },
     {
       "source": "theme/scss/components/_input-group.scss",

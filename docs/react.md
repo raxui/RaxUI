@@ -64,10 +64,10 @@ element to preserve appearance, mode, accent, density and direction.
 
 | Control | Props beyond native / Radix props and forwarded refs |
 | --- | --- |
-| `Input` | `appearance`, `size="default"` (sm/lg), `variant="outline"` (filled/glass alias), `startIcon`, `endIcon`, `clearable`, `onClear`, `clearLabel="Clear"`, `invalid`, `wrapperClassName` |
+| `Input` | `appearance`, `size="default"` (sm/lg), `variant="filled"` (outline; glass is a legacy alias of filled), `startIcon`, `endIcon`, `clearable`, `onClear`, `clearLabel="Clear"`, `invalid`, `wrapperClassName` |
 | `PasswordInput` | Input props except type/endIcon; `showLabel="Show password"`, `hideLabel="Hide password"`. Eye action toggles visibility and aria-pressed; defaults autocomplete to current-password. |
-| `InputGroup` | `size`, `variant`, `orientation="horizontal"` (vertical), `disabled`, `invalid`, `required`, `autoAdvance=false`. Members accept Input props except size/icons/clear and wrapper options. |
-| `Textarea` | `appearance`, `variant="glass"` (filled), `autoResize=false`, `minRows=3`, `maxRows=10`, `showCount=false`, `limitLabel="Character limit reached"`, `footer`, `footerEnd`, `invalid`, `wrapperClassName`. Counter requires maxLength. |
+| `InputGroup` | `size`, `variant="filled"`, `orientation="horizontal"` (vertical), `disabled`, `invalid`, `required`, `autoAdvance=false`. Members accept Input props except size/icons/clear and wrapper options. |
+| `Textarea` | `appearance`, `variant="filled"` (outline; glass is a legacy alias of filled), `autoResize=false`, `minRows=3`, `maxRows=10`, `showCount=false`, `limitLabel="Character limit reached"`, `footer`, `footerEnd`, `invalid`, `wrapperClassName`. Counter requires maxLength. |
 | `Checkbox` | `appearance`, `size="default"` (sm/lg), `shape="square"` (circle); Radix checked/defaultChecked allow true, false or indeterminate. |
 | `RadioGroup` | `appearance`; Radix value/defaultValue, onValueChange, orientation, dir, disabled, required, name. `RadioGroupItem` takes value, appearance and size. |
 | `Switch` | `appearance`, `size="default"` (sm/lg), `loading=false` (disables changes and shows a Bootstrap spinner); checked/defaultChecked and onCheckedChange. |

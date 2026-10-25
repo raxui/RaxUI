@@ -42,7 +42,7 @@ export interface InputGroupProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
   (
-    { size = "default", variant = "glass", orientation = "horizontal", disabled, invalid, required, autoAdvance, className, ...props },
+    { size = "default", variant = "filled", orientation = "horizontal", disabled, invalid, required, autoAdvance, className, ...props },
     ref,
   ) => {
     const wired = useFieldControlProps({ ...props, disabled, required })

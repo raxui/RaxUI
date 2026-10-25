@@ -7,8 +7,10 @@
 // -----------------------------------------------------------------------------
 
 .sheen-select-trigger {
-  @include sheen-surface;
-  box-shadow: var(--sheen-control-shadow);
+  // Same recessed field material as Input.
+  border: 1px solid var(--sheen-field-border);
+  background-color: var(--sheen-field-bg);
+  box-shadow: var(--sheen-field-shadow);
   border-radius: var(--sheen-control-radius);
   display: flex;
   min-height: var(--sheen-control-height); // same height as inputs and buttons
@@ -34,7 +36,7 @@
   &:focus,
   &[data-state="open"] {
     border-color: rgba(var(--bs-primary-rgb), 0.65);
-    box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.16);
+    box-shadow: var(--sheen-field-shadow), 0 0 0 4px rgba(var(--bs-primary-rgb), 0.16);
   }
 
   // aria-invalid (set by FieldControl) looks like Bootstrap's .is-invalid.

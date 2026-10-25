@@ -22,7 +22,7 @@
       "source": "theme/scss/components/_file-upload.scss",
       "target": "styles/sheenui/components/_file-upload.scss",
       "type": "scss",
-      "sha256": "687610849f3a854b15e5f0092a86f329c3b2c5e35d1d8cd17e41d69d8c4ed735"
+      "sha256": "e2de1786693b8ebd512ceb2536befff04fa7870e977e958329c4bd242a96e7dc"
     }
   ]
 }

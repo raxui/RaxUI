@@ -13,6 +13,12 @@
   --sheen-surface-edge: 0 0 #0000;
   --sheen-flat-shadow: none;
   --sheen-glass-card-tint: var(--bs-body-bg);
+  --sheen-field-fill: rgba(15, 23, 42, 0.045);
+  --sheen-field-fill-flat: rgba(15, 23, 42, 0.06);
+  --sheen-field-fill-glass: rgba(255, 255, 255, 0.55);
+  --sheen-field-border-color: rgba(15, 23, 42, 0.16);
+  --sheen-field-inset: inset 0 1px 2px rgba(15, 23, 42, 0.08);
+  --sheen-field-light: inset 0 -1px 0 rgba(255, 255, 255, 0.7);
   --sheen-shadow-rgb: 15, 23, 42;
   --sheen-shadow-opacity: 0.1;
   --sheen-overlay-rgb: 15, 23, 42;
@@ -23,8 +29,8 @@
 }
 
 [data-bs-theme=dark] {
-  --sheen-glass-alpha: 0.42;
-  --sheen-glass-alpha-subtle: 0.3;
+  --sheen-glass-alpha: 0.55;
+  --sheen-glass-alpha-subtle: 0.4;
   --sheen-glass-border-color: rgba(255, 255, 255, 0.14);
   --sheen-glass-highlight: rgba(255, 255, 255, 0.2);
   --sheen-glass-sheen: rgba(255, 255, 255, 0.05);
@@ -33,6 +39,12 @@
   --sheen-surface-edge: var(--sheen-glass-edge);
   --sheen-flat-shadow: var(--sheen-glass-edge);
   --sheen-glass-card-tint: color-mix(in srgb, var(--sheen-page-bg, var(--bs-body-bg)) 85%, #000);
+  --sheen-field-fill: rgba(0, 0, 0, 0.25);
+  --sheen-field-fill-flat: rgba(255, 255, 255, 0.06);
+  --sheen-field-fill-glass: rgba(0, 0, 0, 0.38);
+  --sheen-field-border-color: rgba(255, 255, 255, 0.12);
+  --sheen-field-inset: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+  --sheen-field-light: inset 0 -1px 0 rgba(255, 255, 255, 0.07);
   --sheen-shadow-rgb: 0, 0, 0;
   --sheen-shadow-opacity: 0.35;
   --sheen-overlay-rgb: 0, 0, 0;
@@ -43,8 +55,8 @@
 }
 
 :root {
-  --sheen-glass-blur: 32px;
-  --sheen-glass-saturate: 190%;
+  --sheen-glass-blur: 16px;
+  --sheen-glass-saturate: 140%;
   --sheen-control-height-sm: 2.25rem;
   --sheen-control-height: 2.5rem;
   --sheen-control-height-lg: 3rem;
@@ -338,29 +350,29 @@ body {
 .glass-ultrathin {
   --sheen-glass-alpha: 0.18;
   --sheen-glass-alpha-subtle: 0.12;
-  --sheen-glass-blur: 20px;
+  --sheen-glass-blur: 8px;
 }
 
 .glass-thin {
   --sheen-glass-alpha: 0.32;
   --sheen-glass-alpha-subtle: 0.24;
-  --sheen-glass-blur: 28px;
+  --sheen-glass-blur: 12px;
 }
 
 .glass-regular {
   --sheen-glass-alpha: 0.5;
   --sheen-glass-alpha-subtle: 0.38;
-  --sheen-glass-blur: 32px;
+  --sheen-glass-blur: 16px;
 }
 [data-bs-theme=dark] .glass-regular, .glass-regular[data-bs-theme=dark] {
-  --sheen-glass-alpha: 0.42;
-  --sheen-glass-alpha-subtle: 0.3;
+  --sheen-glass-alpha: 0.55;
+  --sheen-glass-alpha-subtle: 0.4;
 }
 
 .glass-thick {
   --sheen-glass-alpha: 0.78;
   --sheen-glass-alpha-subtle: 0.6;
-  --sheen-glass-blur: 48px;
+  --sheen-glass-blur: 28px;
 }
 
 [data-sheen-accent]:not([data-bs-theme=dark]) {
@@ -396,30 +408,43 @@ body {
   --sheen-surface-shadow: var(--sheen-control-shadow);
   --sheen-control-radius: var(--sheen-radius-control);
   --sheen-surface-filter: none;
+  --sheen-field-bg: var(--sheen-field-fill);
+  --sheen-field-border: var(--sheen-field-border-color);
+  --sheen-field-shadow: var(--sheen-field-inset), var(--sheen-field-light);
+  --sheen-material-floor: 1;
+  --sheen-material-edge: var(--sheen-surface-edge);
+  --sheen-material-shadow: initial;
 }
 
 [data-sheen-appearance=flat] {
   --sheen-control-shadow: var(--sheen-flat-shadow);
   --sheen-surface-shadow: var(--sheen-flat-shadow);
+  --sheen-field-bg: var(--sheen-field-fill-flat);
+  --sheen-field-shadow: 0 0 #0000;
+  --sheen-material-shadow: 0 0 #0000;
 }
 
 [data-sheen-appearance=glass] {
   --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
   --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) 96%, transparent);
+  --sheen-field-bg: var(--sheen-field-fill-glass);
+  --sheen-material-floor: 0;
+  --sheen-material-edge: var(--sheen-glass-edge);
   --sheen-control-shadow: var(--sheen-glass-edge),
     0 2px 4px -1px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.6));
   --sheen-surface-shadow: var(--sheen-glass-edge),
     0 3px 8px -2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.65));
   --sheen-border-color: var(--sheen-glass-border-color);
 }
+
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-  [data-sheen-appearance=glass] {
-    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);
-    --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) 82%, transparent);
+  [data-sheen-appearance=glass],
+  [data-sheen-appearance=glass] :is(.glass-ultrathin, .glass-thin, .glass-regular, .glass-thick) {
+    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), min(calc(var(--sheen-glass-alpha) + 0.32), 0.96));
+    --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) calc(var(--sheen-glass-alpha) * 100%), transparent);
     --sheen-surface-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
   }
 }
-
 [data-sheen-density=compact] {
   --sheen-control-height: 2rem;
   --sheen-control-height-sm: 1.75rem;
