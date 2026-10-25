@@ -354,7 +354,7 @@ describe("sheenui-react init and add button", () => {
 
   it("keeps every packed CLI file visible to git", () => {
     // A .NET-style `bin/` ignore once hid the CLI entry point, so CI packed a CLI without its command.
-    const packed = ["bin/sheenui-react.mjs", "src/cli.mjs", "src/registry.mjs", "src/safety.mjs", "src/state.mjs", "package.json"]
+    const packed = ["bin/sheenui-react.mjs", "src/cli.mjs", "src/registry.mjs", "src/safety.mjs", "src/transaction.mjs", "src/state.mjs", "package.json"]
     const ignored = packed.filter((relative) => {
       try {
         execFileSync("git", ["check-ignore", "-q", `src/react-cli/${relative}`])

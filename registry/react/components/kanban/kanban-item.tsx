@@ -90,3 +90,5 @@ export const KanbanItemCopy = React.forwardRef<HTMLDivElement, KanbanItemProps>(
     )
   },
 )
+KanbanItemLive.displayName = "KanbanItemLive"
+KanbanItemCopy.displayName = "KanbanItemCopy"

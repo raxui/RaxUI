@@ -514,3 +514,5 @@ function SortableOverlay({ container, children, className, ...props }: SortableO
 }
 
 export { Sortable, SortableContent, SortableItem, SortableItemHandle, SortableOverlay }
+SortableItemLive.displayName = "SortableItemLive"
+SortableItemCopy.displayName = "SortableItemCopy"

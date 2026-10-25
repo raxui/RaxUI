@@ -82,7 +82,7 @@
       "source": "registry/react/components/data-table/data-table-columns.tsx",
       "target": "components/ui/data-table-columns.tsx",
       "type": "tsx",
-      "sha256": "99eb07fa3430004cd89fafae6e8e96ee208a9d371f3a2ee282bea5516a966888"
+      "sha256": "874f15f2c9817c7bfd4b5db9121cc4eecabd8d653337428c69925895874239dc"
     },
     {
       "source": "registry/react/components/data-table/data-table-bulk-bar.tsx",

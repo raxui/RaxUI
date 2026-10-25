@@ -64,3 +64,5 @@ The Node CLI follows the same rules as the .NET CLI ([ADR 003](003-installation-
 - React consumers need Sass and see Sass `@import` deprecation warnings from Bootstrap 5.3. This is documented; the CLI does not edit the consumer's Vite configuration.
 - The two CLIs implement the same safety rules in two languages; their tests mirror each other.
 - The package name must be decided before the first npm release.
+
+React interrupted-process recovery is now specified by [ADR 017](017-react-cli-recovery.md); the .NET CLI remains unchanged.

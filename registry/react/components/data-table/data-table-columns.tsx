@@ -38,7 +38,7 @@ function DataTableColumnHeader<TData, TValue>({
 function getSelectColumn<TData>(selectionLabels?: Partial<Pick<DataTableLabels, "selectAll" | "selectRow">>): ColumnDef<TData> {
   return {
     id: "select",
-    header: ({ table }) => {
+    header: function SelectionHeader({ table }) {
       const labels = { ...useTableLabels(), ...selectionLabels }
       return (
         <Checkbox
@@ -49,7 +49,7 @@ function getSelectColumn<TData>(selectionLabels?: Partial<Pick<DataTableLabels, 
         />
       )
     },
-    cell: ({ row }) => {
+    cell: function SelectionCell({ row }) {
       const labels = { ...useTableLabels(), ...selectionLabels }
       return (
         <Checkbox
