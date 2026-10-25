@@ -898,3 +898,26 @@ Sheet and Drawer share the dialog item's native focus containment, Escape and
 backdrop dismissal, and animation-aware closing. Reduced motion removes motion.
 Blazor's command matcher uses ordinary case-insensitive substring matching;
 React also retains boot-ui's accent/Arabic folding and subsequence matching.
+
+## Adopted overlay appearance and gliding choices
+
+The shared theme uses the boot-ui token values, with the following approved defaults.
+Transparency is the visible-through amount; the corresponding CSS alpha is opacity.
+
+| Component | Surface transparency | Surface blur | Light backdrop dim | Dark backdrop dim | Backdrop blur |
+| --- | --- | --- | --- | --- | --- |
+| Dialog / ConfirmDialog | 40% | 32px | 25% | 25% | 4px |
+| Sheet | 45% | 32px | 25% | 25% | 4px |
+| Drawer | 40% | 32px | 25% | 25% | 4px |
+
+Surface transparency and blur apply to Glass; Default and Flat keep opaque panels.
+Reduced-transparency preferences still force opaque surfaces. The same theme is compiled for Blazor.
+Override the CSS properties on the theme provider or an appearance boundary to drive controls from app state:
+
+- Dialog and ConfirmDialog share --sheen-dialog-alpha, --sheen-dialog-blur, --sheen-dialog-overlay-alpha, and --sheen-dialog-overlay-blur.
+- Sheet uses the equivalent --sheen-sheet-* properties; Drawer uses --sheen-drawer-*.
+- Alpha is 0–1: 0.4 means 60% transparency. Blur values require a CSS length, for example 32px.
+- Light and dark dimming defaults resolve independently at data-bs-theme boundaries.
+
+Ordinary Input keeps its original material and shadows with a slightly clearer border.
+React Select, Combobox and Autocomplete include one sliding highlight matching Command's 160ms easing, including pointer and keyboard navigation, filtering, resizing, and reduced-motion preferences. Their manifests ship the helper and stylesheet even when adding to an already initialized app. Blazor Select remains a native select whose popup is drawn by the browser.

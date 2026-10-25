@@ -16,9 +16,9 @@
 // ::backdrop inherits custom properties only in recent browsers; the fallbacks keep it dimmed elsewhere.
 .sheen-confirm::backdrop,
 .sheen-confirm-overlay {
-  background: rgba(var(--sheen-overlay-rgb, 15, 23, 42), var(--sheen-overlay-alpha, 0.3));
-  -webkit-backdrop-filter: blur(4px) saturate(120%);
-  backdrop-filter: blur(4px) saturate(120%);
+  background: rgba(var(--sheen-overlay-rgb, 15, 23, 42), var(--sheen-dialog-overlay-alpha, 0.3));
+  -webkit-backdrop-filter: blur(var(--sheen-dialog-overlay-blur, 4px)) saturate(120%);
+  backdrop-filter: blur(var(--sheen-dialog-overlay-blur, 4px)) saturate(120%);
 }
 
 .sheen-confirm {
@@ -40,6 +40,9 @@
   text-align: center;
   border-radius: calc(1.5rem * var(--sheen-radius-scale));
   @include sheen-surface;
+  background-color: var(--sheen-dialog-bg);
+  -webkit-backdrop-filter: var(--sheen-dialog-filter);
+  backdrop-filter: var(--sheen-dialog-filter);
   box-shadow: var(--sheen-surface-shadow), var(--sheen-shadow-lg);
 
   &[data-tone="destructive"] { --sheen-confirm-rgb: var(--bs-danger-rgb); }

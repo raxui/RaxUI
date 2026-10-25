@@ -17,7 +17,7 @@
       "source": "registry/react/components/dropdown-menu/dropdown-menu.tsx",
       "target": "components/ui/dropdown-menu.tsx",
       "type": "tsx",
-      "sha256": "5ec2c546b86b18959232643e1cdef734d753f8e62b7cba4e7e6ce4eb04a6c974"
+      "sha256": "17f9db6d108f2db0f96a636fb1dcf61c8aeb630927db4e10ee622dcba5c48ade"
     },
     {
       "source": "theme/scss/components/_dropdown-menu.scss",

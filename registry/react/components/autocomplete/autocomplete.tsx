@@ -4,6 +4,7 @@ import * as React from "react"
 import { Input, type InputProps } from "@/components/ui/input"
 import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover"
 import { useFieldControlProps } from "@/components/ui/field"
+import { ChoiceHighlight } from "@/lib/choice-highlight"
 
 export interface AutocompleteProps extends Omit<InputProps, "value" | "defaultValue" | "onChange"> {
   value?: string
@@ -63,7 +64,8 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(({
       }} /></PopoverAnchor>
     <PopoverContent className="sheen-autocomplete-panel" role="presentation" onOpenAutoFocus={e => e.preventDefault()} onCloseAutoFocus={e => e.preventDefault()}
       onInteractOutside={e => { if ((e.target as HTMLElement).closest('input[role="combobox"]')) e.preventDefault() }}>
-      <div role="listbox" id={listId} aria-label={props["aria-label"] ?? props.placeholder ?? ""} aria-busy={busy}>
+      <div role="listbox" id={listId} className="sheen-choice-list" aria-label={props["aria-label"] ?? props.placeholder ?? ""} aria-busy={busy}>
+        <ChoiceHighlight />
         {!busy && !failed && choices.map((choice, i) => <div key={choice} id={`${id}-option-${i}`} role="option" aria-selected={choice === text}
           className="sheen-choice-option" data-active={choice === active || undefined} onPointerDown={e => e.preventDefault()}
           onPointerMove={() => setActive(choice)} onClick={() => select(choice)}>{choice}</div>)}
