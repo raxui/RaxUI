@@ -1,0 +1,699 @@
+// -----------------------------------------------------------------------------
+// Sidebar — the bar keeps its full width inside and the outer element animates
+// its width, so collapsing slides the panel away (offcanvas) or crops it to the
+// icon column (icon) without text reflowing mid-animation. Icons sit in a fixed
+// column, so they don't move when labels fold away. The active item rests on a
+// tinted highlight that glides (spring) between items.
+// -----------------------------------------------------------------------------
+
+.sheen-sidebar-wrapper {
+  --sheen-sidebar-width: 16rem;
+  --sheen-sidebar-width-icon: 3.5rem;
+  --sheen-sidebar-ease: var(--sheen-ease-out);
+  --sheen-sidebar-duration: 320ms;
+
+  display: flex;
+  width: 100%;
+  min-height: var(--sheen-sidebar-height, 100svh);
+
+  // Inset: the page sits on a slightly deeper ground behind the inset card.
+  &:has(> .sheen-sidebar[data-variant="inset"]) {
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.035);
+  }
+}
+
+// ---- The bar ----------------------------------------------------------------------------
+
+.sheen-sidebar {
+  --sheen-sidebar-out: -1; // direction it slides away: toward its own edge
+  --sheen-sidebar-dir: 1;
+
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  flex-shrink: 0;
+  width: var(--sheen-sidebar-width);
+  height: var(--sheen-sidebar-height, 100svh);
+  overflow: hidden;
+  color: var(--bs-body-color);
+
+  &:dir(rtl) {
+    --sheen-sidebar-dir: -1;
+  }
+
+  &[data-side="end"] {
+    --sheen-sidebar-out: 1;
+    order: 2;
+  }
+
+  @include motion-safe {
+    transition: width var(--sheen-sidebar-duration) var(--sheen-sidebar-ease);
+  }
+
+  &[data-collapsible="offcanvas"] {
+    width: 0;
+  }
+
+  &[data-collapsible="icon"] {
+    width: var(--sheen-sidebar-width-icon);
+  }
+
+  &[data-variant="floating"],
+  &[data-variant="inset"] {
+    --sheen-sidebar-width-icon: 4rem;
+    padding: 0.5rem;
+
+    &[data-collapsible="offcanvas"] {
+      padding-inline: 0;
+    }
+  }
+}
+
+.sheen-sidebar-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--sheen-sidebar-width);
+  height: 100%;
+  background-color: rgba(var(--bs-body-bg-rgb), 0.72);
+  border-inline-end: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+
+  @include motion-safe {
+    transition:
+      width var(--sheen-sidebar-duration) var(--sheen-sidebar-ease),
+      transform var(--sheen-sidebar-duration) var(--sheen-sidebar-ease);
+  }
+
+  .sheen-sidebar[data-side="end"] > & {
+    border-inline-end: 0;
+    border-inline-start: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+  }
+
+  .sheen-sidebar[data-collapsible="offcanvas"] > & {
+    transform: translateX(calc(100% * var(--sheen-sidebar-out) * var(--sheen-sidebar-dir)));
+  }
+
+  .sheen-sidebar[data-collapsible="icon"] > & {
+    width: var(--sheen-sidebar-width-icon);
+  }
+
+  // Floating: a glass card with its own corners.
+  .sheen-sidebar[data-variant="floating"] > & {
+    @include glass($shadow: var(--sheen-shadow-sm));
+
+    width: calc(var(--sheen-sidebar-width) - 1rem);
+    border-radius: var(--sheen-radius-lg);
+  }
+
+  .sheen-sidebar[data-variant="floating"][data-collapsible="icon"] > &,
+  .sheen-sidebar[data-variant="inset"][data-collapsible="icon"] > & {
+    width: calc(var(--sheen-sidebar-width-icon) - 1rem);
+  }
+
+  // Inset: the bar melts into the ground; the page is the card.
+  .sheen-sidebar[data-variant="inset"] > & {
+    width: calc(var(--sheen-sidebar-width) - 1rem);
+    background: none;
+    border: 0;
+  }
+
+  .sheen-sidebar[data-collapsible="none"] > & {
+    width: 100%;
+  }
+
+  // Phone: inside a Sheet.
+  &[data-mobile] {
+    width: 100%;
+    background: none;
+    border: 0;
+  }
+}
+
+.sheen-sidebar-sheet {
+  width: min(18rem, 85vw);
+  padding: 0;
+}
+
+.sheen-sidebar-inset {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+
+  .sheen-sidebar[data-variant="inset"] ~ & {
+    margin: 0.5rem;
+    margin-inline-start: 0;
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.06);
+    border-radius: var(--sheen-radius-lg);
+    background-color: var(--bs-body-bg);
+    box-shadow: var(--sheen-shadow-sm);
+
+    @include motion-safe {
+      transition: margin var(--sheen-sidebar-duration) var(--sheen-sidebar-ease);
+    }
+  }
+
+  .sheen-sidebar[data-variant="inset"][data-side="end"] ~ & {
+    margin-inline-start: 0.5rem;
+    margin-inline-end: 0;
+  }
+
+  .sheen-sidebar[data-variant="inset"][data-collapsible="offcanvas"] ~ & {
+    margin-inline: 0.5rem;
+  }
+}
+
+// ---- Rail -----------------------------------------------------------------------------
+
+.sheen-sidebar-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-end: 0;
+  z-index: 2;
+  width: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: w-resize;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-end: -1px;
+    width: 2px;
+    background-color: rgb(var(--bs-primary-rgb));
+    opacity: 0;
+    transition: opacity var(--sheen-duration-fast) ease;
+  }
+
+  &:hover::after {
+    opacity: 0.5;
+  }
+
+  .sheen-sidebar[data-state="collapsed"] & {
+    cursor: e-resize;
+  }
+
+  .sheen-sidebar[data-side="end"] & {
+    inset-inline-end: auto;
+    inset-inline-start: 0;
+
+    &::after {
+      inset-inline-end: auto;
+      inset-inline-start: -1px;
+    }
+  }
+
+  .sheen-sidebar[data-variant="floating"] &,
+  .sheen-sidebar[data-variant="inset"] & {
+    display: none;
+  }
+}
+
+// ---- Header, footer, content ----------------------------------------------------------------
+
+.sheen-sidebar-header,
+.sheen-sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.sheen-sidebar-content {
+  position: relative;
+  isolation: isolate; // the highlight (z-index -1) stays above the bar's background
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.sheen-sidebar-separator {
+  flex-shrink: 0;
+  margin: 0.25rem 0.75rem;
+  border: 0;
+  border-top: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+  opacity: 1;
+}
+
+.sheen-sidebar-input {
+  @include motion-safe {
+    transition: opacity var(--sheen-duration-fast) ease;
+  }
+
+  .sheen-sidebar[data-collapsible="icon"] & {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+// ---- Groups -----------------------------------------------------------------------------
+
+.sheen-sidebar-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.25rem 0.5rem;
+}
+
+.sheen-sidebar-group-label {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: 2rem;
+  padding: 0 0.6875rem;
+  overflow: hidden;
+  color: var(--bs-secondary-color);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+
+  @include motion-safe {
+    transition:
+      opacity var(--sheen-duration) ease,
+      margin var(--sheen-sidebar-duration) var(--sheen-sidebar-ease);
+  }
+
+  // Folded to icons: the label fades and its space closes up; it must not
+  // catch clicks meant for the item it now overlaps.
+  .sheen-sidebar[data-collapsible="icon"] & {
+    margin-top: -2rem;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.sheen-sidebar-group-action {
+  position: absolute;
+  top: 0.5625rem;
+  inset-inline-end: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--sheen-radius-sm);
+  color: var(--bs-secondary-color);
+  background: none;
+  transition: background-color var(--sheen-duration-fast) ease, color var(--sheen-duration-fast) ease;
+
+  &:hover {
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .sheen-sidebar[data-collapsible="icon"] & {
+    display: none;
+  }
+}
+
+// ---- Menu ---------------------------------------------------------------------------------
+
+.sheen-sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheen-sidebar-menu-item {
+  position: relative;
+}
+
+.sheen-sidebar-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: var(--sheen-sidebar-hl-w, 0);
+  height: var(--sheen-sidebar-hl-h, 0);
+  border-radius: var(--sheen-radius-sm);
+  background-color: rgba(var(--bs-primary-rgb), 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(var(--sheen-sidebar-hl-x, 0), var(--sheen-sidebar-hl-y, 0));
+
+  .sheen-sidebar-content[data-highlight] > & {
+    opacity: 1;
+  }
+
+  @include motion-safe {
+    transition:
+      transform 420ms var(--sheen-ease-spring),
+      width 420ms var(--sheen-ease-spring),
+      height 420ms var(--sheen-ease-spring);
+  }
+}
+
+.sheen-sidebar-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  height: 2.25rem;
+  padding: 0 0.6875rem; // centres a 1.125rem icon in the 2.5rem icon column
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--sheen-radius-sm);
+  color: rgba(var(--bs-emphasis-color-rgb), 0.8);
+  background: none;
+  font: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  text-align: start;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  transition:
+    color var(--sheen-duration-fast) ease,
+    background-color var(--sheen-duration-fast) ease;
+
+  > svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+    color: var(--bs-secondary-color);
+    transition: color var(--sheen-duration-fast) ease;
+  }
+
+  // The label is the last span; a logo or avatar before it keeps its size.
+  > span:last-of-type {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @include motion-safe {
+      transition: opacity var(--sheen-duration) ease;
+    }
+  }
+
+  &:hover {
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.05);
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px rgba(var(--bs-primary-rgb), 0.5);
+  }
+
+  &[data-active] {
+    color: var(--sheen-primary-text);
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    font-weight: 600;
+
+    > svg {
+      color: var(--sheen-primary-text);
+    }
+  }
+
+  // Inside SidebarContent the gliding highlight paints the active item.
+  .sheen-sidebar-content[data-highlight] &[data-active] {
+    background-color: transparent;
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  &[data-size="sm"] {
+    height: 2rem;
+    font-size: 0.875rem;
+  }
+
+  // Large: a workspace or user switcher with a 2rem avatar / logo.
+  &[data-size="lg"] {
+    height: 3rem;
+    padding-inline: 0.25rem;
+  }
+
+  .sheen-sidebar-menu-item:has(> .sheen-sidebar-menu-badge) > &,
+  .sheen-sidebar-menu-item:has(> .sheen-sidebar-menu-action) > & {
+    padding-inline-end: 2.25rem;
+  }
+
+  > :not(span:last-of-type, svg:first-child) {
+    flex-shrink: 0;
+  }
+
+  .sheen-sidebar[data-collapsible="icon"] & > span:last-of-type,
+  .sheen-sidebar[data-collapsible="icon"] & > svg:last-child:not(:first-child) {
+    opacity: 0;
+  }
+}
+
+.sheen-sidebar-menu-action {
+  position: absolute;
+  top: 0.375rem;
+  inset-inline-end: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: calc(0.375rem * var(--sheen-radius-scale));
+  color: var(--bs-secondary-color);
+  background: none;
+  transition:
+    opacity var(--sheen-duration-fast) ease,
+    background-color var(--sheen-duration-fast) ease;
+
+  &:hover,
+  &[data-state="open"] {
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &[data-show-on-hover] {
+    opacity: 0;
+
+    .sheen-sidebar-menu-item:hover > &,
+    .sheen-sidebar-menu-item:focus-within > &,
+    &[data-state="open"] {
+      opacity: 1;
+    }
+
+    // Touch screens can't hover.
+    @media (hover: none) {
+      opacity: 1;
+    }
+  }
+
+  .sheen-sidebar[data-collapsible="icon"] & {
+    display: none;
+  }
+}
+
+.sheen-sidebar-menu-badge {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  color: var(--bs-secondary-color);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity var(--sheen-duration) ease;
+
+  .sheen-sidebar-menu-item:has(> [data-active]) > & {
+    color: var(--sheen-primary-text);
+    background-color: rgba(var(--bs-primary-rgb), 0.14);
+  }
+
+  .sheen-sidebar[data-collapsible="icon"] & {
+    opacity: 0;
+  }
+}
+
+.sheen-sidebar-menu-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  height: 2.25rem;
+  padding: 0 0.6875rem;
+
+  .sheen-sidebar-skeleton-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+  }
+
+  .sheen-sidebar-skeleton-text {
+    flex: 1;
+    height: 0.875rem;
+  }
+}
+
+// ---- Sub menu -------------------------------------------------------------------------------
+
+.sheen-sidebar-menu-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  margin: 0;
+  margin-inline-start: 1.25rem; // the line runs under the parent's icon
+  padding: 0.125rem 0;
+  padding-inline-start: 0.625rem;
+  border-inline-start: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
+  list-style: none;
+}
+
+.sheen-sidebar-menu-sub-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+  padding: 0 0.625rem;
+  overflow: hidden;
+  border-radius: var(--sheen-radius-sm);
+  color: rgba(var(--bs-emphasis-color-rgb), 0.72);
+  font-size: 0.875rem;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+  transition:
+    color var(--sheen-duration-fast) ease,
+    background-color var(--sheen-duration-fast) ease;
+
+  &[data-size="sm"] {
+    height: 1.75rem;
+    font-size: 0.8125rem;
+  }
+
+  &:hover {
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.05);
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px rgba(var(--bs-primary-rgb), 0.5);
+  }
+
+  // Active: accent text and a short bar over the guide line.
+  &[data-active] {
+    color: var(--sheen-primary-text);
+    font-weight: 600;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      inset-inline-start: 0;
+      width: 2px;
+      height: 1rem;
+      border-radius: 2px;
+      background-color: rgb(var(--bs-primary-rgb));
+      transform: translateY(-50%);
+    }
+  }
+}
+
+// The bar overlaps the guide line exactly.
+.sheen-sidebar-menu-sub-item {
+  position: relative;
+  margin-inline-start: -0.625rem;
+  padding-inline-start: 0.625rem;
+
+  > .sheen-sidebar-menu-sub-button[data-active]::before {
+    inset-inline-start: -0.625rem;
+  }
+
+  > .sheen-sidebar-menu-sub-button {
+    overflow: visible;
+  }
+}
+
+// ---- Collapsible menu item -------------------------------------------------------------------
+
+.sheen-sidebar-chevron {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  color: var(--bs-secondary-color);
+
+  &:dir(rtl) {
+    transform: scaleX(-1);
+  }
+
+  @include motion-safe {
+    transition:
+      transform var(--sheen-duration) var(--sheen-ease-spring),
+      opacity var(--sheen-duration) ease;
+  }
+
+  .sheen-sidebar-collapsible[data-state="open"] > .sheen-sidebar-menu-button > & {
+    transform: rotate(90deg);
+  }
+}
+
+.sheen-sidebar-collapsible-body {
+  display: grid;
+  grid-template-rows: 0fr;
+
+  @include motion-safe {
+    transition: grid-template-rows var(--sheen-sidebar-duration) var(--sheen-sidebar-ease);
+  }
+
+  > div {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .sheen-sidebar-collapsible[data-state="open"] > & {
+    grid-template-rows: 1fr;
+  }
+
+  .sheen-sidebar[data-collapsible="icon"] & {
+    grid-template-rows: 0fr;
+  }
+}

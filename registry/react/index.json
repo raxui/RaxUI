@@ -54,6 +54,12 @@
     { "name": "command", "manifest": "registry/react/components/command/manifest.json" },
     { "name": "calendar", "manifest": "registry/react/components/calendar/manifest.json" },
     { "name": "date-picker", "manifest": "registry/react/components/date-picker/manifest.json" },
-    { "name": "date-range-picker", "manifest": "registry/react/components/date-range-picker/manifest.json" }
+    { "name": "date-range-picker", "manifest": "registry/react/components/date-range-picker/manifest.json" },
+    { "name": "navbar", "manifest": "registry/react/components/navbar/manifest.json" },
+    { "name": "sidebar", "manifest": "registry/react/components/sidebar/manifest.json" },
+    { "name": "navigation-menu", "manifest": "registry/react/components/navigation-menu/manifest.json" },
+    { "name": "menubar", "manifest": "registry/react/components/menubar/manifest.json" },
+    { "name": "footer", "manifest": "registry/react/components/footer/manifest.json" },
+    { "name": "banner", "manifest": "registry/react/components/banner/manifest.json" }
   ]
 }

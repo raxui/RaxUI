@@ -9,7 +9,10 @@ import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "date-picker", "date-range-picker", "combobox", "autocomplete", "select"]
+// Keep keyboard/selection checks independent of spring animation timing.
+test.use({ reducedMotion: "reduce", actionTimeout: 15_000 })
+
+const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "date-picker", "date-range-picker", "combobox", "autocomplete", "select", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner"]
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
 // CI runs 15.5.28 and 16.4.3.
 const CREATE_NEXT_APP = `create-next-app@${process.env.CREATE_NEXT_APP_VERSION ?? "16.4.3"}`
@@ -135,6 +138,9 @@ export default function Overlays() {
 }
 `)
 
+  mkdirSync(path.join(app, "app/shell"))
+  writeFileSync(path.join(app, "app/shell/demo.tsx"), readFileSync(path.join(repo, "tests/react/fixtures/app-shell.tsx"), "utf8"))
+  writeFileSync(path.join(app, "app/shell/page.tsx"), 'import ShellDemo from "./demo"; export default function Page() { return <ShellDemo /> }')
   sh("npm run build", app)
 
   const port = await freePort()
@@ -170,6 +176,9 @@ test("phase 3 overlays render from a server page and open", async ({ page }) => 
   await expect(page.getByRole("tooltip")).toContainText("Save your work")
   await page.getByRole("button", { name: "Save", exact: true }).click()
   await expect(page.getByText("Saved", { exact: true }).first()).toBeVisible()
+  // Complete the toast flow before starting the independent sheet flow.
+  await page.getByRole("button", { name: "Dismiss", exact: true }).click()
+  await expect(page.getByText("Saved", { exact: true }).first()).toBeHidden()
   await page.getByRole("button", { name: "Settings" }).click()
   await expect(page.getByRole("dialog", { name: "Settings" })).toBeVisible()
   await page.keyboard.press("Escape")
@@ -335,4 +344,25 @@ test("calendar pickers hydrate and commit single dates or range drafts through t
   await expect(from).toHaveValue(await to.inputValue())
   await expect(trigger).toBeFocused()
   expect(errors).toEqual([])
+})
+
+test("app shell hydrates with stored preferences, keeps theme portals and handles desktop and mobile navigation", async ({page})=>{
+ const errors:string[]=[]
+ page.on("pageerror",e=>errors.push(e.message));page.on("console",m=>{if(m.type()==="error")errors.push(m.text())})
+ await page.addInitScript(()=>{localStorage.setItem("acceptance-sidebar","false");localStorage.setItem("sheen-banner:acceptance-tip","dismissed")})
+ await page.goto(baseUrl+"/shell")
+ const sidebar=page.getByRole("button",{name:"Toggle sidebar"})
+ await expect(sidebar).toHaveAttribute("aria-expanded","false")
+ await expect(page.getByText("Remembered tip")).toBeHidden()
+ await sidebar.click();await expect(sidebar).toHaveAttribute("aria-expanded","true")
+ await page.getByRole("button",{name:"Settings",exact:true}).click();await expect(page.getByRole("link",{name:"Profile"})).toBeVisible()
+ await page.getByRole("button",{name:"Products",exact:true}).click();await expect(page.getByRole("link",{name:/UI kit/})).toBeVisible();await page.keyboard.press("Escape")
+ await page.getByRole("menuitem",{name:"File",exact:true}).click();await page.getByRole("menuitem",{name:"New",exact:true}).click();await expect(page.getByLabel("Menu action")).toHaveText("New document")
+ await page.getByRole("menuitem",{name:"View",exact:true}).click();await page.getByRole("menuitemcheckbox",{name:"Toolbar"}).click();await expect(page.getByLabel("Toolbar state")).toHaveText("true")
+ await page.getByRole("textbox",{name:"Stay in the loop"}).fill("user@example.com");await page.getByRole("button",{name:"Subscribe"}).click();await expect(page.getByText("Thanks! Check your inbox to confirm.")).toBeVisible()
+ await page.setViewportSize({width:390,height:844})
+ await page.getByRole("button",{name:"Menu",exact:true}).click();await expect(page.locator('.sheen-navbar-menu')).toHaveAttribute("data-state","open");await page.keyboard.press("Escape")
+ await sidebar.click();const dialog=page.getByRole("dialog",{name:"Workspace"});await expect(dialog).toBeVisible();await expect(dialog).toHaveAttribute("data-side","right");await page.keyboard.press("Escape");await expect(sidebar).toBeFocused()
+ const footer=page.getByRole("button",{name:"Resources",exact:true});await footer.click();await expect(page.getByRole("link",{name:"Guide",exact:true})).toBeVisible()
+ expect(errors).toEqual([])
 })

@@ -13,6 +13,15 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@/components/ui/navbar": ["registry/react/components/navbar/navbar.tsx"],
+      "@/components/ui/sidebar": ["registry/react/components/sidebar/sidebar.tsx"],
+      "@/components/ui/navigation-menu": ["registry/react/components/navigation-menu/navigation-menu.tsx"],
+      "@/components/ui/menubar": ["registry/react/components/menubar/menubar.tsx"],
+      "@/components/ui/footer": ["registry/react/components/footer/footer.tsx"],
+      "@/components/ui/banner": ["registry/react/components/banner/banner.tsx"],
+      "@/components/ui/menu-toggle": ["registry/react/components/menu-toggle/menu-toggle.tsx"],
+      "@/components/ui/skeleton": ["registry/react/components/skeleton/skeleton.tsx"],
+      "@/components/ui/alert": ["registry/react/components/alert/alert.tsx"],
       "@/components/ui/tooltip": ["registry/react/components/tooltip/tooltip.tsx"],
       "@/components/ui/hover-card": ["registry/react/components/hover-card/hover-card.tsx"],
       "@/components/ui/toast": ["registry/react/components/toast/toast.tsx"],
@@ -37,6 +46,6 @@
     }
   },
   "include": ["registry/react", "tests/react"],
-  // Byte-for-byte copies of the Vite template, compared by hash, not compiled here.
+  // Consumer fixtures are compiled inside their Vite/Next acceptance apps.
   "exclude": ["tests/react/fixtures"]
 }

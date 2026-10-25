@@ -1,0 +1,172 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-banner {
+  --sheen-banner-bg: color-mix(in srgb, rgb(var(--sheen-tone-rgb)) 10%, var(--bs-body-bg));
+  display: grid;
+  grid-template-rows: 1fr;
+  color: var(--bs-emphasis-color);
+  font-size: 0.9rem;
+}
+.sheen-banner[data-variant=tinted] {
+  background-color: var(--sheen-banner-bg);
+  box-shadow: inset 0 0 0 1px rgba(var(--sheen-tone-rgb), 0.16);
+}
+.sheen-banner[data-variant=solid] {
+  color: var(--sheen-tone-on);
+  background-color: rgb(var(--sheen-tone-rgb));
+}
+.sheen-banner[data-variant=solid] .sheen-banner-icon,
+.sheen-banner[data-variant=solid] .sheen-banner-message {
+  color: inherit;
+}
+.sheen-banner[data-variant=solid] .sheen-banner-close:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+.sheen-banner[data-variant=solid] .btn {
+  --bs-btn-color: var(--sheen-tone-on);
+  --bs-btn-hover-color: var(--sheen-tone-on);
+  border-color: transparent;
+  color: var(--sheen-tone-on);
+  background-color: rgba(0, 0, 0, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+.sheen-banner[data-variant=solid] .btn:hover {
+  background-color: rgba(0, 0, 0, 0.24);
+}
+.sheen-banner[data-variant=glass] {
+  background-color: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.15));
+  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  border: 1px solid var(--sheen-glass-border-color);
+  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-lg);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .sheen-banner[data-variant=glass] {
+    background-color: rgb(var(--bs-body-bg-rgb));
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sheen-banner[data-variant=glass] {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.96);
+  }
+}
+.sheen-banner[data-position=inline] {
+  border-radius: var(--sheen-radius-control);
+}
+.sheen-banner[data-position=top] {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+.sheen-banner[data-position=top][data-variant=tinted] {
+  box-shadow: inset 0 -1px 0 rgba(var(--sheen-tone-rgb), 0.18);
+}
+.sheen-banner[data-position=bottom] {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  left: 1rem;
+  z-index: 1090;
+  max-width: 44rem;
+  margin-inline: auto;
+  border-radius: var(--sheen-radius);
+}
+.sheen-banner[data-position=bottom]:not([data-variant=glass]) {
+  box-shadow: var(--sheen-shadow-lg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-banner[data-state=open] {
+    animation: sheen-msg-in 320ms var(--sheen-ease-out);
+  }
+  .sheen-banner[data-position=top][data-state=open] {
+    animation: sheen-banner-down 420ms var(--sheen-ease-spring);
+  }
+  .sheen-banner[data-position=bottom][data-state=open] {
+    animation: sheen-banner-up 480ms var(--sheen-ease-spring);
+  }
+  .sheen-banner[data-state=closed] {
+    animation: sheen-msg-collapse 300ms var(--sheen-ease-in) forwards;
+  }
+  .sheen-banner[data-position=bottom][data-state=closed] {
+    animation: sheen-banner-away 260ms var(--sheen-ease-in) forwards;
+  }
+}
+
+@keyframes sheen-banner-down {
+  from {
+    transform: translateY(-100%);
+  }
+}
+@keyframes sheen-banner-up {
+  from {
+    opacity: 0;
+    transform: translateY(calc(100% + 1.5rem));
+  }
+}
+@keyframes sheen-banner-away {
+  to {
+    opacity: 0;
+    transform: translateY(calc(100% + 1.5rem));
+  }
+}
+.sheen-banner-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0.625rem 0.625rem 0.625rem 1rem;
+}
+[data-position=bottom] > .sheen-banner-inner {
+  padding: 0.875rem 0.875rem 0.875rem 1.125rem;
+}
+
+.sheen-banner-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: rgb(var(--sheen-tone-rgb));
+}
+[data-tone=warning]:not([data-variant=solid]) .sheen-banner-icon {
+  color: var(--sheen-tone-text);
+}
+.sheen-banner-icon svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.sheen-banner-text {
+  display: flex;
+  flex: 1 1 14rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.125rem 0.5rem;
+  min-width: 0;
+  line-height: 1.4;
+}
+
+.sheen-banner-title {
+  font-weight: 600;
+}
+
+.sheen-banner-message {
+  color: rgba(var(--bs-emphasis-color-rgb), 0.78);
+}
+
+.sheen-banner-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline-start: auto;
+}
+
+.sheen-banner-group {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+.sheen-banner-group > .sheen-banner[data-position=top] {
+  position: relative;
+}
