@@ -5,7 +5,8 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 
 import { resolveItems, sha256 } from "./registry.mjs"
-import { assertInsideProject, FileBackup } from "./safety.mjs"
+import { assertInsideProject } from "./safety.mjs"
+import { FileTransaction, recoverTransaction } from "./transaction.mjs"
 import { CONFIG_FILE, findTracked, LOCK_FILE, loadConfig, loadLock, STATE_SCHEMA_VERSION, writeState } from "./state.mjs"
 import { npmInvocation, planTooling } from "./tooling.mjs"
 
@@ -76,9 +77,11 @@ React + Vite 6 or later, or Next.js 15 or later (App Router).
 Usage:
   sheenui-react init [options]
   sheenui-react add <component> [options]
+  sheenui-react recover [--keep-changes] [--cwd <dir>]
 
 Options:
   --cwd <dir>      Project directory (defaults to the current directory)
+  --keep-changes   Recovery only: retain conflicting files and restore the rest
   --no-install     Print the npm install command instead of running it
   -v, --version    Print the CLI version
   -h, --help       Show this help
@@ -88,15 +91,21 @@ export function run(args, { cwd, stdout, stderr }) {
   const positional = []
   let projectDir = cwd
   let install = true
+  let keepChanges = false
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--cwd" && i + 1 < args.length) projectDir = path.resolve(cwd, args[++i])
     else if (args[i] === "--no-install") install = false
+    else if (args[i] === "--keep-changes") keepChanges = true
     else positional.push(args[i])
   }
 
   const [command, name] = positional
   try {
+    if (keepChanges && command !== "recover") throw new Error("--keep-changes is only supported by recover.")
     switch (command) {
+      case "recover":
+        if (!recoverTransaction(projectDir, { keepChanges, stdout })) stdout.write("No interrupted SheenUI installation found.\n")
+        return 0
       case "-h":
       case "--help":
         stdout.write(USAGE)
@@ -123,6 +132,7 @@ export function run(args, { cwd, stdout, stderr }) {
 }
 
 function installItems(projectDir, name, { init, install, stdout }) {
+  recoverTransaction(projectDir, { stdout })
   if (["blazorui.react.json", "blazorui.react.lock.json"].some((file) => existsSync(path.join(projectDir, file))))
     throw new Error("This app uses the former BlazorUI registry. SheenUI uses different files and theme APIs. Test in a new app or follow docs/adr/012-sheenui-identity.md; existing files were not changed.")
   const project = detectProject(projectDir)
@@ -190,8 +200,8 @@ function installItems(projectDir, name, { init, install, stdout }) {
   const packageManifest = path.join(projectDir, "package.json")
   const lockfiles = ["package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb"].map((file) => path.join(projectDir, file))
 
-  // 2. Write, keeping originals for rollback; config, then the lock, last.
-  const backup = new FileBackup()
+  // 2. Journal originals before atomic writes; config, then lock, then the durable commit.
+  const backup = new FileTransaction(projectDir)
   try {
     for (const write of planned) backup.write(write.full, write.content)
     for (const { full } of deletes) backup.delete(full)
@@ -204,8 +214,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
       const command = `npm install --save-exact --ignore-scripts ${missing.join(" ")}`
       const otherManager = lockfiles.slice(1).some((file) => existsSync(file))
       if (install && !otherManager) {
-        backup.remember(packageManifest)
-        backup.remember(lockfiles[0])
+        backup.beginExternal([packageManifest, lockfiles[0]])
         stdout.write(`Installing ${missing.join(", ")}...\n`)
         const [executable, args] = npmInvocation(["install", "--save-exact", "--ignore-scripts", "--no-audit", "--no-fund", ...missing])
         const result = spawnSync(executable, args, {
@@ -213,6 +222,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
           stdio: "inherit",
           shell: false,
         })
+        backup.endExternal()
         if (result.status !== 0) throw new Error(`'${command}' failed.`)
       } else {
         stdout.write(`Install the required packages:\n  ${command}\n`)
@@ -245,9 +255,13 @@ function installItems(projectDir, name, { init, install, stdout }) {
     lock.registryVersion = VERSION
     writeState(backup, projectDir, LOCK_FILE, lock)
   } catch (error) {
-    backup.restore()
+    try { backup.restore() } catch (recoveryError) {
+      throw new Error(`${error.message}\nRollback incomplete: ${recoveryError.message}\nOriginal backups retained in .sheenui-react-transaction; run recover before retrying.`)
+    }
     throw error
   }
+
+  backup.commit()
 
   const lines = [
     ...planned.map((write) => `  + ${write.target}`),

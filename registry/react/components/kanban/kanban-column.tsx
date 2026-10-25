@@ -169,3 +169,5 @@ export const KanbanColumnContent = React.forwardRef<HTMLDivElement, KanbanColumn
 })
 
 KanbanColumnContent.displayName = "KanbanColumnContent"
+KanbanColumnLive.displayName = "KanbanColumnLive"
+KanbanColumnCopy.displayName = "KanbanColumnCopy"

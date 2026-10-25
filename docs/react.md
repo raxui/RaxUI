@@ -944,3 +944,27 @@ import { TextEditor } from "@/components/ui/text-editor"
 ```
 
 react-test includes the boot-ui usage examples for all seven components. Permanent Vite/Next acceptance fixtures cover registry installation and real browser interaction; unit tests cover value/validation, safe Markdown and SVG, clipboard errors, IME, editor SSR and keyboard state. New Blazor components are tracked separately in #75.
+
+## Interrupted installation recovery
+
+React init/add now journal each write under .sheenui-react-transaction before changing managed files. On the next init/add invocation, an interrupted installation is recovered before package/config/lock parsing, then the requested operation is planned again. Original bytes are restored; transaction-created files and owned empty directories are removed. Completed installations with a durable commit marker are kept and only their journal is cleaned up. The .NET/Blazor CLI is unchanged.
+
+Run recovery independently when inspecting an interrupted installation:
+
+```sh
+npx sheenui-react recover --cwd ./my-app
+```
+
+If a file changed afterward, automatic recovery stops before changing project files and lists the conflicting paths. Review journal.json and its before-N backups; copy originals you want to keep elsewhere. To retain changed paths and roll back the other managed files:
+
+```sh
+npx sheenui-react recover --keep-changes --cwd ./my-app
+```
+
+This explicitly preserves current conflicting bytes or deletions and removes the journal after successful reconciliation. It does not overwrite edited files with backups. A retained new component may still be untracked by the restored registry lock; inspect it before another init/add instead of deleting it automatically. Paths must stay inside the original project, and linked files/junctions, damaged backups, malformed journals and unknown metadata files are rejected with instructions.
+
+When npm was interrupted, stop any surviving npm process first. Review package.json and package-lock.json backups, then use the explicit keep-changes command to retain package changes and restore managed sources. Repair incomplete package JSON if necessary, and run npm install to reconcile node_modules; recovery does not restore node_modules. A handled npm failure whose invocation returned normally can restore the observed package changes automatically.
+
+If recovery itself was killed, confirm no recovery process is running, remove only .sheenui-react-transaction/recovery.lock, and rerun recover. Keep the remaining journal/backups. A missing/truncated journal or moved project needs manual inspection of the numbered originals; no new writes proceed. A live owner (or reused PID) blocks recovery conservatively. Unrelated files and replacement directories are preserved; an uncertain empty directory can remain after a very early interruption. Do not edit recovery metadata or run other writers during recovery. Successful recovery removes its original backups, so copy any needed conflict originals first. See [ADR 017](adr/017-react-cli-recovery.md) for the filesystem and power-loss limits.
+
+Run `npm run test:recovery` for real crash/restart tests using Node's built-in runner. `npm run check` includes that suite. The existing CI React jobs run it on Windows and Linux; local verification also uses native Ubuntu through WSL. No public package publishing is part of recovery/readiness verification.

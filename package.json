@@ -13,7 +13,8 @@
     "typecheck": "tsc -p .",
     "test:acceptance": "playwright test -c tests/react/acceptance install.spec.ts",
     "test:acceptance:next": "playwright test -c tests/react/acceptance next.spec.ts",
-    "theme:css": "node theme/build-css.mjs"
+    "theme:css": "node theme/build-css.mjs",
+    "test:recovery": "node --test tests/react/recovery/crash.test.mjs"
   },
   "devDependencies": {
     "@dnd-kit/core": "6.3.1",

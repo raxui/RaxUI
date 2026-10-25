@@ -51,13 +51,13 @@
       "source": "registry/react/components/kanban/kanban-column.tsx",
       "target": "components/ui/kanban-column.tsx",
       "type": "tsx",
-      "sha256": "8b38d65b2a64e9a5ce013b28f8443618268c2d5e159b240535b96a1d83a68490"
+      "sha256": "0a05fb40fcdb28c608020cfffe73f7c7506dc32a91c53df06c75e3d0be1d04f2"
     },
     {
       "source": "registry/react/components/kanban/kanban-item.tsx",
       "target": "components/ui/kanban-item.tsx",
       "type": "tsx",
-      "sha256": "3db7a16f3e85e20c95f341e041867ceb0333e7a04ee4b2ffc35fe4ea04907d18"
+      "sha256": "ecd63d1c8128e6803cbe441d483a439e996299aaa0bdfaa9cc3b7974b15c5366"
     },
     {
       "source": "registry/react/components/kanban/kanban-handles.tsx",
