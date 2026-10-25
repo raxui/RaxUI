@@ -852,3 +852,35 @@ and the empty-state display follow the supplied CSS. Reduced motion disables
 motion; Radix retains mounted content until CSS exit animations finish. Vaul owns
 drawer enter/exit and swipe physics. Optional boot-ui page-receding effects are
 not part of this port.
+
+## React app shell
+
+Install independently with `npx sheenui-react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
+
+| Component | Composition and behavior |
+| --- | --- |
+| Navbar | Brand, Links/Link, Actions, Toggle, Menu/MenuLink. Controlled or default open state; glass/transparent/solid and floating variants; configurable collapse breakpoint; gliding hover/current-page indicators; optional hide-on-scroll with a window or element scroll container. Escape restores toggle focus, links and breakpoint changes close the mobile menu. |
+| Sidebar | Provider, Trigger/Rail, Header/Content/Footer/Inset, groups, menu items, badges, skeletons and collapsible submenus. Offcanvas/icon/none modes, sidebar/floating/inset variants, logical start/end sides and a themed mobile Sheet. Optional storageKey remembers desktop collapse; shortcut defaults to Ctrl/Command+B and ignores editable controls. Give each independently controlled sidebar its own provider. |
+| NavigationMenu | List, Item, Trigger, Content, Link, ListItem, Indicator and Viewport. Radix mega-menu semantics and keyboard navigation; a shared viewport glides and resizes under the active trigger, clamped inside the window. viewport=false allows custom panel placement; viewportAlign selects trigger or start. |
+| Menubar | Menu/Trigger/Content, groups, labels, items, checkboxes, radio groups, submenus and shortcuts. Gliding open-trigger highlight, disabled/destructive items, keyboard navigation and nearest-theme portals. |
+| Footer | Brand, columns, links, social links, newsletter, bottom/legal/copyright and back-to-top. Columns become disclosures on phones. Newsletter validates email, awaits onSubscribe, displays success or a configurable errorMessage and supports retry; no service is called unless the consumer provides onSubscribe. Back-to-top respects reduced motion. Pass year for an explicit server-rendered copyright year; otherwise the current year appears after hydration. |
+| Banner | Inline, sticky top or floating bottom placement; tinted/solid/glass variants; tone icons and optional actions; controlled open state or dismissible internal state. persistKey remembers dismissal; resetBanner(key) clears it for the next mount. BannerGroup stacks top banners. Floating banners portal into the nearest theme and mount after hydration. |
+
+Roots accept appearance overrides and inherit theme tokens, density, color mode and direction; local dir sections are respected. Navbar/sidebar roots and their composable parts forward refs. Built-in names can be translated with aria-label or the label, description, dismissLabel and newsletter text props. Sidebar desktop preference and banner dismissal storage are read after hydration so persisted settings cannot change the initial server markup. React 18 and 19 inert/ref differences are handled by the shared installed helper. CSS motion follows prefers-reduced-motion.
+
+```tsx
+import { Navbar, NavbarBrand, NavbarLinks, NavbarLink, NavbarToggle, NavbarMenu, NavbarMenuLink } from "@/components/ui/navbar"
+import { Banner } from "@/components/ui/banner"
+
+<>
+  <Banner title="New release" dismissible dismissLabel="Dismiss announcement">Read the release notes.</Banner>
+  <Navbar expand="md">
+    <NavbarBrand href="/">My app</NavbarBrand>
+    <NavbarLinks label="Main"><NavbarLink href="/docs" active>Docs</NavbarLink></NavbarLinks>
+    <NavbarToggle aria-label="Open navigation" />
+    <NavbarMenu label="Mobile navigation"><NavbarMenuLink href="/docs" active>Docs</NavbarMenuLink></NavbarMenu>
+  </Navbar>
+</>
+```
+
+The reference-based consumer examples in react-test cover all six components, including Arabic sections and desktop/mobile layouts. Shared generated CSS is refreshed; new Blazor app-shell components remain deferred.

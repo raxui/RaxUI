@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "name": "banner",
+  "version": "0.1.0",
+  "description": "banner with boot-ui motion, theme and RTL support.",
+  "requires": [
+    "foundation",
+    "alert"
+  ],
+  "packages": {},
+  "styles": [
+    "components/banner"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/banner/banner.tsx",
+      "target": "components/ui/banner.tsx",
+      "type": "tsx",
+      "sha256": "ab9c8ef8056f21d4c9c94d7034475fd2bf4627c300850ce9127c1f60808e2ec5"
+    },
+    {
+      "source": "theme/scss/components/_banner.scss",
+      "target": "styles/sheenui/components/_banner.scss",
+      "type": "scss",
+      "sha256": "4dddec01db7e54d24154f0cb07dd4442116f08ebd119b009bd0931c3fb9f397b"
+    }
+  ]
+}

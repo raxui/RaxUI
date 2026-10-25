@@ -1,29 +1,30 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
-.sheen-alert-box {
+:is(.sheen-alert-box, .sheen-banner) {
   --sheen-tone-rgb: var(--bs-primary-rgb);
   --sheen-tone-text: var(--bs-primary-text-emphasis);
   --sheen-tone-on: #fff;
 }
-.sheen-alert-box[data-tone=success] {
+:is(.sheen-alert-box, .sheen-banner)[data-tone=success] {
   --sheen-tone-rgb: var(--bs-success-rgb);
   --sheen-tone-text: var(--bs-success-text-emphasis);
 }
-.sheen-alert-box[data-tone=warning] {
+:is(.sheen-alert-box, .sheen-banner)[data-tone=warning] {
   --sheen-tone-rgb: var(--bs-warning-rgb);
   --sheen-tone-text: var(--bs-warning-text-emphasis);
   --sheen-tone-on: #1f1a0a;
 }
-.sheen-alert-box[data-tone=danger] {
+:is(.sheen-alert-box, .sheen-banner)[data-tone=danger] {
   --sheen-tone-rgb: var(--bs-danger-rgb);
   --sheen-tone-text: var(--bs-danger-text-emphasis);
 }
-.sheen-alert-box[data-tone=neutral] {
+:is(.sheen-alert-box, .sheen-banner)[data-tone=neutral] {
   --sheen-tone-rgb: var(--bs-emphasis-color-rgb);
   --sheen-tone-text: var(--bs-emphasis-color);
   --sheen-tone-on: var(--bs-body-bg);
 }
 
-.sheen-alert-box-close.sheen-alert-box-close {
+.sheen-alert-box-close.sheen-alert-box-close,
+.sheen-banner-close {
   display: inline-grid;
   flex-shrink: 0;
   place-items: center;
@@ -38,15 +39,18 @@
   cursor: pointer;
   transition: opacity var(--sheen-duration-fast) ease, background-color var(--sheen-duration-fast) ease;
 }
-.sheen-alert-box-close.sheen-alert-box-close svg {
+.sheen-alert-box-close.sheen-alert-box-close svg,
+.sheen-banner-close svg {
   width: 0.9375rem;
   height: 0.9375rem;
 }
-.sheen-alert-box-close.sheen-alert-box-close:hover {
+.sheen-alert-box-close.sheen-alert-box-close:hover,
+.sheen-banner-close:hover {
   opacity: 1;
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
 }
-.sheen-alert-box-close.sheen-alert-box-close:focus-visible {
+.sheen-alert-box-close.sheen-alert-box-close:focus-visible,
+.sheen-banner-close:focus-visible {
   outline: 0;
   opacity: 1;
   box-shadow: 0 0 0 2px rgba(var(--sheen-tone-rgb), 0.5);

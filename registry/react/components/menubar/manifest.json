@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "name": "menubar",
+  "version": "0.1.0",
+  "description": "menubar with boot-ui motion, theme and RTL support.",
+  "requires": [
+    "foundation",
+    "dropdown-menu"
+  ],
+  "packages": {
+    "@radix-ui/react-menubar": "1.2.1"
+  },
+  "styles": [
+    "components/menubar"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/menubar/menubar.tsx",
+      "target": "components/ui/menubar.tsx",
+      "type": "tsx",
+      "sha256": "c19549a84125038e8cc4a175058bc5d7c232987c242b880aa5da8f5cd9c0a749"
+    },
+    {
+      "source": "theme/scss/components/_menubar.scss",
+      "target": "styles/sheenui/components/_menubar.scss",
+      "type": "scss",
+      "sha256": "27fe743143f56fef817ee8dd1aacbfac016d40205d3d6c39b543895b32881339"
+    },
+    {
+      "source": "registry/react/foundation/app-shell-utils.ts",
+      "target": "lib/app-shell-utils.ts",
+      "type": "ts",
+      "sha256": "a77779ef90233c68a95c0bc3ced8f27ea768a4a57bba30ceb297b94598ddaeb4"
+    }
+  ]
+}

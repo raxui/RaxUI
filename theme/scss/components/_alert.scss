@@ -4,7 +4,7 @@
 // Dismissal collapses height (grid-template-rows 1fr → 0fr) so nothing jumps.
 // -----------------------------------------------------------------------------
 
-.sheen-alert-box {
+:is(.sheen-alert-box, .sheen-banner) {
   --sheen-tone-rgb: var(--bs-primary-rgb);
   --sheen-tone-text: var(--bs-primary-text-emphasis);
   --sheen-tone-on: #fff;
@@ -16,7 +16,8 @@
 }
 
 // Shared close button.
-.sheen-alert-box-close.sheen-alert-box-close {
+.sheen-alert-box-close.sheen-alert-box-close,
+.sheen-banner-close {
   display: inline-grid;
   flex-shrink: 0;
   place-items: center;

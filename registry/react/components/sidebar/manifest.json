@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "name": "sidebar",
+  "version": "0.1.0",
+  "description": "sidebar with boot-ui motion, theme and RTL support.",
+  "requires": [
+    "foundation",
+    "button",
+    "sheet",
+    "skeleton",
+    "tooltip"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/sidebar"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/sidebar/sidebar.tsx",
+      "target": "components/ui/sidebar.tsx",
+      "type": "tsx",
+      "sha256": "bb82463de7b98648c4aa539025a954044e77ba36c21e3d8a23a9493f43067bdd"
+    },
+    {
+      "source": "theme/scss/components/_sidebar.scss",
+      "target": "styles/sheenui/components/_sidebar.scss",
+      "type": "scss",
+      "sha256": "0e7233da93385b759bac2e9889b2c201c8c1a80f85b7dfb92bd929ff2ffe2122"
+    },
+    {
+      "source": "registry/react/foundation/app-shell-utils.ts",
+      "target": "lib/app-shell-utils.ts",
+      "type": "ts",
+      "sha256": "a77779ef90233c68a95c0bc3ced8f27ea768a4a57bba30ceb297b94598ddaeb4"
+    }
+  ]
+}

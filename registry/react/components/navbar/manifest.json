@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "name": "navbar",
+  "version": "0.1.0",
+  "description": "navbar with boot-ui motion, theme and RTL support.",
+  "requires": [
+    "foundation",
+    "menu-toggle"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/navbar"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/navbar/navbar.tsx",
+      "target": "components/ui/navbar.tsx",
+      "type": "tsx",
+      "sha256": "9197687f8cd42e2b857792682d40e797f6ee430c88b4de6db112ce6f0dedac02"
+    },
+    {
+      "source": "theme/scss/components/_navbar.scss",
+      "target": "styles/sheenui/components/_navbar.scss",
+      "type": "scss",
+      "sha256": "be50f2c1681fab41e347dd6ebafd051beb655337772d2435251d150e082fa49b"
+    },
+    {
+      "source": "registry/react/foundation/app-shell-utils.ts",
+      "target": "lib/app-shell-utils.ts",
+      "type": "ts",
+      "sha256": "a77779ef90233c68a95c0bc3ced8f27ea768a4a57bba30ceb297b94598ddaeb4"
+    }
+  ]
+}
