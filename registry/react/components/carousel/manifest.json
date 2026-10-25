@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "name": "carousel",
+  "version": "0.1.0",
+  "description": "Source-owned carousel ported from boot-ui.",
+  "requires": [
+    "foundation",
+    "button"
+  ],
+  "packages": {
+    "embla-carousel-react": "8.6.0",
+    "embla-carousel-autoplay": "8.6.0",
+    "embla-carousel-fade": "8.6.0"
+  },
+  "styles": [
+    "components/carousel"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/carousel/carousel.tsx",
+      "target": "components/ui/carousel.tsx",
+      "type": "tsx",
+      "sha256": "4ecc08919a2fe834572a41cabbcb3233b721f7e3f17a2e59f99dfeaec2c8861d"
+    },
+    {
+      "source": "theme/scss/components/_carousel.scss",
+      "target": "styles/sheenui/components/_carousel.scss",
+      "type": "scss",
+      "sha256": "fd9147e1a1c320a4b04d9af76696702bb7f3c619f98ac53b0125a4a3165afdf4"
+    },
+    {
+      "source": "registry/react/foundation/app-shell-utils.ts",
+      "target": "lib/app-shell-utils.ts",
+      "type": "ts",
+      "sha256": "a77779ef90233c68a95c0bc3ced8f27ea768a4a57bba30ceb297b94598ddaeb4"
+    }
+  ]
+}

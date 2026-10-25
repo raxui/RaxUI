@@ -13,7 +13,8 @@ const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../.
 // `npm create vite@x` runs create-vite@x. CI runs 6.5.0 (Vite 6), 7.1.3 (Vite 7), and 9.3.1 (Vite 8) (ADR 010).
 const CREATE_VITE = `vite@${process.env.CREATE_VITE_VERSION ?? "9.3.1"}`
 
-const APP = `import { useState } from "react"
+const APP = `import AdvancedDemo from "./advanced-demo"
+import { useState } from "react"
 import { Button } from "./components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./components/ui/dialog"
 import { ConfirmDialog } from "./components/ui/confirm-dialog"
@@ -32,6 +33,7 @@ export default function App() {
   const [count, setCount] = useState(0)
   const [picked, setPicked] = useState("")
   const form = useForm({ resolver: zodResolver(schema), defaultValues: { name: "" }, shouldFocusError: false })
+  if (window.location.pathname === "/advanced-components") return <AdvancedDemo/>
   return (
     <SheenThemeProvider
       data-testid="theme"
@@ -162,6 +164,13 @@ test.beforeAll(async () => {
   sh("npx sheenui-react add data-grid", app)
   sh("npx sheenui-react add sortable", app)
   sh("npx sheenui-react add resizable", app)
+  sh("npx sheenui-react add carousel", app)
+  sh("npx sheenui-react add chat", app)
+  sh("npx sheenui-react add ai", app)
+  sh("npx sheenui-react add text-editor", app)
+  sh("npx sheenui-react add qr-code", app)
+  sh("npx sheenui-react add speed-dial", app)
+  sh("npx sheenui-react add kanban", app)
   sh("npx sheenui-react add date-input", app)
   sh("npx sheenui-react add time-picker", app)
   sh("npx sheenui-react add date-time-input", app)
@@ -204,6 +213,7 @@ test.beforeAll(async () => {
   }
   sh("npm run build", app) // the starter itself builds
 
+  writeFileSync(path.join(app, "src/advanced-demo.tsx"), readFileSync(path.join(repo,"tests/react/fixtures/advanced-components.tsx"),"utf8").split('"@/').join('"./'))
   writeFileSync(path.join(app, "src/App.tsx"), APP)
   sh("npm run build", app)
 
@@ -375,6 +385,13 @@ test("running init and add again changes no files", () => {
   sh("npx sheenui-react add data-grid", app)
   sh("npx sheenui-react add sortable", app)
   sh("npx sheenui-react add resizable", app)
+  sh("npx sheenui-react add carousel", app)
+  sh("npx sheenui-react add chat", app)
+  sh("npx sheenui-react add ai", app)
+  sh("npx sheenui-react add text-editor", app)
+  sh("npx sheenui-react add qr-code", app)
+  sh("npx sheenui-react add speed-dial", app)
+  sh("npx sheenui-react add kanban", app)
   sh("npx sheenui-react add date-input", app)
   sh("npx sheenui-react add time-picker", app)
   sh("npx sheenui-react add date-time-input", app)
@@ -410,3 +427,13 @@ test("running init and add again changes no files", () => {
   sh("npx sheenui-react add form-section", app)
   expect(snapshot(app)).toEqual(before)
 })
+
+ test("advanced registry sources build and interact in a Vite consumer",async({page})=>{
+ const errors:string[]=[];page.on("pageerror",e=>errors.push(e.message));await page.goto(baseUrl+"/advanced-components");await expect(page.getByRole("heading",{name:"Advanced components"})).toBeVisible()
+ await expect(page.locator(".sheen-carousel-counter")).toHaveText("1 / 3");await page.getByRole("button",{name:"Next slide"}).click();await expect(page.locator(".sheen-carousel-counter")).toHaveText("2 / 3")
+ await page.getByPlaceholder("Compose message").fill("Vite message");await page.getByPlaceholder("Compose message").press("Enter");await expect(page.getByText("Vite message",{exact:true})).toBeVisible()
+ await page.getByRole("textbox",{name:"Document",exact:true}).fill("Vite editor");await expect(page.getByLabel("Saved HTML")).toContainText("Vite editor");await expect(page.getByRole("img",{name:"Scan code"}).locator("path")).toHaveAttribute("d",/.+/)
+ await page.getByPlaceholder("Ask assistant").fill("Vite AI");await page.getByPlaceholder("Ask assistant").press("Enter");await expect(page.locator(".sheen-ai-response")).toHaveAttribute("aria-busy","true");await page.getByRole("button",{name:"Stop",exact:true}).click()
+ await page.getByRole("button",{name:"More actions"}).click();await page.getByRole("menuitem",{name:"Share",exact:true}).click();await expect(page.getByText("Shared",{exact:true})).toBeVisible()
+ await page.getByRole("button",{name:"Toggle direction"}).click();await expect(page.locator(".sheen-kanban")).toHaveCSS("direction","rtl");expect(errors).toEqual([])
+ })

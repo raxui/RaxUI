@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "name": "kanban",
+  "version": "0.1.0",
+  "description": "Source-owned kanban ported from boot-ui.",
+  "requires": [
+    "foundation",
+    "sortable"
+  ],
+  "packages": {
+    "@dnd-kit/core": "6.3.1",
+    "@dnd-kit/sortable": "10.0.0",
+    "@dnd-kit/utilities": "3.2.2",
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/kanban"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/kanban/kanban.tsx",
+      "target": "components/ui/kanban.tsx",
+      "type": "tsx",
+      "sha256": "1b08eb6343505fdac6952df46358c796204d2e83bf4e946446388429f57f8e2b"
+    },
+    {
+      "source": "theme/scss/components/_kanban.scss",
+      "target": "styles/sheenui/components/_kanban.scss",
+      "type": "scss",
+      "sha256": "5159825403633f0fd2f607db56faf6d266d3a89a7095d9ee5437bb3395da6ab4"
+    },
+    {
+      "source": "registry/react/components/kanban/kanban-context.tsx",
+      "target": "components/ui/kanban-context.tsx",
+      "type": "tsx",
+      "sha256": "1542fae7e0fbb22a10c7c12b879349a51340580bef3e507c4d1607eb7f7e7811"
+    },
+    {
+      "source": "registry/react/components/kanban/kanban-keyboard.tsx",
+      "target": "components/ui/kanban-keyboard.tsx",
+      "type": "tsx",
+      "sha256": "ceff2f4c26fba88c53c6dff2fc71d5f5fb94629fe7986e8eeccb0934263fdea0"
+    },
+    {
+      "source": "registry/react/components/kanban/kanban-board.tsx",
+      "target": "components/ui/kanban-board.tsx",
+      "type": "tsx",
+      "sha256": "0f6a9b69062d5b67b237f182a1b34d6f88ece7ff753bdc01ae42d5d646ed5cc0"
+    },
+    {
+      "source": "registry/react/components/kanban/kanban-column.tsx",
+      "target": "components/ui/kanban-column.tsx",
+      "type": "tsx",
+      "sha256": "8b38d65b2a64e9a5ce013b28f8443618268c2d5e159b240535b96a1d83a68490"
+    },
+    {
+      "source": "registry/react/components/kanban/kanban-item.tsx",
+      "target": "components/ui/kanban-item.tsx",
+      "type": "tsx",
+      "sha256": "3db7a16f3e85e20c95f341e041867ceb0333e7a04ee4b2ffc35fe4ea04907d18"
+    },
+    {
+      "source": "registry/react/components/kanban/kanban-handles.tsx",
+      "target": "components/ui/kanban-handles.tsx",
+      "type": "tsx",
+      "sha256": "3aa2a2432d3c76c4e8121d98417b81e0363222d3addb5eae72ab409f616b0ed1"
+    },
+    {
+      "source": "registry/react/components/kanban/kanban-overlay.tsx",
+      "target": "components/ui/kanban-overlay.tsx",
+      "type": "tsx",
+      "sha256": "b90a7d6cf56738b436edcca857cbbd3b06ffbd9bf990a5719ad1e551de7f1c82"
+    }
+  ]
+}
