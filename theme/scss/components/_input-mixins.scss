@@ -3,48 +3,46 @@
   --sheen-input-radius: var(--sheen-radius-control);
   --sheen-input-pad-x: 0.8125rem;
   --sheen-input-font-size: 1rem; // ≥16px: iOS doesn't zoom into the field
-  --sheen-input-bg: var(--sheen-surface-bg);
-  --sheen-input-border: var(--sheen-border-color);
+  --sheen-input-bg: var(--sheen-field-bg);
+  --sheen-input-border: var(--sheen-field-border);
+  --sheen-input-shadow: var(--sheen-field-shadow);
   --sheen-input-ring-rgb: var(--bs-primary-rgb);
 
-  @include sheen-surface;
+  // Fields are recessed into their surface: no surface colour, no backdrop blur
+  // (a blur inside a blurred card shows nothing and costs a full repaint).
   min-height: var(--sheen-input-height);
   border: 1px solid var(--sheen-input-border);
   border-radius: var(--sheen-input-radius);
   color: var(--bs-emphasis-color);
   background-color: var(--sheen-input-bg);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
-  box-shadow: var(--sheen-control-shadow);
+  box-shadow: var(--sheen-input-shadow);
   font-size: var(--sheen-input-font-size);
   transition:
     border-color var(--sheen-duration) ease,
     background-color var(--sheen-duration) ease,
     box-shadow var(--sheen-duration) ease;
 
-  // Filled sits before hover/focus so those still apply to it.
-  &[data-variant="filled"],
-  &:has(> [data-variant="filled"]) {
-    --sheen-input-bg: rgba(var(--bs-emphasis-color-rgb), 0.055);
-    --sheen-input-border: transparent;
-
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    box-shadow: none;
+  // Outline: border only. Filled (default) and the legacy glass value use the field material.
+  &[data-variant="outline"],
+  &:has(> [data-variant="outline"]) {
+    --sheen-input-bg: transparent;
+    --sheen-input-shadow: 0 0 #0000;
   }
 
   &:hover {
-    --sheen-input-border: rgba(var(--bs-emphasis-color-rgb), 0.2);
+    --sheen-input-border: rgba(var(--bs-emphasis-color-rgb), 0.28);
   }
 
+  // Focus keeps the recess and adds the ring on top.
   #{$focus} {
     --sheen-input-border: rgba(var(--sheen-input-ring-rgb), 0.65);
-    --sheen-input-bg: var(--sheen-surface-bg);
 
     outline: 0;
+    border-color: var(--sheen-input-border); // outrank Bootstrap's .form-control:focus
+    background-color: var(--sheen-input-bg);
     box-shadow:
-      0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16),
-      0 2px 8px rgba(var(--sheen-shadow-rgb), 0.06);
+      var(--sheen-input-shadow),
+      0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16);
   }
 
   @media (min-width: 768px) {

@@ -48,7 +48,7 @@
     [Parameter] public string HideLabel { get; set; } = "Hide password";
     /// <summary>default, sm, or lg.</summary>
     [Parameter] public string Size { get; set; } = "default";
-    [Parameter] public string Variant { get; set; } = "outline";
+    [Parameter] public string Variant { get; set; } = "filled";
     private string? SizeClass => Size == "default" ? null : $"form-control-{Size}";
 
     /// <summary>Bound value, including EditContext validation and static SSR form mapping.</summary>

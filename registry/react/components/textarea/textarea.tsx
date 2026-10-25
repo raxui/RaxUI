@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   /** `glass` = frosted field · `filled` = iOS-style grey field without a border. */
-  variant?: "glass" | "filled"
+  variant?: "glass" | "outline" | "filled"
   /** Grow with the content between `minRows` and `maxRows` (then scroll). */
   autoResize?: boolean
   minRows?: number
@@ -57,7 +57,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     {
       className,
       wrapperClassName,
-      variant = "glass",
+      variant = "filled",
       autoResize = false,
       minRows = 3,
       maxRows = 10,

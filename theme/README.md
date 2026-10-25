@@ -14,6 +14,8 @@ Changes since the copy:
 
 - `_appearance.scss`: opaque glass under `prefers-reduced-transparency: reduce`.
 - `_appearance.scss`: an element that switches mode (`data-bs-theme`) without an appearance re-declares the default material, so surfaces follow the inner mode (dark mode with the default appearance showed light panels).
+- Fields (input, textarea, select trigger, upload zone) use their own recessed material (`--sheen-field-bg`, `--sheen-field-border`, `--sheen-field-shadow`): shadow on the top inner edge, faint light on the bottom one, no backdrop blur. `filled` is the default field variant.
+- Glass surfaces derive from `--sheen-glass-alpha` and `--sheen-glass-blur` (default 16px, saturate 140%), so material classes change cards and overlays too. The `glass()` mixin (`variant="glass"`) follows the appearance: opaque under `default` and `flat`.
 - `components/_button.scss`: no focus ring on mouse clicks when app styles (the Blazor template's `app.css`) ring every `:focus`; keyboard focus keeps it.
 
 ## Contract
@@ -28,7 +30,7 @@ Any element may carry these attributes; components resolve their look from CSS c
 | `data-sheen-density` | `comfortable`, `compact` |
 | `dir` | `ltr`, `rtl` |
 
-Semantic tokens set by the appearance: `--sheen-surface-bg`, `--sheen-border-color`, `--sheen-control-shadow`, `--sheen-surface-shadow`, `--sheen-control-radius`, `--sheen-surface-filter`. Components use these and never test the appearance name.
+Semantic tokens set by the appearance: `--sheen-surface-bg`, `--sheen-border-color`, `--sheen-control-shadow`, `--sheen-surface-shadow`, `--sheen-control-radius`, `--sheen-surface-filter`, `--sheen-field-bg`, `--sheen-field-border`, `--sheen-field-shadow`. Components use these and never test the appearance name.
 
 ## Import order
 

@@ -1,11 +1,8 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
 .sheen-select-trigger {
-  background-color: var(--sheen-surface-bg);
-  border: 1px solid var(--sheen-border-color);
-  box-shadow: var(--sheen-surface-shadow);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
-  box-shadow: var(--sheen-control-shadow);
+  border: 1px solid var(--sheen-field-border);
+  background-color: var(--sheen-field-bg);
+  box-shadow: var(--sheen-field-shadow);
   border-radius: var(--sheen-control-radius);
   display: flex;
   min-height: var(--sheen-control-height);
@@ -25,7 +22,7 @@
 }
 .sheen-select-trigger:focus, .sheen-select-trigger[data-state=open] {
   border-color: rgba(var(--bs-primary-rgb), 0.65);
-  box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.16);
+  box-shadow: var(--sheen-field-shadow), 0 0 0 4px rgba(var(--bs-primary-rgb), 0.16);
 }
 .sheen-select-trigger[aria-invalid=true] {
   border-color: var(--bs-form-invalid-border-color);

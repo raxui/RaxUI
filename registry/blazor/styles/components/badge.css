@@ -90,11 +90,11 @@
   color: var(--sheen-badge-text);
 }
 .sheen-badge.sheen-badge[data-variant=glass] {
-  background-color: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha));
-  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  border: 1px solid var(--sheen-glass-border-color);
-  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
+  background-color: rgba(var(--bs-body-bg-rgb), max(var(--sheen-glass-alpha), var(--sheen-material-floor, 0)));
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-material-edge), var(--sheen-material-shadow, var(--sheen-shadow-sm));
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .sheen-badge.sheen-badge[data-variant=glass] {

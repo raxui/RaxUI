@@ -49,8 +49,6 @@
     border: 0;
     border-radius: inherit;
     background: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
     box-shadow: none;
     padding-bottom: 0.25rem;
     resize: none;
@@ -68,24 +66,6 @@
 .sheen-textarea[aria-invalid="true"] {
   --sheen-input-border: rgba(var(--bs-danger-rgb), 0.6);
   --sheen-input-ring-rgb: var(--bs-danger-rgb);
-}
-
-.sheen-textarea-group:has(> [data-variant="filled"]) {
-  --sheen-input-bg: rgba(var(--bs-emphasis-color-rgb), 0.055);
-  --sheen-input-border: transparent;
-
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  box-shadow: none;
-
-  &:hover { --sheen-input-border: rgba(var(--bs-emphasis-color-rgb), 0.2); }
-
-  &:focus-within {
-    --sheen-input-border: rgba(var(--sheen-input-ring-rgb), 0.65);
-    --sheen-input-bg: rgba(var(--bs-body-bg-rgb), 0.85);
-
-    box-shadow: 0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16);
-  }
 }
 
 .sheen-textarea-footer {

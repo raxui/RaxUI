@@ -11,24 +11,44 @@
   --sheen-surface-shadow: var(--sheen-control-shadow);
   --sheen-control-radius: var(--sheen-radius-control);
   --sheen-surface-filter: none;
+  // Fields (input, textarea, select…) get their own recessed material, never the surface colour.
+  --sheen-field-bg: var(--sheen-field-fill);
+  --sheen-field-border: var(--sheen-field-border-color);
+  --sheen-field-shadow: var(--sheen-field-inset), var(--sheen-field-light);
+  // `variant="glass"` components (glass() mixin) are opaque unless the appearance is glass.
+  --sheen-material-floor: 1;
+  --sheen-material-edge: var(--sheen-surface-edge);
+  --sheen-material-shadow: initial;
 }
 [data-sheen-appearance="flat"] {
   // No drop shadows; dark keeps the glass rim so edges match the other appearances.
   --sheen-control-shadow: var(--sheen-flat-shadow);
   --sheen-surface-shadow: var(--sheen-flat-shadow);
+  --sheen-field-bg: var(--sheen-field-fill-flat);
+  --sheen-field-shadow: 0 0 #0000;
+  --sheen-material-shadow: 0 0 #0000;
 }
 [data-sheen-appearance="glass"] {
   --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
   --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) 96%, transparent);
+  --sheen-field-bg: var(--sheen-field-fill-glass);
+  --sheen-material-floor: 0;
+  --sheen-material-edge: var(--sheen-glass-edge);
   // Keep glass close to the page: subtle contact shadows, without a broad halo.
   --sheen-control-shadow: var(--sheen-glass-edge),
     0 2px 4px -1px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.6));
   --sheen-surface-shadow: var(--sheen-glass-edge),
     0 3px 8px -2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.65));
   --sheen-border-color: var(--sheen-glass-border-color);
-  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);
-    --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) 82%, transparent);
+}
+// Glass surfaces derive from --sheen-glass-alpha / -blur. Custom properties resolve where they are
+// declared, so material classes (.glass-thin…) re-declare them to take effect on their subtree.
+// Floating surfaces (dialogs, menus, toasts) sit over content, so they stay more opaque than cards.
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  [data-sheen-appearance="glass"],
+  [data-sheen-appearance="glass"] :is(.glass-ultrathin, .glass-thin, .glass-regular, .glass-thick) {
+    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), min(calc(var(--sheen-glass-alpha) + 0.32), 0.96));
+    --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) calc(var(--sheen-glass-alpha) * 100%), transparent);
     --sheen-surface-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
   }
 }

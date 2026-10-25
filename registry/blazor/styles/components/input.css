@@ -4,40 +4,32 @@
   --sheen-input-radius: var(--sheen-radius-control);
   --sheen-input-pad-x: 0.8125rem;
   --sheen-input-font-size: 1rem;
-  --sheen-input-bg: var(--sheen-surface-bg);
-  --sheen-input-border: var(--sheen-border-color);
+  --sheen-input-bg: var(--sheen-field-bg);
+  --sheen-input-border: var(--sheen-field-border);
+  --sheen-input-shadow: var(--sheen-field-shadow);
   --sheen-input-ring-rgb: var(--bs-primary-rgb);
-  background-color: var(--sheen-surface-bg);
-  border: 1px solid var(--sheen-border-color);
-  box-shadow: var(--sheen-surface-shadow);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
   min-height: var(--sheen-input-height);
   border: 1px solid var(--sheen-input-border);
   border-radius: var(--sheen-input-radius);
   color: var(--bs-emphasis-color);
   background-color: var(--sheen-input-bg);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
-  box-shadow: var(--sheen-control-shadow);
+  box-shadow: var(--sheen-input-shadow);
   font-size: var(--sheen-input-font-size);
   transition: border-color var(--sheen-duration) ease, background-color var(--sheen-duration) ease, box-shadow var(--sheen-duration) ease;
 }
-.sheen-input[data-variant=filled], .sheen-input:has(> [data-variant=filled]) {
-  --sheen-input-bg: rgba(var(--bs-emphasis-color-rgb), 0.055);
-  --sheen-input-border: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  box-shadow: none;
+.sheen-input[data-variant=outline], .sheen-input:has(> [data-variant=outline]) {
+  --sheen-input-bg: transparent;
+  --sheen-input-shadow: 0 0 #0000;
 }
 .sheen-input:hover {
-  --sheen-input-border: rgba(var(--bs-emphasis-color-rgb), 0.2);
+  --sheen-input-border: rgba(var(--bs-emphasis-color-rgb), 0.28);
 }
 .sheen-input:focus {
   --sheen-input-border: rgba(var(--sheen-input-ring-rgb), 0.65);
-  --sheen-input-bg: var(--sheen-surface-bg);
   outline: 0;
-  box-shadow: 0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16), 0 2px 8px rgba(var(--sheen-shadow-rgb), 0.06);
+  border-color: var(--sheen-input-border);
+  background-color: var(--sheen-input-bg);
+  box-shadow: var(--sheen-input-shadow), 0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16);
 }
 @media (min-width: 768px) {
   .sheen-input {
@@ -74,40 +66,32 @@
   --sheen-input-radius: var(--sheen-radius-control);
   --sheen-input-pad-x: 0.8125rem;
   --sheen-input-font-size: 1rem;
-  --sheen-input-bg: var(--sheen-surface-bg);
-  --sheen-input-border: var(--sheen-border-color);
+  --sheen-input-bg: var(--sheen-field-bg);
+  --sheen-input-border: var(--sheen-field-border);
+  --sheen-input-shadow: var(--sheen-field-shadow);
   --sheen-input-ring-rgb: var(--bs-primary-rgb);
-  background-color: var(--sheen-surface-bg);
-  border: 1px solid var(--sheen-border-color);
-  box-shadow: var(--sheen-surface-shadow);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
   min-height: var(--sheen-input-height);
   border: 1px solid var(--sheen-input-border);
   border-radius: var(--sheen-input-radius);
   color: var(--bs-emphasis-color);
   background-color: var(--sheen-input-bg);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
-  box-shadow: var(--sheen-control-shadow);
+  box-shadow: var(--sheen-input-shadow);
   font-size: var(--sheen-input-font-size);
   transition: border-color var(--sheen-duration) ease, background-color var(--sheen-duration) ease, box-shadow var(--sheen-duration) ease;
 }
-.sheen-input-group[data-variant=filled], .sheen-input-group:has(> [data-variant=filled]) {
-  --sheen-input-bg: rgba(var(--bs-emphasis-color-rgb), 0.055);
-  --sheen-input-border: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  box-shadow: none;
+.sheen-input-group[data-variant=outline], .sheen-input-group:has(> [data-variant=outline]) {
+  --sheen-input-bg: transparent;
+  --sheen-input-shadow: 0 0 #0000;
 }
 .sheen-input-group:hover {
-  --sheen-input-border: rgba(var(--bs-emphasis-color-rgb), 0.2);
+  --sheen-input-border: rgba(var(--bs-emphasis-color-rgb), 0.28);
 }
 .sheen-input-group:focus-within {
   --sheen-input-border: rgba(var(--sheen-input-ring-rgb), 0.65);
-  --sheen-input-bg: var(--sheen-surface-bg);
   outline: 0;
-  box-shadow: 0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16), 0 2px 8px rgba(var(--sheen-shadow-rgb), 0.06);
+  border-color: var(--sheen-input-border);
+  background-color: var(--sheen-input-bg);
+  box-shadow: var(--sheen-input-shadow), 0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16);
 }
 @media (min-width: 768px) {
   .sheen-input-group {
@@ -140,8 +124,6 @@
   border: 0;
   border-radius: inherit;
   background: none;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
   box-shadow: none;
 }
 .sheen-input-group > .sheen-input:disabled {

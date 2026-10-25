@@ -97,11 +97,11 @@
   background-color: rgba(255, 255, 255, 0.18);
 }
 .sheen-alert-box[data-variant=glass] {
-  background-color: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.1));
-  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  border: 1px solid var(--sheen-glass-border-color);
-  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-md);
+  background-color: rgba(var(--bs-body-bg-rgb), max(calc(var(--sheen-glass-alpha) + 0.1), var(--sheen-material-floor, 0)));
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-material-edge), var(--sheen-material-shadow, var(--sheen-shadow-md));
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .sheen-alert-box[data-variant=glass] {
