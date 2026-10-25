@@ -9,7 +9,7 @@ import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "combobox", "autocomplete", "select"]
+const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "date-picker", "date-range-picker", "combobox", "autocomplete", "select"]
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
 // CI runs 15.5.28 and 16.4.3.
 const CREATE_NEXT_APP = `create-next-app@${process.env.CREATE_NEXT_APP_VERSION ?? "16.4.3"}`
@@ -91,6 +91,8 @@ import { CommandDialog, CommandInput, CommandList, CommandGroup, CommandItem, Co
 import { DateInput, DateTimeInput, TimeInput } from "@/components/ui/date-input"
 import { TimePicker } from "@/components/ui/time-picker"
 import { DateRangeInput } from "@/components/ui/date-range-input"
+import { DatePicker } from "@/components/ui/date-picker"
+import { DateRangePicker } from "@/components/ui/date-range-picker"
 import { Combobox } from "@/components/ui/combobox"
 import { Autocomplete } from "@/components/ui/autocomplete"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
@@ -102,6 +104,8 @@ export default function Overlays() {
       <Tooltip content="Save your work" side="top"><button type="button">Help</button></Tooltip>
       <HoverCard><HoverCardTrigger href="#author">Author</HoverCardTrigger><HoverCardContent><p>Author details</p></HoverCardContent></HoverCard>
       <section aria-label="Date and choice parity">
+        <DatePicker locale="en-GB" aria-label="Due picker" name="duePicker" defaultValue={new Date(2026, 9, 15)} />
+        <DateRangePicker locale="en-GB" aria-label="Report picker" name="reportPicker" defaultValue={{ from: new Date(2026, 9, 10), to: new Date(2026, 9, 13) }} />
         <DateInput locale="en-GB" aria-label="Birthday" defaultValue={new Date(2026, 9, 25)} name="birthday" />
         <DateTimeInput locale="en-GB" aria-label="Appointment" defaultValue={new Date(2026, 9, 25, 9, 30)} />
         <TimeInput locale="en-GB" aria-label="Opening time" defaultValue={new Date(2026, 9, 25, 9, 30)} />
@@ -303,4 +307,32 @@ test("segmented range hydrates, posts ISO endpoints and opens a range calendar",
   await popup.getByRole("button", { name: "Done", exact: true }).click()
   await range.getByRole("button", { name: "Clear dates", exact: true }).click()
   await expect(range.locator('input[name="stay_from"]')).toHaveValue("")
+})
+
+
+test("calendar pickers hydrate and commit single dates or range drafts through their public entries", async ({ page }) => {
+  const errors: string[] = []
+  page.on("pageerror", error => errors.push(error.message))
+  page.on("console", message => { if (message.type() === "error") errors.push(message.text()) })
+  await page.goto(baseUrl + "/overlays")
+  await page.getByRole("button", { name: "Due picker", exact: true }).click()
+  const single = page.getByRole("dialog", { name: "Choose date", exact: true })
+  await expect(single.locator('.sheen-calendar-day[tabindex="0"]')).toBeFocused()
+  await single.locator('[data-date="2026-10-16"]').click()
+  await expect(page.locator('input[name="duePicker"]')).toHaveValue("2026-10-16")
+  const trigger = page.getByRole("button", { name: "Report picker", exact: true })
+  const from = page.locator('input[name="reportPicker_from"]')
+  const to = page.locator('input[name="reportPicker_to"]')
+  await trigger.click()
+  const range = page.getByRole("dialog", { name: "Choose date range", exact: true })
+  await range.getByRole("button", { name: "Today", exact: true }).click()
+  await expect(from).toHaveValue("2026-10-10")
+  await range.getByRole("button", { name: "Cancel", exact: true }).click()
+  await expect(from).toHaveValue("2026-10-10")
+  await trigger.click()
+  await range.getByRole("button", { name: "Today", exact: true }).click()
+  await range.getByRole("button", { name: "Apply", exact: true }).click()
+  await expect(from).toHaveValue(await to.inputValue())
+  await expect(trigger).toBeFocused()
+  expect(errors).toEqual([])
 })

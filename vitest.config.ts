@@ -18,6 +18,8 @@ export default defineConfig({
 
       "@/components/ui/dropdown-menu": fileURLToPath(new URL("./registry/react/components/dropdown-menu/dropdown-menu.tsx", import.meta.url)),
       "@/components/ui/popover": fileURLToPath(new URL("./registry/react/components/popover/popover.tsx", import.meta.url)),
+      "@/components/ui/date-picker": fileURLToPath(new URL("./registry/react/components/date-picker/date-picker.tsx", import.meta.url)),
+      "@/components/ui/date-range-presets": fileURLToPath(new URL("./registry/react/components/calendar/date-range-presets.ts", import.meta.url)),
       "@/components/ui/calendar": fileURLToPath(new URL("./registry/react/components/calendar/calendar.tsx", import.meta.url)),
       "@/components/ui/time-picker": fileURLToPath(new URL("./registry/react/components/time-picker/time-picker.tsx", import.meta.url)),
       "@/components/ui/date-input": fileURLToPath(new URL("./registry/react/components/date-input/date-input.tsx", import.meta.url)),
