@@ -1,54 +1,45 @@
 // Each boundary defines a complete material, so explicit default resets glass.
-// Custom properties resolve where they are declared, so a mode switch (data-bs-theme) without an
-// appearance attribute re-declares the default material there; otherwise it would inherit surfaces
-// resolved in the outer mode (white panels in dark). :where() keeps it below explicit appearances.
 :root, [data-sheen-appearance="default"], [data-sheen-appearance="flat"], [data-sheen-appearance="glass"],
 :where([data-bs-theme]:not([data-sheen-appearance="flat"] *, [data-sheen-appearance="glass"] *)) {
   --sheen-surface-bg: var(--bs-body-bg);
+  // SheenUI fields and cards use separate tokens for the same boot-ui material.
   --sheen-card-bg: var(--sheen-surface-bg);
-  --sheen-border-color: var(--sheen-surface-border-color);
-  --sheen-control-shadow: var(--sheen-surface-edge), 0 1px 3px rgba(var(--sheen-shadow-rgb), 0.12);
+  --sheen-field-bg: var(--sheen-surface-bg);
+  --sheen-field-border: var(--sheen-border-color);
+  --sheen-field-shadow: var(--sheen-control-shadow);
+  --sheen-border-color: var(--bs-border-color);
+  --sheen-control-shadow: 0 1px 3px rgba(var(--bs-emphasis-color-rgb), 0.12);
   --sheen-surface-shadow: var(--sheen-control-shadow);
   --sheen-control-radius: var(--sheen-radius-control);
   --sheen-surface-filter: none;
-  // Fields (input, textarea, select…) get their own recessed material, never the surface colour.
-  --sheen-field-bg: var(--sheen-field-fill);
-  --sheen-field-border: var(--sheen-field-border-color);
-  --sheen-field-shadow: var(--sheen-field-inset), var(--sheen-field-light);
-  // `variant="glass"` components (glass() mixin) are opaque unless the appearance is glass.
-  --sheen-material-floor: 1;
-  --sheen-material-edge: var(--sheen-surface-edge);
-  --sheen-material-shadow: initial;
+  --sheen-dialog-bg: var(--sheen-surface-bg);
+  --sheen-dialog-filter: none;
+  --sheen-sheet-bg: var(--sheen-surface-bg);
+  --sheen-sheet-filter: none;
+  --sheen-drawer-bg: var(--sheen-surface-bg);
+  --sheen-drawer-filter: none;
 }
 [data-sheen-appearance="flat"] {
-  // No drop shadows; dark keeps the glass rim so edges match the other appearances.
-  --sheen-control-shadow: var(--sheen-flat-shadow);
-  --sheen-surface-shadow: var(--sheen-flat-shadow);
-  --sheen-field-bg: var(--sheen-field-fill-flat);
-  --sheen-field-shadow: 0 0 #0000;
-  --sheen-material-shadow: 0 0 #0000;
+  --sheen-control-shadow: none;
+  --sheen-surface-shadow: none;
 }
 [data-sheen-appearance="glass"] {
   --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
-  --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) 96%, transparent);
-  --sheen-field-bg: var(--sheen-field-fill-glass);
-  --sheen-material-floor: 0;
-  --sheen-material-edge: var(--sheen-glass-edge);
-  // Keep glass close to the page: subtle contact shadows, without a broad halo.
-  --sheen-control-shadow: var(--sheen-glass-edge),
-    0 2px 4px -1px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.6));
-  --sheen-surface-shadow: var(--sheen-glass-edge),
-    0 3px 8px -2px rgba(var(--sheen-shadow-rgb), calc(var(--sheen-shadow-opacity) * 0.65));
+  --sheen-dialog-bg: var(--sheen-surface-bg);
+  --sheen-sheet-bg: var(--sheen-surface-bg);
+  --sheen-drawer-bg: var(--sheen-surface-bg);
+  // Controls get a light lift; panels (cards, dialogs, menus) keep the deeper glass shadow.
+  --sheen-control-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
+  --sheen-surface-shadow: var(--sheen-glass-edge), var(--sheen-shadow-md);
   --sheen-border-color: var(--sheen-glass-border-color);
-}
-// Glass surfaces derive from --sheen-glass-alpha / -blur. Custom properties resolve where they are
-// declared, so material classes (.glass-thin…) re-declare them to take effect on their subtree.
-// Floating surfaces (dialogs, menus, toasts) sit over content, so they stay more opaque than cards.
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  [data-sheen-appearance="glass"],
-  [data-sheen-appearance="glass"] :is(.glass-ultrathin, .glass-thin, .glass-regular, .glass-thick) {
-    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), min(calc(var(--sheen-glass-alpha) + 0.32), 0.96));
-    --sheen-card-bg: color-mix(in srgb, var(--sheen-glass-card-tint) calc(var(--sheen-glass-alpha) * 100%), transparent);
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);
+    --sheen-dialog-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-dialog-alpha));
+    --sheen-dialog-filter: blur(var(--sheen-dialog-blur)) saturate(var(--sheen-glass-saturate));
+    --sheen-sheet-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-sheet-alpha));
+    --sheen-sheet-filter: blur(var(--sheen-sheet-blur)) saturate(var(--sheen-glass-saturate));
+    --sheen-drawer-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-drawer-alpha));
+    --sheen-drawer-filter: blur(var(--sheen-drawer-blur)) saturate(var(--sheen-glass-saturate));
     --sheen-surface-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
   }
 }
@@ -63,6 +54,7 @@
   --sheen-control-height-lg: 3rem;
 }
 
+
 // Users who ask the system for less transparency get opaque glass everywhere.
 // `*` with !important beats every element that re-declares these (themes, materials).
 @media (prefers-reduced-transparency: reduce) {
@@ -75,5 +67,11 @@
     --sheen-surface-bg: var(--bs-body-bg) !important;
     --sheen-card-bg: var(--bs-body-bg) !important;
     --sheen-surface-filter: none !important;
+    --sheen-dialog-bg: var(--bs-body-bg) !important;
+    --sheen-dialog-filter: none !important;
+    --sheen-sheet-bg: var(--bs-body-bg) !important;
+    --sheen-sheet-filter: none !important;
+    --sheen-drawer-bg: var(--bs-body-bg) !important;
+    --sheen-drawer-filter: none !important;
   }
 }

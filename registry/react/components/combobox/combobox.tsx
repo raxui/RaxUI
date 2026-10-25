@@ -6,6 +6,7 @@ import { useFieldControlProps } from "@/components/ui/field"
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
+import { ChoiceHighlight } from "@/lib/choice-highlight"
 
 export interface ComboboxOption { value: string; label: string; disabled?: boolean }
 export interface ComboboxProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "value" | "defaultValue" | "onChange"> {
@@ -74,7 +75,8 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(({
           else if (e.key === "Tab") setOpen(false)
           if (next) { e.preventDefault(); setActive(next.value); document.getElementById(optionId(next))?.scrollIntoView?.({ block: "nearest" }) }
         }} />
-      <div id={listId} role="listbox" aria-label={props["aria-label"] ?? placeholder}>
+      <div id={listId} role="listbox" className="sheen-choice-list" aria-label={props["aria-label"] ?? placeholder}>
+        <ChoiceHighlight />
         {filtered.map(option => <div key={option.value} id={optionId(option)} role="option" aria-selected={option.value === selected}
           aria-disabled={option.disabled || undefined} data-active={option === activeOption || undefined} className="sheen-choice-option"
           onPointerDown={e => e.preventDefault()} onPointerMove={() => { if (!option.disabled) setActive(option.value) }} onClick={() => select(option)}>{option.label}</div>)}

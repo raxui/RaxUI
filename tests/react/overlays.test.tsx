@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 
@@ -106,4 +106,23 @@ describe("DropdownMenu", () => {
     expect(screen.queryByRole("menu")).not.toBeInTheDocument()
     expect(trigger).toHaveFocus()
   })
+  it("keeps gliding when moving between items briefly focuses the menu", async () => {
+    const user = userEvent.setup()
+    render(<Example onSelect={vi.fn()} />)
+    await user.click(screen.getByRole("button", { name: "Options" }))
+    const menu = screen.getByRole("menu")
+    const edit = screen.getByRole("menuitem", { name: "Edit" })
+    const last = screen.getByRole("menuitem", { name: "Delete" })
+    Object.defineProperties(edit, { offsetTop: { value: 12 }, offsetHeight: { value: 36 } })
+    Object.defineProperties(last, { offsetTop: { value: 84 }, offsetHeight: { value: 36 } })
+    fireEvent.focusIn(edit)
+    const marker = menu.querySelector<HTMLElement>(".sheen-dropdown-highlight")!
+    const transition = vi.spyOn(marker.style, "transition", "set")
+    fireEvent.focusIn(menu)
+    fireEvent.focusIn(last)
+    expect(menu).toHaveAttribute("data-hover")
+    expect(menu.style.getPropertyValue("--sheen-menu-hover-y")).toBe("84px")
+    expect(transition).not.toHaveBeenCalledWith("none")
+  })
+
 })

@@ -1,4 +1,9 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-input,
+.sheen-input-group {
+  --sheen-field-border: rgba(var(--bs-emphasis-color-rgb), 0.22);
+}
+
 .sheen-input {
   --sheen-input-height: var(--sheen-control-height);
   --sheen-input-radius: var(--sheen-radius-control);

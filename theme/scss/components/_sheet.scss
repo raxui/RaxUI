@@ -11,9 +11,9 @@
   position: fixed;
   inset: 0;
   z-index: 1040;
-  background-color: rgba(var(--sheen-overlay-rgb), var(--sheen-overlay-alpha));
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
+  background-color: rgba(var(--sheen-overlay-rgb), var(--sheen-sheet-overlay-alpha));
+  -webkit-backdrop-filter: blur(var(--sheen-sheet-overlay-blur, 4px));
+  backdrop-filter: blur(var(--sheen-sheet-overlay-blur, 4px));
   transition: opacity var(--sheen-duration-slow) var(--sheen-ease-out);
 
   &[data-state="open"] {
@@ -31,6 +31,9 @@
   --sheen-sheet-gap: 0.5rem;
 
   @include sheen-surface;
+  background-color: var(--sheen-sheet-bg);
+  -webkit-backdrop-filter: var(--sheen-sheet-filter);
+  backdrop-filter: var(--sheen-sheet-filter);
 
   position: fixed;
   z-index: 1045;
@@ -236,7 +239,7 @@ $sheen-sheet-offscreen: (
 
 dialog.sheen-sheet-content { margin: 0; padding: 0; max-width: none; max-height: none; }
 dialog.sheen-sheet-content:not([open]) { display: none; }
-dialog.sheen-sheet-content::backdrop { background: rgba(var(--sheen-overlay-rgb), var(--sheen-overlay-alpha)); }
+dialog.sheen-sheet-content::backdrop { background: rgba(var(--sheen-overlay-rgb), var(--sheen-sheet-overlay-alpha)); }
 .sheen-sheet-content[data-side="start"], .sheen-sheet-content[data-side="end"] { top: .5rem; bottom: .5rem; width: min(24rem, calc(100vw - 3rem)); }
 .sheen-sheet-content[data-side="start"] { inset-inline-start: .5rem; inset-inline-end: auto; }
 .sheen-sheet-content[data-side="end"] { inset-inline-end: .5rem; inset-inline-start: auto; }
