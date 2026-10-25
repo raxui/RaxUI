@@ -1,0 +1,111 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-resizable {
+  --sheen-resizable-line: rgba(var(--bs-emphasis-color-rgb), 0.1);
+  --sheen-resizable-active-rgb: var(--bs-primary-rgb);
+  min-width: 0;
+  min-height: 0;
+}
+.sheen-resizable[data-variant=glass] {
+  background-color: var(--sheen-surface-bg);
+  border: 1px solid var(--sheen-border-color);
+  box-shadow: var(--sheen-surface-shadow);
+  -webkit-backdrop-filter: var(--sheen-surface-filter);
+  backdrop-filter: var(--sheen-surface-filter);
+  overflow: hidden;
+  border-radius: var(--sheen-radius);
+}
+
+.sheen-resizable-panel {
+  height: 100%;
+  min-width: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.sheen-resizable-handle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 1px;
+  background-color: var(--sheen-resizable-line);
+  outline: none;
+}
+.sheen-resizable[data-orientation=horizontal] > .sheen-resizable-handle {
+  width: 1px;
+}
+.sheen-resizable[data-orientation=vertical] > .sheen-resizable-handle {
+  height: 1px;
+}
+.sheen-resizable-handle::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  border-radius: 3px;
+  background-color: rgb(var(--sheen-resizable-active-rgb));
+  opacity: 0;
+  transition: opacity var(--sheen-duration) ease, transform var(--sheen-duration) var(--sheen-ease-out);
+}
+.sheen-resizable[data-orientation=horizontal] > .sheen-resizable-handle::after {
+  inset-block: 0;
+  inset-inline-start: -1px;
+  width: 3px;
+  transform: scaleY(0.6);
+}
+.sheen-resizable[data-orientation=vertical] > .sheen-resizable-handle::after {
+  inset-inline: 0;
+  top: -1px;
+  height: 3px;
+  transform: scaleX(0.6);
+}
+.sheen-resizable[data-orientation] > .sheen-resizable-handle:is([data-separator=hover], [data-separator=active], [data-separator=focus])::after {
+  opacity: 1;
+  transform: none;
+}
+.sheen-resizable[data-orientation] > .sheen-resizable-handle[data-separator=hover]::after {
+  opacity: 0.55;
+}
+.sheen-resizable-handle[data-separator=disabled] {
+  cursor: default;
+}
+
+.sheen-resizable-grip {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 0.875rem;
+  height: 1.75rem;
+  border: 1px solid var(--sheen-glass-border-color);
+  border-radius: 999px;
+  color: var(--bs-secondary-color);
+  background-color: rgba(var(--bs-body-bg-rgb), 0.85);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
+  transition: color var(--sheen-duration) ease, background-color var(--sheen-duration) ease, transform var(--sheen-duration) var(--sheen-ease-spring);
+}
+.sheen-resizable-grip svg {
+  width: 0.375rem;
+  height: 0.875rem;
+}
+.sheen-resizable[data-orientation=vertical] > .sheen-resizable-handle > .sheen-resizable-grip {
+  width: 1.75rem;
+  height: 0.875rem;
+}
+.sheen-resizable[data-orientation=vertical] > .sheen-resizable-handle > .sheen-resizable-grip svg {
+  transform: rotate(90deg);
+}
+.sheen-resizable-handle:is([data-separator=hover], [data-separator=focus]) > .sheen-resizable-grip {
+  color: rgb(var(--sheen-resizable-active-rgb));
+}
+.sheen-resizable-handle[data-separator=active] > .sheen-resizable-grip {
+  color: #fff;
+  background-color: rgb(var(--sheen-resizable-active-rgb));
+  transform: scale(1.12);
+}
+.sheen-resizable-handle[data-separator=focus] > .sheen-resizable-grip {
+  box-shadow: var(--sheen-glass-edge), 0 0 0 3px rgba(var(--sheen-resizable-active-rgb), 0.3);
+}

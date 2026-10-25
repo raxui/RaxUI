@@ -60,6 +60,10 @@
     { "name": "navigation-menu", "manifest": "registry/react/components/navigation-menu/manifest.json" },
     { "name": "menubar", "manifest": "registry/react/components/menubar/manifest.json" },
     { "name": "footer", "manifest": "registry/react/components/footer/manifest.json" },
-    { "name": "banner", "manifest": "registry/react/components/banner/manifest.json" }
+    { "name": "banner", "manifest": "registry/react/components/banner/manifest.json" },
+    { "name": "data-table", "manifest": "registry/react/components/data-table/manifest.json" },
+    { "name": "data-grid", "manifest": "registry/react/components/data-grid/manifest.json" },
+    { "name": "sortable", "manifest": "registry/react/components/sortable/manifest.json" },
+    { "name": "resizable", "manifest": "registry/react/components/resizable/manifest.json" }
   ]
 }

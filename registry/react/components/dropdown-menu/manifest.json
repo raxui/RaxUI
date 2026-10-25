@@ -17,13 +17,13 @@
       "source": "registry/react/components/dropdown-menu/dropdown-menu.tsx",
       "target": "components/ui/dropdown-menu.tsx",
       "type": "tsx",
-      "sha256": "17f9db6d108f2db0f96a636fb1dcf61c8aeb630927db4e10ee622dcba5c48ade"
+      "sha256": "afb780edd20f84e65e4cf28f6f2eb60477413236e73807d574a323be7811c6b4"
     },
     {
       "source": "theme/scss/components/_dropdown-menu.scss",
       "target": "styles/sheenui/components/_dropdown-menu.scss",
       "type": "scss",
-      "sha256": "57cdb9af129bb9bc133d5c167ad359772ea051fa8d556ba2064c461f5ecd087e"
+      "sha256": "da4ab0f57fbc4d1d6078fd7a4a904d065b9a60ff59c083bfaff9941884d41145"
     }
   ]
 }

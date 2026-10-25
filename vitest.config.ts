@@ -5,6 +5,13 @@ export default defineConfig({
   resolve: {
     // Registry sources import the foundation as "@/lib/*", like an installed app.
     alias: {
+      "@/components/ui/select": fileURLToPath(new URL("./registry/react/components/select/select.tsx", import.meta.url)),
+      "@/components/ui/checkbox": fileURLToPath(new URL("./registry/react/components/checkbox/checkbox.tsx", import.meta.url)),
+      "@/components/ui/data-table": fileURLToPath(new URL("./registry/react/components/data-table/data-table.tsx", import.meta.url)),
+      "@/components/ui/data-grid": fileURLToPath(new URL("./registry/react/components/data-grid/data-grid.tsx", import.meta.url)),
+      "@/components/ui/sortable": fileURLToPath(new URL("./registry/react/components/sortable/sortable.tsx", import.meta.url)),
+      "@/components/ui/resizable": fileURLToPath(new URL("./registry/react/components/resizable/resizable.tsx", import.meta.url)),
+      "@/components/ui/table": fileURLToPath(new URL("./registry/react/components/table/table.tsx", import.meta.url)),
       "@/components/ui/navbar": fileURLToPath(new URL("./registry/react/components/navbar/navbar.tsx", import.meta.url)),
       "@/components/ui/sidebar": fileURLToPath(new URL("./registry/react/components/sidebar/sidebar.tsx", import.meta.url)),
       "@/components/ui/navigation-menu": fileURLToPath(new URL("./registry/react/components/navigation-menu/navigation-menu.tsx", import.meta.url)),

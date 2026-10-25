@@ -13,6 +13,13 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@/components/ui/select": ["registry/react/components/select/select.tsx"],
+      "@/components/ui/checkbox": ["registry/react/components/checkbox/checkbox.tsx"],
+      "@/components/ui/data-table": ["registry/react/components/data-table/data-table.tsx"],
+      "@/components/ui/data-grid": ["registry/react/components/data-grid/data-grid.tsx"],
+      "@/components/ui/sortable": ["registry/react/components/sortable/sortable.tsx"],
+      "@/components/ui/resizable": ["registry/react/components/resizable/resizable.tsx"],
+      "@/components/ui/table": ["registry/react/components/table/table.tsx"],
       "@/components/ui/navbar": ["registry/react/components/navbar/navbar.tsx"],
       "@/components/ui/sidebar": ["registry/react/components/sidebar/sidebar.tsx"],
       "@/components/ui/navigation-menu": ["registry/react/components/navigation-menu/navigation-menu.tsx"],

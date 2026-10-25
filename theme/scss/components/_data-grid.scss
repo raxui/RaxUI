@@ -1,0 +1,451 @@
+// -----------------------------------------------------------------------------
+// DataGrid — spreadsheet look on the glass material. Div-based (virtualised
+// rows are absolutely positioned), sticky frosted header / footer, sticky
+// pinned columns with an edge shadow once scrolled, hairline cell borders,
+// an active-cell ring, inline editors and a green flash on edited cells.
+// -----------------------------------------------------------------------------
+
+.sheen-grid {
+  --sheen-grid-line: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  // Opaque: content scrolls under the header, footer and pinned columns.
+  --sheen-grid-surface: rgb(var(--bs-body-bg-rgb));
+  --sheen-grid-active-rgb: var(--bs-primary-rgb);
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  // Width comes from the container, never from the (wide) canvas inside it.
+  contain: inline-size;
+
+  [data-bs-theme="dark"] & {
+    --sheen-grid-line: rgba(255, 255, 255, 0.08);
+    --sheen-grid-surface: #1b1e22;
+  }
+}
+
+.sheen-grid-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.sheen-grid-scroller {
+  @include sheen-surface;
+
+  position: relative;
+  // A data surface, not decoration: solid, so rows read cleanly while scrolling.
+  background-color: var(--sheen-grid-surface);
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--sheen-radius);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+
+  &:focus-visible {
+    box-shadow:
+      var(--sheen-glass-edge),
+      0 0 0 3px rgba(var(--sheen-grid-active-rgb), 0.3);
+  }
+}
+
+.sheen-grid-canvas {
+  position: relative;
+  min-width: 100%;
+}
+
+.sheen-grid-row {
+  display: flex;
+  width: 100%;
+}
+
+.sheen-grid-body {
+  position: relative;
+
+  > .sheen-grid-row {
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+
+    // Rows are transformed (each its own layer): lift the active / editing row so
+    // its ring and error bubble paint over the rows after it.
+    &[data-active-row] {
+      z-index: 1;
+    }
+
+    &[data-editing-row] {
+      z-index: 2;
+    }
+  }
+}
+
+// ---- Cells ----------------------------------------------------------------------
+.sheen-grid-cell,
+.sheen-grid-hcell {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--sheen-grid-line);
+  border-inline-end: 1px solid var(--sheen-grid-line);
+  white-space: nowrap;
+
+  &[data-align="end"] {
+    justify-content: flex-end;
+    text-align: end;
+  }
+
+  &[data-align="center"] {
+    justify-content: center;
+  }
+}
+
+.sheen-grid-cell {
+  overflow: hidden;
+  color: var(--bs-body-color);
+  text-overflow: ellipsis;
+  cursor: cell;
+  user-select: none;
+
+  > :not(.sheen-grid-error) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.sheen-grid-row:hover > .sheen-grid-cell:not([data-active]) {
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.025);
+}
+
+.sheen-grid-row[data-selected] > .sheen-grid-cell {
+  background-color: rgba(var(--sheen-grid-active-rgb), 0.07);
+}
+
+// Active cell (keyboard / click target) and the cell being edited.
+.sheen-grid-cell[data-active],
+.sheen-grid-hcell[data-active] {
+  z-index: 3 !important;
+  box-shadow: inset 0 0 0 2px rgb(var(--sheen-grid-active-rgb));
+  border-radius: calc(0.25rem * var(--sheen-radius-scale));
+}
+
+.sheen-grid-scroller:not(:focus-within) .sheen-grid-cell[data-active]:not([data-editing]),
+.sheen-grid-scroller:not(:focus-within) .sheen-grid-hcell[data-active] {
+  box-shadow: inset 0 0 0 1.5px rgba(var(--bs-emphasis-color-rgb), 0.2);
+}
+
+.sheen-grid-cell[data-editing] {
+  overflow: visible;
+  padding: 0;
+  background-color: rgb(var(--bs-body-bg-rgb)) !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(var(--sheen-grid-active-rgb)),
+    0 6px 20px rgba(var(--sheen-shadow-rgb), 0.12);
+
+  &[aria-invalid="true"] {
+    --sheen-grid-active-rgb: var(--bs-danger-rgb);
+  }
+}
+
+// Editable cells: subtle "you can type here" cursor & double-click hint.
+.sheen-grid-cell[data-editable] {
+  cursor: text;
+}
+
+// Edited value lands with a short green flash.
+.sheen-grid-cell[data-flash] {
+  @include motion-safe {
+    animation: sheen-grid-flash 900ms ease-out;
+  }
+}
+
+@keyframes sheen-grid-flash {
+  0%,
+  30% {
+    background-color: rgba(var(--bs-success-rgb), 0.2);
+  }
+}
+
+// ---- Editors ----------------------------------------------------------------------
+.sheen-grid-editor-input {
+  width: 100%;
+  height: 100%;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: calc(0.25rem * var(--sheen-radius-scale));
+  color: var(--bs-emphasis-color);
+  background: none;
+  font: inherit;
+  outline: none;
+
+  [data-align="end"] > & {
+    text-align: end;
+  }
+}
+
+.sheen-grid-editor.form-select {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding-block: 0;
+  border: 0;
+  background-color: transparent;
+  box-shadow: none !important;
+  font-size: inherit;
+}
+
+.sheen-grid-editor-date {
+  width: 100%;
+
+  .sheen-input-group {
+    min-height: 0;
+    height: 100%;
+    border: 0;
+    background: none;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+.sheen-grid-error {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  inset-inline-start: 0;
+  z-index: 5;
+  padding: 0.3125rem 0.625rem;
+  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  color: #fff;
+  background-color: rgb(var(--bs-danger-rgb));
+  box-shadow: var(--sheen-shadow-md);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+
+  @include motion-safe {
+    animation: sheen-pop-in 220ms var(--sheen-ease-spring);
+  }
+}
+
+// ---- Header ------------------------------------------------------------------------
+.sheen-grid-head,
+.sheen-grid-foot {
+  position: sticky;
+  z-index: 4;
+
+  .sheen-grid-hcell,
+  .sheen-grid-fcell {
+    background-color: var(--sheen-grid-surface);
+  }
+}
+
+.sheen-grid-head {
+  top: 0;
+}
+
+.sheen-grid-foot {
+  bottom: 0;
+
+  .sheen-grid-fcell {
+    border-top: 1px solid var(--sheen-grid-line);
+    border-bottom: 0;
+    color: var(--bs-emphasis-color);
+    font-weight: 600;
+    cursor: default;
+  }
+}
+
+.sheen-grid-agg-label {
+  margin-inline-end: auto;
+  color: var(--bs-secondary-color);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.sheen-grid-hcell {
+  color: var(--bs-secondary-color);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+
+.sheen-grid-hlabel {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  [data-align="end"] > & {
+    justify-content: flex-end;
+  }
+
+  &[data-sortable] {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--bs-emphasis-color);
+    }
+  }
+}
+
+.sheen-grid-sort {
+  display: inline-flex;
+  align-items: center;
+  color: rgb(var(--sheen-grid-active-rgb));
+
+  svg {
+    width: 0.8125rem;
+    height: 0.8125rem;
+
+    @include motion-safe {
+      transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+    }
+  }
+
+  &[data-dir="desc"] svg {
+    transform: rotate(180deg);
+  }
+
+  small {
+    font-size: 0.625rem;
+  }
+}
+
+.sheen-grid-hmenu {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  padding: 0;
+  border: 0;
+  border-radius: calc(0.375rem * var(--sheen-radius-scale));
+  color: var(--bs-secondary-color);
+  background: none;
+  opacity: 0;
+  cursor: pointer;
+  transition:
+    opacity var(--sheen-duration-fast) ease,
+    background-color var(--sheen-duration-fast) ease;
+
+  svg {
+    width: 0.9375rem;
+    height: 0.9375rem;
+  }
+
+  .sheen-grid-hcell:hover &,
+  .sheen-grid-hcell[data-active] &,
+  &[data-state="open"] {
+    opacity: 1;
+  }
+
+  &:hover,
+  &[data-state="open"] {
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
+  }
+}
+
+// Resize handle on the inline-end edge of each header.
+.sheen-grid-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-end: -4px;
+  z-index: 3;
+  width: 8px;
+  cursor: col-resize;
+  touch-action: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 20%;
+    bottom: 20%;
+    inset-inline-start: 3px;
+    width: 2px;
+    border-radius: 2px;
+    background-color: transparent;
+    transition: background-color var(--sheen-duration-fast) ease;
+  }
+
+  &:hover::after,
+  &[data-resizing]::after {
+    top: 0;
+    bottom: 0;
+    background-color: rgb(var(--sheen-grid-active-rgb));
+  }
+}
+
+// ---- Pinned columns ------------------------------------------------------------------
+.sheen-grid-cell[data-pinned],
+.sheen-grid-hcell[data-pinned] {
+  background-color: var(--sheen-grid-surface);
+}
+
+.sheen-grid-row[data-selected] > .sheen-grid-cell[data-pinned] {
+  background-color: color-mix(in srgb, rgb(var(--sheen-grid-active-rgb)) 7%, var(--sheen-grid-surface));
+}
+
+// The edge of the pinned block casts a soft shadow once content scrolls under it.
+.sheen-grid-scroller[data-scrolled-x] [data-pinned="start"][data-pin-edge] {
+  box-shadow: 6px 0 12px -6px rgba(var(--sheen-shadow-rgb), 0.25);
+
+  [dir="rtl"] & {
+    box-shadow: -6px 0 12px -6px rgba(var(--sheen-shadow-rgb), 0.25);
+  }
+}
+
+[data-pinned="end"][data-pin-edge] {
+  box-shadow: -6px 0 12px -6px rgba(var(--sheen-shadow-rgb), 0.2);
+
+  [dir="rtl"] & {
+    box-shadow: 6px 0 12px -6px rgba(var(--sheen-shadow-rgb), 0.2);
+  }
+}
+
+// ---- Misc ----------------------------------------------------------------------------
+.sheen-grid-empty {
+  position: sticky;
+  inset-inline-start: 0;
+  width: min(100%, 100cqw);
+  padding: 3rem 1rem;
+  color: var(--bs-secondary-color);
+  text-align: center;
+}
+
+.sheen-grid-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1.25rem;
+  padding: 0.5rem 0.25rem 0;
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.sheen-grid-status-pos {
+  margin-inline-start: auto;
+}
+
+.sheen-grid[data-density="compact"] .sheen-grid-cell {
+  font-size: 0.8125rem;
+}
+
+// The selection checkbox column hugs its content.
+.sheen-grid .sheen-table-select {
+  justify-content: center;
+  padding: 0;
+}

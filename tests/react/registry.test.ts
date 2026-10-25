@@ -19,7 +19,7 @@ describe("React registry", () => {
   it("has a supported index listing every item", () => {
     const index = loadIndex(root)
     expect(index.schemaVersion).toBe(1)
-    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "slider", "rating", "starter-react", "starter-next", "date-input", "time-picker", "date-time-input", "date-range-input", "file-upload", "popover", "combobox", "autocomplete", "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline", "tabs", "accordion", "breadcrumb", "pagination", "stepper", "toggle", "menu-toggle", "tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "calendar", "date-picker", "date-range-picker", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner"])
+    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "slider", "rating", "starter-react", "starter-next", "date-input", "time-picker", "date-time-input", "date-range-input", "file-upload", "popover", "combobox", "autocomplete", "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline", "tabs", "accordion", "breadcrumb", "pagination", "stepper", "toggle", "menu-toggle", "tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "calendar", "date-picker", "date-range-picker", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "data-table", "data-grid", "sortable", "resizable"])
   })
 
   it("has up-to-date hashes for every file (run src/react-cli/scripts/update-hashes.mjs after edits)", () => {
@@ -47,7 +47,7 @@ describe("React registry", () => {
     }
   })
 
-  it.each(["navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "date-picker", "date-range-picker", "calendar", "date-input", "time-picker", "date-time-input", "date-range-input", "combobox", "autocomplete", "command", "select"])("ships the complete local import closure for %s", name => {
+  it.each(["data-table", "data-grid", "sortable", "resizable", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "date-picker", "date-range-picker", "calendar", "date-input", "time-picker", "date-time-input", "date-range-input", "combobox", "autocomplete", "command", "select"])("ships the complete local import closure for %s", name => {
     const items = resolveItems(root, name)
     const files = items.flatMap((item: { files: { target: string; source: string; type: string }[] }) => item.files)
     const targets = new Set(files.map((file: { target: string }) => file.target))

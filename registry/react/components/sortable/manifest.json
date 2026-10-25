@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "name": "sortable",
+  "version": "0.1.0",
+  "description": "Source-owned sortable ported from boot-ui with theme and RTL support.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@dnd-kit/core": "6.3.1",
+    "@dnd-kit/sortable": "10.0.0",
+    "@dnd-kit/modifiers": "9.0.0",
+    "@dnd-kit/utilities": "3.2.2",
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/sortable"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/sortable/sortable.tsx",
+      "target": "components/ui/sortable.tsx",
+      "type": "tsx",
+      "sha256": "c7909296f7d17bccf892d9d0a889bb87dc5ef7163d9642fd7d49477da6b81124"
+    },
+    {
+      "source": "theme/scss/components/_sortable.scss",
+      "target": "styles/sheenui/components/_sortable.scss",
+      "type": "scss",
+      "sha256": "5f1fba13ce23f434e85c5433907d3e4bbbd1289aa484b8c8d7d18e64a1096f3a"
+    }
+  ]
+}

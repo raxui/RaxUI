@@ -1,0 +1,217 @@
+// ---- Sortable header button --------------------------------------------------
+.sheen-table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin: -0.25rem -0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  color: inherit;
+  background: none;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--sheen-duration-fast) ease,
+    background-color var(--sheen-duration-fast) ease;
+
+  svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    opacity: 0.35;
+    transition:
+      opacity var(--sheen-duration-fast) ease,
+      transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+  }
+
+  &:hover {
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.05);
+
+    svg { opacity: 0.7; }
+  }
+
+  &:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.35);
+  }
+
+  &[data-sort] {
+    color: var(--bs-emphasis-color);
+
+    svg { opacity: 1; }
+  }
+
+  &[data-sort="desc"] svg {
+    transform: rotate(180deg);
+  }
+
+  .text-end > & {
+    flex-direction: row-reverse;
+    margin-inline-end: -0.5rem;
+  }
+}
+
+// ---- DataTable chrome --------------------------------------------------------
+.sheen-data-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+
+  // Data cells don't wrap; the table scrolls sideways on narrow screens instead.
+  .sheen-table > tbody > tr > td {
+    white-space: nowrap;
+  }
+}
+
+.sheen-data-table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sheen-table-search {
+  position: relative;
+  flex: 1 1 14rem;
+  max-width: 20rem;
+
+  svg {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 0.625rem;
+    width: 0.9375rem;
+    height: 0.9375rem;
+    color: var(--bs-secondary-color);
+    translate: 0 -50%;
+    pointer-events: none;
+  }
+
+  .form-control {
+    padding-inline-start: 2rem;
+  }
+}
+
+// Faceted filter trigger: dashed until a value is chosen.
+.sheen-table-filter-btn {
+  --bs-btn-border-color: rgba(var(--bs-emphasis-color-rgb), 0.2);
+  border-style: dashed;
+
+  &[data-active] {
+    border-style: solid;
+  }
+
+  .badge {
+    font-weight: 500;
+  }
+}
+
+.sheen-table-frame {
+  overflow: hidden;
+  border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
+  border-radius: var(--sheen-radius);
+  background-color: rgba(var(--bs-body-bg-rgb), 0.6);
+}
+
+.sheen-data-table-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+}
+
+.sheen-table-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+}
+
+.sheen-table-empty {
+  padding: 3rem 1rem !important;
+  text-align: center;
+  color: var(--bs-secondary-color);
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
+  }
+}
+
+.sheen-table-skeleton {
+  display: block;
+  height: 0.625rem;
+  border-radius: 999px;
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
+
+  @include motion-safe {
+    animation: sheen-pulse 0.9s ease-in-out infinite alternate;
+  }
+}
+
+// ---- Floating bulk-action bar (portaled to <body>) ---------------------------
+.sheen-table-bulkbar {
+  @include sheen-surface;
+
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  z-index: 1030;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.375rem;
+  padding-inline-start: 1rem;
+  border-radius: 999px;
+  translate: -50% 0;
+  color: var(--bs-body-color);
+  font-size: 0.875rem;
+  white-space: nowrap;
+
+  &[data-state="open"] {
+    animation: sheen-fade-in var(--sheen-duration) ease;
+  }
+
+  &[data-state="closed"] {
+    animation: sheen-fade-out var(--sheen-duration-fast) ease forwards;
+  }
+
+  @include motion-safe {
+    &[data-state="open"] {
+      animation: sheen-bulkbar-in var(--sheen-duration-slow) var(--sheen-ease-spring);
+    }
+
+    &[data-state="closed"] {
+      animation: sheen-bulkbar-out var(--sheen-duration) var(--sheen-ease-in) forwards;
+    }
+  }
+}
+
+.sheen-table-bulkbar-count {
+  margin-inline-end: 0.5rem;
+  font-weight: 600;
+  color: var(--bs-emphasis-color);
+}
+
+.sheen-table-bulkbar-divider {
+  align-self: stretch;
+  width: 1px;
+  margin: 0.25rem 0.25rem;
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.12);
+}
+
+@keyframes sheen-bulkbar-in {
+  from { opacity: 0; transform: translateY(120%) scale(0.96); }
+}
+
+@keyframes sheen-bulkbar-out {
+  to { opacity: 0; transform: translateY(120%) scale(0.96); }
+}
