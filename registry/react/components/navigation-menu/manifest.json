@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "name": "navigation-menu",
+  "version": "0.1.0",
+  "description": "navigation-menu with boot-ui motion, theme and RTL support.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "@radix-ui/react-navigation-menu": "1.4.1"
+  },
+  "styles": [
+    "components/navigation-menu"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/navigation-menu/navigation-menu.tsx",
+      "target": "components/ui/navigation-menu.tsx",
+      "type": "tsx",
+      "sha256": "d270f7a7298682eb4f8e7b5bded32763282273b0326b28dbaa13002a69d3fc0f"
+    },
+    {
+      "source": "theme/scss/components/_navigation-menu.scss",
+      "target": "styles/sheenui/components/_navigation-menu.scss",
+      "type": "scss",
+      "sha256": "7656a716bd7b7d849f3fb801cf204ae9e21c7dbca8ac2e70ec8ce7dad1a83482"
+    },
+    {
+      "source": "registry/react/foundation/app-shell-utils.ts",
+      "target": "lib/app-shell-utils.ts",
+      "type": "ts",
+      "sha256": "a77779ef90233c68a95c0bc3ced8f27ea768a4a57bba30ceb297b94598ddaeb4"
+    }
+  ]
+}

@@ -5,6 +5,22 @@ export default defineConfig({
   resolve: {
     // Registry sources import the foundation as "@/lib/*", like an installed app.
     alias: {
+      "@/components/ui/select": fileURLToPath(new URL("./registry/react/components/select/select.tsx", import.meta.url)),
+      "@/components/ui/checkbox": fileURLToPath(new URL("./registry/react/components/checkbox/checkbox.tsx", import.meta.url)),
+      "@/components/ui/data-table": fileURLToPath(new URL("./registry/react/components/data-table/data-table.tsx", import.meta.url)),
+      "@/components/ui/data-grid": fileURLToPath(new URL("./registry/react/components/data-grid/data-grid.tsx", import.meta.url)),
+      "@/components/ui/sortable": fileURLToPath(new URL("./registry/react/components/sortable/sortable.tsx", import.meta.url)),
+      "@/components/ui/resizable": fileURLToPath(new URL("./registry/react/components/resizable/resizable.tsx", import.meta.url)),
+      "@/components/ui/table": fileURLToPath(new URL("./registry/react/components/table/table.tsx", import.meta.url)),
+      "@/components/ui/navbar": fileURLToPath(new URL("./registry/react/components/navbar/navbar.tsx", import.meta.url)),
+      "@/components/ui/sidebar": fileURLToPath(new URL("./registry/react/components/sidebar/sidebar.tsx", import.meta.url)),
+      "@/components/ui/navigation-menu": fileURLToPath(new URL("./registry/react/components/navigation-menu/navigation-menu.tsx", import.meta.url)),
+      "@/components/ui/menubar": fileURLToPath(new URL("./registry/react/components/menubar/menubar.tsx", import.meta.url)),
+      "@/components/ui/footer": fileURLToPath(new URL("./registry/react/components/footer/footer.tsx", import.meta.url)),
+      "@/components/ui/banner": fileURLToPath(new URL("./registry/react/components/banner/banner.tsx", import.meta.url)),
+      "@/components/ui/menu-toggle": fileURLToPath(new URL("./registry/react/components/menu-toggle/menu-toggle.tsx", import.meta.url)),
+      "@/components/ui/skeleton": fileURLToPath(new URL("./registry/react/components/skeleton/skeleton.tsx", import.meta.url)),
+      "@/components/ui/alert": fileURLToPath(new URL("./registry/react/components/alert/alert.tsx", import.meta.url)),
       "@/components/ui/tooltip": fileURLToPath(new URL("./registry/react/components/tooltip/tooltip.tsx", import.meta.url)),
       "@/components/ui/hover-card": fileURLToPath(new URL("./registry/react/components/hover-card/hover-card.tsx", import.meta.url)),
       "@/components/ui/toast": fileURLToPath(new URL("./registry/react/components/toast/toast.tsx", import.meta.url)),

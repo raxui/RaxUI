@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "name": "data-table",
+  "version": "0.1.0",
+  "description": "Source-owned data-table ported from boot-ui with theme and RTL support.",
+  "requires": [
+    "foundation",
+    "button",
+    "checkbox",
+    "dropdown-menu",
+    "select",
+    "table"
+  ],
+  "packages": {
+    "@tanstack/react-table": "8.21.3"
+  },
+  "styles": [
+    "components/data-table"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/data-table/use-data-table-state.ts",
+      "target": "components/ui/use-data-table-state.ts",
+      "type": "ts",
+      "sha256": "f5fe0b4e3defe60f457f8f8e42f7471f28085642e75a7f758605c3a0df447d97"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table.tsx",
+      "target": "components/ui/data-table.tsx",
+      "type": "tsx",
+      "sha256": "2aabefd3ca812d023298081c3521cf43c648ca1c89f79c0b0072d8dfc85f4172"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-view-options.tsx",
+      "target": "components/ui/data-table-view-options.tsx",
+      "type": "tsx",
+      "sha256": "91735eeaa1ca943bf7772b9719681a65c94c48304cc2e964930fe8adb0e97670"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-types.ts",
+      "target": "components/ui/data-table-types.ts",
+      "type": "ts",
+      "sha256": "87901a038f1a4efecc38a30e6c3d8ef42414ae6bf6793c26ae7389248d85cacb"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-toolbar.tsx",
+      "target": "components/ui/data-table-toolbar.tsx",
+      "type": "tsx",
+      "sha256": "da278026bf92648203ba2751e1ead81cddf2e91b323766a0dc17914e993f6f66"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-pagination.tsx",
+      "target": "components/ui/data-table-pagination.tsx",
+      "type": "tsx",
+      "sha256": "eff64d0280ded2208cc9915de7bf86fd38f4d4db1e4af96aaa57a0b6817e345e"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-labels.tsx",
+      "target": "components/ui/data-table-labels.tsx",
+      "type": "tsx",
+      "sha256": "4b669de354fc092c81cbd024bfc0e3a738cfc522d24a3e69c38cbff3c9fad412"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-icons.tsx",
+      "target": "components/ui/data-table-icons.tsx",
+      "type": "tsx",
+      "sha256": "d3b7ab3ac7882c1ecaed613122d659a77ff938a8ade4fd0b7d0d6941595c443b"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-filter.tsx",
+      "target": "components/ui/data-table-filter.tsx",
+      "type": "tsx",
+      "sha256": "d0d40083c6977d0b986642e89db94b72aef765e19f654d46ff25b63831b02471"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-content.tsx",
+      "target": "components/ui/data-table-content.tsx",
+      "type": "tsx",
+      "sha256": "1a527f37ede281ffab27e25806492f691265c3e0b3fc4cea1493c22875c7e751"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-columns.tsx",
+      "target": "components/ui/data-table-columns.tsx",
+      "type": "tsx",
+      "sha256": "99eb07fa3430004cd89fafae6e8e96ee208a9d371f3a2ee282bea5516a966888"
+    },
+    {
+      "source": "registry/react/components/data-table/data-table-bulk-bar.tsx",
+      "target": "components/ui/data-table-bulk-bar.tsx",
+      "type": "tsx",
+      "sha256": "919b4c316e512002b9858af88cc156aed868e55819537fb7da67c06e41c73583"
+    },
+    {
+      "source": "theme/scss/components/_data-table.scss",
+      "target": "styles/sheenui/components/_data-table.scss",
+      "type": "scss",
+      "sha256": "0dee02996cb64852598e62dc399acf8ec320813b1e268c91d6eeb45ba6e972d7"
+    }
+  ]
+}

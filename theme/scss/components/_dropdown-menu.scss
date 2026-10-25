@@ -137,3 +137,6 @@
     &:not(:popover-open) { transform: scale(0.96); }
   }
 }
+
+.sheen-dropdown-item.sheen-dropdown-inset { padding-inline-start: 2rem; }
+.sheen-dropdown-indicator { position: absolute; inset-inline-start: .5rem; display: inline-flex; }

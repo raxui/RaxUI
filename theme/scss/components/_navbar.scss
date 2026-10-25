@@ -1,0 +1,372 @@
+// -----------------------------------------------------------------------------
+// Navbar — a sticky bar of glass. Transparent bars turn to glass once the page
+// scrolls (or the menu opens); hideOnScroll slides the bar up and back. Over the
+// links a soft highlight follows the pointer and a 2px indicator rests on the
+// bar's bottom edge under the current page, both gliding with a spring.
+// -----------------------------------------------------------------------------
+
+@mixin sheen-navbar-surface {
+  background-color: rgba(var(--bs-body-bg-rgb), 0.72);
+  border-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
+  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+}
+
+.sheen-navbar {
+  --sheen-navbar-height: 3.75rem;
+  --sheen-navbar-max: 72rem;
+  --sheen-navbar-shift: -100%;
+
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  border-bottom: 1px solid transparent;
+
+  @include motion-safe {
+    transition:
+      transform 380ms var(--sheen-ease-out),
+      background-color var(--sheen-duration) ease,
+      border-color var(--sheen-duration) ease,
+      backdrop-filter var(--sheen-duration) ease;
+  }
+
+  // Full-width bar: the header itself is the surface.
+  &:not([data-floating]) {
+    &[data-variant="glass"],
+    &[data-variant="transparent"][data-scrolled],
+    &[data-variant="transparent"][data-open] {
+      @include sheen-navbar-surface;
+    }
+
+    &[data-variant="solid"] {
+      background-color: var(--bs-body-bg);
+      border-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
+    }
+  }
+
+  &[data-hidden] {
+    transform: translateY(var(--sheen-navbar-shift));
+  }
+
+  // Floating: a rounded bar with air around it.
+  &[data-floating] {
+    --sheen-navbar-shift: calc(-100% - 0.25rem);
+
+    padding: 0.75rem 1rem 0;
+    border: 0;
+  }
+}
+
+.sheen-navbar-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: var(--sheen-navbar-height);
+  max-width: var(--sheen-navbar-max);
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  .sheen-navbar[data-floating] > & {
+    --sheen-navbar-height: 3.25rem;
+
+    border: 1px solid transparent;
+    border-radius: var(--sheen-radius-lg);
+    padding-inline: 0.75rem 0.5rem;
+
+    @include motion-safe {
+      transition:
+        background-color var(--sheen-duration) ease,
+        border-color var(--sheen-duration) ease,
+        box-shadow var(--sheen-duration) ease;
+    }
+  }
+
+  .sheen-navbar[data-floating][data-variant="glass"] > &,
+  .sheen-navbar[data-floating][data-variant="transparent"][data-scrolled] > &,
+  .sheen-navbar[data-floating][data-variant="transparent"][data-open] > & {
+    @include sheen-navbar-surface;
+
+    box-shadow: var(--sheen-shadow-md);
+  }
+
+  .sheen-navbar[data-floating][data-variant="solid"] > & {
+    border-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
+    background-color: var(--bs-body-bg);
+    box-shadow: var(--sheen-shadow-sm);
+  }
+}
+
+// ---- Brand, actions ----------------------------------------------------------------------
+
+.sheen-navbar-brand {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--bs-emphasis-color);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--bs-emphasis-color);
+  }
+
+  &:focus-visible {
+    border-radius: var(--sheen-radius-sm);
+    outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
+    outline-offset: 2px;
+  }
+}
+
+.sheen-navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline-start: auto;
+}
+
+.sheen-navbar-toggle {
+  display: none;
+  flex-shrink: 0;
+  margin-inline-start: auto;
+
+  // Actions already pushed things to the end.
+  .sheen-navbar-actions:not([data-collapse]) ~ & {
+    margin-inline-start: 0;
+  }
+}
+
+// ---- Links ---------------------------------------------------------------------------------
+
+.sheen-navbar-links {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+
+  &[data-align="center"] {
+    position: absolute;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+
+    &:dir(rtl) {
+      transform: translateX(50%);
+    }
+  }
+
+  > ul {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.sheen-navbar-link {
+  display: inline-flex;
+  align-items: center;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border-radius: var(--sheen-radius-sm);
+  color: rgba(var(--bs-emphasis-color-rgb), 0.68);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+  transition: color var(--sheen-duration-fast) ease;
+
+  &:hover,
+  &[aria-current="page"] {
+    color: var(--bs-emphasis-color);
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px rgba(var(--bs-primary-rgb), 0.5);
+  }
+}
+
+// Follows the pointer from link to link.
+.sheen-navbar-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: var(--sheen-navbar-hover-w, 0);
+  height: 100%;
+  border-radius: var(--sheen-radius-sm);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(var(--sheen-navbar-hover-x, 0));
+  transition: opacity var(--sheen-duration-fast) ease;
+
+  .sheen-navbar-links[data-hover] > & {
+    opacity: 1;
+  }
+
+  @include motion-safe {
+    transition:
+      opacity var(--sheen-duration-fast) ease,
+      transform 320ms var(--sheen-ease-spring),
+      width 320ms var(--sheen-ease-spring);
+  }
+}
+
+// Rests on the bar's bottom edge under the current page.
+.sheen-navbar-current {
+  position: absolute;
+  bottom: calc((2.25rem - var(--sheen-navbar-height)) / 2 - 1px);
+  left: 0;
+  width: calc(var(--sheen-navbar-current-w, 0px) - 1.5rem);
+  height: 2px;
+  border-radius: 2px;
+  background-color: rgb(var(--bs-primary-rgb));
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(calc(var(--sheen-navbar-current-x, 0px) + 0.75rem));
+
+  .sheen-navbar-links[data-current] > & {
+    opacity: 1;
+  }
+
+  .sheen-navbar[data-floating] & {
+    bottom: calc((2.25rem - var(--sheen-navbar-height)) / 2 + 0.25rem);
+  }
+
+  @include motion-safe {
+    transition:
+      transform 450ms var(--sheen-ease-spring),
+      width 450ms var(--sheen-ease-spring);
+  }
+}
+
+// ---- Menu (small screens) --------------------------------------------------------------------
+
+.sheen-navbar-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: none;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+
+  @include motion-safe {
+    transition:
+      grid-template-rows 380ms var(--sheen-ease-out),
+      visibility 0s linear 380ms;
+  }
+
+  &[data-state="open"] {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .sheen-navbar[data-floating] & {
+    top: calc(100% + 0.5rem);
+    left: 1rem;
+    right: 1rem;
+  }
+}
+
+.sheen-navbar-menu-clip {
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--bs-body-bg); // opaque: it covers the page's text
+  border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+  box-shadow: var(--sheen-shadow-md);
+
+  .sheen-navbar[data-floating] & {
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+    border-radius: var(--sheen-radius-lg);
+  }
+}
+
+.sheen-navbar-menu-body {
+  max-height: calc(100svh - var(--sheen-navbar-height) - 2rem);
+  overflow-y: auto;
+  padding: 0.5rem 1.25rem 1.25rem;
+}
+
+.sheen-navbar-menu-item {
+  @include motion-safe {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition:
+      opacity 240ms ease,
+      transform 380ms var(--sheen-ease-spring);
+
+    .sheen-navbar-menu[data-state="open"] & {
+      opacity: 1;
+      transform: none;
+      transition-delay: calc(80ms + var(--sheen-i) * 45ms);
+    }
+  }
+}
+
+.sheen-navbar-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.25rem;
+  border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.06);
+  color: var(--bs-emphasis-color);
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-decoration: none;
+  outline: none;
+
+  &[aria-current="page"] {
+    color: var(--sheen-primary-text);
+  }
+
+  &:focus-visible {
+    border-radius: var(--sheen-radius-sm);
+    box-shadow: inset 0 0 0 2px rgba(var(--bs-primary-rgb), 0.5);
+  }
+}
+
+// ---- Breakpoints -----------------------------------------------------------------------------
+
+@mixin sheen-navbar-collapsed {
+  .sheen-navbar-links,
+  .sheen-navbar-actions[data-collapse] {
+    display: none;
+  }
+
+  .sheen-navbar-toggle {
+    display: inline-flex;
+  }
+
+  .sheen-navbar-menu {
+    display: grid;
+  }
+}
+
+.sheen-navbar[data-expand="never"] {
+  @include sheen-navbar-collapsed;
+}
+
+@media (max-width: 575.98px) {
+  .sheen-navbar[data-expand="sm"] {
+    @include sheen-navbar-collapsed;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .sheen-navbar[data-expand="md"] {
+    @include sheen-navbar-collapsed;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .sheen-navbar[data-expand="lg"] {
+    @include sheen-navbar-collapsed;
+  }
+}

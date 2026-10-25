@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "name": "data-grid",
+  "version": "0.1.0",
+  "description": "Source-owned data-grid ported from boot-ui with theme and RTL support.",
+  "requires": [
+    "foundation",
+    "checkbox",
+    "date-input",
+    "dropdown-menu",
+    "select"
+  ],
+  "packages": {
+    "@tanstack/react-table": "8.21.3",
+    "@tanstack/react-virtual": "3.14.13"
+  },
+  "styles": [
+    "components/data-grid"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/data-grid/use-data-grid-virtualizer.ts",
+      "target": "components/ui/use-data-grid-virtualizer.ts",
+      "type": "ts",
+      "sha256": "2dd7e65286b5f8d9ebc68f68cb08cbfa8c42146ec863d25f21e14234e598d4d9"
+    },
+    {
+      "source": "registry/react/components/data-grid/use-data-grid-navigation.ts",
+      "target": "components/ui/use-data-grid-navigation.ts",
+      "type": "ts",
+      "sha256": "609446a881486c370ad31b6a3a081dfab9b61354d9bcbed362a8e1dc78aab210"
+    },
+    {
+      "source": "registry/react/components/data-grid/use-data-grid-model.ts",
+      "target": "components/ui/use-data-grid-model.ts",
+      "type": "ts",
+      "sha256": "2ef9b4666707d635de9bf2a184acaa6efea39907f09dfd38f9c2c33a9dd68b12"
+    },
+    {
+      "source": "registry/react/components/data-grid/use-data-grid-editing.ts",
+      "target": "components/ui/use-data-grid-editing.ts",
+      "type": "ts",
+      "sha256": "f5010c38a5dcea07790032b76f8c7e8eeef7c3cfc319d9423cfd25c776916fc9"
+    },
+    {
+      "source": "registry/react/components/data-grid/data-grid.tsx",
+      "target": "components/ui/data-grid.tsx",
+      "type": "tsx",
+      "sha256": "f11efd76303d8357fdcfd3bbbcb0a29630444fcc5f0e25122aaf224821d4ff16"
+    },
+    {
+      "source": "registry/react/components/data-grid/data-grid-utils.ts",
+      "target": "components/ui/data-grid-utils.ts",
+      "type": "ts",
+      "sha256": "96ef851427873dcc9ae1e83b1981fdb442812eb66a37d9980cb84b4cb7b496d8"
+    },
+    {
+      "source": "registry/react/components/data-grid/data-grid-types.ts",
+      "target": "components/ui/data-grid-types.ts",
+      "type": "ts",
+      "sha256": "f553f34e60886af4af690831b50144cd41b96aeb32c7f6b55058f6d2c1bda991"
+    },
+    {
+      "source": "registry/react/components/data-grid/data-grid-header.tsx",
+      "target": "components/ui/data-grid-header.tsx",
+      "type": "tsx",
+      "sha256": "f25855709949cd5161f8d92034fbf3149159204ee8812673d5578b18d47b69c4"
+    },
+    {
+      "source": "registry/react/components/data-grid/data-grid-footer.tsx",
+      "target": "components/ui/data-grid-footer.tsx",
+      "type": "tsx",
+      "sha256": "c93da14444c7a1fe40ca372e2158d5cbe46f10d2d276b52f08e473a9a618be78"
+    },
+    {
+      "source": "registry/react/components/data-grid/data-grid-editor.tsx",
+      "target": "components/ui/data-grid-editor.tsx",
+      "type": "tsx",
+      "sha256": "b0591445e2c8383ce09e910cc26215984eb8ad60e78358aa4383f0ef8c9a8273"
+    },
+    {
+      "source": "registry/react/components/data-grid/data-grid-body.tsx",
+      "target": "components/ui/data-grid-body.tsx",
+      "type": "tsx",
+      "sha256": "8a29913b26146c523247288d4c21e173b2e91db2dcd68ae698c1c48a1673cdea"
+    },
+    {
+      "source": "theme/scss/components/_data-grid.scss",
+      "target": "styles/sheenui/components/_data-grid.scss",
+      "type": "scss",
+      "sha256": "573dc87c5b9b6a8c9b60b62e413c2c99e5481ac74db32b8a63c15dc335867c7e"
+    }
+  ]
+}

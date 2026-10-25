@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "name": "footer",
+  "version": "0.1.0",
+  "description": "footer with boot-ui motion, theme and RTL support.",
+  "requires": [
+    "foundation",
+    "button"
+  ],
+  "packages": {
+    "@radix-ui/react-slot": "1.5.0"
+  },
+  "styles": [
+    "components/footer"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/footer/footer.tsx",
+      "target": "components/ui/footer.tsx",
+      "type": "tsx",
+      "sha256": "41a32525af60973f3827533b3793b86d904c95204dd13895888174479b8042b6"
+    },
+    {
+      "source": "theme/scss/components/_footer.scss",
+      "target": "styles/sheenui/components/_footer.scss",
+      "type": "scss",
+      "sha256": "d74bac10947c3de3d10fafa3bd62efc40033982d08549431e1d0011c8be45d69"
+    },
+    {
+      "source": "registry/react/foundation/app-shell-utils.ts",
+      "target": "lib/app-shell-utils.ts",
+      "type": "ts",
+      "sha256": "a77779ef90233c68a95c0bc3ced8f27ea768a4a57bba30ceb297b94598ddaeb4"
+    }
+  ]
+}

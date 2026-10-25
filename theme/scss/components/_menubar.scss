@@ -1,0 +1,109 @@
+// -----------------------------------------------------------------------------
+// Menubar — a quiet glass bar of triggers. The open trigger sits on a raised
+// highlight that glides (spring) when you move to the next menu; the menus
+// reuse the Dropdown Menu glass and items (`sheen-menu-*`).
+// -----------------------------------------------------------------------------
+
+.sheen-menubar {
+  @include sheen-surface;
+
+  position: relative;
+  isolation: isolate; // the highlight (z-index -1) stays above the bar
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  max-width: 100%;
+  padding: 0.25rem;
+  border-radius: var(--sheen-radius-control);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sheen-menubar-trigger {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: var(--sheen-radius-sm);
+  color: rgba(var(--bs-emphasis-color-rgb), 0.8);
+  background: none;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: default;
+  outline: none;
+  user-select: none;
+  transition:
+    color var(--sheen-duration-fast) ease,
+    background-color var(--sheen-duration-fast) ease;
+
+  &:hover,
+  &[data-highlighted] {
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+  }
+
+  // The highlight paints the open trigger.
+  &[data-state="open"] {
+    color: var(--bs-emphasis-color);
+    background-color: transparent;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 0.1875rem rgba(var(--bs-primary-rgb), 0.35);
+  }
+
+  &[data-disabled] {
+    opacity: 0.45;
+  }
+}
+
+.sheen-menubar-highlight {
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  left: 0;
+  z-index: -1;
+  width: var(--sheen-menubar-w, 0);
+  border-radius: var(--sheen-radius-sm);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(var(--sheen-menubar-x, 0));
+  transition: opacity var(--sheen-duration-fast) ease;
+
+  .sheen-menubar[data-open] > & {
+    opacity: 1;
+  }
+
+  @include motion-safe {
+    transition:
+      opacity var(--sheen-duration-fast) ease,
+      transform 400ms var(--sheen-ease-spring),
+      width 400ms var(--sheen-ease-spring);
+  }
+}
+
+.sheen-menubar-content {
+  max-height: var(--radix-menubar-content-available-height);
+  transform-origin: var(--radix-menubar-content-transform-origin);
+
+  // No exit animation: a closing menu that lingers would read focus moving into
+  // its neighbour as "focus outside" and close the whole bar. Native menubars
+  // swap menus instantly too.
+  &[data-state="closed"] {
+    animation: none !important;
+  }
+}
+
+.sheen-menubar-content {
+  .sheen-dropdown-inset { padding-inline-start: 2rem; }
+  .sheen-dropdown-item-destructive { color: var(--bs-danger); }
+  .sheen-dropdown-indicator { position: absolute; inset-inline-start: .5rem; display: inline-flex; }
+  .sheen-dropdown-chevron, .sheen-dropdown-shortcut { margin-inline-start: auto; }
+  .sheen-dropdown-shortcut { color: var(--bs-secondary-color); font-size: .75rem; }
+  .sheen-dropdown-chevron:dir(rtl) { rotate: 180deg; }
+}

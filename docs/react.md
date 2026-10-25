@@ -852,3 +852,62 @@ and the empty-state display follow the supplied CSS. Reduced motion disables
 motion; Radix retains mounted content until CSS exit animations finish. Vaul owns
 drawer enter/exit and swipe physics. Optional boot-ui page-receding effects are
 not part of this port.
+
+## React app shell
+
+Install independently with `npx sheenui-react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
+
+| Component | Composition and behavior |
+| --- | --- |
+| Navbar | Brand, Links/Link, Actions, Toggle, Menu/MenuLink. Controlled or default open state; glass/transparent/solid and floating variants; configurable collapse breakpoint; gliding hover/current-page indicators; optional hide-on-scroll with a window or element scroll container. Escape restores toggle focus, links and breakpoint changes close the mobile menu. |
+| Sidebar | Provider, Trigger/Rail, Header/Content/Footer/Inset, groups, menu items, badges, skeletons and collapsible submenus. Offcanvas/icon/none modes, sidebar/floating/inset variants, logical start/end sides and a themed mobile Sheet. Optional storageKey remembers desktop collapse; shortcut defaults to Ctrl/Command+B and ignores editable controls. Give each independently controlled sidebar its own provider. |
+| NavigationMenu | List, Item, Trigger, Content, Link, ListItem, Indicator and Viewport. Radix mega-menu semantics and keyboard navigation; a shared viewport glides and resizes under the active trigger, clamped inside the window. viewport=false allows custom panel placement; viewportAlign selects trigger or start. |
+| Menubar | Menu/Trigger/Content, groups, labels, items, checkboxes, radio groups, submenus and shortcuts. Gliding open-trigger highlight, disabled/destructive items, keyboard navigation and nearest-theme portals. |
+| Footer | Brand, columns, links, social links, newsletter, bottom/legal/copyright and back-to-top. Columns become disclosures on phones. Newsletter validates email, awaits onSubscribe, displays success or a configurable errorMessage and supports retry; no service is called unless the consumer provides onSubscribe. Back-to-top respects reduced motion. Pass year for an explicit server-rendered copyright year; otherwise the current year appears after hydration. |
+| Banner | Inline, sticky top or floating bottom placement; tinted/solid/glass variants; tone icons and optional actions; controlled open state or dismissible internal state. persistKey remembers dismissal; resetBanner(key) clears it for the next mount. BannerGroup stacks top banners. Floating banners portal into the nearest theme and mount after hydration. |
+
+Roots accept appearance overrides and inherit theme tokens, density, color mode and direction; local dir sections are respected. Navbar/sidebar roots and their composable parts forward refs. Built-in names can be translated with aria-label or the label, description, dismissLabel and newsletter text props. Sidebar desktop preference and banner dismissal storage are read after hydration so persisted settings cannot change the initial server markup. React 18 and 19 inert/ref differences are handled by the shared installed helper. CSS motion follows prefers-reduced-motion.
+
+```tsx
+import { Navbar, NavbarBrand, NavbarLinks, NavbarLink, NavbarToggle, NavbarMenu, NavbarMenuLink } from "@/components/ui/navbar"
+import { Banner } from "@/components/ui/banner"
+
+<>
+  <Banner title="New release" dismissible dismissLabel="Dismiss announcement">Read the release notes.</Banner>
+  <Navbar expand="md">
+    <NavbarBrand href="/">My app</NavbarBrand>
+    <NavbarLinks label="Main"><NavbarLink href="/docs" active>Docs</NavbarLink></NavbarLinks>
+    <NavbarToggle aria-label="Open navigation" />
+    <NavbarMenu label="Mobile navigation"><NavbarMenuLink href="/docs" active>Docs</NavbarMenuLink></NavbarMenu>
+  </Navbar>
+</>
+```
+
+The reference-based consumer examples in react-test cover all six components, including Arabic sections and desktop/mobile layouts. Shared generated CSS is refreshed; new Blazor app-shell components remain deferred.
+
+## React data components
+
+Install independently: `npx sheenui-react add data-table`, `data-grid`, `sortable` or `resizable`. Manifests ship every supporting source and stylesheet and pin the approved packages: TanStack Table 8.21.3, TanStack Virtual 3.14.13, dnd-kit core 6.3.1/sortable 10.0.0/modifiers 9.0.0/utilities 3.2.2, and react-resizable-panels 4.14.3. Consumers install only the dependencies their selected component needs.
+
+| Component | Public behavior |
+| --- | --- |
+| DataTable | TanStack client-side sorting/multi-sort, search, faceted filters with counts, paging, row selection, column visibility and density controls, loading/empty states, sticky headers and a themed bulk-action toolbar. Accepts columns/data, stable getRowId, initialSorting/initialPageSize/initialColumnVisibility, filters, toolbar, bulkActions, labels, appearance and dir; forwards the wrapper ref. |
+| DataGrid | Virtual rows, sticky headers/footer aggregates, logical start/end pinned columns, column sorting/hiding/resizing and inline text/number/select/date/checkbox editors. onCellEdit receives row, rowId, columnId, value and previous; the owner updates data to apply an edit. Selection and visibility support controlled/uncontrolled state. Column meta supplies editor, validate, format, aggregate, label, align and className. |
+| Sortable | Controlled value/onValueChange with stable unique IDs; mouse, touch and keyboard sensors; vertical/horizontal/mixed layouts, handles, disabled items, overlays, custom movement, strategies/modifiers and translated announcements. Objects require getItemValue. Exported primitives compose into lists, cards or table rows; withoutSlot renders semantic rows without a wrapper. |
+| Resizable | Horizontal/vertical panel groups, optional glass variant, min/max/default sizes, collapsible panels, grips, pointer/touch/keyboard separators and double-click reset. autoSaveId remembers layout with safe storage fallback; corrupt saved data is ignored. Horizontal RTL reverses physical panel order while preserving RTL panel content and pointer direction. DOM refs and the underlying group/panel imperative refs are supported. |
+
+DataTable and DataGrid keep small public entry files. Responsibilities are separated into presentation components, model/state hooks, editing/navigation hooks, types, labels and pure utilities. For example, DataGrid uses use-data-grid-model, use-data-grid-editing, use-data-grid-navigation and use-data-grid-virtualizer; header/body/editor/footer components render their supplied model/controller. DataTable separates its state, column definitions, filters, toolbar/view options, content, pagination and bulk bar. Supporting files use direct relative imports; public imports remain unchanged:
+
+```tsx
+import { DataTable, DataTableColumnHeader, getSelectColumn } from "@/components/ui/data-table"
+import { DataGrid, type DataGridCellEdit } from "@/components/ui/data-grid"
+import type { ColumnDef } from "@tanstack/react-table"
+```
+
+Grid keyboard: arrows, Home/End, Ctrl/Command+Home/End, PageUp/PageDown move the active cell; Enter/F2 or typing opens an editor; Enter/Tab commit and Escape cancels. Shift+F10 on a header opens its menu, including keyboard width adjustment. Delete clears an editable cell through validation, Shift+Space selects a row, and Ctrl/Command+C or paste copies/edits the active value. Numeric input rejects invalid/non-finite values and enforces editor min/max; pasted numbers use plain numeric text and dates use YYYY-MM-DD. Invalid options/dates are rejected, custom validation errors remain visible, and drafts cannot be applied to a different row/column after reordering. Use stable getRowId for changing datasets. The active/editor row stays mounted when virtual scrolling; aggregates are cached across navigation.
+
+Sortable keyboard: Space/Enter pick up and drop, arrows move, Escape cancels. Touch uses a short hold so ordinary scrolling remains possible. Reduced motion removes drag transitions/drop animation. Give getItemLabel and labels for localized announcements. Drag overlays and table bulk actions inherit the nearest theme; local RTL sections and all appearances are supported.
+
+Resizable separators accept aria-label and keyboard arrows/Home/End. Pass percentages as strings such as `"40%"`; numbers are pixels. Persisted groups first hydrate the same initial markup, then remount once with their saved layout; unsaved groups remain mounted. Avoid sharing autoSaveId across unrelated groups. The underlying v4 imperative APIs remain available through usePanelRef/useGroupRef and the panelRef/groupRef props.
+
+DataTable labels translate controls, summaries and selection names; column helpers also accept label overrides. DataGrid labels translate menus, errors, cell names, counts and aggregates, while meta.validate can return application-specific messages. react-test contains reference-based examples for all four components, including a 10,000-row editable employee grid and RTL products. Data is local demo state; applications supply their own persistence/server callbacks. Existing Table and public source imports remain available. New Blazor counterparts are deferred in #74.
