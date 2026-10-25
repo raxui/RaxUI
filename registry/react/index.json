@@ -52,6 +52,8 @@
     { "name": "drawer", "manifest": "registry/react/components/drawer/manifest.json" },
     { "name": "context-menu", "manifest": "registry/react/components/context-menu/manifest.json" },
     { "name": "command", "manifest": "registry/react/components/command/manifest.json" },
-    { "name": "calendar", "manifest": "registry/react/components/calendar/manifest.json" }
+    { "name": "calendar", "manifest": "registry/react/components/calendar/manifest.json" },
+    { "name": "date-picker", "manifest": "registry/react/components/date-picker/manifest.json" },
+    { "name": "date-range-picker", "manifest": "registry/react/components/date-range-picker/manifest.json" }
   ]
 }

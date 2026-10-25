@@ -10,19 +10,11 @@ import { cn } from "@/lib/utils"
 import { getDirection } from "@/lib/direction"
 import { assignRef } from "@/lib/refs"
 import { Button } from "@/components/ui/button"
-import { Calendar, addDays, addMonths, isSameDay, startOfDay, startOfMonth, type DateRange } from "@/components/ui/calendar"
+import { Calendar, addMonths, isSameDay, startOfDay, startOfMonth, type DateRange } from "@/components/ui/calendar"
 import { DateInput } from "@/components/ui/date-input"
-export interface DateRangePreset { label: string; range: () => DateRange }
+import type { DateRangePreset } from "@/components/ui/date-range-presets"
+export { defaultRangePresets, type DateRangePreset } from "@/components/ui/date-range-presets"
 export type DateRangeValue = DateRange
-
-export const defaultRangePresets: DateRangePreset[] = [
-  { label: "Today", range: () => ({ from: startOfDay(new Date()), to: startOfDay(new Date()) }) },
-  { label: "Yesterday", range: () => ({ from: addDays(startOfDay(new Date()), -1), to: addDays(startOfDay(new Date()), -1) }) },
-  { label: "Last 7 days", range: () => ({ from: addDays(startOfDay(new Date()), -6), to: startOfDay(new Date()) }) },
-  { label: "Last 30 days", range: () => ({ from: addDays(startOfDay(new Date()), -29), to: startOfDay(new Date()) }) },
-  { label: "This month", range: () => ({ from: startOfMonth(new Date()), to: startOfDay(new Date()) }) },
-  { label: "Last month", range: () => ({ from: startOfMonth(addMonths(new Date(), -1)), to: addDays(startOfMonth(new Date()), -1) }) },
-]
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 // -----------------------------------------------------------------------------
@@ -337,7 +329,7 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
             requestAnimationFrame(() => content.querySelector<HTMLElement>(".sheen-calendar-day[tabindex='0']")?.focus())
           }}
         >
-          {presets.length > 0 && (
+          {open && presets.length > 0 && (
             <div className="sheen-date-range-presets" role="group" aria-label={presetsLabel}>
               {presets.map((preset) => {
                 const range = preset.range()

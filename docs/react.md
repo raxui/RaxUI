@@ -501,6 +501,43 @@ string contract, name/endName and orderMessage remain available through
 NativeDateRangeInput and NativeDateRangeValue.
 
 
+### Calendar-based React pickers
+
+Install `date-picker` or `date-range-picker`. Both reuse the shared Calendar,
+Popover, Input material and Field wiring; no additional runtime package is needed.
+These button-based fields are separate from the segmented DateInput/DateRangeInput.
+
+DatePicker accepts Date | null through value/defaultValue and onChange. It formats
+the value using locale and formatOptions, closes on selection, and posts a local
+YYYY-MM-DD hidden input when name is supplied. min, max and isDateDisabled constrain
+the calendar. The forwarded ref reaches the trigger for schema error focus.
+
+DateRangePicker accepts { from?: Date, to?: Date }. Edits stay in a draft: Apply
+commits both dates; Cancel, Escape or outside dismissal discards them. Its calendar
+previews a range on hover and displays two months on wider screens or one on phones.
+Presets are shared with DateRangeInput; custom presets use DateRangePreset
+{ label, range: () => DateRange }, and [] hides them. name submits name_from and
+name_to ISO dates. Apply stays disabled for incomplete, reversed or constrained
+ranges. Controlled values change only when the parent accepts onChange.
+
+Both support appearance, field variant, size, dir, disabled, readOnly, invalid,
+clearable, accessible names/descriptions, nearest-theme portals and field-level
+onBlur. Disabled hidden inputs are excluded from form posts. clearLabel and
+calendarLabel customize actions; DateRangePicker also exposes applyLabel,
+cancelLabel, presetsLabel and startPrompt. Supply custom preset labels for
+translation. Built-in presets are evaluated only while the popup is open, keeping
+closed Next.js static prerenders deterministic.
+
+```tsx
+import { DatePicker } from "./components/ui/date-picker"
+import { DateRangePicker } from "./components/ui/date-range-picker"
+
+<DatePicker value={date} onChange={setDate} locale="en-GB" name="due" />
+<DateRangePicker value={period} onChange={setPeriod} locale="ar-IQ" dir="rtl"
+  applyLabel="تطبيق" cancelLabel="إلغاء" clearLabel="مسح" presets={[]}
+  placeholder="اختر الفترة" calendarLabel="اختيار الفترة" name="period" />
+```
+
 ## File upload
 
 Install `file-upload`. FileUpload is a native file input inside a labelled drop zone,

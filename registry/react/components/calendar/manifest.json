@@ -34,6 +34,12 @@
       "target": "lib/client-now.ts",
       "type": "ts",
       "sha256": "295d001333b1bed0febbce2bbdbf3a3b47e8ae2b3ba5d6c87d1719aef37184aa"
+    },
+    {
+      "source": "registry/react/components/calendar/date-range-presets.ts",
+      "target": "components/ui/date-range-presets.ts",
+      "type": "ts",
+      "sha256": "31506caac2440b2f61c89b2236eae1bf16456d2ed789352198fce88e0570a63e"
     }
   ]
 }
