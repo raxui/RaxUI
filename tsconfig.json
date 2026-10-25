@@ -25,6 +25,8 @@
       "@/components/ui/spinner": ["registry/react/components/spinner/spinner.tsx"],
       "@/components/ui/dropdown-menu": ["registry/react/components/dropdown-menu/dropdown-menu.tsx"],
       "@/components/ui/popover": ["registry/react/components/popover/popover.tsx"],
+      "@/components/ui/date-picker": ["registry/react/components/date-picker/date-picker.tsx"],
+      "@/components/ui/date-range-presets": ["registry/react/components/calendar/date-range-presets.ts"],
       "@/components/ui/calendar": ["registry/react/components/calendar/calendar.tsx"],
       "@/components/ui/time-picker": ["registry/react/components/time-picker/time-picker.tsx"],
       "@/components/ui/date-input": ["registry/react/components/date-input/date-input.tsx"],

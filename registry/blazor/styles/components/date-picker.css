@@ -1,0 +1,141 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.sheen-picker-field {
+  position: relative;
+}
+
+.sheen-picker-trigger {
+  min-height: var(--sheen-control-height);
+}
+.sheen-picker-trigger.form-control-sm {
+  min-height: var(--sheen-control-height-sm);
+}
+.sheen-picker-trigger.form-control-lg {
+  min-height: var(--sheen-control-height-lg);
+}
+.sheen-picker-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding-inline-end: 2.25rem;
+  text-align: start;
+  cursor: pointer;
+}
+.sheen-picker-trigger > svg {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  color: var(--bs-secondary-color);
+}
+.sheen-picker-trigger > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sheen-picker-trigger[data-placeholder] > span {
+  color: var(--bs-secondary-color);
+}
+.sheen-picker-trigger:focus, .sheen-picker-trigger[data-state=open] {
+  border-color: rgba(var(--bs-primary-rgb), 0.65);
+  box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.16);
+}
+
+.sheen-picker-clear {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--bs-body-bg);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.3);
+  translate: 0 -50%;
+  transition: background-color var(--sheen-duration-fast) ease;
+}
+.sheen-picker-clear svg {
+  width: 0.5625rem;
+  height: 0.5625rem;
+}
+.sheen-picker-clear:hover {
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.45);
+}
+.sheen-picker-clear:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.35);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-picker-clear {
+    animation: sheen-pop-in 350ms var(--sheen-ease-spring);
+  }
+}
+
+.sheen-popover.sheen-picker-popover {
+  max-height: min(40rem, 100dvh - 1rem, var(--radix-popover-content-available-height, 40rem));
+  width: auto;
+  max-width: calc(100vw - 1rem);
+  padding: 0.75rem;
+}
+
+.sheen-picker-range-body {
+  display: flex;
+  gap: 1rem;
+}
+
+.sheen-picker-presets {
+  display: none;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 9rem;
+  padding-inline-end: 1rem;
+  border-inline-end: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+}
+@media (min-width: 840px) {
+  .sheen-picker-presets {
+    display: flex;
+  }
+}
+
+.sheen-picker-preset {
+  padding: 0.4375rem 0.625rem;
+  border: 0;
+  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  color: var(--bs-body-color);
+  background: none;
+  font-size: 0.875rem;
+  text-align: start;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--sheen-duration-fast) ease, color var(--sheen-duration-fast) ease;
+}
+.sheen-picker-preset:hover {
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+}
+.sheen-picker-preset[data-active] {
+  color: var(--sheen-primary-text);
+  background-color: rgba(var(--bs-primary-rgb), 0.1);
+  font-weight: 600;
+}
+.sheen-picker-preset:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.35);
+}
+
+.sheen-picker-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+}

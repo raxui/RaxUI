@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "name": "date-picker",
+  "version": "0.1.0",
+  "description": "Calendar-based date picker and draft/apply range picker with Field and theme integration.",
+  "requires": [
+    "foundation",
+    "field",
+    "input",
+    "button",
+    "calendar",
+    "popover"
+  ],
+  "packages": {},
+  "styles": [
+    "components/date-picker"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/date-picker/date-picker.tsx",
+      "target": "components/ui/date-picker.tsx",
+      "type": "tsx",
+      "sha256": "ac9d87ba4143f20d157ebeaaa0ec2578a94da6d75e19abd17ade5114fc223141"
+    },
+    {
+      "source": "theme/scss/components/_date-picker.scss",
+      "target": "styles/sheenui/components/_date-picker.scss",
+      "type": "scss",
+      "sha256": "2dced826a391671876b83ac7ecd97cbda3be598cd4ecf9f4a9823df128e3eca8"
+    },
+    {
+      "source": "registry/react/components/calendar/date-range-presets.ts",
+      "target": "components/ui/date-range-presets.ts",
+      "type": "ts",
+      "sha256": "31506caac2440b2f61c89b2236eae1bf16456d2ed789352198fce88e0570a63e"
+    }
+  ]
+}

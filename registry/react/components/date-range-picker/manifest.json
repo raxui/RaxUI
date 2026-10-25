@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "name": "date-range-picker",
+  "version": "0.1.0",
+  "description": "Date range picker with presets, draft/apply/cancel and responsive calendars.",
+  "requires": [
+    "date-picker"
+  ],
+  "packages": {},
+  "styles": [],
+  "files": [
+    {
+      "source": "registry/react/components/date-range-picker/date-range-picker.tsx",
+      "target": "components/ui/date-range-picker.tsx",
+      "type": "tsx",
+      "sha256": "7b9b2b44125f4400ab1625bc5e020cb586262a352e11deeecbb96dd3b1ea6c81"
+    }
+  ]
+}
