@@ -2,11 +2,15 @@
   "schemaVersion": 1,
   "name": "date-input",
   "version": "0.1.0",
-  "description": "Source-owned date-input with Field integration.",
+  "description": "Source-owned date-input with boot-ui feature parity and SheenUI theme integration.",
   "requires": [
     "foundation",
     "field",
-    "input"
+    "input",
+    "calendar",
+    "popover",
+    "button",
+    "time-picker"
   ],
   "packages": {},
   "styles": [
@@ -17,13 +21,37 @@
       "source": "registry/react/components/date-input/date-input.tsx",
       "target": "components/ui/date-input.tsx",
       "type": "tsx",
-      "sha256": "870bb68951886dfb95ff6846a52c738b9cf35371feb128adb04b106259faccdb"
+      "sha256": "db0a4509ac915db3a2a86be8347a88ab363592592ef30694b92d5496b47ad797"
     },
     {
       "source": "theme/scss/components/_date-input.scss",
       "target": "styles/sheenui/components/_date-input.scss",
       "type": "scss",
-      "sha256": "8386590aad130d6c3fcff1dd4176acab3b783803b7d705ea261db0363f1f6157"
+      "sha256": "c9595e3eab44909e7309dec521c8dbb7ed2f16b1e290fe9bce02e38a3ff53f70"
+    },
+    {
+      "source": "registry/react/components/date-input/native-date-input.tsx",
+      "target": "components/ui/native-date-input.tsx",
+      "type": "tsx",
+      "sha256": "621ca1a11292cad95c1d41a251fcb012829ec3539199d1cbd41a73dcc978e46a"
+    },
+    {
+      "source": "registry/react/foundation/direction.ts",
+      "target": "lib/direction.ts",
+      "type": "ts",
+      "sha256": "9dbcabe1790b4f04f38440dcec3bc8a62505b4a78b3f70a3a2ac233f4c849c1f"
+    },
+    {
+      "source": "registry/react/foundation/refs.ts",
+      "target": "lib/refs.ts",
+      "type": "ts",
+      "sha256": "86ea0968d61008bfe87bd9b6af3314cdaac26c290915d61fc09965ae5964b299"
+    },
+    {
+      "source": "registry/react/foundation/client-now.ts",
+      "target": "lib/client-now.ts",
+      "type": "ts",
+      "sha256": "295d001333b1bed0febbce2bbdbf3a3b47e8ae2b3ba5d6c87d1719aef37184aa"
     }
   ]
 }

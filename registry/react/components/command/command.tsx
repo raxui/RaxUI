@@ -66,6 +66,8 @@ const ITEM_SELECTOR = ".sheen-command-item:not([aria-disabled='true'])"
 // ---- Command (root) -------------------------------------------------------------
 
 export interface CommandProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onKeyDown"> {
+  /** Stable list ID for associated combobox triggers. */
+  listId?: string
   /** Controlled search text. */
   search?: string
   onSearchChange?: (search: string) => void
@@ -80,14 +82,15 @@ export interface CommandProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
 
 const Command = React.forwardRef<HTMLDivElement, CommandProps>(
   (
-    { className, search: searchProp, onSearchChange, filter = true, loop = true, label = "Command palette", onKeyDown, children, ...props },
+    { className, listId: providedListId, search: searchProp, onSearchChange, filter = true, loop = true, label = "Command palette", onKeyDown, children, ...props },
     ref,
   ) => {
     const [uncontrolledSearch, setUncontrolledSearch] = React.useState("")
     const search = searchProp ?? uncontrolledSearch
     const [activeId, setActiveId] = React.useState<string>()
     const listRef = React.useRef<HTMLDivElement>(null)
-    const listId = React.useId()
+    const generatedListId = React.useId()
+    const listId = providedListId ?? generatedListId
 
     const setSearch = React.useCallback(
       (next: string) => {
@@ -226,10 +229,10 @@ const CommandList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
     React.useLayoutEffect(() => {
       const inner = innerRef.current
       if (!inner) return
-      const observer = new ResizeObserver(() => setHeight(inner.offsetHeight))
-      observer.observe(inner)
+      const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => setHeight(inner.offsetHeight))
+      observer?.observe(inner)
       setHeight(inner.offsetHeight)
-      return () => observer.disconnect()
+      return () => observer?.disconnect()
     }, [])
 
     // One highlight that glides to the active item.

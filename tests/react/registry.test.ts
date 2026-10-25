@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { posix } from "node:path"
 import { describe, expect, it } from "vitest"
 
 import {
@@ -18,7 +19,7 @@ describe("React registry", () => {
   it("has a supported index listing every item", () => {
     const index = loadIndex(root)
     expect(index.schemaVersion).toBe(1)
-    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "slider", "rating", "starter-react", "starter-next", "date-input", "time-picker", "date-time-input", "date-range-input", "file-upload", "popover", "combobox", "autocomplete", "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline", "tabs", "accordion", "breadcrumb", "pagination", "stepper", "toggle", "menu-toggle", "tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command"])
+    expect(index.items.map((item: { name: string }) => item.name)).toEqual(["foundation", "button", "dialog", "confirm-dialog", "dropdown-menu", "field", "form", "form-section", "input", "input-group", "textarea", "checkbox", "radio-group", "switch", "select", "slider", "rating", "starter-react", "starter-next", "date-input", "time-picker", "date-time-input", "date-range-input", "file-upload", "popover", "combobox", "autocomplete", "alert", "badge", "avatar", "card", "skeleton", "spinner", "progress", "table", "timeline", "tabs", "accordion", "breadcrumb", "pagination", "stepper", "toggle", "menu-toggle", "tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "calendar"])
   })
 
   it("has up-to-date hashes for every file (run src/react-cli/scripts/update-hashes.mjs after edits)", () => {
@@ -42,6 +43,21 @@ describe("React registry", () => {
           const partial = `${dir}_${imported.split("/").pop()}.scss`
           expect(targets.has(partial), `${name}: ${file.target} imports '${imported}'`).toBe(true)
         }
+      }
+    }
+  })
+
+  it.each(["calendar", "date-input", "time-picker", "date-time-input", "date-range-input", "combobox", "autocomplete", "command", "select"])("ships the complete local import closure for %s", name => {
+    const items = resolveItems(root, name)
+    const files = items.flatMap((item: { files: { target: string; source: string; type: string }[] }) => item.files)
+    const targets = new Set(files.map((file: { target: string }) => file.target))
+    for (const file of files.filter((file: { type: string }) => file.type === "tsx" || file.type === "ts")) {
+      const source = readSource(root, file.source).toString("utf8")
+      for (const match of source.matchAll(/from\s+["']([^"']+)["']/g)) {
+        const spec = match[1]
+        if (!spec.startsWith("@/") && !spec.startsWith(".")) continue
+        const target = spec.startsWith("@/") ? spec.slice(2) : posix.normalize(posix.join(posix.dirname(file.target), spec))
+        expect(targets.has(target + ".tsx") || targets.has(target + ".ts"), name + ": " + file.target + " imports " + spec).toBe(true)
       }
     }
   })

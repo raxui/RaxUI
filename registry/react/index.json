@@ -51,6 +51,7 @@
     { "name": "sheet", "manifest": "registry/react/components/sheet/manifest.json" },
     { "name": "drawer", "manifest": "registry/react/components/drawer/manifest.json" },
     { "name": "context-menu", "manifest": "registry/react/components/context-menu/manifest.json" },
-    { "name": "command", "manifest": "registry/react/components/command/manifest.json" }
+    { "name": "command", "manifest": "registry/react/components/command/manifest.json" },
+    { "name": "calendar", "manifest": "registry/react/components/calendar/manifest.json" }
   ]
 }

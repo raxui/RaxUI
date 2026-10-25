@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "name": "calendar",
+  "version": "0.1.0",
+  "description": "Source-owned calendar with boot-ui feature parity and SheenUI theme integration.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {},
+  "styles": [
+    "components/calendar"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/calendar/calendar.tsx",
+      "target": "components/ui/calendar.tsx",
+      "type": "tsx",
+      "sha256": "f7a4c7597cd6d510a585e9d05f2630715bbcd83166132d10ab9dac950bf8159f"
+    },
+    {
+      "source": "theme/scss/components/_calendar.scss",
+      "target": "styles/sheenui/components/_calendar.scss",
+      "type": "scss",
+      "sha256": "f82ad356b813a776cf97a5d25aec4838be076ef91c6994fe68e5b76734fec6fe"
+    },
+    {
+      "source": "registry/react/foundation/direction.ts",
+      "target": "lib/direction.ts",
+      "type": "ts",
+      "sha256": "9dbcabe1790b4f04f38440dcec3bc8a62505b4a78b3f70a3a2ac233f4c849c1f"
+    },
+    {
+      "source": "registry/react/foundation/client-now.ts",
+      "target": "lib/client-now.ts",
+      "type": "ts",
+      "sha256": "295d001333b1bed0febbce2bbdbf3a3b47e8ae2b3ba5d6c87d1719aef37184aa"
+    }
+  ]
+}

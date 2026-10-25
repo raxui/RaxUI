@@ -76,6 +76,24 @@
       "target": "styles/sheenui/_core.scss",
       "type": "scss",
       "sha256": "797df76eb1f6c8ec550aa79750fee642879acedd8b77f5e7a566b602c14c6b5b"
+    },
+    {
+      "source": "registry/react/foundation/direction.ts",
+      "target": "lib/direction.ts",
+      "type": "ts",
+      "sha256": "9dbcabe1790b4f04f38440dcec3bc8a62505b4a78b3f70a3a2ac233f4c849c1f"
+    },
+    {
+      "source": "registry/react/foundation/refs.ts",
+      "target": "lib/refs.ts",
+      "type": "ts",
+      "sha256": "86ea0968d61008bfe87bd9b6af3314cdaac26c290915d61fc09965ae5964b299"
+    },
+    {
+      "source": "registry/react/foundation/client-now.ts",
+      "target": "lib/client-now.ts",
+      "type": "ts",
+      "sha256": "295d001333b1bed0febbce2bbdbf3a3b47e8ae2b3ba5d6c87d1719aef37184aa"
     }
   ]
 }

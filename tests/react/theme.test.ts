@@ -84,3 +84,11 @@ it("keeps the starter canvas solid in both modes", () => {
   expect(css).toContain("background-color: var(--sheen-page-bg, #fff)")
   expect(css).toContain("background-color: var(--sheen-page-bg, #000)")
 })
+
+
+it("keeps time wheel end gaps in scrollable flow, including reduced motion", () => {
+  const css = compileTheme(['@import "components/time-picker";'])
+  expect(css).toContain(".sheen-wheel-list::before, .sheen-wheel-list::after")
+  expect(css).toContain("height: calc(var(--sheen-wheel-item) * (var(--sheen-wheel-visible) - 1) / 2)")
+  expect(css).toMatch(/\.sheen-wheel-list \{[^}]*padding-block: 0;/)
+})

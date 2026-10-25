@@ -28,3 +28,12 @@
 .sheen-choice-list .sheen-choice-option[data-active] {
   background: transparent;
 }
+
+.sheen-choice-list .sheen-autocomplete-option {
+  position: relative;
+  z-index: 1;
+}
+
+.sheen-choice-list .sheen-autocomplete-option[data-highlighted] {
+  background: transparent;
+}

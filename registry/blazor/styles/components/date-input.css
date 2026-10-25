@@ -16,3 +16,73 @@
     transition: none;
   }
 }
+.sheen-date-field[data-disabled] {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.sheen-date-segments {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  cursor: text;
+}
+
+.sheen-date-run {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sheen-date-literal {
+  color: var(--bs-secondary-color);
+  user-select: none;
+  white-space: pre;
+}
+
+.sheen-date-segment {
+  display: inline-block;
+  padding: 0.125rem 0.125rem;
+  border-radius: calc(0.3125rem * var(--sheen-radius-scale));
+  color: var(--bs-emphasis-color);
+  text-align: center;
+  outline: 0;
+  caret-color: transparent;
+  cursor: default;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--sheen-duration-fast) ease, color var(--sheen-duration-fast) ease;
+}
+.sheen-date-segment[data-placeholder] {
+  color: var(--bs-secondary-color);
+}
+.sheen-date-segment:focus {
+  color: rgb(var(--sheen-input-ring-rgb, var(--bs-primary-rgb)));
+  background-color: rgba(var(--sheen-input-ring-rgb, var(--bs-primary-rgb)), 0.14);
+  opacity: 1;
+}
+.sheen-date-segment::selection,
+.sheen-date-segment *::selection {
+  background: none;
+}
+
+.sheen-date-segment-value {
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-date-segment-value[data-tick] {
+    animation: sheen-date-tick 260ms var(--sheen-ease-spring);
+  }
+}
+
+@keyframes sheen-date-tick {
+  from {
+    opacity: 0.2;
+    transform: translateY(0.35em);
+  }
+}
+.sheen-popover.sheen-date-popover {
+  max-height: min(40rem, 100dvh - 1rem, var(--radix-popover-content-available-height, 40rem));
+}

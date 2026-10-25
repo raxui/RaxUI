@@ -65,6 +65,10 @@
   right: 0.5rem;
 }
 
+.sheen-drawer-content[data-vaul-drawer]:is([data-vaul-drawer-direction=left], [data-vaul-drawer-direction=right])::after {
+  content: none;
+}
+
 .sheen-drawer-handle[data-vaul-handle] {
   flex-shrink: 0;
   width: 2.25rem;

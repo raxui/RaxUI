@@ -9,7 +9,7 @@ import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command"]
+const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "combobox", "autocomplete", "select"]
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
 // CI runs 15.5.28 and 16.4.3.
 const CREATE_NEXT_APP = `create-next-app@${process.env.CREATE_NEXT_APP_VERSION ?? "16.4.3"}`
@@ -88,6 +88,12 @@ import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescri
 import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription, DrawerClose } from "@/components/ui/drawer"
 import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "@/components/ui/context-menu"
 import { CommandDialog, CommandInput, CommandList, CommandGroup, CommandItem, CommandEmpty } from "@/components/ui/command"
+import { DateInput, DateTimeInput, TimeInput } from "@/components/ui/date-input"
+import { TimePicker } from "@/components/ui/time-picker"
+import { DateRangeInput } from "@/components/ui/date-range-input"
+import { Combobox } from "@/components/ui/combobox"
+import { Autocomplete } from "@/components/ui/autocomplete"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { ToastButton } from "./toast-button"
 
 export default function Overlays() {
@@ -95,6 +101,16 @@ export default function Overlays() {
     <SheenThemeProvider className="sheen-app">
       <Tooltip content="Save your work" side="top"><button type="button">Help</button></Tooltip>
       <HoverCard><HoverCardTrigger href="#author">Author</HoverCardTrigger><HoverCardContent><p>Author details</p></HoverCardContent></HoverCard>
+      <section aria-label="Date and choice parity">
+        <DateInput locale="en-GB" aria-label="Birthday" defaultValue={new Date(2026, 9, 25)} name="birthday" />
+        <DateTimeInput locale="en-GB" aria-label="Appointment" defaultValue={new Date(2026, 9, 25, 9, 30)} />
+        <TimeInput locale="en-GB" aria-label="Opening time" defaultValue={new Date(2026, 9, 25, 9, 30)} />
+        <TimePicker locale="en-GB" defaultValue={{ hours: 9, minutes: 30 }} />
+        <DateRangeInput locale="en-GB" aria-label="Stay" name="stay" defaultValue={{ from: new Date(2026, 9, 10), to: new Date(2026, 9, 13) }} />
+        <Combobox aria-label="Frameworks" multiple defaultValue={["react"]} options={[{ value: "react", label: "React", group: "Web" }, { value: "vue", label: "Vue", group: "Web" }]} />
+        <Autocomplete aria-label="City" minChars={0} options={[{ value: "iq", label: "Baghdad", description: "Iraq" }]} />
+        <Select><SelectTrigger aria-label="Priority"><SelectValue placeholder="Priority" /></SelectTrigger><SelectContent><SelectItem value="high">High</SelectItem><SelectItem value="low">Low</SelectItem></SelectContent></Select>
+      </section>
       <ToastButton />
       <Toaster />
       <Sheet><SheetTrigger>Settings</SheetTrigger><SheetContent side="end">
@@ -226,4 +242,65 @@ test("running init and add again changes no files", () => {
   sh("npx sheenui-react add button", app)
   for (const item of OVERLAYS) sh(`npx sheenui-react add ${item}`, app)
   expect(snapshot(app)).toEqual(before)
+})
+
+
+test("date and rich choice components hydrate from server imports and remain interactive", async ({ page }) => {
+  const errors: string[] = []
+  page.on("pageerror", error => errors.push(error.message))
+  await page.goto(baseUrl + "/overlays")
+  const section = page.getByRole("region", { name: "Date and choice parity" })
+  const birthday = section.getByRole("group", { name: "Birthday", exact: true })
+  await birthday.getByRole("spinbutton", { name: "year", exact: true }).press("ArrowUp")
+  await expect(birthday.locator('input[name="birthday"]')).toHaveValue("2027-10-25")
+  await birthday.getByRole("button", { name: "Choose date", exact: true }).click()
+  await expect(page.locator(".sheen-calendar")).toBeVisible()
+  await page.keyboard.press("Escape")
+  await section.getByRole("combobox", { name: "Frameworks", exact: true }).click()
+  await page.getByRole("option", { name: "Vue", exact: true }).click()
+  await page.keyboard.press("Escape")
+  await expect(section.getByRole("button", { name: "Remove Vue", exact: true })).toBeVisible()
+  await section.getByRole("combobox", { name: "City", exact: true }).fill("Bag")
+  await page.getByRole("option", { name: "Baghdad Iraq", exact: true }).click()
+  await expect(section.getByRole("combobox", { name: "City", exact: true })).toHaveValue("Baghdad")
+  await section.getByRole("combobox", { name: "Priority", exact: true }).click()
+  await page.getByRole("option", { name: "High", exact: true }).click()
+  await expect(section.getByRole("combobox", { name: "Priority", exact: true })).toHaveText("High")
+  expect(errors).toEqual([])
+})
+
+
+test("time wheels reach both ends and select the final values", async ({ page }) => {
+  await page.goto(baseUrl + "/overlays")
+  const wheels = page.locator(".sheen-time-wheel")
+  const hour = wheels.getByRole("listbox", { name: "hour", exact: true })
+  const minute = wheels.getByRole("listbox", { name: "minute", exact: true })
+  await hour.press("End")
+  await expect(hour.getByRole("option", { selected: true })).toHaveText("23")
+  for (const label of ["22", "23", "00"]) {
+    await hour.getByRole("option", { name: label, exact: true }).click()
+    await expect(hour.getByRole("option", { selected: true })).toHaveText(label)
+    await expect.poll(() => hour.evaluate(el => Math.round(el.scrollTop))).toBe(Number(label) * 36)
+  }
+  await minute.hover()
+  await page.mouse.wheel(0, 10000)
+  await expect(minute.getByRole("option", { selected: true })).toHaveText("59")
+  for (const label of ["58", "59", "00"]) {
+    await minute.getByRole("option", { name: label, exact: true }).click()
+    await expect(minute.getByRole("option", { selected: true })).toHaveText(label)
+    await expect.poll(() => minute.evaluate(el => Math.round(el.scrollTop))).toBe(Number(label) * 36)
+  }
+})
+
+test("segmented range hydrates, posts ISO endpoints and opens a range calendar", async ({ page }) => {
+  await page.goto(baseUrl + "/overlays")
+  const range = page.getByRole("group", { name: "Stay", exact: true })
+  await expect(range.locator('input[name="stay_from"]')).toHaveValue("2026-10-10")
+  await expect(range.locator('input[name="stay_to"]')).toHaveValue("2026-10-13")
+  await range.getByRole("button", { name: "Choose dates", exact: true }).click()
+  const popup = page.locator(".sheen-date-range-popover")
+  await expect(popup.getByRole("grid")).toHaveCount(2)
+  await popup.getByRole("button", { name: "Done", exact: true }).click()
+  await range.getByRole("button", { name: "Clear dates", exact: true }).click()
+  await expect(range.locator('input[name="stay_from"]')).toHaveValue("")
 })
