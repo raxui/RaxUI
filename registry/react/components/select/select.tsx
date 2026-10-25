@@ -8,6 +8,7 @@ import * as SelectPrimitive from "@radix-ui/react-select"
 
 import { cn } from "@/lib/utils"
 import { useFieldControlProps } from "@/components/ui/field"
+import { ChoiceHighlight } from "@/lib/choice-highlight"
 
 const CheckIcon = () => (
   <svg
@@ -120,7 +121,7 @@ const SelectContent = React.forwardRef<
           {...props}
         >
           <SelectScrollUpButton />
-          <SelectPrimitive.Viewport className="sheen-select-viewport">{children}</SelectPrimitive.Viewport>
+          <SelectPrimitive.Viewport className="sheen-select-viewport sheen-choice-list"><ChoiceHighlight />{children}</SelectPrimitive.Viewport>
           <SelectScrollDownButton />
         </SelectPrimitive.Content>
       </SelectPrimitive.Portal>

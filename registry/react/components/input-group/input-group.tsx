@@ -5,7 +5,6 @@ import * as React from "react"
 import { Input, type InputProps } from "@/components/ui/input"
 import { useFieldControlProps } from "@/components/ui/field"
 import { cn } from "@/lib/utils"
-import { useSheenTheme } from "@/lib/theme"
 
 type InputGroupContextValue = {
   size: NonNullable<InputProps["size"]>
@@ -83,7 +82,6 @@ const groupFields = (input: HTMLInputElement) =>
 const InputGroupItem = React.forwardRef<HTMLInputElement, InputGroupItemProps>(
   ({ className, disabled, required, invalid, onChange, onKeyDown, onPaste, ...props }, ref) => {
     const context = React.useContext(InputGroupContext)
-    const theme = useSheenTheme()
     const autoId = React.useId()
     if (!context) throw new Error("`InputGroupItem` must be used within `InputGroup`")
 
@@ -104,6 +102,7 @@ const InputGroupItem = React.forwardRef<HTMLInputElement, InputGroupItemProps>(
       <Input
         id={props.id ?? autoId}
         ref={ref}
+        dir={props.dir}
         size={context.size}
         variant={context.variant}
         disabled={disabled ?? context.disabled}
@@ -128,7 +127,7 @@ const InputGroupItem = React.forwardRef<HTMLInputElement, InputGroupItemProps>(
             move(input, -1, "end")
           }
           // Arrows follow the screen: in RTL the previous field is on the right.
-          const rtl = (theme.direction ?? getComputedStyle(input).direction) === "rtl"
+          const rtl = getComputedStyle(input.closest(".sheen-joined-inputs") ?? input).direction === "rtl"
           const back = rtl ? "ArrowRight" : "ArrowLeft"
           const forward = rtl ? "ArrowLeft" : "ArrowRight"
           if (event.key === back && caretAtStart) {

@@ -9,6 +9,11 @@
 
 @import "input-mixins";
 
+.sheen-input,
+.sheen-input-group {
+  --sheen-field-border: rgba(var(--bs-emphasis-color-rgb), 0.22);
+}
+
 // ---- Bare field -------------------------------------------------------------
 .sheen-input {
   @include sheen-input-surface("&:focus");

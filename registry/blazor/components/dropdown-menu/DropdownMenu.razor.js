@@ -59,7 +59,11 @@ function glide(menu, item) {
     menu.style.setProperty("--sheen-menu-hover-y", `${item.offsetTop}px`)
     menu.style.setProperty("--sheen-menu-hover-h", `${item.offsetHeight}px`)
   }
-  if (menu.hasAttribute("data-hover")) return set()
+  if (menu.style.getPropertyValue("--sheen-menu-hover-y")) {
+    set()
+    menu.setAttribute("data-hover", "")
+    return
+  }
   highlight.style.transition = "none"
   set()
   void highlight.offsetHeight // commit the position before transitions return

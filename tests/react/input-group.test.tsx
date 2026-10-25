@@ -29,11 +29,28 @@ describe("InputGroup", () => {
     fireEvent.paste(first, { clipboardData: { getData: () => "1234" } })
     expect(first).toHaveValue("12"); expect(second).toHaveValue("34")
   })
+  // jsdom does not compute inherited direction from HTML dir attributes.
   it("uses theme direction for boundary arrow movement", () => {
-    render(<SheenThemeProvider direction="rtl"><InputGroup autoAdvance><InputGroupItem defaultValue="12" /><InputGroupItem /></InputGroup></SheenThemeProvider>)
+    render(<SheenThemeProvider direction="rtl"><InputGroup autoAdvance style={{ direction: "rtl" }}><InputGroupItem defaultValue="12" /><InputGroupItem /></InputGroup></SheenThemeProvider>)
     const [first, second] = screen.getAllByRole("textbox") as HTMLInputElement[]
     first.focus(); first.setSelectionRange(2, 2)
     fireEvent.keyDown(first, { key: "ArrowLeft" })
     expect(second).toHaveFocus()
+  })
+  it.each([['ltr', 'rtl', 'ArrowLeft'], ['rtl', 'ltr', 'ArrowRight']] as const)("uses local %s/%s direction instead of the outer theme", (themeDirection, direction, forward) => {
+    render(<SheenThemeProvider direction={themeDirection}><InputGroup dir={direction} style={{ direction }} autoAdvance><InputGroupItem defaultValue="12" /><InputGroupItem /></InputGroup></SheenThemeProvider>)
+    const [first, second] = screen.getAllByRole("textbox") as HTMLInputElement[]
+    expect(first).not.toHaveAttribute("dir")
+    expect(second).not.toHaveAttribute("dir")
+    first.focus(); first.setSelectionRange(2, 2)
+    fireEvent.keyDown(first, { key: forward })
+    expect(second).toHaveFocus()
+  })
+  it("inherits an RTL wrapper and preserves an explicitly directed field", () => {
+    render(<SheenThemeProvider direction="ltr"><div dir="rtl"><InputGroup><InputGroupItem /><InputGroupItem dir="ltr" /></InputGroup></div></SheenThemeProvider>)
+    const [inherited, explicit] = screen.getAllByRole("textbox")
+    expect(inherited).not.toHaveAttribute("dir")
+    expect(explicit).toHaveAttribute("dir", "ltr")
+    expect(screen.getByRole("group").closest('[dir="rtl"]')).not.toBeNull()
   })
 })

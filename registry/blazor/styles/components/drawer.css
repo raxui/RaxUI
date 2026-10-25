@@ -3,9 +3,9 @@
   position: fixed;
   inset: 0;
   z-index: 1040;
-  background-color: rgba(var(--sheen-overlay-rgb), var(--sheen-overlay-alpha));
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
+  background-color: rgba(var(--sheen-overlay-rgb), var(--sheen-drawer-overlay-alpha));
+  -webkit-backdrop-filter: blur(var(--sheen-drawer-overlay-blur, 4px));
+  backdrop-filter: blur(var(--sheen-drawer-overlay-blur, 4px));
 }
 
 .sheen-drawer-content {
@@ -14,6 +14,9 @@
   box-shadow: var(--sheen-surface-shadow);
   -webkit-backdrop-filter: var(--sheen-surface-filter);
   backdrop-filter: var(--sheen-surface-filter);
+  background-color: var(--sheen-drawer-bg);
+  -webkit-backdrop-filter: var(--sheen-drawer-filter);
+  backdrop-filter: var(--sheen-drawer-filter);
   position: fixed;
   z-index: 1045;
   display: flex;
@@ -148,7 +151,7 @@ dialog.sheen-drawer-content:not([open]) {
 }
 
 dialog.sheen-drawer-content::backdrop {
-  background: rgba(var(--sheen-overlay-rgb), var(--sheen-overlay-alpha));
+  background: rgba(var(--sheen-overlay-rgb), var(--sheen-drawer-overlay-alpha));
 }
 
 dialog.sheen-drawer-content[data-dragging] {

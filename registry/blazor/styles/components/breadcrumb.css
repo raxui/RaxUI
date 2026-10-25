@@ -29,11 +29,18 @@
   margin-inline-start: -0.5rem;
 }
 .sheen-breadcrumb[data-variant=glass] .sheen-breadcrumb-list {
-  background-color: rgba(var(--bs-body-bg-rgb), max(var(--sheen-glass-alpha-subtle), var(--sheen-material-floor, 0)));
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
-  border: 1px solid var(--sheen-border-color);
-  box-shadow: var(--sheen-material-edge), var(--sheen-material-shadow, var(--sheen-shadow-sm));
+  background-color: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha-subtle));
+  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  border: 1px solid var(--sheen-glass-border-color);
+  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .sheen-breadcrumb[data-variant=glass] .sheen-breadcrumb-list {
+    background-color: rgb(var(--bs-body-bg-rgb));
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .sheen-breadcrumb[data-variant=glass] .sheen-breadcrumb-list {
