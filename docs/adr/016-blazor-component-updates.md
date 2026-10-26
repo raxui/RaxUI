@@ -36,9 +36,9 @@ Starter source, starter CSS, app layout, app styles and Bootstrap are outside up
 Plan and validate manifest hashes, path ownership, link containment, imports,
 configuration and lock paths before writing. Any conflict aborts the complete
 transaction, including the shared theme. Dry runs report the plan and conflicts
-without writing. Apply through FileBackup, save configuration, then save the lock
-last; ordinary write failures restore prior bytes. As with installation, concurrent
-edits and abrupt process termination are not covered by the rollback guarantee.
+without writing. Apply through FileTransaction, save configuration, then save the lock
+last; ordinary write failures restore prior bytes and abrupt termination is recovered
+as described in ADR 018. Concurrent edits are not covered by the rollback guarantee.
 
 ## Consequences
 
