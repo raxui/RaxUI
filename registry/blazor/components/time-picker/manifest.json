@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "time-picker",
   "version": "0.1.0",
-  "description": "Source-owned time-picker with Field integration.",
+  "description": "Localized time wheels with keyboard, scrolling, InputBase and native SSR fallback.",
   "dependencies": [
     "field",
     "input"
@@ -22,7 +22,28 @@
       "destination": "components",
       "target": "TimePicker/TimePicker.razor",
       "type": "razor",
-      "sha256": "13408cf84f6a460ef195a7e7a584d9a8ef34d53259cbeca8844cec0796c74f9c"
+      "sha256": "5c3f9b754d978a49f17203b67fb08368320bf91cc4e1684a14bae90d2a2c6d5f"
+    },
+    {
+      "source": "TimeWheel.razor",
+      "destination": "components",
+      "target": "TimePicker/TimeWheel.razor",
+      "type": "razor",
+      "sha256": "c88d74a04d9ec974ca69e66a0d2768b7769077c6caef8ce178a9ce6037bf2b97"
+    },
+    {
+      "source": "TimeWheel.razor.js",
+      "destination": "components",
+      "target": "TimePicker/TimeWheel.razor.js",
+      "type": "js",
+      "sha256": "5c19033c043ebfd6c8ab1ed51dc272911b40b98272d996cecb4270bae1eed010"
+    },
+    {
+      "source": "NativeTimePicker.razor",
+      "destination": "components",
+      "target": "TimePicker/NativeTimePicker.razor",
+      "type": "razor",
+      "sha256": "6dd4a6fac11b27ef25e5fbc91eac17e822a280cc6177bd6ffb42ce8cf72282f5"
     }
   ]
 }
