@@ -572,15 +572,16 @@ See [the project brief](PROJECT_BRIEF.md), [architecture](ARCHITECTURE.md), and
 ## Dates and times
 
 Install `date-input`, `time-picker`, `date-time-input`, or `date-range-input`.
-Blazor retains native browser pickers; React provides the boot-ui segmented fields,
-custom calendar and time wheels described below, with explicit Native exports for
-compatibility. Bootstrap dark mode supplies color-scheme for native pickers.
+Blazor provides localized time wheels and segmented DateTimeInput alongside native
+DateInput/DateRangeInput. React provides the boot-ui segmented fields, calendar and
+wheels described below. Both retain native options for compatibility.
 All controls integrate with Field; React and Blazor value types differ.
 
 Blazor: `DateInput<TValue>` accepts DateOnly, DateTime, DateTimeOffset (and nullable
-forms); `TimePicker` binds TimeOnly; `DateTimeInput<TValue>` accepts DateTime or
-DateTimeOffset. Use `@bind-Value` inside EditForm. Browser date/time values carry no
-time zone: a DateTimeOffset is interpreted as local wall time by InputDate.
+forms); `TimePicker<TValue>` binds TimeOnly or TimeOnly?; `DateTimeInput<TValue>`
+accepts DateTime or DateTimeOffset and nullable forms. Use `@bind-Value` inside
+EditForm. Custom date-time edits preserve Kind/offset; native static SSR uses
+the framework InputDate wall-time parsing policy.
 `ParsingErrorMessage` translates the built-in parsing error.
 `DateRangeInput` binds nullable DateOnly `Value` and `EndValue` with separate
 ValueExpression/EndValueExpression. It validates order in EditContext without
@@ -707,6 +708,148 @@ This React queue does not change Blazor's InputFile API.
 ```
 
 
+
+
+## Blazor Gregorian calendars and pickers
+
+Install `calendar`, `date-picker`, or `date-range-picker`. The range picker installs
+the calendar, single picker, input/field styling, button and Popover dependencies.
+All date arithmetic is Gregorian. `Culture` defaults to `CultureInfo.CurrentCulture`
+and controls localized month/day names, numerals and week start, independently of
+the calendar system. For Iraqi Arabic use `new CultureInfo("ar-IQ")`; no Hijri
+calendar is selected when an Arabic culture is used. Override `WeekStartsOn`,
+`Dir` or `Text` when required. English and Arabic action labels are built in;
+`CalendarState.Labels` parameterizes every built-in action/error/preset string.
+
+```razor
+@using CultureInfo = System.Globalization.CultureInfo
+
+<Calendar @bind-Value="day" Culture="Arabic" />
+<DatePicker @bind-Value="day" Culture="Arabic" Clearable />
+<DateRangePicker @bind-Value="from" @bind-EndValue="to" Culture="Arabic"
+                 MinDays="1" MaxDays="30" Clearable />
+
+@code {
+    private static readonly CultureInfo Arabic = new("ar-IQ");
+    private DateOnly? day, from, to;
+}
+```
+
+Calendar supports `Value`/`ValueChanged` for a day, or `Range` with `Value` and
+`EndValue` for a draft range. `RangeChanged` emits `CalendarState.DateSpan` with
+both endpoints together. Configure `Month`/`MonthChanged`, `Min`, `Max`,
+`IsDateDisabled`, `ShowOutsideDays`, `NumberOfMonths` (1 or 2), `DayContent` and
+`Disabled`. The caption switches between days, months and a 12-year grid.
+`Responsive` switches a two-month calendar to one below 640 CSS pixels.
+The grid always renders six weeks, preserves the React month/zoom animations,
+and respects reduced motion. `Today` defaults to the server's current date;
+pass a date calculated for the application's time zone when it differs.
+
+Picker types are inferred from `@bind-Value`: `DateOnly`, `DateTime`,
+`DateTimeOffset`, and their nullable forms. The calendar changes the date only:
+existing DateTime time/Kind and DateTimeOffset time/offset are preserved, without
+conversion through the server's local time zone. A previously empty DateTime
+starts at midnight/Unspecified; a previously empty DateTimeOffset starts at
+midnight with offset zero. Dates that cannot preserve the existing offset at
+the .NET date limits are unavailable. Use nullable bindings with `Clearable`.
+
+Pickers derive from InputBase and integrate with EditForm, Field/FieldError,
+DataAnnotations and FluentValidation (including Blazilla). Keep `@bind-Value`
+and `@bind-EndValue`, or provide their expressions explicitly for validation and
+generated field names. `Min`, `Max`, `IsDateDisabled`, range order and span limits
+also participate in EditContext validation, including externally assigned values.
+`Disabled` inherits Field state; `ReadOnly` prevents opening or editing.
+
+```razor
+<EditForm Model="booking" FormName="booking" OnValidSubmit="Save" Context="edit">
+    <DataAnnotationsValidator />
+    <Field Id="arrival" For="@(() => booking.Arrival)">
+        <FieldLabel>Arrival</FieldLabel>
+        <DatePicker @bind-Value="booking.Arrival" Clearable />
+        <FieldError />
+    </Field>
+    <Button type="submit">Save</Button>
+</EditForm>
+```
+
+Range selection stays in a draft until Apply. Cancel, Escape and outside dismissal
+discard it. A reverse selection is ordered; selecting an endpoint that violates
+`MinDays`/`MaxDays` starts a new range instead. Set `ExcludeDisabled` to prevent a
+range crossing disabled dates. Day counts are the difference between dates
+(nights), so equal endpoints count as zero. The six default quick ranges match
+React (today, yesterday, last 7/30 days, this/last month). `Presets` accepts a list
+of `CalendarState.DatePreset(label, from, to)`; an empty list hides the sidebar.
+Unavailable presets are disabled. The sidebar is hidden below 840 CSS pixels.
+
+The hidden named inputs contain invariant ISO date strings, or round-trip values
+for DateTime/DateTimeOffset; each range endpoint posts independently. `EndName`
+overrides the generated end-field name. Static SSR renders the grid and formatted
+values with disabled editing controls. Selection, keyboard handling, Popover and
+validation focus require an interactive render mode chosen by the consuming app;
+the components do not force one. Existing native `date-input`, `date-time-input`
+and `date-range-input` remain available for editable static SSR forms.
+
+Keyboard: Left/Right follows text direction, Up/Down moves a week, Home/End uses
+the configured week start, Page Up/Down moves a month (Shift moves a year), and
+Enter/Space selects. Local focus and hover preview use a collocated disposable
+JavaScript module; C# owns values and validates committed choices. Popover Escape
+and dismissal return focus to the field. Month/year selection uses labelled
+buttons; Escape returns to days before dismissing the enclosing popover.
+
+See `examples/blazor/SheenDemo.razor` for the validated Arabic/English booking demo.
+After `init`, `add date-range-picker` and `add date-time-input`, copy it to `Components/Pages/`.
+It uses Interactive Server. Other interactive modes require the components and globalization data in the corresponding client project.
+DatePicker/DateRangePicker remain button-based; DateTimeInput provides segmented entry.
+
+
+## Blazor time wheels and date-time entry
+
+Install `date-time-input` for the combined field and its calendar/time-wheel
+ dependencies, or `time-picker` for standalone wheels.
+
+`TimePicker<TValue>` binds `TimeOnly` or `TimeOnly?`. It renders hour/minute
+wheels and a day-period wheel in 12-hour mode, with click, touch/scroll, Up/Down,
+Page Up/Down and Home/End selection. The first and last options can reach the
+selection band. A nullable empty value shows an uncommitted suggestion; loading
+and positioning the wheels never commits it. `Now` overrides that suggestion.
+Suggestions and the Now action round down to MinuteStep with zero seconds.
+
+`DateTimeInput<TValue>` binds `DateTime`, `DateTimeOffset`, or nullable forms.
+Its Gregorian segments follow the culture's date order, numerals and labels.
+Type ASCII, Arabic or Persian digits; Up/Down increments a segment, Page Up/Down
+steps five, Home/End sets its limits, Left/Right moves between segments, and
+Backspace/Delete clears a segment. Month/year changes clamp the day for leap years.
+The calendar button opens Calendar and TimePicker together with localized Now/Done
+actions. Selections commit immediately; Done or Escape dismisses the popover.
+Incomplete or invalid segment drafts submit an empty hidden value and block
+EditForm validation rather than posting the previous date-time.
+
+Both accept `Culture` (defaults to CurrentCulture), `HourCycle=12|24`,
+`MinuteStep=1..60`, `Disabled`, `ReadOnly`, `Appearance`, `Class`, and
+`Clearable` (nullable values only). The DateTimeInput date limits are Gregorian
+`DateOnly? Min/Max` and `IsDateDisabled`, as for DatePicker. Use
+`TimeWheel.Labels` via `TimePicker.Text` or `DateTimeInput.TimeText` for time
+and segment labels/actions, and `CalendarState.Labels` via DateTimeInput.Text
+for calendar labels. DateTimeInput.Now overrides the Now action/suggested time.
+
+Date-time edits preserve an existing DateTime.Kind or DateTimeOffset.Offset,
+without server timezone conversion. Editing hours/minutes sets seconds and
+fractions to zero; calendar-only selection preserves the existing time. Empty
+DateTime values start with Unspecified Kind, and empty DateTimeOffset values
+start with offset zero. Standalone wheel edits likewise have minute precision.
+
+Both integrate with InputBase/EditForm, DataAnnotations and Blazilla. Interactive
+controls post invariant typed hidden values; static SSR retains an editable native
+input. Set `Native` to retain native browser fields in an interactive app too.
+`NativeTimePicker<TValue>` and `NativeDateTimeInput<TValue>` also ship with their
+manifests. Existing typed bindings remain valid; unbound generic use needs
+`TValue="TimeOnly"` or a typed Value. Native static SSR keeps the framework's
+wall-time parsing policy; custom Culture controls the interactive UI.
+
+`examples/blazor/SheenDemo.razor` includes the standalone wheels and combined
+field, with an Arabic/English switch. After init, add both `date-range-picker`
+and `date-time-input` before copying the page. Browser acceptance covers
+Interactive Server on .NET 8, 9 and 10; WebAssembly hosting is not covered.
 
 ## Popover, combobox and autocomplete
 

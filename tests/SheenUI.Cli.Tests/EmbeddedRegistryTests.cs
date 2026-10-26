@@ -105,6 +105,9 @@ public class EmbeddedRegistryTests
     [InlineData("confirm-dialog", "ConfirmDialog/ConfirmDialog.razor.js")]
     [InlineData("dropdown-menu", "DropdownMenu/DropdownMenu.razor.js")]
     [InlineData("popover", "Popover/Popover.razor.js")]
+    [InlineData("calendar", "Calendar/Calendar.razor.js")]
+    [InlineData("time-picker", "TimePicker/TimeWheel.razor.js")]
+    [InlineData("date-time-input", "DateTimeInput/DateTimeInput.razor.js")]
     [InlineData("file-upload", "FileUpload/FileUpload.razor.js")]
     public void Overlay_manifests_load_with_their_javascript_module(string name, string module)
     {
@@ -165,6 +168,9 @@ public class EmbeddedRegistryTests
     [InlineData("popover")]
     [InlineData("combobox")]
     [InlineData("autocomplete")]
+    [InlineData("calendar")]
+    [InlineData("date-picker")]
+    [InlineData("date-range-picker")]
     public void All_manifest_files_match_their_sha256_checksums(string name)
     {
         var manifest = _registry.GetComponentManifest(name);

@@ -1,0 +1,30 @@
+@page "/time-fluent"
+@rendermode InteractiveServer
+@using Blazilla
+@using FluentValidation
+@using CultureInfo = System.Globalization.CultureInfo
+
+<EditForm Model="model" OnValidSubmit="@(() => saved = "Saved")" Context="timeForm">
+    <FluentValidator Validator="@(new TimeValidator())" />
+    <Field Id="fluent-time" For="@(() => model.Time)"><FieldLabel>Time</FieldLabel><TimePicker @bind-Value="model.Time" HourCycle="24" Culture="English" /><FieldError /></Field>
+    <Field Id="fluent-datetime" For="@(() => model.Date)"><FieldLabel>Appointment</FieldLabel><DateTimeInput @bind-Value="model.Date" Culture="English" /><FieldError /></Field>
+    <button id="fluent-time-save" type="submit" disabled="@(!ready)">Save</button>
+</EditForm>
+<output id="fluent-time-saved">@saved</output>
+
+@code {
+    private static readonly CultureInfo English = new("en-US");
+    private readonly TimeModel model = new();
+    private string saved = "";
+    private bool ready;
+    protected override void OnAfterRender(bool firstRender) { if (firstRender) { ready = true; StateHasChanged(); } }
+    public class TimeModel { public TimeOnly? Time { get; set; } public DateTime? Date { get; set; } }
+    public class TimeValidator : AbstractValidator<TimeModel>
+    {
+        public TimeValidator()
+        {
+            RuleFor(value => value.Time).NotNull().WithMessage("Choose a time with FluentValidation");
+            RuleFor(value => value.Date).NotNull().WithMessage("Choose an appointment with FluentValidation");
+        }
+    }
+}

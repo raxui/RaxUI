@@ -2,10 +2,11 @@
   "schemaVersion": 1,
   "name": "date-time-input",
   "version": "0.1.0",
-  "description": "Source-owned date-time-input with Field integration.",
+  "description": "Localized Gregorian date-time segments, calendar and time wheels with native SSR fallback.",
   "dependencies": [
-    "field",
-    "input"
+    "date-picker",
+    "time-picker",
+    "date-input"
   ],
   "assets": [
     {
@@ -21,6 +22,20 @@
       "source": "DateTimeInput.razor",
       "destination": "components",
       "target": "DateTimeInput/DateTimeInput.razor",
+      "type": "razor",
+      "sha256": "55c6d068a0eff8ac26e605545f3a94154dad1b0b95eecd1742576a688a356484"
+    },
+    {
+      "source": "DateTimeInput.razor.js",
+      "destination": "components",
+      "target": "DateTimeInput/DateTimeInput.razor.js",
+      "type": "js",
+      "sha256": "15205c0071b900b117c24e1857eccdb1d33aa91669d1296195716eaaff9dc118"
+    },
+    {
+      "source": "NativeDateTimeInput.razor",
+      "destination": "components",
+      "target": "DateTimeInput/NativeDateTimeInput.razor",
       "type": "razor",
       "sha256": "459e59e45b3bcff9fc14aaac1fa55f4310dff71f82ec80d794ab4ec4f8450dd4"
     }

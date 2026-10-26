@@ -111,6 +111,9 @@
     {
       "name": "command",
       "manifest": "components/command/manifest.json"
-    }
+    },
+    { "name": "calendar", "manifest": "components/calendar/manifest.json" },
+    { "name": "date-picker", "manifest": "components/date-picker/manifest.json" },
+    { "name": "date-range-picker", "manifest": "components/date-range-picker/manifest.json" }
   ]
 }

@@ -2,8 +2,9 @@
 .sheen-calendar {
   --sheen-cal-rgb: var(--bs-primary-rgb);
   --sheen-cal-text: color-mix(in srgb, rgb(var(--sheen-cal-rgb)) var(--sheen-text-mix), var(--sheen-text-ink));
-  --sheen-cal-cell: 2.5rem;
+  --sheen-cal-cell: var(--sheen-control-height, 2.5rem);
   display: inline-block;
+  max-width: 100%;
   color: var(--bs-body-color);
   font-variant-numeric: tabular-nums;
   user-select: none;

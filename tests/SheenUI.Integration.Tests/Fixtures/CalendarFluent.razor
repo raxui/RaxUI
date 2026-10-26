@@ -1,0 +1,29 @@
+@page "/calendar-fluent"
+@rendermode InteractiveServer
+@using Blazilla
+@using FluentValidation
+
+<EditForm Model="model" OnValidSubmit="@(() => saved = "Saved")" Context="calendarForm">
+    <Form>
+        <FluentValidator Validator="@(new CalendarValidator())" />
+        <Field Id="fluent-day" For="@(() => model.Day)" Required>
+            <FieldLabel>Date</FieldLabel>
+            <DatePicker @bind-Value="model.Day" Min="@(new DateOnly(2026, 10, 1))" Max="@(new DateOnly(2026, 10, 31))" Clearable />
+            <FieldError />
+        </Field>
+        <button id="fluent-calendar-save" type="submit" disabled="@(!ready)">Save</button>
+    </Form>
+</EditForm>
+<output id="fluent-calendar-saved">@saved</output>
+
+@code {
+    private readonly CalendarModel model = new();
+    private string saved = "";
+    private bool ready;
+    protected override void OnAfterRender(bool firstRender) { if (firstRender) { ready = true; StateHasChanged(); } }
+    public class CalendarModel { public DateOnly? Day { get; set; } }
+    public class CalendarValidator : AbstractValidator<CalendarModel>
+    {
+        public CalendarValidator() => RuleFor(value => value.Day).NotNull().WithMessage("Choose a date with FluentValidation");
+    }
+}

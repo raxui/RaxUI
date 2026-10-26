@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "name": "date-range-picker",
+  "version": "0.1.0",
+  "description": "Gregorian calendar and date selection with culture, RTL, keyboard and form integration.",
+  "dependencies": [
+    "date-picker"
+  ],
+  "assets": [],
+  "files": [
+    {
+      "source": "DateRangePicker.razor",
+      "destination": "components",
+      "target": "DateRangePicker/DateRangePicker.razor",
+      "type": "razor",
+      "sha256": "649170bd3609d5aa69af60d521c50f3e4d8e4dc18d5eeee38f32bef5e88dfc60"
+    }
+  ]
+}
