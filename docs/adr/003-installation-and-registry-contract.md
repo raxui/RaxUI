@@ -42,7 +42,7 @@ The CLI writes downloaded source into a developer-owned project. Installations m
 2. Stage files and preserve originals for rollback.
 3. Write the lock file last.
 
-An ordinary failure restores previous contents and removes newly created files. Interrupted-process recovery must be designed and tested before a public release.
+An ordinary failure restores previous contents and removes newly created files. Interrupted-process recovery is specified in ADR 017 (React) and ADR 018 (Blazor).
 
 Repeated commands must not duplicate links or imports, adopt unknown files, or overwrite modified files.
 

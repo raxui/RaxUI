@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using SheenUI.Cli;
 using SheenUI.Cli.Commands;
@@ -209,9 +210,25 @@ public class UpdateWorkflowTests : IDisposable
     {
         InstallOldButton();
         var before = InstallationWorkflowTests.SnapshotFiles(_app);
-        using (var held = new FileStream(LockPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+        // A held file handle blocks the write only on Windows; fail right after the lock write on every platform.
+        var hook = typeof(FileTransaction).GetField("s_afterOperation", BindingFlags.NonPublic | BindingFlags.Static)!;
+        var thread = Environment.CurrentManagedThreadId;
+        hook.SetValue(null, (Action<string, string>)((operation, path) =>
+        {
+            if (Environment.CurrentManagedThreadId == thread && operation == "write" && path == SheenUiLock.DefaultFileName)
+                throw new IOException("Simulated lock write failure.");
+        }));
+        try
+        {
             Assert.Equal(1, Update());
+        }
+        finally
+        {
+            hook.SetValue(null, null);
+        }
+        Assert.Contains("Simulated lock write failure.", _error.ToString());
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(_app));
+        Assert.False(Path.Exists(Path.Combine(_app, FileTransaction.DirectoryName)));
     }
 
     [Fact]

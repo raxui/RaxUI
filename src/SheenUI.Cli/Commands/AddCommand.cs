@@ -13,7 +13,7 @@ public static class AddCommand
     public static int Execute(string workingDirectory, string componentName, TextWriter output, TextWriter error,
         EmbeddedRegistry? registry = null)
     {
-        var backup = new FileBackup();
+        var backup = new FileTransaction(workingDirectory);
 
         try
         {
@@ -77,7 +77,7 @@ public static class AddCommand
                 coreBytes = StyleImports.Append(current, styleTargets);
             }
 
-            // 2. Write files, keeping originals for rollback
+            // 2. Write files, journaling originals for rollback
             foreach (var component in planned)
             {
                 foreach (var write in component.Writes)
@@ -112,12 +112,11 @@ public static class AddCommand
             if (config.RegistryVersion != ReleaseIdentity.Version)
             {
                 config.RegistryVersion = ReleaseIdentity.Version;
-                backup.Remember(Path.Combine(workingDirectory, SheenUiConfig.DefaultFileName));
-                config.Save(workingDirectory);
+                backup.WriteText(Path.Combine(workingDirectory, SheenUiConfig.DefaultFileName), config.ToJson());
             }
 
-            backup.Remember(Path.Combine(workingDirectory, SheenUiLock.DefaultFileName));
-            lockFile.Save(workingDirectory);
+            backup.WriteText(Path.Combine(workingDirectory, SheenUiLock.DefaultFileName), lockFile.ToJson());
+            backup.Commit();
 
             foreach (var component in planned)
             {
@@ -135,7 +134,7 @@ public static class AddCommand
         catch (Exception ex)
         {
             error.WriteLine($"Error adding component '{componentName}': {ex.Message}");
-            backup.Restore();
+            backup.Restore(error);
             return 1;
         }
     }
@@ -186,7 +185,7 @@ public static class AddCommand
         return writes;
     }
 
-    private static void UpdateImportsRazor(ProjectContext project, string componentFolder, FileBackup backup)
+    private static void UpdateImportsRazor(ProjectContext project, string componentFolder, FileTransaction backup)
     {
         var importsPath = project.ImportsRazorPath;
         var usingDirective = $"@using {project.RootNamespace}.Components.UI.{componentFolder}";

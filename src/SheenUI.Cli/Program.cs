@@ -12,17 +12,20 @@ public static class Program
           sheenui init [options]
           sheenui add <component> [options]
           sheenui update [component] [--dry-run] [options]
+          sheenui recover [--keep-changes] [options]
 
         Commands:
           init              Initialize SheenUI in the current Blazor project
           add <component>   Install a component and its assets into your project
           update            Update installed Blazor components and the shared theme
+          recover           Finish an interrupted init, add or update
 
         Options:
           -c, --cwd <dir>   Working directory (defaults to current directory)
           -v, --version     Display CLI version
           -h, --help        Show help information
           --dry-run         Preview an update without writing files
+          --keep-changes    Recovery only: keep changed files and restore the rest
         """;
 
     public static int Main(string[] args)
@@ -62,8 +65,48 @@ public static class Program
             return 1;
         }
 
+        if (command != "recover" && cleanArgs.Contains("--keep-changes"))
+        {
+            error.WriteLine("Error: --keep-changes is only supported by recover.");
+            return 1;
+        }
+
+        // Recover before reading configuration: an interrupted config or lock write must not block it.
+        if (command is "init" or "add" or "update")
+        {
+            try
+            {
+                if (cleanArgs.Contains("--dry-run") && Path.Exists(Path.Combine(cwd, FileTransaction.DirectoryName)))
+                    throw new InvalidOperationException("An interrupted SheenUI installation exists; run 'sheenui recover' first.");
+                FileTransaction.Recover(cwd, keepChanges: false, output);
+            }
+            catch (InvalidOperationException ex)
+            {
+                error.WriteLine($"Error: {ex.Message}");
+                return 1;
+            }
+        }
+
         switch (command)
         {
+            case "recover":
+                if (cleanArgs.Skip(1).Any(arg => arg != "--keep-changes"))
+                {
+                    error.WriteLine("Usage: sheenui recover [--keep-changes] [--cwd <dir>]");
+                    return 1;
+                }
+                try
+                {
+                    if (!FileTransaction.Recover(cwd, cleanArgs.Contains("--keep-changes"), output))
+                        output.WriteLine("No interrupted SheenUI installation found.");
+                    return 0;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    error.WriteLine($"Error: {ex.Message}");
+                    return 1;
+                }
+
             case "-h":
             case "--help":
             case "help":

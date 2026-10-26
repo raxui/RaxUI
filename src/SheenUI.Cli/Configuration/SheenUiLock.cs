@@ -40,12 +40,9 @@ public class SheenUiLock
         return result;
     }
 
-    public void Save(string directory)
-    {
-        var path = Path.Combine(directory, DefaultFileName);
-        var json = JsonSerializer.Serialize(this, SheenUiConfig.JsonOptions);
-        File.WriteAllText(path, json + Environment.NewLine);
-    }
+    public string ToJson() => JsonSerializer.Serialize(this, SheenUiConfig.JsonOptions) + Environment.NewLine;
+
+    public void Save(string directory) => File.WriteAllText(Path.Combine(directory, DefaultFileName), ToJson());
 
     /// <summary>
     /// Refuses to replace a tracked file with different registry content: that is an update,
