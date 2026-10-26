@@ -587,6 +587,99 @@ This React queue does not change Blazor's InputFile API.
 
 
 
+
+## Blazor Gregorian calendars and pickers
+
+Install `calendar`, `date-picker`, or `date-range-picker`. The range picker installs
+the calendar, single picker, input/field styling, button and Popover dependencies.
+All date arithmetic is Gregorian. `Culture` defaults to `CultureInfo.CurrentCulture`
+and controls localized month/day names, numerals and week start, independently of
+the calendar system. For Iraqi Arabic use `new CultureInfo("ar-IQ")`; no Hijri
+calendar is selected when an Arabic culture is used. Override `WeekStartsOn`,
+`Dir` or `Text` when required. English and Arabic action labels are built in;
+`CalendarState.Labels` parameterizes every built-in action/error/preset string.
+
+```razor
+@using CultureInfo = System.Globalization.CultureInfo
+
+<Calendar @bind-Value="day" Culture="Arabic" />
+<DatePicker @bind-Value="day" Culture="Arabic" Clearable />
+<DateRangePicker @bind-Value="from" @bind-EndValue="to" Culture="Arabic"
+                 MinDays="1" MaxDays="30" Clearable />
+
+@code {
+    private static readonly CultureInfo Arabic = new("ar-IQ");
+    private DateOnly? day, from, to;
+}
+```
+
+Calendar supports `Value`/`ValueChanged` for a day, or `Range` with `Value` and
+`EndValue` for a draft range. `RangeChanged` emits `CalendarState.DateSpan` with
+both endpoints together. Configure `Month`/`MonthChanged`, `Min`, `Max`,
+`IsDateDisabled`, `ShowOutsideDays`, `NumberOfMonths` (1 or 2), `DayContent` and
+`Disabled`. The caption switches between days, months and a 12-year grid.
+`Responsive` switches a two-month calendar to one below 640 CSS pixels.
+The grid always renders six weeks, preserves the React month/zoom animations,
+and respects reduced motion. `Today` defaults to the server's current date;
+pass a date calculated for the application's time zone when it differs.
+
+Picker types are inferred from `@bind-Value`: `DateOnly`, `DateTime`,
+`DateTimeOffset`, and their nullable forms. The calendar changes the date only:
+existing DateTime time/Kind and DateTimeOffset time/offset are preserved, without
+conversion through the server's local time zone. A previously empty DateTime
+starts at midnight/Unspecified; a previously empty DateTimeOffset starts at
+midnight with offset zero. Dates that cannot preserve the existing offset at
+the .NET date limits are unavailable. Use nullable bindings with `Clearable`.
+
+Pickers derive from InputBase and integrate with EditForm, Field/FieldError,
+DataAnnotations and FluentValidation (including Blazilla). Keep `@bind-Value`
+and `@bind-EndValue`, or provide their expressions explicitly for validation and
+generated field names. `Min`, `Max`, `IsDateDisabled`, range order and span limits
+also participate in EditContext validation, including externally assigned values.
+`Disabled` inherits Field state; `ReadOnly` prevents opening or editing.
+
+```razor
+<EditForm Model="booking" FormName="booking" OnValidSubmit="Save" Context="edit">
+    <DataAnnotationsValidator />
+    <Field Id="arrival" For="@(() => booking.Arrival)">
+        <FieldLabel>Arrival</FieldLabel>
+        <DatePicker @bind-Value="booking.Arrival" Clearable />
+        <FieldError />
+    </Field>
+    <Button type="submit">Save</Button>
+</EditForm>
+```
+
+Range selection stays in a draft until Apply. Cancel, Escape and outside dismissal
+discard it. A reverse selection is ordered; selecting an endpoint that violates
+`MinDays`/`MaxDays` starts a new range instead. Set `ExcludeDisabled` to prevent a
+range crossing disabled dates. Day counts are the difference between dates
+(nights), so equal endpoints count as zero. The six default quick ranges match
+React (today, yesterday, last 7/30 days, this/last month). `Presets` accepts a list
+of `CalendarState.DatePreset(label, from, to)`; an empty list hides the sidebar.
+Unavailable presets are disabled. The sidebar is hidden below 840 CSS pixels.
+
+The hidden named inputs contain invariant ISO date strings, or round-trip values
+for DateTime/DateTimeOffset; each range endpoint posts independently. `EndName`
+overrides the generated end-field name. Static SSR renders the grid and formatted
+values with disabled editing controls. Selection, keyboard handling, Popover and
+validation focus require an interactive render mode chosen by the consuming app;
+the components do not force one. Existing native `date-input`, `date-time-input`
+and `date-range-input` remain available for editable static SSR forms.
+
+Keyboard: Left/Right follows text direction, Up/Down moves a week, Home/End uses
+the configured week start, Page Up/Down moves a month (Shift moves a year), and
+Enter/Space selects. Local focus and hover preview use a collocated disposable
+JavaScript module; C# owns values and validates committed choices. Popover Escape
+and dismissal return focus to the field. Month/year selection uses labelled
+buttons; Escape returns to days before dismissing the enclosing popover.
+
+See `examples/blazor/SheenDemo.razor` for the validated Iraqi-Arabic booking demo.
+After `init` and `add date-range-picker`, copy that page to `Components/Pages/`.
+It uses Interactive Server. Other interactive modes require the components and globalization data in the corresponding client project.
+Segmented day/month/year text entry is not included in this phase (#72).
+
+
 ## Popover, combobox and autocomplete
 
 Install `popover`, `combobox` or `autocomplete`. The latter two require popover,

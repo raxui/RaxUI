@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "name": "calendar",
+  "version": "0.1.0",
+  "description": "Gregorian calendar and date selection with culture, RTL, keyboard and form integration.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/calendar.css",
+      "destination": "styles",
+      "target": "components/calendar.css",
+      "type": "css",
+      "sha256": "6ca928b9fffe2acbbf82b3f63bc651494e005fe53ea19b422b5cb2b4e1857d78"
+    }
+  ],
+  "files": [
+    {
+      "source": "Calendar.razor",
+      "destination": "components",
+      "target": "Calendar/Calendar.razor",
+      "type": "razor",
+      "sha256": "eb346cf5f1bd321520246965ee68e7fa437b71f8891b36c651e974732b167ef7"
+    },
+    {
+      "source": "CalendarState.razor",
+      "destination": "components",
+      "target": "Calendar/CalendarState.razor",
+      "type": "razor",
+      "sha256": "f812bc2aacc768e39ca45a99cb4a2c79fc21e6f5103d6abb4b59e832ca7dbc01"
+    },
+    {
+      "source": "Calendar.razor.js",
+      "destination": "components",
+      "target": "Calendar/Calendar.razor.js",
+      "type": "js",
+      "sha256": "5fabf130190413258ad386fcacaffd721ac17f9ca3e3588c2c08fca0570f2baf"
+    }
+  ]
+}

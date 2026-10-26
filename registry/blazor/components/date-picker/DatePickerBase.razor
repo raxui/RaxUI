@@ -1,0 +1,137 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Linq.Expressions
+@using CultureInfo = System.Globalization.CultureInfo
+@inherits InputBase<TValue>
+@typeparam TValue
+
+@code {
+    [Parameter] public CultureInfo? Culture { get; set; }
+    [Parameter] public CalendarState.Labels? Text { get; set; }
+    [Parameter] public DateOnly? Today { get; set; }
+    [Parameter] public DateOnly? Min { get; set; }
+    [Parameter] public DateOnly? Max { get; set; }
+    [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
+    [Parameter] public DayOfWeek? WeekStartsOn { get; set; }
+    [Parameter] public string? Dir { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string Size { get; set; } = "default";
+    [Parameter] public string Variant { get; set; } = "outline";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public bool Clearable { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string DateFormat { get; set; } = "d MMM yyyy";
+    [Parameter] public string? ParsingErrorMessage { get; set; }
+    [CascadingParameter] protected Field.FieldContext? FieldContext { get; set; }
+
+    protected CultureInfo FormatCulture = CultureInfo.InvariantCulture;
+    protected CalendarState.Labels Words = new();
+    protected bool Ready;
+    protected bool Open;
+    protected ElementReference Anchor;
+    private readonly string _id = $"sheen-picker-{Guid.NewGuid():N}";
+    private EditContext? _subscribed;
+    private ValidationMessageStore? _messages;
+    private string? _lastError;
+    protected DateOnly? SelectedDate => CalendarState.DateOf(CurrentValue);
+    protected string EffectiveDir => Dir ?? (FormatCulture.TextInfo.IsRightToLeft ? "rtl" : "ltr");
+    protected bool EffectiveDisabled => Disabled || FieldContext?.Disabled == true;
+    protected bool CanClear => Clearable && Nullable.GetUnderlyingType(typeof(TValue)) is not null;
+    protected string InputName => NameAttributeValue;
+    protected string ControlId => Convert.ToString(ControlAttributes["id"])!;
+    protected string TriggerClass => $"form-control sheen-input sheen-picker-trigger {(Size == "default" ? "" : $"form-control-{Size}")} {CssClass} {Class}";
+    protected Dictionary<string, object> ControlAttributes
+    {
+        get
+        {
+            var attrs = FieldContext is null ? new Dictionary<string, object>() : new(FieldContext.ControlAttributes);
+            if (AdditionalAttributes is not null) foreach (var pair in AdditionalAttributes) attrs[pair.Key] = pair.Value;
+            if (!attrs.ContainsKey("id")) attrs["id"] = _id;
+            attrs.Remove("class"); attrs.Remove("name"); attrs.Remove("disabled"); attrs.Remove("aria-required");
+            if (!attrs.ContainsKey("aria-label") && !attrs.ContainsKey("aria-labelledby")) attrs["aria-label"] = Placeholder ?? Words.PickDate;
+            return attrs;
+        }
+    }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        // Preserve cascading metadata; rebuilding ParameterView turns EditContext into a direct parameter.
+        parameters.SetParameterProperties(this);
+        ValueExpression ??= () => Value!;
+        return base.SetParametersAsync(ParameterView.Empty);
+    }
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        var type = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+        if (type != typeof(DateOnly) && type != typeof(DateTime) && type != typeof(DateTimeOffset)) throw new InvalidOperationException("DatePicker requires DateOnly, DateTime, DateTimeOffset or their nullable forms.");
+        if (Min > Max) throw new ArgumentException("Min must not be after Max.");
+        FormatCulture = CalendarState.Gregorian(Culture ?? CultureInfo.CurrentCulture);
+        Words = Text ?? (FormatCulture.TwoLetterISOLanguageName == "ar" ? CalendarState.Labels.Arabic : new CalendarState.Labels());
+        if (_subscribed != EditContext)
+        {
+            Unsubscribe(); _subscribed = EditContext;
+            if (_subscribed is not null)
+            {
+                _messages = new ValidationMessageStore(_subscribed);
+                _subscribed.OnValidationRequested += ValidationRequested;
+                _subscribed.OnFieldChanged += FieldChanged;
+            }
+        }
+        if (EffectiveDisabled || ReadOnly) Open = false;
+        Validate();
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) { Ready = true; StateHasChanged(); }
+    }
+    protected string Display(DateOnly? value) => value.HasValue ? CalendarState.Localize(value.Value.ToString(DateFormat, FormatCulture), FormatCulture) : "";
+    protected static string Serialize(TValue? value) => value switch
+    {
+        null => "", DateOnly date => CalendarState.Iso(date), DateTime date => date.ToString("O", CultureInfo.InvariantCulture),
+        DateTimeOffset date => date.ToString("O", CultureInfo.InvariantCulture), _ => ""
+    };
+    protected override string? FormatValueAsString(TValue? value) => Serialize(value!);
+    protected override bool TryParseValueFromString(string? value, out TValue result, [System.Diagnostics.CodeAnalysis.NotNullWhen(false)] out string? validationErrorMessage)
+    {
+        if (DateOnly.TryParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var day) && CanSelect(day))
+        {
+            result = CalendarState.WithDate<TValue>(CurrentValue, day); validationErrorMessage = null; return true;
+        }
+        result = default!; validationErrorMessage = ParsingErrorMessage ?? Words.InvalidDate; return false;
+    }
+    protected bool CanSelect(DateOnly date) => CanRepresent(CurrentValue, date) && !(Min.HasValue && date < Min) && !(Max.HasValue && date > Max) && IsDateDisabled?.Invoke(date) != true;
+    protected static bool CanRepresent(TValue? original, DateOnly date)
+    {
+        try { CalendarState.WithDate<TValue>(original, date); return true; }
+        catch (ArgumentException) { return false; }
+    }
+    protected void AssignDate(DateOnly? date)
+    {
+        CurrentValueAsString = CalendarState.Iso(date);
+        Validate();
+    }
+    protected virtual string? ValueError() => SelectedDate.HasValue && !CanSelect(SelectedDate.Value) ? ParsingErrorMessage ?? Words.InvalidDate : null;
+    protected virtual bool RelatedField(FieldIdentifier field) => field.Equals(FieldIdentifier);
+    private void ValidationRequested(object? sender, ValidationRequestedEventArgs args) => Validate();
+    private void FieldChanged(object? sender, FieldChangedEventArgs args) { if (RelatedField(args.FieldIdentifier)) Validate(); }
+    protected void Validate()
+    {
+        var error = ValueError();
+        if (error == _lastError || _messages is null) return;
+        _lastError = error; _messages.Clear();
+        if (error is not null) _messages.Add(FieldIdentifier, error);
+        EditContext?.NotifyValidationStateChanged();
+    }
+    private void Unsubscribe()
+    {
+        if (_subscribed is not null)
+        {
+            _subscribed.OnValidationRequested -= ValidationRequested;
+            _subscribed.OnFieldChanged -= FieldChanged;
+        }
+        _messages?.Clear(); _messages = null; _subscribed = null; _lastError = null;
+    }
+    protected override void Dispose(bool disposing) { if (disposing) Unsubscribe(); base.Dispose(disposing); }
+}

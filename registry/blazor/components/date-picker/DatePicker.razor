@@ -1,0 +1,32 @@
+@typeparam TValue
+@inherits DatePickerBase<TValue>
+
+<div class="sheen-picker-field" dir="@EffectiveDir" data-sheen-appearance="@Appearance">
+    <button @attributes="ControlAttributes" @ref="Anchor" type="button" class="@TriggerClass" data-variant="@Variant" data-placeholder="@(SelectedDate is null ? "" : null)"
+            data-state="@(Open ? "open" : "closed")" disabled="@(!Ready || EffectiveDisabled)" aria-disabled="@(ReadOnly ? "true" : null)" aria-haspopup="dialog" aria-expanded="@(Open ? "true" : "false")"
+            aria-controls="@(ControlId + "-popup")" @onclick="Toggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2ZM16 2v4M8 2v4M3 10h18" /></svg>
+        <span>@(SelectedDate.HasValue ? Display(SelectedDate) : Placeholder ?? Words.PickDate)</span>
+    </button>
+    @if (CanClear && SelectedDate.HasValue && !ReadOnly)
+    {
+        <button type="button" class="sheen-picker-clear" disabled="@(!Ready || EffectiveDisabled)" aria-label="@Words.Clear" @onclick="Clear">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+    }
+    <input type="hidden" name="@InputName" value="@Serialize(CurrentValue)" disabled="@EffectiveDisabled" />
+    <Popover Id="@(ControlId + "-popup")" Anchor="Anchor" Open="Open" OpenChanged="OpenChanged" Label="@Words.PickDate" Class="sheen-picker-popover" Appearance="@Appearance">
+        @if (Open)
+        {
+            <Calendar Value="SelectedDate" ValueChanged="Pick" Min="Min" Max="Max" IsDateDisabled="@(day => !CanSelect(day))" Culture="FormatCulture" Text="Words"
+                      Today="Today" Dir="@EffectiveDir" WeekStartsOn="WeekStartsOn" AutoFocus Appearance="@Appearance" />
+        }
+    </Popover>
+</div>
+
+@code {
+    private void Toggle() { if (Ready && !EffectiveDisabled && !ReadOnly) Open = !Open; }
+    private Task OpenChanged(bool open) { Open = open && !EffectiveDisabled && !ReadOnly; return Task.CompletedTask; }
+    private Task Pick(DateOnly? date) { if (!EffectiveDisabled && !ReadOnly) { AssignDate(date); Open = false; } return Task.CompletedTask; }
+    private void Clear() { if (!EffectiveDisabled && !ReadOnly) { AssignDate(null); Open = false; } }
+}

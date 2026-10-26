@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\src\SheenUI.Cli\SheenUI.Cli.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Fixtures/**/*.razor" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../examples/blazor/SheenDemo.razor" Link="Fixtures/SheenDemo.razor" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

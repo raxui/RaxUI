@@ -1,0 +1,218 @@
+@using CultureInfo = System.Globalization.CultureInfo
+@using Microsoft.JSInterop
+
+@code {
+    [Parameter] public DateOnly? Value { get; set; }
+    [Parameter] public EventCallback<DateOnly?> ValueChanged { get; set; }
+    [Parameter] public bool Range { get; set; }
+    [Parameter] public DateOnly? EndValue { get; set; }
+    [Parameter] public EventCallback<DateOnly?> EndValueChanged { get; set; }
+    [Parameter] public EventCallback<DateSpan> RangeChanged { get; set; }
+    [Parameter] public DateOnly? Month { get; set; }
+    [Parameter] public EventCallback<DateOnly> MonthChanged { get; set; }
+    [Parameter] public DateOnly? Min { get; set; }
+    [Parameter] public DateOnly? Max { get; set; }
+    [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
+    [Parameter] public int NumberOfMonths { get; set; } = 1;
+    [Parameter] public bool Responsive { get; set; }
+    [Parameter] public DayOfWeek? WeekStartsOn { get; set; }
+    [Parameter] public CultureInfo? Culture { get; set; }
+    [Parameter] public string? Dir { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ShowOutsideDays { get; set; } = true;
+    [Parameter] public bool AutoFocus { get; set; }
+    [Parameter] public bool ExcludeDisabled { get; set; }
+    [Parameter] public int MinDays { get; set; }
+    [Parameter] public int? MaxDays { get; set; }
+    [Parameter] public DateOnly? Today { get; set; }
+    [Parameter] public RenderFragment<DateOnly>? DayContent { get; set; }
+    [Parameter] public Labels? Text { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public record DateSpan(DateOnly? From, DateOnly? To);
+    public record DatePreset(string Label, DateOnly From, DateOnly To);
+    public record Labels
+    {
+        public string QuickRanges { get; init; } = "Quick ranges";
+        public string Yesterday { get; init; } = "Yesterday";
+        public string Last7Days { get; init; } = "Last 7 days";
+        public string Last30Days { get; init; } = "Last 30 days";
+        public string ThisMonth { get; init; } = "This month";
+        public string LastMonth { get; init; } = "Last month";
+        public string StartPrompt { get; init; } = "Select a start date";
+        public string PreviousMonth { get; init; } = "Previous month";
+        public string NextMonth { get; init; } = "Next month";
+        public string PreviousYear { get; init; } = "Previous year";
+        public string NextYear { get; init; } = "Next year";
+        public string PreviousYears { get; init; } = "Previous years";
+        public string NextYears { get; init; } = "Next years";
+        public string ChooseMonthYear { get; init; } = "Choose month and year";
+        public string ChooseYear { get; init; } = "Choose year";
+        public string BackToMonths { get; init; } = "Back to months";
+        public string Today { get; init; } = "Today";
+        public string PickDate { get; init; } = "Choose a date";
+        public string PickRange { get; init; } = "Choose dates";
+        public string Clear { get; init; } = "Clear date";
+        public string Apply { get; init; } = "Apply";
+        public string Cancel { get; init; } = "Cancel";
+        public string InvalidDate { get; init; } = "Choose an available date.";
+        public string InvalidRange { get; init; } = "Choose a valid date range.";
+        public static Labels Arabic { get; } = new()
+        {
+            QuickRanges = "مدد سريعة", Yesterday = "أمس", Last7Days = "آخر ٧ أيام", Last30Days = "آخر ٣٠ يوماً",
+            ThisMonth = "هذا الشهر", LastMonth = "الشهر الماضي", StartPrompt = "اختر تاريخ البداية",
+            PreviousMonth = "الشهر السابق", NextMonth = "الشهر التالي", PreviousYear = "السنة السابقة", NextYear = "السنة التالية",
+            PreviousYears = "السنوات السابقة", NextYears = "السنوات التالية", ChooseMonthYear = "اختر الشهر والسنة", ChooseYear = "اختر السنة",
+            BackToMonths = "العودة إلى الأشهر", Today = "اليوم", PickDate = "اختر تاريخاً", PickRange = "اختر المدة", Clear = "مسح التاريخ",
+            Apply = "تطبيق", Cancel = "إلغاء", InvalidDate = "اختر تاريخاً متاحاً.", InvalidRange = "اختر مدة صحيحة."
+        };
+    }
+
+    protected CultureInfo FormatCulture = CultureInfo.InvariantCulture;
+    protected Labels Words = new();
+    protected DateOnly VisibleMonth;
+    protected DateOnly Focused;
+    protected DateOnly CurrentDay;
+    protected string View = "days";
+    protected string? Direction;
+    protected bool FromPicker;
+    protected bool Interactive;
+    protected bool Compact;
+    protected bool FocusRequested;
+    protected int PickerYear;
+    private bool _initialized;
+    protected int MonthCount => Responsive && Compact ? 1 : NumberOfMonths;
+    protected int WeekStart => (int)(WeekStartsOn ?? FormatCulture.DateTimeFormat.FirstDayOfWeek);
+    protected string EffectiveDir => Dir ?? (FormatCulture.TextInfo.IsRightToLeft ? "rtl" : "ltr");
+    protected int YearStart => Math.Clamp((PickerYear - 1) / 12 * 12 + 1, 1, 9988);
+    protected string ViewKey => $"{View}-{VisibleMonth.DayNumber}-{PickerYear}";
+
+    protected override void OnParametersSet()
+    {
+        if (NumberOfMonths is < 1 or > 2) throw new ArgumentOutOfRangeException(nameof(NumberOfMonths));
+        if (Min > Max || MinDays < 0 || MaxDays < MinDays) throw new ArgumentException("Invalid calendar limits.");
+        FormatCulture = Gregorian(Culture ?? CultureInfo.CurrentCulture);
+        Words = Text ?? (FormatCulture.TwoLetterISOLanguageName == "ar" ? Labels.Arabic : new Labels());
+        CurrentDay = Today ?? DateOnly.FromDateTime(DateTime.Today);
+        if (!_initialized)
+        {
+            Focused = Clamp(Value ?? Month ?? CurrentDay);
+            VisibleMonth = First(Month ?? Focused);
+            PickerYear = VisibleMonth.Year;
+            FocusRequested = AutoFocus;
+            _initialized = true;
+        }
+        if (Month.HasValue) VisibleMonth = First(Month.Value);
+        VisibleMonth = ClampMonth(VisibleMonth);
+    }
+
+    public static CultureInfo Gregorian(CultureInfo culture)
+    {
+        var result = (CultureInfo)culture.Clone();
+        result.DateTimeFormat.Calendar = new System.Globalization.GregorianCalendar();
+        return result;
+    }
+    public static DateOnly? DateOf<T>(T value) => value switch
+    {
+        null => null, DateOnly date => date, DateTime date => DateOnly.FromDateTime(date),
+        DateTimeOffset date => DateOnly.FromDateTime(date.DateTime), _ => throw new InvalidOperationException("Use DateOnly, DateTime, DateTimeOffset or their nullable forms.")
+    };
+    public static T WithDate<T>(T? original, DateOnly? date)
+    {
+        if (!date.HasValue) return default!;
+        var type = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+        object result;
+        if (type == typeof(DateOnly)) result = date.Value;
+        else if (type == typeof(DateTime))
+        {
+            var prior = original is DateTime dt ? dt : default;
+            result = DateTime.SpecifyKind(date.Value.ToDateTime(TimeOnly.FromDateTime(prior)), prior.Kind);
+        }
+        else if (type == typeof(DateTimeOffset))
+        {
+            var prior = original is DateTimeOffset dto ? dto : default;
+            result = new DateTimeOffset(date.Value.ToDateTime(TimeOnly.FromDateTime(prior.DateTime)), prior.Offset);
+        }
+        else throw new InvalidOperationException("Use DateOnly, DateTime, DateTimeOffset or their nullable forms.");
+        return (T)result;
+    }
+    public static string Iso(DateOnly? value) => value?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) ?? "";
+    protected static DateOnly First(DateOnly value) => new(value.Year, value.Month, 1);
+    protected DateOnly Clamp(DateOnly date) => Min.HasValue && date < Min ? Min.Value : Max.HasValue && date > Max ? Max.Value : date;
+    protected DateOnly ClampMonth(DateOnly date)
+    {
+        date = First(Clamp(date));
+        return date.Year == 9999 && date.Month == 12 && MonthCount == 2 ? date.AddMonths(-1) : date;
+    }
+    protected bool Allowed(DateOnly day) => !Disabled && !(Min.HasValue && day < Min) && !(Max.HasValue && day > Max) && IsDateDisabled?.Invoke(day) != true;
+    protected bool MonthDisabled(DateOnly month) => (Min.HasValue && month.AddDays(DateTime.DaysInMonth(month.Year, month.Month) - 1) < Min) || (Max.HasValue && month > Max);
+    protected bool YearDisabled(int year) => year < 1 || year > 9999 || (Min.HasValue && year < Min.Value.Year) || (Max.HasValue && year > Max.Value.Year);
+    public static string Localize(string text, CultureInfo culture) => string.Concat(text.Select(c => char.IsAsciiDigit(c) ? culture.NumberFormat.NativeDigits[c - '0'] : c.ToString()));
+    protected string Digits(int value) => Localize(value.ToString(CultureInfo.InvariantCulture), FormatCulture);
+    protected string Caption(DateOnly date) => Localize(date.ToString("Y", FormatCulture), FormatCulture);
+    protected static string? Flag(bool value) => value ? "" : null;
+    protected string? Data(bool value) => Flag(value);
+    protected bool Selected(DateOnly day) => day == Value || (Range && day == EndValue);
+    protected bool InRange(DateOnly day) => Range && Value.HasValue && EndValue.HasValue && day > Value && day < EndValue;
+    protected bool Visible(DateOnly date) { var last = VisibleMonth.AddMonths(MonthCount - 1); return date >= VisibleMonth && (date.Year < last.Year || date.Year == last.Year && date.Month <= last.Month); }
+    protected DateOnly ActiveDay => Visible(Focused) ? Focused : Visible(Value ?? CurrentDay) ? Value ?? CurrentDay : VisibleMonth;
+    protected DateOnly? GridDay(DateOnly month, int index)
+    {
+        var number = month.DayNumber - ((int)month.DayOfWeek - WeekStart + 7) % 7 + index;
+        return number < 0 || number > DateOnly.MaxValue.DayNumber ? null : DateOnly.FromDayNumber(number);
+    }
+    protected bool OutOfSpan(DateOnly day) => Range && Value.HasValue && !EndValue.HasValue && !ValidSpan(Value.Value, day);
+    public bool ValidSpan(DateOnly from, DateOnly to)
+    {
+        var count = Math.Abs(to.DayNumber - from.DayNumber);
+        if (count < MinDays || MaxDays.HasValue && count > MaxDays.Value) return false;
+        if (ExcludeDisabled && IsDateDisabled is not null)
+            for (var n = Math.Min(from.DayNumber, to.DayNumber) + 1; n < Math.Max(from.DayNumber, to.DayNumber); n++)
+                if (!Allowed(DateOnly.FromDayNumber(n))) return false;
+        return true;
+    }
+    protected async Task Select(DateOnly day)
+    {
+        if (!Interactive || !Allowed(day)) return;
+        Focused = day;
+        if (Range)
+        {
+            var span = !Value.HasValue || EndValue.HasValue || !ValidSpan(Value.Value, day) ? new DateSpan(day, null)
+                : day < Value.Value ? new DateSpan(day, Value) : new DateSpan(Value, day);
+            Value = span.From; EndValue = span.To;
+            await ValueChanged.InvokeAsync(Value); await EndValueChanged.InvokeAsync(EndValue); await RangeChanged.InvokeAsync(span);
+        }
+        else { Value = day; await ValueChanged.InvokeAsync(day); }
+        if (!Visible(day)) await GoToMonth(day);
+    }
+    protected async Task GoToMonth(DateOnly month)
+    {
+        FromPicker = false;
+        var next = ClampMonth(month);
+        Direction = next > VisibleMonth ? "next" : next < VisibleMonth ? "prev" : null;
+        VisibleMonth = next; await MonthChanged.InvokeAsync(next);
+    }
+    protected async Task NavigateMonth(int offset)
+    {
+        var target = VisibleMonth.AddMonths(offset);
+        if (!MonthDisabled(target)) await GoToMonth(target);
+    }
+    protected void OpenMonths(DateOnly month) { PickerYear = month.Year; View = "months"; }
+    protected void ToggleYear() => View = View == "years" ? "months" : "years";
+    protected async Task ChoosePeriod(int value)
+    {
+        if (View == "years") { PickerYear = value; View = "months"; }
+        else { await GoToMonth(new DateOnly(PickerYear, value, 1)); View = "days"; FromPicker = true; Focused = VisibleMonth; FocusRequested = true; }
+    }
+    [JSInvokable] public async Task Navigate(string iso)
+    {
+        if (!DateOnly.TryParseExact(iso, "yyyy-MM-dd", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var date)) return;
+        Focused = Clamp(date); FocusRequested = true;
+        if (!Visible(Focused)) await GoToMonth(Focused);
+        await InvokeAsync(StateHasChanged);
+    }
+    [JSInvokable] public Task SetCompact(bool compact) { Compact = compact; VisibleMonth = ClampMonth(VisibleMonth); return InvokeAsync(StateHasChanged); }
+    [JSInvokable] public Task ShowDays() { View = "days"; FromPicker = true; FocusRequested = true; return InvokeAsync(StateHasChanged); }
+}

@@ -21,7 +21,7 @@
       "source": "theme/scss/components/_calendar.scss",
       "target": "styles/sheenui/components/_calendar.scss",
       "type": "scss",
-      "sha256": "f82ad356b813a776cf97a5d25aec4838be076ef91c6994fe68e5b76734fec6fe"
+      "sha256": "c3bd1285f69e16d27e001e451e62438613dfdb4466d1a03d27d784ab81e239d2"
     },
     {
       "source": "registry/react/foundation/direction.ts",

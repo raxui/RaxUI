@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "name": "date-picker",
+  "version": "0.1.0",
+  "description": "Gregorian calendar and date selection with culture, RTL, keyboard and form integration.",
+  "dependencies": [
+    "calendar",
+    "popover",
+    "input",
+    "button"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/date-picker.css",
+      "destination": "styles",
+      "target": "components/date-picker.css",
+      "type": "css",
+      "sha256": "15567a5aa417e98ac7c704f52b31f944e0619348d2995d818fb48b58c7cd1305"
+    }
+  ],
+  "files": [
+    {
+      "source": "DatePicker.razor",
+      "destination": "components",
+      "target": "DatePicker/DatePicker.razor",
+      "type": "razor",
+      "sha256": "30f7ab26a98c0f02a996a04a7130a5f6d58ea6d5f59d224b13af44a83e15558f"
+    },
+    {
+      "source": "DatePickerBase.razor",
+      "destination": "components",
+      "target": "DatePicker/DatePickerBase.razor",
+      "type": "razor",
+      "sha256": "795f292de232fa33d5c46fce62fbac461ec3621afbeeb00c9fdb97e7c5f5032f"
+    }
+  ]
+}
