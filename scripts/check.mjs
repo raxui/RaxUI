@@ -49,6 +49,7 @@ for (const tree of ["registry", "theme"]) checkLf(path.join(root, tree))
 run("Shared CSS is current", process.execPath, ["theme/build-css.mjs", "--check"])
 npm("TypeScript", ["run", "typecheck"])
 npm("React, CLI, registry, and theme tests", ["test"])
+npm("React CLI crash/restart recovery", ["run", "test:recovery"])
 run("Build .NET 8/9/10", "dotnet", ["build", "SheenUI.slnx", "-c", "Release"])
 run("C# formatting", "dotnet", ["format", "SheenUI.slnx", "--verify-no-changes", "--no-restore"])
 

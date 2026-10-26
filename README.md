@@ -420,9 +420,10 @@ keys, `Home`/`End`, and typeahead.
 - `add` installs a component's dependencies first, in one transaction with a
   single lock-file write. A dependency that is already installed is kept as it
   is, including your edits.
-- Ordinary write failures restore original files and remove newly created empty
-  directories. Concurrent edits and process termination during installation are
-  not covered by that rollback guarantee.
+- Ordinary Blazor CLI write failures restore original files and remove newly created
+  empty directories; process termination recovery remains tracked in #11. The React
+  CLI now uses a durable journal and preserves changed files during recovery; see
+  [interrupted installation recovery](docs/react.md#interrupted-installation-recovery).
 - `init` and `add` support `button`, `dialog`, `confirm-dialog`, `dropdown-menu`,
   `field`, `form`, `form-section`, `input`, `input-group`, `textarea`, `checkbox`,
   `radio-group`, `switch`, `select`, `slider`, and `rating`. WebAssembly testing

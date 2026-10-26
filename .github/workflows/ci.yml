@@ -74,6 +74,9 @@ jobs:
       - name: Component, theme, registry, and CLI tests
         run: npm test
 
+      - name: React CLI crash/restart recovery
+        run: npm run test:recovery
+
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
