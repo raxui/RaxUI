@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url"
 // Keep keyboard/selection checks independent of spring animation timing.
 test.use({ reducedMotion: "reduce", actionTimeout: 15_000 })
 
-const OVERLAYS = ["tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "date-picker", "date-range-picker", "combobox", "autocomplete", "select", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "data-table", "data-grid", "sortable", "resizable", "carousel", "chat", "ai", "text-editor", "qr-code", "speed-dial", "kanban"]
+const OVERLAYS = ["file-upload", "tooltip", "hover-card", "toast", "sheet", "drawer", "context-menu", "command", "date-input", "time-picker", "date-time-input", "date-range-input", "date-picker", "date-range-picker", "combobox", "autocomplete", "select", "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "data-table", "data-grid", "sortable", "resizable", "carousel", "chat", "ai", "text-editor", "qr-code", "speed-dial", "kanban"]
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
 // CI runs 15.5.28 and 16.4.3.
 const CREATE_NEXT_APP = `create-next-app@${process.env.CREATE_NEXT_APP_VERSION ?? "16.4.3"}`
@@ -147,6 +147,9 @@ export default function Overlays() {
   mkdirSync(path.join(app, "app/data-components"))
   writeFileSync(path.join(app, "app/data-components/demo.tsx"), readFileSync(path.join(repo,"tests/react/fixtures/data-components.tsx"),"utf8"))
   writeFileSync(path.join(app, "app/data-components/page.tsx"), 'import DataDemo from "./demo"; export default function Page(){ return <DataDemo/> }')
+  mkdirSync(path.join(app, "app/file-upload"))
+  writeFileSync(path.join(app, "app/file-upload/demo.tsx"), readFileSync(path.join(repo, "tests/react/fixtures/file-upload.tsx"), "utf8"))
+  writeFileSync(path.join(app, "app/file-upload/page.tsx"), 'import Demo from "./demo"; export default function Page(){return <Demo/>}')
   sh("npm run build", app)
 
   const port = await freePort()
@@ -276,6 +279,11 @@ test("date and rich choice components hydrate from server imports and remain int
   await expect(page.locator(".sheen-calendar")).toBeVisible()
   await page.keyboard.press("Escape")
   await section.getByRole("combobox", { name: "Frameworks", exact: true }).click()
+  const choices = page.locator(".sheen-rich-combobox-content")
+  await expect(choices).toHaveCSS("padding", "0px")
+  await expect(choices.locator(".sheen-command")).toHaveCSS("border-top-width", "0px")
+  await expect(choices.locator(".sheen-command")).toHaveCSS("background-color", "rgba(0, 0, 0, 0)")
+  await expect(choices.locator(".sheen-command")).toHaveCSS("box-shadow", "none")
   await page.getByRole("option", { name: "Vue", exact: true }).click()
   await page.keyboard.press("Escape")
   await expect(section.getByRole("button", { name: "Remove Vue", exact: true })).toBeVisible()
@@ -362,7 +370,17 @@ test("app shell hydrates with stored preferences, keeps theme portals and handle
  await expect(page.getByText("Remembered tip")).toBeHidden()
  await sidebar.click();await expect(sidebar).toHaveAttribute("aria-expanded","true")
  await page.getByRole("button",{name:"Settings",exact:true}).click();await expect(page.getByRole("link",{name:"Profile"})).toBeVisible()
- await page.getByRole("button",{name:"Products",exact:true}).click();await expect(page.getByRole("link",{name:/UI kit/})).toBeVisible();await page.keyboard.press("Escape")
+ await page.getByRole("button",{name:"Products",exact:true}).click();await expect(page.getByRole("link",{name:/UI kit/})).toBeVisible()
+ for(const padding of [12,32]){
+ await page.getByRole("button",{name:"Products",exact:true}).evaluate((el,p)=>el.style.paddingInline=p+"px",padding)
+ await expect.poll(async()=>{
+  const trigger=await page.getByRole("button",{name:"Products",exact:true}).boundingBox(),panel=await page.locator(".sheen-nav-viewport").boundingBox()
+  if(!trigger||!panel)return Infinity
+  const expected=Math.max(8,Math.min(trigger.x+trigger.width-panel.width,page.viewportSize()!.width-8-panel.width))
+  return Math.abs(panel.x-expected)
+ }).toBeLessThan(2)
+ }
+ await page.keyboard.press("Escape")
  await page.getByRole("menuitem",{name:"File",exact:true}).click();await page.getByRole("menuitem",{name:"New",exact:true}).click();await expect(page.getByLabel("Menu action")).toHaveText("New document")
  await page.getByRole("menuitem",{name:"View",exact:true}).click();await page.getByRole("menuitemcheckbox",{name:"Toolbar"}).click();await expect(page.getByLabel("Toolbar state")).toHaveText("true")
  await page.getByRole("textbox",{name:"Stay in the loop"}).fill("user@example.com");await page.getByRole("button",{name:"Subscribe"}).click();await expect(page.getByText("Thanks! Check your inbox to confirm.")).toBeVisible()
@@ -400,3 +418,74 @@ test("data components hydrate and handle table state, safe grid edits, reorderin
  const handle=page.getByRole("button",{name:"Move Alpha",exact:true});await handle.scrollIntoViewIfNeeded();await handle.focus();await page.keyboard.press("Space");await page.waitForTimeout(80);await page.keyboard.press("ArrowRight");await page.waitForTimeout(150);await page.keyboard.press("Space");await expect(page.getByLabel("Board state")).toHaveText('{"todo":["Beta"],"done":["Alpha"]}')
  await page.getByRole("button",{name:"Toggle direction"}).click();await page.getByRole("button",{name:"Toggle mode"}).click();await expect(page.locator(".sheen-kanban")).toHaveCSS("direction","rtl");expect(errors).toEqual([])
  })
+
+test.describe("Carousel motion",()=>{
+ test.use({reducedMotion:"no-preference"})
+ test("Carousel animates through intermediate positions with its default options",async({page})=>{
+  await page.goto(baseUrl+"/advanced-components")
+  const carousel=page.getByRole("region",{name:"Featured slides",exact:true})
+  await expect(carousel.locator(".sheen-carousel-counter")).toHaveText("1 / 3")
+  const positions=await carousel.evaluate(el=>new Promise<number[]>(resolve=>{
+   const track=el.querySelector<HTMLElement>(".sheen-carousel-container")!
+   const x=()=>new DOMMatrixReadOnly(getComputedStyle(track).transform).m41
+   const samples=[x()]
+   el.querySelector<HTMLButtonElement>('button[aria-label="Next slide"]')!.click()
+   function sample(){samples.push(x());if(samples.length<60)requestAnimationFrame(sample);else resolve(samples)}
+   requestAnimationFrame(sample)
+  }))
+  expect(new Set(positions.map(x=>Math.round(x*1000)/1000)).size).toBeGreaterThan(4)
+  await expect(carousel.locator(".sheen-carousel-counter")).toHaveText("2 / 3")
+ })
+})
+
+test("FileUpload queue installs, hydrates, retries and posts its current files", async ({ page }) => {
+  const errors: string[] = []
+  page.on("pageerror", error => errors.push(error.message))
+  await page.goto(baseUrl + "/file-upload")
+  const root = page.locator(".sheen-queue-upload").first()
+  const picker = root.locator('input[type="file"]').first()
+  await picker.setInputFiles({ name: "fail.pdf", mimeType: "application/pdf", buffer: Buffer.from("pdf") })
+  await page.getByRole("button", { name: "Retry: fail.pdf", exact: true }).click()
+  await expect(root.locator('[data-status="success"]')).toHaveCount(1)
+  await page.getByRole("button", { name: "Send", exact: true }).click()
+  await expect(page.getByRole("status")).toHaveText("fail.pdf")
+  await page.getByRole("button", { name: "Remove: fail.pdf", exact: true }).click()
+  await page.getByRole("button", { name: "Send", exact: true }).click()
+  await expect(page.getByRole("status")).toHaveText("No files")
+  expect(errors).toEqual([])
+})
+
+test("FileUpload photo grid contains large images and long filenames", async ({ page }) => {
+  await page.goto(baseUrl + "/file-upload")
+  const images = await page.evaluate(() => [[2400, 4200], [4200, 700], [1600, 1600]].map(([width, height], index) => {
+    const canvas = document.createElement("canvas")
+    canvas.width = width; canvas.height = height
+    const context = canvas.getContext("2d")!
+    context.fillStyle = ["#547aa5", "#a56354", "#5d9568"][index]
+    context.fillRect(0, 0, width, height)
+    return { name: "Photographed document with a long original filename " + index + ".png", data: canvas.toDataURL().split(",")[1] }
+  }))
+  const grid = page.locator('.sheen-queue-upload[data-layout="grid"]')
+  await grid.locator('input[type="file"]').setInputFiles(images.map(image => ({ name: image.name, mimeType: "image/png", buffer: Buffer.from(image.data, "base64") })))
+  await expect(grid.locator("img")).toHaveCount(3)
+  await expect.poll(() => grid.locator("img").evaluateAll(images => images.every(image => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0))).toBe(true)
+  for (const width of [1200, 390]) for (const dir of ["ltr", "rtl"]) {
+    await page.setViewportSize({ width, height: 900 })
+    await grid.evaluate((element, direction) => { element.setAttribute("dir", direction) }, dir)
+    const geometry = await grid.evaluate(element => {
+      const list = element.querySelector(".sheen-queue-upload-list")!
+      return { overflow: list.scrollWidth - list.clientWidth, items: Array.from(list.children).map(item => {
+        const tile = item.querySelector(".sheen-queue-upload-tile")!.getBoundingClientRect()
+        const image = item.querySelector("img")!.getBoundingClientRect()
+        return { width: item.getBoundingClientRect().width, square: Math.abs(tile.width - tile.height), tileWidth: tile.width,
+          contained: image.left >= tile.left - 1 && image.right <= tile.right + 1 && image.top >= tile.top - 1 && image.bottom <= tile.bottom + 1 }
+      }) }
+    })
+    expect(geometry.overflow).toBeLessThanOrEqual(1)
+    for (const item of geometry.items) {
+      expect(item.square).toBeLessThanOrEqual(1)
+      expect(item.tileWidth).toBeLessThanOrEqual(item.width + 1)
+      expect(item.contained).toBe(true)
+    }
+  }
+})

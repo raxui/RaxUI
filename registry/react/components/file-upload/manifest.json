@@ -2,10 +2,13 @@
   "schemaVersion": 1,
   "name": "file-upload",
   "version": "0.1.0",
-  "description": "Source-owned file-upload with Field integration.",
+  "description": "Source-owned native file picker and upload queue with Field integration.",
   "requires": [
     "foundation",
-    "field"
+    "field",
+    "button",
+    "progress",
+    "tooltip"
   ],
   "packages": {},
   "styles": [
@@ -16,13 +19,31 @@
       "source": "registry/react/components/file-upload/file-upload.tsx",
       "target": "components/ui/file-upload.tsx",
       "type": "tsx",
-      "sha256": "df5fc08117aadec099168eb13dcf241dbc1612e5b441fb6c71bd2132e0f74c3e"
+      "sha256": "fd1b0409ad77be355989b51718d5c114687da8c9a1dbfbb0d506ae239687f162"
     },
     {
       "source": "theme/scss/components/_file-upload.scss",
       "target": "styles/sheenui/components/_file-upload.scss",
       "type": "scss",
-      "sha256": "e2de1786693b8ebd512ceb2536befff04fa7870e977e958329c4bd242a96e7dc"
+      "sha256": "36172ea183f3b1c4e52bbf766cb5a951712f4a651a4dce16641449824eb28ce4"
+    },
+    {
+      "source": "registry/react/components/file-upload/file-upload-native.tsx",
+      "target": "components/ui/file-upload-native.tsx",
+      "type": "tsx",
+      "sha256": "5719e0b3ad6b6f2e85283d1da30ef9ac7818cfe02d614f873f5f9a1290471344"
+    },
+    {
+      "source": "registry/react/components/file-upload/file-upload-queue.tsx",
+      "target": "components/ui/file-upload-queue.tsx",
+      "type": "tsx",
+      "sha256": "d782bb9dbb81524e9384e1a24ba310978d74c0ca1ec6fb823575e75394150377"
+    },
+    {
+      "source": "registry/react/foundation/app-shell-utils.ts",
+      "target": "lib/app-shell-utils.ts",
+      "type": "ts",
+      "sha256": "a77779ef90233c68a95c0bc3ced8f27ea768a4a57bba30ceb297b94598ddaeb4"
     }
   ]
 }

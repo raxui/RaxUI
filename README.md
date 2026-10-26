@@ -420,10 +420,11 @@ keys, `Home`/`End`, and typeahead.
 - `add` installs a component's dependencies first, in one transaction with a
   single lock-file write. A dependency that is already installed is kept as it
   is, including your edits.
-- Ordinary Blazor CLI write failures restore original files and remove newly created
-  empty directories; process termination recovery remains tracked in #11. The React
-  CLI now uses a durable journal and preserves changed files during recovery; see
-  [interrupted installation recovery](docs/react.md#interrupted-installation-recovery).
+- Both CLIs write through a durable journal. If `init`, `add` or `update` is killed,
+  the next run rolls the change back, or run `sheenui recover` yourself. Files you
+  changed afterwards stop automatic rollback; `sheenui recover --keep-changes` keeps
+  them and restores the rest. See [ADR 018](docs/adr/018-blazor-cli-recovery.md) and
+  the React [interrupted installation recovery](docs/react.md#interrupted-installation-recovery).
 - `init` and `add` support `button`, `dialog`, `confirm-dialog`, `dropdown-menu`,
   `field`, `form`, `form-section`, `input`, `input-group`, `textarea`, `checkbox`,
   `radio-group`, `switch`, `select`, `slider`, and `rating`. WebAssembly testing
@@ -684,6 +685,27 @@ Use Controller's `{...field}` inside Field for react-hook-form. `accept`, `maxSi
 `maxFiles`, `progress(file)` and `onError` mirror Blazor. Text props use camelCase.
 The forwarded ref reaches the native input for error focusing. Native multipart
 posts use `name`; controlled files, drops and removals synchronize that payload.
+
+React additionally supports boot-ui's upload queue with an explicit
+`variant="dropzone"` or `variant="compact"`. This mode uses a focusable drop-zone
+ref (HTMLDivElement), appends and deduplicates files, and keeps accepted files when
+others are rejected. `multiple={false}` replaces the single file. Set `layout="grid"`
+for image previews (object URLs are revoked on removal). Paste and drag/drop work
+alongside the picker; `minSize`, `validate` and `onReject` extend validation.
+Use `onValueChange` or react-hook-form's `onChange` to bind File[].
+Provide `upload(file, { signal, onProgress })` for actual upload work; the queue
+runs three at a time by default (`concurrency`), supports cancel/retry, and reports
+`onUploaded` / `onUploadError`. Removing files or unmounting aborts uploads.
+`labels` and `locale` localize status, rejection messages and sizes, including RTL.
+With `name`, the hidden multipart input tracks additions, removals and resets.
+Without a variant, existing native-input refs, limits and batch behavior remain.
+This React queue does not change Blazor's InputFile API.
+
+```tsx
+<FileUpload variant="dropzone" accept=".pdf,image/*" maxFiles={6}
+  maxSize={10 * 1024 * 1024} upload={uploadFile} />
+```
+
 
 
 ## Popover, combobox and autocomplete
@@ -1007,7 +1029,7 @@ Install independently with `npx sheenui-react add navbar`, `sidebar`, `navigatio
 | --- | --- |
 | Navbar | Brand, Links/Link, Actions, Toggle, Menu/MenuLink. Controlled or default open state; glass/transparent/solid and floating variants; configurable collapse breakpoint; gliding hover/current-page indicators; optional hide-on-scroll with a window or element scroll container. Escape restores toggle focus, links and breakpoint changes close the mobile menu. |
 | Sidebar | Provider, Trigger/Rail, Header/Content/Footer/Inset, groups, menu items, badges, skeletons and collapsible submenus. Offcanvas/icon/none modes, sidebar/floating/inset variants, logical start/end sides and a themed mobile Sheet. Optional storageKey remembers desktop collapse; shortcut defaults to Ctrl/Command+B and ignores editable controls. Give each independently controlled sidebar its own provider. |
-| NavigationMenu | List, Item, Trigger, Content, Link, ListItem, Indicator and Viewport. Radix mega-menu semantics and keyboard navigation; a shared viewport glides and resizes under the active trigger, clamped inside the window. viewport=false allows custom panel placement; viewportAlign selects trigger or start. |
+| NavigationMenu | List, Item, Trigger, Content, Link, ListItem, Indicator and Viewport. Radix mega-menu semantics and keyboard navigation; a shared viewport glides and resizes aligned to the active trigger's logical start (left in LTR, right in RTL), clamped inside the window. viewport=false allows custom panel placement; viewportAlign selects trigger or start. |
 | Menubar | Menu/Trigger/Content, groups, labels, items, checkboxes, radio groups, submenus and shortcuts. Gliding open-trigger highlight, disabled/destructive items, keyboard navigation and nearest-theme portals. |
 | Footer | Brand, columns, links, social links, newsletter, bottom/legal/copyright and back-to-top. Columns become disclosures on phones. Newsletter validates email, awaits onSubscribe, displays success or a configurable errorMessage and supports retry; no service is called unless the consumer provides onSubscribe. Back-to-top respects reduced motion. Pass year for an explicit server-rendered copyright year; otherwise the current year appears after hydration. |
 | Banner | Inline, sticky top or floating bottom placement; tinted/solid/glass variants; tone icons and optional actions; controlled open state or dismissible internal state. persistKey remembers dismissal; resetBanner(key) clears it for the next mount. BannerGroup stacks top banners. Floating banners portal into the nearest theme and mount after hydration. |

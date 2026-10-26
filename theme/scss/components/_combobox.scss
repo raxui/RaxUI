@@ -164,7 +164,7 @@
 }
 
 // ---- List ------------------------------------------------------------------------
-.sheen-rich-combobox-content.sheen-popover-content {
+.sheen-rich-combobox-content.sheen-popover {
   width: max(var(--radix-popover-trigger-width), 16rem);
   max-height: none;
   overflow: hidden;

@@ -20,7 +20,7 @@
       "source": "registry/react/components/carousel/carousel.tsx",
       "target": "components/ui/carousel.tsx",
       "type": "tsx",
-      "sha256": "4ecc08919a2fe834572a41cabbcb3233b721f7e3f17a2e59f99dfeaec2c8861d"
+      "sha256": "09028a695d095bbaa1a0e093a27f26b7671a48cd748f381529af8b50ed88601a"
     },
     {
       "source": "theme/scss/components/_carousel.scss",

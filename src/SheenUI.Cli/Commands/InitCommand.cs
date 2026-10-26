@@ -23,7 +23,7 @@ public static class InitCommand
 
     public static int Execute(string workingDirectory, TextWriter output, TextWriter error)
     {
-        var backup = new FileBackup();
+        var backup = new FileTransaction(workingDirectory);
 
         try
         {
@@ -128,11 +128,10 @@ public static class InitCommand
                 };
             }
 
-            // 5. Save config, then lock last
-            backup.Remember(Path.Combine(workingDirectory, SheenUiConfig.DefaultFileName));
-            config.Save(workingDirectory);
-            backup.Remember(Path.Combine(workingDirectory, SheenUiLock.DefaultFileName));
-            lockFile.Save(workingDirectory);
+            // 5. Save config, then lock, then the durable commit
+            backup.WriteText(Path.Combine(workingDirectory, SheenUiConfig.DefaultFileName), config.ToJson());
+            backup.WriteText(Path.Combine(workingDirectory, SheenUiLock.DefaultFileName), lockFile.ToJson());
+            backup.Commit();
 
             output.WriteLine("SheenUI initialized successfully.");
             output.WriteLine($"  - Configuration: {SheenUiConfig.DefaultFileName}");
@@ -162,7 +161,7 @@ public static class InitCommand
         catch (Exception ex)
         {
             error.WriteLine($"Error during init: {ex.Message}");
-            backup.Restore();
+            backup.Restore(error);
             return 1;
         }
     }
@@ -240,7 +239,7 @@ public static class InitCommand
                string.Join(Environment.NewLine, missing.Select(line => "  " + line));
     }
 
-    private static void UpdateAppRazor(ProjectContext project, FileBackup backup)
+    private static void UpdateAppRazor(ProjectContext project, FileTransaction backup)
     {
         var appContent = File.ReadAllText(project.AppRazorPath);
 

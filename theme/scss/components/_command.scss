@@ -56,13 +56,13 @@
 .sheen-command-input {
   flex: 1;
   min-width: 0;
-  height: 3.25rem;
+  height: var(--sheen-control-height, 2.5rem);
   padding: 0;
   border: 0;
   outline: none;
   color: var(--bs-emphasis-color);
   background: none;
-  font-size: 1.0625rem;
+  font-size: 0.9375rem;
 
   &::placeholder {
     color: var(--bs-tertiary-color);
@@ -300,4 +300,3 @@ dialog.sheen-command-dialog .sheen-command-item[data-active] { background: rgba(
 .sheen-command-input:focus-visible { outline: 2px solid rgba(var(--bs-primary-rgb), .5); outline-offset: -2px; }
 
 .sheen-command-item { min-height: var(--sheen-control-height); }
-.sheen-command-input { height: calc(var(--sheen-control-height, 2.5rem) + .75rem); }

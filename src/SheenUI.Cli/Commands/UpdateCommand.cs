@@ -15,7 +15,7 @@ public static class UpdateCommand
     public static int Execute(string workingDirectory, string? componentName, bool dryRun,
         TextWriter output, TextWriter error, EmbeddedRegistry? registry = null)
     {
-        var backup = new FileBackup();
+        var backup = new FileTransaction(workingDirectory);
         try
         {
             workingDirectory = Path.GetFullPath(workingDirectory);
@@ -185,17 +185,16 @@ public static class UpdateCommand
                 if (change.Bytes is null) backup.Delete(change.Path);
                 else backup.Write(change.Path, change.Bytes);
             // Starter entries and files deliberately stay as recorded; app layouts are never refreshed here.
-            backup.Remember(Path.Combine(workingDirectory, SheenUiConfig.DefaultFileName));
-            config.Save(workingDirectory);
-            backup.Remember(lockPath);
-            locked.Save(workingDirectory);
+            backup.WriteText(Path.Combine(workingDirectory, SheenUiConfig.DefaultFileName), config.ToJson());
+            backup.WriteText(lockPath, locked.ToJson());
+            backup.Commit();
             output.WriteLine($"Update complete: {changes.Count} file change(s). Starter pages and app styles were left in place.");
             return 0;
         }
         catch (Exception ex)
         {
-            backup.Restore();
             error.WriteLine($"Error during update: {ex.Message}");
+            backup.Restore(error);
             return 1;
         }
     }

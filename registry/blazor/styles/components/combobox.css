@@ -170,14 +170,14 @@
   height: 1rem;
 }
 
-.sheen-rich-combobox-content.sheen-popover-content {
+.sheen-rich-combobox-content.sheen-popover {
   width: max(var(--radix-popover-trigger-width), 16rem);
   max-height: none;
   overflow: hidden;
   padding: 0;
   border-radius: var(--sheen-radius-control);
 }
-.sheen-rich-combobox-content.sheen-popover-content .sheen-command {
+.sheen-rich-combobox-content.sheen-popover .sheen-command {
   border: 0;
   border-radius: 0;
   background: none;
@@ -185,17 +185,17 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-.sheen-rich-combobox-content.sheen-popover-content .sheen-command-input-wrap {
+.sheen-rich-combobox-content.sheen-popover .sheen-command-input-wrap {
   padding-inline: 0.75rem;
 }
-.sheen-rich-combobox-content.sheen-popover-content .sheen-command-input {
+.sheen-rich-combobox-content.sheen-popover .sheen-command-input {
   height: 2.75rem;
   font-size: 0.9375rem;
 }
-.sheen-rich-combobox-content.sheen-popover-content .sheen-command-list {
+.sheen-rich-combobox-content.sheen-popover .sheen-command-list {
   max-height: min(18rem, var(--radix-popover-content-available-height, 18rem) - 3rem);
 }
-.sheen-rich-combobox-content.sheen-popover-content .sheen-command-empty {
+.sheen-rich-combobox-content.sheen-popover .sheen-command-empty {
   padding-block: 1.25rem;
 }
 
