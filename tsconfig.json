@@ -38,6 +38,7 @@
       "@/components/ui/menu-toggle": ["registry/react/components/menu-toggle/menu-toggle.tsx"],
       "@/components/ui/skeleton": ["registry/react/components/skeleton/skeleton.tsx"],
       "@/components/ui/alert": ["registry/react/components/alert/alert.tsx"],
+      "@/components/ui/progress": ["registry/react/components/progress/progress.tsx"],
       "@/components/ui/tooltip": ["registry/react/components/tooltip/tooltip.tsx"],
       "@/components/ui/hover-card": ["registry/react/components/hover-card/hover-card.tsx"],
       "@/components/ui/toast": ["registry/react/components/toast/toast.tsx"],

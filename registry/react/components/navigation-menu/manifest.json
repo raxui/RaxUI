@@ -17,7 +17,7 @@
       "source": "registry/react/components/navigation-menu/navigation-menu.tsx",
       "target": "components/ui/navigation-menu.tsx",
       "type": "tsx",
-      "sha256": "d270f7a7298682eb4f8e7b5bded32763282273b0326b28dbaa13002a69d3fc0f"
+      "sha256": "0cde59f72ae2bed9ba3bd0cdea0259104fac4c5bbe682146a70c5e9ca6baaba9"
     },
     {
       "source": "theme/scss/components/_navigation-menu.scss",

@@ -149,7 +149,13 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
     }, [JSON.stringify(autoplay), reducedMotion])
     const fadePlugin = React.useMemo(() => (effect === "fade" ? Fade() : null), [effect])
 
-    const [carouselRef, api] = useEmblaCarousel({ ...opts, axis: orientation === "horizontal" ? "x" : "y", direction: dir, duration: reducedMotion ? 0 : opts?.duration }, [
+    // ReInit retains omitted options; reset the default duration after reduced motion.
+    const [carouselRef, api] = useEmblaCarousel({
+      ...opts,
+      axis: orientation === "horizontal" ? "x" : "y",
+      direction: dir,
+      duration: reducedMotion ? 0 : (opts?.duration ?? useEmblaCarousel.globalOptions?.duration ?? 25),
+    }, [
       ...plugins,
       ...(autoplayPlugin ? [autoplayPlugin] : []),
       ...(fadePlugin ? [fadePlugin] : []),
