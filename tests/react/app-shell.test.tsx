@@ -124,3 +124,24 @@ describe("app shell",()=>{
     const status=await screen.findByRole("status");expect(status).toHaveAttribute("dir","rtl");expect(status.closest('[data-bs-theme="dark"]')).not.toBeNull()
   })
 })
+
+describe("navigation panel placement",()=>{
+ it.each([
+  ["ltr",300,200],
+  ["rtl",300,80],
+  ["ltr",950,716],
+  ["rtl",30,-92],
+ ] as const)("aligns to %s trigger start at %i and clamps at the screen edge",async(dir,triggerLeft,offset)=>{
+  const user=userEvent.setup(),originalWidth=window.innerWidth
+  Object.defineProperty(window,"innerWidth",{configurable:true,value:1024})
+  try{
+   const {container}=render(<NavigationMenu dir={dir}><NavigationMenuList><NavigationMenuItem><NavigationMenuTrigger>Open panel</NavigationMenuTrigger><NavigationMenuContent><ul><NavigationMenuListItem href="#example" title="Example"/></ul></NavigationMenuContent></NavigationMenuItem></NavigationMenuList></NavigationMenu>)
+   const root=container.querySelector<HTMLElement>(".sheen-nav")!,trigger=screen.getByRole("button",{name:"Open panel"})
+   root.getBoundingClientRect=()=>new DOMRect(100,0,400,40);trigger.getBoundingClientRect=()=>new DOMRect(triggerLeft,0,80,40)
+   await user.click(trigger)
+   const viewport=container.querySelector<HTMLElement>(".sheen-nav-viewport")!,wrap=container.querySelector<HTMLElement>(".sheen-nav-viewport-wrap")!
+   viewport.style.setProperty("--radix-navigation-menu-viewport-width","200px")
+   await waitFor(()=>expect(wrap.style.getPropertyValue("--sheen-nav-viewport-x")).toBe(offset+"px"))
+  }finally{Object.defineProperty(window,"innerWidth",{configurable:true,value:originalWidth})}
+ })
+})

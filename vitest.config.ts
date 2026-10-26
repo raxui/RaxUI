@@ -30,6 +30,7 @@ export default defineConfig({
       "@/components/ui/menu-toggle": fileURLToPath(new URL("./registry/react/components/menu-toggle/menu-toggle.tsx", import.meta.url)),
       "@/components/ui/skeleton": fileURLToPath(new URL("./registry/react/components/skeleton/skeleton.tsx", import.meta.url)),
       "@/components/ui/alert": fileURLToPath(new URL("./registry/react/components/alert/alert.tsx", import.meta.url)),
+      "@/components/ui/progress": fileURLToPath(new URL("./registry/react/components/progress/progress.tsx", import.meta.url)),
       "@/components/ui/tooltip": fileURLToPath(new URL("./registry/react/components/tooltip/tooltip.tsx", import.meta.url)),
       "@/components/ui/hover-card": fileURLToPath(new URL("./registry/react/components/hover-card/hover-card.tsx", import.meta.url)),
       "@/components/ui/toast": fileURLToPath(new URL("./registry/react/components/toast/toast.tsx", import.meta.url)),

@@ -59,7 +59,7 @@ export interface NavigationMenuProps extends React.ComponentPropsWithoutRef<type
   /** Render the shared panel. Turn off to position each NavigationMenuContent yourself. */
   appearance?: SheenAppearance
   viewport?: boolean
-  /** Where the panel sits: under the open trigger (clamped to the window), or at the start of the bar. */
+  /** Align the panel with the open trigger's logical start (clamped to the window), or the start of the bar. */
   viewportAlign?: "trigger" | "start"
 }
 
@@ -97,7 +97,7 @@ const NavigationMenu = React.forwardRef<React.ElementRef<typeof NavigationMenuPr
 NavigationMenu.displayName = NavigationMenuPrimitive.Root.displayName
 
 /**
- * Centres the panel under the open trigger, kept 8px inside the window. The
+ * Aligns the panel with the open trigger's logical start, kept 8px inside the window. The
  * first placement after opening is instant; later ones glide.
  */
 function useViewportPlacement(rootRef: React.RefObject<HTMLElement | null>, enabled: boolean, direction?: string) {
@@ -119,8 +119,8 @@ function useViewportPlacement(rootRef: React.RefObject<HTMLElement | null>, enab
       }
       const rootBox = root.getBoundingClientRect()
       const triggerBox = trigger.getBoundingClientRect()
-      const centre = triggerBox.left + triggerBox.width / 2
-      const left = Math.min(Math.max(centre - width / 2, 8), window.innerWidth - 8 - width)
+      const start = direction === "rtl" ? triggerBox.right - width : triggerBox.left
+      const left = Math.max(8, Math.min(start, window.innerWidth - 8 - width))
       const set = () => wrap.style.setProperty("--sheen-nav-viewport-x", `${Math.round(left - rootBox.left)}px`)
       if (wasOpen) set()
       else withoutTransition(wrap, set)
@@ -128,6 +128,9 @@ function useViewportPlacement(rootRef: React.RefObject<HTMLElement | null>, enab
     }
 
     place()
+    const sizes = new ResizeObserver(place)
+    sizes.observe(root)
+    root.querySelectorAll(".sheen-nav-trigger").forEach(trigger => sizes.observe(trigger))
     // A trigger opens or closes, or the panel learns its new content's size.
     const mutations = new MutationObserver((records) => {
       if (records.some((r) => r.attributeName === "data-state" || (r.target as Element).classList.contains("sheen-nav-viewport"))) place()
@@ -136,6 +139,7 @@ function useViewportPlacement(rootRef: React.RefObject<HTMLElement | null>, enab
     window.addEventListener("resize", place)
     return () => {
       mutations.disconnect()
+      sizes.disconnect()
       window.removeEventListener("resize", place)
     }
   }, [rootRef, enabled, direction])

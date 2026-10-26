@@ -26,7 +26,7 @@
       "source": "theme/scss/components/_combobox.scss",
       "target": "styles/sheenui/components/_combobox.scss",
       "type": "scss",
-      "sha256": "25636fd2da273d650056c9df5aaf1538992bd3e46e3c7d22101c1fc07bbfb498"
+      "sha256": "3a0f21fa90eb10f420998762489283e632dd274c56cfee2b01ce4373468601d8"
     },
     {
       "source": "registry/react/foundation/choice-highlight.tsx",

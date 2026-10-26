@@ -48,13 +48,13 @@
 .sheen-command-input {
   flex: 1;
   min-width: 0;
-  height: 3.25rem;
+  height: var(--sheen-control-height, 2.5rem);
   padding: 0;
   border: 0;
   outline: none;
   color: var(--bs-emphasis-color);
   background: none;
-  font-size: 1.0625rem;
+  font-size: 0.9375rem;
 }
 .sheen-command-input::placeholder {
   color: var(--bs-tertiary-color);
@@ -312,8 +312,4 @@ dialog.sheen-command-dialog .sheen-command-item[data-active] {
 
 .sheen-command-item {
   min-height: var(--sheen-control-height);
-}
-
-.sheen-command-input {
-  height: calc(var(--sheen-control-height, 2.5rem) + 0.75rem);
 }
