@@ -191,6 +191,12 @@ test("actual CLI package-install failure rolls back its observed writes",()=>{
  const result=spawnSync(process.execPath,["--import",pathToFileURL(hook).href,entry,"init","--cwd",app],{encoding:"utf8"});assert.equal(result.status,1);assert.match(result.stderr,/failed/);assert.deepEqual(snapshot(),before);assert.equal(existsSync(full(TRANSACTION_DIR)),false)
 })
 
+test("transiently locked targets are retried instead of rolling back",()=>{
+ const hook=path.join(root,"locked-rename.mjs")
+ writeFileSync(hook,'import fs from "node:fs";import {syncBuiltinESMExports} from "node:module";const rename=fs.renameSync;let locks=0;fs.renameSync=(from,to)=>{if(locks<4){locks++;throw Object.assign(new Error("locked"),{code:locks%2?"EBUSY":"EPERM"})}return rename(from,to)};syncBuiltinESMExports();')
+ const result=spawnSync(process.execPath,["--import",pathToFileURL(hook).href,entry,"init","--cwd",app,"--no-install"],{encoding:"utf8"});assert.equal(result.status,0,result.stderr);assert.equal(existsSync(full("src/lib/theme.tsx")),true);assert.equal(existsSync(full(TRANSACTION_DIR)),false)
+})
+
 test("replaced empty directories are retained using exact filesystem identities",async()=>{
  await crash("init");renameSync(full("src/lib"),path.join(root,"old-lib"));mkdirSync(full("src/lib"));ok(cli("recover"));assert.equal(lstatSync(full("src/lib")).isDirectory(),true)
 })

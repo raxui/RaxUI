@@ -42,11 +42,21 @@ function durable(file, content, mode = 0o600) {
   try { writeFileSync(fd, content); fsyncSync(fd) } finally { closeSync(fd) }
 }
 
+// Antivirus, indexers and dev-server watchers briefly lock files on Windows.
+function move(from, to) {
+  for (let attempt = 1; ; attempt++) {
+    try { return renameSync(from, to) } catch (error) {
+      if (attempt === 10 || !["EPERM", "EBUSY"].includes(error.code)) throw error
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 25 * attempt)
+    }
+  }
+}
+
 function persist(root, journal) {
   const next = checked(root, `${TRANSACTION_DIR}/journal.next`, true)
   if (present(next)) unlinkSync(next)
   durable(next, JSON.stringify(journal) + "\n")
-  renameSync(next, checked(root, `${TRANSACTION_DIR}/journal.json`, true))
+  move(next, checked(root, `${TRANSACTION_DIR}/journal.json`, true))
   syncDir(path.join(root, TRANSACTION_DIR))
 }
 
@@ -54,7 +64,7 @@ function replace(root, relative, content, mode) {
   const stage = checked(root, `${TRANSACTION_DIR}/write.next`, true)
   if (present(stage)) unlinkSync(stage)
   durable(stage, content, mode)
-  renameSync(stage, checked(root, relative))
+  move(stage, checked(root, relative))
   syncDir(path.dirname(path.join(root, relative)))
 }
 
