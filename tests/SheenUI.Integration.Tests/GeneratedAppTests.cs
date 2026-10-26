@@ -8,7 +8,7 @@ namespace SheenUI.Integration.Tests;
 /// End-to-end: a real 'dotnet new blazor' app, SheenUI installed into it, and a real 'dotnet build'.
 /// </summary>
 [Trait("Category", "E2E")]
-public class GeneratedAppTests : IDisposable
+public partial class GeneratedAppTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "SheenUI_E2E_" + Guid.NewGuid().ToString("N"));
 
@@ -61,6 +61,7 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "date-time-input"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "time-picker"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "date-input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "date-range-picker"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "alert"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "badge"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "avatar"], app, output, error) == 0, error.ToString());
@@ -177,6 +178,7 @@ public class GeneratedAppTests : IDisposable
         WriteNavigationPages(components);
         WriteOverlayPages(components);
         WriteFluentForm(components);
+        WriteCalendarPages(components);
         // Optional FluentValidation through Blazilla (#37): SheenUI controls must show its messages too.
         Dotnet(app, "add", "package", "Blazilla", "--version", "2.4.2");
         // Test-only services: antiforgery keys live for this process, not in the user's profile.
@@ -225,6 +227,7 @@ public class GeneratedAppTests : IDisposable
         Assert.True(Program.Run(["add", "date-time-input"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "time-picker"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "date-input"], app, output, error) == 0, error.ToString());
+        Assert.True(Program.Run(["add", "date-range-picker"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "alert"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "badge"], app, output, error) == 0, error.ToString());
         Assert.True(Program.Run(["add", "avatar"], app, output, error) == 0, error.ToString());
@@ -340,6 +343,7 @@ public class GeneratedAppTests : IDisposable
             await VerifyNavigation(page, url);
             await VerifyOverlays(page, url);
             await VerifyFluentForm(page, url);
+            await VerifyCalendarPickers(page, url);
         }
         catch (Exception exception)
         {

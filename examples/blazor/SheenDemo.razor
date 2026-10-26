@@ -1,0 +1,48 @@
+@page "/sheen-demo"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using CultureInfo = System.Globalization.CultureInfo
+
+<PageTitle>SheenUI · التقويم الميلادي</PageTitle>
+<section dir="rtl" class="container py-4" style="max-width:950px">
+    <h1 class="h4">التقويم الميلادي</h1>
+    <p class="text-body-secondary">اختر موعداً أو مدة إقامة. البيانات تجريبية ولا تُرسل إلى خادم حجز.</p>
+    <div class="row g-4 mt-2">
+        <div class="col-md-5">
+            <div class="sheen-panel p-3 d-inline-block"><Calendar @bind-Value="calendarDay" Culture="Arabic" /></div>
+        </div>
+        <div class="col-md-7">
+            <EditForm Model="booking" FormName="sheen-demo" OnValidSubmit="@(() => saved = true)" Context="bookingForm">
+                <DataAnnotationsValidator />
+                <div class="vstack gap-3">
+                    <Field Id="demo-day" For="@(() => booking.Day)">
+                        <FieldLabel>موعد الوصول إلى بغداد</FieldLabel>
+                        <DatePicker @bind-Value="booking.Day" Culture="Arabic" Clearable />
+                        <FieldError />
+                    </Field>
+                    <Field Id="demo-stay" For="@(() => booking.From)">
+                        <FieldLabel>مدة الإقامة</FieldLabel>
+                        <DateRangePicker @bind-Value="booking.From" @bind-EndValue="booking.To" Culture="Arabic" MinDays="1" Clearable />
+                        <FieldError />
+                    </Field>
+                    <Button type="submit">حفظ الاختيار</Button>
+                    <output aria-live="polite">@(saved ? "تم حفظ الاختيار التجريبي." : "")</output>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</section>
+
+@code {
+    private static readonly CultureInfo Arabic = new("ar-IQ");
+    private DateOnly? calendarDay = DateOnly.FromDateTime(DateTime.Today);
+    private readonly Booking booking = new();
+    private bool saved;
+    public class Booking
+    {
+        [Required(ErrorMessage = "اختر موعد الوصول.")]
+        public DateOnly? Day { get; set; }
+        public DateOnly? From { get; set; }
+        public DateOnly? To { get; set; }
+    }
+}

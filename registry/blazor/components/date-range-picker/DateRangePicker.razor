@@ -1,0 +1,136 @@
+@typeparam TValue
+@inherits DatePickerBase<TValue>
+@using System.Linq.Expressions
+
+<div class="sheen-picker-field" dir="@EffectiveDir" data-sheen-appearance="@Appearance">
+    <button @attributes="RangeAttributes" @ref="Anchor" type="button" class="@TriggerClass" data-variant="@Variant" data-placeholder="@(SelectedDate is null ? "" : null)"
+            data-state="@(Open ? "open" : "closed")" disabled="@(!Ready || EffectiveDisabled)" aria-disabled="@(ReadOnly ? "true" : null)" aria-haspopup="dialog" aria-expanded="@(Open ? "true" : "false")"
+            aria-controls="@(ControlId + "-popup")" @onclick="Toggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2ZM16 2v4M8 2v4M3 10h18" /></svg>
+        <span>@RangeDisplay</span>
+    </button>
+    @if (CanClear && (SelectedDate.HasValue || SelectedEnd.HasValue) && !ReadOnly)
+    {
+        <button type="button" class="sheen-picker-clear" disabled="@(!Ready || EffectiveDisabled)" aria-label="@Words.Clear" @onclick="Clear">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+    }
+    <input type="hidden" name="@InputName" value="@Serialize(CurrentValue)" disabled="@EffectiveDisabled" />
+    <input type="hidden" name="@EndFieldName" value="@Serialize(EndValue)" disabled="@EffectiveDisabled" />
+    <Popover Id="@(ControlId + "-popup")" Anchor="Anchor" Open="Open" OpenChanged="OpenChanged" Label="@Words.PickRange" Class="sheen-picker-popover" Appearance="@Appearance">
+        @if (Open)
+        {
+            <div class="sheen-picker-range-body">
+                @if (QuickRanges.Count > 0)
+                {
+                    <div class="sheen-picker-presets" role="group" aria-label="@Words.QuickRanges">
+                        @foreach (var preset in QuickRanges)
+                        {
+                            <button type="button" class="sheen-picker-preset" disabled="@(!SpanAllowed(preset.From, preset.To))"
+                                    data-active="@(preset.From == _from && preset.To == _to ? "" : null)" @onclick="@(() => UsePreset(preset))">@preset.Label</button>
+                        }
+                    </div>
+                }
+            <Calendar Range Value="_from" EndValue="_to" RangeChanged="DraftChanged" Min="Min" Max="Max" IsDateDisabled="DisabledDate" Culture="FormatCulture" Text="Words"
+                      Today="Today" Month="_month" MonthChanged="@(month => _month = month)" Dir="@EffectiveDir" WeekStartsOn="WeekStartsOn" NumberOfMonths="2" Responsive AutoFocus Appearance="@Appearance" MinDays="MinDays" MaxDays="MaxDays" ExcludeDisabled="ExcludeDisabled" />
+            </div>
+            <div class="sheen-picker-footer">
+                <span aria-live="polite">@(_from.HasValue ? Display(_from) + " – " + Display(_to) : Words.StartPrompt)</span>
+                <div class="d-flex gap-2">
+                    <Button Size="sm" Variant="ghost" OnClick="Cancel">@Words.Cancel</Button>
+                    <Button Size="sm" Disabled="@(!CanApply)" OnClick="Apply">@Words.Apply</Button>
+                </div>
+            </div>
+        }
+    </Popover>
+</div>
+
+@code {
+    [Parameter] public TValue EndValue { get; set; } = default!;
+    [Parameter] public EventCallback<TValue> EndValueChanged { get; set; }
+    [Parameter] public Expression<Func<TValue>>? EndValueExpression { get; set; }
+    [Parameter] public string? EndName { get; set; }
+    [Parameter] public bool ExcludeDisabled { get; set; }
+    [Parameter] public int MinDays { get; set; }
+    [Parameter] public int? MaxDays { get; set; }
+    [Parameter] public IReadOnlyList<CalendarState.DatePreset>? Presets { get; set; }
+    private DateOnly? _from, _to, _month;
+    private IReadOnlyList<CalendarState.DatePreset> QuickRanges
+    {
+        get
+        {
+            if (Presets is not null) return Presets;
+            var today = Today ?? DateOnly.FromDateTime(DateTime.Today);
+            var first = new DateOnly(today.Year, today.Month, 1);
+            var previousEnd = first.DayNumber > 0 ? first.AddDays(-1) : first;
+            return new[]
+            {
+                new CalendarState.DatePreset(Words.Today, today, today),
+                new CalendarState.DatePreset(Words.Yesterday, DateOnly.FromDayNumber(Math.Max(0, today.DayNumber - 1)), DateOnly.FromDayNumber(Math.Max(0, today.DayNumber - 1))),
+                new CalendarState.DatePreset(Words.Last7Days, DateOnly.FromDayNumber(Math.Max(0, today.DayNumber - 6)), today),
+                new CalendarState.DatePreset(Words.Last30Days, DateOnly.FromDayNumber(Math.Max(0, today.DayNumber - 29)), today),
+                new CalendarState.DatePreset(Words.ThisMonth, first, today),
+                new CalendarState.DatePreset(Words.LastMonth, new DateOnly(previousEnd.Year, previousEnd.Month, 1), previousEnd)
+            };
+        }
+    }
+    private void UsePreset(CalendarState.DatePreset preset)
+    {
+        if (!SpanAllowed(preset.From, preset.To) || EffectiveDisabled || ReadOnly) return;
+        _from = preset.From; _to = preset.To; _month = new DateOnly(preset.From.Year, preset.From.Month, 1);
+    }
+    private DateOnly? SelectedEnd => CalendarState.DateOf(EndValue);
+    private string RangeDisplay => SelectedDate.HasValue ? $"{Display(SelectedDate)} – {(SelectedEnd.HasValue ? Display(SelectedEnd) : "…")}" : Placeholder ?? Words.PickRange;
+    private Dictionary<string, object> RangeAttributes
+    {
+        get { var attrs = ControlAttributes; if (FieldContext is null && AdditionalAttributes?.ContainsKey("aria-label") != true && AdditionalAttributes?.ContainsKey("aria-labelledby") != true) attrs["aria-label"] = Placeholder ?? Words.PickRange; return attrs; }
+    }
+    private string EndFieldName
+    {
+        get
+        {
+            if (EndName is not null) return EndName;
+            var member = (EndValueExpression?.Body as MemberExpression)?.Member.Name ?? "EndValue";
+            var prefix = InputName.LastIndexOf('.');
+            return prefix >= 0 ? InputName[..(prefix + 1)] + member : member;
+        }
+    }
+    private bool DisabledDate(DateOnly date) => !CanSelect(date) || !CanRepresent(EndValue, date);
+    private bool SpanAllowed(DateOnly from, DateOnly to)
+    {
+        if (to < from || DisabledDate(from) || DisabledDate(to)) return false;
+        var count = to.DayNumber - from.DayNumber;
+        if (MinDays < 0 || MaxDays < MinDays || count < MinDays || MaxDays.HasValue && count > MaxDays.Value) return false;
+        if (ExcludeDisabled && IsDateDisabled is not null)
+            for (var n = from.DayNumber + 1; n < to.DayNumber; n++) if (IsDateDisabled(DateOnly.FromDayNumber(n))) return false;
+        return true;
+    }
+    private bool CanApply => _from.HasValue && _to.HasValue && !EffectiveDisabled && !ReadOnly && SpanAllowed(_from.Value, _to.Value);
+    private void Toggle()
+    {
+        if (!Ready || EffectiveDisabled || ReadOnly) return;
+        if (!Open) { _from = SelectedDate; _to = SelectedEnd; _month = SelectedDate; }
+        Open = !Open;
+    }
+    private Task OpenChanged(bool open) { Open = open && !EffectiveDisabled && !ReadOnly; if (Open) { _from = SelectedDate; _to = SelectedEnd; _month = SelectedDate; } return Task.CompletedTask; }
+    private Task DraftChanged(CalendarState.DateSpan span) { _from = span.From; _to = span.To; return Task.CompletedTask; }
+    private void Cancel() => Open = false;
+    private async Task SetEnd(DateOnly? date)
+    {
+        EndValue = CalendarState.WithDate(EndValue, date); await EndValueChanged.InvokeAsync(EndValue);
+        if (EndValueExpression is not null) EditContext?.NotifyFieldChanged(FieldIdentifier.Create(EndValueExpression));
+    }
+    private async Task Apply()
+    {
+        if (!CanApply) return;
+        await SetEnd(_to); AssignDate(_from); Validate(); Open = false;
+    }
+    private async Task Clear() { if (EffectiveDisabled || ReadOnly) return; await SetEnd(null); AssignDate(null); Validate(); Open = false; }
+    protected override bool RelatedField(FieldIdentifier field) => base.RelatedField(field) || EndValueExpression is not null && field.Equals(FieldIdentifier.Create(EndValueExpression));
+    protected override string? ValueError()
+    {
+        var from = SelectedDate; var to = SelectedEnd;
+        if (!from.HasValue && !to.HasValue) return null;
+        return !from.HasValue || !to.HasValue || !SpanAllowed(from.Value, to.Value) ? ParsingErrorMessage ?? Words.InvalidRange : null;
+    }
+}
