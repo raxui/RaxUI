@@ -106,6 +106,8 @@ public class EmbeddedRegistryTests
     [InlineData("dropdown-menu", "DropdownMenu/DropdownMenu.razor.js")]
     [InlineData("popover", "Popover/Popover.razor.js")]
     [InlineData("calendar", "Calendar/Calendar.razor.js")]
+    [InlineData("time-picker", "TimePicker/TimeWheel.razor.js")]
+    [InlineData("date-time-input", "DateTimeInput/DateTimeInput.razor.js")]
     [InlineData("file-upload", "FileUpload/FileUpload.razor.js")]
     public void Overlay_manifests_load_with_their_javascript_module(string name, string module)
     {

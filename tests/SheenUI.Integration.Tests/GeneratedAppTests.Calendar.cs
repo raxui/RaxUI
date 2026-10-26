@@ -7,6 +7,10 @@ public partial class GeneratedAppTests
     private static void WriteCalendarPages(string components)
     {
         var fixtures = Path.Combine(AppContext.BaseDirectory, "Fixtures");
+        File.Copy(Path.Combine(fixtures, "TimeFluent.razor"), Path.Combine(components, "Pages", "TimeFluent.razor"));
+        var time = File.ReadAllText(Path.Combine(fixtures, "TimePickers.razor"));
+        File.WriteAllText(Path.Combine(components, "Pages", "TimePickers.razor"), time);
+        File.WriteAllText(Path.Combine(components, "Pages", "StaticTimePickers.razor"), time.Replace("@page \"/time-demo\"", "@page \"/static-time-demo\"").Replace("@rendermode InteractiveServer", ""));
         var markup = File.ReadAllText(Path.Combine(fixtures, "CalendarPickers.razor"));
         File.WriteAllText(Path.Combine(components, "Pages", "CalendarPickers.razor"), markup);
         File.WriteAllText(Path.Combine(components, "Pages", "StaticCalendarPickers.razor"), markup
