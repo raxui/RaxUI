@@ -273,7 +273,7 @@ the input through a native label. Built-in icons are inline Lucide SVG (ISC).
 | `Checkbox` | `Indeterminate=false`, `IndeterminateChanged` / `@bind-Indeterminate`. Mixed state uses role checkbox and aria-checked=mixed; interactive activation clears mixed state. |
 | `RadioGroup<TValue>` | `ChildContent`, `Orientation="vertical"` (horizontal). `RadioGroupItem<TValue>` takes `Value`, `Class` and native attributes. |
 | `Switch` | Boolean binding; native checkbox with role switch. |
-| `Select<TValue>` | `ChildContent` containing native option/optgroup elements; native Bootstrap form-select, including browser keyboard and mobile picker support. |
+| `Select<TValue>` | `ChildContent` containing native option/optgroup elements; typed InputSelect for static SSR; interactive themed listbox with groups, checks, typeahead and sliding highlight. Set `Native` to retain the browser picker; `Size="sm"/"lg"` and `Placeholder` are supported. |
 
 All root controls accept `Appearance` (default/flat/glass, unset inherits),
 `Class` and additional HTML attributes (`disabled`, `readonly`, `autocomplete`,
@@ -868,19 +868,12 @@ TriggerClass, PopupRole and Role allow accessible composition. Native light dism
 and Escape close it; focus returns to the trigger when it was inside the panel.
 Interactivity is required for positioning and C# state synchronization.
 
-Blazor Combobox: bind string `Value` with `@bind-Value`; `Options` is an
-IReadOnlyList of `Combobox.Option(Value, Label, Disabled=false)`. Translate
-Placeholder, SearchPlaceholder and EmptyMessage. A native InputSelect is the
-static SSR fallback, with generated form names and EditContext validation.
-Interactive mode replaces the visible select with a button and searchable listbox;
-the hidden native select continues to post the selected value.
-
-Blazor Autocomplete: bind string `Value`; `Suggestions` holds strings. Optional
-`LoadSuggestions(query, cancellationToken)` returns Task<IReadOnlyList<string>>.
-Older requests are cancelled and their results ignored; `Loading` can also be
-controlled by the application. Translate SuggestionsLabel, LoadingMessage,
-EmptyMessage and ErrorMessage. Static SSR renders a named text input and datalist;
-async suggestions and the custom listbox require interactivity.
+Blazor Combobox supports single and multiple selection, rich grouped options,
+removable chips, creation, remote search and loading. Blazor Autocomplete supports
+rich value/label options and the backwards-compatible string Suggestions API,
+cancellable asynchronous sources, templates, clear/status indicators and query
+control. Both retain EditContext and native static SSR forms. See the full
+[Blazor choice APIs and examples](docs/blazor-choices.md).
 
 React Popover exports Popover, PopoverTrigger, PopoverAnchor, PopoverContent and
 PopoverClose. Content uses Radix Popover 1.3.1 and portals into the nearest
@@ -1130,7 +1123,7 @@ politely. The outlet waits for exit motion before removing each message.
 | Sheet | `Open` / `OpenChanged`, `Title`, `Description`, `ChildContent`, `Footer`, `Side="end"` (start/top/bottom), `CloseLabel="Close"`, `Class`, `Appearance`, native attributes. Logical sides flip in RTL. |
 | Drawer | Same panel parameters, bottom placement and a drag handle. Drag down past the greater of 60px and 25% of panel height to dismiss; shorter/cancelled drags spring back. Content remains scrollable because dragging starts only on the handle. |
 | ContextMenu | `Target`, `ChildContent` composed of DropdownMenuItem/Label/Separator, `Label="Actions"`, `TargetClass`, `Class`, `Appearance`, content attributes. Right-click, Shift+F10 and the context-menu key open; arrows, Home/End, character typeahead, Enter/Space, Escape and Tab work like DropdownMenu. |
-| Command | `Open` / `OpenChanged`, `Items: List<Command.Item>` (`Value`, `Label`, `Group=""`, `Disabled=false`, `Keywords=""`), `OnSelect(string)`, `Title="Command palette"`, `SearchPlaceholder="Search commands..."`, `EmptyMessage="No results found."`, `Class`, `Appearance`, native dialog attributes. Case-insensitive label/keyword filtering; arrows and Home/End skip disabled items, Enter runs and closes. Values should be unique. |
+| Command | `Open` / `OpenChanged`, `Items: List<Command.Item>` (`Value`, `Label`, `Group=""`, `Disabled=false`, `Keywords=""`), `OnSelect(string)`, `Title="Command palette"`, `SearchPlaceholder="Search commands..."`, `EmptyMessage="No results found."`, `Class`, `Appearance`, native dialog attributes. Arabic/diacritic/token/fuzzy label/keyword filtering; arrows and Home/End skip disabled items, Enter runs and closes. `Inline`, controlled `Search`/`SearchChanged`, `ShouldFilter`, custom `Filter`, `Loop`, `CloseOnSelect`, `Loading`, `Shortcut`, `Leading`, `Footer`, and `ItemTemplate` are supported; rich Item fields append `Icon`, `Shortcut`, `Description` and `ForceMount`. See [Blazor choices](docs/blazor-choices.md). Values should be unique. |
 
 Sheet, Drawer and Command can also be opened through `@ref` and `ShowAsync()`
 without binding. Sheet/Drawer expose `CloseAsync()`; Command exposes `Close()`.
@@ -1162,7 +1155,7 @@ Override the CSS properties on the theme provider or an appearance boundary to d
 - Light and dark dimming defaults resolve independently at data-bs-theme boundaries.
 
 Ordinary Input keeps its original material and shadows with a slightly clearer border.
-React Select, Combobox and Autocomplete include one sliding highlight matching Command's 160ms easing, including pointer and keyboard navigation, filtering, resizing, and reduced-motion preferences. Their manifests ship the helper and stylesheet even when adding to an already initialized app. Blazor Select remains a native select whose popup is drawn by the browser.
+React Select, Combobox and Autocomplete include one sliding highlight matching Command's 160ms easing, including pointer and keyboard navigation, filtering, resizing, and reduced-motion preferences. Their manifests ship the helper and stylesheet even when adding to an already initialized app. Blazor Select now enhances its native SSR select with the same themed listbox and sliding highlight. Blazor choice parity APIs, compatibility and tests are documented in [docs/blazor-choices.md](docs/blazor-choices.md).
 
 ## React app shell
 

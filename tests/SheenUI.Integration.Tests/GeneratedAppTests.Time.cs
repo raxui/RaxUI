@@ -57,6 +57,8 @@ public partial class GeneratedAppTests
         await Assertions.Expect(result).ToContainTextAsync("2026-10-27T23:50:00.0000000+03:00");
         await page.Locator("#date-time-ar .sheen-input-action").ClickAsync();
         var popup = page.Locator("#date-time-ar-popup");
+        // Wait for the selected wheel row to be centered by its asynchronous JS enhancement.
+        await page.WaitForFunctionAsync("() => { const wheel=document.querySelector('#date-time-ar-popup [role=listbox][data-index]'); const minutes=[...document.querySelectorAll('#date-time-ar-popup [role=listbox][data-index]')][1]; return wheel && minutes && Math.abs(minutes.scrollTop - Number(minutes.dataset.index) * parseFloat(getComputedStyle(minutes).getPropertyValue('--sheen-wheel-item'))) < 1 }");
         await popup.GetByRole(AriaRole.Listbox, new() { Name = "الدقيقة", Exact = true }).PressAsync("End");
         await Assertions.Expect(result).ToContainTextAsync("2026-10-27T23:55:00.0000000+03:00");
         await popup.Locator("button[data-date='2026-10-28']").ClickAsync();

@@ -2,13 +2,15 @@
 const GAP = 4
 const MARGIN = 8
 const instances = new WeakMap()
-export function init(trigger, content, receiver) {
+export function init(trigger, content, receiver, anchor = trigger) {
+  anchor ||= trigger
   dispose(content)
   const controller = new AbortController()
-  const place = () => { if (content.matches(":popover-open")) position(trigger, content) }
+  const place = () => { if (content.matches(":popover-open")) position(anchor, content) }
   content.addEventListener("toggle", event => {
     const open = event.newState === "open"
     trigger.setAttribute("aria-expanded", String(open))
+    content.dataset.state = open ? "open" : "closed"
     if (open) {
       place()
       // Button popovers move focus inside; input suggestions retain the input focus.
@@ -24,7 +26,7 @@ export function init(trigger, content, receiver) {
   window.addEventListener("resize", place, { signal: controller.signal })
   window.addEventListener("scroll", place, { capture: true, signal: controller.signal })
   const observer = new ResizeObserver(place)
-  observer.observe(content); observer.observe(trigger)
+  observer.observe(content); observer.observe(anchor)
   instances.set(content, { controller, observer })
 }
 export function setOpen(content, open) {
@@ -38,6 +40,8 @@ export function dispose(content) {
 function position(trigger, menu) {
   const anchor = trigger.getBoundingClientRect()
   // offset sizes ignore the opening animation's scale.
+  menu.style.setProperty("--radix-popover-trigger-width", `${anchor.width}px`)
+  menu.style.setProperty("--radix-popover-content-available-height", `${Math.max(anchor.top, window.innerHeight - anchor.bottom) - GAP - MARGIN}px`)
   const width = menu.offsetWidth
   const height = menu.offsetHeight
   const rtl = getComputedStyle(trigger).direction === "rtl"
@@ -45,76 +49,117 @@ function position(trigger, menu) {
   const left = Math.max(MARGIN, Math.min(start, window.innerWidth - width - MARGIN))
   const below = anchor.bottom + GAP
   const above = anchor.top - GAP - height
-  const top = below + height <= window.innerHeight - MARGIN || above < MARGIN ? below : above
+  const preferredTop = below + height <= window.innerHeight - MARGIN || above < MARGIN ? below : above
+  const top = Math.max(MARGIN, Math.min(preferredTop, window.innerHeight - height - MARGIN))
   menu.style.left = `${left}px`
   menu.style.top = `${top}px`
   menu.style.transformOrigin = `${top === below ? "top" : "bottom"} ${rtl ? "right" : "left"}`
 }
 
 
-// Shared DOM keyboard enhancement for the two Blazor listboxes. C# owns values and filtering.
+
+// C# owns selection/filtering; this shared enhancement owns transient navigation and motion.
 const lists = new WeakMap()
 export function initListbox(input, list, receiver) {
   const previous = lists.get(input)
-  if (previous?.list === list) {
-    // Filtered/replaced suggestions invalidate stale active descendant IDs.
-    if (!list.querySelector(`[id="${input.getAttribute("aria-activedescendant")}"]`)) input.removeAttribute("aria-activedescendant")
-    return
-  }
-  previous?.controller.abort()
+  if (previous?.list === list) { previous.refresh(); return }
+  disposeListbox(input)
   const controller = new AbortController()
-  const content = list.closest("[popover]")
-  // The listbox opens and closes the popover in the DOM; the toggle event then syncs C# through Toggled.
-  // Going through C# raced with pending renders: a close could be skipped (an unchanged Open=false
-  // parameter) or undone (a late Show), leaving the list open with focus inside it.
-  const hide = () => { if (content?.matches(":popover-open")) content.hidePopover() }
-  const activate = option => {
-    list.querySelectorAll("[data-active]").forEach(el => el.removeAttribute("data-active"))
-    if (!option) { input.removeAttribute("aria-activedescendant"); return }
-    if (list.hasAttribute("data-command-list")) list.querySelectorAll('[role="option"]').forEach(el => el.setAttribute("aria-selected", String(el === option)))
-    option.dataset.active = "true"; input.setAttribute("aria-activedescendant", option.id)
-    option.scrollIntoView({ block: "nearest" })
+  const signal = controller.signal
+  const content = list.closest('[popover]')
+  const inner = list.querySelector('.sheen-command-list-inner') || list
+  const highlight = inner.querySelector('[data-choice-highlight]')
+  let active, frame, pointerX, pointerY
+  const options = () => [...list.querySelectorAll('[role="option"]:not([aria-disabled="true"])')].filter(el => !el.hidden)
+  const keepOpen = () => list.dataset.multiple === 'true' || list.dataset.closeOnSelect === 'false'
+  const hide = () => { if (!keepOpen() && content?.matches(':popover-open')) content.hidePopover() }
+  const measure = () => {
+    cancelAnimationFrame(frame)
+    frame = requestAnimationFrame(() => {
+      if (highlight) {
+        const visible = active?.isConnected && active.getClientRects().length > 0
+        highlight.hidden = !visible
+        inner.toggleAttribute('data-highlight', !!visible)
+        if (visible) {
+          let x = 0, y = 0
+          for (let node = active; node && node !== inner; node = node.offsetParent) { x += node.offsetLeft; y += node.offsetTop }
+          highlight.style.width = `${active.offsetWidth}px`; highlight.style.height = `${active.offsetHeight}px`
+          highlight.style.left = '0'; highlight.style.right = 'auto'
+          highlight.style.transform = `translate(${x}px, ${y}px)`
+        }
+      }
+      if (inner !== list) list.style.height = `${inner.offsetHeight}px`
+    })
   }
-  input.addEventListener("keydown", event => {
-    const options = [...list.querySelectorAll('[role="option"]:not([aria-disabled="true"])')]
-    const index = options.findIndex(el => el.id === input.getAttribute("aria-activedescendant"))
+  const activate = (option, scroll = false) => {
+    list.querySelectorAll('[data-active], [data-highlighted]').forEach(el => { delete el.dataset.active; delete el.dataset.highlighted })
+    active = option
+    if (!option) input.removeAttribute('aria-activedescendant')
+    else {
+      option.dataset.active = 'true'; option.dataset.highlighted = ''
+      input.setAttribute('aria-activedescendant', option.id)
+      if (list.hasAttribute('data-command-list')) list.querySelectorAll('[role="option"]').forEach(el => el.setAttribute('aria-selected', String(el === option)))
+      if (scroll) option.scrollIntoView({ block: 'nearest' })
+    }
+    measure()
+  }
+  const refresh = () => {
+    const choices = options()
+    if (content && !content.matches(':popover-open')) { activate(null); return }
+    activate(choices.includes(active) ? active : choices.find(el => el.getAttribute('aria-selected') === 'true') || choices[0])
+  }
+  const select = option => { if (option) { hide(); receiver.invokeMethodAsync('Select', option.dataset.value) } }
+  input.addEventListener('keydown', event => {
+    if (event.isComposing || input.disabled || input.readOnly || (list.dataset.minChars && input.value.trim().length < Number(list.dataset.minChars))) return
+    const choices = options(), index = choices.indexOf(active), loop = list.dataset.loop !== 'false'
     let next
     switch (event.key) {
-      case "ArrowDown": next = options[(index + 1) % options.length]; break
-      case "ArrowUp": next = options[index <= 0 ? options.length - 1 : index - 1]; break
-      case "Home": next = options[0]; break
-      case "End": next = options.at(-1); break
-      case "Enter":
-        if (index >= 0) { event.preventDefault(); hide(); receiver.invokeMethodAsync("Select", options[index].dataset.value) }
-        return
-      case "Escape":
-        event.preventDefault(); hide(); receiver.invokeMethodAsync("Close"); return
-      case "Tab": hide(); receiver.invokeMethodAsync("Close"); return
-      default: return // Text input itself supplies search/typeahead without intercepting IME.
+      case 'ArrowDown': next = choices[index + 1] || (loop ? choices[0] : choices.at(-1)); break
+      case 'ArrowUp': next = choices[index - 1] || (loop ? choices.at(-1) : choices[0]); break
+      case 'Home': next = choices[0]; break
+      case 'End': next = choices.at(-1); break
+      case ' ': if (input.tagName !== 'INPUT') { event.preventDefault(); if(active) select(active) }; return
+      case 'Enter': if (active || content?.matches(':popover-open') || list.hasAttribute('data-command-list')) event.preventDefault(); if (active) select(active); return
+      case 'Escape': event.preventDefault(); if(content?.matches(':popover-open')) content.hidePopover(); receiver.invokeMethodAsync('Close'); return
+      case 'Tab': if(content?.matches(':popover-open')) content.hidePopover(); receiver.invokeMethodAsync('Close'); return
+      default: return
     }
-    if (!next || event.isComposing) return
-    // Open in the DOM too: a C# Show re-rendered after Enter had closed the list and reopened it.
-    event.preventDefault(); activate(next); if (content && !content.matches(":popover-open")) content.showPopover()
-  }, { signal: controller.signal })
-  list.addEventListener("pointerdown", event => { if (event.target.closest('[role="option"]')) event.preventDefault() }, { signal: controller.signal })
-  // A click selects through the option's own C# handler; close here for the same reason as Enter.
-  list.addEventListener("click", event => { if (event.target.closest('[role="option"]:not([aria-disabled="true"])')) hide() }, { signal: controller.signal })
-  list.addEventListener("pointermove", event => {
+    event.preventDefault()
+    if (content && !content.matches(':popover-open')) content.showPopover()
+    activate(next, true)
+  }, { signal })
+  list.addEventListener('pointerdown', event => { if(event.target.closest('[role="option"]')) event.preventDefault() }, { signal })
+  list.addEventListener('click', event => { if(event.target.closest('[role="option"]:not([aria-disabled="true"])')) hide() }, { signal })
+  list.addEventListener('pointermove', event => {
+    if (event.clientX === pointerX && event.clientY === pointerY) return
+    pointerX = event.clientX; pointerY = event.clientY
     const option = event.target.closest('[role="option"]:not([aria-disabled="true"])')
-    if (option) activate(option)
-  }, { signal: controller.signal })
+    if(option) activate(option)
+  }, { signal })
+  list.addEventListener('scroll', measure, { signal, passive: true })
+  content?.addEventListener('toggle', () => { if(content.matches(':popover-open')) refresh(); else activate(null) }, { signal })
   const trigger = content && document.querySelector(`[popovertarget="${CSS.escape(content.id)}"]`)
-  trigger?.addEventListener("keydown", event => {
+  trigger?.addEventListener('keydown', event => {
     if (event.isComposing || event.ctrlKey || event.metaKey || event.altKey) return
-    const options = [...list.querySelectorAll('[role="option"]:not([aria-disabled="true"])')]
-    if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+    if(event.key === 'Backspace' && list.dataset.multiple === 'true') { event.preventDefault(); receiver.invokeMethodAsync('RemoveLast'); return }
+    if (['ArrowDown','ArrowUp','Home','End'].includes(event.key)) {
       event.preventDefault(); content.showPopover(); input.focus()
-      activate(event.key === "ArrowUp" || event.key === "End" ? options.at(-1) : options[0])
-    } else if (event.key.length === 1 && event.key.trim()) {
+      activate(event.key === 'ArrowUp' || event.key === 'End' ? options().at(-1) : options()[0], true)
+    } else if(input.tagName === 'INPUT' && event.key.length === 1 && event.key.trim()) {
       event.preventDefault(); content.showPopover(); input.focus()
-      input.value = event.key; input.dispatchEvent(new Event("input", { bubbles: true }))
+      input.value = event.key; input.dispatchEvent(new Event('input', { bubbles: true }))
     }
-  }, { signal: controller.signal })
-  lists.set(input, { controller, list })
+  }, { signal })
+  const field = trigger?.closest('.sheen-rich-combobox')
+  field?.addEventListener('pointerdown', event => {
+    if(event.target.closest('button') || field.hasAttribute('data-disabled') || content.contains(event.target)) return
+    event.preventDefault(); content.showPopover(); input.focus()
+  }, { signal })
+  const observer = new ResizeObserver(measure); observer.observe(inner)
+  window.addEventListener('resize', measure, { signal })
+  lists.set(input, { list, refresh, dispose() { controller.abort(); observer.disconnect(); cancelAnimationFrame(frame) } })
+  refresh()
 }
-export function disposeListbox(input) { lists.get(input)?.controller.abort(); lists.delete(input) }
+export function disposeListbox(input) { lists.get(input)?.dispose(); lists.delete(input) }
+
+export function focusTrigger(input) { const content=input.closest('[popover]'); if(content) document.querySelector(`[popovertarget="${CSS.escape(content.id)}"]`)?.focus() }

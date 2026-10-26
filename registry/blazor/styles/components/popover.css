@@ -62,3 +62,42 @@
   padding: 0.75rem;
   color: var(--bs-secondary-color);
 }
+
+.sheen-choice-list {
+  position: relative;
+  isolation: isolate;
+}
+
+.sheen-choice-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: var(--sheen-radius-sm);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-choice-highlight {
+    transition: transform 160ms var(--sheen-ease-out), height 160ms var(--sheen-ease-out), width 160ms var(--sheen-ease-out);
+  }
+}
+
+.sheen-choice-list :is(.sheen-select-item, .sheen-choice-option) {
+  position: relative;
+  z-index: 1;
+}
+
+.sheen-choice-list .sheen-select-item[data-highlighted],
+.sheen-choice-list .sheen-choice-option[data-active] {
+  background: transparent;
+}
+
+.sheen-choice-list .sheen-autocomplete-option {
+  position: relative;
+  z-index: 1;
+}
+
+.sheen-choice-list .sheen-autocomplete-option[data-highlighted] {
+  background: transparent;
+}

@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/popover.css",
       "type": "css",
-      "sha256": "e07a8ebb2b473a6d2692387e0b297df52c148eb1073a1c0e9170fdfe23022060"
+      "sha256": "dd4f08af65d4fbb5ccef00f6f6ea3040a7963f18e6826ef39c84f6c9feecf0d7"
     }
   ],
   "files": [
@@ -21,14 +21,21 @@
       "destination": "components",
       "target": "Popover/Popover.razor",
       "type": "razor",
-      "sha256": "415af61b5649acc196c2f5380c451036cf5fe68f708b04170dfdcd9c8bbe5a13"
+      "sha256": "8e724e1481ad515b463e4e911c824be382dab8c12a9ebb0480cdf74ca2a219a8"
     },
     {
       "source": "Popover.razor.js",
       "destination": "components",
       "target": "Popover/Popover.razor.js",
       "type": "js",
-      "sha256": "859f2b18893b0133eac9728be913c3a44852d97111527294d13e61e3fdcebf86"
+      "sha256": "7e0931170634a6d67c3f21dfa556cea92ea5a702dc7846e1bd10cf659bf183f1"
+    },
+    {
+      "source": "ChoiceSearch.razor",
+      "destination": "components",
+      "target": "Popover/ChoiceSearch.razor",
+      "type": "razor",
+      "sha256": "792e1292afa981172c3f6edfe70811e9108b00875b48bc9cec4b20aec96a8594"
     }
   ]
 }

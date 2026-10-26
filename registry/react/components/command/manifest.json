@@ -25,7 +25,7 @@
       "source": "theme/scss/components/_command.scss",
       "target": "styles/sheenui/components/_command.scss",
       "type": "scss",
-      "sha256": "2a901d68c0db26b1125299c4c66a68e200de96b2d3ae7bb5538d0266db7e67fa"
+      "sha256": "9e8553115366065397a532a35d32f7e9b74a234a5b07368cc786032dd3efc0f7"
     }
   ]
 }

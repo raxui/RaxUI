@@ -259,3 +259,28 @@
 .sheen-rich-combobox-create .sheen-rich-combobox-item-icon {
   color: inherit;
 }
+
+.sheen-rich-combobox-value > .sheen-rich-combobox-trigger {
+  flex: 1;
+}
+
+.sheen-rich-combobox-clear {
+  align-self: center;
+  margin-inline-end: 0.625rem;
+  padding: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  line-height: 1;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(var(--bs-emphasis-color-rgb), 0.3);
+  color: var(--bs-body-bg);
+}
+
+.sheen-rich-combobox-content.sheen-popover {
+  max-width: calc(100vw - 1rem);
+}
+
+.sheen-rich-combobox[hidden] {
+  display: none !important;
+}

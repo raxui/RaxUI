@@ -296,7 +296,7 @@
 dialog.sheen-command-dialog { margin: 0; padding: 0; }
 dialog.sheen-command-dialog:not([open]) { display: none; }
 dialog.sheen-command-dialog::backdrop { background: rgba(var(--sheen-overlay-rgb), var(--sheen-overlay-alpha)); }
-dialog.sheen-command-dialog .sheen-command-item[data-active] { background: rgba(var(--bs-primary-rgb), .12); }
-.sheen-command-input:focus-visible { outline: 2px solid rgba(var(--bs-primary-rgb), .5); outline-offset: -2px; }
+
+
 
 .sheen-command-item { min-height: var(--sheen-control-height); }

@@ -23,7 +23,7 @@ export function compileBlazorAssets() {
     const name = file.slice(1, -5)
     const target = name === "starter" ? "registry/blazor/starter/starter.css" : `registry/blazor/styles/components/${name}.css`
     // These partials contain definitions only; runtime tokens are emitted once by core.
-    assets.set(target, compile(`@import "variables"; @import "mixins"; @import "components/${name}";`))
+    assets.set(target, compile(`@import "variables"; @import "mixins"; @import "components/${name}"; ${name === "popover" ? '@import "components/choice-highlight";' : ""}`))
   }
   return assets
 }

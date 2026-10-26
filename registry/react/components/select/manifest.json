@@ -25,7 +25,7 @@
       "source": "theme/scss/components/_select.scss",
       "target": "styles/sheenui/components/_select.scss",
       "type": "scss",
-      "sha256": "8f9078492d2f48774979a51c51eac99cb1d50dfc47f07ac7f4586082b6c12657"
+      "sha256": "dbe1ec1d24c08de64c12637b7ca0891578c7a83f2642e0df328d6eca3677db72"
     },
     {
       "source": "registry/react/foundation/choice-highlight.tsx",
