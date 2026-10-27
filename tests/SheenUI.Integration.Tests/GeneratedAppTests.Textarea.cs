@@ -118,7 +118,7 @@ public partial class GeneratedAppTests
         await page.SetViewportSizeAsync(1280, 720);
         page.PageError -= Error;
         Assert.Empty(errors);
-        var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false });
+        var context = await page.Context.Browser!.NewContextAsync(new() { JavaScriptEnabled = false, ReducedMotion = ReducedMotion.Reduce });
         try
         {
             var ssr = await context.NewPageAsync();
