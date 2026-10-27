@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "name": "banner",
+  "version": "0.1.0",
+  "description": "Source-owned Blazor banner with shared theme and progressive enhancement.",
+  "dependencies": [
+    "alert"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/banner.css",
+      "destination": "styles",
+      "target": "components/banner.css",
+      "type": "css",
+      "sha256": "a97fec7d8931af375adbb516935bb05bc54319eb820029b317adb8ac77e3a347"
+    }
+  ],
+  "files": [
+    {
+      "source": "Banner.razor",
+      "destination": "components",
+      "target": "Banner/Banner.razor",
+      "type": "razor",
+      "sha256": "76937f38d6ca1be834d1258a6a604cb1d1bdfc5498d16963bc5af0b0da3ddd45"
+    },
+    {
+      "source": "Banner.razor.js",
+      "destination": "components",
+      "target": "Banner/Banner.razor.js",
+      "type": "js",
+      "sha256": "f7f9fc0e6d23ab52fa9cabebde477faafb2f715fbd2a5f27b8b4b42b3322349a"
+    },
+    {
+      "source": "BannerGroup.razor",
+      "destination": "components",
+      "target": "Banner/BannerGroup.razor",
+      "type": "razor",
+      "sha256": "994150502da61dfc5ae8ed8bd1e14c1df18cee144c38ed05d0aee20ea22cf018"
+    }
+  ]
+}

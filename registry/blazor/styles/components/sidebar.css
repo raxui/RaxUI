@@ -598,3 +598,21 @@
 .sheen-sidebar[data-collapsible=icon] .sheen-sidebar-collapsible-body {
   grid-template-rows: 0fr;
 }
+
+dialog.sheen-sheet-content.sheen-sidebar-sheet[data-side] {
+  width: min(18rem, 85vw);
+}
+
+.sheen-sidebar-wrapper[data-blazor-shell]:not([data-shell-ready]) > .sheen-sidebar {
+  width: var(--sheen-sidebar-width);
+}
+
+.sheen-sidebar-wrapper[data-blazor-shell]:not([data-shell-ready]) > .sheen-sidebar > .sheen-sidebar-inner {
+  transform: none;
+}
+
+.sheen-sidebar .sheen-sidebar-menu-button > svg, .sheen-sidebar .sheen-sidebar-menu-action svg,
+.sheen-sidebar-inner[data-mobile] .sheen-sidebar-menu-button > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}

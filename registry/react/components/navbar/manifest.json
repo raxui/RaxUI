@@ -24,7 +24,7 @@
       "source": "theme/scss/components/_navbar.scss",
       "target": "styles/sheenui/components/_navbar.scss",
       "type": "scss",
-      "sha256": "be50f2c1681fab41e347dd6ebafd051beb655337772d2435251d150e082fa49b"
+      "sha256": "e7d2748089f927f68b8e5c937abb4f8bf38e1f7dacc6c5d478f4c8929cbbc880"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

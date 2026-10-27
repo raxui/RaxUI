@@ -1,0 +1,7 @@
+<div @attributes="AdditionalAttributes" class="sheen-dropdown-menu sheen-menubar-content @Class" role="menu" tabindex="-1" data-menubar-content  data-shell-value="@Parent?.Key" id="@(Parent?.Id + "-content")" aria-labelledby="@(Parent?.Id + "-trigger")"><span class="sheen-dropdown-highlight" aria-hidden="true"></span>@ChildContent</div>
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [CascadingParameter] public MenubarMenu? Parent { get; set; }
+}

@@ -24,7 +24,7 @@
       "source": "theme/scss/components/_footer.scss",
       "target": "styles/sheenui/components/_footer.scss",
       "type": "scss",
-      "sha256": "d74bac10947c3de3d10fafa3bd62efc40033982d08549431e1d0011c8be45d69"
+      "sha256": "b8a664ff09e7607b0fa7192cb088b60c531ee49732a40766d429af08b9c2b5af"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

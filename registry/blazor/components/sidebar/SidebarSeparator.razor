@@ -1,0 +1,2 @@
+<hr @attributes="AdditionalAttributes" class="sheen-sidebar-separator @Class" />
+@code { [Parameter] public string? Class { get; set; } [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; } }

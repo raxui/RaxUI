@@ -1,0 +1,9 @@
+<a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" @attributes="AdditionalAttributes" class="sheen-footer-social-link @Class" href="@Href" aria-label="@Label">@ChildContent</a>
+@code {
+    [Parameter] public bool PreventDefault { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    [Parameter] public string Href { get; set; } = "/";
+}

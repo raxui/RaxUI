@@ -1,0 +1,15 @@
+@* Lucide ChevronRight, ISC. A disclosure remains expanded during static SSR. *@
+<li @attributes="AdditionalAttributes" class="sheen-sidebar-menu-item sheen-sidebar-collapsible @Class" data-state="@(Expanded ? "open" : "closed")"><button type="button" class="sheen-sidebar-menu-button" aria-expanded="@Expanded.ToString().ToLowerInvariant()" aria-controls="@id" @onclick="Toggle" disabled="@(Parent?.Ready != true)">@Icon<span>@Title</span><svg class="sheen-sidebar-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg></button><div class="sheen-sidebar-collapsible-body" id="@id" inert="@(!Expanded)"><div><ul class="sheen-sidebar-menu-sub">@ChildContent</ul></div></div></li>
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [CascadingParameter] public SidebarProvider? Parent { get; set; }
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public bool DefaultOpen { get; set; }
+    private bool? open;
+    private bool Expanded => Parent?.Ready != true || (open ?? DefaultOpen) && !(Parent.Mobile == false && !Parent.Current);
+    private readonly string id = "sheen-sidebar-group-" + Guid.NewGuid().ToString("N");
+    private async Task Toggle() { if (Parent is not null && !Parent.Mobile && !Parent.Current) { await Parent.SetOpen(true); open = true; } else open = !(open ?? DefaultOpen); }
+}

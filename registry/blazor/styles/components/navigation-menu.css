@@ -325,3 +325,62 @@
     transform: translateX(calc(6rem * var(--sheen-nav-dir)));
   }
 }
+.sheen-nav[data-blazor-shell] > div > .sheen-nav-list > li {
+  list-style: none;
+}
+
+.sheen-nav[data-blazor-shell] > [data-nav-viewport] {
+  display: none;
+}
+
+.sheen-nav[data-blazor-shell] > [data-nav-viewport]:popover-open {
+  display: block;
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  pointer-events: none;
+  transition: width 450ms var(--sheen-ease-spring), height 450ms var(--sheen-ease-spring), left 450ms var(--sheen-ease-spring), top 450ms var(--sheen-ease-spring);
+}
+
+.sheen-nav[data-blazor-shell] [data-nav-content][popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  overflow: auto;
+}
+
+.sheen-nav[data-blazor-shell]:not([data-shell-ready]) {
+  display: block;
+  max-width: none;
+}
+
+.sheen-nav[data-blazor-shell]:not([data-shell-ready]) .sheen-nav-content {
+  position: static;
+}
+
+.sheen-nav.sheen-nav .sheen-nav-item-icon svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-nav[data-blazor-shell] > [data-nav-viewport]:popover-open {
+    transition: none;
+    animation: none;
+  }
+}
+.sheen-nav[data-blazor-shell] [data-nav-indicator][hidden] {
+  display: none;
+}
+
+.sheen-nav[data-blazor-shell] [data-nav-indicator][popover] {
+  inset: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: none;
+}

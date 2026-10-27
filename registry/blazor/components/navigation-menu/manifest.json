@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "name": "navigation-menu",
+  "version": "0.1.0",
+  "description": "Source-owned Blazor navigation-menu with shared theme and progressive enhancement.",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/navigation-menu.css",
+      "destination": "styles",
+      "target": "components/navigation-menu.css",
+      "type": "css",
+      "sha256": "f2dc08bafc9a7616e5c3ae08cc66226746a1c5d2216143f4a8c0c84423b87699"
+    }
+  ],
+  "files": [
+    {
+      "source": "NavigationMenu.razor",
+      "destination": "components",
+      "target": "NavigationMenu/NavigationMenu.razor",
+      "type": "razor",
+      "sha256": "e50d198e2c3ebd7bb4d408f038a4f9c4e56e135da02df061486940f3650472d4"
+    },
+    {
+      "source": "NavigationMenu.razor.js",
+      "destination": "components",
+      "target": "NavigationMenu/NavigationMenu.razor.js",
+      "type": "js",
+      "sha256": "c555c7b3f5a6e5cc627c9c2189a0e2bb657597641b6a07799a130f572bddb7d8"
+    },
+    {
+      "source": "NavigationMenuContent.razor",
+      "destination": "components",
+      "target": "NavigationMenu/NavigationMenuContent.razor",
+      "type": "razor",
+      "sha256": "86dedb7c85eb1fcbb42430e706e90d7c38f7cff98766cf4bcc1951132e89c914"
+    },
+    {
+      "source": "NavigationMenuItem.razor",
+      "destination": "components",
+      "target": "NavigationMenu/NavigationMenuItem.razor",
+      "type": "razor",
+      "sha256": "228f05e0bc753e51297761fbf454ec9dd9a39fde3243d487b56312ef2d370785"
+    },
+    {
+      "source": "NavigationMenuLink.razor",
+      "destination": "components",
+      "target": "NavigationMenu/NavigationMenuLink.razor",
+      "type": "razor",
+      "sha256": "ed9e87edde829aed0ccd1edf7444ace67a2dfe8da8324f81ef1e04a46cb02fb1"
+    },
+    {
+      "source": "NavigationMenuList.razor",
+      "destination": "components",
+      "target": "NavigationMenu/NavigationMenuList.razor",
+      "type": "razor",
+      "sha256": "da77b5131784b7b81c70a1c8ccdec74678adf7537c89be127c3fcbc3084e9ac3"
+    },
+    {
+      "source": "NavigationMenuListItem.razor",
+      "destination": "components",
+      "target": "NavigationMenu/NavigationMenuListItem.razor",
+      "type": "razor",
+      "sha256": "a199c8f271d649fb617ce1fad2a75e05c42686af08b7fc9cc05a9c7e8a94a250"
+    },
+    {
+      "source": "NavigationMenuTrigger.razor",
+      "destination": "components",
+      "target": "NavigationMenu/NavigationMenuTrigger.razor",
+      "type": "razor",
+      "sha256": "a3fdd52bc12d8bbabd260851259db5aae9b8f716afe869ed6213a1aa71e8a4b6"
+    },
+    {
+      "source": "NavigationMenuIndicator.razor",
+      "destination": "components",
+      "target": "NavigationMenu/NavigationMenuIndicator.razor",
+      "type": "razor",
+      "sha256": "4d56bf1413385a9b3289cf11dc3b8201670cf38ab88fc7c97fb7305f7b5dbbb4"
+    }
+  ]
+}
