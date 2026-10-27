@@ -1,0 +1,41 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+<CascadingValue Value="this"><header @ref="element" @attributes="AdditionalAttributes" class="sheen-navbar @Class" data-blazor-shell data-variant="@Variant" data-expand="@Expand" data-floating="@(Floating ? "" : null)" data-open="@(Current ? "" : null)" data-sheen-appearance="@Appearance" style="@(Style + (MaxWidth is null ? "" : $";--sheen-navbar-max:{MaxWidth}"))"><div class="sheen-navbar-bar">@ChildContent</div></header></CascadingValue>
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public string Variant { get; set; } = "glass";
+    [Parameter] public string Expand { get; set; } = "md";
+    [Parameter] public bool Floating { get; set; }
+    [Parameter] public bool HideOnScroll { get; set; }
+    [Parameter] public string? ScrollContainer { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter] public string? MaxWidth { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public bool DefaultOpen { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    internal string MenuId { get; } = "sheen-navbar-" + Guid.NewGuid().ToString("N");
+    internal bool Current => OpenChanged.HasDelegate ? Open : localOpen ?? (Open || DefaultOpen);
+    internal bool Ready { get; private set; }
+    private bool? localOpen;
+    private bool disposed;
+    private ElementReference element;
+    private IJSObjectReference? module;
+    private DotNetObjectReference<Navbar>? self;
+    protected override void OnInitialized() => Navigation.LocationChanged += LocationChanged;
+    private void LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs args) => _ = InvokeAsync(async () => { await SetOpen(false); StateHasChanged(); });
+    internal bool IsCurrent(string? href, bool exact) { if (string.IsNullOrEmpty(href)) return false; var current = Navigation.ToAbsoluteUri(Navigation.Uri); var target = Navigation.ToAbsoluteUri(href); return current.GetLeftPart(UriPartial.Path).TrimEnd('/').Equals(target.GetLeftPart(UriPartial.Path).TrimEnd('/'), StringComparison.OrdinalIgnoreCase) && (string.IsNullOrEmpty(target.Fragment) || current.Fragment == target.Fragment) || !exact && current.GetLeftPart(UriPartial.Authority) == target.GetLeftPart(UriPartial.Authority) && current.AbsolutePath.StartsWith(target.AbsolutePath.TrimEnd('/') + "/", StringComparison.OrdinalIgnoreCase); }
+    [JSInvokable] public async Task SetOpen(bool value) { localOpen = value; await OpenChanged.InvokeAsync(value); await InvokeAsync(StateHasChanged); }
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (disposed) return;
+        self ??= DotNetObjectReference.Create(this);
+        module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Navbar/Navbar.razor.js");
+        if (disposed) { await module.DisposeAsync(); return; }
+        await module.InvokeVoidAsync("init", element, self, new { open = Current, expand = Expand, hideOnScroll = HideOnScroll, scrollContainer = ScrollContainer });
+        if (!Ready) { Ready = true; StateHasChanged(); }
+    }
+    public async ValueTask DisposeAsync() { disposed = true; Navigation.LocationChanged -= LocationChanged; if (module is not null) { try { await module.InvokeVoidAsync("dispose", element); await module.DisposeAsync(); } catch (JSDisconnectedException) { } } self?.Dispose(); }
+}

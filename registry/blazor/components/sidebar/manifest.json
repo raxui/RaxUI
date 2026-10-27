@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "name": "sidebar",
+  "version": "0.1.0",
+  "description": "Source-owned Blazor sidebar with shared theme and progressive enhancement.",
+  "dependencies": [
+    "sheet",
+    "skeleton",
+    "button"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/sidebar.css",
+      "destination": "styles",
+      "target": "components/sidebar.css",
+      "type": "css",
+      "sha256": "122f46b8c8b992ae85ebd1a9628cd02ab0056d853d290eb71ae49215004bc56c"
+    }
+  ],
+  "files": [
+    {
+      "source": "Sidebar.razor",
+      "destination": "components",
+      "target": "Sidebar/Sidebar.razor",
+      "type": "razor",
+      "sha256": "8aed311b6b8feefb7b34183f17861bd4f57c20b92ee1677a8a388c30e562ad0b"
+    },
+    {
+      "source": "SidebarContent.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarContent.razor",
+      "type": "razor",
+      "sha256": "0627e3da08222113c00b20f95d54b9324b1eeaa1441c1543d58580e482cd437a"
+    },
+    {
+      "source": "SidebarFooter.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarFooter.razor",
+      "type": "razor",
+      "sha256": "6fea9413b822fcf2848f380ab4d36ef5c7a41f7017b9840ca0fcd5f2b16e9161"
+    },
+    {
+      "source": "SidebarGroup.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarGroup.razor",
+      "type": "razor",
+      "sha256": "2964408a635af1236348b6f8174e34ee20e312707847492effb086ba3ef6dfee"
+    },
+    {
+      "source": "SidebarGroupAction.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarGroupAction.razor",
+      "type": "razor",
+      "sha256": "3d1199132c1d4ac42d5883b6b2bf5501f61382b49a3b5ea469fbd5a093e6f214"
+    },
+    {
+      "source": "SidebarGroupContent.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarGroupContent.razor",
+      "type": "razor",
+      "sha256": "12d9bc25555b86fc6ed559c713def3d31ad5b8199cfad5ea05596210b38bce21"
+    },
+    {
+      "source": "SidebarGroupLabel.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarGroupLabel.razor",
+      "type": "razor",
+      "sha256": "465ae401b413414849af5f36d017458c85eeb2cead7db6ade6369af233d119ca"
+    },
+    {
+      "source": "SidebarHeader.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarHeader.razor",
+      "type": "razor",
+      "sha256": "1663bfce8d95ea052c5edeb285b6b49b6fcbc3c3352b79afd303226812482fdc"
+    },
+    {
+      "source": "SidebarInput.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarInput.razor",
+      "type": "razor",
+      "sha256": "a9b37aad7dcc3cbe9061ae581f85852c2480a528dee740825e58ef26e1b5af3e"
+    },
+    {
+      "source": "SidebarInset.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarInset.razor",
+      "type": "razor",
+      "sha256": "0d990e18711048f665888f0634f22335f2ad10ab8cbbfc3387c133a25256852e"
+    },
+    {
+      "source": "SidebarMenu.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenu.razor",
+      "type": "razor",
+      "sha256": "da62af3d335739813969b58cff6aa3327382ec74103b861986e868421674b85e"
+    },
+    {
+      "source": "SidebarMenuAction.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenuAction.razor",
+      "type": "razor",
+      "sha256": "d794331c67f3d20d2f6660916e0e52c405c0fa8c0ea8d070626245d01cadd08e"
+    },
+    {
+      "source": "SidebarMenuBadge.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenuBadge.razor",
+      "type": "razor",
+      "sha256": "3c9fbce536de74cc06cdf384ab2f4540987e8c89617bc5bef0da7ce695e301e9"
+    },
+    {
+      "source": "SidebarMenuButton.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenuButton.razor",
+      "type": "razor",
+      "sha256": "6ff56d3827f71bc62e7d12c0cf297d8f70534ebcebcfa9b0d61364dca1e16083"
+    },
+    {
+      "source": "SidebarMenuCollapsible.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenuCollapsible.razor",
+      "type": "razor",
+      "sha256": "b320048b2a2edcdb22f9a671f8a9d5615cdb94fcb67299c5ef7381439684bd3a"
+    },
+    {
+      "source": "SidebarMenuItem.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenuItem.razor",
+      "type": "razor",
+      "sha256": "a7032dc8e14452a598cb1b2d669ababf4f5417fedc5ea33d63d798a78e817002"
+    },
+    {
+      "source": "SidebarMenuSkeleton.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenuSkeleton.razor",
+      "type": "razor",
+      "sha256": "44ed0ab75c8a0165ba609ddae5127ca5b23ea9f4612d90e6a8ff2a249da51a1f"
+    },
+    {
+      "source": "SidebarMenuSub.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenuSub.razor",
+      "type": "razor",
+      "sha256": "ed533e239967172200a8df9bae9faf912983e2e1f7f5fb4a7b0d96e8162f3f71"
+    },
+    {
+      "source": "SidebarMenuSubButton.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenuSubButton.razor",
+      "type": "razor",
+      "sha256": "876270dc3e61dca628634ddce7364320e9183c5376e92594fc028dc0955bab92"
+    },
+    {
+      "source": "SidebarMenuSubItem.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarMenuSubItem.razor",
+      "type": "razor",
+      "sha256": "f27f55f175909dd861c1387727aee7bd31b1269e68f9b54198685cb062f9b35e"
+    },
+    {
+      "source": "SidebarProvider.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarProvider.razor",
+      "type": "razor",
+      "sha256": "d17994811058b00942df6b65931d58d161df20a0ff520f7ad4145e97aa632811"
+    },
+    {
+      "source": "SidebarProvider.razor.js",
+      "destination": "components",
+      "target": "Sidebar/SidebarProvider.razor.js",
+      "type": "js",
+      "sha256": "96bff81c6ed7510f99d94a60a27f50f073c4bffaaeb29fe8311b7e02507fd325"
+    },
+    {
+      "source": "SidebarRail.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarRail.razor",
+      "type": "razor",
+      "sha256": "d19ca5fae431a5db8cb92e67399308b509ae483af93dbb7516dd2d42ae06c5be"
+    },
+    {
+      "source": "SidebarSeparator.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarSeparator.razor",
+      "type": "razor",
+      "sha256": "ba218d881377584ad2b910928a8d4f0e0d5ee4673213611f87bded910b8a784e"
+    },
+    {
+      "source": "SidebarTrigger.razor",
+      "destination": "components",
+      "target": "Sidebar/SidebarTrigger.razor",
+      "type": "razor",
+      "sha256": "0c79776e183e76e46958a19efa19b01aa9098ce9353f7d62e986b9ca663a2c1c"
+    }
+  ]
+}

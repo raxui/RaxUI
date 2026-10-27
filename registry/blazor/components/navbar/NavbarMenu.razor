@@ -1,0 +1,8 @@
+<div @attributes="AdditionalAttributes" id="@Parent?.MenuId" class="sheen-navbar-menu @Class" data-state="@(Parent?.Current == true ? "open" : "closed")" inert="@(Parent?.Current != true)"><div class="sheen-navbar-menu-clip"><nav class="sheen-navbar-menu-body" aria-label="@Label">@ChildContent</nav></div></div>
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [CascadingParameter] public Navbar? Parent { get; set; }
+    [Parameter] public string Label { get; set; } = "Menu";
+}

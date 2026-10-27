@@ -1,0 +1,9 @@
+<button @attributes="AdditionalAttributes" type="button" class="sheen-sidebar-rail @Class" tabindex="-1" aria-label="@(Parent?.Current == true ? CollapseLabel : ExpandLabel)" @onclick="Toggle" disabled="@(Parent?.Ready != true)"></button>
+@code {
+    [CascadingParameter] public SidebarProvider? Parent { get; set; }
+    [Parameter] public string CollapseLabel { get; set; } = "Collapse sidebar";
+    [Parameter] public string ExpandLabel { get; set; } = "Expand sidebar";
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private Task Toggle() => Parent?.Toggle() ?? Task.CompletedTask;
+}

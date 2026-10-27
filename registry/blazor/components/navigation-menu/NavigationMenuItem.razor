@@ -1,0 +1,10 @@
+<CascadingValue Value="this"><li @attributes="AdditionalAttributes" class="@Class">@ChildContent</li></CascadingValue>
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [CascadingParameter] public NavigationMenu? Root { get; set; }
+    [Parameter] public string? Value { get; set; }
+    internal string Id { get; } = "sheen-nav-" + Guid.NewGuid().ToString("N");
+    internal string Key => Value ?? Id;
+}

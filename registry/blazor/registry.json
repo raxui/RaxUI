@@ -114,6 +114,12 @@
     },
     { "name": "calendar", "manifest": "components/calendar/manifest.json" },
     { "name": "date-picker", "manifest": "components/date-picker/manifest.json" },
-    { "name": "date-range-picker", "manifest": "components/date-range-picker/manifest.json" }
+    { "name": "date-range-picker", "manifest": "components/date-range-picker/manifest.json" },
+    {"name": "navbar", "manifest": "components/navbar/manifest.json"},
+    {"name": "sidebar", "manifest": "components/sidebar/manifest.json"},
+    {"name": "navigation-menu", "manifest": "components/navigation-menu/manifest.json"},
+    {"name": "menubar", "manifest": "components/menubar/manifest.json"},
+    {"name": "footer", "manifest": "components/footer/manifest.json"},
+    {"name": "banner", "manifest": "components/banner/manifest.json"}
   ]
 }

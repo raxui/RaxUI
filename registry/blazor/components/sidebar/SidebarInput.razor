@@ -1,0 +1,8 @@
+<input @attributes="AdditionalAttributes" class="form-control form-control-sm sheen-sidebar-input @Class" value="@Value" @oninput="Changed" />
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private Task Changed(ChangeEventArgs args) => ValueChanged.InvokeAsync(args.Value?.ToString());
+}

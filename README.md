@@ -1217,3 +1217,7 @@ Resizable separators accept aria-label and keyboard arrows/Home/End. Pass percen
 DataTable labels translate controls, summaries and selection names; column helpers also accept label overrides. DataGrid labels translate menus, errors, cell names, counts and aggregates, while meta.validate can return application-specific messages. react-test contains reference-based examples for all four components, including a 10,000-row editable employee grid and RTL products. Data is local demo state; applications supply their own persistence/server callbacks. Existing Table and public source imports remain available. New Blazor counterparts are deferred in #74.
 
 React advanced components are available through the source registry: Carousel, Chat, AI, TextEditor, QRCode, SpeedDial and Kanban. Install with `npx sheenui-react add <name>`; see [React APIs and examples](docs/react.md#advanced-components). Reference-based examples are also available in react-test. Blazor counterparts remain deferred in #75.
+
+### Blazor app shell
+
+Navbar, Sidebar, NavigationMenu, Menubar, Footer and Banner are available through `sheenui add <name>`. They share the React theme, provide navigable static SSR, and enhance interactive render modes with responsive navigation, gliding highlights, native popover menus and remembered state. See [Blazor app shell APIs and examples](docs/blazor-app-shell.md).

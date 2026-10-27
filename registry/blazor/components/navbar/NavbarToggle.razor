@@ -1,0 +1,10 @@
+<MenuToggle @attributes="AdditionalAttributes" Open="@(Parent?.Current ?? false)" OpenChanged="Changed" OpenLabel="@OpenLabel" CloseLabel="@CloseLabel" Class="@($"sheen-navbar-toggle {Class}")" Disabled="@(Disabled || Parent?.Ready != true)" aria-controls="@Parent?.MenuId" />
+@code {
+    [CascadingParameter] public Navbar? Parent { get; set; }
+    [Parameter] public string OpenLabel { get; set; } = "Open menu";
+    [Parameter] public string CloseLabel { get; set; } = "Close menu";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private Task Changed(bool value) => Parent?.SetOpen(value) ?? Task.CompletedTask;
+}

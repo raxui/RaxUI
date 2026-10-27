@@ -1,0 +1,34 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+<CascadingValue Value="this"><nav @ref="element" @attributes="AdditionalAttributes" class="sheen-nav @Class" data-sheen-appearance="@Appearance" aria-label="@Label" data-blazor-shell><div>@ChildContent</div><div class="sheen-nav-viewport" data-nav-viewport aria-hidden="true"></div></nav></CascadingValue>
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public string Label { get; set; } = "Main navigation";
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public string? DefaultValue { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public bool Loop { get; set; } = true;
+    [Parameter] public string ViewportAlign { get; set; } = "trigger";
+    [Parameter] public int DelayDuration { get; set; } = 200;
+
+    internal bool Ready { get; private set; }
+    private string? localValue; private bool hasLocalValue;
+    private bool disposed;
+    private ElementReference element; private IJSObjectReference? module; private DotNetObjectReference<NavigationMenu>? self;
+    protected override void OnInitialized() => Navigation.LocationChanged += LocationChanged;
+    private void LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs args) => _ = InvokeAsync(async () => { await SetValue(null); StateHasChanged(); });
+    internal bool IsCurrent(string href) { var target = Navigation.ToAbsoluteUri(href); var current = Navigation.ToAbsoluteUri(Navigation.Uri); return current.GetLeftPart(UriPartial.Path).TrimEnd('/').Equals(target.GetLeftPart(UriPartial.Path).TrimEnd('/'), StringComparison.OrdinalIgnoreCase) && (string.IsNullOrEmpty(target.Fragment) || current.Fragment == target.Fragment); }
+    [JSInvokable] public async Task SetValue(string? value) { localValue = value; hasLocalValue = true; await ValueChanged.InvokeAsync(value); await InvokeAsync(StateHasChanged); }
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (disposed) return;
+        self ??= DotNetObjectReference.Create(this); module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/NavigationMenu/NavigationMenu.razor.js");
+        if (disposed) { await module.DisposeAsync(); return; }
+        await module.InvokeVoidAsync("init", element, self, new { value = ValueChanged.HasDelegate ? Value : hasLocalValue ? localValue : Value ?? DefaultValue, loop = Loop, viewportAlign = ViewportAlign, delay = Math.Max(0, DelayDuration) });
+        if (!Ready) { Ready = true; StateHasChanged(); }
+    }
+    public async ValueTask DisposeAsync() { disposed = true; Navigation.LocationChanged -= LocationChanged; if (module is not null) { try { await module.InvokeVoidAsync("dispose", element); await module.DisposeAsync(); } catch (JSDisconnectedException) { } } self?.Dispose(); }
+}

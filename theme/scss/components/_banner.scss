@@ -184,3 +184,10 @@
     position: relative;
   }
 }
+
+// Icon slots override later app icon-library sizing (ADR 014).
+.sheen-banner .sheen-banner-icon svg { width: 1.125rem; height: 1.125rem; }
+.sheen-banner .sheen-banner-close svg { width: 1rem; height: 1rem; }
+
+.sheen-banner[data-position="bottom"][popover] { width: calc(100vw - 2rem); inset: auto 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); margin-inline: auto; padding: 0; border: 0; }
+.sheen-banner[popover]:not(:popover-open) { display: none; }

@@ -23,7 +23,7 @@
       "source": "theme/scss/components/_navigation-menu.scss",
       "target": "styles/sheenui/components/_navigation-menu.scss",
       "type": "scss",
-      "sha256": "7656a716bd7b7d849f3fb801cf204ae9e21c7dbca8ac2e70ec8ce7dad1a83482"
+      "sha256": "fe8c4973253bbb1868374f8259e03f2caf490ad24253a58bd17d1d331116bef8"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

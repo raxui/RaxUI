@@ -1,0 +1,14 @@
+<li @attributes="AdditionalAttributes" class="@Class"><a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" href="@Href" aria-current="@((Active ?? Parent?.IsCurrent(Href) ?? false) ? "page" : null)" data-active="@((Active ?? Parent?.IsCurrent(Href) ?? false) ? "" : null)" @onclick="OnClick" class="sheen-nav-item-link">@if (Icon is not null) { <span class="sheen-nav-item-icon">@Icon</span> }<span class="sheen-nav-item-text"><span class="sheen-nav-item-title">@Title</span>@if (Description is not null) { <span class="sheen-nav-item-description">@Description</span> }@ChildContent</span></a></li>
+@code {
+    [CascadingParameter] public NavigationMenu? Parent { get; set; }
+    [Parameter] public bool PreventDefault { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public string Href { get; set; } = "/";
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public bool? Active { get; set; }
+    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+}

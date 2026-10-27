@@ -1,0 +1,9 @@
+@* Lucide ChevronRight, ISC. *@
+<button @attributes="AdditionalAttributes" type="button" role="menuitem" class="sheen-menubar-trigger @Class" id="@(Parent?.Id + "-trigger")" data-menubar-trigger data-shell-value="@Parent?.Key" aria-haspopup="menu" aria-expanded="false" aria-controls="@(Parent?.Id + "-content")" tabindex="-1" disabled="@(Disabled || Parent?.Root?.Ready != true)">@ChildContent</button>
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [CascadingParameter] public MenubarMenu? Parent { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+}
