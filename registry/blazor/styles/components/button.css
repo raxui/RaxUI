@@ -61,6 +61,10 @@
   width: var(--sheen-control-height);
   height: var(--sheen-control-height);
 }
+.btn-glass-icon.btn-sm, .btn-glass-icon.btn-lg {
+  --bs-btn-padding-x: 0;
+  --bs-btn-padding-y: 0;
+}
 .btn-glass-icon.btn-sm {
   width: 2rem;
   height: 2rem;
