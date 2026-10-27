@@ -204,3 +204,7 @@
     translate: 2px 0;
   }
 }
+.sheen-textarea-group .sheen-textarea-count svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}

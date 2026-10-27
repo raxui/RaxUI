@@ -1,0 +1,19 @@
+<span @attributes="AdditionalAttributes" class="@($"sheen-badge-anchor {Class}")">
+    @ChildContent
+    @if(Count>0||ShowZero){<span @key="Count" class="sheen-badge-count" data-color="@Color" data-dot="@(Dot?"":null)" data-placement="@Placement" data-pop="@(changed?"":null)" role="status" aria-label="@(GetLabel?.Invoke(Count)??$"{Count} notifications")">@if(!Dot){@(Count>Max?$"{Max}+":Count.ToString())}</span>}
+</span>
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public int Count { get; set; }
+    [Parameter] public int Max { get; set; } = 99;
+    [Parameter] public bool Dot { get; set; }
+    [Parameter] public bool ShowZero { get; set; }
+    [Parameter] public string Color { get; set; } = "danger";
+    [Parameter] public string Placement { get; set; } = "top-end";
+    [Parameter] public Func<int,string>? GetLabel { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes { get; set; }
+    private int? previous;
+    private bool changed;
+    protected override void OnParametersSet(){if(Max<0||Count<0)throw new ArgumentOutOfRangeException(nameof(Count));changed|=previous.HasValue&&previous.Value!=Count;previous=Count;}
+}

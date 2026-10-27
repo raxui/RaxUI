@@ -124,6 +124,8 @@
     {"name": "data-table", "manifest": "components/data-table/manifest.json"},
     {"name": "sortable", "manifest": "components/sortable/manifest.json"},
     {"name": "resizable", "manifest": "components/resizable/manifest.json"},
-    {"name": "data-grid", "manifest": "components/data-grid/manifest.json"}
+    {"name": "data-grid", "manifest": "components/data-grid/manifest.json"},
+    {"name": "speed-dial", "manifest": "components/speed-dial/manifest.json"},
+    {"name": "chat", "manifest": "components/chat/manifest.json"}
   ]
 }

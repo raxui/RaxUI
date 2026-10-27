@@ -19,7 +19,14 @@
       "destination": "components",
       "target": "Badge/Badge.razor",
       "type": "razor",
-      "sha256": "ba88ab68851b95f627d0728b576f98e345317f99f5e5976feb04dd1d29eaca73"
+      "sha256": "455be81ee222f96c647799989a937b7793ac2260a3825bf3966bc98ef400bb7e"
+    },
+    {
+      "source": "BadgeCount.razor",
+      "destination": "components",
+      "target": "Badge/BadgeCount.razor",
+      "type": "razor",
+      "sha256": "538e7bde536344c1929a889ab162397c1105aba762126903634bcedb20890879"
     }
   ]
 }

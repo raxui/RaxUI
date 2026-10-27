@@ -7,6 +7,8 @@
   display: flex;
   justify-content: center;
   max-width: 100%;
+  overflow-x: auto;
+  justify-content: safe center;
 }
 .sheen-pagination[data-size=sm] {
   --sheen-pagination-size: 1.875rem;

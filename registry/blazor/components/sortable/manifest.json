@@ -19,14 +19,14 @@
       "destination": "components",
       "target": "Sortable/Sortable.razor",
       "type": "razor",
-      "sha256": "c9cd84d4a899ce099b2b650b5bd5cf2833c34b3e6c46bad4ec7a62c593f161ba"
+      "sha256": "f587d0d5f9694a653219fc9600c2c5de67275409df6e5e866b58a5136c843aa9"
     },
     {
       "source": "Sortable.razor.js",
       "destination": "components",
       "target": "Sortable/Sortable.razor.js",
       "type": "js",
-      "sha256": "61e8eb5a713370d4e5c50bf859b7916edcf7847324354fa958825b792cac9330"
+      "sha256": "f6d50377ba7f1b333dfd0e6f66348952e7d0593fae33f7d668416f6c74f729d0"
     }
   ]
 }

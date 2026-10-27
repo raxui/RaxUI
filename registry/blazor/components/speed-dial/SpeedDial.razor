@@ -1,0 +1,51 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="sheen-speed-dial @Class" data-state="@(Current ? "open" : "closed")" data-side="@Side" data-disabled="@(Disabled ? "" : null)" data-sheen-appearance="@Appearance">@ChildContent</div></CascadingValue>
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public bool DefaultOpen { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string Side { get; set; } = "top";
+    [Parameter] public string ActivationMode { get; set; } = "click";
+    [Parameter] public int Delay { get; set; } = 250;
+    [Parameter] public bool CloseOnEscape { get; set; } = true;
+    [Parameter] public bool CloseOnInteractOutside { get; set; } = true;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    internal string ContentId { get; } = "sheen-dial-" + Guid.NewGuid().ToString("N");
+    internal bool Ready { get; private set; }
+    internal bool Current => !Disabled && (OpenChanged.HasDelegate ? Open : local ?? (Open || DefaultOpen));
+    private bool? local;
+    private long revision;
+    private bool disposed;
+    private ElementReference element;
+    private IJSObjectReference? module;
+    private DotNetObjectReference<SpeedDial>? self;
+    protected override void OnParametersSet() {
+        if (Side is not ("top" or "bottom" or "left" or "right")) throw new ArgumentException("Side must be top, bottom, left or right.");
+        if (ActivationMode is not ("click" or "hover")) throw new ArgumentException("ActivationMode must be click or hover.");
+    }
+    [JSInvokable] public async Task SetOpen(bool value, long request) {
+        if (disposed) return;
+        revision = Math.Max(revision, request);
+        local = value && !Disabled;
+        await OpenChanged.InvokeAsync(local.Value);
+        await InvokeAsync(StateHasChanged);
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (disposed) return;
+        self ??= DotNetObjectReference.Create(this);
+        module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/SpeedDial/SpeedDial.razor.js");
+        if (disposed) { await module.DisposeAsync(); return; }
+        await module.InvokeVoidAsync("sync", element, self, new { id = ContentId, open = Current, revision, disabled = Disabled, side = Side, hover = ActivationMode == "hover", delay = Math.Max(0, Delay), closeOnEscape = CloseOnEscape, closeOnInteractOutside = CloseOnInteractOutside });
+        if (!Ready) { Ready = true; StateHasChanged(); }
+    }
+    public async ValueTask DisposeAsync() {
+        disposed = true;
+        if (module is not null) { try { await module.InvokeVoidAsync("dispose", ContentId); await module.DisposeAsync(); } catch (JSDisconnectedException) { } }
+        self?.Dispose();
+    }
+}

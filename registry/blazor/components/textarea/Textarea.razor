@@ -4,15 +4,47 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
-<div @ref="_element" data-auto-resize="@(AutoResize ? "true" : null)" data-min-rows="@MinRows" data-max-rows="@MaxRows">
-    <InputTextArea @attributes="ControlAttributes" class="@($"form-control sheen-textarea {Class} {ExtraClass}".TrimEnd())"
-                   rows="@MinRows" data-sheen-appearance="@Appearance" Value="@Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression" />
+<div @ref="_element" class="@(Grouped ? $"sheen-textarea-group {WrapperClass}" : WrapperClass)" dir="@ControlDirection" data-sheen-appearance="@Appearance"
+     data-auto-resize="@(AutoResize ? "true" : null)" data-min-rows="@MinRows" data-max-rows="@MaxRows">
+    <TextareaInput @attributes="ControlAttributes" class="@($"form-control sheen-textarea {Class} {ExtraClass}".TrimEnd())"
+                   data-variant="@Variant" data-auto-resize="@(AutoResize ? "" : null)" data-sheen-appearance="@Appearance"
+                   OnInput="OnInput" Value="@Value" ValueChanged="Changed" ValueExpression="OwnValueExpression" @onkeydown="OnKeyDown" />
+    @if (Grouped)
+    {
+        <div class="sheen-textarea-footer">
+            <div class="sheen-textarea-footer-start">@Footer</div>
+            @if (ShowCount && MaxLength is > 0)
+            {
+                <span class="sheen-textarea-count" data-state="@CountState" data-count-max="@MaxLength" data-limit-label="@LimitLabel">
+                    <svg viewBox="0 0 20 20" aria-hidden="true"><circle class="sheen-textarea-count-track" cx="10" cy="10" r="8" /><circle class="sheen-textarea-count-bar" cx="10" cy="10" r="8" pathLength="1" style="@($"stroke-dashoffset:{(1 - Math.Min((double)Length / MaxLength.Value, 1)).ToString(System.Globalization.CultureInfo.InvariantCulture)}")" /></svg>
+                    <span class="sheen-textarea-count-text" dir="ltr">@(CountState is null ? $"{Length} / {MaxLength}" : $"{MaxLength - Length}")</span>
+                    <span class="visually-hidden" role="status" data-count-status>@(CountState == "limit" ? LimitLabel : "")</span>
+                </span>
+            }
+            @FooterEnd
+        </div>
+    }
 </div>
 @code {
     /// <summary>Grow between MinRows and MaxRows after an interactive render.</summary>
     [Parameter] public bool AutoResize { get; set; }
     [Parameter] public int MinRows { get; set; } = 3;
     [Parameter] public int MaxRows { get; set; } = 10;
+    [Parameter] public string Variant { get; set; } = "filled";
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public bool ShowCount { get; set; }
+    [Parameter] public int? MaxLength { get; set; }
+    [Parameter] public string LimitLabel { get; set; } = "Character limit reached";
+    [Parameter] public RenderFragment? Footer { get; set; }
+    [Parameter] public RenderFragment? FooterEnd { get; set; }
+    [Parameter] public string? WrapperClass { get; set; }
+    [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+    private bool Grouped => Footer is not null || FooterEnd is not null || ShowCount && MaxLength is > 0;
+    private int Length => Value?.Length ?? 0;
+    private string? CountState => MaxLength is not > 0 ? null : Length >= MaxLength ? "limit" : MaxLength - Length <= Math.Max(10, (int)Math.Round(MaxLength.Value * .1, MidpointRounding.AwayFromZero)) ? "warn" : null;
+    private string? ControlDirection => AdditionalAttributes is not null && AdditionalAttributes.TryGetValue("dir", out var dir) ? Convert.ToString(dir) : null;
+    private async Task Changed(string? value) { Value = value; await ValueChanged.InvokeAsync(value); }
 
     /// <summary>Bound value, including EditContext validation and static SSR form mapping.</summary>
     [Parameter] public string? Value { get; set; } = "";
@@ -38,6 +70,9 @@
             if (AdditionalAttributes is not null)
                 foreach (var pair in AdditionalAttributes) attrs[pair.Key] = pair.Value;
             if (!attrs.ContainsKey("id")) attrs["id"] = _autoId;
+            if (!attrs.ContainsKey("rows")) attrs["rows"] = MinRows;
+            if (MaxLength is not null) attrs["maxlength"] = MaxLength.Value;
+            if (Invalid) attrs["aria-invalid"] = "true";
             return attrs;
         }
     }
@@ -47,7 +82,7 @@
     private Microsoft.JSInterop.IJSObjectReference? _module;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!AutoResize)
+        if (!(AutoResize || Grouped))
         {
             if (_module is not null) await _module.InvokeVoidAsync("dispose", _element);
             return;

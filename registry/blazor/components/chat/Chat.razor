@@ -1,0 +1,16 @@
+<CascadingValue Value="this"><div @attributes="AdditionalAttributes" class="sheen-chat @Class" data-sheen-appearance="@Appearance">@ChildContent</div></CascadingValue>
+@code {
+    public sealed record Text {
+        public string Sending { get; init; } = "Sending";
+        public string Sent { get; init; } = "Sent";
+        public string Delivered { get; init; } = "Delivered";
+        public string Read { get; init; } = "Read";
+        public string Failed { get; init; } = "Not sent";
+        public string Retry { get; init; } = "Retry";
+    }
+    [Parameter] public Text Labels { get; set; } = new();
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

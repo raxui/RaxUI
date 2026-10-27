@@ -15,14 +15,14 @@ public partial class GeneratedAppTests
         Dotnet(_root, "new", "blazor", "-f", targetFramework, "--interactivity", "Server", "-n", "SampleApp", "-o", app);
         var output = new StringWriter(); var error = new StringWriter();
         Assert.Equal(0, Program.Run(["init"], app, output, error));
-        foreach (var name in new[] { "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner" })
+        foreach (var name in new[] { "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "avatar", "accordion", "toggle" })
             Assert.True(Program.Run(["add", name], app, output, error) == 0, error.ToString());
         WriteAppShellPages(Path.Combine(app, "Components"));
         var program = Path.Combine(app, "Program.cs");
         File.WriteAllText(program, "using Microsoft.AspNetCore.DataProtection;\n" + File.ReadAllText(program).Replace("var app = builder.Build();", "builder.Services.AddDataProtection().UseEphemeralDataProtectionProvider(); builder.Logging.ClearProviders(); builder.Logging.AddConsole(); var app = builder.Build();"));
         Dotnet(app, "build", "-warnaserror:RZ10012");
         var before = InstallationWorkflowTests.SnapshotFiles(app);
-        foreach (var name in new[] { "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner" })
+        foreach (var name in new[] { "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "avatar", "accordion", "toggle" })
             Assert.Equal(0, Program.Run(["add", name], app, output, error));
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app, VerifyAppShell);
@@ -48,11 +48,11 @@ public partial class GeneratedAppTests
         await page.SetViewportSizeAsync(1122, 1122);
         await page.EmulateMediaAsync(new() { ReducedMotion = ReducedMotion.Reduce });
         await page.GotoAsync(url + "/shell-demo");
-        await Assertions.Expect(page.Locator("#shell-navbar .sheen-navbar-toggle")).ToBeEnabledAsync();
+        await Assertions.Expect(page.Locator("#shell-navbar [data-navbar-site] .sheen-navbar-toggle")).ToBeEnabledAsync();
         await page.EvaluateAsync("() => { localStorage.removeItem('sheen-demo-sidebar');localStorage.removeItem('sheen-banner:sheen-demo-shell-tip') }");
         await page.ReloadAsync();
-        var navbar = page.Locator("#shell-navbar");
-        var sidebar = page.Locator("#shell-sidebar");
+        var navbar = page.Locator("#shell-navbar [data-navbar-site]");
+        var sidebar = page.Locator("#shell-sidebar [data-sidebar-main]");
         var navigation = page.Locator("#shell-navigation");
         var menubar = page.Locator("#shell-menubar");
         var footer = page.Locator("#shell-footer");
@@ -84,6 +84,15 @@ public partial class GeneratedAppTests
         await Assertions.Expect(navbar.Locator(".sheen-navbar")).ToHaveAttributeAsync("data-hidden", "");
         await navbar.Locator(".sheen-navbar").EvaluateAsync("el => el.parentElement.scrollTop=100");
         await Assertions.Expect(navbar.Locator(".sheen-navbar")).Not.ToHaveAttributeAsync("data-hidden", "");
+        var phone = page.Locator("#shell-navbar [data-navbar-phone]");
+        await phone.GetByRole(AriaRole.Button, new() { Name = "Open phone menu", Exact = true }).ClickAsync();
+        await phone.GetByRole(AriaRole.Link, new() { Name = "Product", Exact = true }).ClickAsync();
+        await Assertions.Expect(phone.Locator("[data-navbar-phone-page]")).ToHaveTextAsync("product");
+        await sidebar.GetByRole(AriaRole.Button, new() { Name = "Add project", Exact = true }).ClickAsync();
+        await Assertions.Expect(sidebar.GetByRole(AriaRole.Link, new() { Name = "Project 4", Exact = true })).ToBeVisibleAsync();
+        await sidebar.GetByRole(AriaRole.Button, new() { Name = "Project 4 options", Exact = true }).ClickAsync();
+        await page.GetByRole(AriaRole.Menuitem, new() { Name = "Delete", Exact = true }).ClickAsync();
+        await Assertions.Expect(sidebar.GetByRole(AriaRole.Link, new() { Name = "Project 4", Exact = true })).ToHaveCountAsync(0);
         await sidebar.GetByRole(AriaRole.Link, new() { Name = "Today", Exact = true }).ClickAsync();
         await Assertions.Expect(sidebar.Locator("[data-sidebar-page]")).ToHaveTextAsync("today");
         await Assertions.Expect(sidebar.Locator(".sheen-sidebar-content")).ToHaveAttributeAsync("data-highlight", "");
@@ -138,7 +147,7 @@ public partial class GeneratedAppTests
         await page.Keyboard.PressAsync("Escape");
         await components.FocusAsync();
         await page.Keyboard.PressAsync("ArrowDown");
-        await Assertions.Expect(site.GetByRole(AriaRole.Link, new() { Name = "Forms Fields, selection and validation.", Exact = true })).ToBeFocusedAsync();
+        await Assertions.Expect(site.GetByRole(AriaRole.Link, new() { Name = "Get started Copy a component, keep the code. Bootstrap underneath.", Exact = true })).ToBeFocusedAsync();
         await page.Keyboard.PressAsync("Escape");
         await Assertions.Expect(components).ToBeFocusedAsync();
         var bar = menubar.GetByRole(AriaRole.Menubar);
@@ -221,9 +230,21 @@ public partial class GeneratedAppTests
                         await page.Locator("#shell-direction").SelectOptionAsync(direction);
                         await page.Locator("#shell-accent").SelectOptionAsync(appearance == "glass" ? "emerald" : appearance == "flat" ? "rose" : "blue");
                         await page.Locator("#shell-density").SelectOptionAsync(appearance == "flat" ? "compact" : "default");
-                        await components.ClickAsync();
-                        await AssertShellPanelPlacement(components, site.Locator("[data-nav-content]:popover-open"), direction == "rtl");
-                        await page.Keyboard.PressAsync("Escape");
+                        if (width == 1122)
+                        {
+                            await components.ClickAsync();
+                            await AssertShellPanelPlacement(components, site.Locator("[data-nav-content]:popover-open"), direction == "rtl");
+                            await page.Keyboard.PressAsync("Escape");
+                        }
+                        else
+                        {
+                            await navigation.GetByRole(AriaRole.Button, new() { Name = "Open site navigation", Exact = true }).ClickAsync();
+                            var disclosure = navigation.Locator("summary").First;
+                            if (await disclosure.Locator("..").GetAttributeAsync("open") is null) await disclosure.ClickAsync();
+                            await navigation.GetByRole(AriaRole.Button, new() { Name = "Forms", Exact = true }).ClickAsync();
+                            await Assertions.Expect(navigation.Locator("[data-navigation-selection]")).ToHaveTextAsync("Forms");
+                            await Assertions.Expect(navigation.GetByRole(AriaRole.Button, new() { Name = "Open site navigation", Exact = true })).ToHaveAttributeAsync("aria-expanded", "false");
+                        }
                         await file.ClickAsync();
                         var menu = bar.Locator("[data-menubar-content]:popover-open");
                         await Assertions.Expect(menu).ToBeVisibleAsync();
@@ -260,7 +281,7 @@ public partial class GeneratedAppTests
             await Assertions.Expect(ssr.Locator("#routing-sidebar").GetByRole(AriaRole.Link)).ToHaveAttributeAsync("aria-current", "page");
             await Assertions.Expect(ssr.Locator("#routing-footer").GetByRole(AriaRole.Link)).ToHaveAttributeAsync("aria-current", "page");
             await Assertions.Expect(ssr.Locator("#routing-footer").GetByRole(AriaRole.Link)).ToBeVisibleAsync();
-            await Assertions.Expect(ssr.Locator("#shell-navbar").GetByRole(AriaRole.Link, new() { Name = "Docs", Exact = true })).ToBeVisibleAsync();
+            await Assertions.Expect(ssr.Locator("#shell-navbar [data-navbar-site]").GetByRole(AriaRole.Link, new() { Name = "Docs", Exact = true })).ToBeVisibleAsync();
             await Assertions.Expect(ssr.Locator("#shell-navigation").GetByRole(AriaRole.Link, new() { Name = "Forms Fields, selection and validation.", Exact = true })).ToBeVisibleAsync();
         }
         finally { await context.CloseAsync(); }

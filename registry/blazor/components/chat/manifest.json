@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "name": "chat",
+  "version": "0.1.0",
+  "description": "Source-owned chat components matching React.",
+  "dependencies": [
+    "button"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/chat.css",
+      "destination": "styles",
+      "target": "components/chat.css",
+      "type": "css",
+      "sha256": "2a7bc86bbdfae8811702e0f9e9b9ebb910ec1a3f106216f2719920a17b757890"
+    }
+  ],
+  "files": [
+    {
+      "source": "Chat.razor",
+      "destination": "components",
+      "target": "Chat/Chat.razor",
+      "type": "razor",
+      "sha256": "6da5c3a528fe5980ca77402213b981801ebfab590b12155aeae7d0651b263c5b"
+    },
+    {
+      "source": "ChatBubble.razor",
+      "destination": "components",
+      "target": "Chat/ChatBubble.razor",
+      "type": "razor",
+      "sha256": "7fd320ef0ecf51295b7757abd31dc1bff40e03540bceb9e293fab08817adc186"
+    },
+    {
+      "source": "ChatComposer.razor",
+      "destination": "components",
+      "target": "Chat/ChatComposer.razor",
+      "type": "razor",
+      "sha256": "3a651264f653f5c36707cb48ac148e01b3f8d048afc919d35c8955fb14402ecf"
+    },
+    {
+      "source": "ChatComposer.razor.js",
+      "destination": "components",
+      "target": "Chat/ChatComposer.razor.js",
+      "type": "js",
+      "sha256": "df8711714341fe515ea7966a3c546d3beca494a9855a2df826a6ccb7da3731d1"
+    },
+    {
+      "source": "ChatDaySeparator.razor",
+      "destination": "components",
+      "target": "Chat/ChatDaySeparator.razor",
+      "type": "razor",
+      "sha256": "51497e9e98008f6edbf8e3d135a9b0f867f0ac968bec1994a18870d8997dee0d"
+    },
+    {
+      "source": "ChatMessageGroup.razor",
+      "destination": "components",
+      "target": "Chat/ChatMessageGroup.razor",
+      "type": "razor",
+      "sha256": "c2b9c05839fb2fec4a381ea84bd7027703837f16bda1486cad8e7346cea8def1"
+    },
+    {
+      "source": "ChatMessages.razor",
+      "destination": "components",
+      "target": "Chat/ChatMessages.razor",
+      "type": "razor",
+      "sha256": "e4093ebaf663e7d6d9a53c2f68572e9ad032196c830fff32bc880a475ce506e3"
+    },
+    {
+      "source": "ChatMessages.razor.js",
+      "destination": "components",
+      "target": "Chat/ChatMessages.razor.js",
+      "type": "js",
+      "sha256": "b11642bd8d2f2f996901b196701a3b8b1e32494ef888ac453d30ce148be8fccf"
+    },
+    {
+      "source": "ChatTyping.razor",
+      "destination": "components",
+      "target": "Chat/ChatTyping.razor",
+      "type": "razor",
+      "sha256": "f8a3a642ba6679a9d3deeff60d0ef67c83afff482f12a125be75989063f583d7"
+    }
+  ]
+}

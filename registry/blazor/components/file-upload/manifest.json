@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "FileUpload/FileUpload.razor",
       "type": "razor",
-      "sha256": "dbf17b50b7396ec67af0c389d4c8423e7d2d9b41dff502143ec4e2d34b773c65"
+      "sha256": "470ad99eccbc84fb3e7ff866a7f641cbbcc79d673b2f88687d1f06ccd5d6d4b9"
     },
     {
       "source": "FileUpload.razor.js",
@@ -29,6 +29,27 @@
       "target": "FileUpload/FileUpload.razor.js",
       "type": "js",
       "sha256": "2590b725450ffabf6e5fd4a068d670c7c1ddd7a1df4e272b3db33519bb1e5426"
+    },
+    {
+      "source": "FileUploadQueue.razor",
+      "destination": "components",
+      "target": "FileUpload/FileUploadQueue.razor",
+      "type": "razor",
+      "sha256": "33b6497d601fe98a00834c3290deff4b73973d68351e4cff4e3e6aa795194e78"
+    },
+    {
+      "source": "FileUploadQueue.razor.js",
+      "destination": "components",
+      "target": "FileUpload/FileUploadQueue.razor.js",
+      "type": "js",
+      "sha256": "c8ae05dbbae8e6b36d7851367deb6cd381bd3eff5e684c6abbc4c760c5d5a7d8"
+    },
+    {
+      "source": "FileUploadItem.razor",
+      "destination": "components",
+      "target": "FileUpload/FileUploadItem.razor",
+      "type": "razor",
+      "sha256": "4e028f8a57326ae4e837162a7fdf4a6ce1a2893b92708757714a7e87b47e080a"
     }
   ]
 }

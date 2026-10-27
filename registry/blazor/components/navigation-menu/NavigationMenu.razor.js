@@ -5,7 +5,7 @@ export function init(root,receiver,options){
  let s=states.get(root)
  if(!s){
   const controller=new AbortController(),signal=controller.signal
-  s={controller,receiver,options,value:null,timer:0};states.set(root,s);root.dataset.shellReady=''
+  s={controller,receiver,options,value:null,timer:0,request:0};states.set(root,s);root.dataset.shellReady=''
   const panels=()=>[...root.querySelectorAll('[data-nav-content]')],triggers=()=>[...root.querySelectorAll('[data-nav-trigger]:not(:disabled)')],backdrop=root.querySelector('[data-nav-viewport]')
   backdrop.setAttribute('popover','manual')
   const place=()=>{
@@ -27,12 +27,12 @@ export function init(root,receiver,options){
     if(!previous)backdrop.style.transition='none';place();void backdrop.offsetWidth;backdrop.style.transition=''
     if(focus)(focus==='last'?focusable(next).at(-1):focusable(next)[0]??next)?.focus()
    }else {if(backdrop.matches(':popover-open'))backdrop.hidePopover();const indicator=root.querySelector('[data-nav-indicator]');if(indicator){if(indicator.matches(':popover-open'))indicator.hidePopover();indicator.hidden=true;indicator.dataset.state='hidden'}}
-   if(previous!==s.value&&notify)s.receiver.invokeMethodAsync('SetValue',s.value)
+   if(previous!==s.value&&notify)s.receiver.invokeMethodAsync('SetValue',s.value,++s.request).catch(console.error)
   }
   s.open=open;s.place=place;s.refresh=()=>panels().forEach(panel=>{panel.setAttribute('popover','manual');s.resize?.observe(panel)});s.refresh()
   root.addEventListener('pointerover',e=>{const t=e.target.closest('[data-nav-trigger]:not(:disabled)');if(!t||e.pointerType==='touch')return;clearTimeout(s.timer);s.timer=setTimeout(()=>open(t.dataset.shellValue),s.value?0:s.options.delay)},{signal})
   root.addEventListener('pointerenter',()=>clearTimeout(s.timer),{signal})
-  root.addEventListener('pointerleave',()=>{clearTimeout(s.timer);s.timer=setTimeout(()=>open(null),150)},{signal})
+  root.addEventListener('pointerleave',()=>{clearTimeout(s.timer);s.timer=setTimeout(()=>{if(!panels().some(panel=>panel.matches(':popover-open')&&panel.contains(document.activeElement)))open(null)},150)},{signal})
   root.addEventListener('click',e=>{const t=e.target.closest('[data-nav-trigger]:not(:disabled)');if(t){open(s.value===t.dataset.shellValue?null:t.dataset.shellValue);return}if(e.target.closest('a[href]'))open(null)},{signal})
   document.addEventListener('pointerdown',e=>{if(!root.contains(e.target))open(null)},{signal})
   document.addEventListener('focusin',e=>{if(!root.contains(e.target))open(null)},{signal})
@@ -48,6 +48,7 @@ export function init(root,receiver,options){
   },{signal})
   s.resize=new ResizeObserver(place);s.resize.observe(root);window.addEventListener('resize',place,{signal});window.addEventListener('scroll',place,{signal,capture:true})
  }
- s.receiver=receiver;s.options=options;s.refresh();if(s.parameter!==options.value){s.parameter=options.value;s.open(options.value,false,false)}s.place()
+ s.receiver=receiver;s.options=options;s.refresh();// Ignore older Server render acknowledgements while a newer local action is pending.
+ if(options.revision>=s.request&&(s.parameter!==options.value||s.ack!==options.revision)){s.parameter=options.value;s.ack=options.revision;s.open(options.value,false,false)}s.place()
 }
 export function dispose(root){const s=states.get(root);if(!s)return;clearTimeout(s.timer);s.open(null,false,false);s.controller.abort();s.resize.disconnect();states.delete(root)}

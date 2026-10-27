@@ -1,0 +1,10 @@
+<div @attributes="AdditionalAttributes" id="@Dial.ContentId" role="menu" aria-label="@Label" aria-orientation="@(Dial.Side is "top" or "bottom" ? "vertical" : "horizontal")" class="sheen-speed-dial-content @Class" data-state="@(Dial.Current ? "open" : "closed")" data-side="@Dial.Side" inert="@(!Dial.Ready || !Dial.Current)" aria-hidden="@(!Dial.Ready || !Dial.Current ? "true" : "false")" style="@($"--sheen-speed-dial-offset:{Math.Max(0, Offset)}px;--sheen-speed-dial-gap:{Math.Max(0, Gap)}px")">@ChildContent</div>
+@code {
+    [CascadingParameter] public SpeedDial Dial { get; set; } = default!;
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public int Offset { get; set; } = 12;
+    [Parameter] public int Gap { get; set; } = 10;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

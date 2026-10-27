@@ -1,0 +1,16 @@
+@page "/example-parity"
+@rendermode InteractiveServer
+<div data-bs-theme="@mode" data-sheen-appearance="@appearance" dir="@direction" style="padding:1rem">
+<label>Appearance<select id="parity-appearance" @bind="appearance"><option>default</option><option>flat</option><option>glass</option></select></label><label>Mode<select id="parity-mode" @bind="mode"><option>light</option><option>dark</option></select></label><label>Direction<select id="parity-direction" @bind="direction"><option>ltr</option><option>rtl</option></select></label>
+<Button OnClick="()=>showSortable=!showSortable">@(showSortable?"Hide sortable":"Show sortable")</Button>
+@if(showSortable){<section id="parity-sortable" style="backdrop-filter:blur(12px)"><SortableExamples /></section>}
+<Button OnClick="()=>showUploads=!showUploads">@(showUploads?"Hide uploads":"Show uploads")</Button>
+@if(showUploads){<section id="parity-upload"><FileUploadExamples /></section>}
+<section id="parity-badge"><BadgeExamples /></section>
+<section id="parity-avatar"><AvatarExamples /></section>
+<section id="parity-timeline"><TimelineExamples /></section>
+<section id="parity-accordion"><AccordionExamples /></section>
+<section id="parity-pagination"><PaginationExamples /></section>
+<section id="parity-stepper"><StepperExamples /></section>
+</div>
+@code{private bool showSortable=true,showUploads=true;private string appearance="default",mode="light",direction="ltr";}
