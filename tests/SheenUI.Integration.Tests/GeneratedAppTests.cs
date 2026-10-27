@@ -257,7 +257,7 @@ public partial class GeneratedAppTests : IDisposable
         await VerifyInBrowser(app);
     }
 
-    private static async Task VerifyInBrowser(string app, bool appShellOnly = false)
+    private static async Task VerifyInBrowser(string app, Func<IPage, string, Task>? verify = null)
     {
         var start = new ProcessStartInfo("dotnet")
         {
@@ -288,7 +288,7 @@ public partial class GeneratedAppTests : IDisposable
             using var playwright = await Playwright.CreateAsync();
             await using var browser = await playwright.Chromium.LaunchAsync(new() { Headless = true });
             var page = await browser.NewPageAsync();
-            if (appShellOnly) { await VerifyAppShell(page, url); return; }
+            if (verify is not null) { await verify(page, url); return; }
 
             // Starter welcome page: theme switching through the query string, no template layout.
             await page.GotoAsync(url);

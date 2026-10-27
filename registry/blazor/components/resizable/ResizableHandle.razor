@@ -1,0 +1,10 @@
+@* Built-in SVG paths from Lucide (ISC). *@
+<div role="separator" tabindex="-1" aria-orientation="@(Orientation=="horizontal"?"vertical":"horizontal")" aria-label="@Label" class="sheen-resizable-handle" style="flex-shrink:0;touch-action:none" data-resizable-handle data-disabled="@(Disabled?"":null)" aria-disabled="@(Disabled?"true":null)">
+    @if(WithHandle){<span class="sheen-resizable-grip"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg></span>}
+</div>
+@code {
+    [CascadingParameter(Name="SheenResizableOrientation")] public string Orientation { get; set; } = "horizontal";
+    [Parameter] public string Label { get; set; } = "Resize panels";
+    [Parameter] public bool WithHandle { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+}

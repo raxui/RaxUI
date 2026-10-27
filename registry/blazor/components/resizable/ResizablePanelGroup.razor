@@ -1,0 +1,21 @@
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @ref="root" @attributes="AdditionalAttributes" class="@($"sheen-resizable {Class}")" style="@($"display:flex;flex-direction:{(Orientation=="vertical"?"column":"row")};{Style}")" data-resizable-group data-orientation="@Orientation" data-variant="@Variant" data-sheen-appearance="@Appearance" dir="@Direction"><CascadingValue Name="SheenResizableOrientation" Value="@Orientation">@ChildContent</CascadingValue></div>
+@code {
+    [Parameter] public string Orientation { get; set; } = "horizontal";
+    [Parameter] public string Variant { get; set; } = "plain";
+    [Parameter] public string? AutoSaveId { get; set; }
+    [Parameter] public EventCallback<IReadOnlyDictionary<string,double>> LayoutChanged { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Direction { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes { get; set; }
+    private ElementReference root;private IJSObjectReference? module;private DotNetObjectReference<ResizablePanelGroup>? self;
+    protected override void OnParametersSet(){if(Orientation is not ("horizontal" or "vertical"))throw new ArgumentException("Invalid resizable orientation.");}
+    protected override async Task OnAfterRenderAsync(bool firstRender){module??=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/Resizable/ResizablePanelGroup.razor.js");self??=DotNetObjectReference.Create(this);await module.InvokeVoidAsync("sync",root,self,AutoSaveId);}
+    [JSInvokable] public Task Changed(Dictionary<string,double> sizes)=>LayoutChanged.InvokeAsync(sizes);
+    public async ValueTask DisposeAsync(){if(module is null)return;try{await module.InvokeVoidAsync("dispose",root);await module.DisposeAsync();}catch(JSDisconnectedException){}self?.Dispose();}
+}

@@ -1,0 +1,32 @@
+@* Built-in SVG paths from Lucide (ISC). *@
+@typeparam TItem
+<div role="rowgroup" class="sheen-grid-head"><div role="row" aria-rowindex="1" class="sheen-grid-row" style="@($"height:{Model.RowHeight}px")">
+@for(var index=0;index<Model.Visible.Count;index++){
+    var c=Model.Visible[index];var col=index;var sort=Model.Sorting.FirstOrDefault(x=>x.Id==c.Id);var sorted=Model.Sorting.Any(x=>x.Id==c.Id);
+    <div @key="c.Id" id="@($"{GridId}-h-c{col}")" role="columnheader" aria-colindex="@(col+1)" aria-sort="@(sorted?(sort.Descending?"descending":"ascending"):null)" class="sheen-grid-hcell" style="@Model.CellStyle(c)" data-col="@c.Id" data-pinned="@Model.EffectivePin(c)" data-active="@(Session.Header&&Session.ActiveColumn==c.Id?"":null)" @onpointerdown='()=>Activate.InvokeAsync(new("",c.Id))' >
+        @if(c.Id=="__select"){
+            <Checkbox disabled="@(!Interactive)" Value="@(Model.Rows.Count>0&&Model.Rows.All(r=>Model.Selected.Contains(Model.Id(r))))" Indeterminate="@(Model.Rows.Any(r=>Model.Selected.Contains(Model.Id(r)))&&!Model.Rows.All(r=>Model.Selected.Contains(Model.Id(r))))" ValueChanged='()=>Action.InvokeAsync(new("select-all",c.Id))' aria-label="@Labels.SelectAll" tabindex="-1" />
+        }else{
+            <button type="button" disabled="@(!Interactive)" class="sheen-grid-hlabel border-0 bg-transparent p-0" style="font:inherit;color:inherit" tabindex="-1" @onclick='e=>Action.InvokeAsync(new("sort",c.Id,e.ShiftKey))'> @c.Title @if(sorted){<span class="sheen-grid-sort" data-dir="@(sort.Descending?"desc":"asc")"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m8 9 4-4 4 4M12 5v14" /></svg>@if(Model.Sorting.Count>1){<small>@(Model.Sorting.FindIndex(x=>x.Id==c.Id)+1)</small>}</span>}</button>
+            <DropdownMenu Disabled="@(!Interactive)" TriggerVariant="ghost" TriggerClass="sheen-grid-hmenu btn-sm" Class="sheen-grid-column-menu">
+                <Trigger><span aria-label="@Labels.ColumnMenu(c.Title)">⋯</span></Trigger><ChildContent>
+                    @if(c.Sortable){<DropdownMenuItem OnSelect='()=>Action.InvokeAsync(new("asc",c.Id))'>@Labels.SortAscending</DropdownMenuItem><DropdownMenuItem OnSelect='()=>Action.InvokeAsync(new("desc",c.Id))'>@Labels.SortDescending</DropdownMenuItem><DropdownMenuItem OnSelect='()=>Action.InvokeAsync(new("clear-sort",c.Id))'>@Labels.ClearSort</DropdownMenuItem><DropdownMenuSeparator />}
+                    <DropdownMenuItem OnSelect='()=>Action.InvokeAsync(new("pin-start",c.Id))'>@Labels.PinStart</DropdownMenuItem><DropdownMenuItem OnSelect='()=>Action.InvokeAsync(new("pin-end",c.Id))'>@Labels.PinEnd</DropdownMenuItem><DropdownMenuItem OnSelect='()=>Action.InvokeAsync(new("unpin",c.Id))'>@Labels.Unpin</DropdownMenuItem>
+                    @if(c.Hideable){<DropdownMenuItem OnSelect='()=>Action.InvokeAsync(new("hide",c.Id))'>@Labels.Hide</DropdownMenuItem>}
+                    <DropdownMenuItem OnSelect='()=>Action.InvokeAsync(new("wider",c.Id))'>@Labels.IncreaseWidth</DropdownMenuItem><DropdownMenuItem OnSelect='()=>Action.InvokeAsync(new("narrower",c.Id))'>@Labels.DecreaseWidth</DropdownMenuItem>
+                </ChildContent>
+            </DropdownMenu>
+            <span role="separator" aria-orientation="vertical" tabindex="-1" aria-label="@($"{c.Title} {Labels.IncreaseWidth}")" aria-valuenow="@Model.Widths[c.Id]" aria-valuemin="@c.MinWidth" aria-valuemax="@c.MaxWidth" data-grid-resize="@c.Id" class="sheen-grid-resizer"></span>
+        }
+    </div>
+}
+</div></div>
+@code {
+    [Parameter,EditorRequired] public DataGridModel.State<TItem> Model { get; set; } = default!;
+    [Parameter,EditorRequired] public DataGridEditing.Session Session { get; set; } = default!;
+    [Parameter] public DataGridTypes.Labels Labels { get; set; } = new();
+    [Parameter] public bool Interactive { get; set; }
+    [Parameter] public string GridId { get; set; } = "";
+    [Parameter] public EventCallback<DataGridTypes.Action> Action { get; set; }
+    [Parameter] public EventCallback<DataGridTypes.Address> Activate { get; set; }
+}

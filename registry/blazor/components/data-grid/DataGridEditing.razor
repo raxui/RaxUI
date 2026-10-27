@@ -1,0 +1,36 @@
+@code {
+    public sealed class Session {
+        public string? ActiveRow { get; set; }
+        public string? ActiveColumn { get; set; }
+        public bool Header { get; set; }
+        public bool Editing { get; set; }
+        public string Draft { get; private set; } = "";
+        public string? Error { get; set; }
+        public string? Flash { get; set; }
+        public bool FocusEditor { get; set; }
+        public bool FocusGrid { get; set; }
+        public bool SelectText { get; set; }
+        private readonly Dictionary<(string Row,string Column),string> drafts=new();
+        public void Begin(string row,string column,object? value,string? seed){
+            ActiveRow=row;ActiveColumn=column;Header=false;Editing=true;Error=null;SelectText=seed is null;FocusEditor=true;
+            Draft=seed??(drafts.TryGetValue((row,column),out var saved)?saved:DataGridTypes.Plain(value));SetDraft(Draft);
+        }
+        public void SetDraft(string value){Draft=value;if(ActiveRow is not null&&ActiveColumn is not null)drafts[(ActiveRow,ActiveColumn)]=value;Error=null;}
+        public void End(bool discard=true){if(discard&&ActiveRow is not null&&ActiveColumn is not null)drafts.Remove((ActiveRow,ActiveColumn));Editing=false;Error=null;FocusEditor=false;FocusGrid=true;}
+        public static object? Parse(DataGridTypes.Editor editor,string text){
+            return editor.Type switch {
+                "number"=>string.IsNullOrWhiteSpace(text)?null:decimal.TryParse(text,System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out var n)?n:text,
+                "date"=>string.IsNullOrWhiteSpace(text)?null:DateOnly.TryParseExact(text,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out var date)?date:text,
+                "checkbox"=>new[]{"true","yes","1","✓","x"}.Contains(text.Trim(),StringComparer.OrdinalIgnoreCase),
+                "select"=>text.Trim(),_=>text
+            };
+        }
+        public static string? Validate<T>(DataGridTypes.Column<T> column,T row,object? value,DataGridTypes.Labels labels){
+            var editor=column.Editor;
+            if(editor?.Type=="number"&&value is not null){if(value is not decimal n)return labels.InvalidNumber;if(editor.Min is decimal min&&n<min)return labels.MinValue(min);if(editor.Max is decimal max&&n>max)return labels.MaxValue(max);}
+            if(editor?.Type=="date"&&value is not null&&value is not DateOnly)return labels.InvalidDate;
+            if(editor?.Type=="select"&&!editor.Options.Any(x=>Equals(x.Value,value)))return labels.InvalidOption;
+            return column.Validate?.Invoke(value,row);
+        }
+    }
+}

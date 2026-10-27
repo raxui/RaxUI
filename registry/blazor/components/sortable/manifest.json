@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "sortable",
+  "version": "0.1.0",
+  "description": "Source-owned sortable (ADR 019).",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/sortable.css",
+      "destination": "styles",
+      "target": "components/sortable.css",
+      "type": "css",
+      "sha256": "7a872fbde2035a62b6ce11c270992d01ddaefcdc379dd71d8cd38c0550b7b567"
+    }
+  ],
+  "files": [
+    {
+      "source": "Sortable.razor",
+      "destination": "components",
+      "target": "Sortable/Sortable.razor",
+      "type": "razor",
+      "sha256": "c9cd84d4a899ce099b2b650b5bd5cf2833c34b3e6c46bad4ec7a62c593f161ba"
+    },
+    {
+      "source": "Sortable.razor.js",
+      "destination": "components",
+      "target": "Sortable/Sortable.razor.js",
+      "type": "js",
+      "sha256": "61e8eb5a713370d4e5c50bf859b7916edcf7847324354fa958825b792cac9330"
+    }
+  ]
+}

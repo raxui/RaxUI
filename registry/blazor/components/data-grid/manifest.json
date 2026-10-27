@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "name": "data-grid",
+  "version": "0.1.0",
+  "description": "Source-owned editable virtual data grid (ADR 019).",
+  "dependencies": [
+    "button",
+    "checkbox",
+    "select",
+    "date-input",
+    "dropdown-menu",
+    "input"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/data-grid.css",
+      "destination": "styles",
+      "target": "components/data-grid.css",
+      "type": "css",
+      "sha256": "fd4bc994f546f6a66a53ed0fcefc0f4125697941e7b4e599e72f97e4e4331ac5"
+    }
+  ],
+  "files": [
+    {
+      "source": "DataGrid.razor",
+      "destination": "components",
+      "target": "DataGrid/DataGrid.razor",
+      "type": "razor",
+      "sha256": "85bfaa15c895b3021abc82e77ddd2f395d9b0cb8c92312045d751e8f6f1131d5"
+    },
+    {
+      "source": "DataGrid.razor.js",
+      "destination": "components",
+      "target": "DataGrid/DataGrid.razor.js",
+      "type": "js",
+      "sha256": "a0b1d1e5e55af858a615278c55e11a1716ef8c56e4bf8badafb44c1c39255e0f"
+    },
+    {
+      "source": "DataGridEditing.razor",
+      "destination": "components",
+      "target": "DataGrid/DataGridEditing.razor",
+      "type": "razor",
+      "sha256": "01ab76b379bdc0f35fc04bc8b625a50d3e558b0765b4ce82a0ee0d61853841be"
+    },
+    {
+      "source": "DataGridEditor.razor",
+      "destination": "components",
+      "target": "DataGrid/DataGridEditor.razor",
+      "type": "razor",
+      "sha256": "aa58dfd13572acad08828c632dfea864c445f74466d1bce4438875cf06f56f55"
+    },
+    {
+      "source": "DataGridFooter.razor",
+      "destination": "components",
+      "target": "DataGrid/DataGridFooter.razor",
+      "type": "razor",
+      "sha256": "3ccf371cde0e3426bb8b242476cf2ad5a5051a648959b52d4b8cd93ffdbef05e"
+    },
+    {
+      "source": "DataGridHeader.razor",
+      "destination": "components",
+      "target": "DataGrid/DataGridHeader.razor",
+      "type": "razor",
+      "sha256": "5e562b1abce1de418105c50b59b960d5618d59e68e83356b011467a6f3c05d1b"
+    },
+    {
+      "source": "DataGridModel.razor",
+      "destination": "components",
+      "target": "DataGrid/DataGridModel.razor",
+      "type": "razor",
+      "sha256": "bb7ccc7e0f09a88d569d479aeddf975fcb05b805f12114ee41f2ba772542c2d1"
+    },
+    {
+      "source": "DataGridRow.razor",
+      "destination": "components",
+      "target": "DataGrid/DataGridRow.razor",
+      "type": "razor",
+      "sha256": "663beff224fd78bf7b486929c7d5772c787f4ac5c6a4a3551cc076fe770dc836"
+    },
+    {
+      "source": "DataGridTypes.razor",
+      "destination": "components",
+      "target": "DataGrid/DataGridTypes.razor",
+      "type": "razor",
+      "sha256": "21f20537606fa00c03f0425870c1e4cf6b7b3ec967af1a0cd8088b4e8e64b324"
+    }
+  ]
+}
