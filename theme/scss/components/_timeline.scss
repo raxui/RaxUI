@@ -6,6 +6,8 @@
 // -----------------------------------------------------------------------------
 
 .sheen-timeline-wrap {
+  // Keep absolute screen-reader labels inside the horizontal scrollport.
+  position: relative;
   container: sheen-timeline / inline-size;
   min-width: 0;
 

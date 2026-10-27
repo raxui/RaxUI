@@ -3,6 +3,12 @@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
+@if (Variant is not null)
+{
+    <FileUploadQueue Value="Value" ValueChanged="QueueChanged" Accept="@Accept" MaxSize="MaxSize" MaxFiles="MaxFiles" Variant="@Variant" Layout="@Layout" Title="@Title" Hint="@Hint" Upload="Upload" Preview="Preview" Labels="Labels" OnUploaded="OnUploaded" OnError="QueueError" Appearance="@Appearance" Class="@Class" AdditionalAttributes="Attributes" />
+}
+else
+{
 <div class="@($"sheen-file-upload {Class}")" data-sheen-appearance="@Appearance" @ref="_root">
     <label class="sheen-upload-zone" data-disabled="@(IsDisabled ? "true" : null)">
         <InputFile @key="_generation" @attributes="Attributes" OnChange="Selected" accept="@Accept" multiple="@(MaxFiles > 1)" class="sheen-upload-input" />
@@ -29,7 +35,24 @@
         }
     </ul>
 </div>
+}
 @code {
+    /// <summary>Null preserves native batch selection; dropzone or compact enables the upload queue.</summary>
+    [Parameter] public string? Variant { get; set; }
+    [Parameter] public string Layout { get; set; } = "list";
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Hint { get; set; }
+    [Parameter] public FileUploadQueue.Text Labels { get; set; } = new();
+    [Parameter] public Func<IBrowserFile, FileUploadQueue.UploadContext, Task>? Upload { get; set; }
+    [Parameter] public Func<IBrowserFile, string?>? Preview { get; set; }
+    [Parameter] public EventCallback<IBrowserFile> OnUploaded { get; set; }
+    private async Task QueueChanged(IReadOnlyList<IBrowserFile> files) { _error = null; _messages?.Clear(); await Change(files); }
+    private async Task QueueError(string message)
+    {
+        _error = message; _messages?.Clear();
+        if (Identifier is { } identifier) _messages?.Add(identifier, message);
+        EditContext?.NotifyValidationStateChanged(); await OnError.InvokeAsync(message);
+    }
     [Parameter] public IReadOnlyList<IBrowserFile> Value { get; set; } = Array.Empty<IBrowserFile>();
     [Parameter] public EventCallback<IReadOnlyList<IBrowserFile>> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<IReadOnlyList<IBrowserFile>>>? ValueExpression { get; set; }
@@ -108,6 +131,7 @@
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (Variant is not null) return;
         _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/FileUpload/FileUpload.razor.js");
         await _module.InvokeVoidAsync("init", _root);
     }

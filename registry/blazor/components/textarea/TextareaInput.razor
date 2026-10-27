@@ -1,0 +1,7 @@
+@* Internal oninput adapter: InputTextArea retains EditContext and static form mapping. *@
+@inherits Microsoft.AspNetCore.Components.Forms.InputTextArea
+<textarea @attributes="AdditionalAttributes" name="@NameAttributeValue" class="@CssClass" @bind="CurrentValueAsString" @bind:event="oninput" @bind:after="NotifyInput"></textarea>
+@code {
+    [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
+    private Task NotifyInput() => OnInput.InvokeAsync(new ChangeEventArgs { Value = CurrentValueAsString });
+}

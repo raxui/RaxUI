@@ -1,23 +1,26 @@
-const states=new WeakMap()
+const states=new WeakMap(),instances=new Map()
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches
 export function sync(root,dotnet,options){
+ if(!root?.isConnected)return
+
  if(states.has(root)){const s=states.get(root);s.options=options;if(s.drag){if(s.drag.committing)s.reset();else s.cancel();}s.restoreFocus();return}
  const content=root.querySelector('[data-sortable-content]'),live=root.querySelector('[data-sortable-live]')
  const items=()=>[...content.children].filter(el=>el.hasAttribute('data-sortable-id'))
  const state={options,drag:null,focus:null,restoreFocus(){if(!state.focus)return;const item=items().find(x=>x.dataset.sortableId===state.focus);(item?.querySelector('[data-sortable-handle]')??item)?.focus({preventScroll:true});state.focus=null}}
  const say=(kind,index)=>{const d=state.drag;if(!d)return;live.textContent=state.options[kind].replaceAll('{item}',state.options.labels[d.id]??d.id).replaceAll('{position}',String(index+1)).replaceAll('{total}',String(d.nodes.length))}
- const reset=()=>{const d=state.drag;if(!d)return;clearTimeout(d.timer);d.copy?.remove();for(const el of d.nodes){el.style.removeProperty('transform');el.style.removeProperty('transition');el.removeAttribute('data-placeholder');el.removeAttribute('data-dragging')}state.drag=null}
+ const reset=()=>{const d=state.drag;if(!d)return;clearTimeout(d.timer);d.copy?.remove();for(const el of d.nodes){el.style.removeProperty('transform');el.style.removeProperty('transition');el.removeAttribute('data-placeholder');el.removeAttribute('data-dragging')}root.removeAttribute('data-sorting');state.drag=null}
  state.reset=reset
  state.cancel=()=>{if(state.drag?.started)say('cancelled',state.drag.from);reset()}
- const start=()=>{const d=state.drag;if(!d||d.started)return;d.started=true;if(d.keyboard){d.element.dataset.dragging='';say('grabbed',d.from);return}d.element.dataset.placeholder='';d.copy=d.element.cloneNode(true);d.copy.removeAttribute('id');d.copy.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));d.copy.removeAttribute('data-placeholder');d.copy.dataset.overlay='';d.copy.setAttribute('aria-hidden','true');d.copy.inert=true
- Object.assign(d.copy.style,{position:'fixed',top:d.rect.top+'px',left:d.rect.left+'px',width:d.rect.width+'px',height:d.rect.height+'px',margin:'0',zIndex:'2000',pointerEvents:'none',boxSizing:'border-box'});root.append(d.copy);say('grabbed',d.from)}
+ const start=()=>{const d=state.drag;if(!d||d.started)return;d.started=true;root.dataset.sorting='';if(d.keyboard){d.element.dataset.dragging='';say('grabbed',d.from);return}d.element.dataset.placeholder='';d.copy=d.element.cloneNode(true);d.copy.removeAttribute('id');d.copy.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));d.copy.removeAttribute('data-placeholder');d.copy.dataset.overlay='';d.copy.setAttribute('aria-hidden','true');d.copy.inert=true
+ Object.assign(d.copy.style,{position:'fixed',top:d.rect.top+'px',left:d.rect.left+'px',width:d.rect.width+'px',height:d.rect.height+'px',margin:'0',zIndex:'2000',pointerEvents:'none',boxSizing:'border-box'});// Glass/transform ancestors establish a containing block for fixed elements.
+ const theme=getComputedStyle(d.element);for(const name of theme)if(name.startsWith('--'))d.copy.style.setProperty(name,theme.getPropertyValue(name));d.copy.style.direction=theme.direction;d.copy.style.font=theme.font;d.copy.style.color=d.color;document.body.append(d.copy);say('grabbed',d.from)}
  const move=index=>{const d=state.drag;if(!d||index===d.to||d.nodes[index]?.hasAttribute('data-disabled'))return;d.to=index
   const order=d.nodes.slice();order.splice(d.from,1);order.splice(index,0,d.element)
-  for(let pos=0;pos<order.length;pos++){const el=order[pos];if(el===d.element)continue;const old=d.boxes[d.nodes.indexOf(el)],next=d.boxes[pos];el.style.transition=reduced()?'none':'transform 320ms cubic-bezier(0.22,1,0.36,1)';el.style.transform=`translate(${next.left-old.left}px,${next.top-old.top}px)`}
+  for(let pos=0;pos<order.length;pos++){const el=order[pos];if(el===d.element&&!el.hasAttribute('data-placeholder'))continue;const old=d.boxes[d.nodes.indexOf(el)],next=d.boxes[pos];el.style.transition=reduced()?'none':'transform 320ms cubic-bezier(0.22,1,0.36,1)';el.style.transform=`translate(${next.left-old.left}px,${next.top-old.top}px)`}
   if(d.keyboard){const box=d.boxes[index];d.element.style.transform=`translate(${box.left-d.rect.left}px,${box.top-d.rect.top}px)`}
   say('moved',index)
  }
- const create=(el,keyboard,event)=>{const nodes=items(),rect=el.getBoundingClientRect();state.drag={element:el,id:el.dataset.sortableId,nodes,boxes:nodes.map(x=>x.getBoundingClientRect()),rect,from:nodes.indexOf(el),to:nodes.indexOf(el),keyboard,started:false,x:event?.clientX??0,y:event?.clientY??0};return state.drag}
+ const create=(el,keyboard,event)=>{const nodes=items(),rect=el.getBoundingClientRect();state.drag={color:getComputedStyle(el).color,element:el,id:el.dataset.sortableId,nodes,boxes:nodes.map(x=>x.getBoundingClientRect()),rect,from:nodes.indexOf(el),to:nodes.indexOf(el),keyboard,started:false,x:event?.clientX??0,y:event?.clientY??0};return state.drag}
  const finish=async()=>{const d=state.drag;if(!d)return;if(!d.started){reset();return}say('dropped',d.to)
   if(d.copy&&!reduced()){const box=d.boxes[d.to];try{await d.copy.animate([{transform:d.copy.style.transform||'none'},{transform:`translate(${box.left-d.rect.left}px,${box.top-d.rect.top}px)`}],{duration:260,easing:'cubic-bezier(0.22,1,0.36,1)',fill:'forwards'}).finished}catch{}}
   if(state.drag!==d)return;state.focus=d.id;d.committing=true;if(d.from!==d.to){try{await dotnet.invokeMethodAsync('Move',d.id,d.nodes[d.to].dataset.sortableId)}catch(error){console.error(error)}}if(state.drag===d)reset();state.restoreFocus()
@@ -47,6 +50,6 @@ export function sync(root,dotnet,options){
  const cancel=()=>state.cancel()
  root.addEventListener('pointerdown',down);root.addEventListener('keydown',key);root.addEventListener('pointermove',pointermove,{passive:false});root.addEventListener('pointerup',up);root.addEventListener('pointercancel',cancel)
  state.dispose=()=>{reset();root.removeEventListener('pointerdown',down);root.removeEventListener('keydown',key);root.removeEventListener('pointermove',pointermove);root.removeEventListener('pointerup',up);root.removeEventListener('pointercancel',cancel)}
- states.set(root,state)
+ state.root=root;instances.set(options.id,state);states.set(root,state)
 }
-export function dispose(root){states.get(root)?.dispose();states.delete(root)}
+export function dispose(id){const state=instances.get(id);if(!state)return;state.dispose();states.delete(state.root);instances.delete(id)}

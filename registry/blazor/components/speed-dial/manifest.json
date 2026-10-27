@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "name": "speed-dial",
+  "version": "0.1.0",
+  "description": "Source-owned speed-dial components matching React.",
+  "dependencies": [
+    "button"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/speed-dial.css",
+      "destination": "styles",
+      "target": "components/speed-dial.css",
+      "type": "css",
+      "sha256": "d490c1459f99cea779da26a77270d3030ea723863bad1d6842c1f70eefd565da"
+    }
+  ],
+  "files": [
+    {
+      "source": "SpeedDial.razor",
+      "destination": "components",
+      "target": "SpeedDial/SpeedDial.razor",
+      "type": "razor",
+      "sha256": "d0c535fb7f9f26f98c70b5ee262414e6d9e53ae65939a903d217000cf0e0c1eb"
+    },
+    {
+      "source": "SpeedDial.razor.js",
+      "destination": "components",
+      "target": "SpeedDial/SpeedDial.razor.js",
+      "type": "js",
+      "sha256": "5133759abc4491bdcef4bb71f210e59233f4e9b5038f1f5845fdfd7b1bff377e"
+    },
+    {
+      "source": "SpeedDialAction.razor",
+      "destination": "components",
+      "target": "SpeedDial/SpeedDialAction.razor",
+      "type": "razor",
+      "sha256": "859ad23b4289415fcf07ce04d4ae9be453735193fa4ab1e4a3e29cdf212e8264"
+    },
+    {
+      "source": "SpeedDialContent.razor",
+      "destination": "components",
+      "target": "SpeedDial/SpeedDialContent.razor",
+      "type": "razor",
+      "sha256": "7cd030115953489ae087be7b78eb7502e2d2de9bdf6deea51f6220fb2e8b3f32"
+    },
+    {
+      "source": "SpeedDialItem.razor",
+      "destination": "components",
+      "target": "SpeedDial/SpeedDialItem.razor",
+      "type": "razor",
+      "sha256": "3b0ef43fb1957fb7bff07e7a2c7d29cecca16c27855699f42cc183bb09efcde5"
+    },
+    {
+      "source": "SpeedDialLabel.razor",
+      "destination": "components",
+      "target": "SpeedDial/SpeedDialLabel.razor",
+      "type": "razor",
+      "sha256": "8abb2b62d43465072ae98599d3b9e37f5a329d5c58eb39aaa06eb2ca9146df0a"
+    },
+    {
+      "source": "SpeedDialTrigger.razor",
+      "destination": "components",
+      "target": "SpeedDial/SpeedDialTrigger.razor",
+      "type": "razor",
+      "sha256": "477e0b5a558e5beb31d98ad011e0ed0bacd6897698afbf16ae630e0dfd6627cc"
+    }
+  ]
+}

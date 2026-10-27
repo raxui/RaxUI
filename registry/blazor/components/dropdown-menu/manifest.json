@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "DropdownMenu/DropdownMenu.razor",
       "type": "razor",
-      "sha256": "b733c38d006ddb6875bcb2cdeb8bfadb530f6afd99b55c040efad0b93674152f"
+      "sha256": "537cbaf0b7595e71a5b53ddd4da03a25ad62a03f1a3b11fe64ad51eac026f143"
     },
     {
       "source": "DropdownMenuItem.razor",
@@ -47,7 +47,7 @@
       "destination": "components",
       "target": "DropdownMenu/DropdownMenu.razor.js",
       "type": "js",
-      "sha256": "789326d956d7f62f0939d8bb36a00f15051f320d563b219d27ab1bff33fb1005"
+      "sha256": "7a8c685abc33fe2c0089c4c7647accb5950b3850611714f006df1c7a71a919b6"
     }
   ]
 }

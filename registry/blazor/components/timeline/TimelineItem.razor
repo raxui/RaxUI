@@ -1,10 +1,10 @@
 @* SheenUI TimelineItem. Source-owned: edit freely. Styled by the timeline component CSS. *@
-<li @attributes="AdditionalAttributes" class="@($"sheen-timeline-item {Class}")" style="@($"--sheen-timeline-i:{Index};{(AdditionalAttributes?.TryGetValue("style", out var style) == true ? style : null)}")" data-status="@Status" data-tone="@(Tone ?? (Status == "error" ? "danger" : Status == "upcoming" ? "neutral" : "primary"))" data-marker="@(Marker is null ? "dot" : "icon")" aria-current="@(Status == "current" ? "step" : null)" data-sheen-appearance="@Appearance">
-    @if (TimelineContext?.TimePosition == "side") { <div class="sheen-timeline-side">@TimeMarkup</div> }
+<li @attributes="AdditionalAttributes" class="@($"sheen-timeline-item {Class}")" style="@($"--sheen-timeline-i:{Index};{(AdditionalAttributes?.TryGetValue("style", out var style) == true ? style : null)}")" data-status="@Status" data-side="@(TimelineContext?.EffectiveTimePosition=="side"?(TimelineContext.Layout=="alternate"&&Index%2==1?"start":"end"):null)" data-tone="@(Tone ?? (Status == "error" ? "danger" : Status == "upcoming" ? "neutral" : "primary"))" data-marker="@(Marker is null ? "dot" : "icon")" aria-current="@(Status == "current" ? "step" : null)" data-sheen-appearance="@Appearance">
+    @if (TimelineContext?.EffectiveTimePosition == "side") { <div class="sheen-timeline-side">@TimeMarkup</div> }
     <div class="sheen-timeline-rail" aria-hidden="true"><span class="sheen-timeline-marker">@Marker</span><span class="sheen-timeline-line"></span></div>
     <div class="sheen-timeline-body">
-        @if (TimelineContext?.TimePosition != "side") { @TimeMarkup }
-        @if (Title is not null) { <div class="sheen-timeline-title">@Title<span class="visually-hidden"> (@(StatusLabel ?? TimelineContext?.StatusLabel(Status) ?? Status))</span></div> }
+        @if (TimelineContext?.EffectiveTimePosition != "side") { @TimeMarkup }
+        @if (Title is not null || TitleContent is not null) { <div class="sheen-timeline-title">@if(TitleContent is not null){@TitleContent}else{@Title}<span class="visually-hidden"> (@(StatusLabel ?? TimelineContext?.StatusLabel(Status) ?? Status))</span></div> }
         @if (Description is not null) { <div class="sheen-timeline-description">@Description</div> }
         @if (ChildContent is not null) { <div class="sheen-timeline-content">@ChildContent</div> }
     </div>
@@ -21,6 +21,7 @@
     [Parameter] public int Index { get; set; }
     [Parameter] public string Status { get; set; } = "done";
     [Parameter] public string? Tone { get; set; }
+    [Parameter] public RenderFragment? TitleContent { get; set; }
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Description { get; set; }
     [Parameter] public string? Time { get; set; }

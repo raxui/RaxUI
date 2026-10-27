@@ -1,16 +1,21 @@
 // SheenUI DropdownMenu: positioning and keyboard navigation for the popover menu (ADR 013).
 // The popover attribute already gives the top layer, Esc, and closing on a click outside. Source-owned: edit freely.
 
+const instances = new Map()
 const ITEM = '[role="menuitem"]:not(:disabled),[role="menuitemcheckbox"]:not(:disabled),[role="menuitemradio"]:not(:disabled)'
 const GAP = 4 // px between trigger and menu
 const MARGIN = 8 // px kept free at the viewport edges
 
 export function init(trigger, menu) {
+  if (!trigger?.isConnected || !menu?.isConnected || instances.has(menu.id)) return
+  const controller = new AbortController()
+  const listen = (element, event, handler) => element.addEventListener(event, handler, { signal: controller.signal })
   const place = () => position(trigger, menu)
+  instances.set(menu.id, () => { controller.abort(); window.removeEventListener("resize", place); window.removeEventListener("scroll", place, true) })
   let pointer = false
-  trigger.addEventListener("pointerdown", () => { pointer = true })
+  listen(trigger, "pointerdown", () => { pointer = true })
 
-  menu.addEventListener("toggle", (event) => {
+  listen(menu, "toggle", (event) => {
     const open = event.newState === "open"
     trigger.setAttribute("aria-expanded", String(open))
     if (open) {
@@ -30,25 +35,27 @@ export function init(trigger, menu) {
     }
   })
 
-  trigger.addEventListener("keydown", (event) => {
+  listen(trigger, "keydown", (event) => {
     if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return
     event.preventDefault()
     menu.showPopover()
   })
 
-  menu.addEventListener("keydown", (event) => onKeyDown(event, menu))
-  menu.addEventListener("click", (event) => {
+  listen(menu, "keydown", (event) => onKeyDown(event, menu))
+  listen(menu, "click", (event) => {
     if (event.target.closest(ITEM)) menu.hidePopover()
   })
   // Like Radix, the pointer moves the highlight, so mouse and keyboard share one active item.
-  menu.addEventListener("pointermove", (event) => {
+  listen(menu, "pointermove", (event) => {
     const item = event.target.closest(ITEM)
     if (item && item !== document.activeElement) item.focus()
   })
   // Leaving the items clears the highlight, as in Radix.
-  menu.addEventListener("pointerleave", () => menu.focus())
-  menu.addEventListener("focusin", (event) => glide(menu, event.target.closest(ITEM)))
+  listen(menu, "pointerleave", () => menu.focus())
+  listen(menu, "focusin", (event) => glide(menu, event.target.closest(ITEM)))
 }
+
+export function dispose(id) { instances.get(id)?.(); instances.delete(id) }
 
 // Slides the highlight to the focused item; it appears in place first, then glides from item to item.
 function glide(menu, item) {

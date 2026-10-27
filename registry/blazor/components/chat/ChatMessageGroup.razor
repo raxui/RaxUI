@@ -1,0 +1,13 @@
+<div @attributes="AdditionalAttributes" class="sheen-chat-group @Class" data-from="@From">
+@if (From == "other") { <div class="sheen-chat-avatar">@Avatar</div> }
+<div class="sheen-chat-stack">@if (Name is not null || Time is not null) { <div class="sheen-chat-meta">@if (Name is not null) { <span class="sheen-chat-name">@Name</span> }@if (Time is not null) { <span class="sheen-chat-time">@Time</span> }</div> }@ChildContent</div></div>
+@code {
+    [Parameter] public string From { get; set; } = "other";
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public string? Time { get; set; }
+    [Parameter] public RenderFragment? Avatar { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    protected override void OnParametersSet() { if (From is not ("self" or "other")) throw new ArgumentException("From must be self or other."); }
+}

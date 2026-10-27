@@ -1,0 +1,28 @@
+@* Built-in icon paths from Lucide (ISC). *@
+@using Microsoft.AspNetCore.Components.Web
+<li class="sheen-queue-upload-item" data-state="open" data-status="@Entry.Status" data-kind="@(Entry.File.ContentType.StartsWith("image/")?"image":"doc")">
+<div class="sheen-queue-upload-item-inner"><div class="sheen-queue-upload-card">
+    <span class="@(Grid ? "sheen-queue-upload-tile" : "sheen-queue-upload-thumb")">
+        @if(Entry.Preview is not null){<img src="@Entry.Preview" alt="" class="sheen-queue-upload-thumb-img" />}
+        else{<span class="sheen-queue-upload-kind-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h6" /></svg></span>}
+        @if(Grid){<span class="sheen-queue-upload-tile-remove">@Actions</span>@if(Entry.Status=="success"){<span class="sheen-queue-upload-tile-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m5 12 4 4L19 6" /></svg></span>}}
+    </span>
+    <div class="sheen-queue-upload-body"><span class="sheen-queue-upload-name text-truncate" dir="auto" title="@Entry.File.Name">@Entry.File.Name</span><span class="sheen-queue-upload-meta" data-error="@(Entry.Status == "error" ? "" : null)">@FileUploadQueue.FormatBytes(Entry.File.Size) · @Status</span>
+    @if(Entry.Status is "uploading" or "queued"){<span class="sheen-queue-upload-bar" role="progressbar" aria-label="@Entry.File.Name" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@Entry.Percent" data-indeterminate="@(Entry.Status=="queued"?"":null)"><span style="@($"width:{Entry.Percent.ToString(System.Globalization.CultureInfo.InvariantCulture)}%")"></span></span>}
+    </div>@if(!Grid){<div class="sheen-queue-upload-actions">@Actions</div>}
+</div></div></li>
+@code {
+    [Parameter,EditorRequired] public FileUploadQueue.Entry Entry { get; set; } = default!;
+    [Parameter] public FileUploadQueue.Text Labels { get; set; } = new();
+    [Parameter] public bool Grid { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public EventCallback OnRemove { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public EventCallback OnRetry { get; set; }
+    private string Status=>Entry.Status switch {"queued"=>Labels.Queued,"uploading"=>$"{Labels.Uploading} {Entry.Percent:0}%","error"=>Entry.Error??Labels.Failed,"cancelled"=>Labels.Cancelled,_=>Labels.Success};
+    private RenderFragment Actions=>@<span class="d-flex">
+        @if(Entry.Status is "uploading" or "queued"){<button type="button" disabled="@Disabled" class="btn btn-glass-icon sheen-queue-upload-action" aria-label="@($"{Labels.Cancel} {Entry.File.Name}")" @onclick="OnCancel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6h12v12H6z" /></svg></button>}
+        @if(Entry.Status is "error" or "cancelled"){<button type="button" disabled="@(Disabled || Entry.Cancellation is not null)" class="btn btn-glass-icon sheen-queue-upload-action" aria-label="@($"{Labels.Retry} {Entry.File.Name}")" @onclick="OnRetry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 7v5h-5M20 12a8 8 0 1 0-2 6" /></svg></button>}
+        <button type="button" disabled="@Disabled" class="btn btn-glass-icon sheen-queue-upload-action" aria-label="@($"{Labels.Remove} {Entry.File.Name}")" @onclick="OnRemove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg></button>
+    </span>;
+}

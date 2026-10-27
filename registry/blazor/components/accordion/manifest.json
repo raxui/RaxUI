@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/accordion.css",
       "type": "css",
-      "sha256": "d9ec87e7ed46261f191969597d5f61cf6be94036e3ec8fbbca74cf91ce69bab6"
+      "sha256": "bd917c3a340ec8530f08eff74f6b8312e941c5cb7cdd2d370c2ef6cc0993b245"
     }
   ],
   "files": [
@@ -19,14 +19,21 @@
       "destination": "components",
       "target": "Accordion/Accordion.razor",
       "type": "razor",
-      "sha256": "505e60a595664f18e6a94875b4b64d73005499509bde920cff6b4139da1f2e26"
+      "sha256": "c6c21cbc1648e3a4cc076136d67c68cdf3347331597790485678ebf4403e9389"
     },
     {
       "source": "AccordionItem.razor",
       "destination": "components",
       "target": "Accordion/AccordionItem.razor",
       "type": "razor",
-      "sha256": "68d9b00fd5379798623de35685abd65e17de89b76118e405e75de85431fe20e2"
+      "sha256": "000080f542ee3b56bc765f134d19c5a338c27f9d8b633d0dd8e1340884775fd8"
+    },
+    {
+      "source": "Accordion.razor.js",
+      "destination": "components",
+      "target": "Accordion/Accordion.razor.js",
+      "type": "js",
+      "sha256": "bc67933c93fcbe272228e6922f060ab74a3fe8274455b283033a17d438d70a47"
     }
   ]
 }
