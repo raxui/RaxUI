@@ -1,0 +1,23 @@
+@page "/editor-demo"
+@rendermode InteractiveServer
+<div data-sheen-appearance="@appearance" data-bs-theme="@mode" dir="@direction" style="padding:1rem">
+<label>Appearance<select id="editor-appearance" @bind="appearance"><option>default</option><option>flat</option><option>glass</option></select></label>
+<label>Mode<select id="editor-mode" @bind="mode"><option>light</option><option>dark</option></select></label>
+<h1>Text editor</h1>
+<section id="editor-examples"><TextEditorExamples /></section>
+<section id="editor-probes" class="my-4">
+    <TextEditor aria-label="Unsafe" Value="@Unsafe" data-probe="unsafe" Toolbar="none" />
+    <TextEditor aria-label="Large" @bind-Value="large" data-probe="large" Toolbar="none" BubbleMenu="false" />
+    <output id="large-length">@(large?.Length ?? 0)</output>
+    <TextEditor aria-label="Locked" Value="<p>Read only</p>" ReadOnly="@locked" data-probe="locked" Toolbar="basic" />
+    <Button OnClick="() => locked = !locked">Toggle read-only</Button>
+    <TextEditorView id="view-probe" Html="@Unsafe" />
+    <form method="post" id="post-probe"><TextEditor aria-label="Posted" Name="body" Value="<p>Posted <strong>body</strong></p>" Toolbar="none" /></form>
+</section>
+</div>
+@code {
+    private string appearance = "default", mode = "light", direction = "ltr";
+    private string? large = "";
+    private bool locked = true;
+    private const string Unsafe = "<p>Safe <strong>text</strong></p><script>window.__xss=1</script><img src=x onerror=\"window.__xss=2\"><p><a href=\"javascript:window.__xss=3\">bad link</a></p>";
+}

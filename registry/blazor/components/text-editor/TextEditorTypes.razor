@@ -1,0 +1,52 @@
+@* Public data contracts. No extra NuGet dependency. *@
+@code {
+    /// <summary>Tool names for TextEditor.Tools; "|" is a separator.</summary>
+    public static class Tools
+    {
+        public static readonly IReadOnlyList<string> Full = ["undo", "redo", "|", "heading", "|", "bold", "italic", "underline", "strike", "highlight", "code", "|", "link", "|", "bulletList", "orderedList", "taskList", "|", "align", "|", "blockquote", "codeBlock", "horizontalRule", "|", "clear"];
+        public static readonly IReadOnlyList<string> Basic = ["bold", "italic", "underline", "|", "link", "|", "bulletList", "orderedList"];
+        public static readonly IReadOnlyList<string> Bubble = ["bold", "italic", "underline", "strike", "highlight", "code", "|", "link"];
+        public static readonly IReadOnlySet<string> Known = new HashSet<string>(Full);
+    }
+    /// <summary>Every built-in text, with the React defaults.</summary>
+    public sealed class Labels
+    {
+        public string Toolbar { get; init; } = "Formatting";
+        public string Undo { get; init; } = "Undo";
+        public string Redo { get; init; } = "Redo";
+        public string TextStyle { get; init; } = "Text style";
+        public string Paragraph { get; init; } = "Normal text";
+        public string Heading1 { get; init; } = "Heading 1";
+        public string Heading2 { get; init; } = "Heading 2";
+        public string Heading3 { get; init; } = "Heading 3";
+        public string Bold { get; init; } = "Bold";
+        public string Italic { get; init; } = "Italic";
+        public string Underline { get; init; } = "Underline";
+        public string Strike { get; init; } = "Strikethrough";
+        public string Code { get; init; } = "Inline code";
+        public string Highlight { get; init; } = "Highlight";
+        public string Link { get; init; } = "Link";
+        public string BulletList { get; init; } = "Bulleted list";
+        public string OrderedList { get; init; } = "Numbered list";
+        public string TaskList { get; init; } = "Checklist";
+        public string Align { get; init; } = "Alignment";
+        public string AlignStart { get; init; } = "Align start";
+        public string AlignCenter { get; init; } = "Center";
+        public string AlignEnd { get; init; } = "Align end";
+        public string AlignJustify { get; init; } = "Justify";
+        public string Blockquote { get; init; } = "Quote";
+        public string CodeBlock { get; init; } = "Code block";
+        public string HorizontalRule { get; init; } = "Divider";
+        public string Clear { get; init; } = "Clear formatting";
+        public string LinkPlaceholder { get; init; } = "Paste or type a link";
+        public string LinkApply { get; init; } = "Apply";
+        public string LinkRemove { get; init; } = "Remove link";
+        public string LinkOpen { get; init; } = "Open link";
+        internal string For(string tool) => tool switch
+        {
+            "undo" => Undo, "redo" => Redo, "bold" => Bold, "italic" => Italic, "underline" => Underline, "strike" => Strike, "code" => Code,
+            "highlight" => Highlight, "link" => Link, "bulletList" => BulletList, "orderedList" => OrderedList, "taskList" => TaskList,
+            "blockquote" => Blockquote, "codeBlock" => CodeBlock, "horizontalRule" => HorizontalRule, "clear" => Clear, _ => tool,
+        };
+    }
+}

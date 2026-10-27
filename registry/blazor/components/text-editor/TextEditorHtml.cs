@@ -14,10 +14,28 @@ internal static partial class TextEditorHtml
     // Tags the Tiptap schema produces, with the attributes each may keep.
     private static readonly Dictionary<string, string[]> Allowed = new(StringComparer.Ordinal)
     {
-        ["p"] = ["style", "dir"], ["h1"] = ["style", "dir"], ["h2"] = ["style", "dir"], ["h3"] = ["style", "dir"],
-        ["strong"] = [], ["em"] = [], ["u"] = [], ["s"] = [], ["code"] = ["class"], ["mark"] = [], ["a"] = ["href"],
-        ["br"] = [], ["hr"] = [], ["blockquote"] = [], ["pre"] = [], ["ul"] = ["data-type"], ["ol"] = ["start"],
-        ["li"] = ["data-type", "data-checked"], ["label"] = [], ["input"] = ["type", "checked"], ["span"] = [], ["div"] = [],
+        ["p"] = ["style", "dir"],
+        ["h1"] = ["style", "dir"],
+        ["h2"] = ["style", "dir"],
+        ["h3"] = ["style", "dir"],
+        ["strong"] = [],
+        ["em"] = [],
+        ["u"] = [],
+        ["s"] = [],
+        ["code"] = ["class"],
+        ["mark"] = [],
+        ["a"] = ["href"],
+        ["br"] = [],
+        ["hr"] = [],
+        ["blockquote"] = [],
+        ["pre"] = [],
+        ["ul"] = ["data-type"],
+        ["ol"] = ["start"],
+        ["li"] = ["data-type", "data-checked"],
+        ["label"] = [],
+        ["input"] = ["type", "checked"],
+        ["span"] = [],
+        ["div"] = [],
     };
     // Equivalent tags normalize to the schema's names.
     private static readonly Dictionary<string, string> Aliases = new(StringComparer.Ordinal) { ["b"] = "strong", ["i"] = "em", ["strike"] = "s", ["del"] = "s" };
