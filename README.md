@@ -1243,3 +1243,7 @@ The reusable samples now cover upload queues/photo grids/CV validation, Badge co
 ### Blazor Chat and SpeedDial
 
 `sheenui add chat` and `sheenui add speed-dial` install source-owned components with shared theme CSS and no new packages. English/Arabic examples cover message delivery/retry/typing/scrolling and labelled, directional and controlled-hover actions. See [the contract and SSR requirements](docs/blazor-advanced-part1.md) and [examples](examples/blazor/advanced/).
+
+### Blazor Kanban
+
+`sheenui add kanban` installs a draggable board built on the Blazor Sortable engine: cards move within and between columns, columns reorder by their grip, and mouse, touch and keyboard all work, with translated announcements. C# state is the source of truth. See [the behavior contract](docs/blazor-kanban.md).

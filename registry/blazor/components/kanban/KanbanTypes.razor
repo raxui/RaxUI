@@ -1,0 +1,11 @@
+@* Public data contracts. No extra NuGet dependency. *@
+@code {
+    /// <summary>One board column; list order is column order.</summary>
+    public sealed record Column<T>(string Id, string Title, IReadOnlyList<T> Items) {
+        public bool Disabled { get; init; }
+        /// <summary>Shows the count as count/limit and flags it when exceeded.</summary>
+        public int? Limit { get; init; }
+    }
+    /// <summary>A committed move: Type is "card" or "column"; From/To are column IDs.</summary>
+    public sealed record Change(string Id, string Type, string From, string To, int Index);
+}

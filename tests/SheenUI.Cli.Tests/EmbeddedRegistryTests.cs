@@ -173,6 +173,8 @@ public class EmbeddedRegistryTests
     [InlineData("date-range-picker")]
     [InlineData("qr-code")]
     [InlineData("carousel")]
+    [InlineData("sortable")]
+    [InlineData("kanban")]
     public void All_manifest_files_match_their_sha256_checksums(string name)
     {
         var manifest = _registry.GetComponentManifest(name);

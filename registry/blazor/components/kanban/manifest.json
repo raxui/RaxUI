@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "kanban",
+  "version": "0.1.0",
+  "description": "Source-owned kanban board built on the sortable engine (ADR 019).",
+  "dependencies": [
+    "sortable"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/kanban.css",
+      "destination": "styles",
+      "target": "components/kanban.css",
+      "type": "css",
+      "sha256": "9a2cdb41580420d738c8c7911011db1e086c420f4c12b1c334d5f63d46100ccd"
+    }
+  ],
+  "files": [
+    {
+      "source": "Kanban.razor",
+      "destination": "components",
+      "target": "Kanban/Kanban.razor",
+      "type": "razor",
+      "sha256": "bf3e4e75c77486680717e1b33dce2e8840dbbed75929f78251dea2f2dab6b48c"
+    },
+    {
+      "source": "KanbanTypes.razor",
+      "destination": "components",
+      "target": "Kanban/KanbanTypes.razor",
+      "type": "razor",
+      "sha256": "48fa0f7ab0f5cb13ee3a7627c95d0a9790ababe76453108c1878a07e3ff8d051"
+    }
+  ]
+}
