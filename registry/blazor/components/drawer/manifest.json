@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Source-owned drawer overlay.",
   "dependencies": [
-    "dialog"
+    "sheet"
   ],
   "assets": [
     {
@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/drawer.css",
       "type": "css",
-      "sha256": "b7e167fb2fcd0054e163c958786bb7aff3f2cb0f0b61be0ee43b22423be647c6"
+      "sha256": "013b931300d57d95f56869cb9144c34ba553dd852635517ca406563d26f27265"
     }
   ],
   "files": [
@@ -21,14 +21,14 @@
       "destination": "components",
       "target": "Drawer/Drawer.razor",
       "type": "razor",
-      "sha256": "88daf9b9abf30d7266b4d72d6bde6d4485cf24a6cb294577edda5c694e75490c"
+      "sha256": "a4fecf5333c71a893eee66d61dc488f9300456099aa7e7671f1cf04fe04a747a"
     },
     {
       "source": "Drawer.razor.js",
       "destination": "components",
       "target": "Drawer/Drawer.razor.js",
       "type": "js",
-      "sha256": "4b2c9a2351ec8f388444d72712b8a9bb471998554d11f09ae0fcfd3851d61b80"
+      "sha256": "562ff035d488e9e7f0540a94251f2d98d12762e54ba6cbf34af22a0f291d1d0c"
     }
   ]
 }
