@@ -1,0 +1,119 @@
+@implements IDisposable
+<div class="vstack gap-3">
+<h3 class="h6 fw-semibold mb-0">Assistant · pick a suggestion or ask; Stop works mid-answer</h3>
+<div class="d-flex flex-column border rounded-4 bg-body overflow-hidden" style="height:640px" data-ai-assistant>
+    @* column-reverse keeps the newest turn in view without script. *@
+    <div class="flex-fill overflow-auto p-3 p-md-4 d-flex flex-column-reverse"><div class="@(turns.Count == 0 ? "h-100" : null)">
+    @if (turns.Count == 0)
+    {
+        <div class="h-100 d-flex flex-column align-items-center justify-content-center gap-3 text-center">
+            <div class="h5 fw-semibold text-body-emphasis mb-0">How can I help?</div>
+            <AISuggestions Suggestions="Suggestions" OnSelect="Ask" Class="justify-content-center" />
+        </div>
+    }
+    else
+    {
+        <AIConversation>
+        @foreach (var turn in turns)
+        {
+            var answer = Answers[KeyOf(turn.Prompt)];
+            <AIMessage @key="turn.Id" From="user">@turn.Prompt</AIMessage>
+            <AIMessage @key="-turn.Id" From="assistant" dir="@(turn.Arabic ? "rtl" : null)">
+                @if (turn.Thinking || turn.Reasoning.Length > 0)
+                {
+                    <AIReasoning Streaming="turn.Thinking" ThinkingLabel="@(turn.Arabic ? "يفكّر…" : "Thinking…")" DoneLabel="@(turn.Arabic ? "فكّر لمدة {s} ث" : "Thought for {s}s")">@turn.Reasoning</AIReasoning>
+                }
+                @if (turn.Tool is not null)
+                {
+                    <AIToolCall Name="search_docs" Status="@turn.Tool" Input="@Json(new { query = turn.Prompt, limit = 3 })" Output="@turn.Output" Error="@(turn.Arabic ? "أُوقف" : "Stopped")"
+                                PendingLabel="@(turn.Arabic ? "بانتظار" : "Waiting")" RunningLabel="@(turn.Arabic ? "قيد التنفيذ" : "Running")" CompletedLabel="@(turn.Arabic ? "تم" : "Done")"
+                                ErrorLabel="@(turn.Arabic ? "فشل" : "Failed")" InputLabel="@(turn.Arabic ? "المدخلات" : "Input")" OutputLabel="@(turn.Arabic ? "النتيجة" : "Output")">
+                        <Title>@(turn.Arabic ? "البحث في التوثيق" : "Searching the docs")</Title>
+                    </AIToolCall>
+                }
+                @if (turn.Streaming || turn.Text.Length > 0)
+                {
+                    <AIResponse Markdown Streaming="turn.Streaming" Text="@turn.Text" CopyLabel="@(turn.Arabic ? "نسخ" : "Copy")" CopiedLabel="@(turn.Arabic ? "تم النسخ" : "Copied")" />
+                }
+                @if (turn.Done && !turn.Stopped) { <AISources Sources="answer.Sources" Label="@(turn.Arabic ? "{n} مصادر" : "{n} sources")" /> }
+                @if (turn.Stopped) { <div class="small text-body-secondary">@(turn.Arabic ? "أُوقف التوليد." : "Stopped.")</div> }
+                @if (turn.Done)
+                {
+                    <AIActions CopyText="@turn.Text" OnRegenerate="@(turn == turns[^1] && status == "ready" ? EventCallback.Factory.Create(this, () => Ask(turn.Prompt)) : default)"
+                               Feedback="@turn.Feedback" FeedbackChanged="@(value => turn.Feedback = value)"
+                               CopyLabel="@(turn.Arabic ? "نسخ" : "Copy")" CopiedLabel="@(turn.Arabic ? "تم النسخ" : "Copied")" RegenerateLabel="@(turn.Arabic ? "إعادة التوليد" : "Regenerate")"
+                               GoodLabel="@(turn.Arabic ? "إجابة جيدة" : "Good response")" BadLabel="@(turn.Arabic ? "إجابة سيئة" : "Bad response")" />
+                }
+            </AIMessage>
+        }
+        </AIConversation>
+    }
+    </div></div>
+    <div class="p-3 pt-0">
+        <AIPromptInput Status="@status" OnSubmit="Ask" OnStop="Stop" Placeholder="Ask about SheenUI… (try Arabic too)">
+            <Tools>
+                <Button Variant="ghost" Size="icon-sm" Type="button" aria-label="Attach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 11-8.5 8.5a5.5 5.5 0 0 1-7.8-7.8l9-9a3.7 3.7 0 0 1 5.2 5.2l-9 9a1.8 1.8 0 0 1-2.6-2.6l8.5-8.5" /></svg></Button>
+                <select class="form-select form-select-sm border-0 bg-transparent" style="width:auto;min-width:8rem" aria-label="Model" @bind="model"><option value="sonnet">Fast model</option><option value="opus">Deep model</option></select>
+            </Tools>
+        </AIPromptInput>
+    </div>
+</div>
+</div>
+@code {
+    private sealed class Turn
+    {
+        public int Id; public string Prompt = ""; public bool Arabic; public string Reasoning = ""; public bool Thinking;
+        public string? Tool; public string? Output; public string Text = ""; public bool Streaming, Done, Stopped; public string? Feedback;
+    }
+    private sealed record Answer(string Reasoning, string Text, AITypes.Source[] Sources);
+    private static readonly Dictionary<string, Answer> Answers = new()
+    {
+        ["en"] = new("The user wants dark mode.\nSheenUI themes with data-bs-theme on <html>.\nI should show the attribute and a toggle.",
+            "Dark mode is **one attribute** on the root element. Every component reads the same tokens, so the glass, shadows and accents switch together:\n\n```html\n<html data-bs-theme=\"dark\" data-sheen-accent=\"emerald\">\n```\n\nTo make it feel native:\n\n1. Toggle `data-bs-theme` from a button.\n2. Remember the choice in `localStorage`.\n3. On the first visit, follow `prefers-color-scheme`.\n\n| Attribute | Values |\n| --- | --- |\n| `data-bs-theme` | `light` · `dark` |\n| `data-sheen-accent` | `emerald` · `indigo` · `amber` |\n\n> The playground header switches all of these live.",
+            [new("Color modes · Bootstrap", "https://getbootstrap.com/docs/5.3/customize/color-modes/"), new("SheenUI README · Accent and typeface", "https://github.com/SaadAlsaree/SheenUI#accent-and-typeface"), new("prefers-color-scheme · MDN", "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme")]),
+        ["corners"] = new("They want square corners.\nEvery radius is a base size times --sheen-radius-scale.\ndata-sheen-radius=\"none\" sets the scale to 0.",
+            "Every radius is a base size × `--sheen-radius-scale`, so **one attribute** squares everything:\n\n```html\n<html data-sheen-radius=\"none\">\n```\n\n- [x] Buttons, inputs, cards and dialogs follow\n- [x] Bootstrap's `.rounded-*` utilities follow\n- [ ] Pills and circles stay round, on purpose\n\nLevels: `none`, `xs`, `sm`, **`md`** (default), `lg` and `xl`. Put the attribute on any element to change just that part of the page.",
+            [new("SheenUI README · Corners", "https://github.com/SaadAlsaree/SheenUI#corners")]),
+        ["ar"] = new("المستخدم يسأل عن الوضع الداكن.\nالمكتبة تعتمد على data-bs-theme في عنصر html.\nسأعرض الخاصية ومثالاً للتبديل.",
+            "الوضع الداكن **خاصية واحدة** على العنصر الجذري. كل المكوّنات تقرأ نفس المتغيرات، فيتغيّر الزجاج والظلال والألوان معاً:\n\n```html\n<html dir=\"rtl\" data-bs-theme=\"dark\">\n```\n\nلتجربة أفضل:\n\n1. اربط `data-bs-theme` بزر تبديل.\n2. احفظ اختيار المستخدم في `localStorage`.\n3. في الزيارة الأولى اتبع إعداد النظام `prefers-color-scheme`.\n\n> يمكنك تجربة كل ذلك مباشرة من رأس صفحة العرض.",
+            [new("أوضاع الألوان · Bootstrap", "https://getbootstrap.com/docs/5.3/customize/color-modes/"), new("prefers-color-scheme · MDN", "https://developer.mozilla.org/ar/docs/Web/CSS/@media/prefers-color-scheme")])
+    };
+    private static readonly string[] Suggestions = ["How do I turn on dark mode?", "Make the corners square", "كيف أفعّل الوضع الداكن؟"];
+    private static bool IsArabic(string text) => text.Any(c => c is >= '؀' and <= 'ۿ');
+    private static string KeyOf(string prompt) => IsArabic(prompt) ? "ar" : System.Text.RegularExpressions.Regex.IsMatch(prompt, "corner|radius|square", System.Text.RegularExpressions.RegexOptions.IgnoreCase) ? "corners" : "en";
+    private static string Json(object value) => System.Text.Json.JsonSerializer.Serialize(value, new System.Text.Json.JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+    private readonly List<Turn> turns = [];
+    private string status = "ready", model = "sonnet";
+    private int nextId = 1;
+    private CancellationTokenSource? run;
+
+    // Simulated model: think line by line, call a tool, then stream the answer word by word.
+    private async Task Ask(string prompt)
+    {
+        run?.Cancel(); run = new(); var token = run.Token;
+        var turn = new Turn { Id = nextId++, Prompt = prompt, Arabic = IsArabic(prompt) }; var answer = Answers[KeyOf(prompt)];
+        turns.Add(turn); status = "submitted";
+        async Task Step(int ms, Action change) { await Task.Delay(ms, token); change(); StateHasChanged(); }
+        try
+        {
+            await Step(500, () => { status = "streaming"; turn.Thinking = true; });
+            var lines = answer.Reasoning.Split('\n');
+            for (var i = 0; i < lines.Length; i++) { var line = lines[i]; var first = i == 0; await Step(600, () => turn.Reasoning += (first ? "" : "\n") + line); }
+            await Step(500, () => { turn.Thinking = false; turn.Tool = "running"; });
+            await Step(1200, () => { turn.Tool = "completed"; turn.Output = Json(new { results = answer.Sources.Length, top = answer.Sources[0].Title }); });
+            await Step(300, () => turn.Streaming = true);
+            var words = answer.Text.Split(' ');
+            for (var i = 0; i < words.Length; i++) { var word = words[i]; var first = i == 0; await Step(45, () => turn.Text += (first ? "" : " ") + word); }
+            await Step(200, () => Finish(turn, false));
+        }
+        catch (TaskCanceledException) { }
+    }
+    private void Finish(Turn turn, bool stopped)
+    {
+        turn.Thinking = false; turn.Streaming = false; turn.Done = true; turn.Stopped = stopped;
+        if (turn.Tool == "running") turn.Tool = "error";
+        status = "ready";
+    }
+    private void Stop() { run?.Cancel(); if (turns.Count > 0) Finish(turns[^1], true); }
+    public void Dispose() => run?.Cancel();
+}

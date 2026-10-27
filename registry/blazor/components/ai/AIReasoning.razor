@@ -1,0 +1,49 @@
+@implements IDisposable
+<div @attributes="AdditionalAttributes" class="sheen-ai-reasoning @Class" data-state="@(open ? "open" : "closed")">
+<button type="button" class="sheen-ai-reasoning-trigger" aria-expanded="@(open ? "true" : "false")" aria-controls="@id" @onclick="Toggle">
+@if (Streaming) { <AIShimmer>@ThinkingLabel</AIShimmer> } else { <span>@DoneLabel.Replace("{s}", Seconds.ToString(System.Globalization.CultureInfo.CurrentCulture))</span> }
+<AIIcon Name="chevron" Class="sheen-ai-chevron" />
+</button>
+<div class="sheen-ai-collapse" id="@id"><div><div class="sheen-ai-reasoning-body" dir="auto">@ChildContent</div></div></div>
+</div>
+@code {
+    /// <summary>Still thinking: shows the shimmer, opens, counts seconds.</summary>
+    [Parameter] public bool Streaming { get; set; }
+    /// <summary>Seconds spent, shown once done (otherwise measured while streaming).</summary>
+    [Parameter] public int? Duration { get; set; }
+    [Parameter] public string ThinkingLabel { get; set; } = "Thinking…";
+    /// <summary>{s} is replaced with the seconds.</summary>
+    [Parameter] public string DoneLabel { get; set; } = "Thought for {s}s";
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private readonly string id = "sheen-ai-" + Guid.NewGuid().ToString("N");
+    private bool open, userOpened, wasStreaming, interactive;
+    private int elapsed;
+    private long started;
+    private Timer? ticker;
+    private CancellationTokenSource? fold;
+    private int Seconds => Duration ?? Math.Max(1, elapsed);
+    protected override void OnInitialized() { open = Streaming; wasStreaming = Streaming; started = Environment.TickCount64; }
+    protected override void OnParametersSet()
+    {
+        if (Streaming && !wasStreaming) { open = true; elapsed = 0; started = Environment.TickCount64; fold?.Cancel(); }
+        if (!Streaming && wasStreaming && !userOpened) _ = Fold();
+        wasStreaming = Streaming; Tick();
+    }
+    protected override void OnAfterRender(bool firstRender) { if (firstRender) { interactive = true; Tick(); } }
+    // The timer runs only once interactive, so static SSR renders a single snapshot.
+    private void Tick()
+    {
+        if (Streaming && interactive && ticker is null) ticker = new Timer(_ => InvokeAsync(() => { elapsed = (int)Math.Round((Environment.TickCount64 - started) / 1000.0); StateHasChanged(); }), null, 500, 500);
+        else if (!Streaming && ticker is not null) { ticker.Dispose(); ticker = null; }
+    }
+    // Fold away when thinking ends, a beat later so the last line is seen.
+    private async Task Fold()
+    {
+        fold?.Cancel(); fold = new();
+        try { await Task.Delay(700, fold.Token); open = false; await InvokeAsync(StateHasChanged); } catch (TaskCanceledException) { }
+    }
+    private void Toggle() { fold?.Cancel(); open = !open; userOpened = true; }
+    public void Dispose() { ticker?.Dispose(); fold?.Cancel(); }
+}

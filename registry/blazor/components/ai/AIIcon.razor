@@ -1,0 +1,13 @@
+@* Built-in SVG paths from Lucide (ISC), matching the React source. *@
+@if (Name == "spark") { <svg class="@Class" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5c.6 5 4.5 8.9 9.5 9.5-5 .6-8.9 4.5-9.5 9.5-.6-5-4.5-8.9-9.5-9.5 5-.6 8.9-4.5 9.5-9.5z" /></svg> }
+else { <svg class="@Class" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="@Paths[Name]" /></svg> }
+@code {
+    private static readonly Dictionary<string, string> Paths = new() {
+        ["chevron"] = "m6 9 6 6 6-6", ["copy"] = "M9 9h11v11H9zM5 15H4V4h11v1", ["check"] = "M20 6 9 17l-5-5",
+        ["refresh"] = "M21 12a9 9 0 1 1-2.6-6.4L21 8M21 3v5h-5", ["thumb-up"] = "M7 10v11H3V10zM7 10l4-8a3 3 0 0 1 3 3v4h5.6a2 2 0 0 1 2 2.3l-1.4 8a2 2 0 0 1-2 1.7H7",
+        ["thumb-down"] = "M17 14V3h4v11zM17 14l-4 8a3 3 0 0 1-3-3v-4H4.4a2 2 0 0 1-2-2.3l1.4-8a2 2 0 0 1 2-1.7H17", ["arrow-up"] = "M12 19V5M5 12l7-7 7 7",
+        ["tool"] = "M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"
+    };
+    [Parameter, EditorRequired] public string Name { get; set; } = "";
+    [Parameter] public string? Class { get; set; }
+}

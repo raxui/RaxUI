@@ -16,6 +16,7 @@
     <Using Include="Xunit" />
     <Compile Include="../../registry/blazor/components/qr-code/QrCodeEncoder.cs" Link="QrCodeEncoder.cs" />
     <Compile Include="../../registry/blazor/components/qr-code/QrCodeDrawing.cs" Link="QrCodeDrawing.cs" />
+    <Compile Include="../../registry/blazor/components/ai/AIMarkdownParser.cs" Link="AIMarkdownParser.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,11 +32,14 @@
     <None Include="../../examples/blazor/advanced/*.razor" Link="Fixtures/AdvancedExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Update="Fixtures/**/*.razor" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/blazor/file-upload/*.razor;../../examples/blazor/badge/*.razor;../../examples/blazor/avatar/*.razor;../../examples/blazor/timeline/*.razor;../../examples/blazor/accordion/*.razor;../../examples/blazor/pagination/*.razor;../../examples/blazor/stepper/*.razor" Link="Fixtures/ParityExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../examples/blazor/media/*" Link="Fixtures/MediaExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Fixtures/QrNayukiVectors.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/blazor/data/*.razor" Link="Fixtures/DataExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Update="Fixtures/VirtualizationProbe.razor.js" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/blazor/textarea/*" Link="Fixtures/TextareaExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/blazor/app-shell/*" Link="Fixtures/AppShellExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/blazor/panels/*" Link="Fixtures/PanelExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../examples/blazor/ai/*.razor" Link="Fixtures/AIExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/blazor/kanban/*.razor" Link="Fixtures/KanbanExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/blazor/SheenDemo.razor" Link="Fixtures/SheenDemo.razor" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

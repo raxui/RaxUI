@@ -1,0 +1,37 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @attributes="AdditionalAttributes" class="sheen-ai-actions @Class">
+@if (CopyText is not null) { <Button Variant="ghost" Size="icon-sm" aria-label="@(copied ? CopiedLabel : CopyLabel)" title="@(copied ? CopiedLabel : CopyLabel)" OnClick="Copy"><AIIcon Name="@(copied ? "check" : "copy")" /></Button> }
+@if (OnRegenerate.HasDelegate) { <Button Variant="ghost" Size="icon-sm" aria-label="@RegenerateLabel" title="@RegenerateLabel" OnClick="OnRegenerate"><AIIcon Name="refresh" /></Button> }
+@if (FeedbackChanged.HasDelegate) {
+<Toggle Size="icon-sm" aria-label="@GoodLabel" title="@GoodLabel" Pressed="@(Feedback == "up")" PressedChanged="@(on => FeedbackChanged.InvokeAsync(on ? "up" : null))"><AIIcon Name="thumb-up" /></Toggle>
+<Toggle Size="icon-sm" aria-label="@BadLabel" title="@BadLabel" Pressed="@(Feedback == "down")" PressedChanged="@(on => FeedbackChanged.InvokeAsync(on ? "down" : null))"><AIIcon Name="thumb-down" /></Toggle>
+}
+@ChildContent
+</div>
+@code {
+    /// <summary>Text the copy button copies.</summary>
+    [Parameter] public string? CopyText { get; set; }
+    [Parameter] public EventCallback OnRegenerate { get; set; }
+    /// <summary>up, down or null; FeedbackChanged receives the new value (null when cleared).</summary>
+    [Parameter] public string? Feedback { get; set; }
+    [Parameter] public EventCallback<string?> FeedbackChanged { get; set; }
+    [Parameter] public string CopyLabel { get; set; } = "Copy";
+    [Parameter] public string CopiedLabel { get; set; } = "Copied";
+    [Parameter] public string RegenerateLabel { get; set; } = "Regenerate";
+    [Parameter] public string GoodLabel { get; set; } = "Good response";
+    [Parameter] public string BadLabel { get; set; } = "Bad response";
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private bool copied;
+    private IJSObjectReference? module;
+    private CancellationTokenSource? reset;
+    private async Task Copy()
+    {
+        if (!await AICodeBlock.CopyText(JS, module, CopyText ?? "", m => module = m)) return;
+        copied = true; StateHasChanged(); reset?.Cancel(); reset = new();
+        try { await Task.Delay(1600, reset.Token); copied = false; } catch (TaskCanceledException) { }
+    }
+    public async ValueTask DisposeAsync() { reset?.Cancel(); if (module is not null) { try { await module.DisposeAsync(); } catch (JSDisconnectedException) { } } }
+}

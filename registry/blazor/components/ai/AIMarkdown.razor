@@ -1,0 +1,75 @@
+@using Microsoft.AspNetCore.Components.Rendering
+@using SheenUI.Internal.AI
+@((RenderFragment)Render)
+@code {
+    [Parameter, EditorRequired] public string Text { get; set; } = "";
+    [Parameter] public bool Streaming { get; set; }
+    [Parameter] public string CopyLabel { get; set; } = "Copy";
+    [Parameter] public string CopiedLabel { get; set; } = "Copied";
+    private string? parsedText;
+    private IReadOnlyList<MdNode> nodes = Array.Empty<MdNode>();
+    protected override void OnParametersSet()
+    {
+        var text = Streaming ? AIMarkdownParser.CloseOpenMarks(Text) : Text;
+        if (text != parsedText) { nodes = AIMarkdownParser.Parse(text); parsedText = text; }
+    }
+    private void Render(RenderTreeBuilder b) => Blocks(b, nodes, false);
+    // All text goes through AddContent, which HTML-encodes; markup comes only from this fixed set of elements.
+    private void Blocks(RenderTreeBuilder b, IReadOnlyList<MdNode> list, bool tight)
+    {
+        foreach (var node in list)
+        {
+            b.OpenRegion(0);
+            switch (node)
+            {
+                case MdParagraph p when tight: Inlines(b, p.Children); break;
+                case MdParagraph p: b.OpenElement(0, "p"); Inlines(b, p.Children); b.CloseElement(); break;
+                case MdHeading h: b.OpenElement(1, "h" + h.Level); Inlines(b, h.Children); b.CloseElement(); break;
+                case MdRule: b.OpenElement(2, "hr"); b.CloseElement(); break;
+                case MdQuote q: b.OpenElement(3, "blockquote"); Blocks(b, q.Blocks, false); b.CloseElement(); break;
+                case MdFence f:
+                    b.OpenComponent<AICodeBlock>(4); b.AddComponentParameter(5, nameof(AICodeBlock.Code), f.Code); b.AddComponentParameter(6, nameof(AICodeBlock.Language), f.Language);
+                    b.AddComponentParameter(7, nameof(AICodeBlock.CopyLabel), CopyLabel); b.AddComponentParameter(8, nameof(AICodeBlock.CopiedLabel), CopiedLabel); b.CloseComponent(); break;
+                case MdList l:
+                    b.OpenElement(9, l.Ordered ? "ol" : "ul"); if (l.Ordered && l.Start != 1) b.AddAttribute(10, "start", l.Start);
+                    foreach (var item in l.Items)
+                    {
+                        b.OpenElement(11, "li");
+                        if (item.Checked is { } done) { b.AddAttribute(12, "class", "task-list-item"); b.OpenElement(13, "input"); b.AddAttribute(14, "type", "checkbox"); b.AddAttribute(15, "disabled", true); b.AddAttribute(16, "checked", done); b.CloseElement(); b.AddContent(17, " "); }
+                        Blocks(b, item.Blocks, l.Tight); b.CloseElement();
+                    }
+                    b.CloseElement(); break;
+                case MdTable t:
+                    b.OpenElement(18, "div"); b.AddAttribute(19, "class", "sheen-ai-table"); b.OpenElement(20, "table"); b.AddAttribute(21, "class", "table table-sm");
+                    b.OpenElement(22, "thead"); b.OpenElement(23, "tr");
+                    for (var i = 0; i < t.Head.Count; i++) { b.OpenElement(24, "th"); if (t.Align[i] is { } a) b.AddAttribute(25, "style", "text-align:" + a); Inlines(b, t.Head[i]); b.CloseElement(); }
+                    b.CloseElement(); b.CloseElement(); b.OpenElement(26, "tbody");
+                    foreach (var row in t.Rows)
+                    {
+                        b.OpenElement(27, "tr");
+                        for (var i = 0; i < row.Count; i++) { b.OpenElement(28, "td"); if (t.Align[i] is { } a) b.AddAttribute(29, "style", "text-align:" + a); Inlines(b, row[i]); b.CloseElement(); }
+                        b.CloseElement();
+                    }
+                    b.CloseElement(); b.CloseElement(); b.CloseElement(); break;
+            }
+            b.CloseRegion();
+        }
+    }
+    private static void Inlines(RenderTreeBuilder b, IReadOnlyList<MdNode> list)
+    {
+        foreach (var node in list)
+        {
+            b.OpenRegion(0);
+            switch (node)
+            {
+                case MdText t: b.AddContent(0, t.Value); break;
+                case MdBreak: b.OpenElement(1, "br"); b.CloseElement(); break;
+                case MdCode c: b.OpenElement(2, "code"); b.AddContent(3, c.Value); b.CloseElement(); break;
+                case MdSpan { Tag: "" } s: Inlines(b, s.Children); break;
+                case MdSpan s: b.OpenElement(4, s.Tag); Inlines(b, s.Children); b.CloseElement(); break;
+                case MdLink l: b.OpenElement(5, "a"); b.AddAttribute(6, "href", l.Url); b.AddAttribute(7, "target", "_blank"); b.AddAttribute(8, "rel", "noreferrer"); Inlines(b, l.Children); b.CloseElement(); break;
+            }
+            b.CloseRegion();
+        }
+    }
+}

@@ -1,0 +1,39 @@
+<div @attributes="AdditionalAttributes" class="sheen-ai-tool @Class" data-status="@Status" data-state="@(open ? "open" : "closed")">
+<button type="button" class="sheen-ai-tool-head" aria-expanded="@(open ? "true" : "false")" aria-controls="@id" @onclick="() => open = !open">
+<span class="sheen-ai-tool-icon"><AIIcon Name="tool" /></span>
+<span class="sheen-ai-tool-title">@if (Title is null) { <code>@Name</code> } else { @Title }</span>
+<span class="sheen-ai-tool-status" role="status">@if (Status == "running") { <span class="sheen-ai-spinner" aria-hidden="true"></span> }@if (Status == "completed") { <AIIcon Name="check" /> }@StatusText</span>
+<AIIcon Name="chevron" Class="sheen-ai-chevron" />
+</button>
+<div class="sheen-ai-collapse" id="@id"><div><div class="sheen-ai-tool-body">
+@if (Input is not null) { <div><div class="sheen-ai-tool-label">@InputLabel</div><pre dir="ltr">@Input</pre></div> }
+@if (Status == "error" && Error is not null) { <div><div class="sheen-ai-tool-label">@ErrorLabel</div><pre dir="ltr" class="sheen-ai-tool-error">@Error</pre></div> }
+else if (Output is not null) { <div><div class="sheen-ai-tool-label">@OutputLabel</div><pre dir="ltr">@Output</pre></div> }
+</div></div></div>
+</div>
+@code {
+    [Parameter, EditorRequired] public string Name { get; set; } = "";
+    /// <summary>Human label; defaults to the tool name.</summary>
+    [Parameter] public RenderFragment? Title { get; set; }
+    /// <summary>pending, running, completed or error.</summary>
+    [Parameter, EditorRequired] public string Status { get; set; } = "pending";
+    /// <summary>Shown as text; serialize objects (for example indented JSON) before passing them.</summary>
+    [Parameter] public string? Input { get; set; }
+    [Parameter] public string? Output { get; set; }
+    /// <summary>Shown instead of the output when Status is error.</summary>
+    [Parameter] public string? Error { get; set; }
+    [Parameter] public bool DefaultOpen { get; set; }
+    [Parameter] public string PendingLabel { get; set; } = "Waiting";
+    [Parameter] public string RunningLabel { get; set; } = "Running";
+    [Parameter] public string CompletedLabel { get; set; } = "Done";
+    [Parameter] public string ErrorLabel { get; set; } = "Failed";
+    [Parameter] public string InputLabel { get; set; } = "Input";
+    [Parameter] public string OutputLabel { get; set; } = "Output";
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private readonly string id = "sheen-ai-" + Guid.NewGuid().ToString("N");
+    private bool open;
+    private string StatusText => Status switch { "pending" => PendingLabel, "running" => RunningLabel, "completed" => CompletedLabel, _ => ErrorLabel };
+    protected override void OnInitialized() => open = DefaultOpen;
+    protected override void OnParametersSet() { if (Status is not ("pending" or "running" or "completed" or "error")) throw new ArgumentException("Invalid AI tool status."); }
+}

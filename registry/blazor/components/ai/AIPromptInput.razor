@@ -1,0 +1,49 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<form @ref="element" @attributes="AdditionalAttributes" class="sheen-ai-prompt @Class" data-status="@Status">
+<textarea rows="1" dir="auto" class="sheen-ai-prompt-field" style="@($"--sheen-ai-rows:{Math.Clamp(MaxRows, 1, 100)}")" placeholder="@Placeholder" aria-label="@(Label ?? Placeholder)" disabled="@(!ready)"></textarea>
+<div class="sheen-ai-prompt-toolbar">
+<div class="sheen-ai-prompt-tools">@Tools</div>
+@if (Status == "streaming") { <Button Type="submit" Size="icon-sm" Class="sheen-ai-prompt-send" aria-label="@StopLabel" data-stop=""><span class="sheen-ai-stop" aria-hidden="true"></span></Button> }
+else { <Button Type="submit" Size="icon-sm" Class="sheen-ai-prompt-send" aria-label="@SendLabel" Disabled="true">@if (Status == "submitted") { <span class="sheen-ai-spinner" aria-hidden="true"></span> } else { <AIIcon Name="arrow-up" /> }</Button> }
+</div>
+</form>
+@code {
+    [Parameter] public EventCallback<string> OnSubmit { get; set; }
+    /// <summary>ready, submitted or streaming; streaming turns Send into Stop.</summary>
+    [Parameter] public string Status { get; set; } = "ready";
+    [Parameter] public EventCallback OnStop { get; set; }
+    [Parameter] public string Placeholder { get; set; } = "Ask anything";
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Left side of the toolbar under the field (attach, model picker…).</summary>
+    [Parameter] public RenderFragment? Tools { get; set; }
+    [Parameter] public int MaxRows { get; set; } = 8;
+    [Parameter] public string SendLabel { get; set; } = "Send";
+    [Parameter] public string StopLabel { get; set; } = "Stop";
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private readonly string id = Guid.NewGuid().ToString("N");
+    private bool ready, disposed;
+    private ElementReference element;
+    private IJSObjectReference? module;
+    private DotNetObjectReference<AIPromptInput>? self;
+    protected override void OnParametersSet() { if (Status is not ("ready" or "submitted" or "streaming")) throw new ArgumentException("Invalid AI prompt status."); }
+    // The draft stays in the browser; only a submitted prompt crosses to .NET.
+    [JSInvokable] public async Task Submit(string text) { if (!disposed && Status == "ready" && !string.IsNullOrWhiteSpace(text)) await OnSubmit.InvokeAsync(text.Trim()); }
+    [JSInvokable] public async Task Stop() { if (!disposed && Status == "streaming") await OnStop.InvokeAsync(); }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (disposed) return;
+        self ??= DotNetObjectReference.Create(this);
+        module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/AI/AIPromptInput.razor.js");
+        if (disposed) { await module.DisposeAsync(); return; }
+        await module.InvokeVoidAsync("sync", element, self, new { id, status = Status });
+        if (!ready) { ready = true; StateHasChanged(); }
+    }
+    public async ValueTask DisposeAsync()
+    {
+        disposed = true;
+        if (module is not null) { try { await module.InvokeVoidAsync("dispose", id); await module.DisposeAsync(); } catch (JSDisconnectedException) { } }
+        self?.Dispose();
+    }
+}
