@@ -27,6 +27,7 @@
     </Kanban>
     <output id="arabic-state">@string.Join(" | ",arabic.Select(c=>c.Id+":"+string.Join(",",c.Items)))</output>
 </section>
+<section id="kanban-examples" class="mt-4"><KanbanExamples /></section>
 </div>
 @code {
     private sealed record Job(string Id,string Title,string Priority,bool Locked=false);
