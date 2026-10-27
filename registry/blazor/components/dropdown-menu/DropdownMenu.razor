@@ -8,6 +8,7 @@
         type="button"
         class="@TriggerCssClass"
         popovertarget="@_id"
+        aria-label="@TriggerLabel"
         aria-haspopup="menu"
         aria-expanded="false"
         aria-controls="@_id"
@@ -27,12 +28,14 @@
 </div>
 
 @code {
+    private bool disposed;
     private readonly string _id = $"sheen-menu-{Guid.NewGuid():N}";
     private ElementReference _trigger;
     private ElementReference _menu;
     private IJSObjectReference? _module;
 
     /// <summary>The trigger button's content.</summary>
+    [Parameter] public string? TriggerLabel { get; set; }
     [Parameter] public RenderFragment? Trigger { get; set; }
 
     /// <summary>The trigger's Button variant: default, secondary, tinted, destructive, outline, ghost, or link.</summary>
@@ -70,16 +73,19 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender) return;
+        if (!firstRender || disposed) return;
         _module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/DropdownMenu/DropdownMenu.razor.js");
+        if (disposed) { await _module.DisposeAsync(); return; }
         await _module.InvokeVoidAsync("init", _trigger, _menu);
     }
 
     public async ValueTask DisposeAsync()
     {
+        disposed = true;
         if (_module is null) return;
         try
         {
+            await _module.InvokeVoidAsync("dispose", _id);
             await _module.DisposeAsync();
         }
         catch (JSDisconnectedException)

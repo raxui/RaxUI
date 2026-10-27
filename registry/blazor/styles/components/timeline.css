@@ -1,5 +1,6 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
 .sheen-timeline-wrap {
+  position: relative;
   container: sheen-timeline/inline-size;
   min-width: 0;
 }

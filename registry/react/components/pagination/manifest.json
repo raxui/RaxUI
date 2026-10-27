@@ -23,7 +23,7 @@
       "source": "theme/scss/components/_pagination.scss",
       "target": "styles/sheenui/components/_pagination.scss",
       "type": "scss",
-      "sha256": "ad8093f233959093ae5c3ecaaf55fade81aea650036b5aba18b932d137cb9096"
+      "sha256": "56cd3edd5788ccfc799cf0cbe13ade89db77a1d334c9567644d8ed60b5fa33df"
     }
   ]
 }

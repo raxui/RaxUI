@@ -21,7 +21,7 @@
       "source": "theme/scss/components/_timeline.scss",
       "target": "styles/sheenui/components/_timeline.scss",
       "type": "scss",
-      "sha256": "763f3ead950cc4a741ccd5412b0661867c9140591c55105aab8cb2c41aa476ab"
+      "sha256": "5c1144de2be07eca60c2eab295fb15b769bbc2fefe276dba868cf3a2b09a8ebb"
     }
   ]
 }

@@ -26,7 +26,14 @@
       "destination": "components",
       "target": "Avatar/Avatar.razor.js",
       "type": "js",
-      "sha256": "3727801b67a24e5b364221898b6a58b6184277193850538d57769b1b6df82ca3"
+      "sha256": "d1f1e480e06e57568fdad183571af341f5312bb9887ba54318b165c9f3e3912e"
+    },
+    {
+      "source": "AvatarGroup.razor",
+      "destination": "components",
+      "target": "Avatar/AvatarGroup.razor",
+      "type": "razor",
+      "sha256": "759f4f76bd386f158e8d890c4cbc4aac0d74c543a7f654ff53ba272680392747"
     }
   ]
 }

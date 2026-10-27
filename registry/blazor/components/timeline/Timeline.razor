@@ -1,7 +1,7 @@
 @* SheenUI Timeline. Source-owned: edit freely. Styled by the timeline component CSS. *@
 <CascadingValue Value="this">
-    <div class="sheen-timeline-wrap" data-layout="start">
-        <ol @attributes="AdditionalAttributes" class="@($"sheen-timeline {Class}")" data-layout="start" data-time="@TimePosition" data-size="@Size" data-animated="@(Animated ? "true" : null)" data-sheen-appearance="@Appearance">@ChildContent</ol>
+    <div tabindex="@(Layout=="horizontal"?0:null)" class="sheen-timeline-wrap" data-layout="@Layout">
+        <ol @attributes="AdditionalAttributes" class="@($"sheen-timeline {Class}")" data-layout="@Layout" data-time="@EffectiveTimePosition" data-size="@Size" data-animated="@(Animated ? "true" : null)" data-sheen-appearance="@Appearance">@ChildContent</ol>
     </div>
 </CascadingValue>
 @code {
@@ -11,6 +11,9 @@
     /// <summary>Extra CSS classes.</summary>
     [Parameter] public string? Class { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public string Layout { get; set; } = "start";
+    public string EffectiveTimePosition=>Layout=="alternate"?"side":Layout=="horizontal"?"inline":TimePosition;
+    protected override void OnParametersSet(){if(Layout is not ("start" or "alternate" or "horizontal") || TimePosition is not ("inline" or "side"))throw new ArgumentException("Invalid timeline layout or time position.");}
     [Parameter] public string TimePosition { get; set; } = "inline";
     [Parameter] public string Size { get; set; } = "default";
     [Parameter] public bool Animated { get; set; } = true;

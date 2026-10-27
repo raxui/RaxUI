@@ -1,0 +1,55 @@
+@* Built-in SVG paths from Lucide (ISC), matching the React source. *@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<form @ref="element" @attributes="AdditionalAttributes" class="sheen-chat-composer @Class" data-disabled="@(Disabled ? "" : null)">
+@if (Actions is not null) { <div class="sheen-chat-composer-actions">@Actions</div> }
+<textarea class="sheen-chat-field" rows="1" dir="auto" style="@($"--sheen-chat-rows:{Math.Clamp(MaxRows, 1, 100)}")" aria-label="@(Label ?? Placeholder)" placeholder="@Placeholder" disabled="@(!ready || Disabled)">@Current</textarea>
+<Button Type="submit" Size="icon-sm" Class="sheen-chat-send" Disabled="@(!ready || Disabled || string.IsNullOrWhiteSpace(Current))" aria-label="@SendLabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg></Button>
+</form>
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public EventCallback<string> OnSend { get; set; }
+    [Parameter] public string Placeholder { get; set; } = "Message";
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string SendLabel { get; set; } = "Send";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public int MaxRows { get; set; } = 6;
+    [Parameter] public RenderFragment? Actions { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private string Current => Value ?? local;
+    private string local = "";
+    private long revision;
+    private bool ready, disposed;
+    private readonly string id = Guid.NewGuid().ToString("N");
+    private ElementReference element;
+    private IJSObjectReference? module;
+    private DotNetObjectReference<ChatComposer>? self;
+    [JSInvokable] public async Task Update(string text, long request) {
+        if (disposed || request <= revision) return;
+        revision = request; local = text;
+        await ValueChanged.InvokeAsync(text);
+        await InvokeAsync(StateHasChanged);
+    }
+    [JSInvokable] public async Task Send(string text, long request) {
+        if (disposed || Disabled || !OnSend.HasDelegate || request <= revision || string.IsNullOrWhiteSpace(text)) return;
+        revision = request; local = "";
+        await ValueChanged.InvokeAsync("");
+        await OnSend.InvokeAsync(text.Trim());
+        await InvokeAsync(StateHasChanged);
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (disposed) return;
+        self ??= DotNetObjectReference.Create(this);
+        module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Chat/ChatComposer.razor.js");
+        if (disposed) { await module.DisposeAsync(); return; }
+        await module.InvokeVoidAsync("sync", element, self, new { id, revision, value = Current, disabled = Disabled || !OnSend.HasDelegate });
+        if (!ready) { ready = true; StateHasChanged(); }
+    }
+    public async ValueTask DisposeAsync() {
+        disposed = true;
+        if (module is not null) { try { await module.InvokeVoidAsync("dispose", id); await module.DisposeAsync(); } catch (JSDisconnectedException) { } }
+        self?.Dispose();
+    }
+}

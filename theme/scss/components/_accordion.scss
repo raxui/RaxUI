@@ -233,7 +233,8 @@
 // Native Blazor details use the same visual states without JavaScript.
 .sheen-accordion-item > summary { list-style: none; }
 .sheen-accordion-item > summary::-webkit-details-marker { display: none; }
-.sheen-accordion-item[open] > summary .sheen-accordion-icon { transform: rotate(180deg); }
+.sheen-accordion-item[open] > summary .sheen-accordion-icon[data-icon="chevron"] { transform: rotate(180deg); }
+.sheen-accordion-item[open] > summary .sheen-accordion-icon[data-icon="plus"] .sheen-accordion-plus-v { transform: rotate(90deg); }
 @supports (interpolate-size: allow-keywords) {
   details.sheen-accordion-item { interpolate-size: allow-keywords; }
   details.sheen-accordion-item::details-content {

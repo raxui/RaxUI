@@ -1,0 +1,13 @@
+<Button @attributes="AdditionalAttributes" Class="@($"sheen-speed-dial-action {Class}")" Variant="@Variant" Size="@Size" Disabled="@(Disabled || Dial.Disabled)" role="menuitem" aria-label="@Label" data-close="@(CloseOnSelect ? "true" : "false")" OnClick="OnSelect">@ChildContent</Button>
+@code {
+    [CascadingParameter] public SpeedDial Dial { get; set; } = default!;
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string Variant { get; set; } = "outline";
+    [Parameter] public string Size { get; set; } = "icon";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool CloseOnSelect { get; set; } = true;
+    [Parameter] public EventCallback<MouseEventArgs> OnSelect { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

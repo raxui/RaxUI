@@ -1,6 +1,7 @@
 // Interactive image-error fallback. Static SSR deliberately keeps native image behavior.
 const bindings = new WeakMap()
 export function init(root) {
+  if (!root?.isConnected) return
   const image = root.querySelector("img")
   if (bindings.get(root)?.image === image) return
   dispose(root)

@@ -2,6 +2,7 @@
 <span @attributes="AdditionalAttributes" class="@($"sheen-badge {Class}")" data-variant="@Variant" data-color="@Color" data-size="@Size" data-shape="@Shape" data-sheen-appearance="@Appearance">
     @if (Dot || Ping) { <span class="sheen-badge-dot" data-pulse="@(Ping ? "true" : null)" aria-hidden="true"></span> }
     @ChildContent
+    @if(OnRemove.HasDelegate){<button type="button" class="sheen-badge-remove" aria-label="@RemoveLabel" @onclick="OnRemove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg></button>}
 </span>
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -15,6 +16,8 @@
     [Parameter] public string Color { get; set; } = "primary";
     [Parameter] public string Size { get; set; } = "default";
     [Parameter] public string Shape { get; set; } = "pill";
+    [Parameter] public EventCallback OnRemove { get; set; }
+    [Parameter] public string RemoveLabel { get; set; } = "Remove";
     [Parameter] public bool Dot { get; set; }
     [Parameter] public bool Ping { get; set; }
 }

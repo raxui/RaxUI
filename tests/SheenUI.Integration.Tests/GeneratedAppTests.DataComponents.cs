@@ -173,6 +173,7 @@ public partial class GeneratedAppTests
                         await page.Locator("#data-direction").SelectOptionAsync(direction);
                         var localized = page.GetByRole(AriaRole.Grid, new() { Name = direction == "rtl" ? "الموظفون" : "Employees", Exact = true });
                         await Assertions.Expect(localized).ToHaveCSSAsync("direction", direction);
+                        if (width == 1440) await AssertGridPinnedPaint(localized, direction == "rtl");
 
                         if (width == 390)
                         {
@@ -236,4 +237,19 @@ public partial class GeneratedAppTests
         }
         finally { await context.CloseAsync(); }
     }
+    private static async Task AssertGridPinnedPaint(ILocator grid, bool rtl)
+    {
+        await grid.EvaluateAsync("e=>e.scrollIntoView({block:'center'})");
+        await grid.EvaluateAsync("(e,rtl)=>{e.scrollLeft=rtl?-360:360;e.scrollTop=210}", rtl);
+        var name = grid.Locator("[data-row-id='6'] [data-col=name]");
+        await Assertions.Expect(name).ToHaveAttributeAsync("data-pinned", "start");
+        await name.HoverAsync();
+        foreach (var cell in new[] { name, grid.Locator(".sheen-grid-head [data-col=name]"), grid.Locator(".sheen-grid-foot [data-col=name]") })
+        {
+            Assert.True(await cell.EvaluateAsync<bool>("e=>{const b=e.getBoundingClientRect();return document.elementFromPoint(b.left+b.width/2,b.top+b.height/2)?.closest('[data-col]')===e}"), await cell.EvaluateAsync<string>("e=>{const b=e.getBoundingClientRect(),hit=document.elementFromPoint(b.left+b.width/2,b.top+b.height/2);return JSON.stringify({cell:e.outerHTML.slice(0,250),box:b.toJSON(),hit:hit?.outerHTML.slice(0,250),dir:getComputedStyle(e).direction})}"));
+            Assert.True(await cell.EvaluateAsync<bool>("e=>{const c=document.createElement('canvas');c.width=c.height=1;const x=c.getContext('2d');x.fillStyle=getComputedStyle(e).backgroundColor;x.fillRect(0,0,1,1);return x.getImageData(0,0,1,1).data[3]===255}"));
+        }
+        await grid.EvaluateAsync("e=>{e.scrollLeft=0;e.scrollTop=0}");
+    }
+
 }

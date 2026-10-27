@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/timeline.css",
       "type": "css",
-      "sha256": "023d04779be3cfc991eb696905045d3c794512d40488cd38dc2a41051ee552ff"
+      "sha256": "46bf0cf939e5668d259a7acd57effcbfde75ab64b82e7f92253999556b8832d0"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Timeline/Timeline.razor",
       "type": "razor",
-      "sha256": "2f0c5839c2e54a4b9c45d4737685c3e8666593b0ca9dc4150a3594fdac811ec0"
+      "sha256": "fbc5c7105ae462b37a8aa4e26b875e5b037cbeba0b156cf29df29caee5bae337"
     },
     {
       "source": "TimelineGroup.razor",
@@ -33,7 +33,7 @@
       "destination": "components",
       "target": "Timeline/TimelineItem.razor",
       "type": "razor",
-      "sha256": "f73455f0d4c2d6e0059aad84758b3349fe1450cae96b54ecb0899ac0f676c79c"
+      "sha256": "d1b331246fef4236f3db77e4c647950a9f4ea59447359ad2a8950527de188d08"
     }
   ]
 }

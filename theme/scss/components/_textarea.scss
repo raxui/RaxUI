@@ -166,3 +166,6 @@
     translate: 2px 0;
   }
 }
+
+// Counter icons retain their size when an app icon stylesheet is loaded later.
+.sheen-textarea-group .sheen-textarea-count svg { width: 1.125rem; height: 1.125rem; }

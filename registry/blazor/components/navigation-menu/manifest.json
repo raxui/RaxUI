@@ -19,14 +19,14 @@
       "destination": "components",
       "target": "NavigationMenu/NavigationMenu.razor",
       "type": "razor",
-      "sha256": "e50d198e2c3ebd7bb4d408f038a4f9c4e56e135da02df061486940f3650472d4"
+      "sha256": "4c5f542dfaef19bcb373f14e3db8ca3c5b47395bd60cb1f8d1abd09d64c22677"
     },
     {
       "source": "NavigationMenu.razor.js",
       "destination": "components",
       "target": "NavigationMenu/NavigationMenu.razor.js",
       "type": "js",
-      "sha256": "c555c7b3f5a6e5cc627c9c2189a0e2bb657597641b6a07799a130f572bddb7d8"
+      "sha256": "b43ccd9c5035506e5dafc57fa1adf8cc48d674f9ed8564499d5d8e2424c54ce0"
     },
     {
       "source": "NavigationMenuContent.razor",

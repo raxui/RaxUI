@@ -88,7 +88,7 @@
       "source": "theme/scss/components/_data-grid.scss",
       "target": "styles/sheenui/components/_data-grid.scss",
       "type": "scss",
-      "sha256": "b20e101f6449cc7fa62b3447d03c81912e1257c6229b4c56985cdff577bc5606"
+      "sha256": "544a07b07a4418f153137480a73a010f7e45b59a532dd55b0d1cf2ba8ade5856"
     }
   ]
 }
