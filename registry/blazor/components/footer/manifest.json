@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "name": "footer",
+  "version": "0.1.0",
+  "description": "Source-owned Blazor footer with shared theme and progressive enhancement.",
+  "dependencies": [
+    "button"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/footer.css",
+      "destination": "styles",
+      "target": "components/footer.css",
+      "type": "css",
+      "sha256": "ae1d8ee20cdde9ae859bcd7167ee74e6a68b610cb31a214471a49ab4bda07bd3"
+    }
+  ],
+  "files": [
+    {
+      "source": "Footer.razor",
+      "destination": "components",
+      "target": "Footer/Footer.razor",
+      "type": "razor",
+      "sha256": "4da04d7c0f6ad5ee1ffdd233a0c620fe4dc908ec0def01c679589d4a1d16395b"
+    },
+    {
+      "source": "Footer.razor.js",
+      "destination": "components",
+      "target": "Footer/Footer.razor.js",
+      "type": "js",
+      "sha256": "26f75715f6b2e7ef907267e59fa24954a75aaab3f8b4f56061dee3ba14700f77"
+    },
+    {
+      "source": "FooterBackToTop.razor",
+      "destination": "components",
+      "target": "Footer/FooterBackToTop.razor",
+      "type": "razor",
+      "sha256": "7bf69fc75b013e2e25cb963fd7760fe02f619e2b13556ed9df5ab70295ce22cc"
+    },
+    {
+      "source": "FooterBottom.razor",
+      "destination": "components",
+      "target": "Footer/FooterBottom.razor",
+      "type": "razor",
+      "sha256": "64f1e07d06e4525d9fbd3f29d2df3d6d8350105bda6b0e21b1d66c9bf497767a"
+    },
+    {
+      "source": "FooterBrand.razor",
+      "destination": "components",
+      "target": "Footer/FooterBrand.razor",
+      "type": "razor",
+      "sha256": "f5569e39fbf2f74943cd15fe597884dd0c9409011bd063660c7d1c81c3ac914d"
+    },
+    {
+      "source": "FooterColumn.razor",
+      "destination": "components",
+      "target": "Footer/FooterColumn.razor",
+      "type": "razor",
+      "sha256": "df1c596148af0fe489702d7c213f0b0438261859343a6c3331abc9a229cb96ec"
+    },
+    {
+      "source": "FooterColumns.razor",
+      "destination": "components",
+      "target": "Footer/FooterColumns.razor",
+      "type": "razor",
+      "sha256": "3839b63c5c355fb3dc30bf951434efa12a0e196d269c843ec35a22d2ae7229c1"
+    },
+    {
+      "source": "FooterCopyright.razor",
+      "destination": "components",
+      "target": "Footer/FooterCopyright.razor",
+      "type": "razor",
+      "sha256": "66a84a1f3567afcda17d7e976266ede61f3a54467ce1be1c4b1d5d9d5303f37b"
+    },
+    {
+      "source": "FooterLegal.razor",
+      "destination": "components",
+      "target": "Footer/FooterLegal.razor",
+      "type": "razor",
+      "sha256": "2f3ce5e91b3b00d6915a7fe1a120d271d2a323e6ff2d89ec6c3e8918df675bdc"
+    },
+    {
+      "source": "FooterLink.razor",
+      "destination": "components",
+      "target": "Footer/FooterLink.razor",
+      "type": "razor",
+      "sha256": "26000b3ebdbc7ed2305444b453711c9553451a3cd39bb81fb158b101a5ea151e"
+    },
+    {
+      "source": "FooterMain.razor",
+      "destination": "components",
+      "target": "Footer/FooterMain.razor",
+      "type": "razor",
+      "sha256": "a1462f94a19f92b7eb16e44b4a6bfcc172dbea5d8bf05ca1d4ebfba616d91b39"
+    },
+    {
+      "source": "FooterNewsletter.razor",
+      "destination": "components",
+      "target": "Footer/FooterNewsletter.razor",
+      "type": "razor",
+      "sha256": "4a9c8e20c141e12ba3bc08ed601afbaf69c654ea36a323ddf83a88a7c5e3c378"
+    },
+    {
+      "source": "FooterSocial.razor",
+      "destination": "components",
+      "target": "Footer/FooterSocial.razor",
+      "type": "razor",
+      "sha256": "420ec2751540614e49e0cbb5dc608f49ba617269d7278ab2902d333fdf7ef1c2"
+    },
+    {
+      "source": "FooterSocialLink.razor",
+      "destination": "components",
+      "target": "Footer/FooterSocialLink.razor",
+      "type": "razor",
+      "sha256": "e20d39c6712d0fd5cd9d2e2f1454afbff6f464b17b813e9cf4046749c6b3774a"
+    }
+  ]
+}

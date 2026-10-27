@@ -315,3 +315,18 @@
     display: grid;
   }
 }
+.sheen-navbar[data-blazor-shell]:not([data-shell-ready]) .sheen-navbar-links {
+  display: block;
+  position: static;
+  transform: none;
+}
+.sheen-navbar[data-blazor-shell]:not([data-shell-ready]) .sheen-navbar-links > ul {
+  flex-wrap: wrap;
+}
+.sheen-navbar[data-blazor-shell]:not([data-shell-ready]) .sheen-navbar-bar {
+  flex-wrap: wrap;
+  height: auto;
+}
+.sheen-navbar[data-blazor-shell]:not([data-shell-ready]) .sheen-navbar-toggle, .sheen-navbar[data-blazor-shell]:not([data-shell-ready]) .sheen-navbar-menu {
+  display: none;
+}

@@ -1,0 +1,2 @@
+<div class="sheen-sidebar-menu-skeleton @Class" aria-hidden="true">@if (ShowIcon) { <Skeleton Class="sheen-sidebar-skeleton-icon" /> }<Skeleton Class="sheen-sidebar-skeleton-text" style="max-width:70%" /></div>
+@code { [Parameter] public bool ShowIcon { get; set; } = true; [Parameter] public string? Class { get; set; } }

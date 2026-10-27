@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "name": "navbar",
+  "version": "0.1.0",
+  "description": "Source-owned Blazor navbar with shared theme and progressive enhancement.",
+  "dependencies": [
+    "menu-toggle"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/navbar.css",
+      "destination": "styles",
+      "target": "components/navbar.css",
+      "type": "css",
+      "sha256": "e1bc633844ce8da868d486d5e1d80dfe91450e7d450b905c14f7378ee1e3747d"
+    }
+  ],
+  "files": [
+    {
+      "source": "Navbar.razor",
+      "destination": "components",
+      "target": "Navbar/Navbar.razor",
+      "type": "razor",
+      "sha256": "c1cac8941e6a1abb878c6149d7965e783e0dffeae74c625af89193bb3c4090e0"
+    },
+    {
+      "source": "Navbar.razor.js",
+      "destination": "components",
+      "target": "Navbar/Navbar.razor.js",
+      "type": "js",
+      "sha256": "a68d06fbf3cf5de3bf3b64409f8820cfe0732c776c1cea59537a71d226b4f477"
+    },
+    {
+      "source": "NavbarActions.razor",
+      "destination": "components",
+      "target": "Navbar/NavbarActions.razor",
+      "type": "razor",
+      "sha256": "8ef79bcdbcf40ef2ef05249656feb7ad21b081068bdafb1553be70ab77ecbb86"
+    },
+    {
+      "source": "NavbarBrand.razor",
+      "destination": "components",
+      "target": "Navbar/NavbarBrand.razor",
+      "type": "razor",
+      "sha256": "c39cb3196514ea10beeb7be1410efb5647b3cb97b41cc0ac11b85e12758cf118"
+    },
+    {
+      "source": "NavbarLink.razor",
+      "destination": "components",
+      "target": "Navbar/NavbarLink.razor",
+      "type": "razor",
+      "sha256": "08bad3a1a409100ec294a6adf093ed04c8390abff5a851a6b7da474d6e36e630"
+    },
+    {
+      "source": "NavbarLinks.razor",
+      "destination": "components",
+      "target": "Navbar/NavbarLinks.razor",
+      "type": "razor",
+      "sha256": "1b3b4c71aef1799ff2eb7a4156ea026a86ee759074e3b4b41db3ec564bcb4488"
+    },
+    {
+      "source": "NavbarMenu.razor",
+      "destination": "components",
+      "target": "Navbar/NavbarMenu.razor",
+      "type": "razor",
+      "sha256": "8851a41b3e1845b1c39b22c30ace3f8b9dbe4f02fccee2ac6d7f6f58d6418643"
+    },
+    {
+      "source": "NavbarMenuLink.razor",
+      "destination": "components",
+      "target": "Navbar/NavbarMenuLink.razor",
+      "type": "razor",
+      "sha256": "3980acecdd7133e800f97f4da171f86f061b394dc895c8340e3c28cfc2a9d189"
+    },
+    {
+      "source": "NavbarToggle.razor",
+      "destination": "components",
+      "target": "Navbar/NavbarToggle.razor",
+      "type": "razor",
+      "sha256": "59240c85fc6c70c1e55e73dc19ceaea0f8f9d83290daedbe8b4047a2c9fa331d"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+<CascadingValue Value="this"><div @attributes="AdditionalAttributes" class="@Class" role="group" aria-label="@Label">@ChildContent</div></CascadingValue>
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    private string? local;
+    internal string Current => ValueChanged.HasDelegate ? Value : local ?? Value;
+    internal async Task Select(string value) { local = value; await ValueChanged.InvokeAsync(value); StateHasChanged(); }
+}

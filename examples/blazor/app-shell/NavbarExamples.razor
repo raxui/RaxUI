@@ -1,0 +1,18 @@
+@inherits ShellExampleBase
+<div class="vstack gap-3">
+<div class="d-flex flex-wrap gap-3 align-items-center"><label>@T("Variant", "المظهر")<select class="form-select form-select-sm" @bind="variant" aria-label="Navbar variant"><option>transparent</option><option>glass</option><option>solid</option></select></label><label><input type="checkbox" @bind="floating" /> @T("Floating", "عائم")</label><label><input type="checkbox" @bind="hide" /> @T("Hide on scroll", "إخفاء عند التمرير")</label></div>
+<div id="@scrollId" class="border rounded-4 position-relative" style="height:360px;overflow:auto;isolation:isolate">
+<Navbar Variant="@variant" Floating="@floating" HideOnScroll="@hide" ScrollContainer="@("#" + scrollId)" Expand="md">
+    <NavbarBrand Href="#shell-home" PreventDefault><span class="badge bg-primary">S</span> SheenUI</NavbarBrand>
+    <NavbarLinks Label="@T("Main", "التنقل الرئيسي")">@foreach (var item in links) { <NavbarLink Href="@("#shell-" + item.Id)" Active="@(page == item.Id)" OnClick="@(() => page = item.Id)" PreventDefault>@T(item.English, item.Arabic)</NavbarLink> }</NavbarLinks>
+    <NavbarActions Collapse><Button Size="sm">@T("Get started", "ابدأ الآن")</Button></NavbarActions><NavbarToggle OpenLabel="@T("Open menu", "فتح القائمة")" CloseLabel="@T("Close menu", "إغلاق القائمة")" />
+    <NavbarMenu Label="@T("Mobile navigation", "التنقل على الهاتف")">@foreach (var item in links) { <NavbarMenuLink Href="@("#shell-" + item.Id)" Active="@(page == item.Id)" OnClick="@(() => page = item.Id)" PreventDefault>@T(item.English, item.Arabic)</NavbarMenuLink> }</NavbarMenu>
+</Navbar>
+<div class="p-4"><h3 class="h5">@T("Built for your next idea", "جاهز لفكرتك القادمة")</h3><p class="text-body-secondary">@T("Hover the links to see the highlight glide. Select a page, resize the window, then scroll down and up.", "مرر المؤشر لرؤية التظليل المنزلق. اختر صفحة وغيّر حجم النافذة ثم مرر للأسفل والأعلى.")</p>@for (var i = 0; i < 8; i++) { <p class="text-body-secondary py-2">@T("The bar turns to glass after scrolling, hides while reading down and returns when you scroll up.", "يتحول الشريط إلى Glass بعد التمرير ويختفي أثناء القراءة ويعود عند التمرير للأعلى.")</p> }</div>
+</div><output class="small text-body-secondary" data-navbar-page>@(page)</output>
+</div>
+@code {
+    private string variant = "transparent", page = "product"; private bool floating, hide = true;
+    private readonly string scrollId = "shell-scroll-" + Guid.NewGuid().ToString("N");
+    private readonly (string Id, string English, string Arabic)[] links = [("product", "Product", "المنتج"), ("pricing", "Pricing", "الأسعار"), ("docs", "Docs", "التوثيق"), ("blog", "Blog", "المدونة")];
+}

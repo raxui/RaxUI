@@ -373,3 +373,17 @@
 .sheen-footer-top {
   margin-inline-start: auto;
 }
+
+.sheen-footer .sheen-footer-heading > button[hidden], .sheen-footer [data-footer-title][hidden] {
+  display: none;
+}
+
+.sheen-footer .sheen-footer-social-link svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.sheen-footer .sheen-footer-newsletter-done svg {
+  width: 1rem;
+  height: 1rem;
+}

@@ -370,3 +370,11 @@
     @include sheen-navbar-collapsed;
   }
 }
+
+// Before enhancement, keep the static navigation usable at every viewport width.
+.sheen-navbar[data-blazor-shell]:not([data-shell-ready]) {
+  .sheen-navbar-links { display: block; position: static; transform: none; }
+  .sheen-navbar-links > ul { flex-wrap: wrap; }
+  .sheen-navbar-bar { flex-wrap: wrap; height: auto; }
+  .sheen-navbar-toggle, .sheen-navbar-menu { display: none; }
+}
