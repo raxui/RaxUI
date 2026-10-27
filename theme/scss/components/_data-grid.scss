@@ -449,3 +449,11 @@
   justify-content: center;
   padding: 0;
 }
+
+// Grid-level errors remain in document flow; date editors fill their cell.
+.sheen-grid > .sheen-grid-error { position: static; align-self: flex-start; }
+.sheen-grid-editor-date .sheen-date-input { height: 100%; min-height: 0; border: 0; box-shadow: none; background: transparent; }
+
+// Native select adapter slots fill the same editor height as React triggers.
+.sheen-grid-cell[data-editing] > .sheen-blazor-select,
+.sheen-grid-cell[data-editing] > .sheen-blazor-select > span { display: block; width: 100%; height: 100%; }

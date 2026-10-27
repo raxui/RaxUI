@@ -1,0 +1,46 @@
+@typeparam TItem
+<div @attributes="AdditionalAttributes" class="@($"sheen-data-table {Class}")" data-sheen-appearance="@Appearance" dir="@Direction">
+    <div inert="@(!interactive?"":null)"><DataTableToolbar TItem="TItem" State="state" Text="Labels" Changed="Changed" Toolbar="Toolbar" /></div>
+    <div><DataTableContent Interactive="interactive" TItem="TItem" State="state" Text="Labels" Label="@Label" Selectable="Selectable" Loading="Loading" MaxHeight="@MaxHeight" EmptyState="EmptyState" Changed="Changed" /></div>
+    <div inert="@(!interactive?"":null)"><DataTablePager TItem="TItem" State="state" Text="Labels" Sizes="PageSizeOptions" Changed="Changed" /></div>
+    @if(interactive&&state.SelectedRows.Count>0){
+        <div class="sheen-table-bulkbar" data-state="open" role="region" aria-label="@Labels.BulkActions">
+            <span class="sheen-table-bulkbar-count">@Labels.Selected(state.SelectedRows.Count)</span>
+            @BulkActions?.Invoke(state.SelectedRows)
+            <Button Variant="ghost" Size="sm" OnClick="ClearSelection">@Labels.ClearSelection</Button>
+        </div>
+    }
+</div>
+@code {
+    [Parameter,EditorRequired] public IReadOnlyList<TItem> Items { get; set; } = Array.Empty<TItem>();
+    [Parameter,EditorRequired] public IReadOnlyList<DataTableTypes.Column<TItem>> Columns { get; set; } = Array.Empty<DataTableTypes.Column<TItem>>();
+    [Parameter,EditorRequired] public Func<TItem,string> GetRowId { get; set; } = default!;
+    [Parameter] public DataTableTypes.Labels Labels { get; set; } = new();
+    [Parameter] public string Label { get; set; } = "Data table";
+    [Parameter] public bool Selectable { get; set; } = true;
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public int InitialPageSize { get; set; } = 10;
+    [Parameter] public IReadOnlyList<int> PageSizeOptions { get; set; } = new[]{10,20,30,40,50};
+    [Parameter] public IReadOnlyList<DataTableTypes.Sort>? InitialSorting { get; set; }
+    [Parameter] public IReadOnlyList<string>? InitialHiddenColumns { get; set; }
+    [Parameter] public string Density { get; set; } = "comfortable";
+    [Parameter] public string? MaxHeight { get; set; }
+    [Parameter] public RenderFragment? Toolbar { get; set; }
+    [Parameter] public RenderFragment? EmptyState { get; set; }
+    [Parameter] public RenderFragment<IReadOnlyList<TItem>>? BulkActions { get; set; }
+    [Parameter] public EventCallback<IReadOnlyList<TItem>> SelectionChanged { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Direction { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes { get; set; }
+    private readonly DataTableState.State<TItem> state=new();
+    private bool interactive,initialized;
+    protected override void OnParametersSet(){
+        ArgumentNullException.ThrowIfNull(GetRowId);
+        if(!initialized){state.Initialize(InitialPageSize,InitialSorting,InitialHiddenColumns,Density);initialized=true;}
+        state.Configure(Items,Columns,GetRowId);
+    }
+    protected override void OnAfterRender(bool firstRender){if(firstRender){interactive=true;StateHasChanged();}}
+    private async Task Changed(){await SelectionChanged.InvokeAsync(state.SelectedRows);StateHasChanged();}
+    public async Task ClearSelection(){state.Selected.Clear();await Changed();}
+}

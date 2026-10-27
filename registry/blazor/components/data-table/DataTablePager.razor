@@ -1,0 +1,20 @@
+@typeparam TItem
+<div class="sheen-data-table-footer">
+    <span aria-live="polite">@Text.Results(State.Filtered.Count) · @Text.Selected(State.SelectedRows.Count)</span>
+    <div class="sheen-table-pagination">
+        <label class="d-flex align-items-center gap-2">@Text.RowsPerPage
+            <Select TValue="int" Value="State.PageSize" ValueChanged="Size" Size="sm" aria-label="@Text.RowsPerPage">
+                @foreach(var size in Sizes.Append(State.PageSize).Distinct().OrderBy(x=>x)){<option value="@size">@size</option>}
+            </Select>
+        </label>
+        <Pagination Page="State.Page" PageCount="State.PageCount" PageChanged="Page" Label="@Text.Pagination" PreviousLabel="@Text.Previous" NextLabel="@Text.Next" MoreLabel="@Text.MorePages" GetPageLabel="Text.Page" Size="sm" />
+    </div>
+</div>
+@code {
+    [Parameter,EditorRequired] public DataTableState.State<TItem> State { get; set; } = default!;
+    [Parameter] public DataTableTypes.Labels Text { get; set; } = new();
+    [Parameter] public IReadOnlyList<int> Sizes { get; set; } = new[]{10,20,30,40,50};
+    [Parameter] public EventCallback Changed { get; set; }
+    private async Task Page(int page){State.SetPage(page);await Changed.InvokeAsync();}
+    private async Task Size(int size){State.SetPageSize(size);await Changed.InvokeAsync();}
+}

@@ -1,0 +1,31 @@
+@typeparam TItem
+<div role="row" aria-rowindex="@(Index+2)" aria-selected="@(Model.Selected.Contains(RowId)?"true":null)" data-selected="@(Model.Selected.Contains(RowId)?"":null)" data-active-row="@(Session.ActiveRow==RowId?"":null)" data-editing-row="@(Session.Editing&&Session.ActiveRow==RowId?"":null)" class="sheen-grid-row" style="@($"height:{Model.RowHeight}px;transform:translateY({Index*Model.RowHeight}px)")" data-row-id="@RowId">
+@for(var index=0;index<Model.Visible.Count;index++){
+    var c=Model.Visible[index];var active=Session.ActiveRow==RowId&&Session.ActiveColumn==c.Id&&!Session.Header;var editing=active&&Session.Editing;
+    <div @key="c.Id" id="@($"{GridId}-r{Index}-c{index}")" role="gridcell" aria-colindex="@(index+1)" aria-readonly="@(!Interactive||c.Editor is null?"true":null)" aria-invalid="@(editing&&Session.Error is not null?"true":null)" data-active="@(active?"":null)" data-editing="@(editing?"":null)" data-editable="@(c.Editor is not null?"":null)" data-align="@c.Align" data-col="@c.Id" data-pinned="@Model.EffectivePin(c)" data-flash="@(Session.Flash==RowId+":"+c.Id?"":null)" class="sheen-grid-cell" style="@Model.CellStyle(c)" @onpointerdown="()=>Activate.InvokeAsync(new(RowId,c.Id))" @ondblclick="()=>Edit.InvokeAsync(new(RowId,c.Id))">
+        @if(editing){
+            <DataGridEditor TItem="TItem" @key="c.Id" Column="c" Session="Session" Label="@Labels.Cell(c.Title,Index+1)" DraftChanged="DraftChanged" Commit="Commit" />
+            @if(Session.Error is not null){<span class="sheen-grid-error" role="alert">@Session.Error</span>}
+        }else if(c.Id=="__select"){
+            <Checkbox disabled="@(!Interactive)" Value="@Model.Selected.Contains(RowId)" ValueChanged="()=>Select.InvokeAsync(RowId)" aria-label="@($"{Labels.SelectRow} {RowId}")" tabindex="-1" />
+        }else if(c.Editor?.Type=="checkbox"&&c.Cell is null){
+            <Checkbox disabled="@(!Interactive)" Value="@(c.Value(Row) is true)" ValueChanged="()=>Edit.InvokeAsync(new(RowId,c.Id))" aria-label="@Labels.Cell(c.Title,Index+1)" tabindex="-1" />
+        }else if(c.Cell is not null){@c.Cell(Row)}else{@c.Text(Row)}
+    </div>
+}
+</div>
+@code {
+    [Parameter,EditorRequired] public DataGridModel.State<TItem> Model { get; set; } = default!;
+    [Parameter,EditorRequired] public DataGridEditing.Session Session { get; set; } = default!;
+    [Parameter,EditorRequired] public TItem Row { get; set; } = default!;
+    [Parameter] public bool Interactive { get; set; }
+    [Parameter] public int Index { get; set; }
+    [Parameter] public string GridId { get; set; } = "";
+    [Parameter] public DataGridTypes.Labels Labels { get; set; } = new();
+    [Parameter] public EventCallback<DataGridTypes.Address> Activate { get; set; }
+    [Parameter] public EventCallback<DataGridTypes.Address> Edit { get; set; }
+    [Parameter] public EventCallback<string> Select { get; set; }
+    [Parameter] public EventCallback<string> DraftChanged { get; set; }
+    [Parameter] public EventCallback Commit { get; set; }
+    private string RowId=>Model.Id(Row);
+}

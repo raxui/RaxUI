@@ -1,0 +1,40 @@
+@* Public data contracts. No extra NuGet dependency. *@
+@code {
+    public sealed class Column<T> {
+        public required string Id { get; init; }
+        public required string Title { get; init; }
+        public required Func<T, object?> Value { get; init; }
+        public RenderFragment<T>? Cell { get; init; }
+        public Func<object?, string>? Format { get; init; }
+        public bool Sortable { get; init; } = true;
+        public bool Hideable { get; init; } = true;
+        public bool Searchable { get; init; } = true;
+        public string Align { get; init; } = "start";
+        public string? Class { get; init; }
+        public IReadOnlyList<Option> Options { get; init; } = Array.Empty<Option>();
+        public string Text(T row) => Format?.Invoke(Value(row)) ?? Convert.ToString(Value(row), System.Globalization.CultureInfo.CurrentCulture) ?? "";
+    }
+    public sealed record Option(string Value, string Label);
+    public sealed record Sort(string ColumnId, bool Descending = false);
+    public sealed class Labels {
+        public string Search { get; init; } = "Search…";
+        public string View { get; init; } = "View";
+        public string Columns { get; init; } = "Columns";
+        public string Compact { get; init; } = "Compact";
+        public string Comfortable { get; init; } = "Comfortable";
+        public string Reset { get; init; } = "Reset filters";
+        public string Empty { get; init; } = "No results.";
+        public string SelectAll { get; init; } = "Select all rows on this page";
+        public string SelectRow { get; init; } = "Select row";
+        public string ClearSelection { get; init; } = "Clear selection";
+        public string RowsPerPage { get; init; } = "Rows per page";
+        public string Previous { get; init; } = "Previous";
+        public string Next { get; init; } = "Next";
+        public string Pagination { get; init; } = "Pagination";
+        public string MorePages { get; init; } = "More pages";
+        public string BulkActions { get; init; } = "Bulk actions";
+        public Func<int,string> Results { get; init; } = n => $"{n} results";
+        public Func<int,string> Selected { get; init; } = n => $"{n} selected";
+        public Func<int,string> Page { get; init; } = n => $"Page {n}";
+    }
+}

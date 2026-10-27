@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Pagination/Pagination.razor",
       "type": "razor",
-      "sha256": "a25bdbeda0ae01bf8c9d213ad3371640108b4e7e290c4028580ee53dc84e82af"
+      "sha256": "5a5d6977fd6205197227bec1b27105ce0e736ba5cd08b7d0abaef98c8281d8cf"
     },
     {
       "source": "Pagination.razor.js",

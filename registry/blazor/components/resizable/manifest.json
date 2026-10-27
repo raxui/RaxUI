@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "name": "resizable",
+  "version": "0.1.0",
+  "description": "Source-owned resizable (ADR 019).",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/resizable.css",
+      "destination": "styles",
+      "target": "components/resizable.css",
+      "type": "css",
+      "sha256": "6964e3c03e131092dac5cf368ea83fd5ee8d0e791a5bf2c7a99708f0592dfc83"
+    }
+  ],
+  "files": [
+    {
+      "source": "ResizableHandle.razor",
+      "destination": "components",
+      "target": "Resizable/ResizableHandle.razor",
+      "type": "razor",
+      "sha256": "2943a3b4ecd4559009b63f9510a8f0e42dc055123515bdc23e9ab9fe429b8ad8"
+    },
+    {
+      "source": "ResizablePanel.razor",
+      "destination": "components",
+      "target": "Resizable/ResizablePanel.razor",
+      "type": "razor",
+      "sha256": "b16f72cb9ef2a8ef4f5a841c7e6cd459ad9ff9018f793bd7b670471ff9e0685d"
+    },
+    {
+      "source": "ResizablePanelGroup.razor",
+      "destination": "components",
+      "target": "Resizable/ResizablePanelGroup.razor",
+      "type": "razor",
+      "sha256": "b36d251c2ec29d4dde6c4624c1fe2c8b6c40df50dbb9f38b0cbbea70d3e30a0d"
+    },
+    {
+      "source": "ResizablePanelGroup.razor.js",
+      "destination": "components",
+      "target": "Resizable/ResizablePanelGroup.razor.js",
+      "type": "js",
+      "sha256": "89e671db3dea0e52b4ee1cd9333dce9407200bc62bfaa7d63b0a2859f1255d9a"
+    }
+  ]
+}

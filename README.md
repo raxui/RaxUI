@@ -1221,3 +1221,10 @@ React advanced components are available through the source registry: Carousel, C
 ### Blazor app shell
 
 Navbar, Sidebar, NavigationMenu, Menubar, Footer and Banner are available through `sheenui add <name>`. They share the React theme, provide navigable static SSR, and enhance interactive render modes with responsive navigation, gliding highlights, native popover menus and remembered state. See [Blazor app shell APIs and examples](docs/blazor-app-shell.md).
+
+## Blazor data components
+
+`data-table`, `data-grid`, `sortable` and `resizable` follow ADR 019 and use the
+shared theme without new runtime packages. See the [API and SSR boundary](docs/blazor-data-components.md),
+[React-equivalent examples](examples/blazor/data/README.md) and
+[virtualization comparison](docs/blazor-data-virtualization.md).

@@ -1,0 +1,59 @@
+@code {
+    public sealed class State<T> {
+        public IReadOnlyList<T> Items { get; private set; } = Array.Empty<T>();
+        public IReadOnlyList<T> Rows { get; private set; } = Array.Empty<T>();
+        public IReadOnlyList<DataGridTypes.Column<T>> Columns { get; private set; } = Array.Empty<DataGridTypes.Column<T>>();
+        public IReadOnlyList<DataGridTypes.Column<T>> Visible { get; private set; } = Array.Empty<DataGridTypes.Column<T>>();
+        public Func<T,string> Id { get; private set; } = default!;
+        public readonly Dictionary<string,int> RowIndexes=new(StringComparer.Ordinal);
+        public readonly Dictionary<string,double> Widths=new(StringComparer.Ordinal);
+        public readonly Dictionary<string,string?> Pins=new(StringComparer.Ordinal);
+        public readonly HashSet<string> Hidden=new(StringComparer.Ordinal);
+        public readonly HashSet<string> Selected=new(StringComparer.Ordinal);
+        public readonly List<(string Id,bool Descending)> Sorting=new();
+        public readonly Dictionary<string,object?> Totals=new(StringComparer.Ordinal);
+        public string Query { get; set; } = "";
+        public string Density { get; set; } = "comfortable";
+        public int RowHeight=>Density=="compact"?34:42;
+        public double TotalWidth=>Visible.Sum(c=>Widths[c.Id]);
+        public bool HasFooter=>Visible.Any(c=>c.Aggregate is not null||c.AggregateValue is not null);
+        public double ViewportWidth { get; set; }
+        public bool PinsLimited=>ViewportWidth>0&&Visible.Where(c=>Pins[c.Id] is not null).Sum(c=>Widths[c.Id])+80>ViewportWidth;
+        public string? EffectivePin(DataGridTypes.Column<T> column)=>ViewportWidth<=0||PinsLimited?(column.Id=="__select"?Pins[column.Id]:null):Pins[column.Id];
+        public int Version { get; private set; }
+        private IReadOnlyList<T>? previous;
+        public void Configure(IReadOnlyList<T> items,IReadOnlyList<DataGridTypes.Column<T>> columns,Func<T,string> id){
+            if(columns.Select(c=>c.Id).Distinct(StringComparer.Ordinal).Count()!=columns.Count)throw new ArgumentException("Grid column IDs must be unique.");
+            foreach(var c in columns){if(string.IsNullOrEmpty(c.Id)||!double.IsFinite(c.Width)||!double.IsFinite(c.MinWidth)||!double.IsFinite(c.MaxWidth)||c.MinWidth<=0||c.MaxWidth<c.MinWidth)throw new ArgumentException("Invalid grid column definition.");
+                if(c.Editor?.Type is string type && type is not ("text" or "number" or "select" or "date" or "checkbox"))throw new ArgumentException("Unknown grid editor.");
+                if(c.Pin is not (null or "start" or "end"))throw new ArgumentException("Invalid grid pin.");
+                Widths.TryAdd(c.Id,Math.Clamp(c.Width,c.MinWidth,c.MaxWidth));Pins.TryAdd(c.Id,c.Pin);
+            }
+            Items=items;Columns=columns;Id=id;
+            if(!ReferenceEquals(previous,items)){var ids=items.Select(id).ToHashSet(StringComparer.Ordinal);if(ids.Count!=items.Count||ids.Any(string.IsNullOrEmpty))throw new ArgumentException("Grid row IDs must be unique and nonempty.");Selected.IntersectWith(ids);previous=items;}
+            Refresh();
+        }
+        public void Refresh(){
+            Visible=Columns.Where(c=>!Hidden.Contains(c.Id)).OrderBy(c=>Pins[c.Id]=="start"?0:Pins[c.Id]=="end"?2:1).ToArray();
+            IEnumerable<T> rows=Items.Where(r=>Query.Length==0||Columns.Any(c=>(c.Text(r).Contains(Query,StringComparison.CurrentCultureIgnoreCase)||DataGridTypes.Plain(c.Value(r)).Contains(Query,StringComparison.CurrentCultureIgnoreCase))));
+            IOrderedEnumerable<T>? ordered=null;
+            foreach(var sort in Sorting){var c=Columns.FirstOrDefault(c=>c.Id==sort.Id);if(c is null)continue;var comparer=Comparer<object?>.Create(Compare);
+                ordered=ordered is null?(sort.Descending?rows.OrderByDescending(c.Value,comparer):rows.OrderBy(c.Value,comparer)):(sort.Descending?ordered.ThenByDescending(c.Value,comparer):ordered.ThenBy(c.Value,comparer));}
+            Rows=(ordered??rows).ToArray();RowIndexes.Clear();for(var i=0;i<Rows.Count;i++)RowIndexes[Id(Rows[i])]=i;Totals.Clear();
+            foreach(var c in Visible.Where(c=>c.Aggregate is not null||c.AggregateValue is not null)){
+                var values=Rows.Select(c.Value).ToArray();if(c.AggregateValue is not null){Totals[c.Id]=c.AggregateValue(values);continue;}
+                var numbers=values.Where(x=>x is not null&&DataGridTypes.Plain(x)!="").Select(x=>decimal.TryParse(DataGridTypes.Plain(x),System.Globalization.NumberStyles.Any,System.Globalization.CultureInfo.InvariantCulture,out var n)?(decimal?)n:null).Where(x=>x.HasValue).Select(x=>x!.Value).ToArray();
+                Totals[c.Id]=c.Aggregate switch {"count"=>values.Count(x=>x is not null&&x is not false&&DataGridTypes.Plain(x)!=""),"sum"=>numbers.Sum(),"avg"=>numbers.Length>0?numbers.Average():null,"min"=>numbers.Length>0?numbers.Min():null,"max"=>numbers.Length>0?numbers.Max():null,_=>null};
+            }
+            Version++;
+        }
+        private static int Compare(object? a,object? b){if(a is null)return b is null?0:-1;if(b is null)return 1;if(a.GetType()==b.GetType()&&a is IComparable comparable)return comparable.CompareTo(b);return StringComparer.CurrentCultureIgnoreCase.Compare(DataGridTypes.Plain(a),DataGridTypes.Plain(b));}
+        public string CellStyle(DataGridTypes.Column<T> c){
+            var invariant=System.Globalization.CultureInfo.InvariantCulture;
+            var width=Widths[c.Id].ToString(invariant);var style=$"width:{width}px;";var pin=EffectivePin(c);if(pin is null)return style;
+            var index=Visible.ToList().FindIndex(x=>x.Id==c.Id);
+            var offset=(pin=="start"?Visible.Take(index):Visible.Skip(index+1)).Where(x=>EffectivePin(x)==pin).Sum(x=>Widths[x.Id]);
+            return style+$"position:sticky;inset-inline-{pin}:{offset.ToString(invariant)}px;";
+        }
+    }
+}

@@ -1,0 +1,21 @@
+@typeparam TItem
+@if(Column.Editor?.Type=="select"){
+    <Select TValue="string" Value="@Session.Draft" ValueChanged="Select" aria-label="@Label" aria-invalid="@(Session.Error is not null?"true":null)" Class="sheen-grid-editor" Size="sm">
+        @foreach(var option in Column.Editor.Options){<option value="@option.Value">@option.Label</option>}
+    </Select>
+} else if(Column.Editor?.Type=="date"){
+    <div class="sheen-grid-editor sheen-grid-editor-date"><DateInput TValue="DateOnly?" Value="DateDraft" ValueChanged="DateChanged" aria-label="@Label" Class="sheen-grid-editor" Size="sm" /></div>
+} else {
+    <input class="sheen-grid-editor sheen-grid-editor-input" aria-label="@Label" inputmode="@(Column.Editor?.Type=="number"?"decimal":null)" aria-invalid="@(Session.Error is not null?"true":null)" value="@Session.Draft" @oninput="Input" />
+}
+@code {
+    [Parameter,EditorRequired] public DataGridTypes.Column<TItem> Column { get; set; } = default!;
+    [Parameter,EditorRequired] public DataGridEditing.Session Session { get; set; } = default!;
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public EventCallback<string> DraftChanged { get; set; }
+    [Parameter] public EventCallback Commit { get; set; }
+    private DateOnly? DateDraft=>DateOnly.TryParseExact(Session.Draft,"yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out var date)?date:null;
+    private Task Input(ChangeEventArgs e)=>DraftChanged.InvokeAsync(Convert.ToString(e.Value)??"");
+    private async Task Select(string value){await DraftChanged.InvokeAsync(value);await Commit.InvokeAsync();}
+    private Task DateChanged(DateOnly? value)=>DraftChanged.InvokeAsync(value?.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)??"");
+}
