@@ -1121,13 +1121,13 @@ politely. The outlet waits for exit motion before removing each message.
 | HoverCard | Same preview parameters, `CloseDelay=200`, `Label="Preview"`. Pointer and keyboard focus may move into the content; Tab from the trigger enters its first control. Escape dismisses. |
 | Toaster | `Position="top-center"` (top/bottom with center/right/left), `Label="Notifications"`, `DismissLabel="Dismiss"`, `Class`, `Appearance`. One outlet per interactive scope. |
 | Sheet | `Open` / `OpenChanged`, `Title`, `Description`, `ChildContent`, `Footer`, `Side="end"` (start/top/bottom), `CloseLabel="Close"`, `Class`, `Appearance`, native attributes. Logical sides flip in RTL. |
-| Drawer | Same panel parameters, bottom placement and a drag handle. Drag down past the greater of 60px and 25% of panel height to dismiss; shorter/cancelled drags spring back. Content remains scrollable because dragging starts only on the handle. |
+| Drawer | Same panel parameters and all six physical/logical sides; pointer/touch dismissal, keyboard-accessible handles, vertical snap points and nested layers. See [Blazor panels](docs/blazor-panels.md) for APIs, migration and reference examples. |
 | ContextMenu | `Target`, `ChildContent` composed of DropdownMenuItem/Label/Separator, `Label="Actions"`, `TargetClass`, `Class`, `Appearance`, content attributes. Right-click, Shift+F10 and the context-menu key open; arrows, Home/End, character typeahead, Enter/Space, Escape and Tab work like DropdownMenu. |
 | Command | `Open` / `OpenChanged`, `Items: List<Command.Item>` (`Value`, `Label`, `Group=""`, `Disabled=false`, `Keywords=""`), `OnSelect(string)`, `Title="Command palette"`, `SearchPlaceholder="Search commands..."`, `EmptyMessage="No results found."`, `Class`, `Appearance`, native dialog attributes. Arabic/diacritic/token/fuzzy label/keyword filtering; arrows and Home/End skip disabled items, Enter runs and closes. `Inline`, controlled `Search`/`SearchChanged`, `ShouldFilter`, custom `Filter`, `Loop`, `CloseOnSelect`, `Loading`, `Shortcut`, `Leading`, `Footer`, and `ItemTemplate` are supported; rich Item fields append `Icon`, `Shortcut`, `Description` and `ForceMount`. See [Blazor choices](docs/blazor-choices.md). Values should be unique. |
 
 Sheet, Drawer and Command can also be opened through `@ref` and `ShowAsync()`
 without binding. Sheet/Drawer expose `CloseAsync()`; Command exposes `Close()`.
-They never mutate their Open parameter. Closing runs in the DOM, then reports
+Sheet/Drawer synchronize their local state on native close. Closing reports
 `OpenChanged(false)`; a parent controls subsequent parameter transitions.
 Sheet and Drawer share the dialog item's native focus containment, Escape and
 backdrop dismissal, and animation-aware closing. Reduced motion removes motion.

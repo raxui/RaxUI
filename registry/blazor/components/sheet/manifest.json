@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/sheet.css",
       "type": "css",
-      "sha256": "5f13e2e34ac08a5ec8436516e8297be60e8078d84fcd3d8f6b1ebf5c6eaf9e8c"
+      "sha256": "d2ed0f704fa7ce02d0a3608fc7ce901b5130f0fa6fa48bdad05b31489a251b79"
     }
   ],
   "files": [
@@ -21,14 +21,14 @@
       "destination": "components",
       "target": "Sheet/Sheet.razor",
       "type": "razor",
-      "sha256": "d80f6be215d8387321215be5acf34694154c4610c651e473cf1b9b1798a01f67"
+      "sha256": "633d490b984d02eafba85bbbdb47286e75c7e1c033744ccdad2801e4dfc88724"
     },
     {
       "source": "Sheet.razor.js",
       "destination": "components",
       "target": "Sheet/Sheet.razor.js",
       "type": "js",
-      "sha256": "4534ada6558946f868b6cd4d8c9c25f9f776d73018bf948728ae0db77d72477b"
+      "sha256": "c5ec8343233d7e05ad03a2d6d4c9dedccaf2cea61af697bdc055ac750a410268"
     }
   ]
 }

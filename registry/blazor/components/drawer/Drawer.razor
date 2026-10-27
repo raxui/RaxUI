@@ -1,28 +1,34 @@
-@* SheenUI Drawer. Source-owned: edit freely. Native modal panel; requires interactivity. *@
+@* Source-owned native modal panel. Shared gestures live in Sheet.razor.js. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-
-<dialog @ref="_element" @attributes="AdditionalAttributes" class="sheen-drawer-content @Class" data-sheen-appearance="@Appearance"
-        data-side="@Side" data-vaul-drawer-direction="bottom" aria-labelledby="@(_id + "-title")"
-        aria-describedby="@(Description is null ? null : _id + "-description")" @onclose="Closed">
-    <div class="sheen-drawer-handle" data-vaul-handle aria-hidden="true"></div>
-    <div class="sheen-drawer-header">
+<dialog @ref="_element" @attributes="AdditionalAttributes" id="@DialogId" class="sheen-drawer-content @Class" data-sheen-appearance="@Appearance"
+        data-side="@Side" aria-labelledby="@(_id + "-title")" aria-describedby="@(Description is null ? null : _id + "-description")" @onclose="Closed">
+    @if (EffectiveHandle)
+    {
+        <button type="button" class="sheen-drawer-handle" data-panel-handle data-vaul-handle aria-label="@HandleLabel" aria-controls="@DialogId"></button>
+    }
+    <div class="sheen-drawer-header @HeaderClass" tabindex="-1" autofocus>
         <h2 id="@(_id + "-title")" class="sheen-drawer-title">@Title</h2>
         @if (Description is not null) { <p id="@(_id + "-description")" class="sheen-drawer-description">@Description</p> }
     </div>
-    <div class="sheen-drawer-body">@ChildContent</div>
-    @if (Footer is not null) { <div class="sheen-drawer-footer">@Footer</div> }
-    <button type="button" class="sheen-drawer-close" aria-label="@CloseLabel" @onclick="CloseAsync">
-        @* Lucide X, ISC license. *@
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
-    </button>
+    <div class="sheen-drawer-body @BodyClass">@ChildContent</div>
+    @if (Footer is not null) { <div class="sheen-drawer-footer @FooterClass">@Footer</div> }
+    @if (ShowCloseButton)
+    {
+        <button type="button" class="sheen-drawer-close" aria-label="@CloseLabel" @onclick="CloseAsync">
+            @* Lucide X, ISC license. *@
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+    }
 </dialog>
-
 @code {
     private readonly string _id = "sheen-drawer-" + Guid.NewGuid().ToString("N");
+    private string DialogId => AdditionalAttributes is not null && AdditionalAttributes.TryGetValue("id", out var id) ? Convert.ToString(id) ?? _id : _id;
     private ElementReference _element;
     private IJSObjectReference? _module;
-    private bool _lastOpen;
+    private DotNetObjectReference<Drawer>? _self;
+    private bool? _parameterOpen, _lastOpen;
+    private bool _requestedOpen, _initialized;
     [Parameter] public bool Open { get; set; }
     [Parameter] public EventCallback<bool> OpenChanged { get; set; }
     [Parameter] public string Title { get; set; } = "";
@@ -30,30 +36,49 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public RenderFragment? Footer { get; set; }
     [Parameter] public string CloseLabel { get; set; } = "Close";
+    [Parameter] public string HandleLabel { get; set; } = "Resize drawer";
     [Parameter] public string Side { get; set; } = "bottom";
+    [Parameter] public bool Draggable { get; set; } = true;
+    [Parameter] public bool? ShowHandle { get; set; }
+    [Parameter] public bool ShowCloseButton { get; set; } = false;
     [Parameter] public string? Class { get; set; }
+    [Parameter] public string? HeaderClass { get; set; }
+    [Parameter] public string? BodyClass { get; set; }
+    [Parameter] public string? FooterClass { get; set; }
     [Parameter] public string? Appearance { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private bool EffectiveHandle => ShowHandle ?? (Side == "bottom" || Side == "top");
+    /// <summary>Viewport fractions ("0.55"), percentages ("55%") or pixel lengths ("148px"), for vertical drawers.</summary>
+    [Parameter] public IReadOnlyList<string> SnapPoints { get; set; } = Array.Empty<string>();
+    [Parameter] public string? ActiveSnapPoint { get; set; }
+    [Parameter] public EventCallback<string?> ActiveSnapPointChanged { get; set; }
+    [Parameter] public int FadeFromIndex { get; set; } = 1;
+    [JSInvokable] public async Task Snapped(string point) { ActiveSnapPoint = point; await ActiveSnapPointChanged.InvokeAsync(point); StateHasChanged(); }
+    protected override void OnParametersSet()
+    {
+        if (Side is not ("start" or "end" or "left" or "right" or "top" or "bottom")) throw new ArgumentException("Side must be start, end, left, right, top or bottom.", nameof(Side));
+        // A binding render can deliver the previous value before the native close callback is applied.
+        if (_parameterOpen != Open) { _parameterOpen = Open; _requestedOpen = Open; }
+        if (SnapPoints.Count > 0 && Side is not ("top" or "bottom")) throw new ArgumentException("Snap points require a vertical drawer.", nameof(SnapPoints));
+    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Drawer/Drawer.razor.js");
-            await _module.InvokeVoidAsync("init", _element);
-        }
-        if (_module is not null && (firstRender || Open != _lastOpen))
-        {
-            _lastOpen = Open;
-            await _module.InvokeVoidAsync("setOpen", _element, Open);
-        }
+        _self ??= DotNetObjectReference.Create(this);
+        _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Drawer/Drawer.razor.js");
+        await _module.InvokeVoidAsync("configure", _element, _self, new { kind = "drawer", side = Side, draggable = Draggable, snapPoints = SnapPoints, activeSnapPoint = ActiveSnapPoint, fadeFromIndex = FadeFromIndex });
+        _initialized = true;
+        if (_lastOpen != _requestedOpen) { _lastOpen = _requestedOpen; await _module.InvokeVoidAsync("setOpen", _element, _requestedOpen); }
     }
-    public async Task ShowAsync() { if (_module is not null) await _module.InvokeVoidAsync("setOpen", _element, true); await OpenChanged.InvokeAsync(true); }
-    public async Task CloseAsync() { if (_module is not null) await _module.InvokeVoidAsync("setOpen", _element, false); }
-    private Task Closed() => OpenChanged.InvokeAsync(false);
+    public async Task ShowAsync() { Open = true; _requestedOpen = true; if (_initialized && _module is not null) { _lastOpen = true; await _module.InvokeVoidAsync("setOpen", _element, true); } await OpenChanged.InvokeAsync(true); }
+    public async Task CloseAsync() { if (_initialized && _module is not null) await _module.InvokeVoidAsync("setOpen", _element, false); else { Open = false; _requestedOpen = false; await OpenChanged.InvokeAsync(false); } }
+    private async Task Closed() { Open = false; _requestedOpen = false; _lastOpen = false; await OpenChanged.InvokeAsync(false); }
     public async ValueTask DisposeAsync()
     {
-        if (_module is null) return;
-        try { await _module.InvokeVoidAsync("dispose", _element); await _module.DisposeAsync(); }
-        catch (JSDisconnectedException) { }
+        if (_module is not null)
+        {
+            try { await _module.InvokeVoidAsync("dispose", _element); await _module.DisposeAsync(); }
+            catch (JSDisconnectedException) { }
+        }
+        _self?.Dispose();
     }
 }

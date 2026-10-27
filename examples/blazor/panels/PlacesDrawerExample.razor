@@ -1,0 +1,12 @@
+@inherits PanelExampleBase
+<Button Variant="tinted" OnClick="@(() => open = true)"><PanelIcon Path="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11ZM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />@T("Nearby places", "أماكن قريبة")</Button>
+<Drawer @bind-Open="open" SnapPoints="points" @bind-ActiveSnapPoint="snap" FadeFromIndex="1" Title="@T("Nearby", "بالقرب منك")" Description="@T($"Drag up for more · {places.Length} places", $"اسحب للأعلى للمزيد · {places.Length} أماكن")" HeaderClass="text-start" HandleLabel="@T("Resize drawer", "تغيير ارتفاع الدروير")">
+    <div class="d-flex gap-2 mb-3">@for (var i = 0; i < points.Length; i++) { var point = points[i]; var label = labels[i];<Button Size="sm" Variant="@(snap == point ? "tinted" : "ghost")" OnClick="@(() => snap = point)">@T(label.English, label.Arabic)</Button> }</div>
+    <ul class="list-unstyled mb-0">@foreach (var place in places) { <li class="d-flex align-items-center gap-3 py-2 border-bottom"><span class="d-inline-grid rounded-circle bg-primary-subtle text-primary-emphasis flex-shrink-0" style="width:40px;height:40px;place-items:center"><PanelIcon Path="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11ZM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" /></span><div><div class="fw-semibold">@T(place.English, place.Arabic)</div><div class="small text-body-secondary">@place.Meta</div></div></li> }</ul>
+</Drawer>
+@code {
+    private bool open; private string? snap = "148px";
+    private readonly string[] points = ["148px", "0.55", "0.96"];
+    private readonly (string English, string Arabic)[] labels = [("Peek", "مختصر"), ("Half", "متوسط"), ("Full", "كامل")];
+    private readonly (string English, string Arabic, string Meta)[] places = [("Baghdad Café", "مقهى بغداد", "Café · 4.6 · 350 m"), ("Al-Mutanabbi Bookshop", "مكتبة المتنبي", "Bookstore · 4.8 · 600 m"), ("Al-Shaheed Monument", "نصب الشهيد", "Landmark · 4.7 · 1.2 km"), ("Baghdad Mall", "بغداد مول", "Mall · 4.5 · 2.4 km"), ("Al-Zawraa Park", "حديقة الزوراء", "Park · 4.6 · 3.1 km"), ("Babylon Gate", "بوابة بابل", "Heritage · 4.9 · 18 km"), ("Cairo City", "مدينة القاهرة", "Entertainment · 4.4 · 9 km"), ("Iraq National Museum", "المتحف العراقي", "Museum · 4.8 · 6 km")];
+}

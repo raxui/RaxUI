@@ -1,0 +1,29 @@
+@inherits PanelExampleBase
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<span @ref="_root"><Button Variant="outline" disabled="@(!ready)" OnClick="@(() => open = true)">@T("Edit profile", "تعديل الملف الشخصي")</Button></span>
+@if (desktop)
+{
+    <Dialog @bind-Open="open" Title="@T("Edit profile", "تعديل الملف الشخصي")" Description="@T("A dialog here; on a phone the same form opens as a drawer.", "نافذة حوار هنا؛ على الهاتف يُعرض النموذج نفسه في دروير.")">
+        <ChildContent>@Fields</ChildContent><Footer><Button OnClick="@(() => open = false)">@T("Save changes", "حفظ التغييرات")</Button></Footer>
+    </Dialog>
+}
+else
+{
+    <Drawer @bind-Open="open" Title="@T("Edit profile", "تعديل الملف الشخصي")" Description="@T("On wider screens this opens as a dialog.", "على الشاشات الكبيرة يُعرض هذا النموذج في نافذة حوار.")" HeaderClass="text-start" HandleLabel="@T("Resize drawer", "تغيير ارتفاع الدروير")">
+        <ChildContent>@Fields</ChildContent><Footer><Button OnClick="@(() => open = false)">@T("Save changes", "حفظ التغييرات")</Button></Footer>
+    </Drawer>
+}
+@code {
+    private bool desktop = true, ready, open; private string name = "Saad Alsaree", username = "@saad";
+    private ElementReference _root; private IJSObjectReference? module; private DotNetObjectReference<ResponsivePanelExample>? self;
+    private RenderFragment Fields => @<form class="d-grid gap-3" @onsubmit:preventDefault><div><label for="dr-name" class="form-label small fw-medium">@T("Name", "الاسم")</label><Input id="dr-name" @bind-Value="name" /></div><div><label for="dr-user" class="form-label small fw-medium">@T("Username", "اسم المستخدم")</label><Input id="dr-user" @bind-Value="username" /></div></form>;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        self = DotNetObjectReference.Create(this); module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/Examples/Panels/ResponsivePanelExample.razor.js");
+        desktop = await module.InvokeAsync<bool>("init", _root, self); ready = true; StateHasChanged();
+    }
+    [JSInvokable] public void MediaChanged(bool value) { desktop = value; open = false; StateHasChanged(); }
+    public async ValueTask DisposeAsync() { if (module is not null) { try { await module.InvokeVoidAsync("dispose", _root); await module.DisposeAsync(); } catch (JSDisconnectedException) { } } self?.Dispose(); }
+}

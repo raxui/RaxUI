@@ -180,6 +180,7 @@ public partial class GeneratedAppTests : IDisposable
         WriteFluentForm(components);
         WriteCalendarPages(components);
         WriteChoicePages(components);
+        WritePanelPages(components);
         // Optional FluentValidation through Blazilla (#37): SheenUI controls must show its messages too.
         Dotnet(app, "add", "package", "Blazilla", "--version", "2.4.2");
         // Test-only services: antiforgery keys live for this process, not in the user's profile.
@@ -347,6 +348,7 @@ public partial class GeneratedAppTests : IDisposable
             await VerifyCalendarPickers(page, url);
             await VerifyChoiceParity(page, url);
             await VerifyTimePickers(page, url);
+            await VerifyPanels(page, url);
         }
         catch (Exception exception)
         {
