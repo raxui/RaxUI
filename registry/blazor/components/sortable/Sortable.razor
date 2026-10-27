@@ -5,7 +5,7 @@
 @inject IJSRuntime JS
 <div @ref="root" class="sheen-sortable" data-orientation="@Orientation" data-sheen-appearance="@Appearance" dir="@Direction">
     <span id="@instructionsId" class="visually-hidden">@Instructions</span>
-    <div class="@Class" style="@Style" data-sortable-content>
+    <div class="@Class" style="@Style" data-sortable-content="@instructionsId">
         @foreach(var item in Items){
             var id=GetId(item);var disabled=Disabled||!interactive||(IsDisabled?.Invoke(item)??false);
             <div @key="id" class="@($"sheen-sortable-item {ItemClass}")" style="@ItemStyle?.Invoke(item)" data-sortable-id="@id" data-disabled="@(disabled?"":null)" data-handle="@(AsHandle?"":null)" tabindex="@(AsHandle&&!disabled?"0":null)" role="@(AsHandle?"button":null)" aria-disabled="@(disabled?"true":null)" aria-label="@(AsHandle?GetLabel(item):null)" aria-describedby="@instructionsId">
@@ -14,7 +14,7 @@
             </div>
         }
     </div>
-    <div class="visually-hidden" aria-live="assertive" aria-atomic="true" data-sortable-live></div>
+    <div class="visually-hidden" aria-live="assertive" aria-atomic="true" data-sortable-live="@instructionsId"></div>
 </div>
 @code {
     [Parameter,EditorRequired] public IReadOnlyList<TItem> Items { get; set; } = Array.Empty<TItem>();
@@ -51,9 +51,9 @@
         module??=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/Sortable/Sortable.razor.js");self??=DotNetObjectReference.Create(this);
         await module.InvokeVoidAsync("sync",root,self,new { id=instructionsId,grabbed=Grabbed,moved=Moved,dropped=Dropped,cancelled=Cancelled,labels=Items.ToDictionary(GetId,GetLabel) });
     }
-    [JSInvokable] public async Task Move(string source,string target){
-        if(Disabled)return;var list=Items.ToList();var from=list.FindIndex(x=>GetId(x)==source);var to=list.FindIndex(x=>GetId(x)==target);
-        if(from<0||to<0||from==to||IsDisabled?.Invoke(list[from])==true||IsDisabled?.Invoke(list[to])==true)return;
+    [JSInvokable] public async Task Move(string source,string _,int to){
+        if(Disabled)return;var list=Items.ToList();var from=list.FindIndex(x=>GetId(x)==source);
+        if(from<0||to<0||to>=list.Count||from==to||IsDisabled?.Invoke(list[from])==true||IsDisabled?.Invoke(list[to])==true)return;
         var item=list[from];list.RemoveAt(from);list.Insert(to,item);Items=list;await ItemsChanged.InvokeAsync(list);await InvokeAsync(StateHasChanged);
     }
     public async ValueTask DisposeAsync(){if(module is null)return;try{await module.InvokeVoidAsync("dispose",instructionsId);await module.DisposeAsync();}catch(JSDisconnectedException){}self?.Dispose();}

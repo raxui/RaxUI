@@ -126,6 +126,9 @@
     {"name": "resizable", "manifest": "components/resizable/manifest.json"},
     {"name": "data-grid", "manifest": "components/data-grid/manifest.json"},
     {"name": "speed-dial", "manifest": "components/speed-dial/manifest.json"},
-    {"name": "chat", "manifest": "components/chat/manifest.json"}
+    {"name": "chat", "manifest": "components/chat/manifest.json"},
+    {"name": "qr-code", "manifest": "components/qr-code/manifest.json"},
+    {"name": "carousel", "manifest": "components/carousel/manifest.json"},
+    {"name": "kanban", "manifest": "components/kanban/manifest.json"}
   ]
 }
