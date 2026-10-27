@@ -1,70 +1,159 @@
-@* SheenUI Combobox. Source-owned: edit freely. Native select posts in static SSR; searchable listbox needs interactivity. *@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<InputSelect TValue="string" @attributes="NativeAttributes" hidden="@_interactive" class="@($"form-select {Class}")"
-             Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression">
-    <option value="">@Placeholder</option>
-    @foreach (var option in Options) { <option value="@option.Value" disabled="@option.Disabled">@option.Label</option> }
-</InputSelect>
-@if (_interactive)
+@if (Multiple)
 {
-    <Popover Id="@(_autoId + "-popup")" @bind-Open="_open" TriggerAttributes="ControlAttributes" TriggerClass="form-control sheen-input sheen-combobox-trigger"
-             PopupRole="listbox" Role="dialog" Label="@SearchPlaceholder" Class="sheen-combobox-panel" Appearance="@Appearance">
-        <Trigger>
-            <span>@(Options.FirstOrDefault(o => o.Value == Value)?.Label ?? Placeholder)</span>
-            @* ChevronsUpDown paths from Lucide (ISC). *@
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m7 15 5 5 5-5M7 9l5-5 5 5" /></svg>
-        </Trigger>
-        <ChildContent>
-            <input @ref="_search" class="form-control sheen-input" role="combobox" aria-label="@SearchPlaceholder" placeholder="@SearchPlaceholder"
-                   aria-autocomplete="list" aria-expanded="@(_open ? "true" : "false")" aria-controls="@(_autoId + "-list")"
-                   value="@_query" @oninput="@((ChangeEventArgs args) => _query = Convert.ToString(args.Value) ?? "")" />
-            <div @ref="_list" id="@(_autoId + "-list")" role="listbox" aria-label="@Placeholder">
-                @foreach (var option in Filtered)
-                {
-                    <div id="@OptionId(option)" role="option" aria-selected="@(option.Value == Value ? "true" : "false")" aria-disabled="@(option.Disabled ? "true" : null)"
-                         class="sheen-choice-option" data-value="@option.Value" @onclick="@(() => Select(option.Value))">@option.Label</div>
-                }
-            </div>
-            @if (!Filtered.Any()) { <p class="sheen-choice-empty" role="status">@EmptyMessage</p> }
-        </ChildContent>
-    </Popover>
+    <InputSelect TValue="string[]" @attributes="NativeAttributes" hidden="@_interactive" class="form-select" Value="Values" ValueChanged="ChangeValues" ValueExpression="OwnValuesExpression">
+        @foreach (var option in KnownOptions) { <option value="@option.Value" disabled="@option.Disabled">@option.Label</option> }
+    </InputSelect>
 }
+else
+{
+    <InputSelect TValue="string" @attributes="NativeAttributes" hidden="@_interactive" class="form-select" Value="Value" ValueChanged="ChangeValue" ValueExpression="OwnValueExpression">
+        <option value="">@Placeholder</option>
+        @foreach (var option in KnownOptions) { <option value="@option.Value" disabled="@option.Disabled">@option.Label</option> }
+    </InputSelect>
+}
+<div @ref="_anchor" class="sheen-input-group sheen-rich-combobox @Class" data-size="@Size" data-variant="@Variant" data-sheen-appearance="@Appearance" data-multiple="@(Multiple ? "" : null)" data-disabled="@(IsDisabled ? "" : null)" data-state="@(_open ? "open" : "closed")" hidden="@(!_interactive)">
+    @if (_interactive)
+    {
+        <div class="sheen-input sheen-rich-combobox-value" aria-invalid="@(ControlAttributes.GetValueOrDefault("aria-invalid"))">
+            @if (Multiple)
+            {
+                @foreach (var value in Values.Take(Math.Max(0, MaxChips)))
+                {
+                    var option = Known(value);
+                    <span @key="value" class="sheen-rich-combobox-chip">
+                        @option?.Icon
+                        <span class="sheen-rich-combobox-chip-label">@(option?.Label ?? value)</span>
+                        @if (!IsDisabled) { <button type="button" class="sheen-rich-combobox-chip-remove" aria-label="@(RemoveLabel + " " + (option?.Label ?? value))" @onclick="@(() => Remove(value))">×</button> }
+                    </span>
+                }
+                @if (Values.Length > Math.Max(0, MaxChips)) { <span class="sheen-rich-combobox-more">+@(Values.Length - Math.Max(0, MaxChips))</span> }
+            }
+            <Popover Anchor="_anchor" Id="@(_autoId + "-popup")" Open="_open" OpenChanged="Opened" TriggerAttributes="ControlAttributes" TriggerClass="sheen-rich-combobox-trigger" PopupRole="listbox" Role="presentation" Class="sheen-rich-combobox-content" Appearance="@Appearance">
+                <Trigger>
+                    @if (!Multiple && Known(Value) is {} selected)
+                    { <span class="sheen-rich-combobox-single">@selected.Icon <span class="sheen-rich-combobox-single-label">@selected.Label</span></span> }
+                    else { <span class="@(Multiple && Values.Length > 0 ? "visually-hidden" : "sheen-rich-combobox-placeholder")">@(Multiple && Values.Length > 0 ? string.Join(", ", Values.Select(v => Known(v)?.Label ?? v)) : Placeholder)</span> }
+                    <span class="sheen-rich-combobox-chevron ms-auto" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></svg></span>
+                </Trigger>
+                <ChildContent>
+                    <div class="sheen-command">
+                        <div class="sheen-command-input-wrap">
+                            <span class="sheen-command-input-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg></span>
+                            <input @ref="_search" class="sheen-command-input" role="combobox" aria-label="@SearchPlaceholder" placeholder="@SearchPlaceholder" aria-autocomplete="list" aria-expanded="@(_open ? "true" : "false")" aria-controls="@(_autoId + "-list")" value="@_query" @oninput="SearchInput" />
+                        </div>
+                        <div @ref="_list" id="@(_autoId + "-list")" role="listbox" class="sheen-command-list" aria-label="@Placeholder" aria-busy="@(Loading ? "true" : "false")" aria-multiselectable="@(Multiple ? "true" : null)" data-multiple="@(Multiple ? "true" : "false")">
+                            <div class="sheen-command-list-inner sheen-choice-list">
+                                <span class="sheen-choice-highlight" data-choice-highlight hidden aria-hidden="true"></span>
+                                @foreach (var group in Filtered.GroupBy(o => o.Group))
+                                {
+                                    <div role="group" aria-label="@group.Key">
+                                        @if (!string.IsNullOrEmpty(group.Key)) { <div class="sheen-command-group-heading">@group.Key</div> }
+                                        @foreach (var option in group)
+                                        {
+                                            <div @key="option.Value" id="@OptionId(option)" role="option" aria-selected="@(Selected(option.Value) ? "true" : "false")" aria-disabled="@(option.Disabled || Loading ? "true" : "false")" class="sheen-command-item sheen-choice-option sheen-rich-combobox-item" data-value="@option.Value" data-checked="@(Selected(option.Value) ? "" : null)" @onclick="@(() => Select(option.Value))">
+                                                @if (OptionTemplate is not null) { @OptionTemplate(option) }
+                                                else
+                                                {
+                                                    @if (option.Icon is not null) { <span class="sheen-rich-combobox-item-icon">@option.Icon</span> }
+                                                    <span class="sheen-rich-combobox-item-text"><span>@option.Label</span>@if (option.Description is not null) { <span class="sheen-rich-combobox-item-description">@option.Description</span> }</span>
+                                                }
+                                                <span class="sheen-rich-combobox-check">@if (Selected(option.Value)) { <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg> }</span>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                @if (CanCreate && !Loading)
+                                {
+                                    <div id="@(_autoId + "-create")" role="option" aria-selected="false" class="sheen-command-item sheen-choice-option sheen-rich-combobox-create" data-value="@_createValue" @onclick="@(() => Select(_createValue))">+ @CreateLabel “@_query.Trim()”</div>
+                                }
+                                @if (Loading) { <div class="sheen-command-loading" role="status"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> @LoadingMessage</div> }
+                                else if (!Filtered.Any() && !CanCreate) { <div class="sheen-choice-empty" role="status">@EmptyMessage</div> }
+                            </div>
+                        </div>
+                    </div>
+                </ChildContent>
+            </Popover>
+        </div>
+        @if (Clearable && !IsDisabled && (Multiple ? Values.Length > 0 : Value.Length > 0))
+        { <button type="button" class="sheen-rich-combobox-clear" disabled="@IsDisabled" aria-label="@ClearLabel" @onclick="Clear">×</button> }
+    }
+</div>
 @code {
-    public sealed record Option(string Value, string Label, bool Disabled = false);
+    public sealed record Option(string Value, string Label, bool Disabled = false, string? Description = null, RenderFragment? Icon = null, string Group = "", string Keywords = "");
     [Parameter] public IReadOnlyList<Option> Options { get; set; } = Array.Empty<Option>();
     [Parameter] public string Value { get; set; } = "";
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
     [Parameter] public System.Linq.Expressions.Expression<Func<string>>? ValueExpression { get; set; }
-    // Unbound use (no @bind-Value): the inner input still needs an expression, so point it at this component's own value.
-    private System.Linq.Expressions.Expression<Func<string>>? _ownValueExpression;
-    private System.Linq.Expressions.Expression<Func<string>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
+    [Parameter] public bool Multiple { get; set; }
+    [Parameter] public string[] Values { get; set; } = Array.Empty<string>();
+    [Parameter] public EventCallback<string[]> ValuesChanged { get; set; }
+    [Parameter] public System.Linq.Expressions.Expression<Func<string[]>>? ValuesExpression { get; set; }
+    [Parameter] public int MaxChips { get; set; } = int.MaxValue;
+    [Parameter] public bool Clearable { get; set; } = true;
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public bool ShouldFilter { get; set; } = true;
+    [Parameter] public Func<Option, string, bool>? Filter { get; set; }
+    [Parameter] public EventCallback<string> OnSearchChange { get; set; }
+    [Parameter] public Func<string, Option?>? OnCreate { get; set; }
+    [Parameter] public RenderFragment<Option>? OptionTemplate { get; set; }
+    [Parameter] public string Size { get; set; } = "default";
+    [Parameter] public string Variant { get; set; } = "glass";
     [Parameter] public string Placeholder { get; set; } = "Choose an option";
     [Parameter] public string SearchPlaceholder { get; set; } = "Search options";
     [Parameter] public string EmptyMessage { get; set; } = "No options found.";
+    [Parameter] public string LoadingMessage { get; set; } = "Loading…";
+    [Parameter] public string ClearLabel { get; set; } = "Clear selection";
+    [Parameter] public string RemoveLabel { get; set; } = "Remove";
+    [Parameter] public string CreateLabel { get; set; } = "Create";
     [CascadingParameter] private EditContext? EditContext { get; set; }
+    private System.Linq.Expressions.Expression<Func<string>> OwnValueExpression => ValueExpression ?? (() => Value);
+    private System.Linq.Expressions.Expression<Func<string[]>> OwnValuesExpression => ValuesExpression ?? (() => Values);
+    private readonly Dictionary<string, Option> _known = new();
+    private IEnumerable<Option> KnownOptions => _known.Values;
+    private Option? Known(string value) => _known.GetValueOrDefault(value);
+    protected override void OnParametersSet() { foreach (var option in Options) _known[option.Value] = option; foreach (var value in Multiple ? Values : new[] { Value }) if (value.Length > 0 && !_known.ContainsKey(value)) _known[value] = new Option(value, value); }
+    private bool Selected(string value) => Multiple ? Values.Contains(value) : Value == value;
+    private IEnumerable<Option> Filtered => Options.Concat(_known.Values.Where(o => _created.Contains(o.Value) && !Options.Any(p => p.Value == o.Value)))
+        .Where(o => !ShouldFilter || (Filter?.Invoke(o, _query) ?? ChoiceSearch.Matches(o.Label + " " + o.Description + " " + o.Keywords, _query)));
+    private readonly HashSet<string> _created = new();
+    private bool CanCreate => OnCreate is not null && _query.Trim().Length > 0 && !_known.Values.Any(o => ChoiceSearch.Normalize(o.Label) == ChoiceSearch.Normalize(_query.Trim()));
     private bool _interactive, _open;
     private string _query = "";
-    private ElementReference _search, _list;
+    private readonly string _createValue = "sheen-create-" + Guid.NewGuid().ToString("N");
+    private ElementReference _anchor, _search, _list;
     private IJSObjectReference? _module;
     private DotNetObjectReference<Combobox>? _self;
-    private IEnumerable<Option> Filtered => Options.Where(o => o.Label.Contains(_query, StringComparison.CurrentCultureIgnoreCase));
-    private string OptionId(Option option) => $"{_autoId}-option-{Options.ToList().IndexOf(option)}";
-    private Dictionary<string, object> NativeAttributes
-    {
-        get { var attrs = ControlAttributes; if (_interactive) attrs["id"] = ControlId + "-native"; return attrs; }
-    }
+    private string OptionId(Option option) => $"{_autoId}-option-{_known.Keys.ToList().IndexOf(option.Value)}";
+    private Dictionary<string, object> NativeAttributes { get { var attrs = ControlAttributes; attrs.Remove("role"); if (_interactive) attrs["id"] = ControlId + "-native"; return attrs; } }
+    private bool IsDisabled => ControlAttributes.TryGetValue("disabled", out var disabled) && disabled is not false && disabled is not null;
+    private async Task ChangeValue(string value) { Value = value; await ValueChanged.InvokeAsync(value); if (ValueExpression is not null) EditContext?.NotifyFieldChanged(FieldIdentifier.Create(ValueExpression)); }
+    private async Task ChangeValues(string[] values) { Values = values; await ValuesChanged.InvokeAsync(values); if (ValuesExpression is not null) EditContext?.NotifyFieldChanged(FieldIdentifier.Create(ValuesExpression)); }
+    private async Task SearchInput(ChangeEventArgs args) { _query = Convert.ToString(args.Value) ?? ""; await OnSearchChange.InvokeAsync(_query); }
+    private async Task Opened(bool open) { _open = open; if (!open && _query.Length > 0) { _query = ""; await OnSearchChange.InvokeAsync(""); } }
     [JSInvokable] public async Task Select(string value)
     {
-        if (IsDisabled || !Options.Any(o => o.Value == value && !o.Disabled)) return;
-        Value = value; await ValueChanged.InvokeAsync(value);
-        if (ValueExpression is not null) EditContext?.NotifyFieldChanged(FieldIdentifier.Create(ValueExpression));
-        _open = false; _query = ""; StateHasChanged();
+        if (IsDisabled || Loading) return;
+        Option? option;
+        if (value == _createValue && CanCreate)
+        {
+            option = OnCreate!(_query.Trim()) ?? new Option(_query.Trim(), _query.Trim());
+            if (option.Disabled || string.IsNullOrEmpty(option.Value)) return;
+            _known[option.Value] = option; _created.Add(option.Value);
+        }
+        else option = Filtered.FirstOrDefault(o => o.Value == value && !o.Disabled);
+        if (option is null) return;
+        if (Multiple) await ChangeValues(Selected(option.Value) ? Values.Where(v => v != option.Value).ToArray() : Values.Append(option.Value).ToArray());
+        else await ChangeValue(Value == option.Value ? "" : option.Value);
+        _open = Multiple; _query = ""; await OnSearchChange.InvokeAsync(""); StateHasChanged();
     }
+    private async Task Remove(string value) { if (!IsDisabled) { await ChangeValues(Values.Where(v => v != value).ToArray()); if (_module is not null) await _module.InvokeVoidAsync("focusTrigger", _search); } }
+    [JSInvokable] public async Task RemoveLast() { if (Multiple && Values.Length > 0) { await Remove(Values[^1]); StateHasChanged(); } }
+    private async Task Clear() { if (IsDisabled) return; if (Multiple) await ChangeValues(Array.Empty<string>()); else await ChangeValue(""); if (_module is not null) await _module.InvokeVoidAsync("focusTrigger", _search); }
     [JSInvokable] public void Close() { _open = false; StateHasChanged(); }
-    [JSInvokable] public void Show() { if (!IsDisabled) { _open = true; StateHasChanged(); } }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!_interactive) { _interactive = true; StateHasChanged(); return; }
@@ -80,7 +169,6 @@
         }
         _self?.Dispose();
     }
-    private bool IsDisabled => ControlAttributes.TryGetValue("disabled", out var disabled) && disabled is true;
     [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
     /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
     [Parameter] public string? Appearance { get; set; }
@@ -97,9 +185,12 @@
             if (AdditionalAttributes is not null)
                 foreach (var pair in AdditionalAttributes) attrs[pair.Key] = pair.Value;
             if (!attrs.ContainsKey("id")) attrs["id"] = _autoId;
+            attrs["role"] = "combobox";
+            if (_interactive) attrs["aria-controls"] = _autoId + "-list";
             return attrs;
         }
     }
     private string ControlId => Convert.ToString(ControlAttributes["id"])!;
+
 
 }

@@ -179,6 +179,7 @@ public partial class GeneratedAppTests : IDisposable
         WriteOverlayPages(components);
         WriteFluentForm(components);
         WriteCalendarPages(components);
+        WriteChoicePages(components);
         // Optional FluentValidation through Blazilla (#37): SheenUI controls must show its messages too.
         Dotnet(app, "add", "package", "Blazilla", "--version", "2.4.2");
         // Test-only services: antiforgery keys live for this process, not in the user's profile.
@@ -344,6 +345,7 @@ public partial class GeneratedAppTests : IDisposable
             await VerifyOverlays(page, url);
             await VerifyFluentForm(page, url);
             await VerifyCalendarPickers(page, url);
+            await VerifyChoiceParity(page, url);
             await VerifyTimePickers(page, url);
         }
         catch (Exception exception)
@@ -773,7 +775,7 @@ public partial class GeneratedAppTests : IDisposable
                         <RadioGroup @bind-Value="Model!.Choice"><label><RadioGroupItem TValue="string" Value="@("a")" />Alpha</label><label><RadioGroupItem TValue="string" Value="@("b")" />Beta</label></RadioGroup>
                         <FieldError />
                     </Field>
-                    <Field Id="country" For="@(() => Model!.Country)"><FieldLabel>Country</FieldLabel><Select @bind-Value="Model!.Country"><option value="">Choose</option><option value="iq">Iraq</option><option value="gb">United Kingdom</option></Select><FieldError /></Field>
+                    <Field Id="country" For="@(() => Model!.Country)"><FieldLabel>Country</FieldLabel><Select Native @bind-Value="Model!.Country"><option value="">Choose</option><option value="iq">Iraq</option><option value="gb">United Kingdom</option></Select><FieldError /></Field>
                     <button id="controls-save" type="submit" disabled="@(!ready)">Save controls</button>
                 </Form>
             </EditForm>

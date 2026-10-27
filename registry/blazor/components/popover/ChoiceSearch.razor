@@ -1,0 +1,28 @@
+@using System.Globalization
+@using System.Text
+@code {
+    public static string Normalize(string text)
+    {
+        var result = new StringBuilder();
+        foreach (var c in text.ToLowerInvariant().Normalize(NormalizationForm.FormD))
+        {
+            if (CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark || c == 'ـ') continue;
+            result.Append(c switch { 'ٱ' => 'ا', 'ة' => 'ه', 'ى' => 'ي', >= '٠' and <= '٩' => (char)('0' + c - '٠'), >= '۰' and <= '۹' => (char)('0' + c - '۰'), _ => c });
+        }
+        return result.ToString();
+    }
+    public static bool Matches(string text, string query)
+    {
+        var haystack = Normalize(text);
+        var tokens = Normalize(query).Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+        if (tokens.All(haystack.Contains)) return true;
+        if (tokens.Length != 1 || tokens[0].Length < 2) return false;
+        var needle = tokens[0];
+        return haystack.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Any(word => {
+            if (word.Length == 0 || word[0] != needle[0]) return false;
+            var index = 0;
+            foreach (var c in word) if (index < needle.Length && c == needle[index]) index++;
+            return index == needle.Length;
+        });
+    }
+}

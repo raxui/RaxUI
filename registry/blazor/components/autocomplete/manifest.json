@@ -23,7 +23,7 @@
       "destination": "components",
       "target": "Autocomplete/Autocomplete.razor",
       "type": "razor",
-      "sha256": "427c474b834c7244360335feed329668d234ae26554500dddce06c162014ecfa"
+      "sha256": "36b713e557d68faed29c8c1ded5fd8d408e4e7d2c1a15d5f306acb396ab1bc3f"
     }
   ]
 }

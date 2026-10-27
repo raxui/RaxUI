@@ -1,0 +1,54 @@
+@page "/choice-parity"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+<div id="choices" data-sheen-appearance="@appearance" data-bs-theme="@mode" dir="@direction" style="padding:1rem;max-width:38rem">
+    <button id="choice-theme" @onclick="Theme">Theme</button>
+    <EditForm Model="model" FormName="choices" OnValidSubmit="@(() => saved = "saved")" Context="choiceForm">
+        <DataAnnotationsValidator />
+        <Field Id="parity-select" For="@(() => model.City)"><FieldLabel>City</FieldLabel>
+            <Select @bind-Value="model.City" Placeholder="Choose a city"><option hidden value=""></option><optgroup label="Iraq"><option value="baghdad">بغداد</option><option value="basra">البصرة</option><option value="blocked" disabled>Blocked</option></optgroup><optgroup label="Arab cities"><option value="cairo">Cairo</option><option data-separator disabled></option><option value="amman">Amman</option></optgroup></Select><FieldError />
+        </Field>
+        <Field Id="parity-multi" For="@(() => model.Tags)"><FieldLabel>Technologies</FieldLabel>
+            <Combobox Options="options" Multiple @bind-Values="model.Tags" MaxChips="2" OnCreate="Create" Placeholder="Technologies" /><FieldError />
+        </Field>
+        <Field Id="parity-auto" For="@(() => model.Person)"><FieldLabel>Person</FieldLabel>
+            <Autocomplete Options="people" @bind-Value="model.Person" @bind-InputValue="query" /><FieldError />
+        </Field>
+        <button id="choice-save" disabled="@(!ready)">Save</button>
+    </EditForm>
+    <Select id="parity-number" @bind-Value="number" Size="sm"><option value="1">One</option><option value="2">Two</option><option value="3">Three</option></Select>
+    <Select id="parity-long" @bind-Value="longValue">@for (var i = 1; i <= 40; i++) { <option value="@i">@i</option> }</Select>
+    <Field Id="parity-remote"><FieldLabel>Remote</FieldLabel><Combobox Options="remote" @bind-Value="remoteValue" ShouldFilter="false" OnSearchChange="RemoteSearch" Loading="loading" /></Field>
+    <Field Id="parity-rich-async"><FieldLabel>Async people</FieldLabel><Autocomplete @bind-Value="asyncValue" LoadOptions="Load" MinChars="2" /></Field>
+    <Field Id="parity-disabled"><FieldLabel>Disabled</FieldLabel><Combobox Options="options" Value="react" disabled /></Field>
+    <Field Id="parity-uncontrolled"><FieldLabel>Existing rich selection</FieldLabel><Autocomplete Options="people" @bind-Value="uncontrolledPerson" /></Field><output id="uncontrolled-person">@uncontrolledPerson</output>
+    <Field Id="parity-readonly"><FieldLabel>Read only</FieldLabel><Autocomplete Options="people" @bind-Value="readonlyValue" readonly /></Field>
+    <Command Inline Items="commands" OnSelect="@(value => commandValue = value)" @bind-Search="search" Loading="commandLoading" Loop="false" CloseOnSelect="false" SearchPlaceholder="Find commands">
+        <Leading><span class="sheen-command-chip">Actions</span></Leading>
+        <Footer><kbd>↑↓</kbd> Navigate</Footer>
+    </Command>
+    <button id="command-loading" @onclick="@(() => commandLoading = !commandLoading)">Loading</button>
+    <button id="open-palette" @onclick="@(() => open = true)">Palette</button>
+    <Command @bind-Open="open" Items="commands" OnSelect="@(value => commandValue = value)" Shortcut="k" SearchPlaceholder="Palette search" />
+    <button id="choice-reset" @onclick="Reset">Reset</button>
+    <output id="choice-values">@model.City|@string.Join(",", model.Tags)|@model.Person|@query|@commandValue|@remoteValue|@asyncValue|@number</output>
+    <output id="choice-saved">@saved</output>
+</div>
+@code {
+    private readonly ChoiceModel model = new();
+    private string query = "", saved = "", commandValue = "", search = "", remoteValue = "react", asyncValue = "", readonlyValue = "saad", uncontrolledPerson = "saad", longValue = "1";
+    private string appearance = "default", mode = "light", direction = "ltr";
+    private bool ready, open, loading, commandLoading;
+    private int request, number = 1;
+    private readonly Combobox.Option[] options = [new("react", "React", Description: "Frontend library", Group: "Web", Keywords: "jsx javascript"), new("next", "Next.js", Group: "Web"), new("blazor", "Blazor", Description: ".NET UI", Group: ".NET"), new("disabled", "Disabled", true)];
+    private IReadOnlyList<Combobox.Option> remote = [new("react", "React")];
+    private readonly Autocomplete.Option[] people = [new("saad", "سعد السراي", "saad@example.com"), new("ahmed", "أحمد", "ahmed@example.com"), new("disabled", "Disabled person", Disabled: true)];
+    private readonly List<Command.Item> commands = [new("settings", "الإعدادات", "Pages", Keywords: "settings preferences", Shortcut: "⌘,"), new("cafe", "Café", "Pages", Keywords: "coffee"), new("person", "أحمد علي", "People", Keywords: "١٢٣"), new("disabled", "Disabled action", "Pages", true), new("library", "مكتبة الأُستاذ يحيى", "Pages"), new("help", "Help", ForceMount: true)];
+    protected override void OnAfterRender(bool firstRender) { if (firstRender) { ready = true; StateHasChanged(); } }
+    private Combobox.Option Create(string label) => new(label.ToLowerInvariant(), label, Group: "Created");
+    private async Task RemoteSearch(string query) { var current = ++request; loading = true; await Task.Delay(60); if(current != request) return; remote = query.Length > 0 ? [new("remote", "Remote result")] : [new("react", "React")]; loading = false; }
+    private async Task<IReadOnlyList<Autocomplete.Option>> Load(string query, CancellationToken token) { await Task.Delay(query == "slow" ? 300 : 30); if(query == "error") throw new InvalidOperationException("Test failure"); return [new(query, query + " result", "Remote profile")]; }
+    private void Reset() { model.City = "baghdad"; model.Tags = ["react"]; model.Person = "saad"; query = "سعد السراي"; }
+    private void Theme() { appearance = appearance == "default" ? "flat" : appearance == "flat" ? "glass" : "default"; mode = mode == "light" ? "dark" : "light"; direction = direction == "ltr" ? "rtl" : "ltr"; }
+    public class ChoiceModel { [Required] public string City { get; set; } = ""; [MinLength(1)] public string[] Tags { get; set; } = []; [Required] public string Person { get; set; } = ""; }
+}

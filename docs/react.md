@@ -747,19 +747,12 @@ TriggerClass, PopupRole and Role allow accessible composition. Native light dism
 and Escape close it; focus returns to the trigger when it was inside the panel.
 Interactivity is required for positioning and C# state synchronization.
 
-Blazor Combobox: bind string `Value` with `@bind-Value`; `Options` is an
-IReadOnlyList of `Combobox.Option(Value, Label, Disabled=false)`. Translate
-Placeholder, SearchPlaceholder and EmptyMessage. A native InputSelect is the
-static SSR fallback, with generated form names and EditContext validation.
-Interactive mode replaces the visible select with a button and searchable listbox;
-the hidden native select continues to post the selected value.
-
-Blazor Autocomplete: bind string `Value`; `Suggestions` holds strings. Optional
-`LoadSuggestions(query, cancellationToken)` returns Task<IReadOnlyList<string>>.
-Older requests are cancelled and their results ignored; `Loading` can also be
-controlled by the application. Translate SuggestionsLabel, LoadingMessage,
-EmptyMessage and ErrorMessage. Static SSR renders a named text input and datalist;
-async suggestions and the custom listbox require interactivity.
+Blazor Combobox supports single and multiple selection, rich grouped options,
+removable chips, creation, remote search and loading. Blazor Autocomplete supports
+rich value/label options and the backwards-compatible string Suggestions API,
+cancellable asynchronous sources, templates, clear/status indicators and query
+control. Both retain EditContext and native static SSR forms. See the full
+[Blazor choice APIs and examples](blazor-choices.md).
 
 React Popover exports Popover, PopoverTrigger, PopoverAnchor, PopoverContent and
 PopoverClose. Content uses Radix Popover 1.3.1 and portals into the nearest

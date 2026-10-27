@@ -5,7 +5,7 @@
 @if (Trigger is not null)
 {
     <button @attributes="TriggerAttributes" @ref="_trigger" type="button" class="@($"sheen-popover-trigger {TriggerClass}")"
-            popovertarget="@Id" aria-haspopup="@PopupRole" aria-controls="@Id" aria-expanded="@(Open ? "true" : "false")">@Trigger</button>
+            popovertarget="@Id" aria-haspopup="@PopupRole" aria-controls="@TriggerControls" aria-expanded="@(Open ? "true" : "false")">@Trigger</button>
 }
 <div @ref="_content" @attributes="AdditionalAttributes" id="@Id" popover="auto" role="@Role" aria-label="@Label"
      class="@($"sheen-popover {Class}")" data-sheen-appearance="@Appearance">@ChildContent</div>
@@ -25,6 +25,7 @@
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private string TriggerControls => TriggerAttributes is not null && TriggerAttributes.TryGetValue("aria-controls", out var id) ? Convert.ToString(id) ?? Id : Id;
     private ElementReference _trigger, _content;
     private IJSObjectReference? _module;
     private DotNetObjectReference<Popover>? _self;
@@ -35,7 +36,7 @@
         {
             _module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Popover/Popover.razor.js");
             _self = DotNetObjectReference.Create(this);
-            await _module.InvokeVoidAsync("init", Trigger is null ? Anchor : _trigger, _content, _self);
+            await _module.InvokeVoidAsync("init", Trigger is null ? Anchor : _trigger, _content, _self, string.IsNullOrEmpty(Anchor.Id) ? null : Anchor);
         }
         if (_lastOpen != Open) { _lastOpen = Open; await _module.InvokeVoidAsync("setOpen", _content, Open); }
     }
