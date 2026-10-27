@@ -1,0 +1,2807 @@
+{
+  "commit": "3c6d0b3cefb4e049dc337e82237c9644399716a8",
+  "vectors": [
+    {
+      "text": "",
+      "level": "LOW",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "a6a51635413ed1c490c80c6e12feb858e85d6a7cf46e8d01808b7cc4d413be53"
+    },
+    {
+      "text": "",
+      "level": "LOW",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "a7f108637f879288a9acbe8d5fddb5714f6a227a2d6d44635d66621d2551dcab"
+    },
+    {
+      "text": "",
+      "level": "LOW",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "8011b970cf923a3ae28ee0b625758900fec36266d9b0f2beb6a619405025330d"
+    },
+    {
+      "text": "",
+      "level": "LOW",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "ef776d5ad53d519766cb01d77f91153fd80fc66e99a37df1d8298afa3d2bced5"
+    },
+    {
+      "text": "",
+      "level": "LOW",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "acb8cbe370a7f14f1685357f07e994e5c60300723ea6e76fe3f95cad1a40f57f"
+    },
+    {
+      "text": "",
+      "level": "LOW",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "f18202c5c6f432dd315c00425385e50550d37db5c1c261e8ec6b6b83550c9a2d"
+    },
+    {
+      "text": "",
+      "level": "LOW",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "3e3fdcc5c7900fcc5a84a7f3a81b07d87e7d5062b7459ba0c043238040d20e1e"
+    },
+    {
+      "text": "",
+      "level": "LOW",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "cb00f6b14970b71e615a7219c00d8845cdb33647e8fdbf8d65dd7f19e878d032"
+    },
+    {
+      "text": "",
+      "level": "LOW",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "a6a51635413ed1c490c80c6e12feb858e85d6a7cf46e8d01808b7cc4d413be53"
+    },
+    {
+      "text": "",
+      "level": "MEDIUM",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "fd6789ef2c6128795fb258140e019c3aa6a2d94901907b4629aabeb889d438b4"
+    },
+    {
+      "text": "",
+      "level": "MEDIUM",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "b9720cef8e65cc09683751f1f34454473c1f4e2aa220f2462e137478de024cc0"
+    },
+    {
+      "text": "",
+      "level": "MEDIUM",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "539609cf919d0724bd8631b393b917f83a6554a38682beb87380dd4fbbabfa9d"
+    },
+    {
+      "text": "",
+      "level": "MEDIUM",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "d3197212fde36d401fc7fed0ef4c7ed3dc6a80c9fca36c25e949f102f43af6e2"
+    },
+    {
+      "text": "",
+      "level": "MEDIUM",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "80a6e40336b4d8130c658b8241e31da635f7d34f1e56731abca01357cd441db0"
+    },
+    {
+      "text": "",
+      "level": "MEDIUM",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "05239fb4bc79b74cf0a8e242aaab0e43136148f9941697fdd36dfa7a2cd7ab0d"
+    },
+    {
+      "text": "",
+      "level": "MEDIUM",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "f23d4b66d8a4c1f3e5c932ff804c5509ca5667417ae78778d55955ce54c9d2a8"
+    },
+    {
+      "text": "",
+      "level": "MEDIUM",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "fd6789ef2c6128795fb258140e019c3aa6a2d94901907b4629aabeb889d438b4"
+    },
+    {
+      "text": "",
+      "level": "MEDIUM",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "789531180c3f52ae91d51b62fbb6d05c7c47d0ca18d2d25f07bf9274a2737a12"
+    },
+    {
+      "text": "",
+      "level": "QUARTILE",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "20b09cee95f0333832f469dda61a3ba44e99431f6537741dce191e2bf8220e23"
+    },
+    {
+      "text": "",
+      "level": "QUARTILE",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "edb70db950b45e7359872bd0719040e259ad6f5ac3330a8eb211aca85d0e93ec"
+    },
+    {
+      "text": "",
+      "level": "QUARTILE",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "20b09cee95f0333832f469dda61a3ba44e99431f6537741dce191e2bf8220e23"
+    },
+    {
+      "text": "",
+      "level": "QUARTILE",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "8346a40dbabda1c35a79aab34ca0e58043c3313da4fbdc67230a4a9ddddb2f87"
+    },
+    {
+      "text": "",
+      "level": "QUARTILE",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "09ecfb695b750110a53701c98eaede75cb4587b98c0e875576b5f32810cf79de"
+    },
+    {
+      "text": "",
+      "level": "QUARTILE",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "3feb1539217e76e9e2bf619dd3d9176b67c294843f17eb96f5b323668a3f4a68"
+    },
+    {
+      "text": "",
+      "level": "QUARTILE",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "aacaa0492881e584e6d7cab555802e19eb29b03caa01747875d8f96198d282cb"
+    },
+    {
+      "text": "",
+      "level": "QUARTILE",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "35fda10df00b884548c5fa557cab7558b75da640aef2e3c93a6f4f966da3df0d"
+    },
+    {
+      "text": "",
+      "level": "QUARTILE",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "7499df6eebd8f781b5c6908aa325d137fa03c2f6c8faa4c9d2de8807bb2c08dd"
+    },
+    {
+      "text": "",
+      "level": "HIGH",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "d50382c16bec94db594cce311e58e82d768b961f6ecfa5081ad5c42ed7ee78d2"
+    },
+    {
+      "text": "",
+      "level": "HIGH",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "efa8e4ff6903e02dd2cc8adf0c43d6e2a8109494d8df11c92931970ac996b18e"
+    },
+    {
+      "text": "",
+      "level": "HIGH",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "6d412459b8be785b865e183c4422027274e03b7938bab17ee3fede9181082b8b"
+    },
+    {
+      "text": "",
+      "level": "HIGH",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "558a302e0905f6973d89dcb4a0fb5d946cb3048b698b7470b110295301a8afc1"
+    },
+    {
+      "text": "",
+      "level": "HIGH",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "b03ce07ec359aa12a910152387d9a874346783860034630d7d8fdbeb6f943ae7"
+    },
+    {
+      "text": "",
+      "level": "HIGH",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "647cccdc771d2fa62a828e30be69369645fe92eef20d428ebd3622d2ad20d34d"
+    },
+    {
+      "text": "",
+      "level": "HIGH",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "6c91166c0d0df2ebb030fac219dd4724b175389686ea347495fa2b16c5e9b898"
+    },
+    {
+      "text": "",
+      "level": "HIGH",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "d50382c16bec94db594cce311e58e82d768b961f6ecfa5081ad5c42ed7ee78d2"
+    },
+    {
+      "text": "",
+      "level": "HIGH",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "2ad2cfd889be0fd4f61960112999b86e1e4ce6544ba9f5073d1f9eb876c7f1ae"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "LOW",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "a23886cf3bd12e716352f261901f905c1a29ed27fe977376738f02ebf9ccab11"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "LOW",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "c54cad512f5db5a77b4c15e1ce1562a98552efd7b3fe3d60ac0c7e9206018627"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "LOW",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "064874c7ff41d5662f3f82489d292b5fdca7aa8ebfa1e3266fb93221e11e7b4e"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "LOW",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "c262bbaea8433fb032c9973c24e53a28cbce9b0c221459a92a6214da088fc91e"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "LOW",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "a23886cf3bd12e716352f261901f905c1a29ed27fe977376738f02ebf9ccab11"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "LOW",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "5ce75319d8f8b087168e28781c4acefe3f5c3496d2208dfb1e3aab8d3384b6d8"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "LOW",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "e91147de8311af07bacdf479fe3d490527ab794b5ca6bc68688ff201c80e762f"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "LOW",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "867d7cfd4e23ab3b20ab5fccf1e70f4548a192120c3ffb5e678b1f3a1e29b39e"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "LOW",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "5d36720c216a2ed63dab4945c9429140022dfc83215cbf600a3e928612f7543e"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "MEDIUM",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "34f8d4b13d9efca0e07ef1426749a305b7df6eaaedd32f80d0737f0f548eed39"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "MEDIUM",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "2bff31ee41fb0db78c9cde6cbceb1b953b7d16981f138fecce2b655af999e5aa"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "MEDIUM",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "1c97bf5db36ebde1e6ce224bfd33c471d89c0e5121ac4ce54bd41df17cea2e66"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "MEDIUM",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "7099a2ebc31b0c16753828ab1b3cc3a3fa89c99a309a1263942cc1ad82f803a3"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "MEDIUM",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "5205f9a9df2a3089569c4cdbe6d604967316d32b349fcc16ab845684da6dfb4d"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "MEDIUM",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "34f8d4b13d9efca0e07ef1426749a305b7df6eaaedd32f80d0737f0f548eed39"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "MEDIUM",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "40a652fbb461cda537975f774bb640826b030c612f0dffd42d51bd64b397b627"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "MEDIUM",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "19bf7d96ef86d06c198d471b4bc28329d063b5bb0984887c72f836fc32a20fdf"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "MEDIUM",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "9a1453960119ea18c11fde833cf3071072e53ef9dfcf15049646503e9dc7d734"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "QUARTILE",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "f97e41b214906870cf31c58f77cd30f6f91468e85ded45076123710d546b6dd9"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "QUARTILE",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "36788c0ba96880fbbf2852f083f14b08e56e143a8c1331a055595791c5c3c641"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "QUARTILE",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "801837c94045fcaed003659aad4081ec4aae1457a46522c65fe3a022c0641c41"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "QUARTILE",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "c771425aa027f041250e38d4599f3285a0c5cd30e990d08b92a9d70fda46f625"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "QUARTILE",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "88aed4f2b7daf3fcd4a31a2f1bfcb80a07f827b03fa09262abe3aec6f650ee0a"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "QUARTILE",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "fbc0e97c40e86b5e59d5ea29e32ead2bc49abfec13b3d62d6dfb76fb29271ec9"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "QUARTILE",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "4454e3d3cad49fabbdc8195788b4cc0f6a8a9b296115d91b083ec8fbc311410e"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "QUARTILE",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "f97e41b214906870cf31c58f77cd30f6f91468e85ded45076123710d546b6dd9"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "QUARTILE",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "51ee9362c3d167f719b8901fba59197d46003416e925eeee5cb1a5d4f42891ed"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "HIGH",
+      "mask": -1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "ceb153cfd4f7dfae6a10b235e591b38fdec4ff6accc639e72b3c0e0ba0fdc851"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "HIGH",
+      "mask": 0,
+      "version": 2,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "13ea9abe1d02b9bc45d8e85ec5b02010a7659df297c264b1b066d1a3e8683e67"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "HIGH",
+      "mask": 1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "ceb153cfd4f7dfae6a10b235e591b38fdec4ff6accc639e72b3c0e0ba0fdc851"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "HIGH",
+      "mask": 2,
+      "version": 2,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "db328d6164a860e57fd00f64910ad34e903cb7d22db8567d6ca849e3ae02697d"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "HIGH",
+      "mask": 3,
+      "version": 2,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "81695105eb0d0d3c7d14f6e6630f640756ec2e7b3b6ad804e32d7b121cb7e59a"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "HIGH",
+      "mask": 4,
+      "version": 2,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "f41c6a5ac133c380c7b8430d212adb767cb96622157a305eefb7ddd6883b07ee"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "HIGH",
+      "mask": 5,
+      "version": 2,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "765edf77c65bf7ff7470b1a1a79ec60a3e365ab2298f75d9b5c8e6bef8c43f87"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "HIGH",
+      "mask": 6,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "c9198a4d4515de9fa2fff7510335cf5721cb03cbc8579490aefb718ee4d19328"
+    },
+    {
+      "text": "01234567890123456789",
+      "level": "HIGH",
+      "mask": 7,
+      "version": 2,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "cf50f3440a63e56f1ee5d87ac416ef0d733e60d6aa0302803b815dc6d4440641"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "LOW",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "fd8287e68916269f20704cc74b77b4c3a4757c2cb7d5fe72f5b277871657bf96"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "LOW",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "1fe3f526f850c92be05478b817a1810104d66b302047ed95314355151cb9dd3f"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "LOW",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "cc6d90693944f600105e803b0cce5c6f623ad321acf6c8d5f7d226c8a1ac7f85"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "LOW",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "a42028dabdd4d61dab1d3160cded6135c4fb342116b1a473ce05ef3a9773071b"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "LOW",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "58c97290ce58e1e96e3967c2682d8383ae4671bf56468e42ae3cd3c8e6ce7891"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "LOW",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "c84c7a6b7608ae4e1c5dd06aa7319b51f982671940d816c20ee3fd5ceec241c5"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "LOW",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "c98aa9bdcbfb78618d16ae1c6e0dbf2fe40d126c5b44cc112a66d54e83efc80a"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "LOW",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "cac39a88b23782461fed2735b42581e28f9c70a69d1d2ac96aeac5482df4c259"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "LOW",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "fd8287e68916269f20704cc74b77b4c3a4757c2cb7d5fe72f5b277871657bf96"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "MEDIUM",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "9f15327b648fdbb6e3878c9a72183cc1f76f880c1b3e4f53fd7859bb5b4f2421"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "MEDIUM",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "9f15327b648fdbb6e3878c9a72183cc1f76f880c1b3e4f53fd7859bb5b4f2421"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "MEDIUM",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "b4219d4647506bbfa2af896f9c5251774beda19d0cb71cef82891009424a90d5"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "MEDIUM",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "0e6d6c8729c445bf5f6de28adbcef9115918ce6984212a2b551df461abb9f350"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "MEDIUM",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "242c59e836a019a7461b551ff6079e5c754701ba3cc80225c965ab590d861872"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "MEDIUM",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "f8ac6e163291f825e9445910e86693d6baaf8bda13b2c2913ed9d3a2a735fc78"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "MEDIUM",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "b8ec5d262ca4090f79e2851676ac2214b8f6bccca384ee724daa02e6d8ab148f"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "MEDIUM",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "6197803fc76d14f8ba1a7a196e80da7728d471f4111ba5667a4e651bf7414c33"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "MEDIUM",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "ccca9a00028211db9c68e3dc55247863313edc5932dcc2f5e3090811a0726a8b"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "QUARTILE",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "98ee3af8dfb46e027fa18006e4cb5079826d9b1aeeec68886f356578867c468c"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "QUARTILE",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "98ee3af8dfb46e027fa18006e4cb5079826d9b1aeeec68886f356578867c468c"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "QUARTILE",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "686130b04cbcb1279b58ad2937a36693d7d2d661b59d28767924874ee35abb17"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "QUARTILE",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "4dc45c617526832276567e8960daddf5c0e0644d4b23a833d509e6ec1018625e"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "QUARTILE",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "8f553255f4cdaf1651a38816c187d3f55b4bc56df75940925b301e54062947fd"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "QUARTILE",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "ae4f8b554a052f47e8c20d438f583577151e9920db00453e71da24ea49884303"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "QUARTILE",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "c663e622b14db51145cbffd69a3d53a27fbc598eeabd28889cd7d454196241e1"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "QUARTILE",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "a3e78d2b19b36fb0f9afc4d62bb6f2e9ac91ada26e97b717f29338a4a49f5ce1"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "QUARTILE",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "6f5bddd130ae36d928e9ec3bf07eea4b0fdb6b4675aa70ba5e1e3475e2d646ad"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "HIGH",
+      "mask": -1,
+      "version": 2,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "a57bd7af72066bf8715ba6bf7c068d9c924f3f99c4591c8e99d1948f09b3ec1a"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "HIGH",
+      "mask": 0,
+      "version": 2,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "f7f068f4e00e65c8c34f63650b9a6ef92c5ebe1ef52d0314913b1b21e8230c79"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "HIGH",
+      "mask": 1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "07730bda62eedee832b1ff1839deab653024eed0bb3571e2683b0ce6a86f5053"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "HIGH",
+      "mask": 2,
+      "version": 2,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "181a2a0c5de422170d1acae1c0b9680a44750fe8b317c4a84fd013e7484cbe25"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "HIGH",
+      "mask": 3,
+      "version": 2,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "fa5607caa1965a8519667b3fe2291a62d05e84bf0a6343b7d0d0ad0dea2d5dd3"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "HIGH",
+      "mask": 4,
+      "version": 2,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "f2c579c7bce0a107baa154c3cf4b416be2f828cbc01c805dde8c5e900dd5b364"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "HIGH",
+      "mask": 5,
+      "version": 2,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "a57bd7af72066bf8715ba6bf7c068d9c924f3f99c4591c8e99d1948f09b3ec1a"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "HIGH",
+      "mask": 6,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "0ef9ea2ff723e3f8339ecbe1c1061026867025239822dd5ab917b24f845117b1"
+    },
+    {
+      "text": "HELLO WORLD",
+      "level": "HIGH",
+      "mask": 7,
+      "version": 2,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "264ab1ed48ad90f72a6d9e965f57ac2199263d8452da009f8d59f3aaf472679f"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "LOW",
+      "mask": -1,
+      "version": 3,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "491bbca3e8c425c65f3d9cdd9b4c3a86ad16b3dbc6c33040455ce3f0fd0a100c"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "LOW",
+      "mask": 0,
+      "version": 3,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "390078cac15707f509ac4d9fec789b1f45607735257c93eddc3e70864b3ba2a6"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "LOW",
+      "mask": 1,
+      "version": 3,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "dd7d0d519437ec2f69a9a699889d0e986137712e4ac2bd88469a96dfc4e16f4f"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "LOW",
+      "mask": 2,
+      "version": 3,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "12cff7a935c3cf19afc8d33f99c49c39ffa75b1c7b7accafc9c56ae50932d6bc"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "LOW",
+      "mask": 3,
+      "version": 3,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "7c9a4506ff952c368c7466b1c731b8376061f5530ac74e9bfa590253db417459"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "LOW",
+      "mask": 4,
+      "version": 3,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "7651b960d58fe7363d810a38d4265be24562d181ad7f900187986a14e03c638c"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "LOW",
+      "mask": 5,
+      "version": 3,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "55c272494dd8f6c2dea1291ba4c31a81d70fe1ebb2c46b0a8ab166deec1996ee"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "LOW",
+      "mask": 6,
+      "version": 3,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "e90c6169f3fb271c910109a91c98c17a3b35275dd05553a338cdfeff19fd9ba5"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "LOW",
+      "mask": 7,
+      "version": 3,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "491bbca3e8c425c65f3d9cdd9b4c3a86ad16b3dbc6c33040455ce3f0fd0a100c"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "MEDIUM",
+      "mask": -1,
+      "version": 3,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "0c108490f63ebc911710905b72b24d8de2a7daad86bcc30e8b55e082aae3d8fc"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "MEDIUM",
+      "mask": 0,
+      "version": 3,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "081e4c3a90d72677baa9bfb2ed0a475b6bbf5af05b3402843c3b9738a01e1c19"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "MEDIUM",
+      "mask": 1,
+      "version": 3,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "0c108490f63ebc911710905b72b24d8de2a7daad86bcc30e8b55e082aae3d8fc"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "MEDIUM",
+      "mask": 2,
+      "version": 3,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "1ee3fcf6b6f84513a164047cd757ec05afbe53f8db9f67e810939acdf512ca55"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "MEDIUM",
+      "mask": 3,
+      "version": 3,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "d05e3d8c8047f82e5873cd36e68b23de1e03d5460190fb4ee3567604f5ac14d8"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "MEDIUM",
+      "mask": 4,
+      "version": 3,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "d1f8ac6508166b8d79e652a13e153524f05a492be73c6f8413564aabcc71adf4"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "MEDIUM",
+      "mask": 5,
+      "version": 3,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "9f3c8ef9e1b079bd32cb542217d98820918d9ee9c18176dd2b3ce9fd7e7e094a"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "MEDIUM",
+      "mask": 6,
+      "version": 3,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "77b2c38e0ac5f177ce8c81aabd2f25ae9841daa8846e5a17568cac9689245e4d"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "MEDIUM",
+      "mask": 7,
+      "version": 3,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "aae4cadf8611180928eaacf742c8ba12d09d8b70232851c453017c952d5634f8"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "QUARTILE",
+      "mask": -1,
+      "version": 4,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "f347ba601e7803464f90af8089cc9e148a10ff6625f7075c5c0e742352046fb9"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "QUARTILE",
+      "mask": 0,
+      "version": 4,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "2e98643f883bc316e9feced8e47643b666990973e4baf5d5614ed6e5551b185e"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "QUARTILE",
+      "mask": 1,
+      "version": 4,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "103b2650e59d9530b6dd97627e4d1e61c7181f129d116a9a0efc8d754df2ae80"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "QUARTILE",
+      "mask": 2,
+      "version": 4,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "f347ba601e7803464f90af8089cc9e148a10ff6625f7075c5c0e742352046fb9"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "QUARTILE",
+      "mask": 3,
+      "version": 4,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "76f28e9f59827d9e13df073c443d7b0b820fce3fff803b5e8f5cce75bdca1615"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "QUARTILE",
+      "mask": 4,
+      "version": 4,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "9717306aba586226b9d7d2717203644fa2653e80fa01e34e5aed4bd0ad7afde6"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "QUARTILE",
+      "mask": 5,
+      "version": 4,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "d3ac9e824c554f624c8730e9f2faa277bca02c385297f66cd8effbcceb595a56"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "QUARTILE",
+      "mask": 6,
+      "version": 4,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "8daf5db13c6af8bb7425c775d0b8343756029062accb76c23499f737de21eefe"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "QUARTILE",
+      "mask": 7,
+      "version": 4,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "9a95c509066d204fcf220cf236479ef521436787966ca11f993ebd4e1254b00c"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "HIGH",
+      "mask": -1,
+      "version": 5,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "8a29d50d7d1ae07732402a366847be31b47d1bc05d3082e55038ae40cf789aec"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "HIGH",
+      "mask": 0,
+      "version": 5,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "a99ff296a5db7950e47e22e930c4ced8be195b484b1e2a7e0a010e5717f392e5"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "HIGH",
+      "mask": 1,
+      "version": 5,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "51e9050bd236d57f239fd3ab480fbeb806ed8bc9eb9c0a5a429fefd3949916f0"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "HIGH",
+      "mask": 2,
+      "version": 5,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "1ee4864380e47a334b0e4024570d3798c9f73f7ca7df2765d0d194f0e9208fc2"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "HIGH",
+      "mask": 3,
+      "version": 5,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "63d9ab0cb6ecddab05280412dbdaff6294e4261c283e4965b9d98b646d08a81a"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "HIGH",
+      "mask": 4,
+      "version": 5,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "ddb77ea521941c1917cd248588d25d98ecac270d36c70dc39f0b4b84089934aa"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "HIGH",
+      "mask": 5,
+      "version": 5,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "8a29d50d7d1ae07732402a366847be31b47d1bc05d3082e55038ae40cf789aec"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "HIGH",
+      "mask": 6,
+      "version": 5,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "ca8b115a0f67bfb8874d47aa91af0d0e1fd8eee2f229ae62b292611f5f509424"
+    },
+    {
+      "text": "https://github.com/SaadAlsaree/SheenUI",
+      "level": "HIGH",
+      "mask": 7,
+      "version": 5,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "f1e676f62f4636b65bef75f5d327b17f4df41fb1fd8ee0bf6ff28f7c8728567d"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "LOW",
+      "mask": -1,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "49cc8ddd0b86e4aa23bad537328d1bcef378abafd7d9b4a020e1b054b26ad515"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "LOW",
+      "mask": 0,
+      "version": 2,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "f047ac7d646737d9d3ecda7c890bca247fcc735b910a8cabcb4bac88a62e4666"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "LOW",
+      "mask": 1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "fad3a762628fd21cfb048f13cf56587c2dbb423ad174d98e42d5117fe37dd225"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "LOW",
+      "mask": 2,
+      "version": 2,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "624c4d6db23b15c7f7e503f148f3f111c9faf64d4a71cfaf257a3ad0cd797c7a"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "LOW",
+      "mask": 3,
+      "version": 2,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "33c0686bceb3b244edc4d29ae4810a819bc0fd5142a68e5b59ba8ad042b4201e"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "LOW",
+      "mask": 4,
+      "version": 2,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "e8a48c98b2206707cef2051005ce31a0fb532f99b3e5a12d5bdc1dd8d59c1ae2"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "LOW",
+      "mask": 5,
+      "version": 2,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "50078307d36ab72f1ab5c7d8f524e47bb82bf1aae67762b4f1abd3a2103e3106"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "LOW",
+      "mask": 6,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "49cc8ddd0b86e4aa23bad537328d1bcef378abafd7d9b4a020e1b054b26ad515"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "LOW",
+      "mask": 7,
+      "version": 2,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "ce6c2f11824471a7757da0dc63ba3b1dd563a224801c61ace6e54db88e3e6bf9"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "MEDIUM",
+      "mask": -1,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "7557b2baae6e2b378771342fa2255ff2ff68b9e9675b35c829be43bf80fa5123"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "MEDIUM",
+      "mask": 0,
+      "version": 2,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "65a268270aa46f501d932caf5c59c28af57b2509d0204a07b24751b733679577"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "MEDIUM",
+      "mask": 1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "c76645fa47e8edada7b4bf14ac4500aca1b355870e5f4f2a26618a015a7e6e2f"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "MEDIUM",
+      "mask": 2,
+      "version": 2,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "8720d8bf39d6d895d6594230ae2afe5bd815f8b3d563d32a38dd480619fea7c6"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "MEDIUM",
+      "mask": 3,
+      "version": 2,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "4ded61abf32e82ccfe05ac36be6c0516edb0bfdf34a70389c5d63ab55c7e046e"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "MEDIUM",
+      "mask": 4,
+      "version": 2,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "74a9fa5a1816b780c694674190bc4801fe46dbec6fbac99f79dfd38e546bc74e"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "MEDIUM",
+      "mask": 5,
+      "version": 2,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "9b0ec96ab90967865de2b0bfbc87586266de33febb11d26afbf12ae2d4f7d43f"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "MEDIUM",
+      "mask": 6,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "7557b2baae6e2b378771342fa2255ff2ff68b9e9675b35c829be43bf80fa5123"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "MEDIUM",
+      "mask": 7,
+      "version": 2,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "fa23bf9d4b90fa7cf3a98e77c341453df0284ca5e70ddedce0f5f211e3e8c0af"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "QUARTILE",
+      "mask": -1,
+      "version": 3,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "b91bf49a2486b400c4bbad81161c858804c2682b1ac45d3898b6a95ff809a8e1"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "QUARTILE",
+      "mask": 0,
+      "version": 3,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "20f6d78dcace700758513f12415d094084cc603aad1d364cc47b0e5f19ea3541"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "QUARTILE",
+      "mask": 1,
+      "version": 3,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "e752bdee73409503bf74f4dbfbd02d82a8813ebfa0ac2dd0ef0d3de6f94939e3"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "QUARTILE",
+      "mask": 2,
+      "version": 3,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "79aa1695c971892ffd660b6157b8faa39593340d93659c3d4316a4d1ad318966"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "QUARTILE",
+      "mask": 3,
+      "version": 3,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "65b215d9310ec3fd4017d454e68bbe92292d4e34841e777bd11437add709f682"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "QUARTILE",
+      "mask": 4,
+      "version": 3,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "11c951aa0f179ad62bbf7a6b9ccd9120eae27afa9249922297474c10a4643fc7"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "QUARTILE",
+      "mask": 5,
+      "version": 3,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "2812a21abda9917838014a9859c47e03f8391f77e765454763e7a675025468bd"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "QUARTILE",
+      "mask": 6,
+      "version": 3,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "b91bf49a2486b400c4bbad81161c858804c2682b1ac45d3898b6a95ff809a8e1"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "QUARTILE",
+      "mask": 7,
+      "version": 3,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "52a5ba64a878aca5defec6e55f821e26663a5aa99094101e0fc088e1788a18ca"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "HIGH",
+      "mask": -1,
+      "version": 4,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "6dc1dc0ab52053b5329938067abf62aa7beea3eff9e03fac8c0261ff1be5a4a2"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "HIGH",
+      "mask": 0,
+      "version": 4,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "e894a77956abd5723a20d4bddc0420eacc7a5b70708b1aceb49bee43e22133f2"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "HIGH",
+      "mask": 1,
+      "version": 4,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "0df86412aab3151a38a416b934b6633cbd9f9a1df769b43c44b52278f9599560"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "HIGH",
+      "mask": 2,
+      "version": 4,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "6dc1dc0ab52053b5329938067abf62aa7beea3eff9e03fac8c0261ff1be5a4a2"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "HIGH",
+      "mask": 3,
+      "version": 4,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "edbb27dbd91d69240a0e7554d256064e70672e5fc895ea19753019b5fae8510c"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "HIGH",
+      "mask": 4,
+      "version": 4,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "fe3e0985469c17ee35139bb37e7e4b0154a2234b338796b4e5c2e85bc1ee1e13"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "HIGH",
+      "mask": 5,
+      "version": 4,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "0adb3a7d48f5adebe2c1ab85c92393e53e2af5e24f0f9901422c02121b074083"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "HIGH",
+      "mask": 6,
+      "version": 4,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "2a74524fd2ccd5ccfa2f0388fdeee0980cd385cf802e76ff4036781e742b6bfc"
+    },
+    {
+      "text": "مرحبا بالعراق",
+      "level": "HIGH",
+      "mask": 7,
+      "version": 4,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "df5e61f3a0953dcf961929a46d2f4f0cf3e443f92d2ca626a1f6c06bbcd3c638"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 2,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "513360742b921b2edb0863bacfc8f1472d380ac7449e47b3c84d0cde84eefc64"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "LOW",
+      "mask": 0,
+      "version": 2,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "2e382fef05696865967191e9b24bbbb410420fda4663b5c473867c8dc470b857"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "LOW",
+      "mask": 1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "a5495f646b9f7d0a8b30ab1b54f0c46734897324a06f445645dba980a4824fbc"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "LOW",
+      "mask": 2,
+      "version": 2,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "fce1d5155a97141917daefa6503dd9aae6efe784b16dd0288729b6638161fc8f"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "LOW",
+      "mask": 3,
+      "version": 2,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "3d22fd9da1305710b4fbf12a2401f3481a13e1981c59dc775dd7aef23d82cbc2"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "LOW",
+      "mask": 4,
+      "version": 2,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "513360742b921b2edb0863bacfc8f1472d380ac7449e47b3c84d0cde84eefc64"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "LOW",
+      "mask": 5,
+      "version": 2,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "85b6eb58b1515bba4bebde2653c3ba1f5b45bd0b8c1d27ba7fbe16a65949b2b0"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "LOW",
+      "mask": 6,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "14863210f355b32bc81f24fe1d6f2631a89251eee98d42f7c85b4c139139a79b"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "LOW",
+      "mask": 7,
+      "version": 2,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "a0809741bf4afc635f5ab6382bb39b9447b900c8cbbfa111c74eea0ec238c641"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "MEDIUM",
+      "mask": -1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "d838aa234a009213c92342e2a24c186350a2697ce1a85c230a287a0a765b814d"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "MEDIUM",
+      "mask": 0,
+      "version": 2,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "c34c88c7dc776e1c1ad2309eb3349d7403c2e43be5a0edc5974d2ba941bdb8c2"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "MEDIUM",
+      "mask": 1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "d838aa234a009213c92342e2a24c186350a2697ce1a85c230a287a0a765b814d"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "MEDIUM",
+      "mask": 2,
+      "version": 2,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "4336690355c86f89aea4fd338849049d959de8946fc71345e360af72669ede89"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "MEDIUM",
+      "mask": 3,
+      "version": 2,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "6a32804dce8003917175789c4e43584e872a1efb6be0ca69c6bbad30ab5f7c38"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "MEDIUM",
+      "mask": 4,
+      "version": 2,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "9c7c1a947abd82a2a3ba585e58a20da621664bd95c1119bc88caed96f9a4bf21"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "MEDIUM",
+      "mask": 5,
+      "version": 2,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "98bcc848fe191060272cec540d777d269746c9b8a6f9e7bf5b7c9b3a1dfb82f8"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "MEDIUM",
+      "mask": 6,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "1dba5f526ec288c64ff6462292a45d1f96e2a47c5802ed2088bd002c2bd996ce"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "MEDIUM",
+      "mask": 7,
+      "version": 2,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "860ecdf5e1ffc249adc018c186a6efd96ed413b1ef470e7c6c3412d2d1ec32da"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "QUARTILE",
+      "mask": -1,
+      "version": 3,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "42453ce643db91eb60e0ce4b9ee524f4c411afd196eb913b617ee5b7c91ac969"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "QUARTILE",
+      "mask": 0,
+      "version": 3,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "a60c0d4395308eb0a5500261558e280f7a6acf36450532c19889223d645483c5"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "QUARTILE",
+      "mask": 1,
+      "version": 3,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "a023f8887cc50fa1640c2d5d429adab5c1585ab4d30b7fd32950949de36aec4a"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "QUARTILE",
+      "mask": 2,
+      "version": 3,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "8c7687fdf1d614ba626ec168f8fcd7bb287d6a3049c52c6f974c1a4b16fd0149"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "QUARTILE",
+      "mask": 3,
+      "version": 3,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "e41334e5671a579c5768efb7b4dcf5e2ae15af713175e8b6ab860232153c77bd"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "QUARTILE",
+      "mask": 4,
+      "version": 3,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "5fe0079ef6e0ab3900e150cdede56da079a746778a367600297b585d578cf54c"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "QUARTILE",
+      "mask": 5,
+      "version": 3,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "b463699c7b4e1263830442d20b424181b5879fb3dc81d719f7bed9d8afa492c3"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "QUARTILE",
+      "mask": 6,
+      "version": 3,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "42453ce643db91eb60e0ce4b9ee524f4c411afd196eb913b617ee5b7c91ac969"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "QUARTILE",
+      "mask": 7,
+      "version": 3,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "61c5252814019ddb3bd725646f86925749a3c3e20cb0689930c7a5ad9054ee7c"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "HIGH",
+      "mask": -1,
+      "version": 3,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "d1459527fc79e183dd0ba2f1c8ea3baffd4def30a32ece8bfaea1b83558ca0f7"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "HIGH",
+      "mask": 0,
+      "version": 3,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "8a0ec19ce269919060cc1a24ee4958e6748cb4db3a53b4f8c27311acbc826184"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "HIGH",
+      "mask": 1,
+      "version": 3,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "d1459527fc79e183dd0ba2f1c8ea3baffd4def30a32ece8bfaea1b83558ca0f7"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "HIGH",
+      "mask": 2,
+      "version": 3,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "027fcec3e672a6f21f3817e38a77c3ad92f4d1aececd28734a0f5c28f5c8d18c"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "HIGH",
+      "mask": 3,
+      "version": 3,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "4f5009e868b117b4e29ad24249d70416c9b358fad2d4171a02cee26931ecaa68"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "HIGH",
+      "mask": 4,
+      "version": 3,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "a9b9e1765383fea6d09ed5d1c66f9e0c8a3d5f5b1537fe3ff0c7123473dcf2c1"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "HIGH",
+      "mask": 5,
+      "version": 3,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "54a00427f9d586ac86175c269ce3ea9fc467d687dff0e2b5af8cbfb2ba30777c"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "HIGH",
+      "mask": 6,
+      "version": 3,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "5456a8f4fa31233ef626ceaa2bc1eef8e05adbcef93f71b1aee0224738e2ad9a"
+    },
+    {
+      "text": "بغداد 😀 QR 123",
+      "level": "HIGH",
+      "mask": 7,
+      "version": 3,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "5c983156430aa2cf5d189f4667c75c6e5e7a9de64f62842e785ae3796432fa18"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "LOW",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "6786a37c2e9596c5ddba60e82d12faed279abe1abe1142bb7c89bdbb6f76ea10"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "LOW",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "0805485359db9aa590908721f8a046e1d478f6750990542f286ee37779a4e856"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "LOW",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "d222ba9db3c0f1834e57e9b27e63faa66ca79f033e5b7d73163ce026f20088cd"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "LOW",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "2410f00321ad18e4814dff6198ed19d6f2761e3c89beb2157c47011c5743a30d"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "LOW",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "6786a37c2e9596c5ddba60e82d12faed279abe1abe1142bb7c89bdbb6f76ea10"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "LOW",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "d3576020d5719994f8c5511b1c9a92b60c7f61548b6a3d60205291f2580bb9b4"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "LOW",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "93520f9606149c6d8b6f89a1a7f12911132305faabcb0806b2c98a66d4529a61"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "LOW",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "6e4dbe7c812df08bce3fe2ec738dcd496394d7119b578c2163993d7484c7ac25"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "LOW",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "24d45cb729cefdb035ddeff1d810575e1ef39e4a8ad6fdda098eb4583840a113"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "MEDIUM",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "9e71d1f2a6fff84ab8d38c1c81b2589cb51736b59fab6a369e7875de5be1662f"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "MEDIUM",
+      "mask": 0,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "53b803435ada0dcb35f935f4d222773be0905fb1b5b3b8e031f648790e74f2c8"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "MEDIUM",
+      "mask": 1,
+      "version": 1,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "38eb3c26d9bc70d586a250a70bbd66ce2c3a408ee73387a9f8d77d18c5b5c3e5"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "MEDIUM",
+      "mask": 2,
+      "version": 1,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "dbde0b484ad4d45038689fcda5d553dab16f8408b18539ace87539d7ed5b36ff"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "MEDIUM",
+      "mask": 3,
+      "version": 1,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "9e71d1f2a6fff84ab8d38c1c81b2589cb51736b59fab6a369e7875de5be1662f"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "MEDIUM",
+      "mask": 4,
+      "version": 1,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "61088e0dd08db25b660602749243bed0e82ff2c367d6af118baee0eaaabba656"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "MEDIUM",
+      "mask": 5,
+      "version": 1,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "94be7175378367874717a2eb5c43aa905fb742d068184815eef365b69462ff42"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "MEDIUM",
+      "mask": 6,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "f0a70c92df725a2f856266e7e31c2c4d149f701b9ca42e12959160f38913374b"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "MEDIUM",
+      "mask": 7,
+      "version": 1,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "36c9c158913d79c569a63f38152ccf5906430852f92109a88fc19ec01282ab2a"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "QUARTILE",
+      "mask": -1,
+      "version": 2,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "8c0b04e6c362e865a099b65b7ab296ecaafb26de9309fd88870001e780431d70"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "QUARTILE",
+      "mask": 0,
+      "version": 2,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "8c0b04e6c362e865a099b65b7ab296ecaafb26de9309fd88870001e780431d70"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "QUARTILE",
+      "mask": 1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "7fb4773d9ecdcaff4ca80c109239bf938fba93a5109781310df4cfe085ef1453"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "QUARTILE",
+      "mask": 2,
+      "version": 2,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "b699b75d6e8132fbf25ae88c86fa58c28c9d14a2305fcc5816f51691842f5edb"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "QUARTILE",
+      "mask": 3,
+      "version": 2,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "15e15838aad568c6cc9734648860712a2ce8d6ad24f5ab12e29837d94e234e57"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "QUARTILE",
+      "mask": 4,
+      "version": 2,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "a7a55e88316d538f986bc6e9d64fb59dca2d2d3ae91bde5ab3420ea625343134"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "QUARTILE",
+      "mask": 5,
+      "version": 2,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "0c1402ed26d1987ba0d8b35a5fe6b26efb2980900d4940a8a225da4b5bba8b8d"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "QUARTILE",
+      "mask": 6,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "792ffee5cad0d04d57ead0de356da4c2ba21c1df854e7d98ce50acf14f12a467"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "QUARTILE",
+      "mask": 7,
+      "version": 2,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "680f68431c5fd5ec315aae554bc3af6eb9580406ae1cacaeb2cd0b27af00c962"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "HIGH",
+      "mask": -1,
+      "version": 2,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "c882c0566bbc140f40c4c4adb1bdf1c3b4156148cf5a92eb1f4dcfcb0760db5e"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "HIGH",
+      "mask": 0,
+      "version": 2,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "337cbb6280923d5fd9e67c421a733727f8430427b98078d7146fa1bce3c8d04b"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "HIGH",
+      "mask": 1,
+      "version": 2,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "285f1fcefb370490747f9a0e700096af87c4a3d8dac9b135b5d7af1d374debfe"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "HIGH",
+      "mask": 2,
+      "version": 2,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "c882c0566bbc140f40c4c4adb1bdf1c3b4156148cf5a92eb1f4dcfcb0760db5e"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "HIGH",
+      "mask": 3,
+      "version": 2,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "7e214d2bcdf4673b14e9a72665124bd6fae53ba845d94332804b6b6907846354"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "HIGH",
+      "mask": 4,
+      "version": 2,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "6c262e8d64bd33d607bd8cac10defc895cfbcebf01e387cf3263c77df5d0a95a"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "HIGH",
+      "mask": 5,
+      "version": 2,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "a5849058f3db5b244f19186ddecd6a947b182b78f196f833903364d945aa2e52"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "HIGH",
+      "mask": 6,
+      "version": 2,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "50d500d32da875281b49c2aa6b8fd34e4f61783c6af3529097b81623b4bdd5fa"
+    },
+    {
+      "text": "😀😃🚀",
+      "level": "HIGH",
+      "mask": 7,
+      "version": 2,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "23dcd6187ae94538b198bf7fbb3a8fb3d876f9708c7a014272f1831739e716ae"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "LOW",
+      "mask": -1,
+      "version": 10,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "9bf79c603cbd9478471e61f06175ef2827bf59472ea0b54e3d042256ea999b77"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "LOW",
+      "mask": 0,
+      "version": 10,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "138d4dc3f446473582faba701d9cb7ebb5a054714af0eeadf657b161795636ed"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "LOW",
+      "mask": 1,
+      "version": 10,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "9bf79c603cbd9478471e61f06175ef2827bf59472ea0b54e3d042256ea999b77"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "LOW",
+      "mask": 2,
+      "version": 10,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "bd9f3fafd04b4f0ab9b2aafb19ff407a84bc046adea2d14096401577ec5570a3"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "LOW",
+      "mask": 3,
+      "version": 10,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "a881930334e46f52d1d43d3e758d85220cf2f801ecfb0d046afc396e25cde292"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "LOW",
+      "mask": 4,
+      "version": 10,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "f2f0933a26d54cef8ca2bfa5680d365e70a0daa99c939a7287ddbea42803ae20"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "LOW",
+      "mask": 5,
+      "version": 10,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "c1733e9970efbc01c7b11845c6a1d3bebb7e6d876e7aa69e2323d5090bcc35d9"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "LOW",
+      "mask": 6,
+      "version": 10,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "b875b693a644552f6cf93564d7d6e5511292736e76acaf5845f9ad585d17ef63"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "LOW",
+      "mask": 7,
+      "version": 10,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "20aa644d2411ce9e306a0211ddeecabd34b8b6ea385667be13132f98c843f191"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "MEDIUM",
+      "mask": -1,
+      "version": 12,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "d1d073e141ff7dfa4a0ea2e374700a13d929fe49262d122663a1758e3402921a"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "MEDIUM",
+      "mask": 0,
+      "version": 12,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "ce1b174bb784268d69f9ffc7ce75a64405d0eec021a11cab92f3ca9c33720674"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "MEDIUM",
+      "mask": 1,
+      "version": 12,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "d1d073e141ff7dfa4a0ea2e374700a13d929fe49262d122663a1758e3402921a"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "MEDIUM",
+      "mask": 2,
+      "version": 12,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "91d547df72a6712a4c3e8ad4ce2d7300f382e702ea2e3a8d75ca71d093ae9d55"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "MEDIUM",
+      "mask": 3,
+      "version": 12,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "93e3c919d41341a6414be78826794e7685729f1e398f7e38a2304cfaf73c34a8"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "MEDIUM",
+      "mask": 4,
+      "version": 12,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "bc2462ca762c19795034139d29c53c44564cfdac0a7344fe23785cf842b4839b"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "MEDIUM",
+      "mask": 5,
+      "version": 12,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "220d3fdea39f2d568a11ef6d6f632e6cbf14e8039fce6375c9744055025def1f"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "MEDIUM",
+      "mask": 6,
+      "version": 12,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "fe204d0c4a3514e2aa4a3be015f1e9ec1ad27857de8721852fa24ca953aad7f8"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "MEDIUM",
+      "mask": 7,
+      "version": 12,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "9e386f7b7cb8af0581fad81eb0e8de8835c1605d522351e02bb997d315d1ba79"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "QUARTILE",
+      "mask": -1,
+      "version": 15,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "c18042acae32b67e58e8b71b70202fabb0ff787ab19d764b5417022a971dc6c9"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "QUARTILE",
+      "mask": 0,
+      "version": 15,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "c18042acae32b67e58e8b71b70202fabb0ff787ab19d764b5417022a971dc6c9"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "QUARTILE",
+      "mask": 1,
+      "version": 15,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "15e03c72bc36f4c190101ddc5609acf10b729d3e7ef9ba118be984ec32a234a1"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "QUARTILE",
+      "mask": 2,
+      "version": 15,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "fcc673530920f39759d0aa05bf5bf2e2f2c911febca32fe3a1381dfd573b71be"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "QUARTILE",
+      "mask": 3,
+      "version": 15,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "56f29a9f9dd943d182690570c88228a2cb78c8e7e960f52bfbbec713e4bfbc48"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "QUARTILE",
+      "mask": 4,
+      "version": 15,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "4d9ba5d08e0ea54658310ce78f79aafe8ed1b76fbecbb70bee8693f3462eef33"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "QUARTILE",
+      "mask": 5,
+      "version": 15,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "119295b263b90d0b1b93734fa897350d36e2bdea0511e0dfda3b0d49c445e73a"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "QUARTILE",
+      "mask": 6,
+      "version": 15,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "19303fa16962e85da5d199d1786ca306c033ae943122a367f8963a881ed81a79"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "QUARTILE",
+      "mask": 7,
+      "version": 15,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "7a25fc4edb22d566e3fb764ce39a957ba6525ee3abdfa45ae99a2d707d505475"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "HIGH",
+      "mask": -1,
+      "version": 17,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "925809e59cfd9073b33235657ddb4d9c646e0a9d423a55aee7a40a4fc32c3058"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "HIGH",
+      "mask": 0,
+      "version": 17,
+      "selectedMask": 0,
+      "boost": false,
+      "hash": "0d00fa814d57a891717de57faf9ba2bad84ab3ea12625e3de53307e48e65e83f"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "HIGH",
+      "mask": 1,
+      "version": 17,
+      "selectedMask": 1,
+      "boost": false,
+      "hash": "925809e59cfd9073b33235657ddb4d9c646e0a9d423a55aee7a40a4fc32c3058"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "HIGH",
+      "mask": 2,
+      "version": 17,
+      "selectedMask": 2,
+      "boost": false,
+      "hash": "f867d28035ecf5021e33ebcc31541dc28c11c9e74ddee5d53c09fd39b41a66ae"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "HIGH",
+      "mask": 3,
+      "version": 17,
+      "selectedMask": 3,
+      "boost": false,
+      "hash": "ead195113471f1b54c087619e5ed66619919cc5377f5927ed8da926f753e9734"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "HIGH",
+      "mask": 4,
+      "version": 17,
+      "selectedMask": 4,
+      "boost": false,
+      "hash": "93b9ed1d2e6ea840b1d6260e565d5f53d3f353d3d9f7404de9cd41135d8cc22a"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "HIGH",
+      "mask": 5,
+      "version": 17,
+      "selectedMask": 5,
+      "boost": false,
+      "hash": "4cb83e2ef77741ffa6adf214482a15cf9a9048435764032b0fe474d453c40fc7"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "HIGH",
+      "mask": 6,
+      "version": 17,
+      "selectedMask": 6,
+      "boost": false,
+      "hash": "ce22638ab327b71b79d80b5e1ff5e0879f9b6f08cd4a6460e2bcb2dda0d1becb"
+    },
+    {
+      "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "level": "HIGH",
+      "mask": 7,
+      "version": 17,
+      "selectedMask": 7,
+      "boost": false,
+      "hash": "b41dabc31d658cd6e2859acc3cbda3cab1f24d4513a69cacb904fe6b476f675d"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 6,
+      "boost": false,
+      "fixedVersion": true,
+      "hash": "3e130ed051ba668b8dec9d454abfb3eb964ad0c71d9b3b45e49f1768b5de9560"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 1,
+      "selectedMask": 0,
+      "boost": true,
+      "fixedVersion": true,
+      "hash": "0ddc06afa12c604cb8aa899715886ac70a297f12e42961f7894936f7dd0256eb"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 7,
+      "selectedMask": 2,
+      "boost": false,
+      "fixedVersion": true,
+      "hash": "fc11289679379d3a74475102d02c3f0798fb2420b25481e41a38afa6053ace07"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 7,
+      "selectedMask": 6,
+      "boost": true,
+      "fixedVersion": true,
+      "hash": "3d4c72b0d692a1f2ae52c2ebe6b68d995431519a73d5ddf2c48be5a2169bfcf1"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 10,
+      "selectedMask": 2,
+      "boost": false,
+      "fixedVersion": true,
+      "hash": "6d5da19bb68083f44b4a93a3eb750d7740f7c09d0a4b80fcef16124e462ec170"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 10,
+      "selectedMask": 2,
+      "boost": true,
+      "fixedVersion": true,
+      "hash": "8ecad0ade47d891214b1757da130156d17aac3c3be8f5fa74c811891c782616f"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 27,
+      "selectedMask": 4,
+      "boost": false,
+      "fixedVersion": true,
+      "hash": "15353f16a1f58d0641068c22517cd80a45dd5ee470ceeac6e4ced0dbcab25524"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 27,
+      "selectedMask": 4,
+      "boost": true,
+      "fixedVersion": true,
+      "hash": "0b0dc8b00b1a2bc46def9ffbc6c7b2ff24954e5725066340e062d6120996e35c"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 40,
+      "selectedMask": 4,
+      "boost": false,
+      "fixedVersion": true,
+      "hash": "16e0daedaf4ba73a50dde0d8c1a92f684dfcd10a9a7e40bbfc6bb2bd0a4fdd3d"
+    },
+    {
+      "text": "123",
+      "level": "LOW",
+      "mask": -1,
+      "version": 40,
+      "selectedMask": 4,
+      "boost": true,
+      "fixedVersion": true,
+      "hash": "8926f972285962a732a6d3c475571484786713d176274392c9eb63a78e9c7385"
+    }
+  ],
+  "drawings": [
+    {
+      "shape": "square",
+      "margin": 0,
+      "hole": 0,
+      "hash": "67f31a42b7658c230e516f5de2ec616e421c95edf3e9baf6b40846cfd8d5bb8e"
+    },
+    {
+      "shape": "square",
+      "margin": 0,
+      "hole": 5,
+      "hash": "a3770c6b25577e988594fd161f017443e897fabb1bb2c4de62832998e47bba3b"
+    },
+    {
+      "shape": "square",
+      "margin": 2,
+      "hole": 0,
+      "hash": "9c975d3338a794f2feff82b60c10d3b2376ca948fbb7de1e4bc24f66653f6307"
+    },
+    {
+      "shape": "square",
+      "margin": 2,
+      "hole": 5,
+      "hash": "567171386e516c9d24c67fa658fe6a711cd2a00c2bc57a190c023e35445970e1"
+    },
+    {
+      "shape": "square",
+      "margin": 4,
+      "hole": 0,
+      "hash": "0a590266c240803eba08025d750115aaf8dfda6d337ab1646dd00ae808521fdc"
+    },
+    {
+      "shape": "square",
+      "margin": 4,
+      "hole": 5,
+      "hash": "2a35488a5b1f499c27b61d49e433d41b5c9df604708fbb9e414229c8032d8756"
+    },
+    {
+      "shape": "rounded",
+      "margin": 0,
+      "hole": 0,
+      "hash": "92ca87654af9e81b6b809db4424a1d62b6b092e8a9ce227c0da8c190558786e6"
+    },
+    {
+      "shape": "rounded",
+      "margin": 0,
+      "hole": 5,
+      "hash": "b3f45caed96c74e2a54af5a8461fe21c69725e6b1b99883c5d92a5eb39000fe8"
+    },
+    {
+      "shape": "rounded",
+      "margin": 2,
+      "hole": 0,
+      "hash": "0e17b8601c439a43926e2fb5bb79cc8744fa53f378b550547c1df52deb0aedfc"
+    },
+    {
+      "shape": "rounded",
+      "margin": 2,
+      "hole": 5,
+      "hash": "ff0dffb3aa9b8cccba07c9d185953da462401631a4d0cb1c02b8032a32cb94cf"
+    },
+    {
+      "shape": "rounded",
+      "margin": 4,
+      "hole": 0,
+      "hash": "0e90c85c4714668074a11fead0d1b644f795b11e5524fdf20086527682f25500"
+    },
+    {
+      "shape": "rounded",
+      "margin": 4,
+      "hole": 5,
+      "hash": "8d55dd5e9fa8b9166109cd500e5c76ed40cb0851607d23b59362ce8ce712431a"
+    },
+    {
+      "shape": "dots",
+      "margin": 0,
+      "hole": 0,
+      "hash": "8293d4c66e9db9d62051fd099473402e42efc7b06868f24f42b8e778c03c46b2"
+    },
+    {
+      "shape": "dots",
+      "margin": 0,
+      "hole": 5,
+      "hash": "12f5e59b7e266a824d9d1e98b933d9bbf0d852e1e8694bea9f3015978ce1f376"
+    },
+    {
+      "shape": "dots",
+      "margin": 2,
+      "hole": 0,
+      "hash": "3685103f588be50336b24324fa17dc843ff48f7fe660b19cf98e4521adeaed84"
+    },
+    {
+      "shape": "dots",
+      "margin": 2,
+      "hole": 5,
+      "hash": "4b477dab8197c73c0055b07a22dd5b154d559a151df852df81e3d146b2f8a619"
+    },
+    {
+      "shape": "dots",
+      "margin": 4,
+      "hole": 0,
+      "hash": "b36679928e808585c934af7026e5761b6bc237c688eb9bc7a315d9677c56b3b0"
+    },
+    {
+      "shape": "dots",
+      "margin": 4,
+      "hole": 5,
+      "hash": "685c28e2f299b62365e330fbb336757e5d958067fa953fad2517646737e571db"
+    }
+  ]
+}

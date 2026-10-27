@@ -1228,3 +1228,7 @@ Navbar, Sidebar, NavigationMenu, Menubar, Footer and Banner are available throug
 shared theme without new runtime packages. See the [API and SSR boundary](docs/blazor-data-components.md),
 [React-equivalent examples](examples/blazor/data/README.md) and
 [virtualization comparison](docs/blazor-data-virtualization.md).
+
+### Blazor QRCode and Carousel
+
+`sheenui add qr-code` generates styled, downloadable SVG/Canvas/Image QR codes in C#; `sheenui add carousel` installs local Embla-powered motion, autoplay, fade and scale. Both include React-equivalent English/Arabic examples, static SSR and .NET 8/9/10 coverage. See [the behavior contract](docs/blazor-qr-carousel.md), [examples](examples/blazor/media/), and [third-party source policy](docs/adr/020-third-party-source.md).
