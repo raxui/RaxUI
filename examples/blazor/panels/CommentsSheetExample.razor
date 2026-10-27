@@ -1,0 +1,11 @@
+@inherits PanelExampleBase
+<Button Variant="tinted" OnClick="@(() => open = true)">@T("Comments", "التعليقات")</Button>
+<Sheet @bind-Open="open" Side="bottom" Title="@T("Comments", "التعليقات")" Description="@T("24 comments", "24 تعليقاً")" CloseLabel="@T("Close", "إغلاق")" HandleLabel="@T("Drag sheet", "سحب الشيت")">
+    <ul class="list-unstyled vstack gap-3 mb-0">
+        @for (var i = 0; i < 24; i++)
+        {
+            <li class="d-flex gap-3"><span class="flex-shrink-0 d-inline-flex align-items-center justify-content-center rounded-circle bg-body-secondary small fw-semibold" style="width:32px;height:32px">@((char)('A' + i % 26))</span><div><div class="small fw-semibold">@T($"User {i + 1}", $"مستخدم {i + 1}")</div><div class="small text-body-secondary">@T("This sheet scrolls; dragging down only dismisses when the list is at the top.", "يمكن تمرير التعليقات؛ السحب للأسفل يغلق الشيت عند بداية القائمة فقط.")</div></div></li>
+        }
+    </ul>
+</Sheet>
+@code { private bool open; }

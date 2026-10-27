@@ -1,0 +1,41 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@using System.ComponentModel.DataAnnotations
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @ref="root"><EditForm EditContext="context" Context="checkoutContext"><Stepper Items="Steps" @bind-Value="step" Linear Busy="placing" Label="@T("Checkout","إتمام الطلب")">
+<StepperPanel Index="0"><ul class="list-unstyled vstack gap-2 mb-0"><li class="d-flex justify-content-between"><span>@T("Glass keyboard","لوحة مفاتيح زجاجية") × 1</span><span>$129</span></li><li class="d-flex justify-content-between"><span>@T("Desk mat, fog","حصيرة مكتب") × 2</span><span>$48</span></li><li class="d-flex justify-content-between border-top pt-2 fw-semibold"><span>@T("Total","الإجمالي")</span><span>$177</span></li></ul></StepperPanel>
+<StepperPanel Index="1"><div class="row g-3"><div class="col-sm-6"><Field For="@(()=>model.Name)"><FieldLabel>@T("Full name","الاسم الكامل")</FieldLabel><Input @bind-Value="model.Name" autocomplete="name" /><FieldError /></Field></div><div class="col-sm-6"><Field For="@(()=>model.Email)"><FieldLabel>@T("Email","البريد")</FieldLabel><Input Type="email" @bind-Value="model.Email" autocomplete="email" /><FieldError /></Field></div><div class="col-sm-8"><Field For="@(()=>model.Address)"><FieldLabel>@T("Address","العنوان")</FieldLabel><Input @bind-Value="model.Address" autocomplete="street-address" /><FieldError /></Field></div><div class="col-sm-4"><Field For="@(()=>model.City)"><FieldLabel>@T("City","المدينة")</FieldLabel><Input @bind-Value="model.City" autocomplete="address-level2" /><FieldError /></Field></div></div></StepperPanel>
+<StepperPanel Index="2"><div class="row g-3"><div class="col-sm-8"><Field For="@(()=>model.Card)"><FieldLabel>@T("Card number","رقم البطاقة")</FieldLabel><Input @bind-Value="model.Card" inputmode="numeric" autocomplete="cc-number" placeholder="4242 4242 4242 4242" /><FieldError /></Field></div><div class="col-sm-4"><Field For="@(()=>model.Expiry)"><FieldLabel>@T("Expiry","انتهاء الصلاحية")</FieldLabel><Input @bind-Value="model.Expiry" autocomplete="cc-exp" placeholder="MM/YY" /><FieldError /></Field></div></div></StepperPanel>
+<StepperPanel Index="3"><dl class="row small mb-0 gy-2"><dt class="col-4">@T("Ship to","الشحن إلى")</dt><dd class="col-8">@model.Name, @model.Address, @model.City</dd><dt class="col-4">@T("Pay with","الدفع بواسطة")</dt><dd class="col-8">@T("Card ending","بطاقة تنتهي بـ") @LastFour</dd><dt class="col-4">@T("Total","الإجمالي")</dt><dd class="col-8">$177</dd></dl></StepperPanel>
+<StepperPanel Index="4" Class="text-center py-3"><div class="fs-5 fw-semibold mb-1">@T("Thanks","شكراً"), @model.Name.Split(' ')[0]!</div><p class="text-body-secondary mb-3">@T("Your order is on its way. We sent a receipt to","طلبك في الطريق. أرسلنا الإيصال إلى") @model.Email</p><Button Variant="tinted" @onclick="Restart">@T("Start over","البدء مجدداً")</Button></StepperPanel>
+@if(step<4){<div class="d-flex justify-content-between"><Button Variant="ghost" Disabled="@(step==0||placing)" @onclick="()=>step--">@T("Previous","السابق")</Button>@if(step<3){<Button @onclick="Continue">@T("Continue","متابعة")</Button>}else{<Button Disabled="placing" @onclick="Place">@if(placing){<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>} @T("Place order · $177","إتمام الطلب · $177")</Button>}</div>}
+</Stepper></EditForm></div>
+@code {
+    [Parameter] public bool Arabic { get; set; }
+    private sealed class Checkout
+    {
+        [MinLength(2,ErrorMessage="Enter your name. / أدخل اسمك.")] public string Name { get; set; }="";
+        [Required,EmailAddress(ErrorMessage="Enter an email like name@example.com. / أدخل بريداً صالحاً.")] public string Email { get; set; }="";
+        [MinLength(5,ErrorMessage="Enter a street address. / أدخل عنوان الشارع.")] public string Address { get; set; }="";
+        [MinLength(2,ErrorMessage="Enter a city. / أدخل المدينة.")] public string City { get; set; }="";
+        [RegularExpression(@"\d{4} ?\d{4} ?\d{4} ?\d{4}",ErrorMessage="Card numbers have 16 digits. / رقم البطاقة ١٦ رقماً.")] [Required] public string Card { get; set; }="";
+        [RegularExpression(@"(0[1-9]|1[0-2])/\d{2}",ErrorMessage="Use MM/YY.")] [Required] public string Expiry { get; set; }="";
+    }
+    private Checkout model=new();private EditContext context=default!;private ValidationMessageStore messages=default!;
+    private int step;private bool placing,focus;private ElementReference root;private IJSObjectReference? module;private readonly CancellationTokenSource lifetime=new();
+    private static readonly string[][] Fields={Array.Empty<string>(),new[]{"Name","Email","Address","City"},new[]{"Card","Expiry"},Array.Empty<string>()};
+    private IReadOnlyList<Stepper.Item> Steps=>new[]{new Stepper.Item(T("Cart","السلة"),T("2 items","منتجان")),new Stepper.Item(T("Details","التفاصيل"),T("Contact & address","الاتصال والعنوان"),Error:HasErrors(1)),new Stepper.Item(T("Payment","الدفع"),Error:HasErrors(2)),new Stepper.Item(T("Review","المراجعة"))};
+    private string LastFour=>string.Concat(model.Card.Where(char.IsDigit)).PadLeft(4,'•')[^4..];
+    private bool HasErrors(int index)=>Fields[index].Any(name=>context.GetValidationMessages(new FieldIdentifier(model,name)).Any());
+    private string T(string en,string ar)=>Arabic?ar:en;
+    protected override void OnInitialized()=>Setup();
+    private void Setup(){context=new(model);messages=new(context);context.OnFieldChanged+=FieldChanged;}
+    private void FieldChanged(object? sender,FieldChangedEventArgs args){if(context.GetValidationMessages(args.FieldIdentifier).Any()){Validate(args.FieldIdentifier.FieldName);context.NotifyValidationStateChanged();}}
+    private void Validate(string name){var field=new FieldIdentifier(model,name);messages.Clear(field);var result=new List<ValidationResult>();Validator.TryValidateProperty(typeof(Checkout).GetProperty(name)!.GetValue(model),new ValidationContext(model){MemberName=name},result);messages.Add(field,result.Select(x=>x.ErrorMessage??"Invalid value"));}
+    private void Continue(){foreach(var name in Fields[step])Validate(name);context.NotifyValidationStateChanged();if(HasErrors(step)){focus=true;return;}step++;}
+    private async Task Place(){if(placing)return;placing=true;try{await Task.Delay(900,lifetime.Token);step=4;}catch(OperationCanceledException){}finally{placing=false;}}
+    private void Restart(){context.OnFieldChanged-=FieldChanged;model=new();Setup();step=0;}
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(!focus)return;focus=false;module??=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/Stepper/Stepper.razor.js");await module.InvokeVoidAsync("focusInvalid",root);}
+    public async ValueTask DisposeAsync(){context.OnFieldChanged-=FieldChanged;lifetime.Cancel();lifetime.Dispose();if(module is not null)try{await module.DisposeAsync();}catch(JSDisconnectedException){}}
+}

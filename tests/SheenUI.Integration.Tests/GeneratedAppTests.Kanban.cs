@@ -15,8 +15,14 @@ public partial class GeneratedAppTests
         Dotnet(_root, "new", "blazor", "-f", targetFramework, "--interactivity", "Server", "-n", "SampleApp", "-o", app);
         var output = new StringWriter(); var error = new StringWriter();
         Assert.Equal(0, Program.Run(["init"], app, output, error));
-        Assert.True(Program.Run(["add", "kanban"], app, output, error) == 0, error.ToString());
+        foreach (var name in new[] { "kanban", "button", "badge", "avatar" })
+            Assert.True(Program.Run(["add", name], app, output, error) == 0, error.ToString());
         Assert.True(File.Exists(Path.Combine(app, "Components/UI/Sortable/Sortable.razor.js")));
+        var samples = Path.Combine(app, "Components", "Pages", "KanbanSamples");
+        Directory.CreateDirectory(samples);
+        foreach (var file in Directory.GetFiles(Path.Combine(AppContext.BaseDirectory, "Fixtures", "KanbanExamples")))
+            File.Copy(file, Path.Combine(samples, Path.GetFileName(file)));
+        File.AppendAllText(Path.Combine(app, "Components", "_Imports.razor"), "\n@using SampleApp.Components.Pages.KanbanSamples\n");
         var markup = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "KanbanComponents.razor"));
         File.WriteAllText(Path.Combine(app, "Components", "Pages", "KanbanComponents.razor"), markup);
         File.WriteAllText(Path.Combine(app, "Components", "Pages", "StaticKanbanComponents.razor"), markup.Replace("/kanban-demo", "/static-kanban-demo").Replace("@rendermode InteractiveServer", ""));
@@ -87,6 +93,16 @@ public partial class GeneratedAppTests
         await Assertions.Expect(page.Locator("#arabic-state")).ToHaveTextAsync("new:مراجعة النص | review:تصميم الشعار");
         await Assertions.Expect(arabic.Locator("[aria-live]")).ToContainTextAsync("أُفلتت تصميم الشعار في قيد المراجعة");
         await Assertions.Expect(arabic.GetByRole(AriaRole.Button, new() { Name = "Drag column", Exact = false })).ToHaveCountAsync(0);
+
+        // The copyable example: a keyboard move is committed and logged.
+        var project = page.Locator("[data-kanban-project]");
+        var example = project.GetByRole(AriaRole.Button, new() { Name = "Add a Kanban block", Exact = true });
+        await example.FocusAsync(); await example.PressAsync("Space"); await example.PressAsync("ArrowRight"); await example.PressAsync("Space");
+        await Assertions.Expect(project.Locator("[aria-live=polite]")).ToHaveTextAsync("Moved “Add a Kanban block” from Backlog to In progress, position 1.");
+        await Assertions.Expect(project.Locator(".sheen-kanban-column-count[data-over-limit]")).ToHaveCountAsync(0);
+        await project.GetByRole(AriaRole.Button, new() { Name = "Add a card to Backlog", Exact = true }).ClickAsync();
+        await Assertions.Expect(project.GetByRole(AriaRole.Button, new() { Name = "New card", Exact = true })).ToBeVisibleAsync();
+        await Assertions.Expect(page.Locator("[data-kanban-arabic] .sheen-kanban-column")).ToHaveCountAsync(3);
 
         foreach (var appearance in new[] { "flat", "glass" }) { await page.Locator("#kanban-appearance").SelectOptionAsync(appearance); await Assertions.Expect(board.Locator(".sheen-kanban")).ToBeVisibleAsync(); }
         await page.Locator("#kanban-mode").SelectOptionAsync("dark");

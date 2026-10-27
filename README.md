@@ -1246,4 +1246,4 @@ The reusable samples now cover upload queues/photo grids/CV validation, Badge co
 
 ### Blazor Kanban
 
-`sheenui add kanban` installs a draggable board built on the Blazor Sortable engine: cards move within and between columns, columns reorder by their grip, and mouse, touch and keyboard all work, with translated announcements. C# state is the source of truth. See [the behavior contract](docs/blazor-kanban.md).
+`sheenui add kanban` installs a draggable board built on the Blazor Sortable engine: cards move within and between columns, columns reorder by their grip, and mouse, touch and keyboard all work, with translated announcements. C# state is the source of truth. See [the behavior contract](docs/blazor-kanban.md) and [examples](examples/blazor/kanban/README.md).

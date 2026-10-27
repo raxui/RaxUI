@@ -36,5 +36,7 @@
     <None Include="../../examples/blazor/textarea/*" Link="Fixtures/TextareaExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/blazor/app-shell/*" Link="Fixtures/AppShellExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/blazor/panels/*" Link="Fixtures/PanelExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../examples/blazor/kanban/*.razor" Link="Fixtures/KanbanExamples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../examples/blazor/SheenDemo.razor" Link="Fixtures/SheenDemo.razor" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

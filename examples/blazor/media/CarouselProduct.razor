@@ -1,0 +1,8 @@
+<a href="#product" class="sheen-demo-product" @onclick:preventDefault><span class="sheen-demo-product-art" style="@($"--tone:var(--bs-{Tone}-rgb)")"><CarouselArtwork Icon="@Icon" Size="44" /></span><span class="d-flex flex-column gap-1"><span class="fw-semibold text-body-emphasis">@Name</span><span class="d-flex align-items-center gap-2"><Rating Value="@((int)Math.Round(Score))" ReadOnly Clearable="false" Size="sm" /><span class="small">@Score.ToString("0.0",System.Globalization.CultureInfo.InvariantCulture)</span></span><span class="text-body-secondary">@Price</span></span></a>
+@code {
+ [Parameter] public string Name {get;set;}="";
+ [Parameter] public string Price {get;set;}="";
+ [Parameter] public string Icon {get;set;}="keyboard";
+ [Parameter] public string Tone {get;set;}="primary";
+ [Parameter] public double Score {get;set;}=4.6;
+}
