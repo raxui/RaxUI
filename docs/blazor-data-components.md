@@ -48,6 +48,8 @@ Navigation is one grid tab stop: arrows, Home/End, Ctrl/Meta+Home/End and PageUp
 
 Copy uses the raw value's plain text, not display formatting. Paste outside editing consumes only the first line and validates the parsed value. Rejected text/number/select paste retains the pasted draft; rejected date paste opens with the previous date; rejected checkbox paste reports a grid-level error without opening an editor. Multi-cell TSV copy/paste is outside this phase. Clipboard write failures are ignored as in React; browser permissions still apply.
 
+Requested pins are restored when space permits. If their total width would leave less than 80px for scrolling columns, only the selection column stays sticky and a configurable `PinsConstrained` hint explains the narrow layout; static SSR also avoids width-dependent pins. Keyboard scrolling uses the effective pinned boundaries.
+
 Rows have fixed heights (34px compact, 42px comfortable). The manual window renders visible rows plus overscan and the active row, sorted in DOM order, at calculated translateY positions. One range callback is in flight at a time, and pending updates coalesce to the newest range. A distant jump may briefly expose blank space while Interactive Server supplies rows. See the [comparison evidence](blazor-data-virtualization.md); neither overscan nor this test promises uninterrupted display at arbitrary network latency or scroll speed.
 
 ## Sortable

@@ -26,7 +26,7 @@
         </div>
     </div>
     @if(!session.Editing&&session.Error is not null){<div class="sheen-grid-error" role="alert">@session.Error</div>}
-    <div class="sheen-grid-status" aria-live="polite"><span>@Labels.Rows(model.Rows.Count,Items.Count)</span>@if(model.Selected.Count>0){<span>@Labels.Selected(model.Selected.Count)</span>}<span class="sheen-grid-status-pos">@(ActiveIndex>=0&&ActiveColumn is not null?$"R{ActiveIndex+1} · {ActiveColumn.Title}":"")</span></div>
+    <div class="sheen-grid-status" aria-live="polite">@if(interactive&&model.PinsLimited){<span>@Labels.PinsConstrained</span>}<span>@Labels.Rows(model.Rows.Count,Items.Count)</span>@if(model.Selected.Count>0){<span>@Labels.Selected(model.Selected.Count)</span>}<span class="sheen-grid-status-pos">@(ActiveIndex>=0&&ActiveColumn is not null?$"R{ActiveIndex+1} · {ActiveColumn.Title}":"")</span></div>
 </div>
 @code {
     [Parameter,EditorRequired] public IReadOnlyList<TItem> Items { get; set; } = Array.Empty<TItem>();
@@ -75,7 +75,7 @@
         await module.InvokeVoidAsync("sync",scroller,self,new { rowHeight=model.RowHeight,count=model.Rows.Count,active=row,activeColumn=session.ActiveColumn,editing=session.Editing,copy=row>=0&&column is not null?DataGridTypes.Plain(column.Value(model.Rows[row])):"",focusEditor=session.FocusEditor,focusGrid=session.FocusGrid,selectText=session.SelectText,version=model.Version });
         session.FocusEditor=false;session.FocusGrid=false;
     }
-    [JSInvokable] public async Task Window(int first,int last){start=Math.Clamp(first,0,model.Rows.Count);end=Math.Clamp(last,start,model.Rows.Count);await InvokeAsync(StateHasChanged);}
+    [JSInvokable] public async Task Window(int first,int last,double width){if(double.IsFinite(width))model.ViewportWidth=Math.Max(0,width);start=Math.Clamp(first,0,model.Rows.Count);end=Math.Clamp(last,start,model.Rows.Count);await InvokeAsync(StateHasChanged);}
     private Task DraftChanged(string value){session.SetDraft(value);return Task.CompletedTask;}
     private async Task<bool> Apply(TItem row,DataGridTypes.Column<TItem> column,object? value){
         var error=DataGridEditing.Session.Validate(column,row,value,Labels);if(error is not null){session.Error=error;return false;}

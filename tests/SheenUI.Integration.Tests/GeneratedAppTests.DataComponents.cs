@@ -173,6 +173,17 @@ public partial class GeneratedAppTests
                         await page.Locator("#data-direction").SelectOptionAsync(direction);
                         var localized = page.GetByRole(AriaRole.Grid, new() { Name = direction == "rtl" ? "الموظفون" : "Employees", Exact = true });
                         await Assertions.Expect(localized).ToHaveCSSAsync("direction", direction);
+
+                        if (width == 390)
+                        {
+                            await Assertions.Expect(localized.Locator("[role=columnheader][data-col=name]")).Not.ToHaveAttributeAsync("data-pinned", "start");
+                            await Assertions.Expect(localized.Locator("[role=columnheader][data-col=status]")).Not.ToHaveAttributeAsync("data-pinned", "end");
+                        }
+                        else
+                        {
+                            await Assertions.Expect(localized.Locator("[role=columnheader][data-col=name]")).ToHaveAttributeAsync("data-pinned", "start");
+                        }
+
                         var box = (await localized.BoundingBoxAsync())!;
                         Assert.InRange(box.Width, 1, width);
                         var indexes = await localized.Locator("[role=row]").EvaluateAllAsync<int[]>("rows => rows.map(r => Number(r.getAttribute('aria-rowindex')))");

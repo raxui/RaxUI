@@ -43,7 +43,7 @@ Copy/paste follows React's single-cell scope. Ctrl/Cmd+C writes the plain text r
 
 Copy and paste need the collocated JavaScript module; C# owns parsing, validation and the commit. Copying formatted text instead would be a deliberate behavior change for both frameworks, not a Blazor-only difference.
 
-Pinned columns use sticky positioning and logical start/end offsets. Verify combined horizontal scrolling, pinning and RTL. Separate state/model, editing, navigation, virtualization and view responsibilities.
+Pinned columns use sticky positioning and logical start/end offsets. When their combined width would leave less than 80px for scrolling data, retain only selection-column pinning until the viewport is wider, with a configurable hint. This avoids pinned groups covering the content on mobile. Verify combined horizontal scrolling, pinning and RTL. Separate state/model, editing, navigation, virtualization and view responsibilities.
 
 ### Sortable and Resizable
 

@@ -3,7 +3,7 @@ export function sync(root,dotnet,options){
  if(states.has(root)){const state=states.get(root);const changed=state.options.version!==options.version||state.options.rowHeight!==options.rowHeight;state.options=options;if(changed)state.last='';state.measure();focus(root,options);return}
  const state={options,busy:false,pending:null,last:'',disposed:false,drag:null,frame:0}
  const send=async()=>{if(state.busy||!state.pending||state.disposed)return;state.busy=true;const next=state.pending;state.pending=null;try{await dotnet.invokeMethodAsync('Window',...next)}catch(error){if(!state.disposed)console.error(error)}finally{state.busy=false;if(state.pending)void send()}}
- state.measure=()=>{const o=state.options,body=root.querySelector('.sheen-grid-body');if(!body)return;const offset=Math.max(0,root.scrollTop-o.rowHeight),first=Math.max(0,Math.floor(offset/o.rowHeight)-24),last=Math.min(o.count,Math.ceil((offset+root.clientHeight)/o.rowHeight)+24),key=`${o.version}:${first}:${last}`;if(key!==state.last){state.last=key;state.pending=[first,last];void send()}root.toggleAttribute('data-scrolled-x',Math.abs(root.scrollLeft)>0)}
+ state.measure=()=>{const o=state.options,body=root.querySelector('.sheen-grid-body');if(!body)return;const offset=Math.max(0,root.scrollTop-o.rowHeight),first=Math.max(0,Math.floor(offset/o.rowHeight)-24),last=Math.min(o.count,Math.ceil((offset+root.clientHeight)/o.rowHeight)+24),key=`${o.version}:${first}:${last}:${root.clientWidth}`;if(key!==state.last){state.last=key;state.pending=[first,last,root.clientWidth];void send()}root.toggleAttribute('data-scrolled-x',Math.abs(root.scrollLeft)>0)}
  const key=event=>{const o=state.options;if(event.defaultPrevented||event.isComposing||event.target.closest('[role="listbox"],[role="menu"]'))return
   const mod=event.metaKey||event.ctrlKey
   if(event.shiftKey&&event.key==='F10'){event.preventDefault();const header=[...root.querySelectorAll('[role="columnheader"]')].find(el=>el.dataset.col===o.activeColumn);header?.querySelector('.sheen-grid-hmenu')?.click();return}
@@ -32,7 +32,7 @@ function focus(root,options){
 export function scrollTo(root,index,column){
  const state=states.get(root);if(!state)return;const h=state.options.rowHeight,top=index*h,bottom=top+h
  if(index>=0){if(top<root.scrollTop)root.scrollTop=top;else if(bottom>root.scrollTop+root.clientHeight-2*h)root.scrollTop=bottom-root.clientHeight+2*h}
- const cell=[...root.querySelectorAll('[role="columnheader"]')].find(el=>el.dataset.col===column);if(cell&&!cell.hasAttribute('data-pinned')){const r=cell.getBoundingClientRect(),box=root.getBoundingClientRect(),delta=r.left<box.left?r.left-box.left:r.right>box.right?r.right-box.right:0;root.scrollLeft+=delta}
+ const cell=[...root.querySelectorAll('[role="columnheader"]')].find(el=>el.dataset.col===column);if(cell&&!cell.hasAttribute('data-pinned')){const r=cell.getBoundingClientRect(),box=root.getBoundingClientRect(),headers=[...root.querySelectorAll('[role=columnheader][data-pinned]')],start=headers.filter(h=>h.dataset.pinned==='start').reduce((n,h)=>n+h.getBoundingClientRect().width,0),end=headers.filter(h=>h.dataset.pinned==='end').reduce((n,h)=>n+h.getBoundingClientRect().width,0),rtl=getComputedStyle(root).direction==='rtl',left=box.left+(rtl?end:start),right=box.right-(rtl?start:end),delta=r.left<left?r.left-left:r.right>right?r.right-right:0;root.scrollLeft+=delta}
  state.measure()
 }
 export function dispose(root){states.get(root)?.dispose();states.delete(root)}

@@ -17,6 +17,9 @@
         public int RowHeight=>Density=="compact"?34:42;
         public double TotalWidth=>Visible.Sum(c=>Widths[c.Id]);
         public bool HasFooter=>Visible.Any(c=>c.Aggregate is not null||c.AggregateValue is not null);
+        public double ViewportWidth { get; set; }
+        public bool PinsLimited=>ViewportWidth>0&&Visible.Where(c=>Pins[c.Id] is not null).Sum(c=>Widths[c.Id])+80>ViewportWidth;
+        public string? EffectivePin(DataGridTypes.Column<T> column)=>ViewportWidth<=0||PinsLimited?(column.Id=="__select"?Pins[column.Id]:null):Pins[column.Id];
         public int Version { get; private set; }
         private IReadOnlyList<T>? previous;
         public void Configure(IReadOnlyList<T> items,IReadOnlyList<DataGridTypes.Column<T>> columns,Func<T,string> id){
@@ -47,9 +50,9 @@
         private static int Compare(object? a,object? b){if(a is null)return b is null?0:-1;if(b is null)return 1;if(a.GetType()==b.GetType()&&a is IComparable comparable)return comparable.CompareTo(b);return StringComparer.CurrentCultureIgnoreCase.Compare(DataGridTypes.Plain(a),DataGridTypes.Plain(b));}
         public string CellStyle(DataGridTypes.Column<T> c){
             var invariant=System.Globalization.CultureInfo.InvariantCulture;
-            var width=Widths[c.Id].ToString(invariant);var style=$"width:{width}px;";var pin=Pins[c.Id];if(pin is null)return style;
+            var width=Widths[c.Id].ToString(invariant);var style=$"width:{width}px;";var pin=EffectivePin(c);if(pin is null)return style;
             var index=Visible.ToList().FindIndex(x=>x.Id==c.Id);
-            var offset=(pin=="start"?Visible.Take(index):Visible.Skip(index+1)).Where(x=>Pins[x.Id]==pin).Sum(x=>Widths[x.Id]);
+            var offset=(pin=="start"?Visible.Take(index):Visible.Skip(index+1)).Where(x=>EffectivePin(x)==pin).Sum(x=>Widths[x.Id]);
             return style+$"position:sticky;inset-inline-{pin}:{offset.ToString(invariant)}px;";
         }
     }

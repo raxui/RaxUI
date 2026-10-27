@@ -3,7 +3,7 @@
 <div role="rowgroup" class="sheen-grid-head"><div role="row" aria-rowindex="1" class="sheen-grid-row" style="@($"height:{Model.RowHeight}px")">
 @for(var index=0;index<Model.Visible.Count;index++){
     var c=Model.Visible[index];var col=index;var sort=Model.Sorting.FirstOrDefault(x=>x.Id==c.Id);var sorted=Model.Sorting.Any(x=>x.Id==c.Id);
-    <div @key="c.Id" id="@($"{GridId}-h-c{col}")" role="columnheader" aria-colindex="@(col+1)" aria-sort="@(sorted?(sort.Descending?"descending":"ascending"):null)" class="sheen-grid-hcell" style="@Model.CellStyle(c)" data-col="@c.Id" data-pinned="@Model.Pins[c.Id]" data-active="@(Session.Header&&Session.ActiveColumn==c.Id?"":null)" @onpointerdown='()=>Activate.InvokeAsync(new("",c.Id))' >
+    <div @key="c.Id" id="@($"{GridId}-h-c{col}")" role="columnheader" aria-colindex="@(col+1)" aria-sort="@(sorted?(sort.Descending?"descending":"ascending"):null)" class="sheen-grid-hcell" style="@Model.CellStyle(c)" data-col="@c.Id" data-pinned="@Model.EffectivePin(c)" data-active="@(Session.Header&&Session.ActiveColumn==c.Id?"":null)" @onpointerdown='()=>Activate.InvokeAsync(new("",c.Id))' >
         @if(c.Id=="__select"){
             <Checkbox disabled="@(!Interactive)" Value="@(Model.Rows.Count>0&&Model.Rows.All(r=>Model.Selected.Contains(Model.Id(r))))" Indeterminate="@(Model.Rows.Any(r=>Model.Selected.Contains(Model.Id(r)))&&!Model.Rows.All(r=>Model.Selected.Contains(Model.Id(r))))" ValueChanged='()=>Action.InvokeAsync(new("select-all",c.Id))' aria-label="@Labels.SelectAll" tabindex="-1" />
         }else{
