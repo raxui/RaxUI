@@ -1,0 +1,7 @@
+<Button @attributes="AdditionalAttributes" Class="@($"sheen-carousel-playpause {Class}")" Variant="@Variant" Size="icon-sm" Disabled="true" aria-label="@Carousel.Labels.Play" aria-pressed="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path data-carousel-play-icon d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" /></svg></Button>
+@code {
+ [CascadingParameter] public Carousel Carousel {get;set;}=default!;
+ [Parameter] public string Variant {get;set;}="secondary";
+ [Parameter] public string? Class {get;set;}
+ [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes {get;set;}
+}

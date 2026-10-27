@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ZXing.Net" Version="0.16.11" />
     <PackageReference Include="Microsoft.Playwright" Version="1.58.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="xunit" Version="2.9.3" />
@@ -13,6 +14,8 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+    <Compile Include="../../registry/blazor/components/qr-code/QrCodeEncoder.cs" Link="QrCodeEncoder.cs" />
+    <Compile Include="../../registry/blazor/components/qr-code/QrCodeDrawing.cs" Link="QrCodeDrawing.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -171,6 +171,8 @@ public class EmbeddedRegistryTests
     [InlineData("calendar")]
     [InlineData("date-picker")]
     [InlineData("date-range-picker")]
+    [InlineData("qr-code")]
+    [InlineData("carousel")]
     public void All_manifest_files_match_their_sha256_checksums(string name)
     {
         var manifest = _registry.GetComponentManifest(name);
@@ -188,6 +190,15 @@ public class EmbeddedRegistryTests
             var hash = EmbeddedRegistry.ComputeSha256(bytes);
             Assert.Equal(asset.Sha256, hash);
         }
+    }
+
+    [Fact]
+    public void Plain_CSharp_sources_are_hash_checked_and_accepted_in_components()
+    {
+        var manifest = _registry.GetComponentManifest("qr-code");
+        Assert.Equal(2, manifest.Files.Count(file => file.Type == "cs"));
+        Assert.All(manifest.Files.Where(file => file.Type == "cs"), file => Assert.EndsWith(".cs", file.Target));
+        _registry.ValidateManifest(manifest);
     }
 
     [Fact]

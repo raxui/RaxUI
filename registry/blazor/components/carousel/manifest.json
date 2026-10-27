@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "name": "carousel",
+  "version": "0.1.0",
+  "description": "Source-owned carousel matching React (ADR 020).",
+  "dependencies": [
+    "button"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/carousel.css",
+      "destination": "styles",
+      "target": "components/carousel.css",
+      "type": "css",
+      "sha256": "2ef2b6d64b964051f750ef966618bbbb34c9cd2ef70953df2ea6b54de923c5d4"
+    }
+  ],
+  "files": [
+    {
+      "source": "Carousel.razor",
+      "destination": "components",
+      "target": "Carousel/Carousel.razor",
+      "type": "razor",
+      "sha256": "50d3eb07aa1f8b27d5bf725551fc34b810c232b4877c1739f3ac890f4655608a"
+    },
+    {
+      "source": "Carousel.razor.js",
+      "destination": "components",
+      "target": "Carousel/Carousel.razor.js",
+      "type": "js",
+      "sha256": "3ef79985c04b8e0b8794c7852a934220906df60c3d3c4b2d239e3c13fefc14de"
+    },
+    {
+      "source": "CarouselContent.razor",
+      "destination": "components",
+      "target": "Carousel/CarouselContent.razor",
+      "type": "razor",
+      "sha256": "de0d4ed75b602df7e1bd2a551a8d7f04c1bb4715a25954024db773f719b9541e"
+    },
+    {
+      "source": "CarouselCounter.razor",
+      "destination": "components",
+      "target": "Carousel/CarouselCounter.razor",
+      "type": "razor",
+      "sha256": "2f65a48550c2bbde60958b8b9d2e0015485b10043d2343f7d9cb2cfc3536f5ef"
+    },
+    {
+      "source": "CarouselDots.razor",
+      "destination": "components",
+      "target": "Carousel/CarouselDots.razor",
+      "type": "razor",
+      "sha256": "82a40d337f6397e61e23f64f15f79b9153a34544ec20e83f69a718187a04e805"
+    },
+    {
+      "source": "CarouselItem.razor",
+      "destination": "components",
+      "target": "Carousel/CarouselItem.razor",
+      "type": "razor",
+      "sha256": "0da44a474081fc5bb9f76f8c891b25d881444f58cbbc63f2b951574334f0258b"
+    },
+    {
+      "source": "CarouselNext.razor",
+      "destination": "components",
+      "target": "Carousel/CarouselNext.razor",
+      "type": "razor",
+      "sha256": "bb4c5d5c57bbf04bffb22a10d169ba0b7bf526b36e5eaa56c606df9a417d1309"
+    },
+    {
+      "source": "CarouselPlayPause.razor",
+      "destination": "components",
+      "target": "Carousel/CarouselPlayPause.razor",
+      "type": "razor",
+      "sha256": "ed3661c3fd1993e759cfa9a4f6d8a9a92379e0d4071bf0fb5ac50b77870fbd26"
+    },
+    {
+      "source": "CarouselPrevious.razor",
+      "destination": "components",
+      "target": "Carousel/CarouselPrevious.razor",
+      "type": "razor",
+      "sha256": "7cc1523fc08e8e2b4367a4f3c226fe11a3e5d1ed19cb0d89b162110d872824b4"
+    },
+    {
+      "source": "CarouselThumbs.razor",
+      "destination": "components",
+      "target": "Carousel/CarouselThumbs.razor",
+      "type": "razor",
+      "sha256": "09dc6073d8f081dc19e4abbef60bb2cc5ffa9bdd7f4be897af619bd8527846f8"
+    },
+    {
+      "source": "embla-carousel-autoplay.esm.js",
+      "destination": "components",
+      "target": "Carousel/CarouselPlayPause.razor.js",
+      "type": "js",
+      "sha256": "84911d2f9b684038360e7be1019923462ffb8a34659b868f6fb046eb13edd42a"
+    },
+    {
+      "source": "embla-carousel-fade.esm.js",
+      "destination": "components",
+      "target": "Carousel/CarouselItem.razor.js",
+      "type": "js",
+      "sha256": "e682c8390b81c9e7e4c0eef705f3fa868bd32f336f1156838d1611baabf67bce"
+    },
+    {
+      "source": "embla-carousel.esm.js",
+      "destination": "components",
+      "target": "Carousel/CarouselContent.razor.js",
+      "type": "js",
+      "sha256": "07a80a91c1834772c8435fc4a234ba6f811daa7ade991903a8a75885d603e077"
+    },
+    {
+      "source": "Embla.LICENSE.js",
+      "destination": "components",
+      "target": "Carousel/CarouselCounter.razor.js",
+      "type": "js",
+      "sha256": "de48bf200dd86091b28775cf1860baaad5544256a458fc44886bf553fa57020f"
+    }
+  ]
+}

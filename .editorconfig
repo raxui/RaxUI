@@ -1,0 +1,3 @@
+# Registry C# sources are hashed and require LF (ADR 015/020).
+[registry/**/*.cs]
+end_of_line = lf

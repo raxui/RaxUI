@@ -1,0 +1,47 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="sheen-carousel @Class" role="region" tabindex="0" aria-roledescription="@Labels.Carousel" aria-label="@Label" dir="@Direction" data-orientation="@Orientation" data-effect="@Effect" style="@Style">@ChildContent</div></CascadingValue>
+@code {
+ public sealed record Text {
+ public string Carousel {get;init;}="carousel";public string Slide {get;init;}="slide";public string Previous {get;init;}="Previous slide";public string Next {get;init;}="Next slide";public string Pause {get;init;}="Pause autoplay";public string Play {get;init;}="Start autoplay";
+ public string GoTo {get;init;}="Go to slide {0}";public string SlideOf {get;init;}="{0} of {1}";
+ }
+ [Parameter] public Text Labels {get;set;}=new();
+ [Parameter] public string? Label {get;set;}
+ [Parameter] public string Orientation {get;set;}="horizontal";
+ [Parameter] public string Effect {get;set;}="slide";
+ [Parameter] public string? Direction {get;set;}
+ [Parameter] public bool Loop {get;set;}
+ [Parameter] public string Align {get;set;}="center";
+ [Parameter] public string SlideSize {get;set;}="100%";
+ [Parameter] public string? SmallSlideSize {get;set;}
+ [Parameter] public string? MediumSlideSize {get;set;}
+ [Parameter] public string? LargeSlideSize {get;set;}
+ [Parameter] public string? ExtraLargeSlideSize {get;set;}
+ [Parameter] public string Gap {get;set;}="1rem";
+ [Parameter] public int Autoplay {get;set;}
+ [Parameter] public int Duration {get;set;}=25;
+ [Parameter] public int StartIndex {get;set;}
+ [Parameter] public EventCallback<int> SelectedChanged {get;set;}
+ [Parameter] public RenderFragment? ChildContent {get;set;}
+ [Parameter] public string? Class {get;set;}
+ [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes {get;set;}
+ internal int Selected {get;private set;}
+ internal int SnapCount {get;private set;}
+ internal bool Ready {get;private set;}
+ internal string GoToLabel(int i)=>Labels.GoTo.Replace("{0}",(i+1).ToString(System.Globalization.CultureInfo.InvariantCulture));
+ private string Style=>$"--sheen-carousel-size-base:{SlideSize};--sheen-carousel-gap:{Gap};"+(SmallSlideSize is null?"":$"--sheen-carousel-size-sm:{SmallSlideSize};")+(MediumSlideSize is null?"":$"--sheen-carousel-size-md:{MediumSlideSize};")+(LargeSlideSize is null?"":$"--sheen-carousel-size-lg:{LargeSlideSize};")+(ExtraLargeSlideSize is null?"":$"--sheen-carousel-size-xl:{ExtraLargeSlideSize};")+(AdditionalAttributes?.TryGetValue("style",out var userStyle)==true?userStyle?.ToString():"");
+ private readonly string id=Guid.NewGuid().ToString("N");
+ private bool disposed;
+ private ElementReference element;
+ private IJSObjectReference? module;
+ private DotNetObjectReference<Carousel>? self;
+ protected override void OnParametersSet(){if(Orientation is not("horizontal" or "vertical")||Effect is not("slide" or "fade" or "scale")||Align is not("start" or "center" or "end")||Direction is not(null or "ltr" or "rtl"))throw new ArgumentException("Invalid carousel option.");}
+ [JSInvokable] public async Task Settled(int index,int count){if(disposed)return;bool changed=Selected!=index;Selected=index;SnapCount=count;await InvokeAsync(StateHasChanged);if(changed)await SelectedChanged.InvokeAsync(index);}
+ public async Task GoToAsync(int index){if(module is not null)await module.InvokeVoidAsync("goTo",id,index);}
+ protected override async Task OnAfterRenderAsync(bool firstRender){
+ if(disposed)return;self??=DotNetObjectReference.Create(this);module??=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/Carousel/Carousel.razor.js");if(disposed){await module.DisposeAsync();return;}
+ await module.InvokeVoidAsync("sync",element,self,new{id,orientation=Orientation,effect=Effect,loop=Loop,align=Align,direction=Direction,autoplay=Math.Max(0,Autoplay),duration=Math.Max(0,Duration),startIndex=Math.Max(0,StartIndex),labels=Labels});if(!Ready){Ready=true;StateHasChanged();}
+ }
+ public async ValueTask DisposeAsync(){disposed=true;if(module is not null){try{await module.InvokeVoidAsync("dispose",id);await module.DisposeAsync();}catch(JSDisconnectedException){}}self?.Dispose();}
+}
