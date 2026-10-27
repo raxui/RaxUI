@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "name": "ai",
+  "version": "0.1.0",
+  "description": "Source-owned AI conversation parts with a C# Markdown subset (#121).",
+  "dependencies": [
+    "button",
+    "toggle"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/ai.css",
+      "destination": "styles",
+      "target": "components/ai.css",
+      "type": "css",
+      "sha256": "54e2b1fc98d7925b65447f744587db82dce462f6a5cacff103df4721a74864fc"
+    }
+  ],
+  "files": [
+    {
+      "source": "AIActions.razor",
+      "destination": "components",
+      "target": "AI/AIActions.razor",
+      "type": "razor",
+      "sha256": "546187a5c9edc42b4470aaf09ef8ecc446c26f4d0100a074add3df163bb959de"
+    },
+    {
+      "source": "AICodeBlock.razor",
+      "destination": "components",
+      "target": "AI/AICodeBlock.razor",
+      "type": "razor",
+      "sha256": "f14c22886eb600996dc20004e442516a986f9daff1484d824ce60463c0ac77e2"
+    },
+    {
+      "source": "AICodeBlock.razor.js",
+      "destination": "components",
+      "target": "AI/AICodeBlock.razor.js",
+      "type": "js",
+      "sha256": "365718ee2ea24c3c762a98a44b910bce02948ba8a94a7f43b443d41408f4b1db"
+    },
+    {
+      "source": "AIConversation.razor",
+      "destination": "components",
+      "target": "AI/AIConversation.razor",
+      "type": "razor",
+      "sha256": "88ba04ce602867b9c667bf9153d96c9f05fb853ff614756de2d96270d6b7e8a9"
+    },
+    {
+      "source": "AIIcon.razor",
+      "destination": "components",
+      "target": "AI/AIIcon.razor",
+      "type": "razor",
+      "sha256": "773a2dff19f1b86e044e9992d023baeb7712d2aff9c00b1b326de41f0e7853d6"
+    },
+    {
+      "source": "AIMarkdown.razor",
+      "destination": "components",
+      "target": "AI/AIMarkdown.razor",
+      "type": "razor",
+      "sha256": "2aebe9a2a9d23202cf5c6a3915fe2dc9317aee941767d40806cb7381fa3469a3"
+    },
+    {
+      "source": "AIMarkdownParser.cs",
+      "destination": "components",
+      "target": "AI/AIMarkdownParser.cs",
+      "type": "cs",
+      "sha256": "f8714242c670c320a95ed9d5a854f5b379e9780036bc9ff3cdea8f48edd5f951"
+    },
+    {
+      "source": "AIMessage.razor",
+      "destination": "components",
+      "target": "AI/AIMessage.razor",
+      "type": "razor",
+      "sha256": "b0d9074149049d90cf0fec6697396ec6283eb45085b8287e948a6372f1b3e68c"
+    },
+    {
+      "source": "AIPromptInput.razor",
+      "destination": "components",
+      "target": "AI/AIPromptInput.razor",
+      "type": "razor",
+      "sha256": "42371296d3e53a3b87c3492aab65a9dee0f3a2e1deb4876a0f7e81c6b6ffd088"
+    },
+    {
+      "source": "AIPromptInput.razor.js",
+      "destination": "components",
+      "target": "AI/AIPromptInput.razor.js",
+      "type": "js",
+      "sha256": "3166b452c6062b5288a2c45a78a1e2e62d13b8818f79f3a746e184131d5f2975"
+    },
+    {
+      "source": "AIReasoning.razor",
+      "destination": "components",
+      "target": "AI/AIReasoning.razor",
+      "type": "razor",
+      "sha256": "32e5a96e44c9afe5d6e9cd3cf3c568a626d3cf61dd158233c6f57da1ce13e77f"
+    },
+    {
+      "source": "AIResponse.razor",
+      "destination": "components",
+      "target": "AI/AIResponse.razor",
+      "type": "razor",
+      "sha256": "6d14db422b088802ec87ff95833415453cbd51a8bbb19df62902692aff9a8db8"
+    },
+    {
+      "source": "AIShimmer.razor",
+      "destination": "components",
+      "target": "AI/AIShimmer.razor",
+      "type": "razor",
+      "sha256": "fc2c0688ad685058e1307b946a6faabf72709afb9365741e84d1322d65d70d10"
+    },
+    {
+      "source": "AISources.razor",
+      "destination": "components",
+      "target": "AI/AISources.razor",
+      "type": "razor",
+      "sha256": "270254c34b0a6ce5340f5e78f562c62883e801f3ba196f3eb17b7c1f812dea3c"
+    },
+    {
+      "source": "AISuggestions.razor",
+      "destination": "components",
+      "target": "AI/AISuggestions.razor",
+      "type": "razor",
+      "sha256": "9bac1696c62b62ed0dbab8b2aec65b48ddee2fa54ab5290fcfaa47717b482827"
+    },
+    {
+      "source": "AIToolCall.razor",
+      "destination": "components",
+      "target": "AI/AIToolCall.razor",
+      "type": "razor",
+      "sha256": "1414359a06ce5525162d04f9d09cbe1c6373578c64f4c9f0cf309d9098849a8e"
+    },
+    {
+      "source": "AITypes.razor",
+      "destination": "components",
+      "target": "AI/AITypes.razor",
+      "type": "razor",
+      "sha256": "f8f214f90f7be494695891f8fa19d0875f342549f198e6a899ef45204f632530"
+    }
+  ]
+}

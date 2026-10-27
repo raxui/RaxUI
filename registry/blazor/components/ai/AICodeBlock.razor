@@ -1,0 +1,30 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @attributes="AdditionalAttributes" class="sheen-ai-code @Class" dir="ltr">
+<div class="sheen-ai-code-head"><span>@Language</span><button type="button" @onclick="Copy" data-copied="@(copied ? "" : null)"><AIIcon Name="@(copied ? "check" : "copy")" /><span aria-live="polite">@(copied ? CopiedLabel : CopyLabel)</span></button></div>
+<pre><code>@Code</code></pre>
+</div>
+@code {
+    [Parameter, EditorRequired] public string Code { get; set; } = "";
+    [Parameter] public string? Language { get; set; }
+    [Parameter] public string CopyLabel { get; set; } = "Copy";
+    [Parameter] public string CopiedLabel { get; set; } = "Copied";
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    private bool copied;
+    private IJSObjectReference? module;
+    private CancellationTokenSource? reset;
+    // Shared with AIActions: imports this file's module once per component.
+    internal static async Task<bool> CopyText(IJSRuntime js, IJSObjectReference? module, string text, Action<IJSObjectReference> keep)
+    {
+        module ??= await js.InvokeAsync<IJSObjectReference>("import", "./Components/UI/AI/AICodeBlock.razor.js"); keep(module);
+        return await module.InvokeAsync<bool>("copy", text);
+    }
+    private async Task Copy()
+    {
+        if (!await CopyText(JS, module, Code, m => module = m)) return;
+        copied = true; StateHasChanged(); reset?.Cancel(); reset = new();
+        try { await Task.Delay(1600, reset.Token); copied = false; } catch (TaskCanceledException) { }
+    }
+    public async ValueTask DisposeAsync() { reset?.Cancel(); if (module is not null) { try { await module.DisposeAsync(); } catch (JSDisconnectedException) { } } }
+}
