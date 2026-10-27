@@ -1251,3 +1251,7 @@ The reusable samples now cover upload queues/photo grids/CV validation, Badge co
 ### Blazor AI
 
 `sheenui add ai` installs the AI conversation parts: reasoning, tool calls, streamed Markdown, sources, actions, suggestions and the prompt input. Markdown uses a source-owned C# GFM subset that never renders raw HTML. See [the behavior contract](docs/blazor-ai.md) and [example](examples/blazor/ai/README.md).
+
+### Blazor TextEditor
+
+`sheenui add text-editor` installs a rich-text editor on the same Tiptap 3.31.4 engine as React, bundled reproducibly (ADR 020). It has toolbar and bubble formatting, links, task lists, alignment, a counter, EditForm validation, a streamed value for large documents, and a sanitized static SSR view. See [the behavior contract](docs/blazor-text-editor.md) and [examples](examples/blazor/text-editor/README.md).

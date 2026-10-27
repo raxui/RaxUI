@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "name": "text-editor",
+  "version": "0.1.0",
+  "description": "Source-owned rich-text editor on a reproducible Tiptap 3.31.4 bundle (ADR 020, #121).",
+  "dependencies": [
+    "button",
+    "dropdown-menu",
+    "popover",
+    "input",
+    "textarea"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/text-editor.css",
+      "destination": "styles",
+      "target": "components/text-editor.css",
+      "type": "css",
+      "sha256": "aae36a1f9e3f10e20a70cc7de8e4fd6bc7837f5cf9bc416768cba90723a58057"
+    }
+  ],
+  "files": [
+    {
+      "source": "TextEditor.razor",
+      "destination": "components",
+      "target": "TextEditor/TextEditor.razor",
+      "type": "razor",
+      "sha256": "bad805bb5670879d39c9d6d81129c77781328d5f107e07501f530587711189b4"
+    },
+    {
+      "source": "TextEditor.razor.js",
+      "destination": "components",
+      "target": "TextEditor/TextEditor.razor.js",
+      "type": "js",
+      "sha256": "cd22112b67f24fafe1062e54918399c7cf0f9f9fada97f8eccff930d9a8211ad"
+    },
+    {
+      "source": "TextEditorContent.razor",
+      "destination": "components",
+      "target": "TextEditor/TextEditorContent.razor",
+      "type": "razor",
+      "sha256": "51f76f0fee721960245a9fb7f3acecdb11642f9f285266f44aebf6e9092db545"
+    },
+    {
+      "source": "TextEditorContent.razor.js",
+      "destination": "components",
+      "target": "TextEditor/TextEditorContent.razor.js",
+      "type": "js",
+      "sha256": "12b5dd5e6b70f51b4679297cb1207b76db44c1238f11d31c8f9d664bcf43e92d"
+    },
+    {
+      "source": "TextEditorHtml.cs",
+      "destination": "components",
+      "target": "TextEditor/TextEditorHtml.cs",
+      "type": "cs",
+      "sha256": "fd547b94d1f2805f8a4c889a19a39e457074318c2b32521f8af64719fcc1303f"
+    },
+    {
+      "source": "TextEditorTypes.razor",
+      "destination": "components",
+      "target": "TextEditor/TextEditorTypes.razor",
+      "type": "razor",
+      "sha256": "768354fec9673b46a7ee3bb2033935a453afbe9c8ec3c95cb715b01ff7bdba49"
+    },
+    {
+      "source": "TextEditorView.razor",
+      "destination": "components",
+      "target": "TextEditor/TextEditorView.razor",
+      "type": "razor",
+      "sha256": "32d034da5bbf2fc43e907f962af97022da15e5c8b12fa235d674ba663b950df3"
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+@* SheenUI TextEditor. Source-owned: edit freely. Razor renders the toolbar, menus, link form and counter; TextEditor.razor.js
+   runs the Tiptap engine and owns toolbar state, so formatting and selection changes never wait for the server.
+   Built-in SVG paths from Lucide (ISC), matching the React source. *@
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @ref="root" @attributes="RootAttributes" class="@($"sheen-editor {Class}".TrimEnd())" data-variant="@Variant" data-disabled="@(Disabled ? "" : null)"
+     data-readonly="@(ReadOnly ? "" : null)" data-invalid="@(IsInvalid ? "" : null)" dir="@Direction" data-sheen-appearance="@Appearance"
+     aria-busy="@(mounted ? null : "true")" style="@RootStyle">
+    @if (ToolbarPosition == "top") { @ToolbarFragment(false) }
+    <TextEditorContent Html="@Value" Mounted="mounted" ContentClass="@ContentClass" Attributes="ContentAttributes" />
+    @if ((ToolbarPosition == "bottom" && ToolList.Count > 0) || Counter || FooterEnd is not null)
+    {
+        <div class="sheen-editor-footer">
+            <div class="sheen-editor-footer-start">@if (ToolbarPosition == "bottom") { @ToolbarFragment(true) }</div>
+            @if (Counter)
+            {
+                var length = SheenUI.Internal.TextEditor.TextEditorHtml.TextLength(Value);
+                <span class="sheen-textarea-count" data-editor-count data-state="@CountState(length)" data-count-max="@MaxLength">
+                    <svg viewBox="0 0 20 20" aria-hidden="true"><circle class="sheen-textarea-count-track" cx="10" cy="10" r="8" /><circle class="sheen-textarea-count-bar" cx="10" cy="10" r="8" pathLength="1" style="@($"stroke-dashoffset:{(1 - Math.Min((double)length / MaxLength!.Value, 1)).ToString(System.Globalization.CultureInfo.InvariantCulture)}")" /></svg>
+                    <span class="sheen-textarea-count-text" dir="ltr">@(CountState(length) is null ? $"{length} / {MaxLength}" : $"{MaxLength - length}")</span>
+                    <span class="visually-hidden" role="status" data-count-status>@(CountState(length) == "limit" ? LimitLabel : "")</span>
+                </span>
+            }
+            @FooterEnd
+        </div>
+    }
+    @if (Name is not null) { <input type="hidden" name="@Name" value="@Value" data-editor-value /> }
+    @if (BubbleMenu)
+    {
+        @* A template: the script clones it into <body> so the menu is never clipped and Blazor never sees it move. *@
+        <template data-editor-bubble>
+            <div class="sheen-editor-bubble" dir="@Direction">
+                <div class="sheen-editor-bubble-tools" role="toolbar" aria-label="@L.Toolbar">
+                    @foreach (var tool in TextEditorTypes.Tools.Bubble) { @ToolButton(tool) }
+                </div>
+                @LinkForm
+            </div>
+        </template>
+    }
+</div>
+@code {
+    /// <summary>HTML; "" means empty. Updates are debounced (300 ms and on blur).</summary>
+    [Parameter] public string? Value { get; set; } = "";
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public System.Linq.Expressions.Expression<Func<string?>>? ValueExpression { get; set; }
+    [Parameter] public EventCallback OnBlur { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>full (default), basic or none. Tools overrides it.</summary>
+    [Parameter] public string Toolbar { get; set; } = "full";
+    /// <summary>Your own tool list ("|" = separator); see TextEditorTypes.Tools.</summary>
+    [Parameter] public IReadOnlyList<string>? Tools { get; set; }
+    /// <summary>top, or bottom to put the tools in the footer, for comment or chat composers.</summary>
+    [Parameter] public string ToolbarPosition { get; set; } = "top";
+    /// <summary>Floating menu over selected text.</summary>
+    [Parameter] public bool BubbleMenu { get; set; } = true;
+    /// <summary>Character limit; typing stops there.</summary>
+    [Parameter] public int? MaxLength { get; set; }
+    /// <summary>Shows the counter ring. Needs MaxLength.</summary>
+    [Parameter] public bool ShowCount { get; set; }
+    [Parameter] public string LimitLabel { get; set; } = "Character limit reached";
+    /// <summary>Content at the end of the footer, e.g. a Send button.</summary>
+    [Parameter] public RenderFragment? FooterEnd { get; set; }
+    /// <summary>CSS length.</summary>
+    [Parameter] public string MinHeight { get; set; } = "140px";
+    /// <summary>CSS length; the text scrolls beyond it while the toolbar stays put.</summary>
+    [Parameter] public string? MaxHeight { get; set; }
+    /// <summary>glass (default) or filled.</summary>
+    [Parameter] public string Variant { get; set; } = "glass";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public bool AutoFocus { get; set; }
+    /// <summary>ltr or rtl; null inherits.</summary>
+    [Parameter] public string? Direction { get; set; }
+    /// <summary>Hidden input with the HTML, for plain form posts.</summary>
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public TextEditorTypes.Labels? Labels { get; set; }
+    [Parameter] public string? ContentClass { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    /// <summary>id and aria-* go to the editable element; everything else to the root.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+    [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
+
+    private static readonly Dictionary<string, (string Path, bool Flip)> Icons = new()
+    {
+        ["undo"] = ("M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11", true), ["redo"] = ("m15 14 5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13", true),
+        ["bold"] = ("M7 5h6a3.5 3.5 0 0 1 0 7H7zM7 12h7a3.5 3.5 0 0 1 0 7H7z", false), ["italic"] = ("M19 4h-9M14 20H5M15 4 9 20", false),
+        ["underline"] = ("M6 4v6a6 6 0 0 0 12 0V4M4 20h16", false), ["strike"] = ("M16 4H9a3 3 0 0 0-2.83 4M14 12a4 4 0 0 1 0 8H6M4 12h16", false),
+        ["code"] = ("m16 18 6-6-6-6M8 6l-6 6 6 6", false), ["highlight"] = ("m9 11-6 6v3h9l3-3M22 12l-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4", false),
+        ["link"] = ("M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1", false),
+        ["bulletList"] = ("M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01", true), ["orderedList"] = ("M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1", true),
+        ["taskList"] = ("m3 17 2 2 4-4M3 7l2 2 4-4M13 6h8M13 12h8M13 18h8", true), ["start"] = ("M21 6H3M15 12H3M17 18H3", true), ["center"] = ("M21 6H3M17 12H7M19 18H5", false),
+        ["end"] = ("M21 6H3M21 12H9M21 18H7", true), ["justify"] = ("M3 6h18M3 12h18M3 18h18", false), ["blockquote"] = ("M17 6H3M21 12H8M21 18H8M3 12v6", true),
+        ["codeBlock"] = ("M10 9.5 8 12l2 2.5M14 9.5l2 2.5-2 2.5M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z", false),
+        ["horizontalRule"] = ("M3 12h18M8 6h8M8 18h8", false), ["clear"] = ("M4 7V4h16v3M5 20h6M13 4 8 20M15 15l5 5M20 15l-5 5", false), ["chevron"] = ("m6 9 6 6 6-6", false),
+        ["check"] = ("M20 6 9 17l-5-5", false), ["open"] = ("M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", false),
+        ["unlink"] = ("M18.8 12.3 20.6 10.5a5 5 0 0 0-7.1-7.1l-1.7 1.7M5.2 11.8l-1.7 1.7a5 5 0 0 0 7.1 7.1l1.7-1.7M8 2v3M2 8h3M16 22v-3M22 16h-3", false),
+    };
+    private static readonly Dictionary<string, string?> Shortcuts = new()
+    {
+        ["undo"] = "Mod-Z", ["redo"] = "Mod-Shift-Z", ["bold"] = "Mod-B", ["italic"] = "Mod-I", ["underline"] = "Mod-U", ["strike"] = "Mod-Shift-S", ["code"] = "Mod-E",
+        ["highlight"] = "Mod-Shift-H", ["link"] = "Mod-K", ["bulletList"] = "Mod-Shift-8", ["orderedList"] = "Mod-Shift-7", ["taskList"] = "Mod-Shift-9",
+        ["blockquote"] = "Mod-Shift-B", ["codeBlock"] = "Mod-Alt-C",
+    };
+    private static readonly string[] AlignValues = ["start", "center", "end", "justify"];
+    private static readonly HashSet<string> ContentKeys = new(StringComparer.OrdinalIgnoreCase) { "id", "aria-label", "aria-labelledby", "aria-describedby", "aria-required", "aria-invalid" };
+
+    private readonly string key = Guid.NewGuid().ToString("N");
+    private ElementReference root;
+    private IJSObjectReference? module;
+    private DotNetObjectReference<TextEditor>? self;
+    private bool mounted, disposed;
+    private string? lastFromEditor;
+    private (string? Placeholder, bool Editable, int? MaxLength, string Attributes) synced;
+    private string AttributeKey => string.Join("|", ContentAttributes.OrderBy(a => a.Key, StringComparer.Ordinal).Select(a => $"{a.Key}={a.Value}"));
+    private FieldIdentifier? fieldId;
+
+    private TextEditorTypes.Labels L => Labels ?? DefaultLabels;
+    private static readonly TextEditorTypes.Labels DefaultLabels = new();
+    private IReadOnlyList<string> ToolList => Tools ?? Toolbar switch { "none" => [], "basic" => TextEditorTypes.Tools.Basic, _ => TextEditorTypes.Tools.Full };
+    private bool Counter => ShowCount && MaxLength is > 0;
+    private bool Editable => !Disabled && !ReadOnly;
+    private bool IsInvalid => Invalid || (fieldId is { } f && EditContext is not null && EditContext.GetValidationMessages(f).Any())
+        || (AdditionalAttributes?.TryGetValue("aria-invalid", out var invalid) == true && Convert.ToString(invalid) == "true");
+    private string RootStyle => $"--sheen-editor-min-h:{MinHeight};{(MaxHeight is null ? "" : $"--sheen-editor-max-h:{MaxHeight};")}{(AdditionalAttributes?.TryGetValue("style", out var s) == true ? s : "")}";
+    private IEnumerable<KeyValuePair<string, object>> RootAttributes => AdditionalAttributes?.Where(a => !ContentKeys.Contains(a.Key) && a.Key != "style") ?? [];
+    private Dictionary<string, object> ContentAttributes
+    {
+        get
+        {
+            var attrs = FieldContext is null ? new Dictionary<string, object>() : new(FieldContext.ControlAttributes);
+            if (AdditionalAttributes is not null) foreach (var a in AdditionalAttributes.Where(a => ContentKeys.Contains(a.Key))) attrs[a.Key] = a.Value;
+            if (IsInvalid) attrs["aria-invalid"] = "true"; else attrs.Remove("aria-invalid");
+            if (Placeholder is not null) attrs["aria-placeholder"] = Placeholder;
+            if (Disabled) attrs["aria-disabled"] = "true";
+            return attrs;
+        }
+    }
+    private string? CountState(int length) => MaxLength is not > 0 ? null : length >= MaxLength ? "limit" : MaxLength - length <= Math.Max(10, (int)Math.Round(MaxLength.Value * .1, MidpointRounding.AwayFromZero)) ? "warn" : null;
+
+    private RenderFragment Icon(string name) => @<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="@(Icons[name].Flip ? "sheen-editor-flip" : null)"><path d="@Icons[name].Path" /></svg>;
+    private RenderFragment ToolButton(string tool) => tool == "|" ? @<span class="sheen-editor-sep" role="separator" aria-orientation="vertical"></span>
+        : @<button type="button" class="btn sheen-button btn-glass btn-glass-ghost btn-glass-icon btn-sm sheen-editor-tool" data-editor-command="@tool" data-shortcut="@Shortcuts.GetValueOrDefault(tool)"
+                   aria-label="@L.For(tool)" title="@L.For(tool)" aria-pressed="@(tool is "undo" or "redo" or "horizontalRule" or "clear" ? null : "false")" aria-disabled="@(Editable && tool is not ("undo" or "redo") ? null : "true")">@Icon(tool)</button>;
+    private RenderFragment LinkForm => @<form class="sheen-editor-link-form" data-editor-link-form>
+        <input type="text" class="form-control form-control-sm sheen-input flex-fill" inputmode="url" autocomplete="url" dir="ltr" placeholder="@L.LinkPlaceholder" aria-label="@L.Link" data-editor-link-input />
+        <button type="submit" class="btn sheen-button btn-glass btn-glass-tinted btn-glass-icon btn-sm" aria-label="@L.LinkApply" title="@L.LinkApply">@Icon("check")</button>
+        <a class="btn sheen-button btn-glass btn-glass-ghost btn-glass-icon btn-sm" target="_blank" rel="noopener noreferrer" aria-label="@L.LinkOpen" title="@L.LinkOpen" data-editor-link-open hidden>@Icon("open")</a>
+        <button type="button" class="btn sheen-button btn-glass btn-glass-ghost btn-glass-icon btn-sm" aria-label="@L.LinkRemove" title="@L.LinkRemove" data-editor-link-remove hidden>@Icon("unlink")</button>
+    </form>;
+    private RenderFragment ToolbarFragment(bool inline) => @<div role="toolbar" aria-label="@L.Toolbar" aria-disabled="@(Editable ? null : "true")" class="@(inline ? "sheen-editor-toolbar sheen-editor-toolbar-inline" : "sheen-editor-toolbar")" data-editor-toolbar>
+        @foreach (var tool in ToolList)
+        {
+            if (tool == "heading")
+            {
+                <DropdownMenu TriggerVariant="ghost" TriggerClass="btn-sm sheen-editor-tool sheen-editor-heading-trigger" TriggerLabel="@($"{L.TextStyle}: {L.Paragraph}")" Disabled="!Editable" Class="sheen-editor-menu" data-editor-menu="heading">
+                    <Trigger><span class="text-truncate" data-editor-heading-label>@L.Paragraph</span>@Icon("chevron")</Trigger>
+                    <ChildContent>
+                        <DropdownMenuItem Role="menuitemradio" aria-checked="true" data-editor-command="heading" data-level="0"><span class="sheen-editor-menu-p">@L.Paragraph</span></DropdownMenuItem>
+                        @foreach (var level in new[] { 1, 2, 3 })
+                        {
+                            <DropdownMenuItem Role="menuitemradio" aria-checked="false" data-editor-command="heading" data-level="@level"><span class="@($"sheen-editor-menu-h{level}")">@(level switch { 1 => L.Heading1, 2 => L.Heading2, _ => L.Heading3 })</span><span class="sheen-editor-menu-kbd" dir="ltr" data-kbd="@($"Mod-Alt-{level}")"></span></DropdownMenuItem>
+                        }
+                    </ChildContent>
+                </DropdownMenu>
+            }
+            else if (tool == "align")
+            {
+                <DropdownMenu TriggerVariant="ghost" TriggerClass="btn-sm sheen-editor-tool sheen-editor-align-trigger" TriggerLabel="@L.Align" Disabled="!Editable" Class="sheen-editor-menu" data-editor-menu="align">
+                    <Trigger>@foreach (var a in AlignValues) { <span data-editor-align-icon="@a" hidden="@(a != "start")" style="display:contents">@Icon(a)</span> }@Icon("chevron")</Trigger>
+                    <ChildContent>
+                        @foreach (var a in AlignValues)
+                        {
+                            <DropdownMenuItem Role="menuitemradio" aria-checked="@(a == "start" ? "true" : "false")" data-editor-command="align" data-align="@a"><span class="sheen-editor-menu-icon">@Icon(a)</span>@(a switch { "start" => L.AlignStart, "center" => L.AlignCenter, "end" => L.AlignEnd, _ => L.AlignJustify })<span class="sheen-editor-menu-kbd" dir="ltr" data-kbd="@($"Mod-Shift-{a switch { "start" => "L", "center" => "E", "end" => "R", _ => "J" }}")"></span></DropdownMenuItem>
+                        }
+                    </ChildContent>
+                </DropdownMenu>
+            }
+            else if (tool == "link")
+            {
+                <Popover TriggerClass="btn sheen-button btn-glass btn-glass-ghost btn-glass-icon btn-sm sheen-editor-tool" Class="sheen-editor-link-popover" Label="@L.Link" data-editor-link-popover
+                         TriggerAttributes="@(new Dictionary<string, object> { ["data-editor-command"] = "link", ["data-shortcut"] = "Mod-K", ["aria-label"] = L.Link, ["title"] = L.Link, ["aria-pressed"] = "false" })">
+                    <Trigger>@Icon("link")</Trigger>
+                    <ChildContent>@LinkForm</ChildContent>
+                </Popover>
+            }
+            else { @ToolButton(tool) }
+        }
+    </div>;
+
+    protected override void OnParametersSet()
+    {
+        if (ToolbarPosition is not ("top" or "bottom")) throw new ArgumentException("TextEditor ToolbarPosition must be top or bottom.");
+        if (Variant is not ("glass" or "filled")) throw new ArgumentException("TextEditor Variant must be glass or filled.");
+        if (Tools?.FirstOrDefault(t => t != "|" && !TextEditorTypes.Tools.Known.Contains(t)) is { } unknown) throw new ArgumentException($"Unknown TextEditor tool '{unknown}'.");
+        if (ValueExpression is not null && EditContext is not null) fieldId = FieldIdentifier.Create(ValueExpression);
+        // Like InputBase: re-render when validation runs, so aria-invalid reaches the editable element.
+        if (EditContext != subscribed)
+        {
+            if (subscribed is not null) subscribed.OnValidationStateChanged -= ValidationChanged;
+            subscribed = EditContext;
+            if (subscribed is not null) subscribed.OnValidationStateChanged += ValidationChanged;
+        }
+    }
+    private EditContext? subscribed;
+    private void ValidationChanged(object? sender, ValidationStateChangedEventArgs e) => _ = InvokeAsync(StateHasChanged);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (disposed) return;
+        if (module is null)
+        {
+            self = DotNetObjectReference.Create(this);
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/TextEditor/TextEditor.razor.js");
+            if (disposed) return;
+            lastFromEditor = Value ?? "";
+            synced = (Placeholder, Editable, MaxLength, AttributeKey);
+            await module.InvokeVoidAsync("init", key, root, self, new
+            {
+                value = lastFromEditor, placeholder = Placeholder ?? "", editable = Editable, maxLength = MaxLength, autofocus = AutoFocus, bubble = BubbleMenu,
+                hasLink = ToolList.Contains("link"), attributes = ContentAttributes, contentClass = ContentClass, limitLabel = LimitLabel,
+                headings = new[] { L.Paragraph, L.Heading1, L.Heading2, L.Heading3 }, textStyle = L.TextStyle,
+            });
+            return;
+        }
+        // Push only what changed outside the editor; its own edits come back as lastFromEditor.
+        if ((Value ?? "") != lastFromEditor) { lastFromEditor = Value ?? ""; await module.InvokeVoidAsync("setValue", key, lastFromEditor); }
+        // Validation state and Field wiring (aria-invalid, aria-describedby) also live on the editable element.
+        if (synced != (Placeholder, Editable, MaxLength, AttributeKey)) { synced = (Placeholder, Editable, MaxLength, AttributeKey); await module.InvokeVoidAsync("configure", key, new { placeholder = Placeholder ?? "", editable = Editable, maxLength = MaxLength, attributes = ContentAttributes }); }
+    }
+
+    [JSInvokable] public void Mounted() { mounted = true; StateHasChanged(); }
+    [JSInvokable] public Task Changed(string html) => Apply(html);
+    // Large documents cross SignalR as a stream; a plain string argument is limited to 32 KB by default.
+    [JSInvokable] public async Task ChangedStream(IJSStreamReference stream)
+    {
+        await using var data = await stream.OpenReadStreamAsync(maxAllowedSize: 10_000_000);
+        using var reader = new StreamReader(data, System.Text.Encoding.UTF8);
+        await Apply(await reader.ReadToEndAsync());
+    }
+    [JSInvokable] public Task Blurred() => OnBlur.InvokeAsync();
+    private async Task Apply(string html)
+    {
+        if (disposed || html == lastFromEditor) return;
+        lastFromEditor = html; Value = html;
+        await ValueChanged.InvokeAsync(html);
+        if (fieldId is { } f) EditContext?.NotifyFieldChanged(f);
+        StateHasChanged();
+    }
+
+    /// <summary>Moves the caret into the editor.</summary>
+    public async Task FocusAsync() { if (module is not null) await module.InvokeVoidAsync("focus", key); }
+    /// <summary>The current HTML, including changes still inside the debounce window; also reported through ValueChanged.</summary>
+    public async Task<string> GetHtmlAsync()
+    {
+        if (module is null) return Value ?? "";
+        await Apply(await module.InvokeAsync<string>("flush", key));
+        return Value ?? "";
+    }
+    /// <summary>Empties the document and reports "".</summary>
+    public async Task ClearAsync() { if (module is not null) await module.InvokeVoidAsync("clear", key); }
+
+    public async ValueTask DisposeAsync()
+    {
+        disposed = true;
+        if (subscribed is not null) subscribed.OnValidationStateChanged -= ValidationChanged;
+        if (module is not null) { try { await module.InvokeVoidAsync("dispose", key); await module.DisposeAsync(); } catch (JSDisconnectedException) { } }
+        self?.Dispose();
+    }
+}

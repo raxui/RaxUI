@@ -1,0 +1,111 @@
+@using System.ComponentModel.DataAnnotations
+@using System.Text.RegularExpressions
+<div class="row g-4" data-editor-examples>
+    @* 1. Document editor *@
+    <div class="col-lg-7 vstack gap-2">
+        <h3 class="h6 fw-semibold mb-1">Document · full toolbar</h3>
+        <p class="small text-body-secondary mb-2">Markdown shortcuts work while typing: <code># </code>, <code>- </code>, <code>1. </code>, <code>[] </code>, <code>&gt; </code>, <code>```</code>, <code>**bold**</code>. Select text for the floating menu; ⌘K / Ctrl+K adds a link.</p>
+        <TextEditor aria-label="Release notes" @bind-Value="document" MaxHeight="380px" Placeholder="Write release notes…" data-example="document" />
+        <div class="d-flex align-items-center gap-2 small text-body-secondary align-self-start">
+            <Switch id="show-html" Class="sheen-switch-sm" @bind-Value="showHtml" /><label for="show-html" class="mb-0">Show HTML output</label>
+        </div>
+        @if (showHtml) { <pre class="small mb-0 p-3 rounded-4 bg-body-tertiary" style="max-height:200px;white-space:pre-wrap" data-example="html">@(string.IsNullOrEmpty(document) ? "(empty)" : document)</pre> }
+    </div>
+
+    <div class="col-lg-5 vstack gap-4">
+        @* 2. Comment composer *@
+        <div>
+            <h3 class="h6 fw-semibold mb-3">Comment composer</h3>
+            <div class="vstack gap-3" data-example="comments">
+                @foreach (var comment in comments)
+                {
+                    <div @key="comment.Id" class="d-flex gap-2">
+                        <Avatar Size="sm" Name="@comment.Name" />
+                        <div class="flex-fill min-w-0">
+                            <div class="small fw-semibold">@comment.Name</div>
+                            @* Stored HTML goes through the editor's allowlist before display. *@
+                            <TextEditorView Class="small" Html="@comment.Html" />
+                        </div>
+                    </div>
+                }
+                <TextEditor @ref="composer" aria-label="Add a comment" @bind-Value="draft" Placeholder="Add a comment…" Tools="CommentTools" ToolbarPosition="bottom"
+                            MinHeight="56px" MaxHeight="200px" MaxLength="280" ShowCount Variant="filled" @onkeydown="SendOnShortcut">
+                    <FooterEnd>
+                        <Button Size="icon-sm" Class="rounded-circle" aria-label="Post comment" Disabled="@(PlainText(draft).Length == 0)" OnClick="Send">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+                        </Button>
+                    </FooterEnd>
+                </TextEditor>
+            </div>
+        </div>
+
+        @* 3. In a form, with DataAnnotations *@
+        <div>
+            <h3 class="h6 fw-semibold mb-3">In an EditForm with DataAnnotations</h3>
+            <EditForm Context="formContext" Model="job" OnValidSubmit="Save" class="vstack gap-3" novalidate data-example="form">
+                <DataAnnotationsValidator />
+                <Field For="@(() => job.Description)">
+                    <FieldLabel>Job description</FieldLabel>
+                    <TextEditor Toolbar="basic" MinHeight="110px" MaxLength="2000" Placeholder="What will this person do?" @bind-Value="job.Description" />
+                    <FieldDescription>Lists and links are fine. Paste from Docs keeps the formatting.</FieldDescription>
+                    <FieldError />
+                </Field>
+                <div class="d-flex gap-2 align-items-center">
+                    <Button Type="submit">Save role</Button>
+                    <Button Type="button" Variant="ghost" OnClick="@(() => job = new())">Reset</Button>
+                    <output class="small text-body-secondary" role="status">@saved</output>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+
+    @* 4. Arabic *@
+    <div class="col-12" dir="rtl" lang="ar">
+        <h3 class="h6 fw-semibold mb-3">بالعربية</h3>
+        <TextEditor Direction="rtl" aria-label="ملاحظات" Variant="filled" Labels="ArabicLabels" Tools="ArabicTools" @bind-Value="arabic" Placeholder="اكتب ملاحظاتك…" MinHeight="120px" data-example="arabic" />
+    </div>
+</div>
+@code {
+    private const string ReleaseNotes = "<h2>SheenUI 3.0</h2><p>This release brings <strong>forms</strong>, <em>dates</em> and a <mark>virtualized data grid</mark>. Read the <a href='https://github.com/saadalsaree/SheenUI'>full changelog</a> for details.</p><h3>Highlights</h3><ul><li><p>Field, FormSection and DataAnnotations wiring</p></li><li><p>Calendar range picker with presets</p></li><li><p>Alerts and banners</p></li></ul><h3>Before you upgrade</h3><ul data-type='taskList'><li data-type='taskItem' data-checked='true'><label><input type='checkbox' checked><span></span></label><div><p>Update Bootstrap to 5.3</p></div></li><li data-type='taskItem' data-checked='false'><label><input type='checkbox'><span></span></label><div><p>Replace <code>&lt;Tooltip title&gt;</code> with <code>content</code></p></div></li></ul><blockquote><p>Glass everywhere, springs where it counts.</p></blockquote><pre><code>dotnet tool install --global SheenUI.Cli --prerelease</code></pre>";
+    private static readonly IReadOnlyList<string> CommentTools = ["bold", "italic", "strike", "code", "|", "link", "bulletList"];
+    private static readonly IReadOnlyList<string> ArabicTools = ["undo", "redo", "|", "heading", "|", "bold", "italic", "underline", "highlight", "|", "link", "|", "bulletList", "orderedList", "taskList", "|", "align"];
+    private static readonly TextEditorTypes.Labels ArabicLabels = new()
+    {
+        Toolbar = "التنسيق", Undo = "تراجع", Redo = "إعادة", TextStyle = "نمط النص", Paragraph = "نص عادي", Heading1 = "عنوان 1", Heading2 = "عنوان 2", Heading3 = "عنوان 3",
+        Bold = "عريض", Italic = "مائل", Underline = "تسطير", Strike = "يتوسطه خط", Code = "رمز", Highlight = "تمييز", Link = "رابط", BulletList = "قائمة نقطية",
+        OrderedList = "قائمة مرقمة", TaskList = "قائمة مهام", Align = "المحاذاة", AlignStart = "محاذاة للبداية", AlignCenter = "توسيط", AlignEnd = "محاذاة للنهاية",
+        AlignJustify = "ضبط", Blockquote = "اقتباس", CodeBlock = "كتلة رمز", HorizontalRule = "فاصل", Clear = "مسح التنسيق", LinkPlaceholder = "الصق رابطاً أو اكتبه",
+        LinkApply = "تطبيق", LinkRemove = "إزالة الرابط", LinkOpen = "فتح الرابط",
+    };
+    private sealed record Comment(long Id, string Name, string Html);
+    public sealed class Job
+    {
+        [Required(ErrorMessage = "Describe the role.")]
+        [TextLength(40, ErrorMessage = "Add a bit more — at least 40 characters.")]
+        public string? Description { get; set; } = "";
+    }
+    /// <summary>Validates the visible text of editor HTML, not its markup.</summary>
+    public sealed class TextLengthAttribute(int minimum) : ValidationAttribute
+    {
+        public override bool IsValid(object? value) => value is not string html || PlainText(html).Length == 0 || PlainText(html).Length >= minimum;
+    }
+
+    private string? document = ReleaseNotes.Trim(), draft = "", arabic = "<h3>ملاحظات الاجتماع</h3><p>ناقشنا خطة <strong>الإطلاق</strong> للربع القادم. يمكن كتابة English داخل الفقرة نفسها دون مشاكل.</p><ol><li><p>مراجعة التصاميم</p></li><li><p>اختبار الأداء على الجوال</p></li></ol><p>Each paragraph picks its own direction automatically.</p>";
+    private bool showHtml;
+    private string saved = "";
+    private Job job = new();
+    private TextEditor? composer;
+    private readonly List<Comment> comments = [new(1, "Noura Al-Qahtani", "<p>Love the new <strong>glass toolbar</strong> — can we get it in the data grid too?</p>")];
+
+    private static string PlainText(string? html) => System.Net.WebUtility.HtmlDecode(Regex.Replace(html ?? "", "<[^>]*>", "")).Trim();
+    private async Task SendOnShortcut(KeyboardEventArgs e) { if (e.Key == "Enter" && (e.CtrlKey || e.MetaKey)) await Send(); }
+    private async Task Send()
+    {
+        // The editor reports changes after a short pause; take its current HTML before sending.
+        if (composer is not null) draft = await composer.GetHtmlAsync();
+        if (PlainText(draft).Length == 0) return;
+        comments.Add(new(DateTime.UtcNow.Ticks, "Saad Alsaree", draft!));
+        draft = "";
+    }
+    private void Save() => saved = $"Saved · {PlainText(job.Description).Length} characters";
+}

@@ -1,6 +1,6 @@
 # ADR 020 — Third-party source in Blazor components
 
-- Status: Accepted for #120; #121 may extend this policy.
+- Status: Accepted for #120; extended for #121 (AI Markdown and the TextEditor engine).
 - Date: 2026-10-27
 
 ## Decision
@@ -28,3 +28,18 @@ Razor owns slides and controls. Embla owns transforms, gestures and autoplay; br
 Pin Nayuki reference vectors to the source commit, fix all options for exact matrix comparison, cover masks 0–7 and automatic masks, versions 1–40, correction levels and boost. Independently decode via test-only ZXing.Net 0.16.11, including Arabic/emoji/mixed inputs. Browser screenshots include quiet zone and overlay; decode PNG inside the browser to RGBA and pass raw bytes to ZXing, requiring no image binding unless proven necessary. Test rendering with the same fixed matrices as React. An overlay at M is an observation test; any demonstrated shared limitation is tracked separately rather than changing the contract silently. Generated apps and SSR are tested on .NET 8/9/10.
 
 Reference vectors are regenerated with `node scripts/generate-qr-vectors.mjs <path-to-pinned-qrcodegen.ts>`; the script verifies the upstream source digest before evaluating it.
+
+## Extension for #121
+
+**AI Markdown** needs no third-party code. `AIMarkdownParser.cs` is SheenUI-owned: a documented GFM subset rendered through `RenderTreeBuilder`, so it never emits raw HTML.
+
+**TextEditor engine.** Tiptap and ProseMirror ship as about 40 ESM packages with bare imports, so their files cannot be installed unchanged the way Embla's are. This is a bounded exception to "byte-for-byte unchanged":
+
+- `scripts/text-editor/entry.mjs` only re-exports the modules the editor uses (`Editor`, `Extension`, `StarterKit`, `CharacterCount`, `Placeholder`, `TextAlign`, `Highlight`, `TaskList`, `TaskItem`, `BubbleMenu`). It contains no SheenUI logic.
+- `scripts/build-text-editor.mjs` bundles it with the exact-pinned devDependency `rolldown` 1.2.15 (ES module, minified) from the exact-pinned Tiptap 3.31.4 packages in `package-lock.json`. The output is `registry/blazor/components/text-editor/TextEditorContent.razor.js`, collocated with `TextEditorContent.razor` like the Embla files.
+- The file starts with every bundled package's name, version, SPDX license and full license text, generated from `node_modules`. All 40 are MIT. Source maps are not shipped.
+- The bundle is derived, not edited. `npm run check` runs `scripts/build-text-editor.mjs --check`, which rebuilds it and fails unless the committed file is byte-identical. The manifest hash covers the installed bytes as usual.
+- Updates change the pinned versions in `package.json`, run `npm ci` and `node scripts/build-text-editor.mjs`, refresh hashes (`node scripts/update-blazor-hashes.mjs`), update the size below and rerun the browser tests.
+- SheenUI behavior (toolbar, menus, link form, counter, value transport) lives in the readable, source-owned `TextEditor.razor.js`, which imports the engine.
+
+Built from Tiptap 3.31.4: 466,930 bytes (46 KB of it license text), 134 KB gzip, 113 KB Brotli. SHA-256 `12b5dd5e6b70f51b4679297cb1207b76db44c1238f11d31c8f9d664bcf43e92d`. It is loaded only by pages that render a TextEditor.

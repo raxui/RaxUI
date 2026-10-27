@@ -1,0 +1,9 @@
+@* Read-only display of TextEditor HTML, e.g. a saved comment. The HTML goes through the editor's allowlist first,
+   so stored or user-supplied markup can't run scripts or load content. Works in static SSR. *@
+@using SheenUI.Internal.TextEditor
+<div @attributes="AdditionalAttributes" class="@($"sheen-prose {Class}".TrimEnd())">@((MarkupString)TextEditorHtml.Sanitize(Html))</div>
+@code {
+    [Parameter] public string? Html { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+}

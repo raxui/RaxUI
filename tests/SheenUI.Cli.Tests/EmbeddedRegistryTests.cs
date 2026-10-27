@@ -176,6 +176,7 @@ public class EmbeddedRegistryTests
     [InlineData("sortable")]
     [InlineData("kanban")]
     [InlineData("ai")]
+    [InlineData("text-editor")]
     public void All_manifest_files_match_their_sha256_checksums(string name)
     {
         var manifest = _registry.GetComponentManifest(name);
