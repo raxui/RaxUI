@@ -1,0 +1,6 @@
+<Button Variant="secondary" OnClick="@(() => open = true)">خيارات الطلب</Button>
+<Drawer @bind-Open="open" dir="rtl" Title="خيارات الطلب" Description="اسحب للأسفل للإغلاق." HandleLabel="تغيير ارتفاع الدروير">
+    <ChildContent>@for (var i = 0; i < labels.Length; i++) { var index = i;<label class="d-flex align-items-center justify-content-between py-2">@labels[i]<Switch @bind-Value="values[index]" /></label> }</ChildContent>
+    <Footer><Button OnClick="@(() => open = false)">تأكيد</Button></Footer>
+</Drawer>
+@code { private bool open; private readonly string[] labels = ["توصيل سريع", "تغليف هدية", "الدفع عند الاستلام"]; private readonly bool[] values = [true, false, false]; }

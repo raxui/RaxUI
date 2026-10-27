@@ -1,0 +1,19 @@
+@inherits PanelExampleBase
+<div class="d-flex flex-wrap gap-2">
+    @foreach (var side in new[] { "top", "end", "bottom", "start" })
+    {
+        <Button Variant="secondary" Class="text-capitalize" OnClick="@(() => Show(side))">@side</Button>
+    }
+</div>
+<Sheet @bind-Open="open" Side="@side" Title="@T("Edit profile", "تعديل الملف الشخصي")" Description="@T($"Drag toward the {side} edge, press Esc or tap outside to close.", "اسحب نحو الحافة، أو اضغط Escape أو خارج اللوحة للإغلاق.")" BodyClass="vstack gap-3" CloseLabel="@T("Close", "إغلاق")" HandleLabel="@T("Drag sheet", "سحب الشيت")">
+    <ChildContent>
+        <div><label for="sheet-profile-name" class="form-label small fw-semibold">@T("Name", "الاسم")</label><input id="sheet-profile-name" class="form-control" @bind="name" /></div>
+        <div><label for="sheet-profile-user" class="form-label small fw-semibold">@T("Username", "اسم المستخدم")</label><input id="sheet-profile-user" class="form-control" @bind="username" /></div>
+    </ChildContent>
+    <Footer><Button Variant="secondary" OnClick="@(() => open = false)">@T("Cancel", "إلغاء")</Button><Button OnClick="Save">@T("Save", "حفظ")</Button></Footer>
+</Sheet>
+@code {
+    private bool open; private string side = "end", name = "Saad Alsaree", username = "@saad";
+    private void Show(string value) { side = value; open = true; }
+    private void Save() { open = false; Notify("Profile saved", "تم حفظ الملف الشخصي"); }
+}
