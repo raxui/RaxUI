@@ -138,3 +138,7 @@
     box-shadow: var(--sheen-glass-edge), 0 0 0 3px rgba(var(--sheen-resizable-active-rgb), 0.3);
   }
 }
+
+// Accessible hit area without increasing the painted divider.
+.sheen-resizable-handle::before { content: ""; position: absolute; z-index: 1; inset: -8px; }
+.sheen-resizable-handle:focus-visible::after { opacity: 1; transform: none; }

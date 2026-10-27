@@ -1,0 +1,69 @@
+@code {
+    public sealed class State<T> {
+        public IReadOnlyList<T> Items { get; private set; } = Array.Empty<T>();
+        public IReadOnlyList<DataTableTypes.Column<T>> Columns { get; private set; } = Array.Empty<DataTableTypes.Column<T>>();
+        public Func<T,string> Id { get; private set; } = _ => "";
+        public string Query { get; private set; } = "";
+        public int Page { get; private set; } = 1;
+        public int PageSize { get; private set; } = 10;
+        public string Density { get; set; } = "comfortable";
+        public readonly HashSet<string> Hidden = new(StringComparer.Ordinal);
+        public readonly HashSet<string> Selected = new(StringComparer.Ordinal);
+        public readonly Dictionary<string,HashSet<string>> Filters = new(StringComparer.Ordinal);
+        public readonly List<DataTableTypes.Sort> Sorting = new();
+        public IReadOnlyList<T> Filtered { get; private set; } = Array.Empty<T>();
+        public IEnumerable<DataTableTypes.Column<T>> Visible => Columns.Where(c => !Hidden.Contains(c.Id));
+        public IEnumerable<T> PageRows => Filtered.Skip((Page-1)*PageSize).Take(PageSize);
+        public int PageCount => Math.Max(1,(Filtered.Count+PageSize-1)/PageSize);
+        public IReadOnlyList<T> SelectedRows => Filtered.Where(x=>Selected.Contains(Id(x))).ToArray();
+        public bool IsFiltered => Query.Length > 0 || Filters.Values.Any(x=>x.Count>0);
+        private IReadOnlyList<T>? previous;
+        public void Configure(IReadOnlyList<T> items,IReadOnlyList<DataTableTypes.Column<T>> columns,Func<T,string> id) {
+            if(columns.Select(c=>c.Id).Distinct(StringComparer.Ordinal).Count()!=columns.Count) throw new ArgumentException("Column IDs must be unique.");
+            Items=items;Columns=columns;Id=id;
+            var ids=items.Select(id).ToHashSet(StringComparer.Ordinal);
+            if(ids.Count!=items.Count || ids.Any(string.IsNullOrEmpty)) throw new ArgumentException("Row IDs must be unique and nonempty.");
+            Selected.IntersectWith(ids);
+            if(!ReferenceEquals(previous,items)){Page=1;previous=items;}
+            Refresh();
+        }
+        public void Initialize(int pageSize,IEnumerable<DataTableTypes.Sort>? sorting,IEnumerable<string>? hidden,string density) {
+            PageSize=Math.Max(1,pageSize);Density=density;
+            if(sorting is not null)Sorting.AddRange(sorting);
+            if(hidden is not null)Hidden.UnionWith(hidden);
+        }
+        public void Search(string? query){Query=query??"";Page=1;Refresh();}
+        public void Filter(string column,string value){
+            if(!Filters.TryGetValue(column,out var values)) Filters[column]=values=new(StringComparer.Ordinal);
+            if(!values.Add(value))values.Remove(value);Page=1;Refresh();
+        }
+        public void Reset(){Query="";Filters.Clear();Page=1;Refresh();}
+        public void SortBy(string id,bool multiple){
+            var old=Sorting.FirstOrDefault(x=>x.ColumnId==id);
+            if(!multiple)Sorting.Clear();else Sorting.RemoveAll(x=>x.ColumnId==id);
+            if(old is null)Sorting.Add(new(id));else if(!old.Descending)Sorting.Add(new(id,true));
+            Page=1;Refresh();
+        }
+        public void SetPage(int page){Page=Math.Clamp(page,1,PageCount);}
+        public void SetPageSize(int size){PageSize=Math.Max(1,size);Page=1;}
+        public void Toggle(string id){if(!Selected.Add(id))Selected.Remove(id);}
+        public void TogglePage(){var rows=PageRows.Select(Id).ToArray();if(rows.All(Selected.Contains))Selected.ExceptWith(rows);else Selected.UnionWith(rows);}
+        public void ToggleColumn(string id){if(!Hidden.Add(id))Hidden.Remove(id);}
+        private static int Compare(object? a,object? b){
+            if(ReferenceEquals(a,b))return 0;if(a is null)return -1;if(b is null)return 1;
+            if(a.GetType()==b.GetType() && a is IComparable comparable)return comparable.CompareTo(b);
+            return StringComparer.CurrentCultureIgnoreCase.Compare(Convert.ToString(a),Convert.ToString(b));
+        }
+        public void Refresh(){
+            IEnumerable<T> rows=Items.Where(row=>
+                (Query.Length==0 || Columns.Any(c=>c.Searchable&&(c.Text(row).Contains(Query,StringComparison.CurrentCultureIgnoreCase)||(Convert.ToString(c.Value(row),System.Globalization.CultureInfo.InvariantCulture)??"").Contains(Query,StringComparison.CurrentCultureIgnoreCase)))) &&
+                Columns.All(c=>!Filters.TryGetValue(c.Id,out var values)||values.Count==0||values.Contains(Convert.ToString(c.Value(row),System.Globalization.CultureInfo.InvariantCulture)??"")));
+            IOrderedEnumerable<T>? ordered=null;
+            foreach(var sort in Sorting){var c=Columns.FirstOrDefault(c=>c.Id==sort.ColumnId&&c.Sortable);if(c is null)continue;
+                var comparer=Comparer<object?>.Create(Compare);
+                ordered=ordered is null?(sort.Descending?rows.OrderByDescending(c.Value,comparer):rows.OrderBy(c.Value,comparer)):(sort.Descending?ordered.ThenByDescending(c.Value,comparer):ordered.ThenBy(c.Value,comparer));
+            }
+            Filtered=(ordered??rows).ToArray();Page=Math.Clamp(Page,1,PageCount);
+        }
+    }
+}

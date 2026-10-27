@@ -1,0 +1,63 @@
+@code {
+    public sealed class Column<T> {
+        public required string Id { get; init; }
+        public required string Title { get; init; }
+        public required Func<T,object?> Value { get; init; }
+        public RenderFragment<T>? Cell { get; init; }
+        public Func<object?,string>? Format { get; init; }
+        public Editor? Editor { get; init; }
+        public Func<object?,T,string?>? Validate { get; init; }
+        public string? Aggregate { get; init; }
+        public Func<IReadOnlyList<object?>,object?>? AggregateValue { get; init; }
+        public string? Pin { get; init; }
+        public double Width { get; init; } = 160;
+        public double MinWidth { get; init; } = 60;
+        public double MaxWidth { get; init; } = 800;
+        public bool Hideable { get; init; } = true;
+        public bool Sortable { get; init; } = true;
+        public string Align { get; init; } = "start";
+        public string Text(T row)=>Format?.Invoke(Value(row))??Plain(Value(row));
+    }
+    public sealed class Editor {
+        public string Type { get; init; } = "text";
+        public decimal? Min { get; init; }
+        public decimal? Max { get; init; }
+        public decimal? Step { get; init; }
+        public IReadOnlyList<Option> Options { get; init; } = Array.Empty<Option>();
+    }
+    public sealed record Option(string Value,string Label);
+    public sealed record CellEdit<T>(T Row,string RowId,string ColumnId,object? Value,object? Previous);
+    public sealed record Address(string RowId,string ColumnId);
+    public sealed record Action(string Kind,string ColumnId,bool Multiple=false);
+    public static string Plain(object? value)=>value switch {DateOnly date=>date.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture),DateTime date=>date.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture),bool boolean=>boolean?"true":"false",null=>"",_=>Convert.ToString(value,System.Globalization.CultureInfo.InvariantCulture)??""};
+    public sealed class Labels {
+        public string View { get; init; } = "View";
+        public string Columns { get; init; } = "Columns";
+        public string Search { get; init; } = "Search rows…";
+        public string Compact { get; init; } = "Compact";
+        public string Comfortable { get; init; } = "Comfortable";
+        public string Empty { get; init; } = "No rows";
+        public string SelectAll { get; init; } = "Select all rows";
+        public string SelectRow { get; init; } = "Select row";
+        public string SortAscending { get; init; } = "Sort ascending";
+        public string SortDescending { get; init; } = "Sort descending";
+        public string ClearSort { get; init; } = "Clear sort";
+        public string PinStart { get; init; } = "Pin to start";
+        public string PinEnd { get; init; } = "Pin to end";
+        public string Unpin { get; init; } = "Unpin";
+        public string Hide { get; init; } = "Hide column";
+        public string InvalidNumber { get; init; } = "Enter a number.";
+        public string InvalidDate { get; init; } = "Enter a valid date.";
+        public string InvalidOption { get; init; } = "Choose a valid option.";
+        public string EditedRowMissing { get; init; } = "The edited cell is no longer available. Its draft is retained.";
+        public string IncreaseWidth { get; init; } = "Increase width";
+        public string DecreaseWidth { get; init; } = "Decrease width";
+        public Func<decimal,string> MinValue { get; init; } = n=>$"Value must be at least {n}.";
+        public Func<decimal,string> MaxValue { get; init; } = n=>$"Value must be at most {n}.";
+        public Func<int,int,string> Rows { get; init; } = (n,total)=>n==total?$"{n} rows":$"{n} of {total} rows";
+        public Func<int,string> Selected { get; init; } = n=>$"{n} selected";
+        public Func<string,int,string> Cell { get; init; } = (column,row)=>$"{column}, row {row}";
+        public Func<string,string> ColumnMenu { get; init; } = title=>$"{title} column menu";
+        public IReadOnlyDictionary<string,string> Aggregates { get; init; } = new Dictionary<string,string>{{"sum","Sum"},{"avg","Avg"},{"min","Min"},{"max","Max"},{"count","Count"}};
+    }
+}

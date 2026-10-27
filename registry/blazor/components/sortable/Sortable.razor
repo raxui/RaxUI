@@ -1,0 +1,60 @@
+@* Built-in SVG paths from Lucide (ISC). *@
+@typeparam TItem
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @ref="root" class="sheen-sortable" data-orientation="@Orientation" data-sheen-appearance="@Appearance" dir="@Direction">
+    <span id="@instructionsId" class="visually-hidden">@Instructions</span>
+    <div class="@Class" style="@Style" data-sortable-content>
+        @foreach(var item in Items){
+            var id=GetId(item);var disabled=Disabled||!interactive||(IsDisabled?.Invoke(item)??false);
+            <div @key="id" class="@($"sheen-sortable-item {ItemClass}")" style="@ItemStyle?.Invoke(item)" data-sortable-id="@id" data-disabled="@(disabled?"":null)" data-handle="@(AsHandle?"":null)" tabindex="@(AsHandle&&!disabled?"0":null)" role="@(AsHandle?"button":null)" aria-disabled="@(disabled?"true":null)" aria-label="@(AsHandle?GetLabel(item):null)" aria-describedby="@instructionsId">
+                @if(!AsHandle){<button type="button" class="sheen-sortable-handle" data-sortable-handle disabled="@disabled" aria-label="@($"{HandleLabel} {GetLabel(item)}")" aria-describedby="@instructionsId"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg></button>}
+                @ItemTemplate(item)
+            </div>
+        }
+    </div>
+    <div class="visually-hidden" aria-live="assertive" aria-atomic="true" data-sortable-live></div>
+</div>
+@code {
+    [Parameter,EditorRequired] public IReadOnlyList<TItem> Items { get; set; } = Array.Empty<TItem>();
+    [Parameter] public EventCallback<IReadOnlyList<TItem>> ItemsChanged { get; set; }
+    [Parameter,EditorRequired] public Func<TItem,string> GetId { get; set; } = default!;
+    [Parameter,EditorRequired] public RenderFragment<TItem> ItemTemplate { get; set; } = default!;
+    [Parameter] public Func<TItem,string> GetLabel { get; set; } = item=>Convert.ToString(item)??"";
+    [Parameter] public Func<TItem,bool>? IsDisabled { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool AsHandle { get; set; }
+    [Parameter] public string Orientation { get; set; } = "vertical";
+    [Parameter] public string Instructions { get; set; } = "Press Space or Enter to pick up, arrows to move, Space to drop, Escape to cancel.";
+    [Parameter] public string HandleLabel { get; set; } = "Reorder";
+    [Parameter] public string Grabbed { get; set; } = "Picked up {item}. Position {position} of {total}.";
+    [Parameter] public string Moved { get; set; } = "Moved {item} to position {position} of {total}.";
+    [Parameter] public string Dropped { get; set; } = "Dropped {item} at position {position} of {total}.";
+    [Parameter] public string Cancelled { get; set; } = "Cancelled moving {item}. Position {position} of {total}.";
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Direction { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter] public string? ItemClass { get; set; }
+    [Parameter] public Func<TItem,string>? ItemStyle { get; set; }
+    private readonly string instructionsId=$"sheen-sortable-{Guid.NewGuid():N}";
+    private bool interactive;
+    private ElementReference root;private IJSObjectReference? module;private DotNetObjectReference<Sortable<TItem>>? self;
+    protected override void OnParametersSet(){
+        ArgumentNullException.ThrowIfNull(GetId);ArgumentNullException.ThrowIfNull(ItemTemplate);
+        if(Orientation is not ("vertical" or "horizontal" or "mixed"))throw new ArgumentException("Invalid sortable orientation.");
+        var ids=Items.Select(GetId).ToArray();if(ids.Any(string.IsNullOrEmpty)||ids.Distinct(StringComparer.Ordinal).Count()!=ids.Length)throw new ArgumentException("Sortable IDs must be unique and nonempty.");
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        if(!interactive){interactive=true;StateHasChanged();return;}
+        module??=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/Sortable/Sortable.razor.js");self??=DotNetObjectReference.Create(this);
+        await module.InvokeVoidAsync("sync",root,self,new { grabbed=Grabbed,moved=Moved,dropped=Dropped,cancelled=Cancelled,labels=Items.ToDictionary(GetId,GetLabel) });
+    }
+    [JSInvokable] public async Task Move(string source,string target){
+        if(Disabled)return;var list=Items.ToList();var from=list.FindIndex(x=>GetId(x)==source);var to=list.FindIndex(x=>GetId(x)==target);
+        if(from<0||to<0||from==to||IsDisabled?.Invoke(list[from])==true||IsDisabled?.Invoke(list[to])==true)return;
+        var item=list[from];list.RemoveAt(from);list.Insert(to,item);Items=list;await ItemsChanged.InvokeAsync(list);await InvokeAsync(StateHasChanged);
+    }
+    public async ValueTask DisposeAsync(){if(module is null)return;try{await module.InvokeVoidAsync("dispose",root);await module.DisposeAsync();}catch(JSDisconnectedException){}self?.Dispose();}
+}

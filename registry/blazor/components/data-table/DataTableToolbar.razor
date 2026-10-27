@@ -1,0 +1,39 @@
+@typeparam TItem
+<div class="sheen-data-table-toolbar">
+    <div class="sheen-table-search"><input type="search" class="form-control sheen-input form-control-sm" aria-label="@Text.Search" placeholder="@Text.Search" value="@State.Query" @oninput="Search" /></div>
+    @foreach(var column in State.Columns.Where(c=>c.Options.Count>0)){
+        <DropdownMenu TriggerClass="btn-sm sheen-table-filter-btn" Class="sheen-table-filter">
+            <Trigger>@column.Title@if(State.Filters.TryGetValue(column.Id,out var chosen)&&chosen.Count>0){<span class="badge bg-primary-subtle text-primary-emphasis">@chosen.Count</span>}</Trigger>
+            <ChildContent>
+                @foreach(var option in column.Options){
+                    var selected=State.Filters.TryGetValue(column.Id,out var values)&&values.Contains(option.Value);
+                    <DropdownMenuItem Role="menuitemcheckbox" aria-checked="@(selected?"true":"false")" OnSelect="()=>Filter(column.Id,option.Value)">@if(selected){<span aria-hidden="true">✓</span>}@option.Label</DropdownMenuItem>
+                }
+            </ChildContent>
+        </DropdownMenu>
+    }
+    @if(State.IsFiltered){<Button Variant="ghost" Size="sm" OnClick="Reset">@Text.Reset</Button>}
+    @Toolbar
+    <div class="ms-auto"><DropdownMenu TriggerClass="btn-sm" Class="sheen-table-view-options">
+        <Trigger>@Text.View</Trigger><ChildContent>
+            <DropdownMenuLabel>@Text.Columns</DropdownMenuLabel>
+            @foreach(var column in State.Columns.Where(c=>c.Hideable)){
+                <DropdownMenuItem Role="menuitemcheckbox" aria-checked="@(!State.Hidden.Contains(column.Id)?"true":"false")" OnSelect="()=>Visibility(column.Id)">@if(!State.Hidden.Contains(column.Id)){<span aria-hidden="true">✓</span>}@column.Title</DropdownMenuItem>
+            }
+            <DropdownMenuSeparator />
+            <DropdownMenuItem OnSelect='()=>Density("compact")'>@Text.Compact</DropdownMenuItem>
+            <DropdownMenuItem OnSelect='()=>Density("comfortable")'>@Text.Comfortable</DropdownMenuItem>
+        </ChildContent>
+    </DropdownMenu></div>
+</div>
+@code {
+    [Parameter,EditorRequired] public DataTableState.State<TItem> State { get; set; } = default!;
+    [Parameter] public DataTableTypes.Labels Text { get; set; } = new();
+    [Parameter] public EventCallback Changed { get; set; }
+    [Parameter] public RenderFragment? Toolbar { get; set; }
+    private async Task Search(ChangeEventArgs e){State.Search(Convert.ToString(e.Value));await Changed.InvokeAsync();}
+    private async Task Filter(string id,string value){State.Filter(id,value);await Changed.InvokeAsync();}
+    private async Task Reset(){State.Reset();await Changed.InvokeAsync();}
+    private async Task Visibility(string id){State.ToggleColumn(id);await Changed.InvokeAsync();}
+    private async Task Density(string value){State.Density=value;await Changed.InvokeAsync();}
+}

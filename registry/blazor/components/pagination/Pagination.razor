@@ -3,22 +3,24 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
-<nav @attributes="AdditionalAttributes" class="@($"sheen-pagination {Class}")" aria-label="@Label" data-variant="@Variant" data-size="@Size" data-sheen-appearance="@Appearance">
+<nav data-enhance-nav="false" @attributes="AdditionalAttributes" class="@($"sheen-pagination {Class}")" aria-label="@Label" data-variant="@Variant" data-size="@Size" data-sheen-appearance="@Appearance">
     <ul @ref="_root" class="sheen-pagination-content">
         <li class="sheen-pagination-indicator" aria-hidden="true" role="presentation"></li>
-        <li class="sheen-pagination-item"><a class="sheen-pagination-link sheen-pagination-step" href="@(Current > 1 ? Href(Current - 1) : null)" aria-disabled="@(Current <= 1 ? "true" : null)">@PreviousLabel</a></li>
+        <li class="sheen-pagination-item"><a class="sheen-pagination-link sheen-pagination-step" href="@(Current > 1 ? Href(Current - 1) : null)" @onclick="()=>Change(Current-1)" @onclick:preventDefault="PageChanged.HasDelegate" aria-disabled="@(Current <= 1 ? "true" : null)">@PreviousLabel</a></li>
         @foreach (var item in Range())
         {
             <li @key="item" class="sheen-pagination-item">
-                @if (item > 0) { <a class="sheen-pagination-link" href="@Href(item)" aria-label="@GetPageLabel(item)" aria-current="@(item == Current ? "page" : null)">@FormatPage(item)</a> }
+                @if (item > 0) { <a class="sheen-pagination-link" href="@Href(item)" @onclick="()=>Change(item)" @onclick:preventDefault="PageChanged.HasDelegate" aria-label="@GetPageLabel(item)" aria-current="@(item == Current ? "page" : null)">@FormatPage(item)</a> }
                 else { <span class="sheen-pagination-ellipsis" aria-label="@MoreLabel">&hellip;</span> }
             </li>
         }
-        <li class="sheen-pagination-item"><a class="sheen-pagination-link sheen-pagination-step" href="@(Current < PageCount ? Href(Current + 1) : null)" aria-disabled="@(Current >= PageCount ? "true" : null)">@NextLabel</a></li>
+        <li class="sheen-pagination-item"><a class="sheen-pagination-link sheen-pagination-step" href="@(Current < PageCount ? Href(Current + 1) : null)" @onclick="()=>Change(Current+1)" @onclick:preventDefault="PageChanged.HasDelegate" aria-disabled="@(Current >= PageCount ? "true" : null)">@NextLabel</a></li>
     </ul>
 </nav>
 @code {
     [Parameter] public int Page { get; set; } = 1;
+    [Parameter] public EventCallback<int> PageChanged { get; set; }
+    private Task Change(int page) => PageChanged.InvokeAsync(Math.Clamp(page,1,Math.Max(1,PageCount)));
     [Parameter] public int PageCount { get; set; } = 1;
     [Parameter] public int Siblings { get; set; } = 1;
     [Parameter] public int Boundaries { get; set; } = 1;

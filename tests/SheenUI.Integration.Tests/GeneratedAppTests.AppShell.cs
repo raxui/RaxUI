@@ -25,7 +25,7 @@ public partial class GeneratedAppTests
         foreach (var name in new[] { "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner" })
             Assert.Equal(0, Program.Run(["add", name], app, output, error));
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
-        await VerifyInBrowser(app, appShellOnly: true);
+        await VerifyInBrowser(app, VerifyAppShell);
     }
 
     private static void WriteAppShellPages(string components)

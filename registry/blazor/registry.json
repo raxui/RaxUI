@@ -120,6 +120,10 @@
     {"name": "navigation-menu", "manifest": "components/navigation-menu/manifest.json"},
     {"name": "menubar", "manifest": "components/menubar/manifest.json"},
     {"name": "footer", "manifest": "components/footer/manifest.json"},
-    {"name": "banner", "manifest": "components/banner/manifest.json"}
+    {"name": "banner", "manifest": "components/banner/manifest.json"},
+    {"name": "data-table", "manifest": "components/data-table/manifest.json"},
+    {"name": "sortable", "manifest": "components/sortable/manifest.json"},
+    {"name": "resizable", "manifest": "components/resizable/manifest.json"},
+    {"name": "data-grid", "manifest": "components/data-grid/manifest.json"}
   ]
 }

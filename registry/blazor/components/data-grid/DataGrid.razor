@@ -1,0 +1,149 @@
+@typeparam TItem
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @attributes="AdditionalAttributes" class="@($"sheen-grid {Class}")" data-sheen-appearance="@Appearance" data-density="@model.Density" dir="@Direction">
+    <div class="sheen-grid-toolbar" inert="@(!interactive?"":null)">
+        <input type="search" class="form-control sheen-input form-control-sm" style="max-width:20rem" value="@model.Query" aria-label="@Labels.Search" placeholder="@Labels.Search" @oninput="Search" />
+        @Toolbar
+        <DropdownMenu TriggerClass="btn-sm"><Trigger>@Labels.View</Trigger><ChildContent>
+            <DropdownMenuLabel>@Labels.Columns</DropdownMenuLabel>
+            @foreach(var c in model.Columns.Where(c=>c.Hideable)){<DropdownMenuItem Role="menuitemcheckbox" aria-checked="@(!model.Hidden.Contains(c.Id)?"true":"false")" OnSelect='()=>ColumnAction(new(model.Hidden.Contains(c.Id)?"show":"hide",c.Id))' >@if(!model.Hidden.Contains(c.Id)){<span aria-hidden="true">✓</span>}@c.Title</DropdownMenuItem>}
+            <DropdownMenuSeparator /><DropdownMenuItem OnSelect='()=>DensityChanged("compact")'>@Labels.Compact</DropdownMenuItem><DropdownMenuItem OnSelect='()=>DensityChanged("comfortable")'>@Labels.Comfortable</DropdownMenuItem>
+        </ChildContent></DropdownMenu>
+    </div>
+    <div @ref="scroller" id="@gridId" class="sheen-grid-scroller" role="grid" aria-label="@Label" aria-rowcount="@(model.Rows.Count+1+(model.HasFooter?1:0))" aria-colcount="@model.Visible.Count" aria-multiselectable="true" aria-activedescendant="@ActiveDescendant" tabindex="@(interactive?0:-1)" aria-readonly="@(!interactive?"true":null)" style="@($"max-height:{Height}")" data-version="@model.Version" data-editing="@(session.Editing?"":null)" data-range-start="@start" data-range-end="@end">
+        <div class="sheen-grid-canvas" style="@($"width:{model.TotalWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}px")">
+            <DataGridHeader Interactive="interactive" TItem="TItem" Model="model" Session="session" Labels="Labels" GridId="@gridId" Activate="Activate" Action="ColumnAction" />
+            <div class="sheen-grid-body" role="rowgroup" style="@($"height:{(interactive?model.Rows.Count:Math.Min(20,model.Rows.Count))*model.RowHeight}px")">
+                @if(model.Rows.Count==0){<div class="sheen-grid-empty">@if(EmptyState is not null){@EmptyState}else{@Labels.Empty}</div>}
+                @foreach(var index in RenderedIndexes){
+                    var row=model.Rows[index];
+                    <DataGridRow Interactive="interactive" TItem="TItem" @key="model.Id(row)" Model="model" Session="session" Row="row" Index="index" GridId="@gridId" Labels="Labels" Activate="Activate" Edit="Edit" Select="Select" DraftChanged="DraftChanged" Commit="CommitEditor" />
+                }
+            </div>
+            <DataGridFooter TItem="TItem" Model="model" Labels="Labels" />
+        </div>
+    </div>
+    @if(!session.Editing&&session.Error is not null){<div class="sheen-grid-error" role="alert">@session.Error</div>}
+    <div class="sheen-grid-status" aria-live="polite"><span>@Labels.Rows(model.Rows.Count,Items.Count)</span>@if(model.Selected.Count>0){<span>@Labels.Selected(model.Selected.Count)</span>}<span class="sheen-grid-status-pos">@(ActiveIndex>=0&&ActiveColumn is not null?$"R{ActiveIndex+1} · {ActiveColumn.Title}":"")</span></div>
+</div>
+@code {
+    [Parameter,EditorRequired] public IReadOnlyList<TItem> Items { get; set; } = Array.Empty<TItem>();
+    [Parameter,EditorRequired] public IReadOnlyList<DataGridTypes.Column<TItem>> Columns { get; set; } = Array.Empty<DataGridTypes.Column<TItem>>();
+    [Parameter,EditorRequired] public Func<TItem,string> GetRowId { get; set; } = default!;
+    [Parameter,EditorRequired] public string Label { get; set; } = "Data grid";
+    [Parameter] public EventCallback<DataGridTypes.CellEdit<TItem>> CellEdit { get; set; }
+    [Parameter] public EventCallback<IReadOnlySet<string>> SelectionChanged { get; set; }
+    [Parameter] public IReadOnlySet<string>? Selection { get; set; }
+    [Parameter] public bool Selectable { get; set; } = true;
+    [Parameter] public string Height { get; set; } = "480px";
+    [Parameter] public string Density { get; set; } = "comfortable";
+    [Parameter] public DataGridTypes.Labels Labels { get; set; } = new();
+    [Parameter] public RenderFragment? Toolbar { get; set; }
+    [Parameter] public RenderFragment? EmptyState { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Direction { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes { get; set; }
+    private readonly DataGridModel.State<TItem> model=new();
+    private readonly DataGridEditing.Session session=new();
+    private readonly string gridId=$"sheen-grid-{Guid.NewGuid():N}";
+    private int start,end=20;private bool interactive,initialized,disposed;
+    private System.Threading.CancellationTokenSource? flashCancellation;
+    private ElementReference scroller;private IJSObjectReference? module;private DotNetObjectReference<DataGrid<TItem>>? self;
+    private int ActiveIndex=>session.ActiveRow is not null&&model.RowIndexes.TryGetValue(session.ActiveRow,out var index)?index:-1;
+    private DataGridTypes.Column<TItem>? ActiveColumn=>model.Visible.FirstOrDefault(c=>c.Id==session.ActiveColumn);
+    private IEnumerable<int> RenderedIndexes=>Enumerable.Range(Math.Min(start,model.Rows.Count),Math.Max(0,Math.Min(end,model.Rows.Count)-Math.Min(start,model.Rows.Count))).Concat(ActiveIndex>=0?new[]{ActiveIndex}:Array.Empty<int>()).Distinct().OrderBy(i=>i);
+    private string? ActiveDescendant=>!interactive||session.Editing||ActiveColumn is null?null:session.Header?$"{gridId}-h-c{model.Visible.ToList().FindIndex(c=>c.Id==session.ActiveColumn)}":ActiveIndex>=0?$"{gridId}-r{ActiveIndex}-c{model.Visible.ToList().FindIndex(c=>c.Id==session.ActiveColumn)}":null;
+    protected override void OnParametersSet(){
+        ArgumentNullException.ThrowIfNull(GetRowId);
+        if(!initialized){model.Density=Density;initialized=true;}
+        var columns=Selectable?new[]{new DataGridTypes.Column<TItem>{Id="__select",Title=Labels.SelectAll,Value=_=>null,Width=44,MinWidth=44,MaxWidth=44,Hideable=false,Sortable=false,Pin="start"}}.Concat(Columns).ToArray():Columns;
+        model.Configure(Items,columns,GetRowId);
+        if(Selection is not null){model.Selected.Clear();model.Selected.UnionWith(Selection);}
+        EnsureActive();
+    }
+    private void EnsureActive(){
+        if(session.ActiveColumn is null||model.Visible.All(c=>c.Id!=session.ActiveColumn))session.ActiveColumn=model.Visible.FirstOrDefault()?.Id;
+        if(session.ActiveRow is null||ActiveIndex<0){if(session.Editing){session.End(false);session.Error=Labels.EditedRowMissing;}session.ActiveRow=model.Rows.Count>0?model.Id(model.Rows[0]):null;}
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        if(!interactive){interactive=true;StateHasChanged();return;}
+        module??=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/DataGrid/DataGrid.razor.js");self??=DotNetObjectReference.Create(this);
+        var row=ActiveIndex;var column=ActiveColumn;
+        await module.InvokeVoidAsync("sync",scroller,self,new { rowHeight=model.RowHeight,count=model.Rows.Count,active=row,activeColumn=session.ActiveColumn,editing=session.Editing,copy=row>=0&&column is not null?DataGridTypes.Plain(column.Value(model.Rows[row])):"",focusEditor=session.FocusEditor,focusGrid=session.FocusGrid,selectText=session.SelectText,version=model.Version });
+        session.FocusEditor=false;session.FocusGrid=false;
+    }
+    [JSInvokable] public async Task Window(int first,int last){start=Math.Clamp(first,0,model.Rows.Count);end=Math.Clamp(last,start,model.Rows.Count);await InvokeAsync(StateHasChanged);}
+    private Task DraftChanged(string value){session.SetDraft(value);return Task.CompletedTask;}
+    private async Task<bool> Apply(TItem row,DataGridTypes.Column<TItem> column,object? value){
+        var error=DataGridEditing.Session.Validate(column,row,value,Labels);if(error is not null){session.Error=error;return false;}
+        var previous=column.Value(row);if(!Equals(previous,value)){await CellEdit.InvokeAsync(new(row,model.Id(row),column.Id,value,previous));session.Flash=model.Id(row)+":"+column.Id;flashCancellation?.Cancel();flashCancellation?.Dispose();flashCancellation=new();_=ClearFlash(flashCancellation.Token);}
+        session.Error=null;return true;
+    }
+    private async Task ClearFlash(System.Threading.CancellationToken token){try{await Task.Delay(900,token);await InvokeAsync(()=>{if(!disposed&&!token.IsCancellationRequested){session.Flash=null;StateHasChanged();}});}catch(OperationCanceledException){}}
+    private async Task<bool> Commit(){
+        if(!session.Editing)return true;var index=ActiveIndex;var c=ActiveColumn;if(index<0||c?.Editor is null){session.End(false);session.Error=Labels.EditedRowMissing;return false;}
+        if(!await Apply(model.Rows[index],c,DataGridEditing.Session.Parse(c.Editor,session.Draft)))return false;session.End();return true;
+    }
+    private async Task CommitEditor(){await Commit();}
+    private async Task Activate(DataGridTypes.Address cell){
+        if(session.ActiveRow==cell.RowId&&session.ActiveColumn==cell.ColumnId&&!session.Header)return;
+        if(!await Commit())return;session.ActiveRow=cell.RowId;session.ActiveColumn=cell.ColumnId;session.Header=cell.RowId=="";session.FocusGrid=true;
+    }
+    private async Task Edit(DataGridTypes.Address cell){
+        await Activate(cell);if(session.ActiveRow!=cell.RowId||session.ActiveColumn!=cell.ColumnId)return;await Begin();
+    }
+    private async Task Begin(string? seed=null){
+        var index=ActiveIndex;var c=ActiveColumn;if(index<0||c?.Editor is null)return;
+        var row=model.Rows[index];if(c.Editor.Type=="checkbox"){await Apply(row,c,c.Value(row) is not true);session.FocusGrid=true;return;}
+        session.Begin(model.Id(row),c.Id,c.Value(row),seed);
+    }
+    private async Task Select(string id){if(!model.Selected.Add(id))model.Selected.Remove(id);await SelectionChanged.InvokeAsync(model.Selected.ToHashSet(StringComparer.Ordinal));}
+    private async Task Search(ChangeEventArgs e){if(!await Commit())return;model.Query=Convert.ToString(e.Value)??"";model.Refresh();start=0;end=20;EnsureActive();}
+    private async Task DensityChanged(string value){if(!await Commit())return;model.Density=value;model.Refresh();}
+    private async Task ColumnAction(DataGridTypes.Action action){
+        if(!await Commit())return;var c=model.Columns.FirstOrDefault(c=>c.Id==action.ColumnId);if(c is null)return;
+        if(action.Kind=="select-all"){var ids=model.Rows.Select(model.Id).ToArray();if(ids.All(model.Selected.Contains))model.Selected.ExceptWith(ids);else model.Selected.UnionWith(ids);await SelectionChanged.InvokeAsync(model.Selected.ToHashSet(StringComparer.Ordinal));return;}
+        if(action.Kind is "sort" or "asc" or "desc" or "clear-sort"){
+            if(!c.Sortable)return;var old=model.Sorting.FirstOrDefault(x=>x.Id==c.Id);var exists=model.Sorting.Any(x=>x.Id==c.Id);
+            if(!action.Multiple)model.Sorting.Clear();else model.Sorting.RemoveAll(x=>x.Id==c.Id);
+            if(action.Kind!="clear-sort"&&(action.Kind!="sort"||!exists||!old.Descending))model.Sorting.Add((c.Id,action.Kind=="desc"||(action.Kind=="sort"&&exists&&!old.Descending)));
+        }else if(action.Kind=="hide"&&c.Hideable){model.Hidden.Add(c.Id);}else if(action.Kind=="show"){model.Hidden.Remove(c.Id);}
+        else if(action.Kind=="pin-start")model.Pins[c.Id]="start";else if(action.Kind=="pin-end")model.Pins[c.Id]="end";else if(action.Kind=="unpin")model.Pins[c.Id]=null;
+        else if(action.Kind is "wider" or "narrower")model.Widths[c.Id]=Math.Clamp(model.Widths[c.Id]+(action.Kind=="wider"?10:-10),c.MinWidth,c.MaxWidth);
+        model.Refresh();EnsureActive();
+    }
+    [JSInvokable] public async Task Resize(string id,double width){var c=model.Columns.FirstOrDefault(c=>c.Id==id);if(c is null||!double.IsFinite(width))return;model.Widths[id]=Math.Clamp(width,c.MinWidth,c.MaxWidth);await InvokeAsync(StateHasChanged);}
+    [JSInvokable] public async Task Paste(string text){
+        if(session.Editing)return;var index=ActiveIndex;var c=ActiveColumn;if(index<0||c?.Editor is null)return;var row=model.Rows[index];
+        if(!await Apply(row,c,DataGridEditing.Session.Parse(c.Editor,text))){var error=session.Error;if(c.Editor.Type!="checkbox"){session.Begin(model.Id(row),c.Id,c.Value(row),c.Editor.Type=="date"?null:text);session.Error=error;}}
+        await InvokeAsync(StateHasChanged);
+    }
+    [JSInvokable] public async Task Key(string key,bool shift,bool mod,string? seed,int pageRows,bool rtl){
+        var row=session.Header?-1:Math.Max(0,ActiveIndex);var col=Math.Max(0,model.Visible.ToList().FindIndex(c=>c.Id==session.ActiveColumn));
+        if(session.Editing){if(key=="Escape")session.End();else if(key is "Enter" or "Tab"){if(!await Commit()){await InvokeAsync(StateHasChanged);return;}if(key=="Enter")row+=shift?-1:1;else col+=shift?-1:1;}else return;}
+        else {
+            switch(key){
+                case "ArrowDown":row=mod?model.Rows.Count-1:row+1;break;
+                case "ArrowUp":row=mod?0:row-1;break;
+                case "ArrowRight":col=mod?(rtl?0:model.Visible.Count-1):col+(rtl?-1:1);break;
+                case "ArrowLeft":col=mod?(rtl?model.Visible.Count-1:0):col+(rtl?1:-1);break;
+                case "Home":col=0;if(mod)row=0;break;
+                case "End":col=model.Visible.Count-1;if(mod)row=model.Rows.Count-1;break;
+                case "PageDown":row+=pageRows;break;
+                case "PageUp":row-=pageRows;break;
+                case "Enter":case "F2":if(session.Header&&key=="Enter"&&ActiveColumn is not null)await ColumnAction(new("sort",ActiveColumn.Id,shift));else if(ActiveColumn?.Id=="__select"&&session.ActiveRow is not null)await Select(session.ActiveRow);else if(!session.Header)await Begin();await InvokeAsync(StateHasChanged);return;
+                case " ":if(session.Header&&ActiveColumn is not null)await ColumnAction(new("sort",ActiveColumn.Id,shift));else if(session.ActiveRow is not null&&(shift||ActiveColumn?.Id=="__select"))await Select(session.ActiveRow);else if(ActiveColumn?.Editor?.Type=="checkbox")await Begin();else if(ActiveColumn?.Editor?.Type is "text" or "number")await Begin(" ");await InvokeAsync(StateHasChanged);return;
+                case "Delete":case "Backspace":if(ActiveIndex>=0&&ActiveColumn is { Editor: not null } c){await Apply(model.Rows[ActiveIndex],c,c.Editor.Type=="checkbox"?false:c.Editor.Type is "number" or "date"?null:"");}await InvokeAsync(StateHasChanged);return;
+                case "type":if(ActiveColumn?.Editor?.Type is "text" or "number")await Begin(seed);await InvokeAsync(StateHasChanged);return;
+                default:return;
+            }
+        }
+        row=Math.Clamp(row,-1,Math.Max(-1,model.Rows.Count-1));col=Math.Clamp(col,0,Math.Max(0,model.Visible.Count-1));
+        session.Header=row==-1;session.ActiveRow=row>=0?model.Id(model.Rows[row]):null;session.ActiveColumn=model.Visible.ElementAtOrDefault(col)?.Id;session.FocusGrid=true;
+        await InvokeAsync(StateHasChanged);if(module is not null)await module.InvokeVoidAsync("scrollTo",scroller,row,session.ActiveColumn);
+    }
+    public async ValueTask DisposeAsync(){disposed=true;flashCancellation?.Cancel();flashCancellation?.Dispose();if(module is null)return;try{await module.InvokeVoidAsync("dispose",scroller);await module.DisposeAsync();}catch(JSDisconnectedException){}self?.Dispose();}
+}

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "name": "data-table",
+  "version": "0.1.0",
+  "description": "Source-owned data-table with React parity (ADR 019).",
+  "dependencies": [
+    "table",
+    "pagination",
+    "button",
+    "checkbox",
+    "select",
+    "dropdown-menu",
+    "input"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/data-table.css",
+      "destination": "styles",
+      "target": "components/data-table.css",
+      "type": "css",
+      "sha256": "6e71002978ef36a0fc86a75cf89f8b00aa76b0f52c6717766d3f05f86828e7d6"
+    }
+  ],
+  "files": [
+    {
+      "source": "DataTable.razor",
+      "destination": "components",
+      "target": "DataTable/DataTable.razor",
+      "type": "razor",
+      "sha256": "4836bf065b512b826078c87d2acd4f04a9fc6c8e89b654d7424d40d1aa89c2ae"
+    },
+    {
+      "source": "DataTableContent.razor",
+      "destination": "components",
+      "target": "DataTable/DataTableContent.razor",
+      "type": "razor",
+      "sha256": "a0cc7380fb1f131ca972983b8b47475d34a56eeb57b2123bd74801071c374f04"
+    },
+    {
+      "source": "DataTablePager.razor",
+      "destination": "components",
+      "target": "DataTable/DataTablePager.razor",
+      "type": "razor",
+      "sha256": "17eef6beaadc34b137195562f2e7a92e58489921ce7f46b58ac11deb277220dc"
+    },
+    {
+      "source": "DataTableState.razor",
+      "destination": "components",
+      "target": "DataTable/DataTableState.razor",
+      "type": "razor",
+      "sha256": "b6bfecff8f0b3e82b71dbf0aa434e4267b23c0fbd87efc23b11ad9777771a204"
+    },
+    {
+      "source": "DataTableToolbar.razor",
+      "destination": "components",
+      "target": "DataTable/DataTableToolbar.razor",
+      "type": "razor",
+      "sha256": "ad0bcfa67f6610b37ef9c6e76a3c0a7aee037cb138b2de361273b76ae54e9b99"
+    },
+    {
+      "source": "DataTableTypes.razor",
+      "destination": "components",
+      "target": "DataTable/DataTableTypes.razor",
+      "type": "razor",
+      "sha256": "b892e1af27287592cd0d423774262698c649f2bfafb4f2e76d325af65325b176"
+    }
+  ]
+}

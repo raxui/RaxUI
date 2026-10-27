@@ -1,0 +1,49 @@
+<div class="vstack gap-5">
+<section><h3 class="h6">@T("Employees · 10,000 rows","الموظفون · 10,000 صف")</h3><p class="small text-body-secondary">@T("Click a cell, then use the arrows. Enter or F2 edits, Escape cancels, Tab commits and moves, Delete clears, Ctrl+C/Ctrl+V copy and paste. Drag header edges to resize; ⋯ sorts, pins and hides.","حدد خلية ثم استخدم الأسهم. Enter أو F2 للتحرير، Escape للإلغاء، وTab للحفظ والتنقل، وDelete للمسح. اسحب حافة العمود لتغيير العرض واستخدم قائمته للفرز والتثبيت والإخفاء.")</p>
+<DataGrid TItem="Employee" Label="@T("Employees","الموظفون")" Items="employees" Columns="Columns" GetRowId="x=>x.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)" Height="520px" CellEdit="EditEmployee" Labels="Labels" Selection="selection" SelectionChanged="value=>selection=value">
+    <Toolbar>@if(selection.Count>0){<Button Size="sm" Variant="destructive" OnClick="DeleteEmployees">@T($"Delete {selection.Count}",$"حذف {selection.Count}")</Button>}</Toolbar>
+</DataGrid><output role="status">@message</output></section>
+<section dir="rtl"><h3 class="h6">المنتجات</h3><DataGrid TItem="Product" Items="products" Columns="ProductColumns" GetRowId="x=>x.Sku" Label="المنتجات" Direction="rtl" Height="340px" Density="compact" Labels="ArabicLabels" CellEdit="EditProduct" /></section>
+</div>
+@code {
+    [Parameter] public bool Arabic { get; set; }
+    public sealed record Employee(int Id,string Name,string Email,string Department,decimal Salary,DateOnly StartDate,decimal Quota,bool Remote,string Status);
+    public sealed record Product(string Sku,string Name,decimal Stock,decimal Price,bool Active);
+    private IReadOnlyList<Employee> employees=MakeEmployees();
+    private IReadOnlyList<Product> products=new[]{new Product("SKU-101","قهوة مختصة",42,65000,true),new Product("SKU-102","شاي أخضر",8,32000,true),new Product("SKU-103","تمر",120,48000,true),new Product("SKU-104","عسل",0,210000,false),new Product("SKU-105","زعفران",15,180000,true),new Product("SKU-106","هيل",64,55000,true)};
+    private IReadOnlySet<string> selection=new HashSet<string>();private string message="";
+    private static IReadOnlyList<Employee> MakeEmployees(){
+        var first=new[]{"Noura","Omar","Lina","Yusuf","Sara","Faisal","Maya","Daniel","Reem","Hassan","Grace","Eileen","Khalid","Aisha","Tom","Layla"};
+        var last=new[]{"Ali","Khalid","Haddad","Nasser","Ahmed","Hassan","Chen","Park","Omar","Ali","Kim","Collins","Saeed","Rahman","Fischer","Mansour"};
+        var departments=new[]{"engineering","design","sales","support","finance"};long seed=7;
+        double Rand(){seed=seed*16807%2147483647;return (seed-1)/2147483646d;}
+        return Enumerable.Range(0,10000).Select(i=>{var a=first[(int)(Rand()*first.Length)];var b=last[(int)(Rand()*last.Length)];var dept=departments[(int)(Rand()*departments.Length)];var salary=(decimal)Math.Round((4000+Rand()*16000)/50)*50;var date=new DateOnly(2016+(int)(Rand()*10),(int)(Rand()*12)+1,(int)(Rand()*27)+1);var quota=(decimal)Math.Round(Rand()*100);var remote=Rand()>.55;var status=Rand()>.9?(Rand()>.5?"leave":"offboarding"):"active";return new Employee(i+1,a+" "+b,$"{a}.{b}{i}@example.com".ToLowerInvariant(),dept,salary,date,quota,remote,status);}).ToArray();
+    }
+    private string T(string en,string ar)=>Arabic?ar:en;
+    private string Money(object? value)=>value is null?"":Convert.ToDecimal(value).ToString("N0",System.Globalization.CultureInfo.GetCultureInfo(Arabic?"ar-IQ":"en-US"))+T(" IQD"," د.ع");
+    private DataGridTypes.Option[] Departments=>new[]{new DataGridTypes.Option("engineering",T("Engineering","الهندسة")),new DataGridTypes.Option("design",T("Design","التصميم")),new DataGridTypes.Option("sales",T("Sales","المبيعات")),new DataGridTypes.Option("support",T("Support","الدعم")),new DataGridTypes.Option("finance",T("Finance","المالية"))};
+    private DataGridTypes.Option[] Statuses=>new[]{new DataGridTypes.Option("active",T("Active","نشط")),new DataGridTypes.Option("leave",T("On leave","إجازة")),new DataGridTypes.Option("offboarding",T("Offboarding","مغادرة"))};
+    private RenderFragment<Employee> NameCell=>row=>@<span class="d-inline-flex align-items-center gap-2"><Avatar Name="@row.Name" Size="xs"/><span>@row.Name</span></span>;
+    private RenderFragment<Employee> DepartmentCell=>row=>@<span class="badge bg-primary-subtle text-body-emphasis">@(Departments.First(x=>x.Value==row.Department).Label)</span>;
+    private RenderFragment<Employee> QuotaCell=>row=>@<span class="d-flex align-items-center gap-2 w-100"><Progress Value="@((double)row.Quota)" Size="sm" AccessibleLabel="@T("Quota","الحصة")" Class="flex-fill"/><span>@row.Quota%</span></span>;
+    private RenderFragment<Employee> StatusCell=>row=>@<span class="@($"badge bg-{(row.Status=="active"?"success":row.Status=="leave"?"warning":"danger")}-subtle text-body-emphasis")">@(Statuses.First(x=>x.Value==row.Status).Label)</span>;
+    private IReadOnlyList<DataGridTypes.Column<Employee>> Columns=>new DataGridTypes.Column<Employee>[]{
+        new(){Id="id",Title="#",Value=r=>r.Id,Width=72,Align="end",Pin="start"},
+        new(){Id="name",Title=T("Name","الاسم"),Value=r=>r.Name,Cell=NameCell,Width=210,Pin="start",Editor=new(){Type="text"},Validate=(v,r)=>Convert.ToString(v)?.Trim().Length>=2?null:T("Enter a name.","أدخل اسماً.")},
+        new(){Id="email",Title=T("Email","البريد"),Value=r=>r.Email,Width=260,Editor=new(){Type="text"},Validate=(v,r)=>Convert.ToString(v)?.Contains('@')==true?null:T("Enter an email.","أدخل بريداً إلكترونياً.")},
+        new(){Id="department",Title=T("Department","القسم"),Value=r=>r.Department,Cell=DepartmentCell,Width=160,Editor=new(){Type="select",Options=Departments}},
+        new(){Id="salary",Title=T("Salary","الراتب"),Value=r=>r.Salary,Width=130,Align="end",Editor=new(){Type="number",Min=0},Validate=(v,r)=>v is decimal n&&n>=1000&&n<=1000000?null:T("Salary must be between 1,000 and 1,000,000.","يجب أن يكون الراتب بين 1,000 و1,000,000."),Format=Money,Aggregate="avg"},
+        new(){Id="startDate",Title=T("Start date","تاريخ البدء"),Value=r=>r.StartDate,Width=150,Editor=new(){Type="date"},Validate=(v,r)=>v is DateOnly date&&date<=DateOnly.FromDateTime(DateTime.Today)?null:T("Enter a date that is not in the future.","أدخل تاريخاً لا يقع في المستقبل."),Format=v=>v is DateOnly date?date.ToString("yyyy-MM-dd"):""},
+        new(){Id="quota",Title=T("Quota","الحصة"),Value=r=>r.Quota,Cell=QuotaCell,Width=150,Editor=new(){Type="number",Min=0,Max=100},Format=v=>v is null?"":$"{Math.Round(Convert.ToDecimal(v))}%",Aggregate="avg"},
+        new(){Id="remote",Title=T("Remote","عن بعد"),Value=r=>r.Remote,Width=100,Align="center",Editor=new(){Type="checkbox"},Aggregate="count"},
+        new(){Id="status",Title=T("Status","الحالة"),Value=r=>r.Status,Cell=StatusCell,Width=140,Pin="end",Editor=new(){Type="select",Options=Statuses}}
+    };
+    private IReadOnlyList<DataGridTypes.Column<Product>> ProductColumns=>new DataGridTypes.Column<Product>[]{
+        new(){Id="sku",Title="الرمز",Value=r=>r.Sku,Width=110,Pin="start"},new(){Id="name",Title="المنتج",Value=r=>r.Name,Width=170,Editor=new(){Type="text"}},new(){Id="stock",Title="المخزون",Value=r=>r.Stock,Width=110,Editor=new(){Type="number",Min=0},Aggregate="sum",Align="end"},new(){Id="price",Title="السعر",Value=r=>r.Price,Width=140,Editor=new(){Type="number",Min=0},Format=v=>v is null?"":Convert.ToDecimal(v).ToString("N0",System.Globalization.CultureInfo.GetCultureInfo("ar-IQ"))+" د.ع",Aggregate="avg",Align="end"},new(){Id="active",Title="متاح",Value=r=>r.Active,Width=90,Editor=new(){Type="checkbox"},Align="center"}
+    };
+    private DataGridTypes.Labels Labels=>Arabic?ArabicLabels:new(){Search="Search 10,000 people…"};
+    private DataGridTypes.Labels ArabicLabels=>new(){Search="بحث في الصفوف…",View="العرض",Columns="الأعمدة",Compact="مضغوط",Comfortable="مريح",Empty="لا توجد صفوف",SelectAll="تحديد جميع الصفوف",SelectRow="تحديد الصف",SortAscending="فرز تصاعدي",SortDescending="فرز تنازلي",ClearSort="إلغاء الفرز",PinStart="تثبيت في البداية",PinEnd="تثبيت في النهاية",Unpin="إلغاء التثبيت",Hide="إخفاء العمود",InvalidNumber="أدخل رقماً.",InvalidDate="أدخل تاريخاً صالحاً.",InvalidOption="اختر قيمة صالحة.",EditedRowMissing="الخلية المحررة لم تعد متاحة. احتفظنا بالمسودة.",IncreaseWidth="زيادة العرض",DecreaseWidth="تقليل العرض",MinValue=n=>$"الحد الأدنى {n}.",MaxValue=n=>$"الحد الأقصى {n}.",Rows=(n,total)=>$"{n} من {total} صف",Selected=n=>$"{n} محدد",Cell=(col,row)=>$"{col}، صف {row}",ColumnMenu=title=>$"قائمة عمود {title}",Aggregates=new Dictionary<string,string>{{"sum","المجموع"},{"avg","المتوسط"},{"min","الأدنى"},{"max","الأعلى"},{"count","العدد"}}};
+    private void EditEmployee(DataGridTypes.CellEdit<Employee> edit){employees=employees.Select(r=>r.Id==edit.Row.Id?edit.ColumnId switch {"name"=>r with{Name=Convert.ToString(edit.Value)??""},"email"=>r with{Email=Convert.ToString(edit.Value)??""},"department"=>r with{Department=Convert.ToString(edit.Value)??""},"salary"=>r with{Salary=Convert.ToDecimal(edit.Value)},"startDate"=>r with{StartDate=(DateOnly)edit.Value!},"quota"=>r with{Quota=Convert.ToDecimal(edit.Value)},"remote"=>r with{Remote=edit.Value is true},"status"=>r with{Status=Convert.ToString(edit.Value)??""},_=>r}:r).ToArray();message=T($"Updated {edit.RowId} · {edit.ColumnId}",$"تم تحديث {edit.RowId} · {edit.ColumnId}");}
+    private void EditProduct(DataGridTypes.CellEdit<Product> edit){products=products.Select(r=>r.Sku==edit.RowId?edit.ColumnId switch {"name"=>r with{Name=Convert.ToString(edit.Value)??""},"stock"=>r with{Stock=Convert.ToDecimal(edit.Value)},"price"=>r with{Price=Convert.ToDecimal(edit.Value)},"active"=>r with{Active=edit.Value is true},_=>r}:r).ToArray();}
+    private void DeleteEmployees(){employees=employees.Where(x=>!selection.Contains(x.Id.ToString(System.Globalization.CultureInfo.InvariantCulture))).ToArray();selection=new HashSet<string>();}
+}

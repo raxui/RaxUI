@@ -1,7 +1,7 @@
 // SheenUI DropdownMenu: positioning and keyboard navigation for the popover menu (ADR 013).
 // The popover attribute already gives the top layer, Esc, and closing on a click outside. Source-owned: edit freely.
 
-const ITEM = '[role="menuitem"]:not(:disabled)'
+const ITEM = '[role="menuitem"]:not(:disabled),[role="menuitemcheckbox"]:not(:disabled),[role="menuitemradio"]:not(:disabled)'
 const GAP = 4 // px between trigger and menu
 const MARGIN = 8 // px kept free at the viewport edges
 
@@ -89,7 +89,7 @@ export function onKeyDown(event, menu, hide = () => menu.hidePopover()) {
       if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey || !event.key.trim()) return
       const key = event.key.toLocaleLowerCase()
       const ordered = [...items.slice(index + 1), ...items.slice(0, index + 1)]
-      next = ordered.find((item) => item.textContent.trim().toLocaleLowerCase().startsWith(key))
+      next = ordered.find((item) => item.textContent.trim().replace(/^✓\s*/, "").toLocaleLowerCase().startsWith(key))
     }
   }
   if (!next) return
