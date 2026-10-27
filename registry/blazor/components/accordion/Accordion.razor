@@ -1,8 +1,20 @@
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
 @* SheenUI Accordion. Source-owned: edit freely. Native details work in static SSR. *@
 <CascadingValue Value="this">
-    <div @attributes="AdditionalAttributes" class="@($"sheen-accordion {Class}")" data-variant="@Variant" data-sheen-appearance="@Appearance">@ChildContent</div>
+    <div @ref="root" @attributes="AdditionalAttributes" class="@($"sheen-accordion {Class}")" data-variant="@Variant" data-sheen-appearance="@Appearance">@ChildContent</div>
 </CascadingValue>
 @code {
+    [Parameter] public IReadOnlyList<string>? Values { get; set; }
+    [Parameter] public EventCallback<IReadOnlyList<string>> ValuesChanged { get; set; }
+    [Parameter] public string Icon { get; set; } = "chevron";
+    private ElementReference root;
+    private IJSObjectReference? module;
+    private DotNetObjectReference<Accordion>? self;
+    [JSInvokable] public async Task SetValues(string[] values){Values=Multiple?values:values.Take(1).ToArray();await ValuesChanged.InvokeAsync(Values);}
+    protected override async Task OnAfterRenderAsync(bool firstRender){module??=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/Accordion/Accordion.razor.js");self??=DotNetObjectReference.Create(this);await module.InvokeVoidAsync("sync",root,self,Values);}
+    public async ValueTask DisposeAsync(){if(module is null)return;try{await module.InvokeVoidAsync("dispose",root);await module.DisposeAsync();}catch(JSDisconnectedException){}self?.Dispose();}
     [Parameter] public bool Multiple { get; set; }
     [Parameter] public string Name { get; set; } = $"sheen-accordion-{Guid.NewGuid():N}";
     [Parameter] public string Variant { get; set; } = "default";

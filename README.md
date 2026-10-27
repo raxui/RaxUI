@@ -269,7 +269,7 @@ the input through a native label. Built-in icons are inline Lucide SVG (ISC).
 | `Input` | `Type="text"` (also email, password, number, search), `StartIcon`, `EndIcon`, `Clearable=false`, `ClearLabel="Clear"`, `ShowLabel="Show password"`, `HideLabel="Hide password"`, `Size="default"` (sm/lg), `Variant="outline"` (filled/glass alias) |
 | `NumberInput<TValue>` | Typed numeric binding through `InputNumber<TValue>`; nullable numbers supported. `Input Type="number"` instead binds a string. |
 | `InputGroup` | `ChildContent`, `AutoAdvance=false`, `Orientation="horizontal"` (vertical). Each `InputGroupItem` has its own binding, `Class`, and native attributes such as maxlength, id and aria-label. |
-| `Textarea` | `AutoResize=false`, `MinRows=3`, `MaxRows=10` |
+| `Textarea` | `AutoResize=false`, `MinRows=3`, `MaxRows=10`, `Variant="filled"`, `Invalid`, `ShowCount`, `MaxLength`, `LimitLabel="Character limit reached"`, `Footer`, `FooterEnd`, `WrapperClass`, `OnInput`, `OnKeyDown`. Counter requires a positive MaxLength. |
 | `Checkbox` | `Indeterminate=false`, `IndeterminateChanged` / `@bind-Indeterminate`. Mixed state uses role checkbox and aria-checked=mixed; interactive activation clears mixed state. |
 | `RadioGroup<TValue>` | `ChildContent`, `Orientation="vertical"` (horizontal). `RadioGroupItem<TValue>` takes `Value`, `Class` and native attributes. |
 | `Switch` | Boolean binding; native checkbox with role switch. |
@@ -281,6 +281,12 @@ All root controls accept `Appearance` (default/flat/glass, unset inherits),
 joined-input groups apply Field's identity to a native fieldset, whose disabled
 state disables its children. Give each member a separate label or aria-label;
 the group's ID must not be copied onto every member.
+
+Textarea binds on each input event while retaining EditContext validation and
+static SSR form names. Footer slots and the character ring use the shared React
+styles; auto-grow and immediate ring updates require an interactive render mode.
+The [portable Textarea examples](examples/blazor/textarea/README.md) mirror the
+React playground: composer, validation, plain, filled/counter, disabled and RTL.
 
 Password visibility, clearing, textarea auto-grow, and joined-input enhancements
 require an interactive render mode such as `@rendermode InteractiveServer`.
@@ -1229,6 +1235,11 @@ shared theme without new runtime packages. See the [API and SSR boundary](docs/b
 [React-equivalent examples](examples/blazor/data/README.md) and
 [virtualization comparison](docs/blazor-data-virtualization.md).
 
-### Blazor QRCode and Carousel
 
-`sheenui add qr-code` generates styled, downloadable SVG/Canvas/Image QR codes in C#; `sheenui add carousel` installs local Embla-powered motion, autoplay, fade and scale. Both include React-equivalent English/Arabic examples, static SSR and .NET 8/9/10 coverage. See [the behavior contract](docs/blazor-qr-carousel.md), [examples](examples/blazor/media/), and [third-party source policy](docs/adr/020-third-party-source.md).
+## Blazor examples matching React
+
+The reusable samples now cover upload queues/photo grids/CV validation, Badge counters/removal, Avatar groups, Timeline layouts, controlled Accordion settings/cards, Pagination layouts, validated Stepper flows and complete Navbar/Sidebar/Navigation Menu frames. See [the component behavior notes](docs/blazor-upload-and-profile-examples.md) and `examples/blazor/` for installation requirements. Sortable overlays/slots remain visible in Glass containers, and pinned DataGrid cells cover scrolling content in both directions.
+
+### Blazor Chat and SpeedDial
+
+`sheenui add chat` and `sheenui add speed-dial` install source-owned components with shared theme CSS and no new packages. English/Arabic examples cover message delivery/retry/typing/scrolling and labelled, directional and controlled-hover actions. See [the contract and SSR requirements](docs/blazor-advanced-part1.md) and [examples](examples/blazor/advanced/).

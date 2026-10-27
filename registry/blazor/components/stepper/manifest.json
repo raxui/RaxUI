@@ -19,7 +19,21 @@
       "destination": "components",
       "target": "Stepper/Stepper.razor",
       "type": "razor",
-      "sha256": "96ecf77d60b1b96e3ec992cbe45bf0c44878f746c3043d0667cd25fcc1d5e7e7"
+      "sha256": "a296127158a0b5959317dc886d149035cd8a34689ab1767b4ce1029753da3f95"
+    },
+    {
+      "source": "StepperPanel.razor",
+      "destination": "components",
+      "target": "Stepper/StepperPanel.razor",
+      "type": "razor",
+      "sha256": "af4f93efc5aab7e0ba743816e0abd4c6380d51b3bb76c3a4ccc428b5c739286c"
+    },
+    {
+      "source": "Stepper.razor.js",
+      "destination": "components",
+      "target": "Stepper/Stepper.razor.js",
+      "type": "js",
+      "sha256": "0770fc2611066c268637b728d2a84842f2c4413a026252b7ca97da248b9386b1"
     }
   ]
 }

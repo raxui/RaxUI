@@ -103,11 +103,11 @@
 }
 
 .sheen-grid-row:hover > .sheen-grid-cell:not([data-active]) {
-  background-color: rgba(var(--bs-emphasis-color-rgb), 0.025);
+  background-color: color-mix(in srgb, var(--bs-emphasis-color) 2.5%, var(--sheen-grid-surface));
 }
 
 .sheen-grid-row[data-selected] > .sheen-grid-cell {
-  background-color: rgba(var(--sheen-grid-active-rgb), 0.07);
+  background-color: color-mix(in srgb, rgb(var(--sheen-grid-active-rgb)) 7%, var(--sheen-grid-surface));
 }
 
 .sheen-grid-cell[data-active],
@@ -144,7 +144,7 @@
 
 @keyframes sheen-grid-flash {
   0%, 30% {
-    background-color: rgba(var(--bs-success-rgb), 0.2);
+    background-color: color-mix(in srgb, rgb(var(--bs-success-rgb)) 20%, var(--sheen-grid-surface));
   }
 }
 .sheen-grid-editor-input {
@@ -345,6 +345,7 @@
 
 .sheen-grid-cell[data-pinned],
 .sheen-grid-hcell[data-pinned] {
+  z-index: 4;
   background-color: var(--sheen-grid-surface);
 }
 

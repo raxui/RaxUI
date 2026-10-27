@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/pagination.css",
       "type": "css",
-      "sha256": "02bfe243a59f46af5186f9a834f932d171adcdba4653b90f1ab07c4fca6a3320"
+      "sha256": "3e30d1da8f84280ee9c38da33a17a71e30691fc40c3962348b819567bc20b160"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Pagination/Pagination.razor",
       "type": "razor",
-      "sha256": "5a5d6977fd6205197227bec1b27105ce0e736ba5cd08b7d0abaef98c8281d8cf"
+      "sha256": "accbb86168ee220958bbe19f1058126ba91c9d3ab5cc941fd98eaa0c9532b222"
     },
     {
       "source": "Pagination.razor.js",

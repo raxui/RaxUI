@@ -1,0 +1,18 @@
+@typeparam TItem
+<div @attributes="AdditionalAttributes" class="@($"sheen-avatar-group {Class}")" role="group" aria-label="@Label">
+    @for(var i=0;i<Math.Min(Max,Items.Count);i++){var item=Items[i];<Avatar @key="GetId(item)" Name="@GetName(item)" Src="@GetImage?.Invoke(item)" Size="@Size" title="@GetName(item)" style="@($"--sheen-avatar-i:{i}")" />}
+    @if(Items.Count>Max){<Avatar Size="@Size" Class="sheen-avatar-more" FallbackLabel="@(MoreLabel?.Invoke(Items.Count-Max)??$"{Items.Count-Max} more members")" title="@string.Join(", ",Items.Skip(Max).Select(GetName))" style="@($"--sheen-avatar-i:{Max}")">+@(Items.Count-Max)</Avatar>}
+</div>
+@code {
+    [Parameter,EditorRequired] public IReadOnlyList<TItem> Items { get; set; }=Array.Empty<TItem>();
+    [Parameter,EditorRequired] public Func<TItem,string> GetName { get; set; }=default!;
+    [Parameter] public Func<TItem,string> GetId { get; set; }=item=>Convert.ToString(item)??"";
+    [Parameter] public Func<TItem,string?>? GetImage { get; set; }
+    [Parameter] public int Max { get; set; }=5;
+    [Parameter] public string Size { get; set; }="default";
+    [Parameter] public string Label { get; set; }="Members";
+    [Parameter] public Func<int,string>? MoreLabel { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes { get; set; }
+    protected override void OnParametersSet(){if(Max<1)throw new ArgumentOutOfRangeException(nameof(Max));ArgumentNullException.ThrowIfNull(GetName);}
+}

@@ -23,7 +23,7 @@
       "source": "theme/scss/components/_accordion.scss",
       "target": "styles/sheenui/components/_accordion.scss",
       "type": "scss",
-      "sha256": "be5896f2d4584ee5f7aceb7de5cab4b4e62f10946fe6495ce61e7cb5bca7c157"
+      "sha256": "2ddf2a8682401a043b9ad0598b1885b9a27301c79b7d567757665939535cfc96"
     }
   ]
 }

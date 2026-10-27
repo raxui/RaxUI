@@ -1,0 +1,16 @@
+@page "/textarea-examples"
+@rendermode InteractiveServer
+<div id="textarea-theme" data-sheen-appearance="@appearance" data-bs-theme="@mode" dir="@direction" style="padding:1rem">
+<label>Appearance<select id="textarea-appearance" @bind="appearance"><option>default</option><option>flat</option><option>glass</option></select></label>
+<label>Mode<select id="textarea-mode" @bind="mode"><option>light</option><option>dark</option></select></label>
+<label>Direction<select id="textarea-direction" @bind="direction"><option>ltr</option><option>rtl</option></select></label>
+<h1>Textarea examples</h1><TextareaExamples Arabic='@(direction == "rtl")' />
+<EditForm Context="formContext" Model="Model" FormName="textarea-example-form" method="post" OnValidSubmit="Submit"><DataAnnotationsValidator /><Field Id="mapped-textarea" For="@(() => Model!.Notes)"><FieldLabel>Mapped notes</FieldLabel><Textarea @bind-Value="Model!.Notes" /><FieldError /></Field><button type="submit">Submit notes</button></EditForm><output id="textarea-form-result">@result</output>
+</div>
+@code {
+    private string appearance = "default", mode = "light", direction = "ltr", result = "";
+    [SupplyParameterFromForm] public TextareaModel? Model { get; set; }
+    protected override void OnInitialized() => Model ??= new();
+    private void Submit() => result = Model!.Notes ?? "";
+    public sealed class TextareaModel { [System.ComponentModel.DataAnnotations.Required] [System.ComponentModel.DataAnnotations.MinLength(5)] public string? Notes { get; set; } = "Initial notes"; }
+}

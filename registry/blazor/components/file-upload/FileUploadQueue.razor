@@ -1,0 +1,162 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @ref="root" class="@($"sheen-queue-upload {Class}")" data-variant="@Variant" data-layout="@Layout" data-disabled="@(Disabled ? "" : null)" data-sheen-appearance="@Appearance">
+    <label for="@Id" class="sheen-queue-upload-zone" tabindex="@(Disabled ? -1 : 0)" role="button" aria-label="@ZoneLabel" aria-describedby="@(Id + "-hint")" aria-disabled="@Disabled.ToString().ToLowerInvariant()">
+        <span class="sheen-queue-upload-zone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg></span>
+        <span class="sheen-queue-upload-zone-text"><span class="sheen-queue-upload-zone-title">@(Title ?? (Variant == "compact" ? Labels.Compact : Labels.Title)) @if(Title is null && Variant != "compact"){@(" ")<span class="sheen-queue-upload-browse">@Labels.Browse</span>}</span><span class="sheen-queue-upload-zone-hint" id="@(Id + "-hint")">@(Hint ?? $"{Accept ?? Labels.AnyFile} · {Labels.UpTo} {FormatBytes(MaxSize)} · {MaxFiles} {Labels.MaxFiles}")</span></span>
+    </label>
+    @foreach(var batch in batches)
+    {
+        <span @key="batch" data-upload-batch="@batch" hidden="@(batch != generation)"><InputFile @attributes="InputAttributes(batch)" OnChange="args=>Selected(args,batch)" accept="Accept" multiple="@(MaxFiles > 1)" class="sheen-queue-upload-input" /></span>
+    }
+    @if(error is not null){<div class="sheen-queue-upload-rejections" role="alert"><span class="flex-fill">@error</span><button type="button" class="btn btn-sm btn-link" aria-label="@Labels.Dismiss" @onclick="()=>error=null">×</button></div>}
+    @if(entries.Count > 0)
+    {
+        <div class="sheen-queue-upload-files"><div class="sheen-queue-upload-summary"><span>@entries.Count @Labels.Files · @FormatBytes(entries.Sum(x=>x.File.Size))</span><button type="button" class="btn btn-link" disabled="@Disabled" @onclick="Clear">@Labels.RemoveAll</button></div>
+        <ul class="sheen-queue-upload-list">@foreach(var entry in entries){<FileUploadItem @key="entry.Id" Entry="entry" Labels="Labels" Grid="@(Layout == "grid")" Disabled="Disabled" OnRemove="()=>Remove(entry)" OnCancel="()=>Cancel(entry)" OnRetry="()=>Retry(entry)" />}</ul></div>
+    }
+    <span class="visually-hidden" role="status" aria-live="polite" aria-atomic="true">@announcement</span>
+</div>
+@code {
+    [Parameter] public IReadOnlyList<IBrowserFile> Value { get; set; } = Array.Empty<IBrowserFile>();
+    [Parameter] public EventCallback<IReadOnlyList<IBrowserFile>> ValueChanged { get; set; }
+    [Parameter] public string? Accept { get; set; }
+    [Parameter] public long MaxSize { get; set; } = 10 * 1024 * 1024;
+    [Parameter] public int MaxFiles { get; set; } = 1;
+    [Parameter] public string Variant { get; set; } = "dropzone";
+    [Parameter] public string Layout { get; set; } = "list";
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Hint { get; set; }
+    [Parameter] public Text Labels { get; set; } = new();
+    [Parameter] public Func<IBrowserFile, UploadContext, Task>? Upload { get; set; }
+    [Parameter] public Func<IBrowserFile, string?>? Preview { get; set; }
+    [Parameter] public EventCallback<IBrowserFile> OnUploaded { get; set; }
+    [Parameter] public EventCallback<string> OnError { get; set; }
+    [Parameter] public string? Appearance { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    public sealed record UploadContext(CancellationToken CancellationToken, Action<double> OnProgress);
+    public sealed class Entry(IBrowserFile file)
+    {
+        public string Id { get; } = Guid.NewGuid().ToString("N");
+        public IBrowserFile File { get; } = file;
+        public int Batch { get; init; } = -1;
+        public int Index { get; init; }
+        public string Status { get; set; } = "success";
+        public double Percent { get; set; }
+        public string? Preview { get; set; }
+        public string? Error { get; set; }
+        public CancellationTokenSource? Cancellation { get; set; }
+    }
+    public sealed class Text
+    {
+        public string Title { get; init; } = "Drag and drop files here or";
+        public string Browse { get; init; } = "browse";
+        public string Compact { get; init; } = "Attach files";
+        public string AnyFile { get; init; } = "Any file";
+        public string UpTo { get; init; } = "up to";
+        public string MaxFiles { get; init; } = "files max";
+        public string Files { get; init; } = "files";
+        public string Remove { get; init; } = "Remove";
+        public string RemoveAll { get; init; } = "Remove all";
+        public string Cancel { get; init; } = "Cancel upload";
+        public string Retry { get; init; } = "Retry";
+        public string Dismiss { get; init; } = "Dismiss";
+        public string Queued { get; init; } = "Queued…";
+        public string Uploading { get; init; } = "Uploading…";
+        public string Success { get; init; } = "Uploaded";
+        public string Cancelled { get; init; } = "Upload cancelled";
+        public string Failed { get; init; } = "Upload failed";
+        public string RejectType { get; init; } = "This file type is not allowed.";
+        public string RejectLarge { get; init; } = "This file is too large.";
+        public string RejectMany { get; init; } = "Too many files selected.";
+        public string Added { get; init; } = "Files added";
+    }
+    public static string FormatBytes(long size) => size < 1024 ? $"{size} B" : size < 1024 * 1024 ? $"{size / 1024d:0.#} kB" : $"{size / (1024d * 1024):0.#} MB";
+    private readonly List<Entry> entries = new();
+    private readonly List<int> batches = new() { 0 };
+    private readonly List<string> released = new();
+    private readonly string autoId = $"sheen-upload-{Guid.NewGuid():N}";
+    private int generation, running;
+    private bool disposed;
+    private string? error, announcement;
+    private ElementReference root;
+    private IJSObjectReference? module;
+    private string ZoneLabel=>AdditionalAttributes?.TryGetValue("aria-label",out var label)==true?Convert.ToString(label)!:Title??Labels.Title;
+    private string Id => AdditionalAttributes?.TryGetValue("id", out var id) == true ? Convert.ToString(id)! : autoId;
+    private bool Disabled => AdditionalAttributes?.TryGetValue("disabled", out var disabled) == true && disabled is not (null or false);
+    private Dictionary<string, object> InputAttributes(int batch)
+    {
+        var attrs = AdditionalAttributes is null ? new Dictionary<string, object>() : new(AdditionalAttributes);
+        attrs["id"] = batch == generation ? Id : $"{Id}-batch-{batch}";
+        attrs["disabled"] = Disabled;
+        return attrs;
+    }
+    protected override void OnParametersSet()
+    {
+        if(MaxFiles < 1 || MaxSize < 0) throw new ArgumentOutOfRangeException(nameof(MaxFiles));
+        if(Variant is not ("compact" or "dropzone") || Layout is not ("grid" or "list")) throw new ArgumentException("Invalid upload variant or layout.");
+        foreach(var entry in entries.Where(x=>!Value.Any(f=>ReferenceEquals(f,x.File))).ToArray()) Forget(entry);
+        foreach(var file in Value) if(!entries.Any(x=>ReferenceEquals(x.File,file))) entries.Add(new(file) { Preview=Preview?.Invoke(file) });
+    }
+    private bool Accepts(IBrowserFile file) => string.IsNullOrWhiteSpace(Accept) || Accept.Split(',').Where(x=>!string.IsNullOrWhiteSpace(x)).Any(raw=>
+    {
+        var rule=raw.Trim(); return rule.StartsWith('.') ? file.Name.EndsWith(rule,StringComparison.OrdinalIgnoreCase) : rule.EndsWith("/*") ? file.ContentType.StartsWith(rule[..^1],StringComparison.OrdinalIgnoreCase) : file.ContentType.Equals(rule,StringComparison.OrdinalIgnoreCase);
+    });
+    private async Task Selected(InputFileChangeEventArgs args,int batch)
+    {
+        if(Disabled || disposed || module is null) return;
+        var previews=await module.InvokeAsync<string?[]>("capture",root,batch);
+        var selected=args.GetMultipleFiles(args.FileCount);
+        var rejected=new List<string>();
+        var replaced=false;
+        for(var index=0;index<selected.Count;index++)
+        {
+            var file=selected[index]; var preview=previews.ElementAtOrDefault(index);
+            var reason=!Accepts(file)?Labels.RejectType:file.Size>MaxSize?Labels.RejectLarge:(MaxFiles>1||replaced)&&entries.Count>=MaxFiles?Labels.RejectMany:null;
+            var duplicate=entries.Any(x=>x.File.Name==file.Name&&x.File.Size==file.Size&&x.File.LastModified==file.LastModified);
+            if(reason is not null || duplicate){if(preview is not null)released.Add(preview);if(reason is not null)rejected.Add($"{file.Name}: {reason}");continue;}
+            if(MaxFiles==1){foreach(var entry in entries.ToArray())Forget(entry);replaced=true;}
+            entries.Add(new(file){Batch=batch,Index=index,Preview=preview,Status=Upload is null?"success":"queued"});
+        }
+        generation++; batches.Add(generation);
+        error=rejected.Count==0?null:string.Join(" ",rejected); announcement=Labels.Added;
+        await Changed(); if(error is not null) await OnError.InvokeAsync(error); Pump();
+    }
+    private async Task Changed(){Value=entries.Select(x=>x.File).ToArray();await ValueChanged.InvokeAsync(Value);}
+    private void Forget(Entry entry){entry.Cancellation?.Cancel();if(entry.Preview?.StartsWith("blob:",StringComparison.Ordinal)==true)released.Add(entry.Preview);entries.Remove(entry);}
+    private async Task Remove(Entry entry){if(Disabled)return;Forget(entry);announcement=$"{Labels.Remove}: {entry.File.Name}";await Changed();Pump();}
+    private async Task Clear(){if(Disabled)return;foreach(var entry in entries.ToArray())Forget(entry);error=null;announcement=Labels.RemoveAll;await Changed();}
+    private void Cancel(Entry entry){if(Disabled)return;entry.Status="cancelled";entry.Cancellation?.Cancel();announcement=$"{Labels.Cancelled}: {entry.File.Name}";}
+    private void Retry(Entry entry){if(Disabled||entry.Cancellation is not null)return;entry.Status="queued";entry.Error=null;entry.Percent=0;Pump();}
+    private void Pump()
+    {
+        if(disposed||Disabled||Upload is null)return;
+        while(running<3 && entries.FirstOrDefault(x=>x.Status=="queued") is {} entry){running++;entry.Status="uploading";entry.Cancellation=new();_ = Run(entry,entry.Cancellation);}
+    }
+    private async Task Run(Entry entry,CancellationTokenSource cancellation)
+    {
+        try
+        {
+            await Upload!(entry.File,new(cancellation.Token,percent=>{if(!double.IsFinite(percent))return;_ = InvokeAsync(()=>{if(!disposed&&entries.Contains(entry)&&!cancellation.IsCancellationRequested){entry.Percent=Math.Clamp(percent,0,100);StateHasChanged();}});}));
+            cancellation.Token.ThrowIfCancellationRequested();
+            if(!disposed&&entries.Contains(entry)){entry.Percent=100;entry.Status="success";announcement=$"{Labels.Success}: {entry.File.Name}";await OnUploaded.InvokeAsync(entry.File);}
+        }
+        catch(OperationCanceledException) when(cancellation.IsCancellationRequested){if(entries.Contains(entry))entry.Status="cancelled";}
+        catch(Exception ex){if(!disposed&&entries.Contains(entry)){entry.Status="error";entry.Error=ex.Message;announcement=$"{Labels.Failed}: {entry.File.Name}";}}
+        finally{entry.Cancellation=null;cancellation.Dispose();running--;if(!disposed)await InvokeAsync(()=>{Pump();StateHasChanged();});}
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        module??=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/FileUpload/FileUploadQueue.razor.js");
+        await module.InvokeVoidAsync("sync",root,generation,entries.Where(x=>x.Batch>=0).Select(x=>new{batch=x.Batch,index=x.Index}),released.ToArray(),autoId);released.Clear();
+        batches.RemoveAll(batch=>batch!=generation&&!entries.Any(x=>x.Batch==batch));
+    }
+    public async ValueTask DisposeAsync()
+    {
+        disposed=true;foreach(var entry in entries)entry.Cancellation?.Cancel();
+        if(module is null)return;try{await module.InvokeVoidAsync("dispose",autoId);await module.DisposeAsync();}catch(JSDisconnectedException){}
+    }
+}
