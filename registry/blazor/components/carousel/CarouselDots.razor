@@ -1,0 +1,7 @@
+<div @attributes="AdditionalAttributes" class="sheen-carousel-dots @Class" data-variant="@Variant">@for(var i=0;i<Carousel.SnapCount;i++){<button type="button" class="sheen-carousel-dot" data-carousel-index="@i" aria-label="@Carousel.GoToLabel(i)"><span class="sheen-carousel-dot-progress" style="display:none"></span></button>}</div>
+@code {
+ [CascadingParameter] public Carousel Carousel {get;set;}=default!;
+ [Parameter] public string Variant {get;set;}="default";
+ [Parameter] public string? Class {get;set;}
+ [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes {get;set;}
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "name": "qr-code",
+  "version": "0.1.0",
+  "description": "Source-owned qr-code matching React (ADR 020).",
+  "dependencies": [
+    "button"
+  ],
+  "assets": [
+    {
+      "source": "styles/components/qr-code.css",
+      "destination": "styles",
+      "target": "components/qr-code.css",
+      "type": "css",
+      "sha256": "11337839ccddefd444c22a11e669077a1a5bfd7bf4fd07e6c59f7e2020992272"
+    }
+  ],
+  "files": [
+    {
+      "source": "QRCode.razor",
+      "destination": "components",
+      "target": "QRCode/QRCode.razor",
+      "type": "razor",
+      "sha256": "e496f03b419cbf22350f7082193fcac2441c2790c636a35913a4a49e8f936850"
+    },
+    {
+      "source": "QRCode.razor.js",
+      "destination": "components",
+      "target": "QRCode/QRCode.razor.js",
+      "type": "js",
+      "sha256": "ec8e9e7cdb532af3fa9fb863281544371acf0a6d29613456895145e511ec8301"
+    },
+    {
+      "source": "QrCodeDrawing.cs",
+      "destination": "components",
+      "target": "QRCode/QrCodeDrawing.cs",
+      "type": "cs",
+      "sha256": "1f6d0182a2d1a1231e6776309311d31de88e2ec7d4345104f8accb95ed1e8a8e"
+    },
+    {
+      "source": "QrCodeEncoder.cs",
+      "destination": "components",
+      "target": "QRCode/QrCodeEncoder.cs",
+      "type": "cs",
+      "sha256": "4affb231bbc3c8fe82df21a7d6c8d79bb0149f054167af5e770788aaa9a8f3c2"
+    }
+  ]
+}

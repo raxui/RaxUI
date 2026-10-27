@@ -23,7 +23,7 @@ public class EmbeddedRegistry
     // the app's wwwroot/app.css (ADR 008).
     private static readonly Dictionary<string, (string[] Types, int Segments)> ComponentRules = new()
     {
-        [ComponentsDestination] = (["razor", "isolated-css", "js"], 2),
+        [ComponentsDestination] = (["razor", "isolated-css", "js", "cs"], 2),
     };
     private static readonly Dictionary<string, (string[] Types, int Segments)> StarterRules = new()
     {
