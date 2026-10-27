@@ -1,6 +1,0 @@
-@inject Toaster.ToastService Toasts
-@code {
-    [CascadingParameter(Name = "PanelExamplesArabic")] public bool Arabic { get; set; }
-    protected string T(string english, string arabic) => Arabic ? arabic : english;
-    protected void Notify(string english, string arabic) => Toasts.Show(T(english, arabic), "success");
-}
