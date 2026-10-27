@@ -6,7 +6,9 @@
   "dependencies": [
     "field",
     "input",
-    "popover"
+    "popover",
+    "command",
+    "input-group"
   ],
   "assets": [
     {
@@ -14,7 +16,7 @@
       "destination": "styles",
       "target": "components/combobox.css",
       "type": "css",
-      "sha256": "8440ee33f6c58df62d83b99194d17f4ce9449896338df8e95817c1451c7f9f09"
+      "sha256": "aa0e7467baef4f971511fe310d7a1aa56077e52a4611bb2194f48fd8aefc8c9f"
     }
   ],
   "files": [
@@ -23,7 +25,7 @@
       "destination": "components",
       "target": "Combobox/Combobox.razor",
       "type": "razor",
-      "sha256": "6423c1f21082431dc354b99215fc509022b142664a4f4306ffd317d38194f770"
+      "sha256": "46ea5df95db66453ce2ab4fee0c5982e1a48ee953a31414deb869b3b2a9e63b0"
     }
   ]
 }

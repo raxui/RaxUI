@@ -184,3 +184,12 @@
 
 select.sheen-select-trigger { display: block; }
 @media (prefers-reduced-motion: reduce) { .sheen-select-content { animation: none !important; } }
+
+// Native form control remains the SSR fallback; interactive Blazor uses the same choice surface.
+.sheen-blazor-select > [hidden] { display: none !important; }
+.sheen-blazor-select > span > .sheen-select-trigger { width: 100%; }
+.sheen-blazor-select-content[popover] { position: fixed; padding: 0; margin: 0; min-width: min(var(--radix-popover-trigger-width, 8rem), calc(100vw - 1rem)); max-width: calc(100vw - 1rem); }
+.sheen-blazor-select-content .sheen-select-viewport { max-height: min(18rem, calc(var(--radix-popover-content-available-height, 21rem) - 3rem)); overflow-y: auto; outline: none; }
+
+.sheen-blazor-select-content .sheen-select-scroll-button { width: 100%; border: 0; background: none; }
+.sheen-blazor-select-content .sheen-select-scroll-button[hidden] { display: none; }

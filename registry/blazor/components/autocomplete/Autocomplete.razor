@@ -1,84 +1,167 @@
-@* SheenUI Autocomplete. Source-owned: edit freely. Native input/datalist posts in static SSR; enhanced async suggestions need interactivity. *@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
 @inherits InputBase<string>
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<input @ref="_input" @attributes="ControlAttributes" type="text" name="@NameAttributeValue" class="@($"form-control sheen-input {CssClass} {Class}")"
-       data-sheen-appearance="@Appearance" value="@CurrentValueAsString" @oninput="Changed" @onfocus="Focused"
-       role="@(_interactive ? "combobox" : null)" aria-autocomplete="@(_interactive ? "list" : null)"
-       aria-expanded="@(_interactive ? (_open ? "true" : "false") : null)" aria-controls="@(_interactive ? _autoId + "-list" : null)"
-       list="@(!_interactive ? _autoId + "-datalist" : null)" autocomplete="off" />
-@if (!_interactive)
+@if (Rich && !_interactive)
+{
+    <InputSelect TValue="string" @attributes="ControlAttributes" class="form-select" Value="CurrentValue" ValueChanged="NativeSelected" ValueExpression="ValueExpression">
+        <option value="">@Placeholder</option>
+        @foreach (var option in Options ?? Array.Empty<Option>()) { <option value="@option.Value" disabled="@option.Disabled">@option.Label</option> }
+    </InputSelect>
+}
+<div class="sheen-autocomplete @WrapperClass" data-loading="@(Busy ? "" : null)" data-sheen-appearance="@Appearance" hidden="@(Rich && !_interactive)">
+    @if (Rich && _interactive) { <input type="hidden" name="@NameAttributeValue" value="@CurrentValueAsString" disabled="@IsDisabled" /> }
+    <input @ref="_input" @attributes="InputAttributes" type="text" name="@(!Rich ? NameAttributeValue : null)" class="@($"form-control sheen-input sheen-autocomplete-input {CssClass} {Class} {(Size == "sm" ? "form-control-sm" : Size == "lg" ? "form-control-lg" : "")}")"
+           data-sheen-appearance="@Appearance" data-variant="@Variant" value="@_text" @oninput="Changed" @onfocus="Focused" placeholder="@EffectivePlaceholder"
+           role="@(_interactive ? "combobox" : null)" aria-autocomplete="@(_interactive ? "list" : null)"
+           aria-expanded="@(_interactive ? (_open ? "true" : "false") : null)" aria-controls="@(_interactive ? _autoId + "-list" : null)"
+           list="@(!_interactive && !Rich ? _autoId + "-datalist" : null)" autocomplete="off" />
+    <span class="sheen-autocomplete-icon" aria-hidden="true">
+        <span class="sheen-autocomplete-icon-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg></span>
+        <span class="sheen-autocomplete-icon-spinner"><span class="spinner-border spinner-border-sm"></span></span>
+    </span>
+    @if (Clearable && _text.Length > 0 && !IsDisabled && !IsReadOnly)
+    { <button type="button" class="sheen-autocomplete-clear" aria-label="@ClearLabel" @onclick="Clear"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 3 6 6m0-6-6 6"/></svg></button> }
+</div>
+@if (!_interactive && !Rich)
 {
     <datalist id="@(_autoId + "-datalist")">@foreach (var suggestion in Suggestions) { <option value="@suggestion"></option> }</datalist>
 }
-else
+else if (_interactive)
 {
-    <Popover Id="@(_autoId + "-popup")" Anchor="_input" @bind-Open="_open" Role="presentation" Class="sheen-autocomplete-panel" Appearance="@Appearance">
-        <div @ref="_list" id="@(_autoId + "-list")" role="listbox" aria-label="@SuggestionsLabel" aria-busy="@(Busy ? "true" : "false")">
-            @if (!Busy && !_failed)
+    <Popover Id="@(_autoId + "-popup")" Anchor="_input" @bind-Open="_open" Role="presentation" Class="@($"sheen-autocomplete-content {ContentClass}")" Appearance="@Appearance">
+        <div @ref="_list" id="@(_autoId + "-list")" role="listbox" class="sheen-autocomplete-listbox sheen-choice-list" data-min-chars="@MinChars" aria-label="@SuggestionsLabel" aria-busy="@(Busy ? "true" : "false")">
+            <span class="sheen-choice-highlight" data-choice-highlight hidden aria-hidden="true"></span>
+            @if (!_failed)
             {
-                @foreach (var suggestion in Filtered)
+                @foreach (var option in Filtered)
                 {
-                    <div id="@OptionId(suggestion)" role="option" aria-selected="@(suggestion == CurrentValue ? "true" : "false")" class="sheen-choice-option"
-                         data-value="@suggestion" @onclick="@(() => Select(suggestion))">@suggestion</div>
+                    <div @key="option.Value" id="@OptionId(option)" role="option" aria-selected="@(option.Value == CurrentValue ? "true" : "false")" aria-disabled="@(option.Disabled || Busy ? "true" : "false")" data-disabled="@(option.Disabled ? "" : null)" class="sheen-autocomplete-option"
+                         data-value="@option.Value" @onclick="@(() => Select(option.Value))">
+                        @if (OptionTemplate is not null) { @OptionTemplate(option) }
+                        else
+                        {
+                            @if (option.Icon is not null) { <span class="sheen-autocomplete-option-icon">@option.Icon</span> }
+                            <span class="sheen-autocomplete-option-text"><span>@MatchedLabel(option.Label)</span>@if (option.Description is not null) { <span class="sheen-autocomplete-option-description">@option.Description</span> }</span>
+                        }
+                        @if (option.Value == CurrentValue) { <span class="sheen-autocomplete-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span> }
+                    </div>
                 }
             }
+            @if (Busy)
+            {
+                @if (!Filtered.Any()) { @for (var i = 0; i < 3; i++) { <div class="sheen-autocomplete-skeleton" aria-hidden="true"><span style="width:60%"></span></div> } }
+                <span role="status" class="visually-hidden">@LoadingMessage</span>
+            }
+            else if (_failed || !Filtered.Any()) { <div role="status" class="sheen-autocomplete-empty">@(_failed ? ErrorMessage : EmptyMessage)</div> }
         </div>
-        @if (Busy) { <p role="status" class="sheen-choice-empty"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> @LoadingMessage</p> }
-        else if (_failed || !Filtered.Any()) { <p role="status" class="sheen-choice-empty">@(_failed ? ErrorMessage : EmptyMessage)</p> }
     </Popover>
 }
 @code {
+    public sealed record Option(string Value, string Label, string? Description = null, RenderFragment? Icon = null, bool Disabled = false);
+    /// <summary>Omit Options for the backwards-compatible free-text Suggestions/LoadSuggestions API.</summary>
+    [Parameter] public IReadOnlyList<Option>? Options { get; set; }
+    [Parameter] public Func<string, CancellationToken, Task<IReadOnlyList<Option>>>? LoadOptions { get; set; }
     [Parameter] public IReadOnlyList<string> Suggestions { get; set; } = Array.Empty<string>();
     [Parameter] public Func<string, CancellationToken, Task<IReadOnlyList<string>>>? LoadSuggestions { get; set; }
+    [Parameter] public string? InputValue { get; set; }
+    [Parameter] public EventCallback<string> InputValueChanged { get; set; }
+    [Parameter] public EventCallback<Option?> OnSelect { get; set; }
+    [Parameter] public bool ShouldFilter { get; set; } = true;
+    [Parameter] public Func<Option, string, bool>? Filter { get; set; }
+    [Parameter] public RenderFragment<Option>? OptionTemplate { get; set; }
+    [Parameter] public int MinChars { get; set; }
+    [Parameter] public bool Clearable { get; set; } = true;
+    [Parameter] public string ClearLabel { get; set; } = "Clear search";
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string Size { get; set; } = "default";
+    [Parameter] public string Variant { get; set; } = "glass";
+    [Parameter] public string? WrapperClass { get; set; }
+    [Parameter] public string? ContentClass { get; set; }
     [Parameter] public bool Loading { get; set; }
     [Parameter] public string SuggestionsLabel { get; set; } = "Suggestions";
     [Parameter] public string LoadingMessage { get; set; } = "Loading suggestions";
     [Parameter] public string EmptyMessage { get; set; } = "No suggestions found.";
     [Parameter] public string ErrorMessage { get; set; } = "Unable to load suggestions.";
-    private IReadOnlyList<string> _results = Array.Empty<string>();
-    private IEnumerable<string> Filtered => (LoadSuggestions is null ? Suggestions.Where(s => s.Contains(CurrentValue ?? "", StringComparison.CurrentCultureIgnoreCase)) : _results).Distinct();
-    private string OptionId(string suggestion) => $"{_autoId}-option-{Filtered.ToList().IndexOf(suggestion)}";
+    private string? EffectivePlaceholder => Placeholder ?? (ControlAttributes.TryGetValue("placeholder", out var text) ? Convert.ToString(text) : null);
+    private bool Rich => Options is not null || LoadOptions is not null;
+    private IReadOnlyList<Option> _results = Array.Empty<Option>();
+    private readonly Dictionary<string, Option> _known = new();
+    private IEnumerable<Option> Source => LoadOptions is not null || LoadSuggestions is not null ? _results : Options ?? Suggestions.Distinct().Select(s => new Option(s, s)).ToArray();
+    private IEnumerable<Option> Filtered => _text.Trim().Length < MinChars ? Array.Empty<Option>() : Source.Where(o => LoadOptions is not null || LoadSuggestions is not null || !ShouldFilter || (Filter?.Invoke(o, _text) ?? ChoiceSearch.Matches(o.Label + " " + o.Description, _text)));
+    private string OptionId(Option option) => $"{_autoId}-option-{Source.ToList().FindIndex(o => o.Value == option.Value)}";
+    private string _text = "";
+    private string? _lastValue, _lastInput, _parameterValue;
+    private bool _hasParameters;
+    protected override void OnParametersSet()
+    {
+        var previousLabel = CurrentValue is not null ? _known.GetValueOrDefault(CurrentValue)?.Label : null;
+        foreach (var option in Options ?? Array.Empty<Option>()) _known[option.Value] = option;
+        if (Rich && previousLabel is not null && _text == previousLabel && CurrentValue is not null) _text = _known.GetValueOrDefault(CurrentValue)?.Label ?? _text;
+        // Parent binding can render its previous value before delivering the new value.
+        if (!_hasParameters || _parameterValue != CurrentValue)
+        {
+            _hasParameters = true; _parameterValue = CurrentValue;
+            if (_lastValue != CurrentValue) _text = Rich && CurrentValue is not null && _known.TryGetValue(CurrentValue, out var option) ? option.Label : CurrentValue ?? "";
+            _lastValue = CurrentValue;
+        }
+        if (InputValue is not null && InputValue != _lastInput) { _lastInput = InputValue; _text = InputValue; }
+    }
+    private RenderFragment MatchedLabel(string label) => builder => {
+        var index = _text.Length > 0 ? label.IndexOf(_text, StringComparison.CurrentCultureIgnoreCase) : -1;
+        if (index < 0) { builder.AddContent(0, label); return; }
+        builder.AddContent(1, label[..index]); builder.OpenElement(2, "mark"); builder.AddAttribute(3, "class", "sheen-autocomplete-match"); builder.AddContent(4, label.Substring(index, _text.Length)); builder.CloseElement(); builder.AddContent(5, label[(index + _text.Length)..]);
+    };
     private bool _interactive, _open, _pending, _failed, _disposed;
     private bool Busy => Loading || _pending;
     private ElementReference _input, _list;
     private IJSObjectReference? _module;
     private DotNetObjectReference<Autocomplete>? _self;
     private CancellationTokenSource? _request;
-    private bool IsDisabled => ControlAttributes.TryGetValue("disabled", out var value) && value is true;
+    private bool IsDisabled => ControlAttributes.TryGetValue("disabled", out var value) && value is not false && value is not null;
     private bool IsReadOnly => ControlAttributes.TryGetValue("readonly", out var value) && value is not false && value is not null;
     private async Task Changed(ChangeEventArgs args)
     {
         if (IsDisabled || IsReadOnly) return;
-        CurrentValueAsString = Convert.ToString(args.Value); _open = true;
+        _text = Convert.ToString(args.Value) ?? "";
+        _lastValue = Rich ? "" : _text; CurrentValueAsString = _lastValue;
+        await InputValueChanged.InvokeAsync(_text); _open = _text.Trim().Length >= MinChars;
         await Load();
     }
-    private async Task Focused() { if (!IsDisabled && !IsReadOnly) { _open = true; await Load(); } }
+    private async Task Clear()
+    {
+        if (IsDisabled || IsReadOnly) return;
+        _text = ""; _lastValue = ""; CurrentValueAsString = "";
+        await InputValueChanged.InvokeAsync(""); await OnSelect.InvokeAsync(null); await _input.FocusAsync();
+        _open = MinChars == 0; await Load();
+    }
+    private async Task Focused() { if (!IsDisabled && !IsReadOnly && _text.Trim().Length >= MinChars) { _open = true; await Load(); } }
     private async Task Load()
     {
         _request?.Cancel(); _request?.Dispose(); _request = new();
-        _failed = false;
-        if (LoadSuggestions is null) return;
-        var request = _request;
-        _pending = true; _results = Array.Empty<string>(); StateHasChanged();
+        _failed = false; _pending = false;
+        if ((LoadSuggestions is null && LoadOptions is null) || _text.Trim().Length < MinChars) return;
+        var request = _request; var query = _text;
+        _pending = true; StateHasChanged();
         try
         {
-            var results = await LoadSuggestions(CurrentValue ?? "", request.Token);
-            if (!request.IsCancellationRequested && !_disposed) _results = results;
+            var results = LoadOptions is not null ? await LoadOptions(query, request.Token) : (await LoadSuggestions!(query, request.Token)).Distinct().Select(s => new Option(s, s)).ToArray();
+            if (!request.IsCancellationRequested && !_disposed) { _results = results; foreach(var option in results) _known[option.Value] = option; }
         }
         catch (OperationCanceledException) when (request.IsCancellationRequested) { }
         catch (Exception) { if (!request.IsCancellationRequested && !_disposed) _failed = true; }
         finally { if (!request.IsCancellationRequested && !_disposed) { _pending = false; StateHasChanged(); } }
     }
-    [JSInvokable] public void Select(string value)
+    private async Task NativeSelected(string value) { _lastValue = value; _text = _known.GetValueOrDefault(value)?.Label ?? value; CurrentValueAsString = value; await OnSelect.InvokeAsync(_known.GetValueOrDefault(value)); }
+    [JSInvokable] public async Task Select(string value)
     {
-        if (IsDisabled || IsReadOnly || Busy || !Filtered.Contains(value)) return;
-        CurrentValueAsString = value; Close();
+        var option = Filtered.FirstOrDefault(o => o.Value == value && !o.Disabled);
+        if (IsDisabled || IsReadOnly || Busy || option is null) return;
+        _lastValue = value; _text = option.Label; CurrentValueAsString = value;
+        await InputValueChanged.InvokeAsync(_text); await OnSelect.InvokeAsync(option); Close();
     }
     [JSInvokable] public void Close() { _request?.Cancel(); _pending = false; _open = false; StateHasChanged(); }
-    [JSInvokable] public void Show() { if (!IsDisabled && !IsReadOnly) { _open = true; StateHasChanged(); } }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!_interactive) { _interactive = true; StateHasChanged(); return; }
@@ -115,6 +198,8 @@ else
             return attrs;
         }
     }
+    private Dictionary<string, object> InputAttributes { get { var attrs = ControlAttributes; if (Rich && !_interactive) attrs["id"] = ControlId + "-enhanced"; return attrs; } }
     private string ControlId => Convert.ToString(ControlAttributes["id"])!;
+
 
 }

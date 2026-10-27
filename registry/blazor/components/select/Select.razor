@@ -1,9 +1,33 @@
 @* SheenUI Select. Source-owned: edit freely. Native form behavior also works in static SSR. *@
 @using Microsoft.AspNetCore.Components.Forms
 @typeparam TValue
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+<div @ref="_root" class="sheen-blazor-select" data-sheen-appearance="@Appearance">
 <InputSelect TValue="TValue" @attributes="ControlAttributes" class="@($"form-select sheen-select-trigger {Class} {ExtraClass}".TrimEnd())"
              data-sheen-appearance="@Appearance" Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression">@ChildContent</InputSelect>
+<span @ref="_host"></span>
+</div>
 @code {
+    [Parameter] public bool Native { get; set; }
+    [Parameter] public string Size { get; set; } = "default";
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string ScrollUpLabel { get; set; } = "Scroll up";
+    [Parameter] public string ScrollDownLabel { get; set; } = "Scroll down";
+    private ElementReference _root, _host;
+    private IJSObjectReference? _module;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Select/Select.razor.js");
+        await _module.InvokeVoidAsync("sync", _root, _host, Native, Size, Placeholder, ScrollUpLabel, ScrollDownLabel);
+    }
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is null) return;
+        try { await _module.InvokeVoidAsync("dispose", _root); await _module.DisposeAsync(); }
+        catch (JSDisconnectedException) { }
+    }
+
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     /// <summary>Bound value, including EditContext validation and static SSR form mapping.</summary>
