@@ -5,7 +5,7 @@
 <label class="@($"sheen-switch sheen-switch-native {Class} {ExtraClass}".TrimEnd())" data-sheen-appearance="@Appearance">
     <InputCheckbox @attributes="Attributes" role="switch" class="sheen-switch-input"
                    Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression" />
-    <span class="sheen-switch-thumb" aria-hidden="true"></span>
+    <span class="sheen-switch-thumb" aria-hidden="true">@if (Icon is not null) { <span class="sheen-switch-icon" data-when="@(CheckedIcon is null ? null : "unchecked")">@Icon</span> }@if (CheckedIcon is not null) { <span class="sheen-switch-icon" data-when="checked">@CheckedIcon</span> }</span>
 </label>
 @code {
 
@@ -18,6 +18,10 @@
     private System.Linq.Expressions.Expression<Func<bool>> OwnValueExpression => ValueExpression ?? (_ownValueExpression ??= () => Value);
 
     [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
+    /// <summary>Icon in the thumb; it takes the "on" tint when checked.</summary>
+    [Parameter] public RenderFragment? Icon { get; set; }
+    /// <summary>Icon in the thumb when checked; Icon then shows only when unchecked.</summary>
+    [Parameter] public RenderFragment? CheckedIcon { get; set; }
     /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>
     [Parameter] public string? Appearance { get; set; }
     /// <summary>Extra CSS classes appended to the control.</summary>

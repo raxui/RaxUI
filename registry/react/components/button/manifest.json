@@ -23,7 +23,7 @@
       "source": "theme/scss/components/_button.scss",
       "target": "styles/sheenui/components/_button.scss",
       "type": "scss",
-      "sha256": "ad15e47ef1cbee512dd699971dba6ac896a28c2cfa51b86c0af8a4e0ca6ca7b7"
+      "sha256": "80835020e52ac42e78839c6d896696c7fcf64b8c90b4332f5295cf3efc11bded"
     }
   ]
 }
