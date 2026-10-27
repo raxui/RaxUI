@@ -6,6 +6,12 @@
 // the stretch and RTL are all derived from four numbers.
 // -----------------------------------------------------------------------------
 
+@mixin switch-icon-checked {
+  .sheen-switch-icon { color: rgb(var(--sheen-switch-on-rgb)); }
+  .sheen-switch-icon[data-when="checked"] { display: inline-flex; }
+  .sheen-switch-icon[data-when="unchecked"] { display: none; }
+}
+
 .sheen-switch {
   --sheen-switch-on-rgb: var(--bs-success-rgb); // iOS green; override per switch
   --sheen-switch-w: calc(var(--sheen-control-height) * 1.1);
@@ -106,6 +112,21 @@
     height: 62%;
     color: #8e8e93; // fixed grey: the thumb is white in dark mode too
   }
+
+  &[data-state="checked"] { @include switch-icon-checked; }
+}
+
+// Icons in the thumb: `icon` shows in both states; with a checked icon too, the two swap.
+// Both are rendered and CSS picks one, so it also works in static SSR and uncontrolled use.
+.sheen-switch-icon {
+  display: inline-flex;
+  width: 62%;
+  height: 62%;
+  color: #8e8e93;
+  transition: color var(--sheen-duration) ease;
+
+  svg { width: 100%; height: 100%; }
+  &[data-when="checked"] { display: none; }
 }
 
 // Blazor: the same track and thumb around a real checkbox, which covers the track invisibly (static SSR posts,
@@ -135,6 +156,7 @@
   cursor: inherit;
 
   &:checked + .sheen-switch-thumb {
+    @include switch-icon-checked;
     transform: translateX(
       calc((var(--sheen-switch-w) - 2 * var(--sheen-switch-p) - var(--sheen-switch-thumb-w)) * var(--sheen-switch-dir))
     );

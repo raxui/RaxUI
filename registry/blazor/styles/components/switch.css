@@ -80,6 +80,30 @@
   height: 62%;
   color: #8e8e93;
 }
+.sheen-switch-thumb[data-state=checked] .sheen-switch-icon {
+  color: rgb(var(--sheen-switch-on-rgb));
+}
+.sheen-switch-thumb[data-state=checked] .sheen-switch-icon[data-when=checked] {
+  display: inline-flex;
+}
+.sheen-switch-thumb[data-state=checked] .sheen-switch-icon[data-when=unchecked] {
+  display: none;
+}
+
+.sheen-switch-icon {
+  display: inline-flex;
+  width: 62%;
+  height: 62%;
+  color: #8e8e93;
+  transition: color var(--sheen-duration) ease;
+}
+.sheen-switch-icon svg {
+  width: 100%;
+  height: 100%;
+}
+.sheen-switch-icon[data-when=checked] {
+  display: none;
+}
 
 .sheen-switch-native:has(> .sheen-switch-input:checked) {
   background-color: rgb(var(--sheen-switch-on-rgb));
@@ -106,6 +130,15 @@
   appearance: none;
   opacity: 0;
   cursor: inherit;
+}
+.sheen-switch-input:checked + .sheen-switch-thumb .sheen-switch-icon {
+  color: rgb(var(--sheen-switch-on-rgb));
+}
+.sheen-switch-input:checked + .sheen-switch-thumb .sheen-switch-icon[data-when=checked] {
+  display: inline-flex;
+}
+.sheen-switch-input:checked + .sheen-switch-thumb .sheen-switch-icon[data-when=unchecked] {
+  display: none;
 }
 .sheen-switch-input:checked + .sheen-switch-thumb {
   transform: translateX(calc((var(--sheen-switch-w) - 2 * var(--sheen-switch-p) - var(--sheen-switch-thumb-w)) * var(--sheen-switch-dir)));

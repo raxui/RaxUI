@@ -741,6 +741,7 @@ public partial class GeneratedAppTests : IDisposable
             <div id="unbound">
                 <Switch id="unbound-switch" Value="true" disabled />
                 <Switch id="press-switch" Value="false" />
+                <Switch id="icon-switch" Value="false"><Icon><svg id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" /></svg></Icon><CheckedIcon><svg id="icon-moon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" /></svg></CheckedIcon></Switch>
                 <Checkbox id="unbound-check" Value="true" />
                 <Input id="unbound-input" Value="Read only" readonly />
                 <Slider id="unbound-slider" Value="30" />
@@ -905,6 +906,16 @@ public partial class GeneratedAppTests : IDisposable
         Assert.True((await thumb.BoundingBoxAsync())!.Width > restWidth * 1.15, "The thumb stretches while pressed.");
         await page.Mouse.UpAsync();
         await Assertions.Expect(page.Locator("#press-switch")).ToBeCheckedAsync();
+
+        // Thumb icons: CSS shows the unchecked icon, then swaps to the tinted checked icon.
+        await Assertions.Expect(page.Locator("#icon-sun")).ToBeVisibleAsync();
+        await Assertions.Expect(page.Locator("#icon-moon")).ToBeHiddenAsync();
+        await page.Locator("#icon-switch").FocusAsync();
+        await page.Locator("#icon-switch").PressAsync("Space");
+        await Assertions.Expect(page.Locator("#icon-switch")).ToBeCheckedAsync();
+        await Assertions.Expect(page.Locator("#icon-sun")).ToBeHiddenAsync();
+        await Assertions.Expect(page.Locator("#icon-moon")).ToBeVisibleAsync();
+        await Assertions.Expect(page.Locator("#icon-moon").Locator("xpath=..")).Not.ToHaveCSSAsync("color", "rgb(142, 142, 147)");
 
         // The React indicators around the native inputs: the check is drawn, the selected radio grows its dot.
         await Assertions.Expect(page.Locator("#unbound-check ~ .sheen-checkbox-indicator .sheen-checkbox-check")).ToHaveCSSAsync("stroke-dashoffset", "0px");

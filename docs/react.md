@@ -70,7 +70,7 @@ element to preserve appearance, mode, accent, density and direction.
 | `Textarea` | `appearance`, `variant="filled"` (outline; glass is a legacy alias of filled), `autoResize=false`, `minRows=3`, `maxRows=10`, `showCount=false`, `limitLabel="Character limit reached"`, `footer`, `footerEnd`, `invalid`, `wrapperClassName`. Counter requires maxLength. |
 | `Checkbox` | `appearance`, `size="default"` (sm/lg), `shape="square"` (circle); Radix checked/defaultChecked allow true, false or indeterminate. |
 | `RadioGroup` | `appearance`; Radix value/defaultValue, onValueChange, orientation, dir, disabled, required, name. `RadioGroupItem` takes value, appearance and size. |
-| `Switch` | `appearance`, `size="default"` (sm/lg), `loading=false` (disables changes and shows a Bootstrap spinner); checked/defaultChecked and onCheckedChange. |
+| `Switch` | `appearance`, `size="default"` (sm/lg), `loading=false` (disables changes and shows a Bootstrap spinner); `icon` in the thumb (takes the on tint when checked) and `checkedIcon` (swaps with `icon`); checked/defaultChecked and onCheckedChange. |
 | `Select` | `appearance`; Radix value/defaultValue, onValueChange, open/defaultOpen, onOpenChange, disabled, required, name and dir. |
 | `SelectTrigger` | `appearance`, `size="default"` (sm/lg), className and Radix trigger props. |
 | `SelectContent` | `appearance`, `position="popper"` (item-aligned), `sideOffset=6`, `collisionPadding=8` and Radix content props. |

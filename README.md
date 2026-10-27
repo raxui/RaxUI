@@ -272,7 +272,7 @@ the input through a native label. Built-in icons are inline Lucide SVG (ISC).
 | `Textarea` | `AutoResize=false`, `MinRows=3`, `MaxRows=10`, `Variant="filled"`, `Invalid`, `ShowCount`, `MaxLength`, `LimitLabel="Character limit reached"`, `Footer`, `FooterEnd`, `WrapperClass`, `OnInput`, `OnKeyDown`. Counter requires a positive MaxLength. |
 | `Checkbox` | `Indeterminate=false`, `IndeterminateChanged` / `@bind-Indeterminate`. Mixed state uses role checkbox and aria-checked=mixed; interactive activation clears mixed state. |
 | `RadioGroup<TValue>` | `ChildContent`, `Orientation="vertical"` (horizontal). `RadioGroupItem<TValue>` takes `Value`, `Class` and native attributes. |
-| `Switch` | Boolean binding; native checkbox with role switch. |
+| `Switch` | Boolean binding; native checkbox with role switch. `Icon` shows in the thumb (on tint when checked); `CheckedIcon` swaps with it. Works in static SSR. |
 | `Select<TValue>` | `ChildContent` containing native option/optgroup elements; typed InputSelect for static SSR; interactive themed listbox with groups, checks, typeahead and sliding highlight. Set `Native` to retain the browser picker; `Size="sm"/"lg"` and `Placeholder` are supported. |
 
 All root controls accept `Appearance` (default/flat/glass, unset inherits),
