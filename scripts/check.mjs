@@ -47,6 +47,7 @@ function checkLf(folder) {
 for (const tree of ["registry", "theme"]) checkLf(path.join(root, tree))
 
 run("Shared CSS is current", process.execPath, ["theme/build-css.mjs", "--check"])
+run("Blazor TextEditor engine reproduces from package-lock.json", process.execPath, ["scripts/build-text-editor.mjs", "--check"])
 npm("TypeScript", ["run", "typecheck"])
 npm("React, CLI, registry, and theme tests", ["test"])
 npm("React CLI crash/restart recovery", ["run", "test:recovery"])

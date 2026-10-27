@@ -17,6 +17,7 @@
     <Compile Include="../../registry/blazor/components/qr-code/QrCodeEncoder.cs" Link="QrCodeEncoder.cs" />
     <Compile Include="../../registry/blazor/components/qr-code/QrCodeDrawing.cs" Link="QrCodeDrawing.cs" />
     <Compile Include="../../registry/blazor/components/ai/AIMarkdownParser.cs" Link="AIMarkdownParser.cs" />
+    <Compile Include="../../registry/blazor/components/text-editor/TextEditorHtml.cs" Link="TextEditorHtml.cs" />
   </ItemGroup>
 
   <ItemGroup>
