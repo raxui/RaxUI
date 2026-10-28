@@ -500,6 +500,19 @@
   .sheen-sidebar[data-collapsible="icon"] & > svg:last-child:not(:first-child) {
     opacity: 0;
   }
+
+  // Folded to icons: the label takes no room, so the leading icon or avatar centres in whatever
+  // rail width the variant leaves (the floating and inset rails are narrower than the icon column).
+  .sheen-sidebar[data-collapsible="icon"] & {
+    justify-content: center;
+    gap: 0;
+    padding-inline: 0;
+  }
+
+  .sheen-sidebar[data-collapsible="icon"] & > span:last-of-type {
+    flex: 0 0 0;
+    min-width: 0;
+  }
 }
 
 .sheen-sidebar-menu-action {

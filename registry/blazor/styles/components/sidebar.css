@@ -430,6 +430,15 @@
 .sheen-sidebar[data-collapsible=icon] .sheen-sidebar-menu-button > span:last-of-type, .sheen-sidebar[data-collapsible=icon] .sheen-sidebar-menu-button > svg:last-child:not(:first-child) {
   opacity: 0;
 }
+.sheen-sidebar[data-collapsible=icon] .sheen-sidebar-menu-button {
+  justify-content: center;
+  gap: 0;
+  padding-inline: 0;
+}
+.sheen-sidebar[data-collapsible=icon] .sheen-sidebar-menu-button > span:last-of-type {
+  flex: 0 0 0;
+  min-width: 0;
+}
 
 .sheen-sidebar-menu-action {
   position: absolute;

@@ -27,7 +27,7 @@
       "source": "theme/scss/components/_sidebar.scss",
       "target": "styles/sheenui/components/_sidebar.scss",
       "type": "scss",
-      "sha256": "0f2279e435bef8581d8116fa51b6bedfe9bf7518de63a015d68e336826e37411"
+      "sha256": "08e9dd17a2449912e0bcf76a78b2d51a9c5e50bc3da5c5750d4b487f73c790fb"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",
