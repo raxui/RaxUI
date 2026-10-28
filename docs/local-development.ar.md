@@ -149,6 +149,14 @@ app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 في `Program.cs` أضف الاستدعاءات الناقصة إلى التسجيل والربط الموجودين؛ لا تكررهما.
 الأداة تطبع التنبيه ولا تعدّل `Program.cs` بنفسها.
 
+### WebAssembly و Auto
+
+كل أوضاع الرندر مدعومة: Static SSR و Server و WebAssembly و Auto. في تطبيق أُنشئ
+بـ `--interactivity WebAssembly` أو `Auto`، شغّل `init` و `add` داخل مشروع
+السيرفر (المجلد الذي فيه `Components/App.razor`)، لا داخل مشروع `.Client`.
+تُنسخ المكونات إلى `SampleApp.Client/Components/UI` ليشغّلها المتصفح، وتُضاف
+`@using` إلى `_Imports.razor` في المشروعين، وتبقى الأنماط والإعدادات في مشروع السيرفر.
+
 ## 4. تجربة React مع Vite
 
 القالب التالي يستخدم TypeScript وإصداراً مجرّباً من أداة إنشاء Vite:

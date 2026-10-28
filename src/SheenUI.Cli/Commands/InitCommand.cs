@@ -31,7 +31,7 @@ public static class InitCommand
             var registry = new EmbeddedRegistry();
             var index = registry.GetIndex();
             // Read before any write; printed after a successful init.
-            var interactivityWarning = CheckInteractiveServer(workingDirectory);
+            var interactivityWarning = CheckInteractivity(workingDirectory, project);
 
             output.WriteLine($"Initializing SheenUI for project '{project.ProjectName}'...");
 
@@ -139,6 +139,8 @@ public static class InitCommand
             output.WriteLine($"  - Host links updated in: {Path.GetRelativePath(workingDirectory, project.AppRazorPath).Replace('\\', '/')}");
             if (bootstrapUpgrade != null)
                 output.WriteLine($"  - Bootstrap 5.3: {bootstrapUpgrade.Value.RelTarget}");
+            if (project.ClientDirectory != null)
+                output.WriteLine($"  - Components install into the WebAssembly client: {Path.GetRelativePath(workingDirectory, project.ClientDirectory).Replace('\\', '/')}/{config.ComponentsPath}/");
             foreach (var write in starter.Writes)
                 output.WriteLine($"  - Starter: {write.RelativePath}");
             foreach (var path in starter.Deletes)
@@ -214,10 +216,10 @@ public static class InitCommand
     }
 
     /// <summary>
-    /// The supported target is Interactive Server (ADR 002). Program.cs is the developer's code,
-    /// so init only warns when the two registrations are missing; it never edits the file.
+    /// Static SSR, Interactive Server, WebAssembly and Auto are supported (ADR 021). Program.cs is the developer's
+    /// code, so init only reports a missing or incomplete registration; it never edits the file.
     /// </summary>
-    private static string? CheckInteractiveServer(string workingDirectory)
+    private static string? CheckInteractivity(string workingDirectory, ProjectContext project)
     {
         var programPath = Path.Combine(workingDirectory, "Program.cs");
         ProjectPath.Validate(workingDirectory, programPath);
@@ -225,17 +227,24 @@ public static class InitCommand
             return null;
 
         var program = File.ReadAllText(programPath);
-        var missing = new List<string>();
-        if (!program.Contains("AddInteractiveServerComponents", StringComparison.Ordinal))
-            missing.Add("builder.Services.AddRazorComponents().AddInteractiveServerComponents();");
-        if (!program.Contains("AddInteractiveServerRenderMode", StringComparison.Ordinal))
-            missing.Add("app.MapRazorComponents<App>().AddInteractiveServerRenderMode();");
+        bool Has(string call) => program.Contains(call, StringComparison.Ordinal);
+        var server = Has("AddInteractiveServerComponents") && Has("AddInteractiveServerRenderMode");
+        var webAssembly = Has("AddInteractiveWebAssemblyComponents") && Has("AddInteractiveWebAssemblyRenderMode");
 
-        if (missing.Count == 0)
+        if (webAssembly && project.ClientDirectory == null)
+            return "Warning: Program.cs enables Interactive WebAssembly, but this project references no Blazor WebAssembly client project, " +
+                   "so components cannot run in the browser. Create the app with 'dotnet new blazor --interactivity WebAssembly' or 'Auto'.";
+        if (server || webAssembly)
             return null;
 
-        return "Warning: Program.cs does not enable Interactive Server, so components render but do not respond to clicks. " +
-               "Create the app with 'dotnet new blazor --interactivity Server', or add:" + Environment.NewLine +
+        var missing = new List<string>();
+        if (!Has("AddInteractiveServerComponents"))
+            missing.Add("builder.Services.AddRazorComponents().AddInteractiveServerComponents();");
+        if (!Has("AddInteractiveServerRenderMode"))
+            missing.Add("app.MapRazorComponents<App>().AddInteractiveServerRenderMode();");
+        return "Note: Program.cs enables no interactive render mode, so components render as static SSR: links and forms work, " +
+               "but clicks do not run C# or JavaScript. For interactivity, create the app with 'dotnet new blazor --interactivity Server' " +
+               "(or WebAssembly, or Auto), or add:" + Environment.NewLine +
                string.Join(Environment.NewLine, missing.Select(line => "  " + line));
     }
 

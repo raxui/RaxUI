@@ -23,7 +23,7 @@ Deferred:
 
 - `list`, `update`, `diff`, `remove`, `doctor`, `theme init`, and `bootstrap update`.
 - Diff generation and update workflows.
-- Static SSR-only applications, standalone WebAssembly, Interactive Auto, and other hosting models, until each is tested.
+- Static SSR-only applications, standalone WebAssembly, Interactive Auto, and other hosting models, until each is tested. ([ADR 021](021-blazor-render-modes.md) adds static SSR, WebAssembly and Auto Blazor Web Apps.)
 
 Reusable components do not hard-code `@rendermode`. The consumer selects interactivity at the page or application boundary.
 

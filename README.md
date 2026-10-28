@@ -16,6 +16,28 @@ On .NET 8, `init` upgrades the template's unmodified Bootstrap 5.1 to 5.3, which
 the theme needs ([ADR 009](docs/adr/009-dotnet-8-9-10.md)). Installed components
 run without the CLI or a registry connection.
 
+### Render modes
+
+All four Blazor Web App render modes are supported: static SSR, Interactive
+Server, Interactive WebAssembly, and Interactive Auto, per page or global
+([ADR 021](docs/adr/021-blazor-render-modes.md)). Components never set
+`@rendermode`; choose it on your page or in `App.razor`.
+
+Run `sheenui init` and `sheenui add` in the **server project** (the one with
+`Components/App.razor`). If it references a WebAssembly `.Client` project, as
+`dotnet new blazor --interactivity WebAssembly` or `Auto` creates, components
+are installed into `SampleApp.Client/Components/UI` so the browser can run them.
+Their usings are added to the `_Imports.razor` of both projects. Styles and
+configuration stay in the server project. Standalone Blazor WebAssembly apps
+(`dotnet new blazorwasm`) are not supported.
+
+```bash
+dotnet new blazor --interactivity Auto -n SampleApp
+cd SampleApp/SampleApp
+sheenui init
+sheenui add dialog
+```
+
 ## Fields and forms
 
 Install `field`, `form`, and `form-section` with `sheenui add <name>` from your
@@ -1109,6 +1131,10 @@ Register the service in **Program.cs**, before `builder.Build()` (replace
 ```csharp
 builder.Services.AddScoped<YourApp.Components.UI.Toast.Toaster.ToastService>();
 ```
+
+In a WebAssembly or Auto app the component lives in the client project: use
+`YourApp.Client.Components.UI.Toast.Toaster.ToastService` and register it in
+both the server and the client `Program.cs`. Prerendering uses the server's copy.
 
 The nested service ships in `Toaster.razor`, so it needs no package or installer
 extension. Scoped lifetime isolates Blazor Server circuits; never register it as

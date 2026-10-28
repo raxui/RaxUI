@@ -275,7 +275,7 @@ public class InstallationWorkflowTests : IDisposable
     }
 
     [Fact]
-    public void Init_warns_without_editing_when_Program_cs_lacks_interactive_server()
+    public void Init_notes_static_ssr_without_editing_when_Program_cs_enables_no_interactivity()
     {
         CreateSampleBlazorProject();
         var programPath = Path.Combine(_testDirectory, "Program.cs");
@@ -294,7 +294,7 @@ public class InstallationWorkflowTests : IDisposable
         var code = Program.Run(["init"], _testDirectory, output, error);
 
         Assert.Equal(0, code);
-        Assert.Contains("does not enable Interactive Server", output.ToString());
+        Assert.Contains("components render as static SSR", output.ToString());
         Assert.Contains(".AddInteractiveServerComponents();", output.ToString());
         Assert.Contains(".AddInteractiveServerRenderMode();", output.ToString());
         Assert.Equal(program, File.ReadAllText(programPath));
@@ -315,6 +315,59 @@ public class InstallationWorkflowTests : IDisposable
         var output = new StringWriter();
         Assert.Equal(0, Program.Run(["init"], _testDirectory, output, new StringWriter()));
         Assert.DoesNotContain("Warning", output.ToString());
+        Assert.DoesNotContain("Note: Program.cs", output.ToString());
+    }
+
+    // WebAssembly and Auto (ADR 021): the server project keeps config, lock and styles; components go to the client.
+    [Fact]
+    public void Add_and_update_install_components_into_the_WebAssembly_client_project()
+    {
+        var host = Path.Combine(_testDirectory, "TestConsumerApp");
+        var client = Path.Combine(_testDirectory, "TestConsumerApp.Client");
+        Directory.CreateDirectory(host);
+        Directory.CreateDirectory(client);
+        CreateSampleBlazorProject(host);
+        var csproj = Path.Combine(host, "TestConsumerApp.csproj");
+        File.WriteAllText(csproj, File.ReadAllText(csproj).Replace("</Project>",
+            """<ItemGroup><ProjectReference Include="..\TestConsumerApp.Client\TestConsumerApp.Client.csproj" /></ItemGroup></Project>"""));
+        File.WriteAllText(Path.Combine(host, "Program.cs"), """
+            builder.Services.AddRazorComponents().AddInteractiveWebAssemblyComponents();
+            app.MapRazorComponents<App>().AddInteractiveWebAssemblyRenderMode();
+            """);
+        File.WriteAllText(Path.Combine(client, "TestConsumerApp.Client.csproj"), """
+            <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+              <PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>
+            </Project>
+            """);
+        File.WriteAllText(Path.Combine(client, "_Imports.razor"), "@using TestConsumerApp.Client\n");
+
+        var output = new StringWriter();
+        var error = new StringWriter();
+        Assert.True(Program.Run(["init"], host, output, error) == 0, error.ToString());
+        Assert.DoesNotContain("Warning", output.ToString());
+        Assert.Contains("TestConsumerApp.Client/Components/UI/", output.ToString());
+        Assert.True(Program.Run(["add", "dialog"], host, output, error) == 0, error.ToString());
+
+        Assert.True(File.Exists(Path.Combine(client, "Components", "UI", "Dialog", "Dialog.razor.js")));
+        Assert.False(Directory.Exists(Path.Combine(host, "Components", "UI")));
+        Assert.True(File.Exists(Path.Combine(host, "wwwroot", "css", "sheenui", "components", "dialog.css")));
+        const string directive = "@using TestConsumerApp.Client.Components.UI.Dialog";
+        Assert.Contains(directive, File.ReadAllText(Path.Combine(client, "_Imports.razor")));
+        Assert.Contains(directive, File.ReadAllText(Path.Combine(host, "Components", "_Imports.razor")));
+        Assert.Contains(SheenUiLock.LoadOrCreate(host).Components["dialog"].Files, file => file.Target == "Components/UI/Dialog/Dialog.razor");
+        Assert.False(Directory.Exists(Path.Combine(_testDirectory, ".sheenui-transaction")));
+
+        // Update resolves the same targets in the client and protects its local edits.
+        var dialog = Path.Combine(client, "Components", "UI", "Dialog", "Dialog.razor");
+        Assert.True(Program.Run(["update", "--dry-run"], host, output, error) == 0, error.ToString());
+        File.AppendAllText(dialog, "@* local edit *@");
+        Assert.True(Program.Run(["add", "dialog"], host, new StringWriter(), error) != 0);
+        Assert.EndsWith("@* local edit *@", File.ReadAllText(dialog));
+
+        // The client project itself is not an init target.
+        var clientError = new StringWriter();
+        Assert.Equal(1, Program.Run(["init"], client, new StringWriter(), clientError));
+        Assert.Contains("Run SheenUI in the server project", clientError.ToString());
     }
 
     [Fact]

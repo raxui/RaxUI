@@ -76,9 +76,10 @@ public static class Program
         {
             try
             {
-                if (cleanArgs.Contains("--dry-run") && Path.Exists(Path.Combine(cwd, FileTransaction.DirectoryName)))
+                if (cleanArgs.Contains("--dry-run") && TransactionRoots(cwd).Any(root => Path.Exists(Path.Combine(root, FileTransaction.DirectoryName))))
                     throw new InvalidOperationException("An interrupted SheenUI installation exists; run 'sheenui recover' first.");
-                FileTransaction.Recover(cwd, keepChanges: false, output);
+                foreach (var root in TransactionRoots(cwd))
+                    FileTransaction.Recover(root, keepChanges: false, output);
             }
             catch (InvalidOperationException ex)
             {
@@ -97,7 +98,10 @@ public static class Program
                 }
                 try
                 {
-                    if (!FileTransaction.Recover(cwd, cleanArgs.Contains("--keep-changes"), output))
+                    var recovered = false;
+                    foreach (var root in TransactionRoots(cwd))
+                        recovered |= FileTransaction.Recover(root, cleanArgs.Contains("--keep-changes"), output);
+                    if (!recovered)
                         output.WriteLine("No interrupted SheenUI installation found.");
                     return 0;
                 }
@@ -152,5 +156,14 @@ public static class Program
                 error.WriteLine(Usage);
                 return 1;
         }
+    }
+
+    // A WebAssembly or Auto app journals in the folder that holds its server and client projects (ProjectContext.WorkspaceRoot).
+    private static IEnumerable<string> TransactionRoots(string cwd)
+    {
+        var project = Path.TrimEndingDirectorySeparator(Path.GetFullPath(cwd));
+        yield return project;
+        if (Path.GetDirectoryName(project) is { } parent)
+            yield return parent;
     }
 }
