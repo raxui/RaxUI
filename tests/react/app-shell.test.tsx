@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { SheenThemeProvider } from "../../registry/react/foundation/theme"
 import { Navbar, NavbarLinks, NavbarLink, NavbarToggle, NavbarMenu, NavbarMenuLink } from "../../registry/react/components/navbar/navbar"
-import { SidebarProvider, Sidebar, SidebarContent, SidebarMenuCollapsible, SidebarMenuSubButton, SidebarInset, SidebarTrigger, SidebarMenuSkeleton } from "../../registry/react/components/sidebar/sidebar"
+import { SidebarProvider, Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuCollapsible, SidebarMenuSubButton, SidebarInset, SidebarTrigger, SidebarMenuSkeleton } from "../../registry/react/components/sidebar/sidebar"
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuListItem } from "../../registry/react/components/navigation-menu/navigation-menu"
 import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem, MenubarCheckboxItem, MenubarRadioGroup, MenubarRadioItem } from "../../registry/react/components/menubar/menubar"
 import { Footer, FooterColumn, FooterLink, FooterNewsletter, FooterBackToTop, FooterCopyright } from "../../registry/react/components/footer/footer"
@@ -62,6 +62,15 @@ describe("app shell",()=>{
     await user.click(group);expect(group).toHaveAttribute("aria-expanded","true")
     expect(screen.getByRole("button",{name:"Toggle sidebar"})).toHaveAttribute("aria-expanded","true")
     expect(document.querySelector('.sheen-sidebar-collapsible-body')).not.toHaveAttribute("inert")
+  })
+  it("slides one hover pill between sidebar items and hides it on leave",()=>{
+    render(<SidebarProvider><Sidebar><SidebarContent><SidebarMenu><SidebarMenuItem><SidebarMenuButton>Inbox</SidebarMenuButton></SidebarMenuItem><SidebarMenuItem><SidebarMenuButton disabled>Archive</SidebarMenuButton></SidebarMenuItem></SidebarMenu></SidebarContent></Sidebar></SidebarProvider>)
+    const content=document.querySelector<HTMLElement>(".sheen-sidebar-content")!
+    expect(content.querySelector(":scope > .sheen-sidebar-hover")).not.toBeNull()
+    fireEvent.pointerOver(screen.getByRole("button",{name:"Archive"}));expect(content).not.toHaveAttribute("data-hover")
+    fireEvent.pointerOver(screen.getByRole("button",{name:"Inbox"}))
+    expect(content).toHaveAttribute("data-hover","");expect(content.style.getPropertyValue("--sheen-sidebar-hover-w")).toMatch(/px$/)
+    fireEvent.pointerOut(screen.getByRole("button",{name:"Inbox"}),{relatedTarget:document.body});expect(content).not.toHaveAttribute("data-hover")
   })
   it("uses a themed RTL mobile sheet and returns focus to its trigger",async()=>{
     phone=true;const user=userEvent.setup()

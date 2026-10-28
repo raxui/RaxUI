@@ -15,14 +15,14 @@ public partial class GeneratedAppTests
         Dotnet(_root, "new", "blazor", "-f", targetFramework, "--interactivity", "Server", "-n", "SampleApp", "-o", app);
         var output = new StringWriter(); var error = new StringWriter();
         Assert.Equal(0, Program.Run(["init"], app, output, error));
-        foreach (var name in new[] { "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "avatar", "accordion", "toggle" })
+        foreach (var name in new[] { "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "avatar", "accordion", "toggle", "menu-toggle" })
             Assert.True(Program.Run(["add", name], app, output, error) == 0, error.ToString());
         WriteAppShellPages(Path.Combine(app, "Components"));
         var program = Path.Combine(app, "Program.cs");
         File.WriteAllText(program, "using Microsoft.AspNetCore.DataProtection;\n" + File.ReadAllText(program).Replace("var app = builder.Build();", "builder.Services.AddDataProtection().UseEphemeralDataProtectionProvider(); builder.Logging.ClearProviders(); builder.Logging.AddConsole(); var app = builder.Build();"));
         Dotnet(app, "build", "-warnaserror:RZ10012");
         var before = InstallationWorkflowTests.SnapshotFiles(app);
-        foreach (var name in new[] { "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "avatar", "accordion", "toggle" })
+        foreach (var name in new[] { "navbar", "sidebar", "navigation-menu", "menubar", "footer", "banner", "avatar", "accordion", "toggle", "menu-toggle" })
             Assert.Equal(0, Program.Run(["add", name], app, output, error));
         Assert.Equal(before, InstallationWorkflowTests.SnapshotFiles(app));
         await VerifyInBrowser(app, VerifyAppShell);
@@ -96,6 +96,8 @@ public partial class GeneratedAppTests
         await sidebar.GetByRole(AriaRole.Link, new() { Name = "Today", Exact = true }).ClickAsync();
         await Assertions.Expect(sidebar.Locator("[data-sidebar-page]")).ToHaveTextAsync("today");
         await Assertions.Expect(sidebar.Locator(".sheen-sidebar-content")).ToHaveAttributeAsync("data-highlight", "");
+        await sidebar.GetByRole(AriaRole.Link, new() { Name = "Calendar", Exact = true }).HoverAsync();
+        await Assertions.Expect(sidebar.Locator(".sheen-sidebar-content")).ToHaveAttributeAsync("data-hover", "");
         var sidebarToggle = sidebar.GetByRole(AriaRole.Button, new() { Name = "Toggle sidebar", Exact = true });
         await sidebarToggle.ClickAsync();
         await Assertions.Expect(sidebar.Locator(".sheen-sidebar")).ToHaveAttributeAsync("data-collapsible", "icon");

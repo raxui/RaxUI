@@ -21,13 +21,13 @@
       "source": "registry/react/components/sidebar/sidebar.tsx",
       "target": "components/ui/sidebar.tsx",
       "type": "tsx",
-      "sha256": "bb82463de7b98648c4aa539025a954044e77ba36c21e3d8a23a9493f43067bdd"
+      "sha256": "c3123c4f82470a94f3fcb141e122f545580803e89935898cfdbb97a2a18f4895"
     },
     {
       "source": "theme/scss/components/_sidebar.scss",
       "target": "styles/sheenui/components/_sidebar.scss",
       "type": "scss",
-      "sha256": "fcacebb7cf6e8683b09644feada9d131a121e4e1f7fb205fd355a59825166cd6"
+      "sha256": "0f2279e435bef8581d8116fa51b6bedfe9bf7518de63a015d68e336826e37411"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

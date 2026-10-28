@@ -14,7 +14,7 @@
       "destination": "styles",
       "target": "components/sidebar.css",
       "type": "css",
-      "sha256": "122f46b8c8b992ae85ebd1a9628cd02ab0056d853d290eb71ae49215004bc56c"
+      "sha256": "42950651428e028479ddbd219f8f557f1b09c70a7721643ef9386cc757ca7f3e"
     }
   ],
   "files": [
@@ -30,7 +30,7 @@
       "destination": "components",
       "target": "Sidebar/SidebarContent.razor",
       "type": "razor",
-      "sha256": "0627e3da08222113c00b20f95d54b9324b1eeaa1441c1543d58580e482cd437a"
+      "sha256": "bc84b2eccfa997be88fc3c8bc44b2e60507516c1b581c0d7d82477188f12bdf1"
     },
     {
       "source": "SidebarFooter.razor",
@@ -163,14 +163,14 @@
       "destination": "components",
       "target": "Sidebar/SidebarProvider.razor",
       "type": "razor",
-      "sha256": "d17994811058b00942df6b65931d58d161df20a0ff520f7ad4145e97aa632811"
+      "sha256": "cec2b3734e41a0b74c9c3d36b2ed49b6b6d14882c42b36ad2fe89c001363f81c"
     },
     {
       "source": "SidebarProvider.razor.js",
       "destination": "components",
       "target": "Sidebar/SidebarProvider.razor.js",
       "type": "js",
-      "sha256": "96bff81c6ed7510f99d94a60a27f50f073c4bffaaeb29fe8311b7e02507fd325"
+      "sha256": "db41e47752330f09fa400a172d26d34d90d3acd18f04da9bb387236115a111d9"
     },
     {
       "source": "SidebarRail.razor",

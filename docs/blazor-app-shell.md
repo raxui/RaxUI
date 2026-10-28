@@ -35,7 +35,15 @@ Place Sidebar and SidebarInset inside an independent SidebarProvider. Provider p
 
 Sidebar accepts Side=start/end, Variant=sidebar/floating/inset, Collapsible=offcanvas/icon/none, Label and Description. Under 768px it uses the existing Sheet; modal focus containment, Escape/backdrop dismissal and scroll locking are handled by Sheet. Closing a link or resizing out of mobile removes that layer cleanly. Collapsible=none keeps ordinary navigation on all widths.
 
-Parts include Header, Footer, Content, Inset, Trigger, Rail, Separator, Input, Group/Label/Content/Action, Menu/Item/Button/Action/Badge/Skeleton, MenuSub/Item/Button and MenuCollapsible (all prefixed Sidebar). MenuButton/SubButton accept Href, IsActive, Exact, Disabled, Size, Variant, Icon, Tooltip, OnClick and PreventDefault. Tooltip is the native title hint, including in icon mode. MenuCollapsible accepts Title, Icon and DefaultOpen; opening a group while folded to icons expands the sidebar. Give custom icon-only actions a Label.
+Parts include Header, Footer, Content, Inset, Trigger, Rail, Separator, Input, Group/Label/Content/Action, Menu/Item/Button/Action/Badge/Skeleton, MenuSub/Item/Button and MenuCollapsible (all prefixed Sidebar). MenuButton/SubButton accept Href, IsActive, Exact, Disabled, Size, Variant, Icon, Tooltip, OnClick and PreventDefault. Tooltip is the native title hint, including in icon mode. MenuCollapsible accepts Title, Icon and DefaultOpen; opening a group while folded to icons expands the sidebar. Give custom icon-only actions a Label. `Href=""` is the app root, as in an anchor. The active item sits on a highlight that glides between items, and a lighter pill follows the pointer from item to item; both keep their spring when the page under the inset changes height, and reduced-motion preferences avoid animated travel.
+
+For a custom trigger, the provider cascades itself: `IsOpen` (expanded on desktop, the Sheet open on phones), `Ready`, `PanelId` and `Toggle()`. `examples/blazor/app-shell/ShellSidebarToggle.razor` uses them to drive an animated `MenuToggle` (`sheenui add menu-toggle`):
+
+```razor
+<MenuToggle Open="@(Parent?.IsOpen == true)" OpenChanged="@(_ => Parent?.Toggle() ?? Task.CompletedTask)"
+            Disabled="@(Parent?.Ready != true)" aria-controls="@Parent?.PanelId" OpenLabel="Toggle sidebar" CloseLabel="Toggle sidebar" />
+@code { [CascadingParameter] public SidebarProvider? Parent { get; set; } }
+```
 
 ## NavigationMenu
 

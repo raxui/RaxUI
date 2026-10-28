@@ -1,4 +1,4 @@
-<div @attributes="AdditionalAttributes" class="sheen-sidebar-content @Class" data-sidebar="content"><span class="sheen-sidebar-highlight" aria-hidden="true"></span>@ChildContent</div>
+<div @attributes="AdditionalAttributes" class="sheen-sidebar-content @Class" data-sidebar="content"><span class="sheen-sidebar-hover" aria-hidden="true"></span><span class="sheen-sidebar-highlight" aria-hidden="true"></span>@ChildContent</div>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }

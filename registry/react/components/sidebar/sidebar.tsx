@@ -344,11 +344,43 @@ const SidebarInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttribute
 ))
 SidebarInput.displayName = "SidebarInput"
 
-/** Scrolling middle part. Holds the highlight that glides to the active item. */
-const SidebarContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, children, ...props }, ref) => {
+const hoverItems = "[data-sidebar=menu-button], .sheen-sidebar-menu-sub-button"
+
+/** Scrolling middle part. Holds the highlight that glides to the active item and the pill that follows the pointer. */
+const SidebarContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, children, onPointerOver, onPointerOut, onScroll, ...props }, ref) => {
   const contentRef = React.useRef<HTMLDivElement | null>(null)
   const { dir } = useSidebar()
   useActiveHighlight(contentRef, dir)
+
+  // Hover pill: appears in place, then glides from item to item (like the navbar's hover).
+  const handlePointerOver = (event: React.PointerEvent<HTMLDivElement>) => {
+    onPointerOver?.(event)
+    const content = event.currentTarget
+    const button = (event.target as Element).closest<HTMLElement>(hoverItems)
+    if (!button || button.closest(".sheen-sidebar-content") !== content || button.matches("[aria-disabled=true], :disabled")) return
+    const box = button.getBoundingClientRect()
+    const origin = content.getBoundingClientRect()
+    const set = () => {
+      content.style.setProperty("--sheen-sidebar-hover-x", `${box.left - origin.left + content.scrollLeft}px`)
+      content.style.setProperty("--sheen-sidebar-hover-y", `${box.top - origin.top + content.scrollTop}px`)
+      content.style.setProperty("--sheen-sidebar-hover-w", `${box.width}px`)
+      content.style.setProperty("--sheen-sidebar-hover-h", `${box.height}px`)
+    }
+    if (content.hasAttribute("data-hover")) set()
+    else withoutTransition(content.querySelector<HTMLElement>(":scope > .sheen-sidebar-hover"), set)
+    content.setAttribute("data-hover", "")
+  }
+  const handlePointerOut = (event: React.PointerEvent<HTMLDivElement>) => {
+    onPointerOut?.(event)
+    const next = (event.relatedTarget as Element | null)?.closest?.(hoverItems)
+    if (next?.closest(".sheen-sidebar-content") !== event.currentTarget) event.currentTarget.removeAttribute("data-hover")
+  }
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    onScroll?.(event)
+    event.currentTarget.removeAttribute("data-hover")
+  }
+
   return (
     <div
       ref={(node) => {
@@ -357,13 +389,18 @@ const SidebarContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
       }}
       className={cn("sheen-sidebar-content", className)}
       data-sidebar="content"
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+      onScroll={handleScroll}
       {...props}
     >
+      <span className="sheen-sidebar-hover" aria-hidden="true" />
       <span className="sheen-sidebar-highlight" aria-hidden="true" />
       {children}
     </div>
   )
-})
+  },
+)
 SidebarContent.displayName = "SidebarContent"
 
 /**
