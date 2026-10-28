@@ -344,6 +344,34 @@
   position: relative;
 }
 
+// Follows the pointer from item to item, like the navbar's hover. Sits under the active highlight.
+.sheen-sidebar-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: var(--sheen-sidebar-hover-w, 0);
+  height: var(--sheen-sidebar-hover-h, 0);
+  border-radius: var(--sheen-radius-sm);
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(var(--sheen-sidebar-hover-x, 0), var(--sheen-sidebar-hover-y, 0));
+  transition: opacity var(--sheen-duration-fast) ease;
+
+  .sheen-sidebar-content[data-hover] > & {
+    opacity: 1;
+  }
+
+  @include motion-safe {
+    transition:
+      opacity var(--sheen-duration-fast) ease,
+      transform 420ms var(--sheen-ease-spring),
+      width 420ms var(--sheen-ease-spring),
+      height 420ms var(--sheen-ease-spring);
+  }
+}
+
 .sheen-sidebar-highlight {
   position: absolute;
   top: 0;
@@ -416,6 +444,11 @@
   &:hover {
     color: var(--bs-emphasis-color);
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.05);
+  }
+
+  // The hover pill draws the hover instead.
+  .sheen-sidebar-content[data-hover] &:hover {
+    background-color: transparent;
   }
 
   &:focus-visible {
@@ -612,6 +645,11 @@
   &:hover {
     color: var(--bs-emphasis-color);
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.05);
+  }
+
+  // The hover pill draws the hover instead.
+  .sheen-sidebar-content[data-hover] &:hover {
+    background-color: transparent;
   }
 
   &:focus-visible {

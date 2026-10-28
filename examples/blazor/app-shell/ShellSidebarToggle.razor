@@ -1,0 +1,9 @@
+@* The sidebar trigger as an animated MenuToggle: the bars become an X while the sidebar is open
+   (expanded on desktop, the Sheet on phones). Place it inside the SidebarProvider. *@
+<MenuToggle Open="@(Parent?.IsOpen == true)" OpenChanged="@(_ => Parent?.Toggle() ?? Task.CompletedTask)" Disabled="@(Parent?.Ready != true)"
+            OpenLabel="@Label" CloseLabel="@Label" Class="btn-sm" aria-controls="@Parent?.PanelId" />
+@code {
+    [CascadingParameter] public SidebarProvider? Parent { get; set; }
+    /// <summary>One name for both states; aria-expanded tells which.</summary>
+    [Parameter] public string Label { get; set; } = "Toggle sidebar";
+}
