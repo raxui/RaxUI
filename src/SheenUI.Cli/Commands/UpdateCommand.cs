@@ -15,7 +15,7 @@ public static class UpdateCommand
     public static int Execute(string workingDirectory, string? componentName, bool dryRun,
         TextWriter output, TextWriter error, EmbeddedRegistry? registry = null)
     {
-        var backup = new FileTransaction(workingDirectory);
+        FileTransaction? backup = null;
         try
         {
             workingDirectory = Path.GetFullPath(workingDirectory);
@@ -27,6 +27,8 @@ public static class UpdateCommand
                 throw new InvalidOperationException("sheenui.lock.json is required to safely update installed files. Restore it from backup.");
             var locked = SheenUiLock.LoadOrCreate(workingDirectory);
             var project = ProjectContext.Detect(workingDirectory);
+            backup = new FileTransaction(project.WorkspaceRoot);
+            string Checked(string target) => CheckedPath(project.RootFor(target, config.ComponentsPath), target);
             registry ??= new EmbeddedRegistry();
             var requested = componentName is null
                 ? locked.Components.Keys.Where(name => name != StarterApp.ItemName).OrderBy(name => name, StringComparer.Ordinal).ToArray()
@@ -61,7 +63,7 @@ public static class UpdateCommand
                     .Concat(manifest.Assets.Select(asset => (Source: asset.Source, Target: $"{config.StylesPath}/{asset.Target}")));
                 foreach (var file in files)
                 {
-                    var fullPath = CheckedPath(workingDirectory, file.Target);
+                    var fullPath = Checked(file.Target);
                     if (!claimed.Add(file.Target))
                         throw new InvalidOperationException($"Multiple components target '{file.Target}'.");
                     var tracked = previous?.Files.SingleOrDefault(item => Paths.Equals(item.Target, file.Target));
@@ -106,7 +108,7 @@ public static class UpdateCommand
                     if (!old.Target.StartsWith(config.ComponentsPath + "/", StringComparison.Ordinal) &&
                         old.Target != $"{config.StylesPath}/components/{manifest.Name}.css")
                         throw new InvalidOperationException($"Unsupported obsolete component path '{old.Target}'.");
-                    var fullPath = CheckedPath(workingDirectory, old.Target);
+                    var fullPath = Checked(old.Target);
                     if (Directory.Exists(fullPath))
                         conflicts.Add($"{old.Target}: a directory occupies an obsolete file path.");
                     else if (File.Exists(fullPath))
@@ -124,7 +126,7 @@ public static class UpdateCommand
 
             // Always refresh the core together with components, retaining starter and unrelated imports.
             var coreRelative = $"{config.StylesPath}/sheenui.css";
-            var corePath = CheckedPath(workingDirectory, coreRelative);
+            var corePath = Checked(coreRelative);
             var coreTracked = locked.FindTrackedFile(coreRelative);
             var coreSource = new EmbeddedRegistry().GetResourceBytes("styles/sheenui.css");
             var additions = manifests.Values.SelectMany(manifest => manifest.Assets).Select(asset => asset.Target);
@@ -147,18 +149,21 @@ public static class UpdateCommand
                 catch (InvalidOperationException ex) { conflicts.Add($"{coreRelative}: {ex.Message}"); }
             }
 
-            ProjectPath.Validate(workingDirectory, project.ImportsRazorPath);
-            var imports = File.ReadAllText(project.ImportsRazorPath);
             var nextFolders = Folders(locked.Components.Values.SelectMany(component => component.Files), config.ComponentsPath);
-            var removedDirectives = oldFolders.Except(nextFolders).Select(folder => $"@using {project.RootNamespace}.Components.UI.{folder}").ToHashSet();
-            var separator = imports.Contains("\r\n") ? "\r\n" : "\n";
-            var updatedImports = string.Join(separator, imports.Split(separator).Where(line => !removedDirectives.Contains(line.Trim())));
-            updatedImports = AddCommand.AppendImports(updatedImports, manifests.Values.Select(manifest =>
-                $"@using {project.RootNamespace}.Components.UI.{manifest.Files[0].Target.Split('/')[0]}"));
-            if (updatedImports != imports)
+            var removedDirectives = oldFolders.Except(nextFolders).Select(folder => $"@using {project.ComponentsNamespace}.Components.UI.{folder}").ToHashSet();
+            foreach (var importsPath in project.ImportsRazorPaths)
             {
-                var relative = Path.GetRelativePath(workingDirectory, project.ImportsRazorPath).Replace('\\', '/');
-                changes.Add(relative, new(project.ImportsRazorPath, relative, Encoding.UTF8.GetBytes(updatedImports)));
+                ProjectPath.Validate(project.WorkspaceRoot, importsPath);
+                var imports = File.Exists(importsPath) ? File.ReadAllText(importsPath) : "";
+                var separator = imports.Contains("\r\n") ? "\r\n" : "\n";
+                var updatedImports = string.Join(separator, imports.Split(separator).Where(line => !removedDirectives.Contains(line.Trim())));
+                updatedImports = AddCommand.AppendImports(updatedImports, manifests.Values.Select(manifest =>
+                    $"@using {project.ComponentsNamespace}.Components.UI.{manifest.Files[0].Target.Split('/')[0]}"));
+                if (updatedImports != imports)
+                {
+                    var relative = Path.GetRelativePath(workingDirectory, importsPath).Replace('\\', '/');
+                    changes.Add(relative, new(importsPath, relative, Encoding.UTF8.GetBytes(updatedImports)));
+                }
             }
 
             output.WriteLine($"{(dryRun ? "Previewing" : "Updating")} {manifests.Count} component(s) to registry {ReleaseIdentity.Version}.");
@@ -194,7 +199,7 @@ public static class UpdateCommand
         catch (Exception ex)
         {
             error.WriteLine($"Error during update: {ex.Message}");
-            backup.Restore(error);
+            backup?.Restore(error);
             return 1;
         }
     }

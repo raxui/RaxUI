@@ -13,7 +13,7 @@ public static class AddCommand
     public static int Execute(string workingDirectory, string componentName, TextWriter output, TextWriter error,
         EmbeddedRegistry? registry = null)
     {
-        var backup = new FileTransaction(workingDirectory);
+        FileTransaction? backup = null;
 
         try
         {
@@ -31,6 +31,7 @@ public static class AddCommand
             }
 
             var project = ProjectContext.Detect(workingDirectory);
+            backup = new FileTransaction(project.WorkspaceRoot);
             registry ??= new EmbeddedRegistry();
 
             // The component and its dependencies, dependencies first.
@@ -40,8 +41,9 @@ public static class AddCommand
             output.WriteLine($"Adding component '{requested.Name}' (v{requested.Version})...");
 
             var lockFile = SheenUiLock.LoadOrCreate(workingDirectory);
-            ProjectPath.Validate(workingDirectory, project.ImportsRazorPath);
-            var componentsDir = Path.Combine(workingDirectory, config.ComponentsPath);
+            foreach (var imports in project.ImportsRazorPaths)
+                ProjectPath.Validate(project.WorkspaceRoot, imports);
+            var componentsDir = Path.Combine(project.ComponentsRoot, config.ComponentsPath);
 
             // 1. Plan every component and check every conflict before writing anything (ADR 003).
             var planned = new List<PlannedComponent>();
@@ -57,7 +59,7 @@ public static class AddCommand
 
                 // The manifest validator guarantees every target is "<ComponentFolder>/<file>" in one folder.
                 var folder = manifest.Files[0].Target.Split('/')[0];
-                planned.Add(new PlannedComponent(manifest, folder, PlanWrites(workingDirectory, componentsDir, manifest, registry, lockFile)));
+                planned.Add(new PlannedComponent(manifest, folder, PlanWrites(workingDirectory, project.ComponentsRoot, componentsDir, manifest, registry, lockFile)));
             }
 
             // Plan the core edit too, before any component write.
@@ -90,7 +92,7 @@ public static class AddCommand
                 coreTracked!.InstalledHash = EmbeddedRegistry.ComputeSha256(coreBytes);
             }
 
-            // 3. Update Components/_Imports.razor
+            // 3. Update Components/_Imports.razor, and the client's when components live there
             foreach (var component in planned)
                 UpdateImportsRazor(project, component.Folder, backup);
 
@@ -123,23 +125,27 @@ public static class AddCommand
                 var role = component.Manifest == requested ? "Component" : "Dependency";
                 output.WriteLine($"{role} '{component.Manifest.Name}' installed successfully:");
                 foreach (var w in component.Writes)
-                    output.WriteLine(w.Keep ? $"  = Kept local edits: {w.RelTarget}" : $"  + {w.RelTarget}");
+                {
+                    var shown = Path.GetRelativePath(workingDirectory, w.TargetPath).Replace('\\', '/');
+                    output.WriteLine(w.Keep ? $"  = Kept local edits: {shown}" : $"  + {shown}");
+                }
             }
             foreach (var name in kept)
                 output.WriteLine($"Dependency '{name}' is already installed; kept as is.");
-            output.WriteLine($"  * Updated: {Path.GetRelativePath(workingDirectory, project.ImportsRazorPath).Replace('\\', '/')}");
+            foreach (var imports in project.ImportsRazorPaths)
+                output.WriteLine($"  * Updated: {Path.GetRelativePath(workingDirectory, imports).Replace('\\', '/')}");
 
             return 0;
         }
         catch (Exception ex)
         {
             error.WriteLine($"Error adding component '{componentName}': {ex.Message}");
-            backup.Restore(error);
+            backup?.Restore(error);
             return 1;
         }
     }
 
-    private static List<PlannedWrite> PlanWrites(string workingDirectory, string componentsDir, ComponentManifest manifest,
+    private static List<PlannedWrite> PlanWrites(string workingDirectory, string componentsRoot, string componentsDir, ComponentManifest manifest,
         EmbeddedRegistry registry, SheenUiLock lockFile)
     {
         var writes = new List<PlannedWrite>();
@@ -151,9 +157,11 @@ public static class AddCommand
         {
             var bytes = registry.GetResourceBytes(file.Source);
             var hash = EmbeddedRegistry.ComputeSha256(bytes);
+            // Lock targets stay project-relative ("Components/UI/..."); ProjectContext.RootFor resolves them back.
+            var root = file.Style ? workingDirectory : componentsRoot;
             var targetPath = Path.Combine(file.Style ? Path.Combine(workingDirectory, config.StylesPath) : componentsDir, file.Target);
-            ProjectPath.Validate(workingDirectory, targetPath);
-            var relTarget = Path.GetRelativePath(workingDirectory, targetPath).Replace('\\', '/');
+            ProjectPath.Validate(root, targetPath);
+            var relTarget = Path.GetRelativePath(root, targetPath).Replace('\\', '/');
             lockFile.EnsureSameSource(relTarget, hash);
 
             if (File.Exists(targetPath))
@@ -187,15 +195,14 @@ public static class AddCommand
 
     private static void UpdateImportsRazor(ProjectContext project, string componentFolder, FileTransaction backup)
     {
-        var importsPath = project.ImportsRazorPath;
-        var usingDirective = $"@using {project.RootNamespace}.Components.UI.{componentFolder}";
-
-        var currentContent = File.Exists(importsPath) ? File.ReadAllText(importsPath) : "";
-        var updated = AppendImports(currentContent, [usingDirective]);
-        if (updated == currentContent)
-            return;
-
-        backup.WriteText(importsPath, updated);
+        var usingDirective = $"@using {project.ComponentsNamespace}.Components.UI.{componentFolder}";
+        foreach (var importsPath in project.ImportsRazorPaths)
+        {
+            var currentContent = File.Exists(importsPath) ? File.ReadAllText(importsPath) : "";
+            var updated = AppendImports(currentContent, [usingDirective]);
+            if (updated != currentContent)
+                backup.WriteText(importsPath, updated);
+        }
     }
 
     internal static string AppendImports(string currentContent, IEnumerable<string> directives)

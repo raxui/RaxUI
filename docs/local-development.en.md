@@ -155,6 +155,15 @@ app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 Add missing calls to your existing service registration and endpoint mapping;
 do not duplicate them. The CLI reports the issue but does not edit `Program.cs`.
 
+### WebAssembly and Auto
+
+Every render mode is supported: static SSR, Server, WebAssembly and Auto. In an app
+created with `--interactivity WebAssembly` or `Auto`, run `init` and `add` in the
+server project (the folder with `Components/App.razor`), not in `.Client`.
+Components are copied to `SampleApp.Client/Components/UI` so the browser can run
+them, usings go into both `_Imports.razor` files, and styles and configuration
+stay in the server project.
+
 ## 4. Try React with Vite
 
 Create a TypeScript application using a tested Vite scaffolder version:
