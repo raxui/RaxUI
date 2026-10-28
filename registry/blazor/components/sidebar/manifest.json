@@ -14,7 +14,7 @@
       "destination": "styles",
       "target": "components/sidebar.css",
       "type": "css",
-      "sha256": "51e6064836500b0485bfbb461e1dbb645b9a6220a6d908e41edd2b866adad1d4"
+      "sha256": "f3b9b715020b06caaad4e2958751736e9ee144e0acc0382abff1dc13dd2fbe48"
     }
   ],
   "files": [
@@ -170,7 +170,7 @@
       "destination": "components",
       "target": "Sidebar/SidebarProvider.razor.js",
       "type": "js",
-      "sha256": "db41e47752330f09fa400a172d26d34d90d3acd18f04da9bb387236115a111d9"
+      "sha256": "ab538300c0999167035519863f62373aa4fb1230af9f4c92b9091de5fae3cbb8"
     },
     {
       "source": "SidebarRail.razor",

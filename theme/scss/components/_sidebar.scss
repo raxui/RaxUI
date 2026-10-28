@@ -509,8 +509,10 @@
     padding-inline: 0;
   }
 
-  .sheen-sidebar[data-collapsible="icon"] & > span:last-of-type {
+  .sheen-sidebar[data-collapsible="icon"] & > span:last-of-type,
+  .sheen-sidebar[data-collapsible="icon"] & > svg:last-child:not(:first-child) {
     flex: 0 0 0;
+    width: 0;
     min-width: 0;
   }
 }

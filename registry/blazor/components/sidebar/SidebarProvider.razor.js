@@ -10,6 +10,8 @@ export function init(root,receiver,shortcut,key){
   document.addEventListener('keydown',e=>{if(e.defaultPrevented||!s.shortcut||e.altKey||e.shiftKey||!(e.metaKey||e.ctrlKey)||e.key.toLowerCase()!==s.shortcut.toLowerCase()||e.target.isContentEditable||e.target.closest('input,textarea,select'))return;const owner=e.target.closest('.sheen-sidebar-wrapper');if(owner?owner!==root:document.querySelector('.sheen-sidebar-wrapper')!==root)return;e.preventDefault();s.receiver.invokeMethodAsync('Toggle')},{signal})
   const place=()=>root.querySelectorAll('.sheen-sidebar-content').forEach(content=>{
    if(!known.has(content)){known.add(content);content.addEventListener('scroll',()=>{place();content.removeAttribute('data-hover')},{signal,passive:true});s.resize.observe(content)}
+   // Menus too: a group folding above the active item moves it without resizing the content.
+   content.querySelectorAll('[data-sidebar="menu"]').forEach(menu=>{if(!known.has(menu)){known.add(menu);s.resize.observe(menu)}})
    const active=[...content.querySelectorAll('[data-sidebar="menu-button"][data-active]')].find(el=>el.closest('.sheen-sidebar-content')===content&&el.getClientRects().length),highlight=content.querySelector(':scope > .sheen-sidebar-highlight');content.toggleAttribute('data-highlight',!!active)
    if(!active||!highlight)return
    const b=active.getBoundingClientRect(),o=content.getBoundingClientRect(),previous=last.get(content)
