@@ -14,7 +14,7 @@ For the first milestone:
 
 ### 1. Embedded registry
 
-- The registry ships as embedded resources inside the CLI package (`RaxUI.Cli`).
+- The registry ships as embedded resources inside the CLI package (`RaxUI`).
 - The CLI package version is the registry version. NuGet package versions are immutable, so each CLI release is an immutable registry snapshot, as ADR 003 requires.
 - No remote download, HTTPS transport, or registry hosting is implemented. A remote registry is deferred.
 - Manifests keep `schemaVersion`, per-file SHA-256 hashes, and path validation from ADR 003. Embedded content is still validated before any write.

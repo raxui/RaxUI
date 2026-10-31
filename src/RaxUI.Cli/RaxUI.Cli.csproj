@@ -7,7 +7,7 @@
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>raxui</ToolCommandName>
-    <PackageId>RaxUI.Cli</PackageId>
+    <PackageId>RaxUI</PackageId>
     <Version>0.1.0-preview.2</Version>
     <Description>Source-first Blazor UI components installed into your project.</Description>
     <Authors>SaadAlsaree</Authors>
