@@ -33,7 +33,7 @@ function parseVersion(version) {
 /** Accepts files written by this or an older CLI; rejects a newer one. */
 export function ensureSupported(recorded, current, file) {
   if (compareVersions(recorded, current) > 0)
-    throw new Error(`'${file}' was written by raxui-react ${recorded}, which is newer than this CLI (${current}). Install raxui-react ${recorded} or later.`)
+    throw new Error(`'${file}' was written by raxui-react ${recorded}, which is newer than this CLI (${current}). Install @raxui/react ${recorded} or later.`)
 }
 
 function readJson(projectDir, file) {

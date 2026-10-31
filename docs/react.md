@@ -10,7 +10,7 @@ Installed component and SCSS paths in your app are unchanged.
 ## Basic controls
 
 Install `input`, `input-group`, `textarea`, `checkbox`, `radio-group`, `switch`,
-or `select` with `npx raxui-react add <name>`. They require `foundation` and
+or `select` with `npx @raxui/react add <name>`. They require `foundation` and
 `field`; `input-group` also installs `input`. Selection controls pin Radix
 Checkbox **1.4.1**, RadioGroup **1.5.1**, Switch **1.4.1**, and Select **2.4.1**.
 The installer adds each control's SCSS import; input and textarea share a mixin
@@ -95,7 +95,7 @@ motion respects reduced-motion preferences.
 
 ## Fields and forms
 
-Install with `npx raxui-react add field`, `add form`, or `add form-section`.
+Install with `npx @raxui/react add field`, `add form`, or `add form-section`.
 Dependencies are installed first: Form and FormSection require Field and the
 foundation. Form pins `react-hook-form` **7.91.0**, `zod` **4.6.7**, and
 `@hookform/resolvers` **5.9.2**. All new sources are client components.
@@ -223,8 +223,8 @@ In a React + Vite (TypeScript) app:
 
 ```sh
 npm install -D --save-exact --ignore-scripts /path/to/raxui-react-0.1.0-preview.1.tgz
-npx raxui-react init
-npx raxui-react add button
+npx @raxui/react init
+npx @raxui/react add button
 ```
 
 `init`:
@@ -330,7 +330,7 @@ import { Trash2 } from "lucide-react"
 
 ### Dialog and DropdownMenu
 
-`npx raxui-react add dialog` and `npx raxui-react add dropdown-menu` install wrappers over Radix with the shared styles ([ADR 013](adr/013-overlay-primitives.md)). Their content renders inside the nearest `RaxThemeProvider`, so mode, appearance, accent, and direction apply to it.
+`npx @raxui/react add dialog` and `npx @raxui/react add dropdown-menu` install wrappers over Radix with the shared styles ([ADR 013](adr/013-overlay-primitives.md)). Their content renders inside the nearest `RaxThemeProvider`, so mode, appearance, accent, and direction apply to it.
 
 ```tsx
 <Dialog>
@@ -362,7 +362,7 @@ import { Trash2 } from "lucide-react"
 
 ### ConfirmDialog
 
-`npx raxui-react add confirm-dialog` installs boot-ui's confirmation on Radix AlertDialog (it also installs Button). A click outside nudges it instead of closing; focus starts on Cancel.
+`npx @raxui/react add confirm-dialog` installs boot-ui's confirmation on Radix AlertDialog (it also installs Button). A click outside nudges it instead of closing; focus starts on Cancel.
 
 ```tsx
 <ConfirmDialog
@@ -382,8 +382,8 @@ Appearance precedence: the component's `appearance`, then the nearest `RaxAppear
 
 ## Slider and rating
 
-`npx raxui-react add slider` installs `@radix-ui/react-slider` **1.6.1**;
-`npx raxui-react add rating` adds no packages. Both require `foundation` and
+`npx @raxui/react add slider` installs `@radix-ui/react-slider` **1.6.1**;
+`npx @raxui/react add rating` adds no packages. Both require `foundation` and
 `field`. Import `Slider` from `@/components/ui/slider` and `Rating` (or
 `RatingBreakdown`) from `@/components/ui/rating`.
 
@@ -793,7 +793,7 @@ an external trigger with its list. No new external runtime dependency is needed.
 ## Display basics
 
 Install `alert`, `badge`, `avatar`, `card`, `skeleton`, `spinner`, `progress`,
-`table`, or `timeline` with `npx raxui-react add <name>`. Each requires only
+`table`, or `timeline` with `npx @raxui/react add <name>`. Each requires only
 foundation. Avatar pins Radix Avatar **1.3.1**; Progress pins Radix Progress
 **1.2.1**; Badge, Card and Skeleton reuse Radix Slot **1.5.0**. No icon package is
 required. Roots accept `appearance` (default/flat/glass; unset inherits),
@@ -936,7 +936,7 @@ pages retain a static highlight until measurement.
 ## Overlays and feedback (phase 3)
 
 Install `tooltip`, `hover-card`, `toast`, `sheet`, `drawer`, `context-menu`, and
-`command` with `npx raxui-react add <name>`. The toast item includes `toast.tsx`,
+`command` with `npx @raxui/react add <name>`. The toast item includes `toast.tsx`,
 `toaster.tsx`, and `use-toast.ts`. Exact pins: Radix Tooltip 1.4.1, HoverCard 1.2.1,
 Toast 1.3.1, ContextMenu 2.4.1, and Vaul 1.1.2. Sheet and Command use the existing
 Radix Dialog 1.3.1. Declared dependencies install shared button, spinner, dialog,
@@ -1012,7 +1012,7 @@ not part of this port.
 
 ## React app shell
 
-Install independently with `npx raxui-react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
+Install independently with `npx @raxui/react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
 
 | Component | Composition and behavior |
 | --- | --- |
@@ -1044,7 +1044,7 @@ The reference-based consumer examples in react-test cover all six components, in
 
 ## React data components
 
-Install independently: `npx raxui-react add data-table`, `data-grid`, `sortable` or `resizable`. Manifests ship every supporting source and stylesheet and pin the approved packages: TanStack Table 8.21.3, TanStack Virtual 3.14.13, dnd-kit core 6.3.1/sortable 10.0.0/modifiers 9.0.0/utilities 3.2.2, and react-resizable-panels 4.14.3. Consumers install only the dependencies their selected component needs.
+Install independently: `npx @raxui/react add data-table`, `data-grid`, `sortable` or `resizable`. Manifests ship every supporting source and stylesheet and pin the approved packages: TanStack Table 8.21.3, TanStack Virtual 3.14.13, dnd-kit core 6.3.1/sortable 10.0.0/modifiers 9.0.0/utilities 3.2.2, and react-resizable-panels 4.14.3. Consumers install only the dependencies their selected component needs.
 
 | Component | Public behavior |
 | --- | --- |
@@ -1071,7 +1071,7 @@ DataTable labels translate controls, summaries and selection names; column helpe
 
 ## Advanced components
 
-Install individually with `npx raxui-react add carousel` (or chat, ai, text-editor, qr-code, speed-dial, kanban). The CLI installs the complete local source/style closure and exact dependency pins. All components inherit RaxUI tokens, appearance, mode, accent and density from the provider. Direction follows the nearest DOM section; overlays inherit the nearest theme provider. Public composition parts forward DOM refs; controllers expose callbacks rather than calling services.
+Install individually with `npx @raxui/react add carousel` (or chat, ai, text-editor, qr-code, speed-dial, kanban). The CLI installs the complete local source/style closure and exact dependency pins. All components inherit RaxUI tokens, appearance, mode, accent and density from the provider. Direction follows the nearest DOM section; overlays inherit the nearest theme provider. Public composition parts forward DOM refs; controllers expose callbacks rather than calling services.
 
 | Component | Public API and behavior |
 | --- | --- |
@@ -1109,13 +1109,13 @@ React init/add now journal each write under .raxui-react-transaction before chan
 Run recovery independently when inspecting an interrupted installation:
 
 ```sh
-npx raxui-react recover --cwd ./my-app
+npx @raxui/react recover --cwd ./my-app
 ```
 
 If a file changed afterward, automatic recovery stops before changing project files and lists the conflicting paths. Review journal.json and its before-N backups; copy originals you want to keep elsewhere. To retain changed paths and roll back the other managed files:
 
 ```sh
-npx raxui-react recover --keep-changes --cwd ./my-app
+npx @raxui/react recover --keep-changes --cwd ./my-app
 ```
 
 This explicitly preserves current conflicting bytes or deletions and removes the journal after successful reconciliation. It does not overwrite edited files with backups. A retained new component may still be untracked by the restored registry lock; inspect it before another init/add instead of deleting it automatically. Paths must stay inside the original project, and linked files/junctions, damaged backups, malformed journals and unknown metadata files are rejected with instructions.

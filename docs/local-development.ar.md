@@ -172,12 +172,12 @@ npm install
 
 ```powershell
 npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\RaxUI\raxui-react-0.1.0-preview.1.tgz"
-npx raxui-react init
+npx @raxui/react init
 npm run dev
 ```
 
 افتح الرابط الظاهر في الطرفية، وعادةً يكون `http://localhost:5173`.
-`init` يثبّت Button تلقائياً؛ تشغيل `npx raxui-react add button` بعده لا يضيف
+`init` يثبّت Button تلقائياً؛ تشغيل `npx @raxui/react add button` بعده لا يضيف
 نسخة أخرى.
 
 الملفات الرئيسية التي تنسخها المكتبة:
@@ -211,7 +211,7 @@ cd next-test
 
 ```powershell
 npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\RaxUI\raxui-react-0.1.0-preview.1.tgz"
-npx raxui-react init
+npx @raxui/react init
 npm run dev
 ```
 

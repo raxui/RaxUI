@@ -337,9 +337,9 @@ with `raxui init --appearance glass --accent emerald`; piped or CI runs use the
 flags or the defaults. The choice is saved in `raxui.json` and written as
 `data-rax-appearance` and `data-rax-accent` on `<html>` in `Components/App.razor`.
 `raxui add button card input` installs several components in one command.
-`npx raxui-react init` takes the same two flags (saved in `raxui.react.json`,
+`npx @raxui/react init` takes the same two flags (saved in `raxui.react.json`,
 written on `<html>` in `index.html` or `app/layout.tsx`) and
-`npx raxui-react add button card input` adds several.
+`npx @raxui/react add button card input` adds several.
 
 `init` replaces the template's sidebar layout and sample pages with a RaxUI
 app shell and a welcome page where you can try the theme, and replaces the
@@ -551,8 +551,8 @@ and reduced-motion behavior; no collocated JavaScript is required for these cont
 ## React
 
 A React library with the same theme lives in this repository: React 18.3/19 on
-Vite 6+ or Next.js 15+ (App Router, no Tailwind), Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx raxui-react init`,
-`npx raxui-react add button`). It is not published to npm yet. See
+Vite 6+ or Next.js 15+ (App Router, no Tailwind), Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx @raxui/react init`,
+`npx @raxui/react add button`). It is not published to npm yet. See
 [docs/react.md](docs/react.md) for installation, usage, and customization.
 
 ## Build and test
@@ -1201,7 +1201,7 @@ React Select, Combobox and Autocomplete include one sliding highlight matching C
 
 ## React app shell
 
-Install independently with `npx raxui-react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
+Install independently with `npx @raxui/react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
 
 | Component | Composition and behavior |
 | --- | --- |
@@ -1233,7 +1233,7 @@ The reference-based consumer examples in react-test cover all six components, in
 
 ## React data components
 
-Install independently: `npx raxui-react add data-table`, `data-grid`, `sortable` or `resizable`. Manifests ship every supporting source and stylesheet and pin the approved packages: TanStack Table 8.21.3, TanStack Virtual 3.14.13, dnd-kit core 6.3.1/sortable 10.0.0/modifiers 9.0.0/utilities 3.2.2, and react-resizable-panels 4.14.3. Consumers install only the dependencies their selected component needs.
+Install independently: `npx @raxui/react add data-table`, `data-grid`, `sortable` or `resizable`. Manifests ship every supporting source and stylesheet and pin the approved packages: TanStack Table 8.21.3, TanStack Virtual 3.14.13, dnd-kit core 6.3.1/sortable 10.0.0/modifiers 9.0.0/utilities 3.2.2, and react-resizable-panels 4.14.3. Consumers install only the dependencies their selected component needs.
 
 | Component | Public behavior |
 | --- | --- |
@@ -1258,7 +1258,7 @@ Resizable separators accept aria-label and keyboard arrows/Home/End. Pass percen
 
 DataTable labels translate controls, summaries and selection names; column helpers also accept label overrides. DataGrid labels translate menus, errors, cell names, counts and aggregates, while meta.validate can return application-specific messages. react-test contains reference-based examples for all four components, including a 10,000-row editable employee grid and RTL products. Data is local demo state; applications supply their own persistence/server callbacks. Existing Table and public source imports remain available. New Blazor counterparts are deferred in #74.
 
-React advanced components are available through the source registry: Carousel, Chat, AI, TextEditor, QRCode, SpeedDial and Kanban. Install with `npx raxui-react add <name>`; see [React APIs and examples](docs/react.md#advanced-components). Reference-based examples are also available in react-test. Blazor counterparts remain deferred in #75.
+React advanced components are available through the source registry: Carousel, Chat, AI, TextEditor, QRCode, SpeedDial and Kanban. Install with `npx @raxui/react add <name>`; see [React APIs and examples](docs/react.md#advanced-components). Reference-based examples are also available in react-test. Blazor counterparts remain deferred in #75.
 
 ### Blazor app shell
 

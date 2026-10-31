@@ -94,7 +94,7 @@ export default function App() {
             <h2 id="next-heading">Next steps</h2>
             <p>Button is already installed. Add more components, then use them in your pages:</p>
             <pre>
-              <code>npx raxui-react add &lt;component&gt;</code>
+              <code>npx @raxui/react add &lt;component&gt;</code>
             </pre>
             <p className="mt-3 mb-0">
               Edit this page in <code>src/App.tsx</code>. The theme provider and its options live in{" "}

@@ -109,8 +109,8 @@ React workflow for the first React milestone ([ADR 006](docs/adr/006-react-first
 npm create vite@latest my-app -- --template react-ts
 cd my-app
 
-npx raxui-react init
-npx raxui-react add button
+npx @raxui/react init
+npx @raxui/react add button
 ```
 
 Generated structure:
@@ -127,7 +127,7 @@ my-app/
 └── raxui.react.lock.json
 ```
 
-The package name `raxui-react` is provisional; nothing is published to npm in this milestone.
+The package name `@raxui/react` is provisional; nothing is published to npm in this milestone.
 
 ## 7. CLI Responsibilities
 
