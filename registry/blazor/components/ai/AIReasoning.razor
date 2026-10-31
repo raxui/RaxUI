@@ -1,10 +1,10 @@
 @implements IDisposable
-<div @attributes="AdditionalAttributes" class="sheen-ai-reasoning @Class" data-state="@(open ? "open" : "closed")">
-<button type="button" class="sheen-ai-reasoning-trigger" aria-expanded="@(open ? "true" : "false")" aria-controls="@id" @onclick="Toggle">
+<div @attributes="AdditionalAttributes" class="rax-ai-reasoning @Class" data-state="@(open ? "open" : "closed")">
+<button type="button" class="rax-ai-reasoning-trigger" aria-expanded="@(open ? "true" : "false")" aria-controls="@id" @onclick="Toggle">
 @if (Streaming) { <AIShimmer>@ThinkingLabel</AIShimmer> } else { <span>@DoneLabel.Replace("{s}", Seconds.ToString(System.Globalization.CultureInfo.CurrentCulture))</span> }
-<AIIcon Name="chevron" Class="sheen-ai-chevron" />
+<AIIcon Name="chevron" Class="rax-ai-chevron" />
 </button>
-<div class="sheen-ai-collapse" id="@id"><div><div class="sheen-ai-reasoning-body" dir="auto">@ChildContent</div></div></div>
+<div class="rax-ai-collapse" id="@id"><div><div class="rax-ai-reasoning-body" dir="auto">@ChildContent</div></div></div>
 </div>
 @code {
     /// <summary>Still thinking: shows the shimmer, opens, counts seconds.</summary>
@@ -17,7 +17,7 @@
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
-    private readonly string id = "sheen-ai-" + Guid.NewGuid().ToString("N");
+    private readonly string id = "rax-ai-" + Guid.NewGuid().ToString("N");
     private bool open, userOpened, wasStreaming, interactive;
     private int elapsed;
     private long started;

@@ -5,56 +5,56 @@
 // spread apart.
 // -----------------------------------------------------------------------------
 
-.sheen-menu-toggle {
-  --sheen-bars-w: 1.125rem;
-  --sheen-bars-gap: 0.3125rem; // centre-to-centre distance between bars
-  --sheen-bar-h: 2px;
+.rax-menu-toggle {
+  --rax-bars-w: 1.125rem;
+  --rax-bars-gap: 0.3125rem; // centre-to-centre distance between bars
+  --rax-bar-h: 2px;
 
   &.btn-sm {
-    --sheen-bars-w: 1rem;
-    --sheen-bars-gap: 0.28125rem;
+    --rax-bars-w: 1rem;
+    --rax-bars-gap: 0.28125rem;
   }
 
   &.btn-lg {
-    --sheen-bars-w: 1.375rem;
-    --sheen-bars-gap: 0.375rem;
+    --rax-bars-w: 1.375rem;
+    --rax-bars-gap: 0.375rem;
   }
 }
 
-.sheen-menu-toggle-bars {
+.rax-menu-toggle-bars {
   position: relative;
   display: inline-block;
   flex-shrink: 0;
-  width: var(--sheen-bars-w);
-  height: calc(var(--sheen-bars-gap) * 2 + var(--sheen-bar-h));
+  width: var(--rax-bars-w);
+  height: calc(var(--rax-bars-gap) * 2 + var(--rax-bar-h));
 
   > span {
     position: absolute;
-    top: calc(50% - var(--sheen-bar-h) / 2);
+    top: calc(50% - var(--rax-bar-h) / 2);
     left: 0;
     width: 100%;
-    height: var(--sheen-bar-h);
-    border-radius: var(--sheen-bar-h);
+    height: var(--rax-bar-h);
+    border-radius: var(--rax-bar-h);
     background-color: currentColor;
     transform-origin: center;
 
-    &:nth-child(1) { translate: 0 calc(var(--sheen-bars-gap) * -1); }
-    &:nth-child(3) { translate: 0 var(--sheen-bars-gap); }
+    &:nth-child(1) { translate: 0 calc(var(--rax-bars-gap) * -1); }
+    &:nth-child(3) { translate: 0 var(--rax-bars-gap); }
   }
 
   // Closing: unturn first, then spread.
   @include motion-safe {
     > span {
       transition:
-        rotate 200ms var(--sheen-ease-out),
-        scale 200ms var(--sheen-ease-out),
+        rotate 200ms var(--rax-ease-out),
+        scale 200ms var(--rax-ease-out),
         opacity 150ms ease 100ms,
-        translate 350ms var(--sheen-ease-spring) 150ms;
+        translate 350ms var(--rax-ease-spring) 150ms;
     }
   }
 
   // Back arrow: pointing to the start of the line, so it mirrors in RTL.
-  .sheen-menu-toggle[data-icon="arrow"] & {
+  .rax-menu-toggle[data-icon="arrow"] & {
     > span:nth-child(odd) {
       transform-origin: left center;
     }
@@ -66,7 +66,7 @@
 }
 
 // Open: meet in the middle, then turn.
-.sheen-menu-toggle[data-open] .sheen-menu-toggle-bars {
+.rax-menu-toggle[data-open] .rax-menu-toggle-bars {
   > span:nth-child(1),
   > span:nth-child(3) {
     translate: 0 0;
@@ -80,20 +80,20 @@
   @include motion-safe {
     > span {
       transition:
-        translate 180ms var(--sheen-ease-out),
+        translate 180ms var(--rax-ease-out),
         opacity 120ms ease,
-        scale 180ms var(--sheen-ease-out),
-        rotate 450ms var(--sheen-ease-spring) 150ms;
+        scale 180ms var(--rax-ease-out),
+        rotate 450ms var(--rax-ease-spring) 150ms;
     }
   }
 }
 
-.sheen-menu-toggle[data-open][data-icon="close"] .sheen-menu-toggle-bars {
+.rax-menu-toggle[data-open][data-icon="close"] .rax-menu-toggle-bars {
   > span:nth-child(1) { rotate: 45deg; }
   > span:nth-child(3) { rotate: -45deg; }
 }
 
-.sheen-menu-toggle[data-open][data-icon="arrow"] .sheen-menu-toggle-bars {
+.rax-menu-toggle[data-open][data-icon="arrow"] .rax-menu-toggle-bars {
   // The middle bar stays as the shaft; the outer ones fold into the head.
   > span:nth-child(2) {
     opacity: 1;
@@ -106,15 +106,15 @@
   @include motion-safe {
     > span {
       transition:
-        translate 180ms var(--sheen-ease-out),
-        scale 450ms var(--sheen-ease-spring) 150ms,
-        rotate 450ms var(--sheen-ease-spring) 150ms;
+        translate 180ms var(--rax-ease-out),
+        scale 450ms var(--rax-ease-spring) 150ms,
+        rotate 450ms var(--rax-ease-spring) 150ms;
     }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheen-menu-toggle, .sheen-menu-toggle * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .rax-menu-toggle, .rax-menu-toggle * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-.sheen-menu-toggle .sheen-menu-toggle-bars svg { width: 1em; height: 1em; }
+.rax-menu-toggle .rax-menu-toggle-bars svg { width: 1em; height: 1em; }

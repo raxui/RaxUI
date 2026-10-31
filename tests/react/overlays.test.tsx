@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 
-import { SheenThemeProvider } from "@/lib/theme"
+import { RaxThemeProvider } from "@/lib/theme"
 import {
   Dialog,
   DialogContent,
@@ -29,7 +29,7 @@ beforeAll(() => {
 describe("Dialog", () => {
   function Example() {
     return (
-      <SheenThemeProvider data-testid="root" mode="dark" data-sheen-accent="emerald">
+      <RaxThemeProvider data-testid="root" mode="dark" data-rax-accent="emerald">
         <Dialog>
           <DialogTrigger>Open</DialogTrigger>
           <DialogContent>
@@ -40,7 +40,7 @@ describe("Dialog", () => {
             <DialogFooter>Actions</DialogFooter>
           </DialogContent>
         </Dialog>
-      </SheenThemeProvider>
+      </RaxThemeProvider>
     )
   }
 
@@ -52,10 +52,10 @@ describe("Dialog", () => {
 
     const dialog = screen.getByRole("dialog", { name: "Delete file?" })
     expect(dialog).toHaveAccessibleDescription("This cannot be undone.")
-    expect(dialog).toHaveClass("sheen-dialog")
+    expect(dialog).toHaveClass("rax-dialog")
     // Portalled into the provider, so mode and accent apply to the overlay too (ADR 013).
     expect(screen.getByTestId("root")).toContainElement(dialog)
-    expect(screen.getByRole("button", { name: "Close" })).toHaveClass("btn-close", "sheen-dialog-close")
+    expect(screen.getByRole("button", { name: "Close" })).toHaveClass("btn-close", "rax-dialog-close")
 
     await user.keyboard("{Escape}")
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
@@ -66,7 +66,7 @@ describe("Dialog", () => {
 describe("DropdownMenu", () => {
   function Example({ onSelect }: { onSelect: () => void }) {
     return (
-      <SheenThemeProvider data-testid="root" direction="rtl">
+      <RaxThemeProvider data-testid="root" direction="rtl">
         <DropdownMenu>
           <DropdownMenuTrigger>Options</DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -77,7 +77,7 @@ describe("DropdownMenu", () => {
             <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </SheenThemeProvider>
+      </RaxThemeProvider>
     )
   }
 
@@ -90,14 +90,14 @@ describe("DropdownMenu", () => {
     await user.keyboard("{Enter}")
 
     const menu = screen.getByRole("menu")
-    expect(menu).toHaveClass("sheen-dropdown-menu")
+    expect(menu).toHaveClass("rax-dropdown-menu")
     expect(menu).toHaveAttribute("dir", "rtl") // the theme direction reaches Radix
     expect(screen.getByTestId("root")).toContainElement(menu)
-    expect(screen.getByText("Actions")).toHaveClass("sheen-dropdown-label")
-    expect(screen.getByRole("separator")).toHaveClass("sheen-dropdown-separator")
+    expect(screen.getByText("Actions")).toHaveClass("rax-dropdown-label")
+    expect(screen.getByRole("separator")).toHaveClass("rax-dropdown-separator")
 
     const edit = screen.getByRole("menuitem", { name: "Edit" })
-    expect(edit).toHaveClass("sheen-dropdown-item")
+    expect(edit).toHaveClass("rax-dropdown-item")
     expect(edit).toHaveFocus()
     await user.keyboard("{ArrowDown}")
     expect(screen.getByRole("menuitem", { name: "Delete" })).toHaveFocus()
@@ -116,12 +116,12 @@ describe("DropdownMenu", () => {
     Object.defineProperties(edit, { offsetTop: { value: 12 }, offsetHeight: { value: 36 } })
     Object.defineProperties(last, { offsetTop: { value: 84 }, offsetHeight: { value: 36 } })
     fireEvent.focusIn(edit)
-    const marker = menu.querySelector<HTMLElement>(".sheen-dropdown-highlight")!
+    const marker = menu.querySelector<HTMLElement>(".rax-dropdown-highlight")!
     const transition = vi.spyOn(marker.style, "transition", "set")
     fireEvent.focusIn(menu)
     fireEvent.focusIn(last)
     expect(menu).toHaveAttribute("data-hover")
-    expect(menu.style.getPropertyValue("--sheen-menu-hover-y")).toBe("84px")
+    expect(menu.style.getPropertyValue("--rax-menu-hover-y")).toBe("84px")
     expect(transition).not.toHaveBeenCalledWith("none")
   })
 

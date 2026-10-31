@@ -10,13 +10,13 @@ export interface AISuggestionsProps extends Omit<React.HTMLAttributes<HTMLDivEle
 }
 
 export const AISuggestions = React.forwardRef<HTMLDivElement, AISuggestionsProps>(({ suggestions, onSelect, className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-ai-suggestions", className)} {...props}>
+  <div ref={ref} className={cn("rax-ai-suggestions", className)} {...props}>
     {suggestions.map((suggestion, i) => (
       <button
         key={suggestion}
         type="button"
-        className="sheen-ai-suggestion"
-        style={{ "--sheen-i": i } as React.CSSProperties}
+        className="rax-ai-suggestion"
+        style={{ "--rax-i": i } as React.CSSProperties}
         dir="auto"
         onClick={() => onSelect(suggestion)}
       >

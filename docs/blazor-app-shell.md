@@ -3,12 +3,12 @@
 Phase 5 ports the React app shell components to source-owned Razor. The six components use the same SCSS, tokens and inline Lucide icons (ISC), without React/Radix dependencies or new NuGet packages. Adding a component through the CLI installs its required components and per-component CSS imports.
 
 ```text
-sheenui add navbar
-sheenui add sidebar
-sheenui add navigation-menu
-sheenui add menubar
-sheenui add footer
-sheenui add banner
+raxui add navbar
+raxui add sidebar
+raxui add navigation-menu
+raxui add menubar
+raxui add footer
+raxui add banner
 ```
 
 ## Rendering and routing
@@ -37,7 +37,7 @@ Sidebar accepts Side=start/end, Variant=sidebar/floating/inset, Collapsible=offc
 
 Parts include Header, Footer, Content, Inset, Trigger, Rail, Separator, Input, Group/Label/Content/Action, Menu/Item/Button/Action/Badge/Skeleton, MenuSub/Item/Button and MenuCollapsible (all prefixed Sidebar). MenuButton/SubButton accept Href, IsActive, Exact, Disabled, Size, Variant, Icon, Tooltip, OnClick and PreventDefault. Tooltip is the native title hint, including in icon mode. MenuCollapsible accepts Title, Icon and DefaultOpen; opening a group while folded to icons expands the sidebar. Give custom icon-only actions a Label. `Href=""` is the app root, as in an anchor. The active item sits on a highlight that glides between items, and a lighter pill follows the pointer from item to item; both keep their spring when the page under the inset changes height, and reduced-motion preferences avoid animated travel.
 
-For a custom trigger, the provider cascades itself: `IsOpen` (expanded on desktop, the Sheet open on phones), `Ready`, `PanelId` and `Toggle()`. `examples/blazor/app-shell/ShellSidebarToggle.razor` uses them to drive an animated `MenuToggle` (`sheenui add menu-toggle`):
+For a custom trigger, the provider cascades itself: `IsOpen` (expanded on desktop, the Sheet open on phones), `Ready`, `PanelId` and `Toggle()`. `examples/blazor/app-shell/ShellSidebarToggle.razor` uses them to drive an animated `MenuToggle` (`raxui add menu-toggle`):
 
 ```razor
 <MenuToggle Open="@(Parent?.IsOpen == true)" OpenChanged="@(_ => Parent?.Toggle() ?? Task.CompletedTask)"
@@ -71,10 +71,10 @@ Newsletter exposes OnSubscribe(string), Title, Description, Placeholder, SubmitL
 
 Banner supports Tone=info/success/warning/danger/neutral, Variant=tinted/solid/glass, Position=inline/top/bottom, Title, ChildContent, Icon/ShowIcon, Action, Dismissible/DismissLabel, Label, Open/OpenChanged, Appearance and PersistKey. BannerGroup stacks announcements. A bottom banner uses the native top layer and inherits its ancestor theme. Dismissal waits for exit animation; reduced motion removes it.
 
-Unbound banners remember dismissal in localStorage under `sheen-banner:<PersistKey>`. `ResetAsync()` on an @ref clears that key and shows it again. Controlled Open takes precedence over remembered dismissal. Storage is read after hydration, so SSR cannot know a visitor's saved preference before interactivity starts.
+Unbound banners remember dismissal in localStorage under `rax-banner:<PersistKey>`. `ResetAsync()` on an @ref clears that key and shows it again. Controlled Open takes precedence over remembered dismissal. Storage is read after hydration, so SSR cannot know a visitor's saved preference before interactivity starts.
 
 ## Examples and verification
 
-`examples/blazor/app-shell/` contains portable English/Arabic examples. Copy the folder into your app, import its namespace and render NavbarExamples, SidebarExamples, NavigationMenuExamples, MenubarExamples, FooterExamples or BannerExamples. The named boolean cascade ShellExamplesArabic selects language. The local SheenDemo wrappers follow its existing theme controls; all six examples are registered in its gallery.
+`examples/blazor/app-shell/` contains portable English/Arabic examples. Copy the folder into your app, import its namespace and render NavbarExamples, SidebarExamples, NavigationMenuExamples, MenubarExamples, FooterExamples or BannerExamples. The named boolean cascade ShellExamplesArabic selects language. The local RaxDemo wrappers follow its existing theme controls; all six examples are registered in its gallery.
 
 The generated-app suite installs all six components into real .NET 8/9/10 apps and compiles the public samples. Chromium acceptance checks routing/static SSR, desktop/mobile geometry, RTL, materials/accents/density, scroll behavior, highlights, keyboard/submenus, storage, newsletter states and banners. Existing library checks cover manifest ownership, dependency installation, generated assets and hashes. Browser plugin is unavailable in this workspace, so browser checks use the installed Playwright fallback. Physical touch devices, Firefox/WebKit and Interactive WebAssembly require separate validation.

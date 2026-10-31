@@ -1,4 +1,4 @@
-# استخدام SheenUI محلياً على Windows 11
+# استخدام RaxUI محلياً على Windows 11
 
 العربية | [English](local-development.en.md)
 
@@ -6,14 +6,14 @@
 نفّذ الأوامر في **PowerShell**. المسارات أدناه تفترض أن المستودع موجود في:
 
 ```text
-C:\Users\saada\source\repos\SheenUI
+C:\Users\saada\source\repos\RaxUI
 ```
 
 غيّر المسارات إذا كان موقع المستودع مختلفاً. أوامر إنشاء التطبيقات مخصّصة
 لمجلدات جديدة؛ إذا كان التطبيق موجوداً، انتقل إلى فقرة تثبيته مباشرة.
 
 إذا بقي اسم مجلد نسختك المحلية `BlazorUI`، فاستخدم ذلك المسار بدلاً من
-`SheenUI` في الأمثلة؛ لا يلزم نقل المجلد لاستخدام الأدوات الجديدة.
+`RaxUI` في الأمثلة؛ لا يلزم نقل المجلد لاستخدام الأدوات الجديدة.
 
 ## 1. المتطلبات
 
@@ -44,13 +44,13 @@ npm --version
 ### إنشاء حزمة أداة Blazor
 
 ```powershell
-$repo = "C:\Users\saada\source\repos\SheenUI"
+$repo = "C:\Users\saada\source\repos\RaxUI"
 $version = "0.1.0-local.$(Get-Date -Format yyyyMMddHHmmss)"
 $tools = "$repo\local-tools\$version"
 
 cd $repo
 
-dotnet pack .\src\SheenUI.Cli\SheenUI.Cli.csproj `
+dotnet pack .\src\RaxUI.Cli\RaxUI.Cli.csproj `
   -c Release `
   -o .\nupkg `
   -p:Version=$version
@@ -59,7 +59,7 @@ dotnet pack .\src\SheenUI.Cli\SheenUI.Cli.csproj `
 ### حزمة React وNext.js (لا تلزم لتجربة Blazor)
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
+cd C:\Users\saada\source\repos\RaxUI
 npm ci
 npm pack ./src/react-cli --pack-destination .
 ```
@@ -68,8 +68,8 @@ npm pack ./src/react-cli --pack-destination .
 بالإصدار الحالي إذا نفّذت أوامرها:
 
 ```text
-SheenUI\nupkg\SheenUI.Cli.<version>.nupkg
-SheenUI\sheenui-react-0.1.0-preview.1.tgz
+RaxUI\nupkg\RaxUI.Cli.<version>.nupkg
+RaxUI\raxui-react-0.1.0-preview.1.tgz
 ```
 
 هذه أوامر إنشاء حزم محلية فقط. لا تستخدم `npm publish` أو `dotnet nuget push`.
@@ -83,7 +83,7 @@ SheenUI\sheenui-react-0.1.0-preview.1.tgz
 ```powershell
 cd $repo
 
-dotnet tool install SheenUI.Cli `
+dotnet tool install RaxUI.Cli `
   --tool-path "$tools" `
   --add-source "$repo\nupkg" `
   --version "$version"
@@ -97,8 +97,8 @@ dotnet tool install SheenUI.Cli `
 
 ```powershell
 cd C:\Users\saada\source\repos
-dotnet new blazor -n SheenDemo --framework net10.0 --interactivity Server
-cd SheenDemo
+dotnet new blazor -n RaxDemo --framework net10.0 --interactivity Server
+cd RaxDemo
 ```
 
 لتجربة .NET 8 أو9 غيّر `net10.0` إلى `net8.0` أو `net9.0`، مع توافر متطلباته.
@@ -109,8 +109,8 @@ cd SheenDemo
 انتقل إلى المجلد الذي يحتوي ملف التطبيق `.csproj`، ثم نفّذ:
 
 ```powershell
-& "$tools\sheenui.exe" init
-& "$tools\sheenui.exe" add button
+& "$tools\raxui.exe" init
+& "$tools\raxui.exe" add button
 dotnet build
 dotnet run
 ```
@@ -121,7 +121,7 @@ dotnet run
 الملفات التي عدّلتها تُحفظ وتظهر ملاحظة عنها.
 
 ستجد المكوّن في `Components/UI/Button/Button.razor`، والثيم في
-`wwwroot/css/sheenui/sheenui.css`.
+`wwwroot/css/raxui/raxui.css`.
 
 ### استخدام Button
 
@@ -171,13 +171,13 @@ npm install
 لتثبيت المكتبة، سواء في هذا التطبيق أو في تطبيق Vite 6+ موجود:
 
 ```powershell
-npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\SheenUI\sheenui-react-0.1.0-preview.1.tgz"
-npx sheenui-react init
+npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\RaxUI\raxui-react-0.1.0-preview.1.tgz"
+npx raxui-react init
 npm run dev
 ```
 
 افتح الرابط الظاهر في الطرفية، وعادةً يكون `http://localhost:5173`.
-`init` يثبّت Button تلقائياً؛ تشغيل `npx sheenui-react add button` بعده لا يضيف
+`init` يثبّت Button تلقائياً؛ تشغيل `npx raxui-react add button` بعده لا يضيف
 نسخة أخرى.
 
 الملفات الرئيسية التي تنسخها المكتبة:
@@ -186,8 +186,8 @@ npm run dev
 src/App.tsx                         صفحة الترحيب والليّاوت
 src/components/ui/button.tsx         المكوّن
 src/lib/theme.tsx                    مزوّد الثيم
-src/styles/sheenui.scss             نقطة تجميع الأنماط
-src/styles/sheenui/                 ملفات الثيم والمكونات
+src/styles/raxui.scss             نقطة تجميع الأنماط
+src/styles/raxui/                 ملفات الثيم والمكونات
 ```
 
 للتأكد من بناء التطبيق:
@@ -210,8 +210,8 @@ cd next-test
 ثم داخل التطبيق:
 
 ```powershell
-npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\SheenUI\sheenui-react-0.1.0-preview.1.tgz"
-npx sheenui-react init
+npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\RaxUI\raxui-react-0.1.0-preview.1.tgz"
+npx raxui-react init
 npm run dev
 ```
 
@@ -223,7 +223,7 @@ app/page.tsx                       صفحة الترحيب
 app/layout.tsx                     إضافة استيراد الثيم إلى الليّاوت الموجود
 components/ui/button.tsx           المكوّن
 lib/theme.tsx                      مزوّد الثيم
-styles/sheenui.scss               نقطة تجميع الأنماط
+styles/raxui.scss               نقطة تجميع الأنماط
 ```
 
 عند استخدام خيار `--src-dir` تكون هذه الملفات تحت `src/` بدلاً من جذر التطبيق.
@@ -249,14 +249,14 @@ npm run start
 
 // في Next.js استخدم ../components/ui/button و../lib/theme بدلاً من ./
 import { Button } from "./components/ui/button"
-import { SheenThemeProvider } from "./lib/theme"
+import { RaxThemeProvider } from "./lib/theme"
 
 export default function App() {
   return (
-    <SheenThemeProvider className="sheen-app" mode="dark" appearance="glass" direction="rtl">
+    <RaxThemeProvider className="rax-app" mode="dark" appearance="glass" direction="rtl">
       <Button onClick={() => alert("تم الحفظ")}>حفظ</Button>
       <Button variant="outline" appearance="flat">إلغاء</Button>
-    </SheenThemeProvider>
+    </RaxThemeProvider>
   )
 }
 ```
@@ -264,13 +264,13 @@ export default function App() {
 في Blazor يمكنك استخدام خصائص HTML على حاوية المكوّن:
 
 ```razor
-<div data-bs-theme="dark" data-sheen-appearance="glass" dir="rtl">
+<div data-bs-theme="dark" data-rax-appearance="glass" dir="rtl">
     <Button>حفظ</Button>
 </div>
 ```
 
 خلفية صفحة الترحيب الداكنة سوداء مع تدرجات الزوايا. لتثبيت إعدادات الصفحة
-عدّل الحاوية `.sheen-app` في الليّاوت الخاص بـBlazor، أو قيم الحالة في صفحة React.
+عدّل الحاوية `.rax-app` في الليّاوت الخاص بـBlazor، أو قيم الحالة في صفحة React.
 
 ## 7. تجربة تحديثات المكتبة أثناء التطوير
 
@@ -280,13 +280,13 @@ export default function App() {
 
 ### Blazor: تحديث تطبيق مثبّت
 
-بعد إعادة بناء أنماط المكتبة كما هو موضح أدناه، نفّذ من مستودع SheenUI:
+بعد إعادة بناء أنماط المكتبة كما هو موضح أدناه، نفّذ من مستودع RaxUI:
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
-dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- update --dry-run --cwd "C:\Users\saada\source\repos\SheenDemo"
-dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- update --cwd "C:\Users\saada\source\repos\SheenDemo"
-dotnet build ..\SheenDemo\SheenDemo.csproj
+cd C:\Users\saada\source\repos\RaxUI
+dotnet run --project .\src\RaxUI.Cli -c Release -f net10.0 -- update --dry-run --cwd "C:\Users\saada\source\repos\RaxDemo"
+dotnet run --project .\src\RaxUI.Cli -c Release -f net10.0 -- update --cwd "C:\Users\saada\source\repos\RaxDemo"
+dotnet build ..\RaxDemo\RaxDemo.csproj
 ```
 
 استخدم `update button` لتحديث مكوّن واحد مع اعتمادياته. يتحدّث الثيم المشترك
@@ -298,16 +298,16 @@ dotnet build ..\SheenDemo\SheenDemo.csproj
 التحديث كاملًا قبل الكتابة ويعرض التعارضات. احفظ تعديلاتك جانبًا، واستعد النسخة
 المثبّتة السابقة، ثم حدّث وأعد تطبيق تعديلاتك؛ أو استبدل الملف بمصدره الجديد
 المطابق للمكتبة ثم أعد المحاولة.
-لا تحذف `sheenui.lock.json`؛ فهو أساس المقارنة. لا يوجد خيار لفرض الاستبدال.
+لا تحذف `raxui.lock.json`؛ فهو أساس المقارنة. لا يوجد خيار لفرض الاستبدال.
 
 ### Blazor: تشغيل الأداة مباشرة من المصدر
 
 هذا يتجاوز نسخة الأداة المثبّتة سابقاً ومشاكل تخزين حزمة بنفس رقم الإصدار:
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
-dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- init --cwd "C:\Users\saada\source\repos\blazor-test-new"
-dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- add button --cwd "C:\Users\saada\source\repos\blazor-test-new"
+cd C:\Users\saada\source\repos\RaxUI
+dotnet run --project .\src\RaxUI.Cli -c Release -f net10.0 -- init --cwd "C:\Users\saada\source\repos\blazor-test-new"
+dotnet run --project .\src\RaxUI.Cli -c Release -f net10.0 -- add button --cwd "C:\Users\saada\source\repos\blazor-test-new"
 ```
 
 يجب أن يكون التطبيق الجديد موجوداً قبل تشغيل هذه الأوامر.
@@ -315,7 +315,7 @@ dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- add button --cwd
 ### React وNext.js: إعادة تجهيز الحزمة
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
+cd C:\Users\saada\source\repos\RaxUI
 npm pack ./src/react-cli --pack-destination .
 ```
 
@@ -327,7 +327,7 @@ npm pack ./src/react-cli --pack-destination .
 المصدر المشترك في `theme/scss/`. بعد تغييره:
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
+cd C:\Users\saada\source\repos\RaxUI
 npm run theme:css
 node src/react-cli/scripts/update-hashes.mjs
 ```

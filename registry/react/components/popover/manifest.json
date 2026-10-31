@@ -18,13 +18,13 @@
       "source": "registry/react/components/popover/popover.tsx",
       "target": "components/ui/popover.tsx",
       "type": "tsx",
-      "sha256": "81990640cfc7964763a5375e03c4ff1acadadecb758379f6d75487da45a4e245"
+      "sha256": "d40d6049848b072d8427fd0c741d29b766c190e66779e63c42e49d1a921e18ba"
     },
     {
       "source": "theme/scss/components/_popover.scss",
-      "target": "styles/sheenui/components/_popover.scss",
+      "target": "styles/raxui/components/_popover.scss",
       "type": "scss",
-      "sha256": "0f22856959fba2679a45179a61b1fb1e14c865c6b347e34d18eeb140d2604d29"
+      "sha256": "daa97089249133c167f0ff6d81701232f8166664fbe00edf0dea16309cf4078f"
     }
   ]
 }

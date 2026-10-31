@@ -1,13 +1,13 @@
-@* SheenUI FieldLegend. Source-owned: edit freely. Names the surrounding field's control. *@
-<legend @attributes="AdditionalAttributes" id="@Context?.LabelId" class="@($"sheen-field-legend {Class}".TrimEnd())">
+@* RaxUI FieldLegend. Source-owned: edit freely. Names the surrounding field's control. *@
+<legend @attributes="AdditionalAttributes" id="@Context?.LabelId" class="@($"rax-field-legend {Class}".TrimEnd())">
     @ChildContent
     @if (Context?.Required == true && !Context.Optional && RequiredIndicator is not null)
     {
-        <span class="sheen-field-required" aria-hidden="true">@RequiredIndicator</span>
+        <span class="rax-field-required" aria-hidden="true">@RequiredIndicator</span>
     }
     @if (Context?.Optional == true)
     {
-        <span class="sheen-field-optional">@OptionalText</span>
+        <span class="rax-field-optional">@OptionalText</span>
     }
 </legend>
 

@@ -1,21 +1,21 @@
 @* Built-in SVG paths from Lucide (ISC). *@
 @typeparam TItem
-<div class="sheen-table-frame">
+<div class="rax-table-frame">
 <Table Density="@State.Density" StickyHeader="@(MaxHeight is not null)" ContainerStyle="@(MaxHeight is null?null:$"max-height:{MaxHeight};overflow:auto")" aria-label="@Label" aria-busy="@(Loading?"true":null)">
 <TableHeader><TableRow>
     @if(Selectable){<TableHead><Checkbox disabled="@(!Interactive)" Value="@All" Indeterminate="@Some" ValueChanged="TogglePage" aria-label="@Text.SelectAll" /></TableHead>}
     @foreach(var c in State.Visible){
         var sort=State.Sorting.FirstOrDefault(x=>x.ColumnId==c.Id);
         <TableHead Class="@(c.Align=="end"?"text-end":c.Align=="center"?"text-center":null)" aria-sort="@(sort is null?null:sort.Descending?"descending":"ascending")">
-            @if(c.Sortable){<button type="button" disabled="@(!Interactive)" class="sheen-table-sort" data-sort="@(sort is null?null:sort.Descending?"desc":"asc")" @onclick="e=>Sort(c.Id,e.ShiftKey)">@c.Title<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m8 9 4-4 4 4M12 5v14" /></svg></button>}
+            @if(c.Sortable){<button type="button" disabled="@(!Interactive)" class="rax-table-sort" data-sort="@(sort is null?null:sort.Descending?"desc":"asc")" @onclick="e=>Sort(c.Id,e.ShiftKey)">@c.Title<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m8 9 4-4 4 4M12 5v14" /></svg></button>}
             else {@c.Title}
         </TableHead>
     }
 </TableRow></TableHeader>
 <TableBody>
 @if(Loading){
-    @for(var i=0;i<Math.Min(State.PageSize,10);i++){<TableRow>@for(var j=0;j<State.Visible.Count()+(Selectable?1:0);j++){<TableCell><span class="sheen-table-skeleton"></span></TableCell>}</TableRow>}
-} else if(State.Filtered.Count==0){<TableRow><TableCell Class="sheen-table-empty" colspan="@(State.Visible.Count()+(Selectable?1:0))">@if(EmptyState is not null){@EmptyState}else{@Text.Empty}</TableCell></TableRow>}
+    @for(var i=0;i<Math.Min(State.PageSize,10);i++){<TableRow>@for(var j=0;j<State.Visible.Count()+(Selectable?1:0);j++){<TableCell><span class="rax-table-skeleton"></span></TableCell>}</TableRow>}
+} else if(State.Filtered.Count==0){<TableRow><TableCell Class="rax-table-empty" colspan="@(State.Visible.Count()+(Selectable?1:0))">@if(EmptyState is not null){@EmptyState}else{@Text.Empty}</TableCell></TableRow>}
 else {
     @foreach(var row in State.PageRows){
         var id=State.Id(row);

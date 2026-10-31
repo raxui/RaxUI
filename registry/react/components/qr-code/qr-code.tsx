@@ -90,12 +90,12 @@ export const QRCode = React.forwardRef<HTMLDivElement, QRCodeProps>(
         <Comp
           ref={ref}
           data-state={status}
-          className={cn("sheen-qr-code", className)}
+          className={cn("rax-qr-code", className)}
           style={
             {
-              "--sheen-qr-size": `${size}px`,
-              "--sheen-qr-hole": `${(hole / total) * size}px`,
-              "--sheen-qr-bg": backgroundColor,
+              "--rax-qr-size": `${size}px`,
+              "--rax-qr-hole": `${(hole / total) * size}px`,
+              "--rax-qr-bg": backgroundColor,
               ...style,
             } as React.CSSProperties
           }
@@ -116,7 +116,7 @@ export const QRCodeSvg = React.forwardRef<HTMLDivElement, QRCodeSvgProps>(({ lab
   if (!matrix) return null
   const total = matrix.count + margin * 2
   return (
-    <div ref={ref} className={cn("sheen-qr-code-frame", className)} {...props}>
+    <div ref={ref} className={cn("rax-qr-code-frame", className)} {...props}>
       <svg
         role="img"
         aria-label={label}
@@ -153,7 +153,7 @@ export const QRCodeCanvas = React.forwardRef<HTMLCanvasElement, QRCodeCanvasProp
       ref={setRef}
       role="img"
       aria-label={label}
-      className={cn("sheen-qr-code-frame", className)}
+      className={cn("rax-qr-code-frame", className)}
       style={{ width: context.size, height: context.size, ...style }}
       {...props}
     />
@@ -180,7 +180,7 @@ export const QRCodeImage = React.forwardRef<HTMLImageElement, QRCodeImageProps>(
       alt={alt}
       width={context.size}
       height={context.size}
-      className={cn("sheen-qr-code-frame", className)}
+      className={cn("rax-qr-code-frame", className)}
       {...props}
     />
   )
@@ -195,7 +195,7 @@ export const QRCodeOverlay = React.forwardRef<HTMLDivElement, React.HTMLAttribut
     return () => setHasOverlay(false)
   }, [setHasOverlay])
   if (!matrix) return null
-  return <div ref={ref} className={cn("sheen-qr-code-overlay", className)} {...props} />
+  return <div ref={ref} className={cn("rax-qr-code-overlay", className)} {...props} />
 })
 
 QRCodeOverlay.displayName = "QRCodeOverlay"
@@ -203,7 +203,7 @@ QRCodeOverlay.displayName = "QRCodeOverlay"
 export const QRCodeSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
   const { status } = useQRCode("QRCodeSkeleton")
   if (status !== "loading") return null
-  return <div ref={ref} aria-hidden="true" className={cn("sheen-qr-code-skeleton", className)} {...props} />
+  return <div ref={ref} aria-hidden="true" className={cn("rax-qr-code-skeleton", className)} {...props} />
 })
 
 QRCodeSkeleton.displayName = "QRCodeSkeleton"

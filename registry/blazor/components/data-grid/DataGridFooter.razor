@@ -1,7 +1,7 @@
 @typeparam TItem
-@if(Model.HasFooter){<div role="rowgroup" class="sheen-grid-foot"><div role="row" aria-rowindex="@(Model.Rows.Count+2)" class="sheen-grid-row" style="@($"height:{Model.RowHeight}px")">
-    @for(var i=0;i<Model.Visible.Count;i++){var c=Model.Visible[i];<div role="gridcell" aria-colindex="@(i+1)" class="sheen-grid-cell sheen-grid-fcell" data-col="@c.Id" data-pinned="@Model.EffectivePin(c)" data-align="@c.Align" style="@Model.CellStyle(c)">
-        @if(Model.Totals.TryGetValue(c.Id,out var value)){@if(c.Aggregate is string kind){<span class="sheen-grid-agg-label">@(Labels.Aggregates.TryGetValue(kind,out var title)?title:kind)</span>}<span>@(c.Format?.Invoke(value)??DataGridTypes.Plain(value))</span>}
+@if(Model.HasFooter){<div role="rowgroup" class="rax-grid-foot"><div role="row" aria-rowindex="@(Model.Rows.Count+2)" class="rax-grid-row" style="@($"height:{Model.RowHeight}px")">
+    @for(var i=0;i<Model.Visible.Count;i++){var c=Model.Visible[i];<div role="gridcell" aria-colindex="@(i+1)" class="rax-grid-cell rax-grid-fcell" data-col="@c.Id" data-pinned="@Model.EffectivePin(c)" data-align="@c.Align" style="@Model.CellStyle(c)">
+        @if(Model.Totals.TryGetValue(c.Id,out var value)){@if(c.Aggregate is string kind){<span class="rax-grid-agg-label">@(Labels.Aggregates.TryGetValue(kind,out var title)?title:kind)</span>}<span>@(c.Format?.Invoke(value)??DataGridTypes.Plain(value))</span>}
     </div>}
 </div></div>}
 @code {

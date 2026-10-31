@@ -1,4 +1,4 @@
-<div @attributes="AdditionalAttributes" class="sheen-navbar-actions @Class" data-collapse="@(Collapse ? "" : null)">@ChildContent</div>
+<div @attributes="AdditionalAttributes" class="rax-navbar-actions @Class" data-collapse="@(Collapse ? "" : null)">@ChildContent</div>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }

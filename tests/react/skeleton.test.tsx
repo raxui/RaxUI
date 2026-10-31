@@ -19,7 +19,7 @@ describe("Skeleton", () => {
   })
   it("renders requested lines with a shorter last line", () => {
     render(<SkeletonText lines={2} lastLineWidth="40%" />)
-    expect(document.querySelectorAll(".sheen-skeleton")).toHaveLength(2)
-    expect(document.querySelectorAll(".sheen-skeleton")[1]).toHaveStyle({ width: "40%" })
+    expect(document.querySelectorAll(".rax-skeleton")).toHaveLength(2)
+    expect(document.querySelectorAll(".rax-skeleton")[1]).toHaveStyle({ width: "40%" })
   })
 })

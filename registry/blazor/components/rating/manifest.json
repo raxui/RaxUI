@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/rating.css",
       "type": "css",
-      "sha256": "0952feaad00fd27ae770c5fdad31f309f617cdcf260ae8419a593defa7be0675"
+      "sha256": "dbade68f5bc08d301c622561e23eae09d1dfdc4c77d826d5621d22d0debb89f9"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Rating/Rating.razor",
       "type": "razor",
-      "sha256": "651d45f9ad6b387cb48ff2e69d3213806c4e22bc020b24024c03d94473da1255"
+      "sha256": "d0f418b4b0634d5dce4a45f56da75c421b30870e8584413c772b96e84fafede8"
     }
   ]
 }

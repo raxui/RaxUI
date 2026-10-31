@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/sortable.css",
       "type": "css",
-      "sha256": "7a872fbde2035a62b6ce11c270992d01ddaefcdc379dd71d8cd38c0550b7b567"
+      "sha256": "182eafc004bbb3620ce23aef253d9ecb82649346b30b2cdb4df0e36d2f7f2853"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Sortable/Sortable.razor",
       "type": "razor",
-      "sha256": "2559086b7621729701018d8bfdc103499b461a2d763859185a12e2f49a240802"
+      "sha256": "09fb3ad91ddb5e40b9527a86efd2e93ff45e8ecf3ea5490a4c0cb58f8f4298cc"
     },
     {
       "source": "Sortable.razor.js",

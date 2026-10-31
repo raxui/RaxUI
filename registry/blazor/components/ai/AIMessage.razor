@@ -1,6 +1,6 @@
-<div @attributes="AdditionalAttributes" class="sheen-ai-message @Class" data-from="@From">
-@if (From == "assistant") { <div class="sheen-ai-avatar" aria-hidden="true">@if (Avatar is null) { <AIIcon Name="spark" /> } else { @Avatar }</div> }
-<div class="sheen-ai-message-body" dir="@(From == "user" ? "auto" : null)">@ChildContent</div>
+<div @attributes="AdditionalAttributes" class="rax-ai-message @Class" data-from="@From">
+@if (From == "assistant") { <div class="rax-ai-avatar" aria-hidden="true">@if (Avatar is null) { <AIIcon Name="spark" /> } else { @Avatar }</div> }
+<div class="rax-ai-message-body" dir="@(From == "user" ? "auto" : null)">@ChildContent</div>
 </div>
 @code {
     /// <summary>user or assistant.</summary>

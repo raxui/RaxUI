@@ -6,7 +6,7 @@
 }
 else
 {
-    <dialog @ref="_dialog" @attributes="AdditionalAttributes" class="sheen-command-dialog @Class" aria-labelledby="@(_id + "-title")" data-sheen-appearance="@Appearance" @onclose="Closed">
+    <dialog @ref="_dialog" @attributes="AdditionalAttributes" class="rax-command-dialog @Class" aria-labelledby="@(_id + "-title")" data-rax-appearance="@Appearance" @onclose="Closed">
         <h2 id="@(_id + "-title")" class="visually-hidden">@Title</h2>
         @Surface
     </dialog>
@@ -36,50 +36,50 @@ else
     [Parameter] public string? Class { get; set; }
     [Parameter] public string? Appearance { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
-    private readonly string _id = "sheen-command-" + Guid.NewGuid().ToString("N");
+    private readonly string _id = "rax-command-" + Guid.NewGuid().ToString("N");
     private ElementReference _dialog, _input, _list;
     private IJSObjectReference? _module;
     private DotNetObjectReference<Command>? _reference;
     private bool? _lastOpen;
     private IEnumerable<Item> Filtered => Items.Where(item => item.ForceMount || !ShouldFilter || (Filter?.Invoke(item, Search) ?? ChoiceSearch.Matches(item.Label + " " + item.Keywords, Search)));
-    private RenderFragment Surface => @<div @attributes="@(Inline ? AdditionalAttributes : null)" class="sheen-command @(Inline ? Class : null)" data-sheen-appearance="@Appearance" data-searching="@(Search.Length > 0 ? "" : null)">
-        <div class="sheen-command-input-wrap">
+    private RenderFragment Surface => @<div @attributes="@(Inline ? AdditionalAttributes : null)" class="rax-command @(Inline ? Class : null)" data-rax-appearance="@Appearance" data-searching="@(Search.Length > 0 ? "" : null)">
+        <div class="rax-command-input-wrap">
             @Leading
-            <span class="sheen-command-input-icon" aria-hidden="true">
+            <span class="rax-command-input-icon" aria-hidden="true">
                 @if (Loading) { <span class="spinner-border spinner-border-sm"></span> }
                 else { <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg> }
             </span>
-            <input @ref="_input" class="sheen-command-input" role="combobox" aria-expanded="true" aria-controls="@(_id + "-list")" aria-autocomplete="list" aria-label="@SearchPlaceholder" placeholder="@SearchPlaceholder" value="@Search" @oninput="SearchInput" />
+            <input @ref="_input" class="rax-command-input" role="combobox" aria-expanded="true" aria-controls="@(_id + "-list")" aria-autocomplete="list" aria-label="@SearchPlaceholder" placeholder="@SearchPlaceholder" value="@Search" @oninput="SearchInput" />
         </div>
-        <div @ref="_list" id="@(_id + "-list")" role="listbox" data-command-list data-loop="@(Loop ? "true" : "false")" data-close-on-select="@(CloseOnSelect ? "true" : "false")" aria-label="@Title" aria-busy="@(Loading ? "true" : "false")" class="sheen-command-list">
-            <div class="sheen-command-list-inner">
-                <span class="sheen-command-highlight" data-choice-highlight hidden aria-hidden="true"></span>
+        <div @ref="_list" id="@(_id + "-list")" role="listbox" data-command-list data-loop="@(Loop ? "true" : "false")" data-close-on-select="@(CloseOnSelect ? "true" : "false")" aria-label="@Title" aria-busy="@(Loading ? "true" : "false")" class="rax-command-list">
+            <div class="rax-command-list-inner">
+                <span class="rax-command-highlight" data-choice-highlight hidden aria-hidden="true"></span>
                 @{ var groups = Filtered.GroupBy(item => item.Group).ToList(); }
                 @for (var g = 0; g < groups.Count; g++)
                 {
                     var group = groups[g];
-                    @if (g > 0) { <div role="separator" class="sheen-command-separator"></div> }
-                    <div role="group" aria-label="@group.Key" class="sheen-command-group">
-                        @if (!string.IsNullOrEmpty(group.Key)) { <div class="sheen-command-group-heading">@group.Key</div> }
+                    @if (g > 0) { <div role="separator" class="rax-command-separator"></div> }
+                    <div role="group" aria-label="@group.Key" class="rax-command-group">
+                        @if (!string.IsNullOrEmpty(group.Key)) { <div class="rax-command-group-heading">@group.Key</div> }
                         @foreach (var item in group)
                         {
-                            <div @key="item.Value" id="@(_id + "-" + Items.IndexOf(item))" role="option" aria-selected="false" aria-disabled="@(item.Disabled ? "true" : "false")" data-value="@item.Value" class="sheen-command-item" @onclick="@(() => Select(item.Value))">
+                            <div @key="item.Value" id="@(_id + "-" + Items.IndexOf(item))" role="option" aria-selected="false" aria-disabled="@(item.Disabled ? "true" : "false")" data-value="@item.Value" class="rax-command-item" @onclick="@(() => Select(item.Value))">
                                 @if (ItemTemplate is not null) { @ItemTemplate(item) }
                                 else
                                 {
-                                    @if (item.Icon is not null) { <span class="sheen-command-item-icon">@item.Icon</span> }
-                                    <span>@item.Label @if (item.Description is not null) { <span class="sheen-command-item-hint">@item.Description</span> }</span>
-                                    @if (item.Shortcut is not null) { <span class="sheen-command-shortcut">@item.Shortcut</span> }
+                                    @if (item.Icon is not null) { <span class="rax-command-item-icon">@item.Icon</span> }
+                                    <span>@item.Label @if (item.Description is not null) { <span class="rax-command-item-hint">@item.Description</span> }</span>
+                                    @if (item.Shortcut is not null) { <span class="rax-command-shortcut">@item.Shortcut</span> }
                                 }
                             </div>
                         }
                     </div>
                 }
-                @if (Loading) { <div class="sheen-command-loading" role="status">@LoadingMessage</div> }
-                else { <div class="sheen-command-empty" role="status">@EmptyMessage</div> }
+                @if (Loading) { <div class="rax-command-loading" role="status">@LoadingMessage</div> }
+                else { <div class="rax-command-empty" role="status">@EmptyMessage</div> }
             </div>
         </div>
-        @if (Footer is not null) { <div class="sheen-command-footer">@Footer</div> }
+        @if (Footer is not null) { <div class="rax-command-footer">@Footer</div> }
     </div>;
     private async Task SearchInput(ChangeEventArgs args) { Search = Convert.ToString(args.Value) ?? ""; await SearchChanged.InvokeAsync(Search); }
     protected override async Task OnAfterRenderAsync(bool firstRender)

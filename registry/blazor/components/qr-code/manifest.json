@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/qr-code.css",
       "type": "css",
-      "sha256": "11337839ccddefd444c22a11e669077a1a5bfd7bf4fd07e6c59f7e2020992272"
+      "sha256": "4414abf10d63f457f4e4dfc59b09458cf27d1283906eec51f1c856011ae08b47"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "QRCode/QRCode.razor",
       "type": "razor",
-      "sha256": "e496f03b419cbf22350f7082193fcac2441c2790c636a35913a4a49e8f936850"
+      "sha256": "0ad186fa0075c0d3e3923a15bd46a5351f893da342ba8f6b473776b984df2aa8"
     },
     {
       "source": "QRCode.razor.js",
@@ -35,14 +35,14 @@
       "destination": "components",
       "target": "QRCode/QrCodeDrawing.cs",
       "type": "cs",
-      "sha256": "1f6d0182a2d1a1231e6776309311d31de88e2ec7d4345104f8accb95ed1e8a8e"
+      "sha256": "901b94d2c423324e1fd30bc731d618fc82c254fbc699ebf81cf93dae95f4da32"
     },
     {
       "source": "QrCodeEncoder.cs",
       "destination": "components",
       "target": "QRCode/QrCodeEncoder.cs",
       "type": "cs",
-      "sha256": "4affb231bbc3c8fe82df21a7d6c8d79bb0149f054167af5e770788aaa9a8f3c2"
+      "sha256": "a0d579b01540d8406c70905941c47c3035d4e53fc603b0eef7681673b1255557"
     }
   ]
 }

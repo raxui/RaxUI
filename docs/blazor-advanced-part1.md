@@ -1,6 +1,6 @@
 # Blazor advanced components part 1: Chat and SpeedDial
 
-Implements issue #119. Both are source-owned Razor components: install with `sheenui add chat` or `sheenui add speed-dial`. Their only component dependency is `button`; there are no new NuGet or JavaScript packages. Each declares its existing generated per-component CSS. The examples also install `avatar`, `toggle`, and `switch`.
+Implements issue #119. Both are source-owned Razor components: install with `raxui add chat` or `raxui add speed-dial`. Their only component dependency is `button`; there are no new NuGet or JavaScript packages. Each declares its existing generated per-component CSS. The examples also install `avatar`, `toggle`, and `switch`.
 
 ## Chat
 
@@ -26,6 +26,6 @@ Static SSR renders message content and existing draft text, with composer/trigge
 
 ## Examples and verification
 
-`examples/blazor/advanced/` contains the live conversation (sending/read/typing/reply/offline/retry), Arabic conversation, labelled/physical-side/controlled-hover/Arabic SpeedDial examples. SheenDemo hosts the same files at `#chat` and `#speed-dial`. Upload/transport is not implemented; the attachment button demonstrates an application action and delivery is simulated.
+`examples/blazor/advanced/` contains the live conversation (sending/read/typing/reply/offline/retry), Arabic conversation, labelled/physical-side/controlled-hover/Arabic SpeedDial examples. RaxDemo hosts the same files at `#chat` and `#speed-dial`. Upload/transport is not implemented; the attachment button demonstrates an application action and delivery is simulated.
 
 `GeneratedAppTests.AdvancedPart1.cs` installs into fresh .NET 8/9/10 applications and checks build/idempotence, static SSR, native keyboard/pointer behavior, disabled actions, dismissal policy, controlled hover, multiline/IME/rapid drafts, retry, Arabic labels, scrolling, component removal/recreation, appearance/mode/direction/viewport combinations, alternate accents/densities, reduced motion, and clean browser runtime errors. Browser validation uses Chromium; other engines and real mobile devices are not implied.

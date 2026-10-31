@@ -10,7 +10,7 @@ import { CharacterCount, Placeholder } from "@tiptap/extensions"
 import { TextAlign } from "@tiptap/extension-text-align"
 import { Highlight } from "@tiptap/extension-highlight"
 import { TaskItem, TaskList } from "@tiptap/extension-list"
-import { useSheenPortalContainer, useSheenTheme, sheenThemeAttributes } from "@/lib/theme"
+import { useRaxPortalContainer, useRaxTheme, raxThemeAttributes } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { assignRef } from "@/lib/refs"
 import { CountRing } from "@/components/ui/textarea"
@@ -104,8 +104,8 @@ const TextEditorClient = React.forwardRef<HTMLDivElement, TextEditorProps>(
     },
     ref,
   ) => {
-    const portalContainer = useSheenPortalContainer()
-    const theme = useSheenTheme()
+    const portalContainer = useRaxPortalContainer()
+    const theme = useRaxTheme()
     const labels = React.useMemo(() => ({ ...DEFAULT_LABELS, ...labelsProp }), [labelsProp])
     const tools = toolbar === "none" ? [] : Array.isArray(toolbar) ? toolbar : TOOLBARS[toolbar]
     const hasLinkTool = tools.includes("link")
@@ -125,7 +125,7 @@ const TextEditorClient = React.forwardRef<HTMLDivElement, TextEditorProps>(
     const isInvalid = invalid || ariaInvalid === true || ariaInvalid === "true"
     const attributes = Object.fromEntries(
       Object.entries({
-        class: cn("sheen-prose sheen-editor-content", contentClassName),
+        class: cn("rax-prose rax-editor-content", contentClassName),
         role: "textbox",
         "aria-multiline": "true",
         id,
@@ -156,7 +156,7 @@ const TextEditorClient = React.forwardRef<HTMLDivElement, TextEditorProps>(
         // dir="auto" on text blocks only. On every node (Tiptap's textDirection) a list
         // would skip its children's text when guessing direction and fall back to LTR.
         Extension.create({
-          name: "sheenAutoDirection",
+          name: "raxAutoDirection",
           addGlobalAttributes: () => [
             {
               types: ["paragraph", "heading"],
@@ -171,7 +171,7 @@ const TextEditorClient = React.forwardRef<HTMLDivElement, TextEditorProps>(
           ],
         }),
         Extension.create({
-          name: "sheenShortcuts",
+          name: "raxShortcuts",
           priority: 1000, // before TextAlign's left / right shortcuts
           addKeyboardShortcuts() {
             const align = (value: Align) => () => setAlign(this.editor, value)
@@ -267,27 +267,27 @@ const TextEditorClient = React.forwardRef<HTMLDivElement, TextEditorProps>(
           labels={labels}
           linkOpen={linkOpen}
           onLinkOpenChange={setLinkOpen}
-          className={toolbarPosition === "bottom" ? "sheen-editor-toolbar-inline" : undefined}
+          className={toolbarPosition === "bottom" ? "rax-editor-toolbar-inline" : undefined}
         />
       ) : null
     const footer = toolbarPosition === "bottom" ? toolbarNode : null
 
     return (
       <div
-        className={cn("sheen-editor", className)}
+        className={cn("rax-editor", className)}
         data-variant={variant}
         data-disabled={disabled || undefined}
         data-readonly={readOnly || undefined}
         data-invalid={isInvalid || undefined}
         dir={dir}
-        style={{ ...style, "--sheen-editor-min-h": cssSize(minHeight), "--sheen-editor-max-h": cssSize(maxHeight) } as React.CSSProperties}
+        style={{ ...style, "--rax-editor-min-h": cssSize(minHeight), "--rax-editor-max-h": cssSize(maxHeight) } as React.CSSProperties}
         {...props}
       >
         {toolbarPosition === "top" && toolbarNode}
 
         <EditorContent
           editor={editor}
-          className="sheen-editor-scroll"
+          className="rax-editor-scroll"
           // Clicking the padding below the last line still puts the caret in the text.
           onMouseDown={(event) => {
             if (event.target === event.currentTarget && editor) {
@@ -298,8 +298,8 @@ const TextEditorClient = React.forwardRef<HTMLDivElement, TextEditorProps>(
         />
 
         {(footer || counter || footerEnd) && (
-          <div className="sheen-editor-footer">
-            <div className="sheen-editor-footer-start">{footer}</div>
+          <div className="rax-editor-footer">
+            <div className="rax-editor-footer-start">{footer}</div>
             {counter && <CountRing length={characters} max={maxLength!} limitLabel={limitLabel} />}
             {footerEnd}
           </div>
@@ -314,8 +314,8 @@ const TextEditorClient = React.forwardRef<HTMLDivElement, TextEditorProps>(
             ref={bubbleRef}
             pluginKey={BUBBLE_KEY}
             editor={editor}
-            {...sheenThemeAttributes(theme)}
-            className="sheen-editor-bubble"
+            {...raxThemeAttributes(theme)}
+            className="rax-editor-bubble"
             dir={dir}
             data-mode={bubbleLink ? "link" : undefined}
             appendTo={() => portalContainer ?? document.body}
@@ -343,9 +343,9 @@ const TextEditorClient = React.forwardRef<HTMLDivElement, TextEditorProps>(
                 }}
               />
             ) : (
-              <div className="sheen-editor-bubble-tools" role="toolbar" aria-label={labels.toolbar}>
+              <div className="rax-editor-bubble-tools" role="toolbar" aria-label={labels.toolbar}>
                 {BUBBLE_TOOLS.map((tool, i) => {
-                  if (tool === "|") return <span key={`sep-${i}`} className="sheen-editor-sep" role="separator" aria-orientation="vertical" />
+                  if (tool === "|") return <span key={`sep-${i}`} className="rax-editor-sep" role="separator" aria-orientation="vertical" />
                   if (tool === "link") {
                     return (
                       <ToolButton
@@ -386,7 +386,7 @@ export const TextEditor = React.forwardRef<HTMLDivElement, TextEditorProps>((pro
   const [mounted, setMounted] = React.useState(false)
   React.useEffect(() => setMounted(true), [])
   return mounted ? <TextEditorClient {...props} ref={ref} /> : (
-    <div className={cn("sheen-editor", props.className)} aria-busy="true" style={{ minHeight: cssSize(props.minHeight ?? 140), ...props.style }}>
+    <div className={cn("rax-editor", props.className)} aria-busy="true" style={{ minHeight: cssSize(props.minHeight ?? 140), ...props.style }}>
       {props.name !== undefined && <input type="hidden" name={props.name} value={props.value ?? props.defaultValue ?? ""} />}
     </div>
   )

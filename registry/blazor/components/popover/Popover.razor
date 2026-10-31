@@ -1,16 +1,16 @@
-@* SheenUI Popover. Source-owned: edit freely. Native popover top layer with anchored positioning (ADR 013). Enhancements require interactivity. *@
+@* RaxUI Popover. Source-owned: edit freely. Native popover top layer with anchored positioning (ADR 013). Enhancements require interactivity. *@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 @if (Trigger is not null)
 {
-    <button @attributes="TriggerAttributes" @ref="_trigger" type="button" class="@($"sheen-popover-trigger {TriggerClass}")"
+    <button @attributes="TriggerAttributes" @ref="_trigger" type="button" class="@($"rax-popover-trigger {TriggerClass}")"
             popovertarget="@Id" aria-haspopup="@PopupRole" aria-controls="@TriggerControls" aria-expanded="@(Open ? "true" : "false")">@Trigger</button>
 }
 <div @ref="_content" @attributes="AdditionalAttributes" id="@Id" popover="auto" role="@Role" aria-label="@Label"
-     class="@($"sheen-popover {Class}")" data-sheen-appearance="@Appearance">@ChildContent</div>
+     class="@($"rax-popover {Class}")" data-rax-appearance="@Appearance">@ChildContent</div>
 @code {
-    [Parameter] public string Id { get; set; } = $"sheen-popover-{Guid.NewGuid():N}";
+    [Parameter] public string Id { get; set; } = $"rax-popover-{Guid.NewGuid():N}";
     [Parameter] public bool Open { get; set; }
     [Parameter] public EventCallback<bool> OpenChanged { get; set; }
     [Parameter] public RenderFragment? Trigger { get; set; }

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DatePicker, DateRangePicker } from "../../registry/react/components/date-picker/date-picker"
-import { SheenThemeProvider } from "../../registry/react/foundation/theme"
+import { RaxThemeProvider } from "../../registry/react/foundation/theme"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "../../registry/react/components/form/form"
 import { Wired, expectWiring } from "./control-test-utils"
 
@@ -23,7 +23,7 @@ describe("DatePicker", () => {
   })
   it("opens on the selected day, skips blocked dates, posts ISO and restores focus", async () => {
     const user=userEvent.setup(),change=vi.fn()
-    render(<SheenThemeProvider mode="dark" data-testid="theme"><DatePicker aria-label="Due date" locale="en-GB" name="due" defaultValue={new Date(2026,9,15)} min={new Date(2026,9,10)} max={new Date(2026,9,20)} isDateDisabled={d=>d.getDate()===16} onChange={change} /></SheenThemeProvider>)
+    render(<RaxThemeProvider mode="dark" data-testid="theme"><DatePicker aria-label="Due date" locale="en-GB" name="due" defaultValue={new Date(2026,9,15)} min={new Date(2026,9,10)} max={new Date(2026,9,20)} isDateDisabled={d=>d.getDate()===16} onChange={change} /></RaxThemeProvider>)
     const trigger=screen.getByRole("button",{name:"Due date"})
     await user.click(trigger)
     const dialog=screen.getByRole("dialog",{name:"Choose date"})
@@ -150,7 +150,7 @@ it("integrates a date value with react-hook-form/zod errors, focus and submissio
   const trigger=screen.getByRole("button",{name:"Date"})
   await waitFor(()=>expect(trigger).toHaveFocus())
   await user.click(trigger)
-  const day=screen.getByRole("dialog").querySelector<HTMLElement>('.sheen-calendar-day[tabindex="0"]')!
+  const day=screen.getByRole("dialog").querySelector<HTMLElement>('.rax-calendar-day[tabindex="0"]')!
   await user.click(day);await user.click(screen.getByRole("button",{name:"Save"}))
   await waitFor(()=>expect(submit).toHaveBeenCalled())
   expect(submit.mock.calls[0][0].date).toBeInstanceOf(Date)

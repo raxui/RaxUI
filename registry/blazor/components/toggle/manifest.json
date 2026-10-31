@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/toggle.css",
       "type": "css",
-      "sha256": "0abb4546c8c062bd5950a71f04f75f1dffec7c427862ad0a4d9b83acbbe54f07"
+      "sha256": "3f127a6341bdb43d0709a134e6633ebb63a36c767c11860e1bd68e8eb4bd42d0"
     }
   ],
   "files": [
@@ -19,21 +19,21 @@
       "destination": "components",
       "target": "Toggle/Toggle.razor",
       "type": "razor",
-      "sha256": "1909ef18f70965d937cb860d57efa5a7ae7f9e75c3e36966924c1c14bdb340a5"
+      "sha256": "5661fe6a03b627d4ed29e37a85286884ed39a246ed1c11b57c1a3e662c9fcb82"
     },
     {
       "source": "ToggleGroup.razor",
       "destination": "components",
       "target": "Toggle/ToggleGroup.razor",
       "type": "razor",
-      "sha256": "019ec027bcfde3f511bce76d665899cfa0403640d0d07efc4c90556734c52412"
+      "sha256": "854bfeaf128f85b5c424c67eed7680643e890b70fee332a981fe45901e7fe4a2"
     },
     {
       "source": "ToggleGroupItem.razor",
       "destination": "components",
       "target": "Toggle/ToggleGroupItem.razor",
       "type": "razor",
-      "sha256": "d3bfc371df790d1fe00ab7da4e61dfd8aba140c0feb2dd915725ce20031de2d2"
+      "sha256": "ab016febadf32cc12ca3945678418e1202517726792411d56582ff17c569594b"
     }
   ]
 }

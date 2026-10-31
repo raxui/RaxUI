@@ -1,33 +1,33 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
-.sheen-table-container {
+.rax-table-container {
   position: relative;
   width: 100%;
   overflow: auto;
   overscroll-behavior-x: contain;
 }
 
-.sheen-table {
+.rax-table {
   --bs-table-bg: transparent;
   --bs-table-color: var(--bs-body-color);
   --bs-table-border-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
   --bs-table-hover-bg: rgba(var(--bs-emphasis-color-rgb), 0.035);
   --bs-table-hover-color: var(--bs-body-color);
   --bs-table-striped-bg: rgba(var(--bs-emphasis-color-rgb), 0.02);
-  --bs-table-cell-padding-y: var(--sheen-table-padding-y, 0.75rem);
-  --bs-table-cell-padding-x: var(--sheen-table-padding-x, 1rem);
-  --sheen-table-head-bg: rgba(var(--bs-emphasis-color-rgb), 0.025);
-  --sheen-table-selected-bg: rgba(var(--bs-primary-rgb), 0.07);
+  --bs-table-cell-padding-y: var(--rax-table-padding-y, 0.75rem);
+  --bs-table-cell-padding-x: var(--rax-table-padding-x, 1rem);
+  --rax-table-head-bg: rgba(var(--bs-emphasis-color-rgb), 0.025);
+  --rax-table-selected-bg: rgba(var(--bs-primary-rgb), 0.07);
   margin-bottom: 0;
   font-size: 0.9375rem;
   font-variant-numeric: tabular-nums;
   caption-side: bottom;
 }
-.sheen-table > :not(caption) > * > * {
+.rax-table > :not(caption) > * > * {
   vertical-align: middle;
-  transition: box-shadow var(--sheen-duration-fast) ease;
+  transition: box-shadow var(--rax-duration-fast) ease;
 }
-.sheen-table > thead > tr > th {
-  --bs-table-bg: var(--sheen-table-head-bg);
+.rax-table > thead > tr > th {
+  --bs-table-bg: var(--rax-table-head-bg);
   height: 2.75rem;
   padding-block: 0.5rem;
   font-size: 0.8125rem;
@@ -35,69 +35,69 @@
   color: var(--bs-secondary-color);
   white-space: nowrap;
 }
-.sheen-table > tbody > tr:last-child > * {
+.rax-table > tbody > tr:last-child > * {
   border-bottom-width: 0;
 }
-.sheen-table > tfoot > tr > * {
-  --bs-table-bg: var(--sheen-table-head-bg);
+.rax-table > tfoot > tr > * {
+  --bs-table-bg: var(--rax-table-head-bg);
   border-top: 1px solid var(--bs-table-border-color);
   border-bottom-width: 0;
   font-weight: 600;
   color: var(--bs-emphasis-color);
 }
-.sheen-table > tbody > tr[data-state=selected] > * {
-  --bs-table-bg-state: var(--sheen-table-selected-bg);
+.rax-table > tbody > tr[data-state=selected] > * {
+  --bs-table-bg-state: var(--rax-table-selected-bg);
 }
-.sheen-table > caption {
+.rax-table > caption {
   padding: 0.875rem 1rem 0;
   font-size: 0.8125rem;
   color: var(--bs-secondary-color);
 }
-.sheen-table .sheen-table-select {
+.rax-table .rax-table-select {
   width: 2.75rem;
   padding-inline-end: 0;
   line-height: 0;
 }
-.sheen-table .sheen-table-actions {
+.rax-table .rax-table-actions {
   width: 3rem;
   padding-block: 0;
   text-align: end;
 }
 
-.sheen-table-compact {
+.rax-table-compact {
   --bs-table-cell-padding-y: 0.4375rem;
   --bs-table-cell-padding-x: 0.75rem;
   font-size: 0.875rem;
 }
-.sheen-table-compact > thead > tr > th {
+.rax-table-compact > thead > tr > th {
   height: 2.25rem;
 }
 
-.sheen-table-sticky > thead > tr > th {
+.rax-table-sticky > thead > tr > th {
   position: sticky;
   top: 0;
   z-index: 2;
   background-color: rgba(var(--bs-body-bg-rgb), 0.85);
-  box-shadow: inset 0 -1px 0 var(--bs-table-border-color), inset 0 0 0 9999px var(--sheen-table-head-bg);
+  box-shadow: inset 0 -1px 0 var(--bs-table-border-color), inset 0 0 0 9999px var(--rax-table-head-bg);
   -webkit-backdrop-filter: blur(12px) saturate(160%);
   backdrop-filter: blur(12px) saturate(160%);
 }
 
-.sheen-table > :not(caption) > * > * {
+.rax-table > :not(caption) > * > * {
   padding: var(--bs-table-cell-padding-y) var(--bs-table-cell-padding-x);
 }
 
-[data-sheen-density=compact] {
-  --sheen-table-padding-y: 0.4375rem;
-  --sheen-table-padding-x: 0.75rem;
+[data-rax-density=compact] {
+  --rax-table-padding-y: 0.4375rem;
+  --rax-table-padding-x: 0.75rem;
 }
 
-[data-sheen-density=comfortable] {
-  --sheen-table-padding-y: 0.75rem;
-  --sheen-table-padding-x: 1rem;
+[data-rax-density=comfortable] {
+  --rax-table-padding-y: 0.75rem;
+  --rax-table-padding-x: 1rem;
 }
 
-.sheen-table[data-density=comfortable] {
+.rax-table[data-density=comfortable] {
   --bs-table-cell-padding-y: 0.75rem;
   --bs-table-cell-padding-x: 1rem;
 }

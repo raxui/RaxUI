@@ -34,9 +34,9 @@ export function DataTableToolbar<TData>({
 } & Pick<DataTableProps<TData, unknown>, "searchPlaceholder">) {
   const labels = useTableLabels()
   return (
-    <div className="sheen-data-table-toolbar">
+    <div className="rax-data-table-toolbar">
       {searchPlaceholder !== false && (
-        <div className="sheen-table-search">
+        <div className="rax-table-search">
           <SearchIcon />
           <input
             type="search"

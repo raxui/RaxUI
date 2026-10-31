@@ -1,6 +1,6 @@
 <div class="vstack gap-4">
 <section><h3 class="h6">@T("Mail · nested, collapsible and saved","البريد · متداخل وقابل للطي والحفظ")</h3>
-<ResizablePanelGroup AutoSaveId="sheen-demo-mail" Variant="glass" Style="height:420px">
+<ResizablePanelGroup AutoSaveId="rax-demo-mail" Variant="glass" Style="height:420px">
     <ResizablePanel Id="mail-folders" DefaultSize="20%" MinSize="12%" MaxSize="35%" Collapsible>
         <nav class="p-3 d-grid gap-2" aria-label="@T("Mail folders","مجلدات البريد")">@foreach(var folder in new[]{T("Inbox","الوارد"),T("Sent","المرسل"),T("Drafts","المسودات"),T("Archive","الأرشيف")}){<Button Variant="ghost" Size="sm" OnClick="()=>notice=folder">@folder</Button>}</nav>
     </ResizablePanel>
@@ -10,16 +10,16 @@
     </ResizablePanel>
     <ResizableHandle WithHandle Label="@T("Resize message list","تغيير عرض الرسائل")" />
     <ResizablePanel Id="mail-reader" DefaultSize="46%" MinSize="30%">
-        <ResizablePanelGroup Orientation="vertical" AutoSaveId="sheen-demo-mail-reader" Style="height:100%">
-            <ResizablePanel Id="reader-message" DefaultSize="65%" MinSize="30%"><article class="p-4"><div class="small text-body-secondary">@mail[open].From</div><h4 class="h6 mt-2">@T(mail[open].Subject,mail[open].Arabic)</h4><p class="small">@T("Thanks for checking the latest SheenUI components. Try resizing these panels and opening another message.","شكراً لتجربة مكونات SheenUI. جرّب تغيير أحجام اللوحات وفتح رسالة أخرى.")</p></article></ResizablePanel>
+        <ResizablePanelGroup Orientation="vertical" AutoSaveId="rax-demo-mail-reader" Style="height:100%">
+            <ResizablePanel Id="reader-message" DefaultSize="65%" MinSize="30%"><article class="p-4"><div class="small text-body-secondary">@mail[open].From</div><h4 class="h6 mt-2">@T(mail[open].Subject,mail[open].Arabic)</h4><p class="small">@T("Thanks for checking the latest RaxUI components. Try resizing these panels and opening another message.","شكراً لتجربة مكونات RaxUI. جرّب تغيير أحجام اللوحات وفتح رسالة أخرى.")</p></article></ResizablePanel>
             <ResizableHandle WithHandle Label="@T("Resize reply","تغيير ارتفاع الرد")" />
-            <ResizablePanel Id="reader-reply" DefaultSize="35%" MinSize="20%"><div class="p-3 h-100 d-flex flex-column gap-2"><textarea class="form-control sheen-textarea flex-fill" aria-label="@T("Reply","الرد")" placeholder="@T("Reply…","اكتب ردّك…")" @bind="reply"></textarea><div><Button Size="sm" OnClick="Send">@T("Send","إرسال")</Button></div></div></ResizablePanel>
+            <ResizablePanel Id="reader-reply" DefaultSize="35%" MinSize="20%"><div class="p-3 h-100 d-flex flex-column gap-2"><textarea class="form-control rax-textarea flex-fill" aria-label="@T("Reply","الرد")" placeholder="@T("Reply…","اكتب ردّك…")" @bind="reply"></textarea><div><Button Size="sm" OnClick="Send">@T("Send","إرسال")</Button></div></div></ResizablePanel>
         </ResizablePanelGroup>
     </ResizablePanel>
 </ResizablePanelGroup>
 <p class="small text-body-secondary">@T("Drag a divider, or focus it with Tab and use the arrow keys. Double-click resets it. The layout is remembered.","اسحب الفاصل أو ركّز عليه واستخدم الأسهم. النقر المزدوج يعيد الأحجام. يُحفظ التخطيط.")</p><output role="status">@notice</output>
 </section>
-<section><h3 class="h6">@T("Live sizes","الأحجام الحالية")</h3><ResizablePanelGroup Style="height:140px;border:1px solid var(--sheen-glass-border-color);border-radius:var(--sheen-radius)" LayoutChanged="Changed">
+<section><h3 class="h6">@T("Live sizes","الأحجام الحالية")</h3><ResizablePanelGroup Style="height:140px;border:1px solid var(--rax-glass-border-color);border-radius:var(--rax-radius)" LayoutChanged="Changed">
     <ResizablePanel Id="live-a" DefaultSize="40%" MinSize="20%"><div class="h-100 d-flex align-items-center justify-content-center fs-4"><span data-resizable-size="live-a">@Pct("live-a",40)</span></div></ResizablePanel>
     <ResizableHandle WithHandle Label="@T("Resize A and B","تغيير حجم أ وب")" />
     <ResizablePanel Id="live-b" DefaultSize="60%" MinSize="20%"><div class="h-100 d-flex align-items-center justify-content-center fs-4"><span data-resizable-size="live-b">@Pct("live-b",60)</span></div></ResizablePanel>

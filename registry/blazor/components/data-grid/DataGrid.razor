@@ -2,9 +2,9 @@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @attributes="AdditionalAttributes" class="@($"sheen-grid {Class}")" data-sheen-appearance="@Appearance" data-density="@model.Density" dir="@Direction">
-    <div class="sheen-grid-toolbar" inert="@(!interactive?"":null)">
-        <input type="search" class="form-control sheen-input form-control-sm" style="max-width:20rem" value="@model.Query" aria-label="@Labels.Search" placeholder="@Labels.Search" @oninput="Search" />
+<div @attributes="AdditionalAttributes" class="@($"rax-grid {Class}")" data-rax-appearance="@Appearance" data-density="@model.Density" dir="@Direction">
+    <div class="rax-grid-toolbar" inert="@(!interactive?"":null)">
+        <input type="search" class="form-control rax-input form-control-sm" style="max-width:20rem" value="@model.Query" aria-label="@Labels.Search" placeholder="@Labels.Search" @oninput="Search" />
         @Toolbar
         <DropdownMenu TriggerClass="btn-sm"><Trigger>@Labels.View</Trigger><ChildContent>
             <DropdownMenuLabel>@Labels.Columns</DropdownMenuLabel>
@@ -12,11 +12,11 @@
             <DropdownMenuSeparator /><DropdownMenuItem OnSelect='()=>DensityChanged("compact")'>@Labels.Compact</DropdownMenuItem><DropdownMenuItem OnSelect='()=>DensityChanged("comfortable")'>@Labels.Comfortable</DropdownMenuItem>
         </ChildContent></DropdownMenu>
     </div>
-    <div @ref="scroller" id="@gridId" class="sheen-grid-scroller" role="grid" aria-label="@Label" aria-rowcount="@(model.Rows.Count+1+(model.HasFooter?1:0))" aria-colcount="@model.Visible.Count" aria-multiselectable="true" aria-activedescendant="@ActiveDescendant" tabindex="@(interactive?0:-1)" aria-readonly="@(!interactive?"true":null)" style="@($"max-height:{Height}")" data-version="@model.Version" data-editing="@(session.Editing?"":null)" data-range-start="@start" data-range-end="@end">
-        <div class="sheen-grid-canvas" style="@($"width:{model.TotalWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}px")">
+    <div @ref="scroller" id="@gridId" class="rax-grid-scroller" role="grid" aria-label="@Label" aria-rowcount="@(model.Rows.Count+1+(model.HasFooter?1:0))" aria-colcount="@model.Visible.Count" aria-multiselectable="true" aria-activedescendant="@ActiveDescendant" tabindex="@(interactive?0:-1)" aria-readonly="@(!interactive?"true":null)" style="@($"max-height:{Height}")" data-version="@model.Version" data-editing="@(session.Editing?"":null)" data-range-start="@start" data-range-end="@end">
+        <div class="rax-grid-canvas" style="@($"width:{model.TotalWidth.ToString(System.Globalization.CultureInfo.InvariantCulture)}px")">
             <DataGridHeader Interactive="interactive" TItem="TItem" Model="model" Session="session" Labels="Labels" GridId="@gridId" Activate="Activate" Action="ColumnAction" />
-            <div class="sheen-grid-body" role="rowgroup" style="@($"height:{(interactive?model.Rows.Count:Math.Min(20,model.Rows.Count))*model.RowHeight}px")">
-                @if(model.Rows.Count==0){<div class="sheen-grid-empty">@if(EmptyState is not null){@EmptyState}else{@Labels.Empty}</div>}
+            <div class="rax-grid-body" role="rowgroup" style="@($"height:{(interactive?model.Rows.Count:Math.Min(20,model.Rows.Count))*model.RowHeight}px")">
+                @if(model.Rows.Count==0){<div class="rax-grid-empty">@if(EmptyState is not null){@EmptyState}else{@Labels.Empty}</div>}
                 @foreach(var index in RenderedIndexes){
                     var row=model.Rows[index];
                     <DataGridRow Interactive="interactive" TItem="TItem" @key="model.Id(row)" Model="model" Session="session" Row="row" Index="index" GridId="@gridId" Labels="Labels" Activate="Activate" Edit="Edit" Select="Select" DraftChanged="DraftChanged" Commit="CommitEditor" />
@@ -25,8 +25,8 @@
             <DataGridFooter TItem="TItem" Model="model" Labels="Labels" />
         </div>
     </div>
-    @if(!session.Editing&&session.Error is not null){<div class="sheen-grid-error" role="alert">@session.Error</div>}
-    <div class="sheen-grid-status" aria-live="polite">@if(interactive&&model.PinsLimited){<span>@Labels.PinsConstrained</span>}<span>@Labels.Rows(model.Rows.Count,Items.Count)</span>@if(model.Selected.Count>0){<span>@Labels.Selected(model.Selected.Count)</span>}<span class="sheen-grid-status-pos">@(ActiveIndex>=0&&ActiveColumn is not null?$"R{ActiveIndex+1} · {ActiveColumn.Title}":"")</span></div>
+    @if(!session.Editing&&session.Error is not null){<div class="rax-grid-error" role="alert">@session.Error</div>}
+    <div class="rax-grid-status" aria-live="polite">@if(interactive&&model.PinsLimited){<span>@Labels.PinsConstrained</span>}<span>@Labels.Rows(model.Rows.Count,Items.Count)</span>@if(model.Selected.Count>0){<span>@Labels.Selected(model.Selected.Count)</span>}<span class="rax-grid-status-pos">@(ActiveIndex>=0&&ActiveColumn is not null?$"R{ActiveIndex+1} · {ActiveColumn.Title}":"")</span></div>
 </div>
 @code {
     [Parameter,EditorRequired] public IReadOnlyList<TItem> Items { get; set; } = Array.Empty<TItem>();
@@ -48,7 +48,7 @@
     [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes { get; set; }
     private readonly DataGridModel.State<TItem> model=new();
     private readonly DataGridEditing.Session session=new();
-    private readonly string gridId=$"sheen-grid-{Guid.NewGuid():N}";
+    private readonly string gridId=$"rax-grid-{Guid.NewGuid():N}";
     private int start,end=20;private bool interactive,initialized,disposed;
     private System.Threading.CancellationTokenSource? flashCancellation;
     private ElementReference scroller;private IJSObjectReference? module;private DotNetObjectReference<DataGrid<TItem>>? self;

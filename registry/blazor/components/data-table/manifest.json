@@ -18,7 +18,7 @@
       "destination": "styles",
       "target": "components/data-table.css",
       "type": "css",
-      "sha256": "6e71002978ef36a0fc86a75cf89f8b00aa76b0f52c6717766d3f05f86828e7d6"
+      "sha256": "4e7d338e99c908153aee326af0e4a1a9b855dbbcd990f3c643b17220c1d3b8ce"
     }
   ],
   "files": [
@@ -27,21 +27,21 @@
       "destination": "components",
       "target": "DataTable/DataTable.razor",
       "type": "razor",
-      "sha256": "4836bf065b512b826078c87d2acd4f04a9fc6c8e89b654d7424d40d1aa89c2ae"
+      "sha256": "2737cdfa0c238c0d27b868f2019e1223e500cfa56fa8df264a6c0534e13c0483"
     },
     {
       "source": "DataTableContent.razor",
       "destination": "components",
       "target": "DataTable/DataTableContent.razor",
       "type": "razor",
-      "sha256": "a0cc7380fb1f131ca972983b8b47475d34a56eeb57b2123bd74801071c374f04"
+      "sha256": "6e9f60d995cc385fff30dd8bafa9ed05f4501635a3f89483ca8785bfbed9e2e8"
     },
     {
       "source": "DataTablePager.razor",
       "destination": "components",
       "target": "DataTable/DataTablePager.razor",
       "type": "razor",
-      "sha256": "17eef6beaadc34b137195562f2e7a92e58489921ce7f46b58ac11deb277220dc"
+      "sha256": "0e9dc38cce597de20ef49583b296b69d5c6dce6bbcc17d02d4ce80e4f1d3058a"
     },
     {
       "source": "DataTableState.razor",
@@ -55,7 +55,7 @@
       "destination": "components",
       "target": "DataTable/DataTableToolbar.razor",
       "type": "razor",
-      "sha256": "ad0bcfa67f6610b37ef9c6e76a3c0a7aee037cb138b2de361273b76ae54e9b99"
+      "sha256": "d69dc3ff43d65856083b4fd83711b2434f30d1f4fbe3c526961f0f6db45bb74b"
     },
     {
       "source": "DataTableTypes.razor",

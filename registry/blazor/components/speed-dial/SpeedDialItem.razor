@@ -1,7 +1,7 @@
-<CascadingValue Value="this"><div @attributes="AdditionalAttributes" role="none" class="sheen-speed-dial-item @Class" data-state="@(Dial.Current ? "open" : "closed")">@ChildContent</div></CascadingValue>
+<CascadingValue Value="this"><div @attributes="AdditionalAttributes" role="none" class="rax-speed-dial-item @Class" data-state="@(Dial.Current ? "open" : "closed")">@ChildContent</div></CascadingValue>
 @code {
     [CascadingParameter] public SpeedDial Dial { get; set; } = default!;
-    internal string LabelId { get; } = "sheen-dial-label-" + Guid.NewGuid().ToString("N");
+    internal string LabelId { get; } = "rax-dial-label-" + Guid.NewGuid().ToString("N");
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }

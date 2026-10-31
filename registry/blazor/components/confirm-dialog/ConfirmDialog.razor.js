@@ -1,4 +1,4 @@
-// SheenUI ConfirmDialog: what the native <dialog> lacks for a confirmation (ADR 013). Source-owned: edit freely.
+// RaxUI ConfirmDialog: what the native <dialog> lacks for a confirmation (ADR 013). Source-owned: edit freely.
 
 export function init(dialog) {
   // A press on the backdrop targets the <dialog> itself, outside its box. A confirmation stays open
@@ -14,7 +14,7 @@ export function init(dialog) {
     dialog.setAttribute("data-nudge", "")
   })
   dialog.addEventListener("animationend", (event) => {
-    if (event.animationName === "sheen-alert-nudge") dialog.removeAttribute("data-nudge")
+    if (event.animationName === "rax-alert-nudge") dialog.removeAttribute("data-nudge")
   })
   // Esc cannot close it while the confirm action is still running.
   dialog.addEventListener("cancel", (event) => {

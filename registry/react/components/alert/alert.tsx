@@ -1,9 +1,9 @@
 "use client"
 
-// SheenUI alert. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI alert. Source-owned: edit freely. Ported from boot-ui.
 import * as React from "react"
 
-import type { SheenAppearance } from "@/lib/theme"
+import type { RaxAppearance } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 const prefersReducedMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -75,7 +75,7 @@ export function useDismiss(open: boolean | undefined, defaultOpen: boolean, onOp
 }
 
 export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   tone?: AlertTone
   /** `tinted` soft fill (default) · `outline` · `solid` strong fill · `glass` frosted, for use over media. */
   variant?: "tinted" | "outline" | "solid" | "glass"
@@ -117,24 +117,24 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     return (
       <div
         ref={ref}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         role={role ?? (tone === "danger" || tone === "warning" ? "alert" : "status")}
         data-tone={tone}
         data-variant={variant}
         data-state={isOpen ? "open" : "closed"}
-        className={cn("sheen-alert-box", className)}
+        className={cn("rax-alert-box", className)}
         onAnimationEnd={onAnimationEnd}
         {...props}
       >
         {/* The inner wrapper lets the box collapse its height to 0 smoothly. */}
-        <div className="sheen-alert-box-inner">
-          {icon !== false && <span className="sheen-alert-box-icon">{icon === true ? TONE_ICON[tone] : icon}</span>}
-          <div className="sheen-alert-box-body">
+        <div className="rax-alert-box-inner">
+          {icon !== false && <span className="rax-alert-box-icon">{icon === true ? TONE_ICON[tone] : icon}</span>}
+          <div className="rax-alert-box-body">
             {title && <AlertTitle>{title}</AlertTitle>}
             {children}
           </div>
           {dismissible && (
-            <button type="button" className="sheen-alert-box-close" aria-label={dismissLabel} onClick={dismiss}>
+            <button type="button" className="rax-alert-box-close" aria-label={dismissLabel} onClick={dismiss}>
               <CloseIcon />
             </button>
           )}
@@ -146,18 +146,18 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 Alert.displayName = "Alert"
 
 const AlertTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(({ className, ...props }, ref) => (
-  <h5 ref={ref} className={cn("sheen-alert-box-title", className)} {...props} />
+  <h5 ref={ref} className={cn("rax-alert-box-title", className)} {...props} />
 ))
 AlertTitle.displayName = "AlertTitle"
 
 const AlertDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-alert-box-description", className)} {...props} />
+  <div ref={ref} className={cn("rax-alert-box-description", className)} {...props} />
 ))
 AlertDescription.displayName = "AlertDescription"
 
 /** Buttons / links under the description. */
 const AlertActions = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-alert-box-actions", className)} {...props} />
+  <div ref={ref} className={cn("rax-alert-box-actions", className)} {...props} />
 ))
 AlertActions.displayName = "AlertActions"
 

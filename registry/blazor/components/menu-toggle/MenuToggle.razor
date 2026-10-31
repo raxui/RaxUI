@@ -1,8 +1,8 @@
-@* SheenUI MenuToggle. Source-owned: edit freely. Animated CSS bars; requires interactivity. *@
-<button @attributes="AdditionalAttributes" type="button" class="@($"btn sheen-button btn-glass btn-glass-{Variant} sheen-menu-toggle btn-glass-icon {Class}")"
-        data-sheen-appearance="@Appearance" data-icon="@Icon" data-open="@(Current ? "" : null)" disabled="@Disabled"
+@* RaxUI MenuToggle. Source-owned: edit freely. Animated CSS bars; requires interactivity. *@
+<button @attributes="AdditionalAttributes" type="button" class="@($"btn rax-button btn-glass btn-glass-{Variant} rax-menu-toggle btn-glass-icon {Class}")"
+        data-rax-appearance="@Appearance" data-icon="@Icon" data-open="@(Current ? "" : null)" disabled="@Disabled"
         aria-expanded="@(Current ? "true" : "false")" aria-label="@(Current ? CloseLabel : OpenLabel)" @onclick="ToggleOpen">
-    <span class="sheen-menu-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>@ChildContent
+    <span class="rax-menu-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>@ChildContent
 </button>
 @code {
     [Parameter] public bool Open { get; set; }

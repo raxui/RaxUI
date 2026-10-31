@@ -1,23 +1,23 @@
 // -----------------------------------------------------------------------------
-// Context Menu — reuses the Dropdown Menu glass and items (`sheen-menu-*`);
-// only Radix's variable names differ. `sheen-context-target` keeps whatever was
+// Context Menu — reuses the Dropdown Menu glass and items (`rax-menu-*`);
+// only Radix's variable names differ. `rax-context-target` keeps whatever was
 // right-clicked highlighted while its menu is open.
 // -----------------------------------------------------------------------------
 
-.sheen-context-menu {
+.rax-context-menu {
   max-height: var(--radix-context-menu-content-available-height);
   transform-origin: var(--radix-context-menu-content-transform-origin); // grows out of the pointer
 }
 
 // Opt-in look for a trigger: a quiet ring while its menu is open.
-.sheen-context-target {
-  border-radius: var(--sheen-radius);
+.rax-context-target {
+  border-radius: var(--rax-radius);
   outline: 2px solid transparent;
   outline-offset: 2px;
   -webkit-touch-callout: none; // long-press opens the menu, not the iOS callout
   transition:
-    outline-color var(--sheen-duration-fast) ease,
-    background-color var(--sheen-duration-fast) ease;
+    outline-color var(--rax-duration-fast) ease,
+    background-color var(--rax-duration-fast) ease;
 
   &[data-state="open"] {
     outline-color: rgba(var(--bs-primary-rgb), 0.55);
@@ -26,19 +26,19 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [class*="sheen-context-menu"] { animation: none !important; transition: none !important; }
+  [class*="rax-context-menu"] { animation: none !important; transition: none !important; }
 }
 
-.sheen-context-menu[data-state="closed"] { animation: sheen-fade-out 120ms ease forwards; }
+.rax-context-menu[data-state="closed"] { animation: rax-fade-out 120ms ease forwards; }
 
 // Context-specific parts extend the shared DropdownMenu items without duplicating their surface.
-.sheen-context-menu {
-  .sheen-dropdown-inset { padding-inline-start: 2rem; }
-  .sheen-dropdown-item-destructive { color: var(--bs-danger); }
-  .sheen-dropdown-indicator { position: absolute; inset-inline-start: .5rem; display: inline-flex; }
-  .sheen-dropdown-chevron, .sheen-dropdown-shortcut { margin-inline-start: auto; }
-  .sheen-dropdown-shortcut { color: var(--bs-secondary-color); font-size: .75rem; }
-  .sheen-dropdown-chevron:dir(rtl) { rotate: 180deg; }
+.rax-context-menu {
+  .rax-dropdown-inset { padding-inline-start: 2rem; }
+  .rax-dropdown-item-destructive { color: var(--bs-danger); }
+  .rax-dropdown-indicator { position: absolute; inset-inline-start: .5rem; display: inline-flex; }
+  .rax-dropdown-chevron, .rax-dropdown-shortcut { margin-inline-start: auto; }
+  .rax-dropdown-shortcut { color: var(--bs-secondary-color); font-size: .75rem; }
+  .rax-dropdown-chevron:dir(rtl) { rotate: 180deg; }
 }
 
-.sheen-context-menu .sheen-dropdown-item { min-height: var(--sheen-control-height-sm); }
+.rax-context-menu .rax-dropdown-item { min-height: var(--rax-control-height-sm); }

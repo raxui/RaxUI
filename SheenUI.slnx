@@ -1,9 +1,0 @@
-<Solution>
-  <Folder Name="/src/">
-    <Project Path="src/SheenUI.Cli/SheenUI.Cli.csproj" />
-  </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/SheenUI.Cli.Tests/SheenUI.Cli.Tests.csproj" />
-    <Project Path="tests/SheenUI.Integration.Tests/SheenUI.Integration.Tests.csproj" />
-  </Folder>
-</Solution>

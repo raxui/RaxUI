@@ -15,7 +15,7 @@ import {
   type SeparatorProps,
 } from "react-resizable-panels"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { useMergedRef } from "@/lib/refs"
 import { getDirection } from "@/lib/direction"
@@ -63,7 +63,7 @@ const noStorage: LayoutStorage = { getItem: () => null, setItem: () => {} }
 const MirroredContext = React.createContext(false)
 
 export interface ResizablePanelGroupProps extends GroupProps {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   /** Same as `orientation` (an older name, still accepted). */
   direction?: "horizontal" | "vertical"
   /** Remember the layout across visits under this key. */
@@ -86,12 +86,12 @@ const ResizablePanelGroup = React.forwardRef<HTMLDivElement, ResizablePanelGroup
   children,
   ...props
 }: ResizablePanelGroupProps, forwardedRef) {
-  const theme = useSheenTheme({ appearance })
+  const theme = useRaxTheme({ appearance })
   const axis = orientation ?? direction ?? "horizontal"
   const [hydrated, setHydrated] = React.useState(false)
   React.useEffect(() => setHydrated(true), [])
   const saved = useDefaultLayout({
-    id: autoSaveId ?? "sheen-resizable-unsaved",
+    id: autoSaveId ?? "rax-resizable-unsaved",
     storage: autoSaveId && hydrated ? safeStorage : noStorage,
     onlySaveAfterUserInteractions: false,
   })
@@ -113,7 +113,7 @@ const ResizablePanelGroup = React.forwardRef<HTMLDivElement, ResizablePanelGroup
     <MirroredContext.Provider value={mirrored}>
       <Group
         key={autoSaveId ? `${autoSaveId}:${hydrated ? "saved" : "initial"}` : undefined}
-        {...sheenThemeAttributes(theme)}
+        {...raxThemeAttributes(theme)}
         elementRef={composedRef}
         orientation={axis}
         defaultLayout={defaultLayout ?? saved.defaultLayout}
@@ -121,7 +121,7 @@ const ResizablePanelGroup = React.forwardRef<HTMLDivElement, ResizablePanelGroup
           if (autoSaveId) saved.onLayoutChanged(layout, meta)
           onLayoutChanged?.(layout, meta)
         }}
-        className={cn("sheen-resizable", className)}
+        className={cn("rax-resizable", className)}
         data-orientation={axis}
         data-variant={variant}
         data-mirrored={mirrored ? "" : undefined}
@@ -137,7 +137,7 @@ ResizablePanelGroup.displayName = "ResizablePanelGroup"
 
 function ResizablePanel({ className, ...props }: PanelProps) {
   const mirrored = React.useContext(MirroredContext)
-  return <Panel className={cn("sheen-resizable-panel", className)} dir={mirrored ? "rtl" : undefined} {...props} />
+  return <Panel className={cn("rax-resizable-panel", className)} dir={mirrored ? "rtl" : undefined} {...props} />
 }
 ResizablePanel.displayName = "ResizablePanel"
 
@@ -161,9 +161,9 @@ const GripIcon = () => (
 
 function ResizableHandle({ withHandle, className, children, ...props }: ResizableHandleProps) {
   return (
-    <Separator className={cn("sheen-resizable-handle", className)} {...props}>
+    <Separator className={cn("rax-resizable-handle", className)} {...props}>
       {withHandle && (
-        <span className="sheen-resizable-grip" aria-hidden="true">
+        <span className="rax-resizable-grip" aria-hidden="true">
           <GripIcon />
         </span>
       )}

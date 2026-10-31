@@ -17,13 +17,13 @@
       "source": "registry/react/components/progress/progress.tsx",
       "target": "components/ui/progress.tsx",
       "type": "tsx",
-      "sha256": "9586e7c8237f082ef9e794e7df0552aaf96e59f6bff3c996617b09a658e1f33d"
+      "sha256": "b27bc0f1477971a1841c7f0b931d3e70390061f2e4fedba47fa137252986857a"
     },
     {
       "source": "theme/scss/components/_progress.scss",
-      "target": "styles/sheenui/components/_progress.scss",
+      "target": "styles/raxui/components/_progress.scss",
       "type": "scss",
-      "sha256": "b7f7fe9ae33137fcf7e7521c9fedbfa1ff4db1be67c0658f0ff03569908a9f8b"
+      "sha256": "502dd4b557de170501d084cdfe43517a81d4125a6453a10e0528ba52efd0df84"
     }
   ]
 }

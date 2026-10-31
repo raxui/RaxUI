@@ -3,14 +3,16 @@
   "name": "dropdown-menu",
   "version": "0.1.0",
   "description": "Popover menu with items, labels, separators, and keyboard navigation.",
-  "dependencies": [],
+  "dependencies": [
+    "button"
+  ],
   "assets": [
     {
       "source": "styles/components/dropdown-menu.css",
       "destination": "styles",
       "target": "components/dropdown-menu.css",
       "type": "css",
-      "sha256": "40472d7ab1a95eae9ec55177624eef679a614b5ebb5cbac2066564635056a920"
+      "sha256": "c0f5273cd996fc25c5743d142b9e761493c6a12550f7f5904d71b0feb163f17b"
     }
   ],
   "files": [
@@ -19,35 +21,35 @@
       "destination": "components",
       "target": "DropdownMenu/DropdownMenu.razor",
       "type": "razor",
-      "sha256": "537cbaf0b7595e71a5b53ddd4da03a25ad62a03f1a3b11fe64ad51eac026f143"
+      "sha256": "2b27630c67692c54666d95af1e348b6b8d0e8682f2ac3906ab7cf8348813daa2"
     },
     {
       "source": "DropdownMenuItem.razor",
       "destination": "components",
       "target": "DropdownMenu/DropdownMenuItem.razor",
       "type": "razor",
-      "sha256": "bb4d47cb756c39411b160a471c6b7a437fb2c7bf80471707dbd863cf4030381e"
+      "sha256": "ad43bbfc15a060222f5b60426893771e14bfa28af7935ff9835f97a2b31d392d"
     },
     {
       "source": "DropdownMenuLabel.razor",
       "destination": "components",
       "target": "DropdownMenu/DropdownMenuLabel.razor",
       "type": "razor",
-      "sha256": "124c675017d2a1359d13ad647695bdaaa743f4da84f27af36b30faa04ae806b4"
+      "sha256": "52fff1609dfc2e8899fb85f27794b9e06b6c2c9ed4234c5e2bf37bfc5af7a560"
     },
     {
       "source": "DropdownMenuSeparator.razor",
       "destination": "components",
       "target": "DropdownMenu/DropdownMenuSeparator.razor",
       "type": "razor",
-      "sha256": "644a4346beedb233e657306d504c3eb6152341171110e092644cb5d59651fcd9"
+      "sha256": "57f1caebc7d3f6cf3474d0e9938ccf1401a4e6ea4879c6b7637cdde827d1aaf2"
     },
     {
       "source": "DropdownMenu.razor.js",
       "destination": "components",
       "target": "DropdownMenu/DropdownMenu.razor.js",
       "type": "js",
-      "sha256": "7a8c685abc33fe2c0089c4c7647accb5950b3850611714f006df1c7a71a919b6"
+      "sha256": "b792b17a064e187bfdbcc99a8deca270b182015fd4caa77e4aed5b2c5de74dd1"
     }
   ]
 }

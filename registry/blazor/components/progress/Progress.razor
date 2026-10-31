@@ -1,13 +1,13 @@
-@* SheenUI Progress. Source-owned: edit freely. Styled by the progress component CSS. *@
-<div class="sheen-progress-field" data-sheen-appearance="@Appearance" data-complete="@(CurrentValue == EffectiveMax ? "true" : null)">
+@* RaxUI Progress. Source-owned: edit freely. Styled by the progress component CSS. *@
+<div class="rax-progress-field" data-rax-appearance="@Appearance" data-complete="@(CurrentValue == EffectiveMax ? "true" : null)">
     @if (Label is not null || ShowValue)
     {
-        <div class="sheen-progress-label-row">
-            @if (Label is not null) { <span id="@_labelId" class="sheen-progress-label">@Label</span> }
-            @if (ShowValue && CurrentValue is double labelValue) { <span class="sheen-progress-value" aria-hidden="true">@FormatValue(labelValue, EffectiveMax)</span> }
+        <div class="rax-progress-label-row">
+            @if (Label is not null) { <span id="@_labelId" class="rax-progress-label">@Label</span> }
+            @if (ShowValue && CurrentValue is double labelValue) { <span class="rax-progress-value" aria-hidden="true">@FormatValue(labelValue, EffectiveMax)</span> }
         </div>
     }
-    <div @attributes="AdditionalAttributes" class="@($"sheen-progress {Class}")" role="progressbar" aria-label="@(Label is null ? AccessibleLabel : null)" aria-labelledby="@(Label is not null ? _labelId : null)"
+    <div @attributes="AdditionalAttributes" class="@($"rax-progress {Class}")" role="progressbar" aria-label="@(Label is null ? AccessibleLabel : null)" aria-labelledby="@(Label is not null ? _labelId : null)"
          aria-valuemin="0" aria-valuemax="@Number(EffectiveMax)" aria-valuenow="@(CurrentValue is double value ? Number(value) : null)" aria-valuetext="@(CurrentValue is double current ? FormatValue(current, EffectiveMax) : null)"
          data-state="@(CurrentValue is null ? "indeterminate" : CurrentValue == EffectiveMax ? "complete" : "loading")" data-value="@(CurrentValue is double val ? Number(val) : null)" data-size="@Size" data-color="@(SuccessOnComplete && CurrentValue == EffectiveMax ? "success" : Color)" data-segmented="@(Segments > 0 && CurrentValue is not null ? "true" : null)">
         @if (Segments > 0 && CurrentValue is not null)
@@ -15,10 +15,10 @@
             @for (var i = 0; i < Segments; i++)
             {
                 var fill = Math.Clamp(CurrentValue.Value / EffectiveMax * Segments - i, 0, 1);
-                <span class="sheen-progress-segment"><span class="sheen-progress-indicator" data-empty="@(fill == 0 ? "true" : null)" style="@($"transform:translateX({Number((fill - 1) * 100)}%)")"></span></span>
+                <span class="rax-progress-segment"><span class="rax-progress-indicator" data-empty="@(fill == 0 ? "true" : null)" style="@($"transform:translateX({Number((fill - 1) * 100)}%)")"></span></span>
             }
         }
-        else { <span class="sheen-progress-indicator" style="@(CurrentValue is double indicatorValue ? $"transform:translateX({Number(indicatorValue / EffectiveMax * 100 - 100)}%)" : null)"></span> }
+        else { <span class="rax-progress-indicator" style="@(CurrentValue is double indicatorValue ? $"transform:translateX({Number(indicatorValue / EffectiveMax * 100 - 100)}%)" : null)"></span> }
     </div>
 </div>
 @code {
@@ -38,7 +38,7 @@
     [Parameter] public int Segments { get; set; }
     [Parameter] public bool SuccessOnComplete { get; set; }
     [Parameter] public Func<double, double, string> FormatValue { get; set; } = (value, max) => $"{Math.Round(value / max * 100)}%";
-    private readonly string _labelId = $"sheen-progress-{Guid.NewGuid():N}";
+    private readonly string _labelId = $"rax-progress-{Guid.NewGuid():N}";
     private double EffectiveMax => double.IsFinite(Max) && Max > 0 ? Max : 100;
     private double? CurrentValue => Value is double v && double.IsFinite(v) ? Math.Clamp(v, 0, EffectiveMax) : null;
     private static string Number(double value) => value.ToString(System.Globalization.CultureInfo.InvariantCulture);

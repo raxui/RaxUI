@@ -67,7 +67,7 @@ describe("advanced React components",()=>{
   const matrix={count:2,get:()=>true};expect(qrPath(matrix,0,"square",0)).toBe("M0 0h2v1h-2zM0 1h2v1h-2z")
   const svg=svgMarkup({matrix,margin:1,shape:"square",hole:0,foregroundColor:'red" onload="bad',backgroundColor:"white",size:200} as unknown as Parameters<typeof svgMarkup>[0]);expect(svg).toContain("&quot;");expect(new DOMParser().parseFromString(svg,"image/svg+xml").querySelector("[onload]")).toBeNull()
  })
- it("renders the editor on the server without constructing a browser editor",()=>{const random=vi.spyOn(Math,"random").mockImplementation(()=>{throw new Error("SSR random")});try {expect(renderToString(<TextEditor defaultValue="<p>Hello</p>" aria-label="Document"/>)).toContain("sheen-editor")}finally{random.mockRestore()}})
+ it("renders the editor on the server without constructing a browser editor",()=>{const random=vi.spyOn(Math,"random").mockImplementation(()=>{throw new Error("SSR random")});try {expect(renderToString(<TextEditor defaultValue="<p>Hello</p>" aria-label="Document"/>)).toContain("rax-editor")}finally{random.mockRestore()}})
  it("keeps controlled HTML, readonly state, hidden form value and character limit",async()=>{
   const editorRef={current:null as Editor|null},change=vi.fn();const view=render(<TextEditor editorRef={editorRef} value="<p>Hello</p>" onChange={change} maxLength={8} name="body" aria-label="Document"/>);await waitFor(()=>expect(editorRef.current).toBeTruthy());expect(screen.getByRole("textbox",{name:"Document"})).toHaveTextContent("Hello")
   act(()=>{editorRef.current!.commands.insertContent("0123456789")});expect(htmlToText(editorRef.current!.getHTML()).length).toBeLessThanOrEqual(8)

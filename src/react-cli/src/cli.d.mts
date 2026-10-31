@@ -4,4 +4,4 @@ export interface Writer {
 
 export const VERSION: string
 export const USAGE: string
-export function run(args: string[], io: { cwd: string; stdout: Writer; stderr: Writer }): number
+export function run(args: string[], io: { cwd: string; stdout: Writer; stderr: Writer; interactive?: boolean }): number

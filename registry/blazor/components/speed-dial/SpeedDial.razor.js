@@ -8,8 +8,8 @@ export function sync(root, dotnet, options) {
     s = { root, dotnet, options, open: options.open, request: 0, controller: new AbortController() }
     instances.set(options.id, s)
     const listen = (el, name, fn) => el.addEventListener(name, fn, { signal: s.controller.signal })
-    const trigger = () => root.querySelector('.sheen-speed-dial-trigger')
-    const actions = () => [...root.querySelectorAll('.sheen-speed-dial-action:not(:disabled)')].filter(e => e.closest('.sheen-speed-dial') === root)
+    const trigger = () => root.querySelector('.rax-speed-dial-trigger')
+    const actions = () => [...root.querySelectorAll('.rax-speed-dial-action:not(:disabled)')].filter(e => e.closest('.rax-speed-dial') === root)
     const set = value => {
       if (s.options.disabled) value = false
       clearTimeout(s.timer)
@@ -18,12 +18,12 @@ export function sync(root, dotnet, options) {
       s.dotnet.invokeMethodAsync('SetOpen', value, ++s.request)
     }
     listen(root, 'click', e => {
-      if (e.target.closest('.sheen-speed-dial') !== root) return
-      if (e.target.closest('.sheen-speed-dial-trigger')) set(!s.open)
-      else if (e.target.closest('.sheen-speed-dial-action:not(:disabled)')?.dataset.close === 'true') { set(false); trigger()?.focus() }
+      if (e.target.closest('.rax-speed-dial') !== root) return
+      if (e.target.closest('.rax-speed-dial-trigger')) set(!s.open)
+      else if (e.target.closest('.rax-speed-dial-action:not(:disabled)')?.dataset.close === 'true') { set(false); trigger()?.focus() }
     })
     listen(root, 'keydown', e => {
-      if (e.target.closest('.sheen-speed-dial') !== root || e.altKey || e.ctrlKey || e.metaKey) return
+      if (e.target.closest('.rax-speed-dial') !== root || e.altKey || e.ctrlKey || e.metaKey) return
       const items = actions(), index = items.indexOf(document.activeElement), side = s.options.side
       let next
       if (e.target === trigger() && e.key === away[side]) { set(true); next = items[0] }
@@ -58,16 +58,16 @@ export function sync(root, dotnet, options) {
 function paint(s) {
   const state = s.open ? 'open' : 'closed', root = s.root
   root.dataset.state = state
-  root.querySelector('.sheen-speed-dial-trigger')?.setAttribute('aria-expanded', String(s.open))
-  const content = root.querySelector('.sheen-speed-dial-content')
+  root.querySelector('.rax-speed-dial-trigger')?.setAttribute('aria-expanded', String(s.open))
+  const content = root.querySelector('.rax-speed-dial-content')
   if (!content) return
   content.inert = !s.open; content.setAttribute('aria-hidden', String(!s.open))
-  const items = [...content.children].filter(e => e.classList.contains('sheen-speed-dial-item'))
-  content.style.setProperty('--sheen-speed-dial-count', items.length)
-  root.querySelectorAll('[data-state]').forEach(e => { if (e.closest('.sheen-speed-dial') === root) e.dataset.state = state })
+  const items = [...content.children].filter(e => e.classList.contains('rax-speed-dial-item'))
+  content.style.setProperty('--rax-speed-dial-count', items.length)
+  root.querySelectorAll('[data-state]').forEach(e => { if (e.closest('.rax-speed-dial') === root) e.dataset.state = state })
   items.forEach((item, index) => {
-    item.style.setProperty('--sheen-speed-dial-index', index)
-    const label = item.querySelector('.sheen-speed-dial-label'), action = item.querySelector('.sheen-speed-dial-action')
+    item.style.setProperty('--rax-speed-dial-index', index)
+    const label = item.querySelector('.rax-speed-dial-label'), action = item.querySelector('.rax-speed-dial-action')
     if (label && action && !action.hasAttribute('aria-label')) action.setAttribute('aria-labelledby', label.id)
   })
 }

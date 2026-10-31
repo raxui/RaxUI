@@ -4,33 +4,33 @@
 @inject IJSRuntime JS
 @using Microsoft.JSInterop
 
-<div @ref="_root" @attributes="AdditionalAttributes" class="@($"sheen-calendar {Class}")" dir="@EffectiveDir" data-sheen-appearance="@Appearance"
+<div @ref="_root" @attributes="AdditionalAttributes" class="@($"rax-calendar {Class}")" dir="@EffectiveDir" data-rax-appearance="@Appearance"
      data-day-content="@Data(DayContent is not null)" data-range="@Data(Range)" data-range-start="@Iso(Value)" data-range-end="@Iso(EndValue)"
      data-week-start="@WeekStart" data-min="@Iso(Min ?? DateOnly.MinValue)" data-max="@Iso(Max ?? DateOnly.MaxValue)" data-responsive="@Data(Responsive)" data-view="@View">
-    <div class="sheen-calendar-view" data-view="@View" data-from-picker="@Data(FromPicker)" @key="ViewKey">
+    <div class="rax-calendar-view" data-view="@View" data-from-picker="@Data(FromPicker)" @key="ViewKey">
         @if (View != "days")
         {
-            <div class="sheen-calendar-header">
-                <button type="button" class="sheen-calendar-nav" disabled="@(!Interactive || Disabled || YearDisabled(PickerYear - (View == "years" ? 12 : 1)))"
+            <div class="rax-calendar-header">
+                <button type="button" class="rax-calendar-nav" disabled="@(!Interactive || Disabled || YearDisabled(PickerYear - (View == "years" ? 12 : 1)))"
                         aria-label="@(View == "years" ? Words.PreviousYears : Words.PreviousYear)" @onclick="@(() => PickerYear -= View == "years" ? 12 : 1)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
                 </button>
-                <button type="button" class="sheen-calendar-caption" disabled="@(!Interactive || Disabled)" aria-label="@(View == "years" ? Words.BackToMonths : Words.ChooseYear)" @onclick="ToggleYear">
+                <button type="button" class="rax-calendar-caption" disabled="@(!Interactive || Disabled)" aria-label="@(View == "years" ? Words.BackToMonths : Words.ChooseYear)" @onclick="ToggleYear">
                     @(View == "years" ? $"{Digits(YearStart)} – {Digits(YearStart + 11)}" : Digits(PickerYear))
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
                 </button>
-                <button type="button" class="sheen-calendar-nav" disabled="@(!Interactive || Disabled || YearDisabled(PickerYear + (View == "years" ? 12 : 1)))"
+                <button type="button" class="rax-calendar-nav" disabled="@(!Interactive || Disabled || YearDisabled(PickerYear + (View == "years" ? 12 : 1)))"
                         aria-label="@(View == "years" ? Words.NextYears : Words.NextYear)" @onclick="@(() => PickerYear += View == "years" ? 12 : 1)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
                 </button>
             </div>
-            <div class="sheen-calendar-picker">
+            <div class="rax-calendar-picker">
                 @for (var index = 0; index < 12; index++)
                 {
                     var year = View == "years" ? YearStart + index : PickerYear;
                     var month = index + 1;
                     var years = View == "years";
-                    <button type="button" class="sheen-calendar-picker-item" disabled="@(!Interactive || Disabled || (years ? YearDisabled(year) : MonthDisabled(new DateOnly(year, month, 1))))"
+                    <button type="button" class="rax-calendar-picker-item" disabled="@(!Interactive || Disabled || (years ? YearDisabled(year) : MonthDisabled(new DateOnly(year, month, 1))))"
                             data-current="@Data(year == VisibleMonth.Year && (years || month == VisibleMonth.Month))" data-today="@Data(year == CurrentDay.Year && (years || month == CurrentDay.Month))"
                             @onclick="@(() => ChoosePeriod(years ? year : month))">@(years ? Digits(year) : new DateOnly(year, month, 1).ToString("MMM", FormatCulture))</button>
                 }
@@ -38,31 +38,31 @@
         }
         else
         {
-            <div class="sheen-calendar-months">
+            <div class="rax-calendar-months">
                 @for (var index = 0; index < MonthCount; index++)
                 {
                     var month = VisibleMonth.AddMonths(index);
-                    <div class="sheen-calendar-month">
-                        <div class="sheen-calendar-header">
+                    <div class="rax-calendar-month">
+                        <div class="rax-calendar-header">
                             @if (index == 0)
                             {
-                                <button type="button" class="sheen-calendar-nav" disabled="@(!Interactive || Disabled || VisibleMonth <= First(Min ?? DateOnly.MinValue))" aria-label="@Words.PreviousMonth" @onclick="@(() => NavigateMonth(-1))">
+                                <button type="button" class="rax-calendar-nav" disabled="@(!Interactive || Disabled || VisibleMonth <= First(Min ?? DateOnly.MinValue))" aria-label="@Words.PreviousMonth" @onclick="@(() => NavigateMonth(-1))">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
                                 </button>
                             }
-                            else { <span class="sheen-calendar-nav-spacer"></span> }
-                            <button type="button" class="sheen-calendar-caption" disabled="@(!Interactive || Disabled)" aria-label="@($"{Caption(month)}, {Words.ChooseMonthYear}")" aria-live="polite" @onclick="@(() => OpenMonths(month))">
+                            else { <span class="rax-calendar-nav-spacer"></span> }
+                            <button type="button" class="rax-calendar-caption" disabled="@(!Interactive || Disabled)" aria-label="@($"{Caption(month)}, {Words.ChooseMonthYear}")" aria-live="polite" @onclick="@(() => OpenMonths(month))">
                                 @Caption(month)<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
                             </button>
                             @if (index == MonthCount - 1)
                             {
-                                <button type="button" class="sheen-calendar-nav" disabled="@(!Interactive || Disabled || month >= First(Max ?? DateOnly.MaxValue))" aria-label="@Words.NextMonth" @onclick="@(() => NavigateMonth(1))">
+                                <button type="button" class="rax-calendar-nav" disabled="@(!Interactive || Disabled || month >= First(Max ?? DateOnly.MaxValue))" aria-label="@Words.NextMonth" @onclick="@(() => NavigateMonth(1))">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
                                 </button>
                             }
-                            else { <span class="sheen-calendar-nav-spacer"></span> }
+                            else { <span class="rax-calendar-nav-spacer"></span> }
                         </div>
-                        <table role="grid" aria-label="@Caption(month)" class="sheen-calendar-grid" data-direction="@Direction" @key="month">
+                        <table role="grid" aria-label="@Caption(month)" class="rax-calendar-grid" data-direction="@Direction" @key="month">
                             <thead><tr>
                                 @for (var weekday = 0; weekday < 7; weekday++)
                                 {
@@ -87,12 +87,12 @@
                                                 var selected = Selected(day);
                                                 var inRange = InRange(day);
                                                 <td role="gridcell" aria-selected="@(selected || inRange ? "true" : null)" data-range-start="@Data(Range && day == Value && EndValue.HasValue)" data-range-end="@Data(Range && day == EndValue)" data-in-range="@Data(inRange)">
-                                                    <button type="button" class="sheen-calendar-day" disabled="@(!Interactive || Disabled)" data-date="@Iso(day)" data-today="@Data(day == CurrentDay)"
+                                                    <button type="button" class="rax-calendar-day" disabled="@(!Interactive || Disabled)" data-date="@Iso(day)" data-today="@Data(day == CurrentDay)"
                                                             data-outside="@Data(day.Month != month.Month)" data-selected="@Data(selected)" data-out-of-span="@Data(OutOfSpan(day))"
                                                             aria-disabled="@(!Allowed(day) ? "true" : null)" aria-label="@(Localize(day.ToString("D", FormatCulture), FormatCulture) + (day == CurrentDay ? $", {Words.Today}" : ""))"
                                                             aria-current="@(day == CurrentDay ? "date" : null)" tabindex="@(day == ActiveDay && day.Month == month.Month ? 0 : -1)" @onclick="@(() => Select(day))">
                                                         @if (DayContent is not null)
-                                                        { <span class="sheen-calendar-day-number">@Digits(day.Day)</span><span class="sheen-calendar-day-content">@DayContent(day)</span> }
+                                                        { <span class="rax-calendar-day-number">@Digits(day.Day)</span><span class="rax-calendar-day-content">@DayContent(day)</span> }
                                                         else { @Digits(day.Day) }
                                                     </button>
                                                 </td>

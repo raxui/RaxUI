@@ -9,7 +9,7 @@ import { SparkIcon } from "./ai-shared"
 import { AICodeBlock } from "./ai-code-block"
 
 export const AIConversation = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-ai-conversation", className)} role="log" aria-live="polite" {...props} />
+  <div ref={ref} className={cn("rax-ai-conversation", className)} role="log" aria-live="polite" {...props} />
 ))
 
 AIConversation.displayName = "AIConversation"
@@ -21,13 +21,13 @@ export interface AIMessageProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const AIMessage = React.forwardRef<HTMLDivElement, AIMessageProps>(({ from, avatar, className, children, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-ai-message", className)} data-from={from} {...props}>
+  <div ref={ref} className={cn("rax-ai-message", className)} data-from={from} {...props}>
     {from === "assistant" && (
-      <div className="sheen-ai-avatar" aria-hidden="true">
+      <div className="rax-ai-avatar" aria-hidden="true">
         {avatar ?? <SparkIcon />}
       </div>
     )}
-    <div className="sheen-ai-message-body" dir={from === "user" ? "auto" : undefined}>
+    <div className="rax-ai-message-body" dir={from === "user" ? "auto" : undefined}>
       {children}
     </div>
   </div>
@@ -92,7 +92,7 @@ export const MARKDOWN_COMPONENTS: Components = {
   },
   a: ({ node: _node, ...props }) => <a {...props} target="_blank" rel="noreferrer" />,
   table: ({ node: _node, ...props }) => (
-    <div className="sheen-ai-table">
+    <div className="rax-ai-table">
       <table className="table table-sm" {...props} />
     </div>
   ),
@@ -110,7 +110,7 @@ export const AIResponse = React.forwardRef<HTMLDivElement, AIResponseProps>(
   ({ streaming, markdown, codeLabels, className, children, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("sheen-ai-response", className)}
+      className={cn("rax-ai-response", className)}
       data-streaming={streaming ? "" : undefined}
       data-markdown={markdown ? "" : undefined}
       dir="auto"
@@ -131,5 +131,5 @@ export const AIResponse = React.forwardRef<HTMLDivElement, AIResponseProps>(
 AIResponse.displayName = "AIResponse"
 
 export const AIShimmer = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => (
-  <span className={cn("sheen-ai-shimmer", className)} {...props} />
+  <span className={cn("rax-ai-shimmer", className)} {...props} />
 )

@@ -4,7 +4,7 @@
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 
-import { useSheenPortalContainer } from "@/lib/theme"
+import { useRaxPortalContainer } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 
 
@@ -28,13 +28,13 @@ function DrawerNested(props: React.ComponentProps<typeof DrawerPrimitive.NestedR
 DrawerNested.displayName = "DrawerNested"
 
 const DrawerTrigger = DrawerPrimitive.Trigger
-function DrawerPortal(props: React.ComponentProps<typeof DrawerPrimitive.Portal>) { return <DrawerPrimitive.Portal container={useSheenPortalContainer()} {...props} /> }
+function DrawerPortal(props: React.ComponentProps<typeof DrawerPrimitive.Portal>) { return <DrawerPrimitive.Portal container={useRaxPortalContainer()} {...props} /> }
 const DrawerClose = DrawerPrimitive.Close
 
 const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
->(({ className, ...props }, ref) => <DrawerPrimitive.Overlay ref={ref} className={cn("sheen-drawer-overlay", className)} {...props} />)
+>(({ className, ...props }, ref) => <DrawerPrimitive.Overlay ref={ref} className={cn("rax-drawer-overlay", className)} {...props} />)
 DrawerOverlay.displayName = "DrawerOverlay"
 
 export interface DrawerContentProps extends React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> {
@@ -47,8 +47,8 @@ const DrawerContent = React.forwardRef<React.ElementRef<typeof DrawerPrimitive.C
   ({ className, children, showHandle = true, handleLabel = "Resize drawer", ...props }, ref) => (
     <DrawerPortal>
       <DrawerOverlay />
-      <DrawerPrimitive.Content ref={ref} className={cn("sheen-drawer-content", className)} {...props}>
-        {showHandle && <DrawerPrimitive.Handle aria-label={handleLabel} className="sheen-drawer-handle" />}
+      <DrawerPrimitive.Content ref={ref} className={cn("rax-drawer-content", className)} {...props}>
+        {showHandle && <DrawerPrimitive.Handle aria-label={handleLabel} className="rax-drawer-handle" />}
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>
@@ -57,32 +57,32 @@ const DrawerContent = React.forwardRef<React.ElementRef<typeof DrawerPrimitive.C
 DrawerContent.displayName = "DrawerContent"
 
 const DrawerHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-drawer-header", className)} {...props} />
+  <div ref={ref} className={cn("rax-drawer-header", className)} {...props} />
 ))
 DrawerHeader.displayName = "DrawerHeader"
 
 /** Scrollable middle. Dragging starts only once it's scrolled to the top (vaul handles the hand-off). */
 const DrawerBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-drawer-body", className)} {...props} />
+  <div ref={ref} className={cn("rax-drawer-body", className)} {...props} />
 ))
 DrawerBody.displayName = "DrawerBody"
 
 const DrawerFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-drawer-footer", className)} {...props} />
+  <div ref={ref} className={cn("rax-drawer-footer", className)} {...props} />
 ))
 DrawerFooter.displayName = "DrawerFooter"
 
 const DrawerTitle = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
->(({ className, ...props }, ref) => <DrawerPrimitive.Title ref={ref} className={cn("sheen-drawer-title", className)} {...props} />)
+>(({ className, ...props }, ref) => <DrawerPrimitive.Title ref={ref} className={cn("rax-drawer-title", className)} {...props} />)
 DrawerTitle.displayName = "DrawerTitle"
 
 const DrawerDescription = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
 >(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Description ref={ref} className={cn("sheen-drawer-description", className)} {...props} />
+  <DrawerPrimitive.Description ref={ref} className={cn("rax-drawer-description", className)} {...props} />
 ))
 DrawerDescription.displayName = "DrawerDescription"
 

@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/slider.css",
       "type": "css",
-      "sha256": "2220c96def5d827341983aa9e7d8c122250d5ea3fd3bccc2101578144f4b5ba0"
+      "sha256": "9b670a9042d5af2e3ac5b50f15291ff3391976e536f117ad9d60faba70f6ab52"
     }
   ],
   "files": [
@@ -21,14 +21,14 @@
       "destination": "components",
       "target": "Slider/Slider.razor",
       "type": "razor",
-      "sha256": "78673971240482164cfa7af9e73dfa40ee48ad46de37e7f9a4dfcbb9bbd796a0"
+      "sha256": "c5953a8fe9a9ee9ca28b2d66eee4f92eade026f25e11775ba56a418e2bb79ca0"
     },
     {
       "source": "SliderInput.razor",
       "destination": "components",
       "target": "Slider/SliderInput.razor",
       "type": "razor",
-      "sha256": "dbf1b35cfdf87c4eb0229dd9e1014230acef029969890f8ca2e430533ccf80f9"
+      "sha256": "f52047ab3447c17da021758c038eed742fc742ee5cef082b32c8af0bb91689d3"
     }
   ]
 }

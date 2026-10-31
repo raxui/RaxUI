@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/avatar.css",
       "type": "css",
-      "sha256": "2ffe81048045022f4df450de43014c1f8bb44f85644e7abc1da79d932b9066b1"
+      "sha256": "35b0b24ab6a9055a35909e1b55ae2825b7c78d0486c5c760d7d55ef8ff74e69d"
     }
   ],
   "files": [
@@ -19,21 +19,21 @@
       "destination": "components",
       "target": "Avatar/Avatar.razor",
       "type": "razor",
-      "sha256": "e4d213af711f1bae458504a6abeb46a7ba248094bd359644ba7ff869ce0a997e"
+      "sha256": "fe378253f440574e7343e4b1160ac35f588e69e84119693f24fc98e71471a09f"
     },
     {
       "source": "Avatar.razor.js",
       "destination": "components",
       "target": "Avatar/Avatar.razor.js",
       "type": "js",
-      "sha256": "d1f1e480e06e57568fdad183571af341f5312bb9887ba54318b165c9f3e3912e"
+      "sha256": "4266d30fda74de69f097dcffe597540e26c5d421f515d576f2ab57a612feb7e3"
     },
     {
       "source": "AvatarGroup.razor",
       "destination": "components",
       "target": "Avatar/AvatarGroup.razor",
       "type": "razor",
-      "sha256": "759f4f76bd386f158e8d890c4cbc4aac0d74c543a7f654ff53ba272680392747"
+      "sha256": "081efa1e1101fe7a1ee82e299a36ad8d77480a23f95c853651145d35b2d63643"
     }
   ]
 }

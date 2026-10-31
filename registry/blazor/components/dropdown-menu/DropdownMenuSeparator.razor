@@ -1,4 +1,4 @@
-@* SheenUI DropdownMenuSeparator. Source-owned: edit freely. A line between groups of items. *@
+@* RaxUI DropdownMenuSeparator. Source-owned: edit freely. A line between groups of items. *@
 
 <div @attributes="AdditionalAttributes" role="separator" class="@CssClass"></div>
 
@@ -9,5 +9,5 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private string CssClass => string.IsNullOrEmpty(Class) ? "sheen-dropdown-separator" : $"sheen-dropdown-separator {Class}";
+    private string CssClass => string.IsNullOrEmpty(Class) ? "rax-dropdown-separator" : $"rax-dropdown-separator {Class}";
 }

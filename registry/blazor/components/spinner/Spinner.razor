@@ -1,5 +1,5 @@
-@* SheenUI Spinner. Source-owned: edit freely. Styled by the spinner component CSS. *@
-<svg @attributes="AdditionalAttributes" class="@($"sheen-spinner {Class}")" role="status" aria-label="@Label" data-size="@Size" data-color="@Color" data-sheen-appearance="@Appearance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+@* RaxUI Spinner. Source-owned: edit freely. Styled by the spinner component CSS. *@
+<svg @attributes="AdditionalAttributes" class="@($"rax-spinner {Class}")" role="status" aria-label="@Label" data-size="@Size" data-color="@Color" data-rax-appearance="@Appearance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
     @for (var i = 0; i < 8; i++)
     {
         <line x1="12" y1="2.75" x2="12" y2="6.75" transform="@($"rotate({i * 45} 12 12)")" opacity="@(((i + 1) / 8.0).ToString(System.Globalization.CultureInfo.InvariantCulture))" />

@@ -1,12 +1,12 @@
-@* SheenUI TimelineItem. Source-owned: edit freely. Styled by the timeline component CSS. *@
-<li @attributes="AdditionalAttributes" class="@($"sheen-timeline-item {Class}")" style="@($"--sheen-timeline-i:{Index};{(AdditionalAttributes?.TryGetValue("style", out var style) == true ? style : null)}")" data-status="@Status" data-side="@(TimelineContext?.EffectiveTimePosition=="side"?(TimelineContext.Layout=="alternate"&&Index%2==1?"start":"end"):null)" data-tone="@(Tone ?? (Status == "error" ? "danger" : Status == "upcoming" ? "neutral" : "primary"))" data-marker="@(Marker is null ? "dot" : "icon")" aria-current="@(Status == "current" ? "step" : null)" data-sheen-appearance="@Appearance">
-    @if (TimelineContext?.EffectiveTimePosition == "side") { <div class="sheen-timeline-side">@TimeMarkup</div> }
-    <div class="sheen-timeline-rail" aria-hidden="true"><span class="sheen-timeline-marker">@Marker</span><span class="sheen-timeline-line"></span></div>
-    <div class="sheen-timeline-body">
+@* RaxUI TimelineItem. Source-owned: edit freely. Styled by the timeline component CSS. *@
+<li @attributes="AdditionalAttributes" class="@($"rax-timeline-item {Class}")" style="@($"--rax-timeline-i:{Index};{(AdditionalAttributes?.TryGetValue("style", out var style) == true ? style : null)}")" data-status="@Status" data-side="@(TimelineContext?.EffectiveTimePosition=="side"?(TimelineContext.Layout=="alternate"&&Index%2==1?"start":"end"):null)" data-tone="@(Tone ?? (Status == "error" ? "danger" : Status == "upcoming" ? "neutral" : "primary"))" data-marker="@(Marker is null ? "dot" : "icon")" aria-current="@(Status == "current" ? "step" : null)" data-rax-appearance="@Appearance">
+    @if (TimelineContext?.EffectiveTimePosition == "side") { <div class="rax-timeline-side">@TimeMarkup</div> }
+    <div class="rax-timeline-rail" aria-hidden="true"><span class="rax-timeline-marker">@Marker</span><span class="rax-timeline-line"></span></div>
+    <div class="rax-timeline-body">
         @if (TimelineContext?.EffectiveTimePosition != "side") { @TimeMarkup }
-        @if (Title is not null || TitleContent is not null) { <div class="sheen-timeline-title">@if(TitleContent is not null){@TitleContent}else{@Title}<span class="visually-hidden"> (@(StatusLabel ?? TimelineContext?.StatusLabel(Status) ?? Status))</span></div> }
-        @if (Description is not null) { <div class="sheen-timeline-description">@Description</div> }
-        @if (ChildContent is not null) { <div class="sheen-timeline-content">@ChildContent</div> }
+        @if (Title is not null || TitleContent is not null) { <div class="rax-timeline-title">@if(TitleContent is not null){@TitleContent}else{@Title}<span class="visually-hidden"> (@(StatusLabel ?? TimelineContext?.StatusLabel(Status) ?? Status))</span></div> }
+        @if (Description is not null) { <div class="rax-timeline-description">@Description</div> }
+        @if (ChildContent is not null) { <div class="rax-timeline-content">@ChildContent</div> }
     </div>
 </li>
 @code {
@@ -28,5 +28,5 @@
     [Parameter] public string? DateTime { get; set; }
     [Parameter] public RenderFragment? Marker { get; set; }
     [Parameter] public string? StatusLabel { get; set; }
-    private RenderFragment TimeMarkup => @<text>@if (Time is not null) { <time class="sheen-timeline-time" datetime="@DateTime">@Time</time> }</text>;
+    private RenderFragment TimeMarkup => @<text>@if (Time is not null) { <time class="rax-timeline-time" datetime="@DateTime">@Time</time> }</text>;
 }

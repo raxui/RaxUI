@@ -17,13 +17,13 @@
       "source": "registry/react/components/navigation-menu/navigation-menu.tsx",
       "target": "components/ui/navigation-menu.tsx",
       "type": "tsx",
-      "sha256": "0cde59f72ae2bed9ba3bd0cdea0259104fac4c5bbe682146a70c5e9ca6baaba9"
+      "sha256": "8a5fbe70782ec3568eece407a27c4cdba375465e7b7ec6189d0ac9a99584a8dc"
     },
     {
       "source": "theme/scss/components/_navigation-menu.scss",
-      "target": "styles/sheenui/components/_navigation-menu.scss",
+      "target": "styles/raxui/components/_navigation-menu.scss",
       "type": "scss",
-      "sha256": "fe8c4973253bbb1868374f8259e03f2caf490ad24253a58bd17d1d331116bef8"
+      "sha256": "0c6451588a1ca029758a182654581b7c442fe7cd3f368b339b4ee8a4dea35702"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

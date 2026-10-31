@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/breadcrumb.css",
       "type": "css",
-      "sha256": "6701c69bebf141b4056c848700b5373901590adf895f6b1f87e2eebb45be2752"
+      "sha256": "c470e98a09d4cf51fd4e3ce7e9533257eb80ea6afdb6bd90322cfeee3950b24c"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Breadcrumb/Breadcrumb.razor",
       "type": "razor",
-      "sha256": "37716bba5e505cb97a1515ad7fe170e560f089f74be8b4042799ce68f5186cbd"
+      "sha256": "632f08c1cf5194625dc26599d0c19330da961edc6ed3346c04d935a915601f89"
     }
   ]
 }

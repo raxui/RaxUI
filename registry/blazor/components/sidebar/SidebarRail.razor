@@ -1,4 +1,4 @@
-<button @attributes="AdditionalAttributes" type="button" class="sheen-sidebar-rail @Class" tabindex="-1" aria-label="@(Parent?.Current == true ? CollapseLabel : ExpandLabel)" @onclick="Toggle" disabled="@(Parent?.Ready != true)"></button>
+<button @attributes="AdditionalAttributes" type="button" class="rax-sidebar-rail @Class" tabindex="-1" aria-label="@(Parent?.Current == true ? CollapseLabel : ExpandLabel)" @onclick="Toggle" disabled="@(Parent?.Ready != true)"></button>
 @code {
     [CascadingParameter] public SidebarProvider? Parent { get; set; }
     [Parameter] public string CollapseLabel { get; set; } = "Collapse sidebar";

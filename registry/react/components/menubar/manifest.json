@@ -18,13 +18,13 @@
       "source": "registry/react/components/menubar/menubar.tsx",
       "target": "components/ui/menubar.tsx",
       "type": "tsx",
-      "sha256": "c19549a84125038e8cc4a175058bc5d7c232987c242b880aa5da8f5cd9c0a749"
+      "sha256": "3faeb2adea19b8ab6df4f6a2f8e7b474a437c0220d20ce82456f80b3b80c5123"
     },
     {
       "source": "theme/scss/components/_menubar.scss",
-      "target": "styles/sheenui/components/_menubar.scss",
+      "target": "styles/raxui/components/_menubar.scss",
       "type": "scss",
-      "sha256": "0e72f440b120ef39ba4235e3cec169eb816e0de1c62fc93d92f5de5f843314eb"
+      "sha256": "a9b9b03024ae2aa62bc2cc39bd2f9259dd8af257a9f3b73a01f1acc97ff03369"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

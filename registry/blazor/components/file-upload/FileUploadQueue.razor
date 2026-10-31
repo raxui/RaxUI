@@ -2,20 +2,20 @@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @ref="root" class="@($"sheen-queue-upload {Class}")" data-variant="@Variant" data-layout="@Layout" data-disabled="@(Disabled ? "" : null)" data-sheen-appearance="@Appearance">
-    <label for="@Id" class="sheen-queue-upload-zone" tabindex="@(Disabled ? -1 : 0)" role="button" aria-label="@ZoneLabel" aria-describedby="@(Id + "-hint")" aria-disabled="@Disabled.ToString().ToLowerInvariant()">
-        <span class="sheen-queue-upload-zone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg></span>
-        <span class="sheen-queue-upload-zone-text"><span class="sheen-queue-upload-zone-title">@(Title ?? (Variant == "compact" ? Labels.Compact : Labels.Title)) @if(Title is null && Variant != "compact"){@(" ")<span class="sheen-queue-upload-browse">@Labels.Browse</span>}</span><span class="sheen-queue-upload-zone-hint" id="@(Id + "-hint")">@(Hint ?? $"{Accept ?? Labels.AnyFile} · {Labels.UpTo} {FormatBytes(MaxSize)} · {MaxFiles} {Labels.MaxFiles}")</span></span>
+<div @ref="root" class="@($"rax-queue-upload {Class}")" data-variant="@Variant" data-layout="@Layout" data-disabled="@(Disabled ? "" : null)" data-rax-appearance="@Appearance">
+    <label for="@Id" class="rax-queue-upload-zone" tabindex="@(Disabled ? -1 : 0)" role="button" aria-label="@ZoneLabel" aria-describedby="@(Id + "-hint")" aria-disabled="@Disabled.ToString().ToLowerInvariant()">
+        <span class="rax-queue-upload-zone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg></span>
+        <span class="rax-queue-upload-zone-text"><span class="rax-queue-upload-zone-title">@(Title ?? (Variant == "compact" ? Labels.Compact : Labels.Title)) @if(Title is null && Variant != "compact"){@(" ")<span class="rax-queue-upload-browse">@Labels.Browse</span>}</span><span class="rax-queue-upload-zone-hint" id="@(Id + "-hint")">@(Hint ?? $"{Accept ?? Labels.AnyFile} · {Labels.UpTo} {FormatBytes(MaxSize)} · {MaxFiles} {Labels.MaxFiles}")</span></span>
     </label>
     @foreach(var batch in batches)
     {
-        <span @key="batch" data-upload-batch="@batch" hidden="@(batch != generation)"><InputFile @attributes="InputAttributes(batch)" OnChange="args=>Selected(args,batch)" accept="Accept" multiple="@(MaxFiles > 1)" class="sheen-queue-upload-input" /></span>
+        <span @key="batch" data-upload-batch="@batch" hidden="@(batch != generation)"><InputFile @attributes="InputAttributes(batch)" OnChange="args=>Selected(args,batch)" accept="Accept" multiple="@(MaxFiles > 1)" class="rax-queue-upload-input" /></span>
     }
-    @if(error is not null){<div class="sheen-queue-upload-rejections" role="alert"><span class="flex-fill">@error</span><button type="button" class="btn btn-sm btn-link" aria-label="@Labels.Dismiss" @onclick="()=>error=null">×</button></div>}
+    @if(error is not null){<div class="rax-queue-upload-rejections" role="alert"><span class="flex-fill">@error</span><button type="button" class="btn btn-sm btn-link" aria-label="@Labels.Dismiss" @onclick="()=>error=null">×</button></div>}
     @if(entries.Count > 0)
     {
-        <div class="sheen-queue-upload-files"><div class="sheen-queue-upload-summary"><span>@entries.Count @Labels.Files · @FormatBytes(entries.Sum(x=>x.File.Size))</span><button type="button" class="btn btn-link" disabled="@Disabled" @onclick="Clear">@Labels.RemoveAll</button></div>
-        <ul class="sheen-queue-upload-list">@foreach(var entry in entries){<FileUploadItem @key="entry.Id" Entry="entry" Labels="Labels" Grid="@(Layout == "grid")" Disabled="Disabled" OnRemove="()=>Remove(entry)" OnCancel="()=>Cancel(entry)" OnRetry="()=>Retry(entry)" />}</ul></div>
+        <div class="rax-queue-upload-files"><div class="rax-queue-upload-summary"><span>@entries.Count @Labels.Files · @FormatBytes(entries.Sum(x=>x.File.Size))</span><button type="button" class="btn btn-link" disabled="@Disabled" @onclick="Clear">@Labels.RemoveAll</button></div>
+        <ul class="rax-queue-upload-list">@foreach(var entry in entries){<FileUploadItem @key="entry.Id" Entry="entry" Labels="Labels" Grid="@(Layout == "grid")" Disabled="Disabled" OnRemove="()=>Remove(entry)" OnCancel="()=>Cancel(entry)" OnRetry="()=>Retry(entry)" />}</ul></div>
     }
     <span class="visually-hidden" role="status" aria-live="polite" aria-atomic="true">@announcement</span>
 </div>
@@ -78,7 +78,7 @@
     private readonly List<Entry> entries = new();
     private readonly List<int> batches = new() { 0 };
     private readonly List<string> released = new();
-    private readonly string autoId = $"sheen-upload-{Guid.NewGuid():N}";
+    private readonly string autoId = $"rax-upload-{Guid.NewGuid():N}";
     private int generation, running;
     private bool disposed;
     private string? error, announcement;

@@ -2,7 +2,7 @@
 
 // Ported from boot-ui. Built-in SVG paths from Lucide (ISC).
 import * as React from "react"
-import { useSheenTheme, sheenThemeAttributes } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes } from "@/lib/theme"
 import { Slot } from "@radix-ui/react-slot"
 import { horizontalListSortingStrategy, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { cn } from "@/lib/utils"
@@ -15,7 +15,7 @@ export interface KanbanBoardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(({ asChild, className, ...props }, ref) => {
-  const theme = useSheenTheme()
+  const theme = useRaxTheme()
   const context = useKanban("KanbanBoard")
   const Comp = asChild ? Slot : "div"
   return (
@@ -24,11 +24,11 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(({
         items={Object.keys(context.columns)}
         strategy={context.orientation === "horizontal" ? horizontalListSortingStrategy : verticalListSortingStrategy}
       >
-        <Comp {...sheenThemeAttributes(theme)} dir={undefined}
+        <Comp {...raxThemeAttributes(theme)} dir={undefined}
           ref={ref}
           data-orientation={context.orientation}
           data-dragging={context.activeId !== null ? "" : undefined}
-          className={cn("sheen-kanban", className)}
+          className={cn("rax-kanban", className)}
           {...props}
         />
       </SortableContext>

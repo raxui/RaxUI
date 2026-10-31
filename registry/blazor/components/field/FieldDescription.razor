@@ -1,5 +1,5 @@
-@* SheenUI FieldDescription. Source-owned: edit freely. Set Field.HasDescription when composing manually. *@
-<p @attributes="AdditionalAttributes" id="@Context?.DescriptionId" class="@($"sheen-field-description {Class}".TrimEnd())">@ChildContent</p>
+@* RaxUI FieldDescription. Source-owned: edit freely. Set Field.HasDescription when composing manually. *@
+<p @attributes="AdditionalAttributes" id="@Context?.DescriptionId" class="@($"rax-field-description {Class}".TrimEnd())">@ChildContent</p>
 
 @code {
     [CascadingParameter] private Field.FieldContext? Context { get; set; }

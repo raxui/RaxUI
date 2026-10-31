@@ -1,5 +1,5 @@
 @* Built-in SVG path from Lucide (ISC). *@
-<Button @attributes="AdditionalAttributes" Class="@($"sheen-carousel-nav sheen-carousel-prev {Class}")" Variant="@Variant" Size="@Size" Disabled="true" data-carousel-prev data-orientation="@Carousel.Orientation" aria-label="@Carousel.Labels.Previous">@if(ChildContent is not null){@ChildContent}else{<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>}</Button>
+<Button @attributes="AdditionalAttributes" Class="@($"rax-carousel-nav rax-carousel-prev {Class}")" Variant="@Variant" Size="@Size" Disabled="true" data-carousel-prev data-orientation="@Carousel.Orientation" aria-label="@Carousel.Labels.Previous">@if(ChildContent is not null){@ChildContent}else{<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>}</Button>
 @code {
  [CascadingParameter] public Carousel Carousel {get;set;}=default!;
  [Parameter] public string Variant {get;set;}="secondary";

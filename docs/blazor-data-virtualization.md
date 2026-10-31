@@ -4,7 +4,7 @@ Related: [ADR 019](adr/019-blazor-data-components.md). This experiment compares 
 
 ## Method
 
-Run on Windows, .NET 10 Interactive Server and Chromium, using 10,000 rows at 40px with overscan 12 in both candidates. The minimal probes are [VirtualizationProbe.razor](../tests/SheenUI.Integration.Tests/Fixtures/VirtualizationProbe.razor) and its [collocated module](../tests/SheenUI.Integration.Tests/Fixtures/VirtualizationProbe.razor.js). Both retain the draft in C#; only the manual candidate explicitly unions the active row into the rendered indexes.
+Run on Windows, .NET 10 Interactive Server and Chromium, using 10,000 rows at 40px with overscan 12 in both candidates. The minimal probes are [VirtualizationProbe.razor](../tests/RaxUI.Integration.Tests/Fixtures/VirtualizationProbe.razor) and its [collocated module](../tests/RaxUI.Integration.Tests/Fixtures/VirtualizationProbe.razor.js). Both retain the draft in C#; only the manual candidate explicitly unions the active row into the rendered indexes.
 
 The latency run used a local TCP proxy delaying traffic by 60ms in each direction, including the existing SignalR connection. Actual JS interop round-trip measurements verified the delay. The scroll sample moved 80px every 20ms for 20 samples, followed by a distant jump, the last row, and a return to the editor. Blank samples were measured at the viewport's top data position; these counts are observations, not a benchmark guarantee.
 

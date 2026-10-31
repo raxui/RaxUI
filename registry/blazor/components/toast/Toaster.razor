@@ -1,23 +1,23 @@
-@* SheenUI Toaster. Source-owned: edit freely. Register Toaster.ToastService as scoped and mount once in an interactive layout. *@
+@* RaxUI Toaster. Source-owned: edit freely. Register Toaster.ToastService as scoped and mount once in an interactive layout. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 @inject ToastService Toasts
 
-<ol @ref="_outlet" class="sheen-toast-viewport @Class" data-position="@Position" aria-label="@Label" data-sheen-appearance="@Appearance">
+<ol @ref="_outlet" class="rax-toast-viewport @Class" data-position="@Position" aria-label="@Label" data-rax-appearance="@Appearance">
     @foreach (var toast in Toasts.Items)
     {
-        <li @key="toast.Id" id="@toast.Id" class="sheen-toast" data-state="open" data-duration="@toast.Duration"
+        <li @key="toast.Id" id="@toast.Id" class="rax-toast" data-state="open" data-duration="@toast.Duration"
             data-variant="@(toast.Tone == "danger" ? "destructive" : toast.Tone)" role="@(toast.Tone == "danger" ? "alert" : "status")"
             aria-live="@(toast.Tone == "danger" ? "assertive" : "polite")" aria-atomic="true">
-            <span class="sheen-toast-icon" aria-hidden="true">
+            <span class="rax-toast-icon" aria-hidden="true">
                 @* Lucide status icons, ISC license. *@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="@IconPath(toast.Tone)" /></svg>
             </span>
-            <div class="sheen-toast-body"><div class="sheen-toast-title">@toast.Title</div>
-                @if (toast.Description is not null) { <div class="sheen-toast-description">@toast.Description</div> }
+            <div class="rax-toast-body"><div class="rax-toast-title">@toast.Title</div>
+                @if (toast.Description is not null) { <div class="rax-toast-description">@toast.Description</div> }
             </div>
-            @if (toast.Action is not null) { <button type="button" class="btn sheen-button btn-glass btn-glass-secondary sheen-toast-action" @onclick="@(() => Act(toast))">@toast.ActionLabel</button> }
-            <button type="button" class="sheen-toast-close" aria-label="@DismissLabel" @onclick="@(() => Dismiss(toast.Id))">
+            @if (toast.Action is not null) { <button type="button" class="btn rax-button btn-glass btn-glass-secondary rax-toast-action" @onclick="@(() => Act(toast))">@toast.ActionLabel</button> }
+            <button type="button" class="rax-toast-close" aria-label="@DismissLabel" @onclick="@(() => Dismiss(toast.Id))">
                 @* Lucide X, ISC license. *@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
             </button>
@@ -75,7 +75,7 @@
         public string Show(string title, string tone = "info", string? description = null, int duration = 5000, string? actionLabel = null, Func<Task>? action = null)
         {
             if (action is not null && string.IsNullOrWhiteSpace(actionLabel)) throw new ArgumentException("An action requires a label.", nameof(actionLabel));
-            var id = "sheen-toast-" + Guid.NewGuid().ToString("N");
+            var id = "rax-toast-" + Guid.NewGuid().ToString("N");
             _items.Add(new Message(id, title, description, tone, duration, actionLabel, action));
             Changed?.Invoke();
             return id;

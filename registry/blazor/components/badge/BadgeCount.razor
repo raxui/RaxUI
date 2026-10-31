@@ -1,6 +1,6 @@
-<span @attributes="AdditionalAttributes" class="@($"sheen-badge-anchor {Class}")">
+<span @attributes="AdditionalAttributes" class="@($"rax-badge-anchor {Class}")">
     @ChildContent
-    @if(Count>0||ShowZero){<span @key="Count" class="sheen-badge-count" data-color="@Color" data-dot="@(Dot?"":null)" data-placement="@Placement" data-pop="@(changed?"":null)" role="status" aria-label="@(GetLabel?.Invoke(Count)??$"{Count} notifications")">@if(!Dot){@(Count>Max?$"{Max}+":Count.ToString())}</span>}
+    @if(Count>0||ShowZero){<span @key="Count" class="rax-badge-count" data-color="@Color" data-dot="@(Dot?"":null)" data-placement="@Placement" data-pop="@(changed?"":null)" role="status" aria-label="@(GetLabel?.Invoke(Count)??$"{Count} notifications")">@if(!Dot){@(Count>Max?$"{Max}+":Count.ToString())}</span>}
 </span>
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }

@@ -14,7 +14,7 @@
       "destination": "styles",
       "target": "components/autocomplete.css",
       "type": "css",
-      "sha256": "8a5b7390eae6888996a8494e288552db0a54d69c1c5f2a81d4ba2e5df420ab08"
+      "sha256": "1ca0cb1ddd505a00bb26cf7741d78e5f496d73877900d11133fa1fd5f8649e15"
     }
   ],
   "files": [
@@ -23,7 +23,7 @@
       "destination": "components",
       "target": "Autocomplete/Autocomplete.razor",
       "type": "razor",
-      "sha256": "36b713e557d68faed29c8c1ded5fd8d408e4e7d2c1a15d5f306acb396ab1bc3f"
+      "sha256": "593e7c6c845ef8b93aa9ca1703bf8df3a7fb68da1b354eb9e27627585b76c2d8"
     }
   ]
 }

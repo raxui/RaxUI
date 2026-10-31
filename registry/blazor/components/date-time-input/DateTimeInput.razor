@@ -12,44 +12,44 @@
 }
 else
 {
-    <div @ref="_root" @attributes="ControlAttributes" tabindex="-1" class="@($"sheen-input-group sheen-date-field {Class} {CssClass}")" role="group" dir="@EffectiveDir"
-         data-size="@Size" data-variant="@Variant" data-sheen-appearance="@Appearance" data-start="@(StartIcon is not null ? "" : null)" data-end="" data-disabled="@(EffectiveDisabled ? "" : null)" data-readonly="@(ReadOnly ? "" : null)">
-        @if (StartIcon is not null) { <span class="sheen-input-slot" data-side="start" aria-hidden="true">@StartIcon</span> }
-        <div class="form-control sheen-input sheen-date-segments" data-variant="@Variant">
-            <span class="sheen-date-run" dir="ltr">
+    <div @ref="_root" @attributes="ControlAttributes" tabindex="-1" class="@($"rax-input-group rax-date-field {Class} {CssClass}")" role="group" dir="@EffectiveDir"
+         data-size="@Size" data-variant="@Variant" data-rax-appearance="@Appearance" data-start="@(StartIcon is not null ? "" : null)" data-end="" data-disabled="@(EffectiveDisabled ? "" : null)" data-readonly="@(ReadOnly ? "" : null)">
+        @if (StartIcon is not null) { <span class="rax-input-slot" data-side="start" aria-hidden="true">@StartIcon</span> }
+        <div class="form-control rax-input rax-date-segments" data-variant="@Variant">
+            <span class="rax-date-run" dir="ltr">
                 @foreach (var type in DateOrder)
                 {
-                    if (type != DateOrder[0]) { <span class="sheen-date-literal" aria-hidden="true">@FormatCulture.DateTimeFormat.DateSeparator</span> }
+                    if (type != DateOrder[0]) { <span class="rax-date-literal" aria-hidden="true">@FormatCulture.DateTimeFormat.DateSeparator</span> }
                     @Segment(type)
                 }
             </span>
-            <span class="sheen-date-literal" aria-hidden="true"> · </span>
-            <span class="sheen-date-run" dir="ltr">
-                @Segment("hour")<span class="sheen-date-literal" aria-hidden="true">:</span>@Segment("minute")
-                @if (H12) { <span class="sheen-date-literal" aria-hidden="true"> </span>@Segment("period") }
+            <span class="rax-date-literal" aria-hidden="true"> · </span>
+            <span class="rax-date-run" dir="ltr">
+                @Segment("hour")<span class="rax-date-literal" aria-hidden="true">:</span>@Segment("minute")
+                @if (H12) { <span class="rax-date-literal" aria-hidden="true"> </span>@Segment("period") }
             </span>
         </div>
-        <div class="sheen-input-slot" data-side="end">
+        <div class="rax-input-slot" data-side="end">
             @if (CanClear && CurrentValue is not null && !ReadOnly)
             {
-                <button type="button" class="sheen-input-clear" aria-label="@Words.Clear" disabled="@EffectiveDisabled" @onclick="Clear">×</button>
+                <button type="button" class="rax-input-clear" aria-label="@Words.Clear" disabled="@EffectiveDisabled" @onclick="Clear">×</button>
             }
-            <button type="button" class="sheen-input-action" disabled="@(EffectiveDisabled || ReadOnly)" aria-label="@Words.PickDate" aria-expanded="@(Open ? "true" : "false")" aria-haspopup="dialog" aria-controls="@(ControlId + "-popup")" @onclick="Toggle">
-                <svg class="sheen-icon sheen-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2ZM16 2v4M8 2v4M3 10h18" /></svg>
+            <button type="button" class="rax-input-action" disabled="@(EffectiveDisabled || ReadOnly)" aria-label="@Words.PickDate" aria-expanded="@(Open ? "true" : "false")" aria-haspopup="dialog" aria-controls="@(ControlId + "-popup")" @onclick="Toggle">
+                <svg class="rax-icon rax-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2ZM16 2v4M8 2v4M3 10h18" /></svg>
             </button>
         </div>
     </div>
     <input type="hidden" name="@InputName" value="@(Complete && _draftValid ? Serialize(CurrentValue) : "")" disabled="@EffectiveDisabled" />
     @if (_anchorReady)
     {
-    <Popover Id="@(ControlId + "-popup")" Anchor="_root" Open="Open" OpenChanged="OpenChanged" Label="@Words.PickDate" Class="sheen-date-popover" Appearance="@Appearance">
+    <Popover Id="@(ControlId + "-popup")" Anchor="_root" Open="Open" OpenChanged="OpenChanged" Label="@Words.PickDate" Class="rax-date-popover" Appearance="@Appearance">
         @if (Open)
         {
-            <div class="sheen-date-popover-body" dir="@EffectiveDir">
+            <div class="rax-date-popover-body" dir="@EffectiveDir">
                 <Calendar Value="SelectedDate" ValueChanged="PickDate" Min="Min" Max="Max" IsDateDisabled="@(day => !CanSelect(day))" Culture="FormatCulture" Text="Words" Today="Today" Dir="@EffectiveDir" WeekStartsOn="WeekStartsOn" AutoFocus Appearance="@Appearance" />
                 <TimePicker TValue="TimeOnly?" Value="SelectedTime" ValueChanged="PickTime" Culture="FormatCulture" Text="TimeWords" HourCycle="HourCycle" MinuteStep="MinuteStep" Appearance="@Appearance" Now="NowTime" />
             </div>
-            <div class="sheen-date-popover-footer">
+            <div class="rax-date-popover-footer">
                 <Button Size="sm" Variant="ghost" OnClick="UseNow">@TimeWords.Now</Button>
                 <Button Size="sm" OnClick="Done">@TimeWords.Done</Button>
             </div>
@@ -87,11 +87,11 @@ else
         "year" => (1, 9999), "month" => (1, 12), "day" => (1, DateTime.DaysInMonth(_parts["year"] ?? 2000, _parts["month"] ?? 1)),
         "hour" => H12 ? (1, 12) : (0, 23), "minute" => (0, 59), _ => (0, 1)
     };
-    private RenderFragment Segment(string type) => @<span class="sheen-date-segment" role="spinbutton" tabindex="@(EffectiveDisabled ? -1 : 0)" data-segment="@type"
+    private RenderFragment Segment(string type) => @<span class="rax-date-segment" role="spinbutton" tabindex="@(EffectiveDisabled ? -1 : 0)" data-segment="@type"
         contenteditable="@(!EffectiveDisabled && !ReadOnly ? "true" : "false")" inputmode="@(type == "period" ? "text" : "numeric")" spellcheck="false" aria-label="@SegmentName(type)"
         aria-valuemin="@Limits(type).Min" aria-valuemax="@Limits(type).Max" aria-valuenow="@_parts[type]" aria-valuetext="@(type == "period" && _parts[type].HasValue ? PeriodText(_parts[type]!.Value) : null)"
         aria-disabled="@(EffectiveDisabled ? "true" : null)" aria-readonly="@(ReadOnly ? "true" : null)" data-placeholder="@(!_parts[type].HasValue ? "" : null)">
-        <span class="sheen-date-segment-value" data-tick="" @key="_parts[type]">@(_parts[type].HasValue ? type == "period" ? PeriodText(_parts[type]!.Value) : TimeWheel.Digits(_parts[type]!.Value, FormatCulture, type != "year") : type == "year" ? "yyyy" : type == "period" ? "–" : "––")</span>
+        <span class="rax-date-segment-value" data-tick="" @key="_parts[type]">@(_parts[type].HasValue ? type == "period" ? PeriodText(_parts[type]!.Value) : TimeWheel.Digits(_parts[type]!.Value, FormatCulture, type != "year") : type == "year" ? "yyyy" : type == "period" ? "–" : "––")</span>
     </span>;
     private string PeriodText(int value) => value == 0 ? FormatCulture.DateTimeFormat.AMDesignator : FormatCulture.DateTimeFormat.PMDesignator;
     private Dictionary<string, object> NativeAttributes

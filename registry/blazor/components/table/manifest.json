@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/table.css",
       "type": "css",
-      "sha256": "19ded7639d4a34eec1f603ea4894e53d0ea1b852778c4b92c15f936b70e32e15"
+      "sha256": "ea486c89044aa19d34182cec4fc45a32723c7d4e8a04df378bd91af41fa26ef9"
     }
   ],
   "files": [
@@ -19,56 +19,56 @@
       "destination": "components",
       "target": "Table/Table.razor",
       "type": "razor",
-      "sha256": "e7bcfa13d591ca52e7b36e75f12400c1fa8db68e02180207b4b7658d09f69be7"
+      "sha256": "adee11d1912e5aef5ab0d58c112a124ea70c999b0066235b1393c0f34b2dcfc3"
     },
     {
       "source": "TableBody.razor",
       "destination": "components",
       "target": "Table/TableBody.razor",
       "type": "razor",
-      "sha256": "610afb3ab399d25364e9cc1f95509ecc738f33f492f303bc33abd21f10f0c7ce"
+      "sha256": "0acec6494e18979816c055ef22d6c1c2143dfeabc7dcd3df1c003e77218ebfe0"
     },
     {
       "source": "TableCaption.razor",
       "destination": "components",
       "target": "Table/TableCaption.razor",
       "type": "razor",
-      "sha256": "22b2af3ca39c30bf9b36cebeb1618c0aa1a55c4165d114da6dcb92a30dcd409a"
+      "sha256": "f356c93ac24b663a59dbf500353584378c960211065735eaf4c2a09c14712528"
     },
     {
       "source": "TableCell.razor",
       "destination": "components",
       "target": "Table/TableCell.razor",
       "type": "razor",
-      "sha256": "b1b8a14a67ecce61569e89c0d3eccf35e31d285c6b059c8b4f054e99ee46add6"
+      "sha256": "0303f0e3074f31426763607e776d46c6958eac89a21be22ea72ac27867cabda6"
     },
     {
       "source": "TableFooter.razor",
       "destination": "components",
       "target": "Table/TableFooter.razor",
       "type": "razor",
-      "sha256": "67d13c634d421af8aef61b03148718aa788c6d3cfb17458bb289712b9be88ede"
+      "sha256": "7439de0d908f0ae2c28182188900163e0cbe015f2075e3dfe55309d69d6d7769"
     },
     {
       "source": "TableHead.razor",
       "destination": "components",
       "target": "Table/TableHead.razor",
       "type": "razor",
-      "sha256": "068b5b402c7db485b1f5192595e98428651346edfa175d284a366167a135c95d"
+      "sha256": "3b2b1fe70cabcc808815d9818d670c9f44de8e108abe8bee1059095fa6dce355"
     },
     {
       "source": "TableHeader.razor",
       "destination": "components",
       "target": "Table/TableHeader.razor",
       "type": "razor",
-      "sha256": "3c379b321d749593b7766eb8aa1e1105ad88217b1e372377cbef504cea27db89"
+      "sha256": "b6a6cdb358be2cb5364d8338740eb237c6824e50aa7dc4af4ada58a15474a927"
     },
     {
       "source": "TableRow.razor",
       "destination": "components",
       "target": "Table/TableRow.razor",
       "type": "razor",
-      "sha256": "88279bf89a55e0ccd24176a68093724b53de5351f15b6314c22f067e718cccb4"
+      "sha256": "b41efe3ddcdfbcad7fb34476d822f947deeebc767ae366f67e2ee234454a5a5d"
     }
   ]
 }

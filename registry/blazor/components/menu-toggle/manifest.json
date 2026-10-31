@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/menu-toggle.css",
       "type": "css",
-      "sha256": "caa1ea3d1cffaf24b4a394e3405d279cd9ff9f41b26c1c0845f91fa042be1b67"
+      "sha256": "437a3af287bda548ee045fa9dd998bdfa0778a48fca4c6254d55d23baa893426"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "MenuToggle/MenuToggle.razor",
       "type": "razor",
-      "sha256": "a05e39bf7518461ee4a5a44e04b227b8b0f580fca3ec49a34d850fca1e69e38c"
+      "sha256": "ad2b77da35ee73de6c31689584f89b4d8c03131851b648cf95a87376297c1c78"
     }
   ]
 }

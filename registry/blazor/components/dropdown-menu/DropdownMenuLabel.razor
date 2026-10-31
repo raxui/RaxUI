@@ -1,4 +1,4 @@
-@* SheenUI DropdownMenuLabel. Source-owned: edit freely. A heading for a group of items; not selectable. *@
+@* RaxUI DropdownMenuLabel. Source-owned: edit freely. A heading for a group of items; not selectable. *@
 
 <div @attributes="AdditionalAttributes" class="@CssClass">@ChildContent</div>
 
@@ -11,5 +11,5 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private string CssClass => string.IsNullOrEmpty(Class) ? "sheen-dropdown-label" : $"sheen-dropdown-label {Class}";
+    private string CssClass => string.IsNullOrEmpty(Class) ? "rax-dropdown-label" : $"rax-dropdown-label {Class}";
 }

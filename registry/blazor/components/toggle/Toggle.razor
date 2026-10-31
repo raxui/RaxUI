@@ -1,5 +1,5 @@
-@* SheenUI Toggle. Source-owned: edit freely. Requires an interactive render mode. *@
-<button @attributes="AdditionalAttributes" type="button" class="@($"sheen-toggle sheen-toggle-{Variant} sheen-toggle-{Size} {Class}")" data-sheen-appearance="@Appearance"
+@* RaxUI Toggle. Source-owned: edit freely. Requires an interactive render mode. *@
+<button @attributes="AdditionalAttributes" type="button" class="@($"rax-toggle rax-toggle-{Variant} rax-toggle-{Size} {Class}")" data-rax-appearance="@Appearance"
         disabled="@Disabled" aria-pressed="@(Current ? "true" : "false")" data-state="@(Current ? "on" : "off")" @onclick="TogglePressed">@ChildContent</button>
 @code {
     [Parameter] public bool Pressed { get; set; }

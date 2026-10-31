@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/context-menu.css",
       "type": "css",
-      "sha256": "705bf9e869cfbb80058900490ef082ca77ff186138c832a20ef5f178e54af7d0"
+      "sha256": "d2d50c5a21680dc43fd3ac3430543c4461c8abd380ea15c1e3d692ab4f4038d5"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "ContextMenu/ContextMenu.razor",
       "type": "razor",
-      "sha256": "7bab4ded52b1ade965fcc9d3c93a90bd82cf9ff37ca539aad4dabc1c745314b1"
+      "sha256": "c7a38a1b11aeb7e8ac12d1010da27510b6edab86de9aacfafe42c080e3881a49"
     },
     {
       "source": "ContextMenu.razor.js",

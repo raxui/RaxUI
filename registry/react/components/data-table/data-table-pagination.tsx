@@ -25,9 +25,9 @@ function DataTablePagination<TData>({
   const labelId = React.useId()
 
   return (
-    <div className="sheen-data-table-footer">
+    <div className="rax-data-table-footer">
       <div aria-live="polite">{selected > 0 ? labels.selectionSummary(selected, total) : labels.results(total)}</div>
-      <div className="sheen-table-pagination">
+      <div className="rax-table-pagination">
         <div className="d-flex align-items-center gap-2">
           <span id={labelId}>{labels.rowsPerPage}</span>
           <Select value={String(pageSize)} onValueChange={(value) => table.setPageSize(Number(value))}>

@@ -1,11 +1,11 @@
 import { act, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, it, vi } from "vitest"
-import { SheenThemeProvider } from "../../registry/react/foundation/theme"
+import { RaxThemeProvider } from "../../registry/react/foundation/theme"
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "../../registry/react/components/hover-card/hover-card"
 afterEach(() => vi.useRealTimers())
 it("opens on focus and hover with delays and keeps the card reachable", async () => {
   vi.useFakeTimers()
-  render(<SheenThemeProvider data-testid="theme"><HoverCard><HoverCardTrigger href="#profile">Profile</HoverCardTrigger><HoverCardContent><button>Follow</button></HoverCardContent></HoverCard></SheenThemeProvider>)
+  render(<RaxThemeProvider data-testid="theme"><HoverCard><HoverCardTrigger href="#profile">Profile</HoverCardTrigger><HoverCardContent><button>Follow</button></HoverCardContent></HoverCard></RaxThemeProvider>)
   const trigger = screen.getByRole("link")
   fireEvent.focus(trigger)
   await act(() => vi.advanceTimersByTimeAsync(450))

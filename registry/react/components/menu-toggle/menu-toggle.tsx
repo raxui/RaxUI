@@ -1,6 +1,6 @@
 "use client"
 
-// SheenUI menu-toggle. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI menu-toggle. Source-owned: edit freely. Ported from boot-ui.
 // Built-in icon paths from Lucide (ISC).
 import * as React from "react"
 
@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils"
 // -----------------------------------------------------------------------------
 
 export interface MenuToggleProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange"> {
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   openLabel?: string
   closeLabel?: string
   open?: boolean
@@ -63,12 +63,12 @@ const MenuToggle = React.forwardRef<HTMLButtonElement, MenuToggleProps>(
       <button
         ref={ref}
         type="button"
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         aria-expanded={open}
         aria-label={children ? ariaLabel : (ariaLabel ?? (open ? closeLabel : openLabel))}
         className={buttonVariants({
           variant,
-          className: cn("sheen-menu-toggle", !children && "btn-glass-icon", sizeClasses[size], className),
+          className: cn("rax-menu-toggle", !children && "btn-glass-icon", sizeClasses[size], className),
         })}
         data-icon={icon}
         {...props}
@@ -80,7 +80,7 @@ const MenuToggle = React.forwardRef<HTMLButtonElement, MenuToggleProps>(
           onOpenChange?.(!open)
         }}
       >
-        <span className="sheen-menu-toggle-bars" aria-hidden="true">
+        <span className="rax-menu-toggle-bars" aria-hidden="true">
           <span />
           <span />
           <span />

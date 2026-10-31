@@ -1,4 +1,4 @@
-@* SheenUI DropdownMenu. Source-owned: edit freely. A popover menu (ADR 013) styled by the shared theme, with
+@* RaxUI DropdownMenu. Source-owned: edit freely. A popover menu (ADR 013) styled by the shared theme, with
    the same classes and keyboard behavior as the React DropdownMenu. Needs an interactive render mode.
    Put DropdownMenuItem, DropdownMenuLabel, and DropdownMenuSeparator inside. *@
 @implements IAsyncDisposable
@@ -22,14 +22,14 @@
      role="menu"
      tabindex="-1"
      class="@CssClass"
-     data-sheen-appearance="@Appearance">
-    <span class="sheen-dropdown-highlight" aria-hidden="true"></span>
+     data-rax-appearance="@Appearance">
+    <span class="rax-dropdown-highlight" aria-hidden="true"></span>
     @ChildContent
 </div>
 
 @code {
     private bool disposed;
-    private readonly string _id = $"sheen-menu-{Guid.NewGuid():N}";
+    private readonly string _id = $"rax-menu-{Guid.NewGuid():N}";
     private ElementReference _trigger;
     private ElementReference _menu;
     private IJSObjectReference? _module;
@@ -46,7 +46,7 @@
 
     [Parameter] public bool Disabled { get; set; }
 
-    /// <summary>default, flat, or glass. When null, the menu inherits it from the nearest ancestor with data-sheen-appearance.</summary>
+    /// <summary>default, flat, or glass. When null, the menu inherits it from the nearest ancestor with data-rax-appearance.</summary>
     [Parameter] public string? Appearance { get; set; }
 
     /// <summary>Extra CSS classes for the menu.</summary>
@@ -57,7 +57,7 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private string CssClass => string.IsNullOrEmpty(Class) ? "sheen-dropdown-menu" : $"sheen-dropdown-menu {Class}";
+    private string CssClass => string.IsNullOrEmpty(Class) ? "rax-dropdown-menu" : $"rax-dropdown-menu {Class}";
 
     private string TriggerCssClass
     {
@@ -67,7 +67,7 @@
             var variant = TriggerVariant is "default" or "solid" || !TriggerVariant.All(c => char.IsAsciiLetter(c) || c == '-')
                 ? "primary"
                 : TriggerVariant;
-            return $"btn sheen-button btn-glass btn-glass-{variant} {TriggerClass}".TrimEnd();
+            return $"btn rax-button btn-glass btn-glass-{variant} {TriggerClass}".TrimEnd();
         }
     }
 

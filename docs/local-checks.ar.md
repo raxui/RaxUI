@@ -1,4 +1,4 @@
-# دليل أدوات الفحص المحلي — SheenUI
+# دليل أدوات الفحص المحلي — RaxUI
 
 العربية | [English](local-checks.md)
 
@@ -25,10 +25,10 @@ dotnet --list-runtimes
 pwsh --version
 ```
 
-انتقل إلى جذر المستودع الذي يحتوي `package.json` و`SheenUI.slnx`:
+انتقل إلى جذر المستودع الذي يحتوي `package.json` و`RaxUI.slnx`:
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
+cd C:\Users\saada\source\repos\RaxUI
 npm ci
 ```
 
@@ -118,7 +118,7 @@ $LASTEXITCODE
 | `Shared CSS is current` | أعد توليد CSS باستخدام `npm run theme:css`، ثم حدّث البصمات المتأثرة وراجع الفروق قبل إعادة الفحص. |
 | TypeScript أو اختبارات React | أصلح الخطأ الظاهر في الملفات المحددة، ثم أعد الفحص المناسب. |
 | بناء .NET | تحقق من SDK المطلوب، والاستعادة، وأخطاء C# أو Razor. |
-| تنسيق C# | شغّل `dotnet format SheenUI.slnx` وراجع تعديلاته، ثم أعد الفحص. |
+| تنسيق C# | شغّل `dotnet format RaxUI.slnx` وراجع تعديلاته، ثم أعد الفحص. |
 | `pwsh` غير موجود | ثبّت PowerShell 7 وأعد فتح الطرفية. |
 | تعذّر تنزيل Chromium أو اعتماديات تطبيق تجريبي | تحقق من الاتصال بالشبكة والوكيل وصلاحيات الكاش؛ لا تعتبر ذلك نجاحاً للاختبارات. |
 | `Diff whitespace` | راجع نتيجة `git diff --check` وأصلح المسافات أو الأسطر التي يحددها. |
@@ -142,9 +142,9 @@ node src/react-cli/scripts/update-hashes.mjs
 ```powershell
 npm run typecheck
 npm test
-dotnet build SheenUI.slnx -c Release
-dotnet format SheenUI.slnx --verify-no-changes --no-restore
-dotnet test SheenUI.slnx -c Release --no-build
+dotnet build RaxUI.slnx -c Release
+dotnet format RaxUI.slnx --verify-no-changes --no-restore
+dotnet test RaxUI.slnx -c Release --no-build
 npm run test:acceptance
 npm run test:acceptance:next
 ```

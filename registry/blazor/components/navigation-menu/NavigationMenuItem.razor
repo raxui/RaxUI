@@ -5,6 +5,6 @@
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
     [CascadingParameter] public NavigationMenu? Root { get; set; }
     [Parameter] public string? Value { get; set; }
-    internal string Id { get; } = "sheen-nav-" + Guid.NewGuid().ToString("N");
+    internal string Id { get; } = "rax-nav-" + Guid.NewGuid().ToString("N");
     internal string Key => Value ?? Id;
 }

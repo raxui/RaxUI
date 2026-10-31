@@ -1,10 +1,10 @@
 @* Built-in SVG paths from Lucide (ISC), matching the React source. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<form @ref="element" @attributes="AdditionalAttributes" class="sheen-chat-composer @Class" data-disabled="@(Disabled ? "" : null)">
-@if (Actions is not null) { <div class="sheen-chat-composer-actions">@Actions</div> }
-<textarea class="sheen-chat-field" rows="1" dir="auto" style="@($"--sheen-chat-rows:{Math.Clamp(MaxRows, 1, 100)}")" aria-label="@(Label ?? Placeholder)" placeholder="@Placeholder" disabled="@(!ready || Disabled)">@Current</textarea>
-<Button Type="submit" Size="icon-sm" Class="sheen-chat-send" Disabled="@(!ready || Disabled || string.IsNullOrWhiteSpace(Current))" aria-label="@SendLabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg></Button>
+<form @ref="element" @attributes="AdditionalAttributes" class="rax-chat-composer @Class" data-disabled="@(Disabled ? "" : null)">
+@if (Actions is not null) { <div class="rax-chat-composer-actions">@Actions</div> }
+<textarea class="rax-chat-field" rows="1" dir="auto" style="@($"--rax-chat-rows:{Math.Clamp(MaxRows, 1, 100)}")" aria-label="@(Label ?? Placeholder)" placeholder="@Placeholder" disabled="@(!ready || Disabled)">@Current</textarea>
+<Button Type="submit" Size="icon-sm" Class="rax-chat-send" Disabled="@(!ready || Disabled || string.IsNullOrWhiteSpace(Current))" aria-label="@SendLabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg></Button>
 </form>
 @code {
     [Parameter] public string? Value { get; set; }

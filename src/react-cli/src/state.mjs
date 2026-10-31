@@ -1,11 +1,11 @@
-// sheenui.react.json and sheenui.react.lock.json, with the version rules of the .NET CLI (ADR 004, ADR 006).
+// raxui.react.json and raxui.react.lock.json, with the version rules of the .NET CLI (ADR 004, ADR 006).
 import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
 
 import { assertInsideProject } from "./safety.mjs"
 
-export const CONFIG_FILE = "sheenui.react.json"
-export const LOCK_FILE = "sheenui.react.lock.json"
+export const CONFIG_FILE = "raxui.react.json"
+export const LOCK_FILE = "raxui.react.lock.json"
 export const STATE_SCHEMA_VERSION = 1
 
 /** Semantic Version 2.0 precedence: build metadata ignored, prerelease below release. */
@@ -33,7 +33,7 @@ function parseVersion(version) {
 /** Accepts files written by this or an older CLI; rejects a newer one. */
 export function ensureSupported(recorded, current, file) {
   if (compareVersions(recorded, current) > 0)
-    throw new Error(`'${file}' was written by sheenui-react ${recorded}, which is newer than this CLI (${current}). Install sheenui-react ${recorded} or later.`)
+    throw new Error(`'${file}' was written by raxui-react ${recorded}, which is newer than this CLI (${current}). Install raxui-react ${recorded} or later.`)
 }
 
 function readJson(projectDir, file) {

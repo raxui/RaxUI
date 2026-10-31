@@ -1,28 +1,29 @@
 @import "input-mixins";
 // -----------------------------------------------------------------------------
 // TextEditor — Input / Textarea surface around a Tiptap editor: a sticky
-// toolbar, the editable `.sheen-prose` area, an optional footer (tools, counter,
+// toolbar, the editable `.rax-prose` area, an optional footer (tools, counter,
 // send button) and a glass bubble menu over selections.
-// `.sheen-prose` is also usable on its own to display saved HTML.
+// `.rax-prose` is also usable on its own to display saved HTML.
 // Requires _input.scss (surface mixin) and _textarea.scss (counter ring).
 // -----------------------------------------------------------------------------
 
-.sheen-editor {
-  @include sheen-input-surface("&:focus-within");
+.rax-editor {
+  @include rax-input-surface("&:focus-within");
 
-  --sheen-editor-min-h: 140px;
-  --sheen-editor-max-h: none;
-  --sheen-editor-pad-x: 1rem;
+  --rax-editor-min-h: 140px;
+  --rax-editor-max-h: none;
+  --rax-editor-pad-x: 1rem;
 
   position: relative;
   display: flex;
   flex-direction: column;
+  min-width: 0; // shrink in grid and flex parents; the toolbar scrolls instead
   min-height: 0;
   padding: 0;
 
   &[data-invalid] {
-    --sheen-input-border: rgba(var(--bs-danger-rgb), 0.6);
-    --sheen-input-ring-rgb: var(--bs-danger-rgb);
+    --rax-input-border: rgba(var(--bs-danger-rgb), 0.6);
+    --rax-input-ring-rgb: var(--bs-danger-rgb);
   }
 
   &[data-disabled] {
@@ -30,7 +31,7 @@
   }
 
   &[data-readonly] {
-    --sheen-input-bg: transparent;
+    --rax-input-bg: transparent;
 
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
@@ -40,7 +41,7 @@
 
 // ---- Toolbar ---------------------------------------------------------------------------
 
-.sheen-editor-toolbar {
+.rax-editor-toolbar {
   position: sticky;
   top: 0;
   z-index: 1;
@@ -51,7 +52,7 @@
   flex-wrap: wrap;
   padding: 0.375rem;
   border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
-  border-radius: calc(var(--sheen-input-radius) - 1px) calc(var(--sheen-input-radius) - 1px) 0 0;
+  border-radius: calc(var(--rax-input-radius) - 1px) calc(var(--rax-input-radius) - 1px) 0 0;
   background-color: rgba(var(--bs-body-bg-rgb), 0.72);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   backdrop-filter: blur(16px) saturate(180%);
@@ -66,19 +67,19 @@
     }
   }
 
-  .sheen-editor[data-variant="filled"] & {
+  .rax-editor[data-variant="filled"] & {
     background-color: transparent;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
 
-  .sheen-editor[data-readonly] & {
+  .rax-editor[data-readonly] & {
     display: none;
   }
 }
 
 // Toolbar in the footer (composer): no bar of its own.
-.sheen-editor-toolbar-inline {
+.rax-editor-toolbar-inline {
   position: static;
   flex-wrap: nowrap;
   padding: 0;
@@ -89,18 +90,18 @@
   backdrop-filter: none;
 }
 
-.sheen-editor-tool {
-  --sheen-editor-tool-size: 2rem;
+.rax-editor-tool {
+  --rax-editor-tool-size: 2rem;
 
   flex-shrink: 0;
   color: var(--bs-secondary-color);
 
   &.btn-glass-icon {
-    width: var(--sheen-editor-tool-size);
-    height: var(--sheen-editor-tool-size);
+    width: var(--rax-editor-tool-size);
+    height: var(--rax-editor-tool-size);
     min-height: 0;
     padding: 0;
-    border-radius: calc(0.5rem * var(--sheen-radius-scale));
+    border-radius: calc(0.5rem * var(--rax-radius-scale));
   }
 
   svg {
@@ -134,9 +135,9 @@
 
   @include motion-safe {
     transition:
-      color var(--sheen-duration-fast) ease,
-      background-color var(--sheen-duration-fast) ease,
-      transform var(--sheen-duration) var(--sheen-ease-spring);
+      color var(--rax-duration-fast) ease,
+      background-color var(--rax-duration-fast) ease,
+      transform var(--rax-duration) var(--rax-ease-spring);
 
     &:active:not([aria-disabled="true"]) {
       transform: scale(0.88);
@@ -145,8 +146,8 @@
 }
 
 // Text-style and alignment pickers: label / icon + chevron.
-.sheen-editor-heading-trigger,
-.sheen-editor-align-trigger {
+.rax-editor-heading-trigger,
+.rax-editor-align-trigger {
   &.btn-sm {
     display: inline-flex;
     align-items: center;
@@ -154,7 +155,7 @@
     height: 2rem;
     min-height: 0;
     padding: 0 0.375rem 0 0.5rem;
-    border-radius: calc(0.5rem * var(--sheen-radius-scale));
+    border-radius: calc(0.5rem * var(--rax-radius-scale));
     font-size: 0.875rem;
     font-weight: 500;
   }
@@ -171,17 +172,17 @@
   }
 }
 
-.sheen-editor-heading-trigger {
+.rax-editor-heading-trigger {
   width: 7.75rem;
   justify-content: space-between;
 }
 
-.sheen-editor-align-trigger > svg:first-child {
+.rax-editor-align-trigger > svg:first-child {
   width: 1.0625rem;
   height: 1.0625rem;
 }
 
-.sheen-editor-sep {
+.rax-editor-sep {
   flex-shrink: 0;
   width: 1px;
   height: 1.25rem;
@@ -189,21 +190,21 @@
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.12);
 }
 
-[dir="rtl"] .sheen-editor-flip,
-.sheen-editor-flip:dir(rtl) {
+[dir="rtl"] .rax-editor-flip,
+.rax-editor-flip:dir(rtl) {
   transform: scaleX(-1);
 }
 
 // Menus: items preview the style they apply.
-.sheen-editor-menu {
+.rax-editor-menu {
   min-width: 13rem;
 
-  .sheen-menu-item {
+  .rax-menu-item {
     gap: 0.5rem;
   }
 }
 
-.sheen-editor-menu-icon {
+.rax-editor-menu-icon {
   display: inline-flex;
   color: var(--bs-secondary-color);
 
@@ -213,7 +214,7 @@
   }
 }
 
-.sheen-editor-menu-kbd {
+.rax-editor-menu-kbd {
   margin-inline-start: auto;
   padding-inline-start: 1rem;
   color: var(--bs-secondary-color);
@@ -222,35 +223,35 @@
   letter-spacing: 0.04em;
 }
 
-.sheen-editor-menu-h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
-.sheen-editor-menu-h2 { font-size: 1.0625rem; font-weight: 650; }
-.sheen-editor-menu-h3 { font-size: 0.9375rem; font-weight: 600; }
+.rax-editor-menu-h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
+.rax-editor-menu-h2 { font-size: 1.0625rem; font-weight: 650; }
+.rax-editor-menu-h3 { font-size: 0.9375rem; font-weight: 600; }
 
 // ---- Editable area -----------------------------------------------------------------
 
-.sheen-editor-scroll {
+.rax-editor-scroll {
   flex: 1;
-  min-height: var(--sheen-editor-min-h);
-  max-height: var(--sheen-editor-max-h);
+  min-height: var(--rax-editor-min-h);
+  max-height: var(--rax-editor-max-h);
   overflow-y: auto;
   cursor: text;
   scrollbar-width: thin;
 
-  .sheen-editor[data-readonly] & {
+  .rax-editor[data-readonly] & {
     min-height: 0;
     cursor: default;
   }
 }
 
-.sheen-editor-content {
-  min-height: var(--sheen-editor-min-h);
-  padding: 0.875rem var(--sheen-editor-pad-x);
+.rax-editor-content {
+  min-height: var(--rax-editor-min-h);
+  padding: 0.875rem var(--rax-editor-pad-x);
   outline: 0;
   white-space: pre-wrap;
   word-wrap: break-word;
   caret-color: var(--bs-primary);
 
-  .sheen-editor[data-readonly] & {
+  .rax-editor[data-readonly] & {
     min-height: 0;
   }
 
@@ -272,7 +273,7 @@
   .ProseMirror-selectednode {
     outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
     outline-offset: 2px;
-    border-radius: calc(0.25rem * var(--sheen-radius-scale));
+    border-radius: calc(0.25rem * var(--rax-radius-scale));
   }
 
   // Gap cursor (between blocks that can't hold a caret).
@@ -288,7 +289,7 @@
       display: block;
       width: 20px;
       border-top: 1px solid var(--bs-emphasis-color);
-      animation: sheen-editor-blink 1.1s steps(2, start) infinite;
+      animation: rax-editor-blink 1.1s steps(2, start) infinite;
     }
   }
 
@@ -297,7 +298,7 @@
   }
 }
 
-@keyframes sheen-editor-blink {
+@keyframes rax-editor-blink {
   to {
     visibility: hidden;
   }
@@ -305,7 +306,7 @@
 
 // ---- Footer -------------------------------------------------------------------------
 
-.sheen-editor-footer {
+.rax-editor-footer {
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -314,7 +315,7 @@
   padding: 0.25rem 0.375rem 0.375rem;
 }
 
-.sheen-editor-footer-start {
+.rax-editor-footer-start {
   display: flex;
   flex: 1;
   align-items: center;
@@ -325,39 +326,39 @@
 
 // ---- Bubble menu --------------------------------------------------------------------
 
-.sheen-editor-bubble {
-  @include glass($alpha: calc(var(--sheen-glass-alpha) + 0.3), $shadow: var(--sheen-shadow-lg));
+.rax-editor-bubble {
+  @include glass($alpha: calc(var(--rax-glass-alpha) + 0.3), $shadow: var(--rax-shadow-lg));
 
   z-index: 1060;
   padding: 0.25rem;
-  border-radius: calc(0.875rem * var(--sheen-radius-scale));
+  border-radius: calc(0.875rem * var(--rax-radius-scale));
   transform-origin: bottom center;
 
   @include motion-safe {
-    animation: sheen-editor-bubble-in 280ms var(--sheen-ease-spring);
+    animation: rax-editor-bubble-in 280ms var(--rax-ease-spring);
   }
 
   &[data-mode="link"] {
     width: min(22rem, calc(100vw - 1rem)) !important; // the plugin sets max-content
   }
 
-  .sheen-editor-tool {
-    --sheen-editor-tool-size: 1.875rem;
+  .rax-editor-tool {
+    --rax-editor-tool-size: 1.875rem;
   }
 
-  .sheen-editor-sep {
+  .rax-editor-sep {
     height: 1.125rem;
     margin-inline: 0.1875rem;
   }
 }
 
-.sheen-editor-bubble-tools {
+.rax-editor-bubble-tools {
   display: flex;
   align-items: center;
   gap: 0.0625rem;
 }
 
-@keyframes sheen-editor-bubble-in {
+@keyframes rax-editor-bubble-in {
   from {
     opacity: 0;
     transform: translateY(4px) scale(0.92);
@@ -366,17 +367,17 @@
 
 // ---- Link form (bubble + toolbar popover) --------------------------------------------
 
-.sheen-editor-link-popover.sheen-popover-content {
+.rax-editor-link-popover.rax-popover-content {
   width: 22rem;
   padding: 0.375rem;
 }
 
-.sheen-editor-link-form {
+.rax-editor-link-form {
   display: flex;
   align-items: center;
   gap: 0.25rem;
 
-  .sheen-input-group,
+  .rax-input-group,
   .form-control {
     min-width: 0;
   }
@@ -389,7 +390,7 @@
 
 // ---- Prose: shared typography for the editor and for displaying saved HTML ------------
 
-.sheen-prose {
+.rax-prose {
   color: var(--bs-emphasis-color);
   font-size: 1rem;
   line-height: 1.6;
@@ -446,7 +447,7 @@
 
   code {
     padding: 0.125em 0.375em;
-    border-radius: calc(0.375rem * var(--sheen-radius-scale));
+    border-radius: calc(0.375rem * var(--rax-radius-scale));
     color: var(--bs-emphasis-color);
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
     font-size: 0.875em;
@@ -456,7 +457,7 @@
     margin: 0.75em 0;
     padding: 0.875rem 1rem;
     overflow-x: auto;
-    border-radius: calc(0.75rem * var(--sheen-radius-scale));
+    border-radius: calc(0.75rem * var(--rax-radius-scale));
     color: var(--bs-emphasis-color);
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.055);
     font-size: 0.875rem;
@@ -577,9 +578,9 @@
 
       @include motion-safe {
         transition:
-          background-color var(--sheen-duration-fast) ease,
-          border-color var(--sheen-duration-fast) ease,
-          transform var(--sheen-duration) var(--sheen-ease-spring);
+          background-color var(--rax-duration-fast) ease,
+          border-color var(--rax-duration-fast) ease,
+          transform var(--rax-duration) var(--rax-ease-spring);
 
         &:active {
           transform: scale(0.85);

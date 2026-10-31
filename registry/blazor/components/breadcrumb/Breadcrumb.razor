@@ -1,21 +1,21 @@
-@* SheenUI Breadcrumb. Source-owned: edit freely. Native collapsed details preserve links without JavaScript. *@
-<nav @attributes="AdditionalAttributes" aria-label="@Label" class="@($"sheen-breadcrumb {Class}")" data-variant="@Variant" data-sheen-appearance="@Appearance">
-    <ol class="sheen-breadcrumb-list">
+@* RaxUI Breadcrumb. Source-owned: edit freely. Native collapsed details preserve links without JavaScript. *@
+<nav @attributes="AdditionalAttributes" aria-label="@Label" class="@($"rax-breadcrumb {Class}")" data-variant="@Variant" data-rax-appearance="@Appearance">
+    <ol class="rax-breadcrumb-list">
         @for (var i = 0; i < Items.Count; i++)
         {
-            @if (i > 0) { <li class="sheen-breadcrumb-separator" role="presentation" aria-hidden="true">@Separator</li> }
+            @if (i > 0) { <li class="rax-breadcrumb-separator" role="presentation" aria-hidden="true">@Separator</li> }
             @if (MaxItems >= 2 && Items.Count > MaxItems && i == 1)
             {
-                <li class="sheen-breadcrumb-item"><details class="sheen-breadcrumb-collapse"><summary class="sheen-breadcrumb-link" aria-label="@CollapsedLabel">&hellip;</summary><ul>
-                    @for (; i < Items.Count - 1; i++) { <li><a class="sheen-breadcrumb-link" href="@Items[i].Href">@Items[i].Label</a></li> }
+                <li class="rax-breadcrumb-item"><details class="rax-breadcrumb-collapse"><summary class="rax-breadcrumb-link" aria-label="@CollapsedLabel">&hellip;</summary><ul>
+                    @for (; i < Items.Count - 1; i++) { <li><a class="rax-breadcrumb-link" href="@Items[i].Href">@Items[i].Label</a></li> }
                 </ul></details></li>
                 i--;
             }
             else
             {
-                <li class="sheen-breadcrumb-item">
-                    @if (i == Items.Count - 1) { <span class="sheen-breadcrumb-page" aria-current="page">@Items[i].Label</span> }
-                    else { <a class="sheen-breadcrumb-link" href="@Items[i].Href">@Items[i].Label</a> }
+                <li class="rax-breadcrumb-item">
+                    @if (i == Items.Count - 1) { <span class="rax-breadcrumb-page" aria-current="page">@Items[i].Label</span> }
+                    else { <a class="rax-breadcrumb-link" href="@Items[i].Href">@Items[i].Label</a> }
                 </li>
             }
         }

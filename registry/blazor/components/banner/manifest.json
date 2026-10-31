@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/banner.css",
       "type": "css",
-      "sha256": "a97fec7d8931af375adbb516935bb05bc54319eb820029b317adb8ac77e3a347"
+      "sha256": "06442bfec72ec4ea1743df175f68c720bfc451b599eace1b23cea1648d2ffc1f"
     }
   ],
   "files": [
@@ -21,21 +21,21 @@
       "destination": "components",
       "target": "Banner/Banner.razor",
       "type": "razor",
-      "sha256": "76937f38d6ca1be834d1258a6a604cb1d1bdfc5498d16963bc5af0b0da3ddd45"
+      "sha256": "5a5e56f1968e0949c38178aa02f4584dd0d9ee944c728dfc6e6e6283c23d9c40"
     },
     {
       "source": "Banner.razor.js",
       "destination": "components",
       "target": "Banner/Banner.razor.js",
       "type": "js",
-      "sha256": "f7f9fc0e6d23ab52fa9cabebde477faafb2f715fbd2a5f27b8b4b42b3322349a"
+      "sha256": "994c4c29a32236b3e85e3d92bd1d1f39d3c1f96d1f18c1647c955247101e2017"
     },
     {
       "source": "BannerGroup.razor",
       "destination": "components",
       "target": "Banner/BannerGroup.razor",
       "type": "razor",
-      "sha256": "994150502da61dfc5ae8ed8bd1e14c1df18cee144c38ed05d0aee20ea22cf018"
+      "sha256": "500acaecddd19261b2022c55f3ad2b980b8d067e7110b75700a2995a90705351"
     }
   ]
 }

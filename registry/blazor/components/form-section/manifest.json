@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/form-section.css",
       "type": "css",
-      "sha256": "13b542bf63038f1e715da6573630db604b6b8e9f7d779edf02ea2d63a1ba741a"
+      "sha256": "0f522cb5d5186bbbfec1d143aebf34af018dd46620789cfe68217176ef3929ba"
     }
   ],
   "files": [
@@ -21,21 +21,21 @@
       "destination": "components",
       "target": "FormSection/FormRow.razor",
       "type": "razor",
-      "sha256": "9c257881881a7e04d9182529f4864dd30f4fd3c1c2bcb10d1536057657a8e3cf"
+      "sha256": "c433730a45b5f294478fe5556821216072213d045855f5e4b31fe322eda82a64"
     },
     {
       "source": "FormRowLink.razor",
       "destination": "components",
       "target": "FormSection/FormRowLink.razor",
       "type": "razor",
-      "sha256": "bef8e23738e54d01fbdcdedb95b3f52ea02840c8dbd5e6ab9961bfb3ef2d7e51"
+      "sha256": "0fbc81e0c981cfb09db525b0cb3c9cb161bf09a383e71350ece868e5824fc55e"
     },
     {
       "source": "FormSection.razor",
       "destination": "components",
       "target": "FormSection/FormSection.razor",
       "type": "razor",
-      "sha256": "62e7c6f39af92e3c9a2b0ce6b204559cfc02e2d8983aaa54718c14e34e7ecc61"
+      "sha256": "f282f5da3357a0a98c4780881c46af2905d11684e67182cfd696bb3373de522e"
     }
   ]
 }

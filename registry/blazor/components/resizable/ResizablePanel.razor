@@ -1,6 +1,6 @@
-<div id="@(Id??generated)" class="@($"sheen-resizable-panel {Class}")" style="@($"flex:{DefaultSize};min-width:0;min-height:0;{Style}")" data-resizable-panel data-explicit-id="@(Id is not null?"":null)" data-default="@DefaultSize" data-min="@MinSize" data-max="@MaxSize" data-collapsible="@(Collapsible?"":null)" data-collapsed="@CollapsedSize">@ChildContent</div>
+<div id="@(Id??generated)" class="@($"rax-resizable-panel {Class}")" style="@($"flex:{DefaultSize};min-width:0;min-height:0;{Style}")" data-resizable-panel data-explicit-id="@(Id is not null?"":null)" data-default="@DefaultSize" data-min="@MinSize" data-max="@MaxSize" data-collapsible="@(Collapsible?"":null)" data-collapsed="@CollapsedSize">@ChildContent</div>
 @code {
-    private readonly string generated=$"sheen-panel-{Guid.NewGuid():N}";
+    private readonly string generated=$"rax-panel-{Guid.NewGuid():N}";
     [Parameter] public string? Id { get; set; }
     [Parameter] public string DefaultSize { get; set; } = "50%";
     [Parameter] public string MinSize { get; set; } = "0%";

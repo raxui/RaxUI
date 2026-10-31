@@ -1,6 +1,6 @@
-@* SheenUI ToggleGroup. Source-owned: edit freely. Value is a list in both single and multiple modes. *@
+@* RaxUI ToggleGroup. Source-owned: edit freely. Value is a list in both single and multiple modes. *@
 <CascadingValue Value="this">
-    <div @attributes="AdditionalAttributes" role="group" aria-label="@Label" class="@($"sheen-toggle-group {Class}")" data-variant="@Variant" data-size="@Size" data-sheen-appearance="@Appearance">@ChildContent</div>
+    <div @attributes="AdditionalAttributes" role="group" aria-label="@Label" class="@($"rax-toggle-group {Class}")" data-variant="@Variant" data-size="@Size" data-rax-appearance="@Appearance">@ChildContent</div>
 </CascadingValue>
 @code {
     [Parameter] public IReadOnlyList<string> Value { get; set; } = Array.Empty<string>();

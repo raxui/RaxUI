@@ -1,14 +1,14 @@
-// SheenUI starter app shell and welcome page, installed by `sheenui-react init` (ADR 008).
+// RaxUI starter app shell and welcome page, installed by `raxui-react init` (ADR 008).
 // Source-owned: replace it with your own app.
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { SheenThemeProvider, type SheenAppearance } from "@/lib/theme"
+import { RaxThemeProvider, type RaxAppearance } from "@/lib/theme"
 
 type Accent = "emerald" | "indigo" | "amber" | undefined
 
 export default function App() {
-  const [appearance, setAppearance] = useState<SheenAppearance>("default")
+  const [appearance, setAppearance] = useState<RaxAppearance>("default")
   const [mode, setMode] = useState<"light" | "dark">("light")
   const [accent, setAccent] = useState<Accent>(undefined)
   const [direction, setDirection] = useState<"ltr" | "rtl">("ltr")
@@ -21,39 +21,39 @@ export default function App() {
   ] as const
 
   return (
-    <SheenThemeProvider className="sheen-app" appearance={appearance} mode={mode} direction={direction} data-sheen-accent={accent}>
-      <header className="sheen-app-header">
-        <a className="sheen-app-brand" href="/">
-          SheenUI
+    <RaxThemeProvider className="rax-app" appearance={appearance} mode={mode} direction={direction} data-rax-accent={accent}>
+      <header className="rax-app-header">
+        <a className="rax-app-brand" href="/">
+          RaxUI
         </a>
-        <span className="sheen-app-header-end">Theme playground</span>
+        <span className="rax-app-header-end">Theme playground</span>
       </header>
 
-      <main className="sheen-app-main">
-        <div className="sheen-welcome">
-          <section className="sheen-welcome-intro">
-            <h1>Welcome to your SheenUI app</h1>
-            <p className="sheen-welcome-lead">
+      <main className="rax-app-main">
+        <div className="rax-welcome">
+          <section className="rax-welcome-intro">
+            <h1>Welcome to your RaxUI app</h1>
+            <p className="rax-welcome-lead">
               Your components live in <code>src/components/ui</code> and are yours to edit. Try the theme below: every
-              SheenUI component follows it.
+              RaxUI component follows it.
             </p>
           </section>
 
-          <section className="sheen-panel sheen-theme-panel" aria-labelledby="theme-heading">
+          <section className="rax-panel rax-theme-panel" aria-labelledby="theme-heading">
             <h2 id="theme-heading">Theme</h2>
             {rows.map((row) => (
-              <div className="sheen-theme-row" key={row.label}>
-                <span className="sheen-theme-label">{row.label}</span>
-                <div className="sheen-theme-options" role="group" aria-label={row.label}>
+              <div className="rax-theme-row" key={row.label}>
+                <span className="rax-theme-label">{row.label}</span>
+                <div className="rax-theme-options" role="group" aria-label={row.label}>
                   {row.options.map(([text, value]) => {
                     const selected = row.value === value
                     return row.label === "Accent" ? (
                       <button
                         key={text}
                         type="button"
-                        className="sheen-accent-swatch"
-                        data-sheen-accent={value}
-                        data-sheen-swatch={value ?? "blue"}
+                        className="rax-accent-swatch"
+                        data-rax-accent={value}
+                        data-rax-swatch={value ?? "blue"}
                         aria-label={text}
                         title={text}
                         aria-pressed={selected}
@@ -76,10 +76,10 @@ export default function App() {
             ))}
           </section>
 
-          <section className="sheen-panel sheen-preview-panel" aria-labelledby="preview-heading">
+          <section className="rax-panel rax-preview-panel" aria-labelledby="preview-heading">
             <h2 id="preview-heading">Preview</h2>
-            <p className="sheen-preview-description">One component, six variants. Use the theme controls to compare their appearance.</p>
-            <div className="sheen-preview-row">
+            <p className="rax-preview-description">One component, six variants. Use the theme controls to compare their appearance.</p>
+            <div className="rax-preview-row">
               <Button>Primary</Button>
               <Button variant="secondary">Secondary</Button>
               <Button variant="tinted">Tinted</Button>
@@ -87,14 +87,14 @@ export default function App() {
               <Button variant="ghost">Ghost</Button>
               <Button variant="destructive">Destructive</Button>
             </div>
-            <p className="sheen-preview-hint">Use Tab to explore keyboard focus.</p>
+            <p className="rax-preview-hint">Use Tab to explore keyboard focus.</p>
           </section>
 
-          <section className="sheen-next-steps" aria-labelledby="next-heading">
+          <section className="rax-next-steps" aria-labelledby="next-heading">
             <h2 id="next-heading">Next steps</h2>
             <p>Button is already installed. Add more components, then use them in your pages:</p>
             <pre>
-              <code>npx sheenui-react add &lt;component&gt;</code>
+              <code>npx raxui-react add &lt;component&gt;</code>
             </pre>
             <p className="mt-3 mb-0">
               Edit this page in <code>src/App.tsx</code>. The theme provider and its options live in{" "}
@@ -103,6 +103,6 @@ export default function App() {
           </section>
         </div>
       </main>
-    </SheenThemeProvider>
+    </RaxThemeProvider>
   )
 }

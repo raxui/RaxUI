@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/drawer.css",
       "type": "css",
-      "sha256": "013b931300d57d95f56869cb9144c34ba553dd852635517ca406563d26f27265"
+      "sha256": "72ecd3485e831220d0f0d3bd90d013f1b2554e006e0aba86f86fb1c4c841d19b"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Drawer/Drawer.razor",
       "type": "razor",
-      "sha256": "a4fecf5333c71a893eee66d61dc488f9300456099aa7e7671f1cf04fe04a747a"
+      "sha256": "d9cd415b4b31e661ca7893217cc072472b9650b2be15e86cb606831470287a6a"
     },
     {
       "source": "Drawer.razor.js",

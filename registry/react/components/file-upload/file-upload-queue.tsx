@@ -257,9 +257,9 @@ function FileItem({ file, entry, layout, leaving, labels, locale, disabled, onRe
 
   const thumb =
     preview && !broken ? (
-      <img src={preview} alt="" className="sheen-queue-upload-thumb-img" onError={() => setBroken(true)} />
+      <img src={preview} alt="" className="rax-queue-upload-thumb-img" onError={() => setBroken(true)} />
     ) : (
-      <span className="sheen-queue-upload-kind-icon">{KIND_ICONS[kind]}</span>
+      <span className="rax-queue-upload-kind-icon">{KIND_ICONS[kind]}</span>
     )
 
   const actions = (
@@ -269,7 +269,7 @@ function FileItem({ file, entry, layout, leaving, labels, locale, disabled, onRe
           type="button"
           variant="ghost"
           size="icon-sm"
-          className="sheen-queue-upload-action"
+          className="rax-queue-upload-action"
           aria-label={`${labels.retry}: ${file.name}`}
           onClick={onRetry}
           disabled={disabled}
@@ -281,7 +281,7 @@ function FileItem({ file, entry, layout, leaving, labels, locale, disabled, onRe
         type="button"
         variant="ghost"
         size="icon-sm"
-        className="sheen-queue-upload-action"
+        className="rax-queue-upload-action"
         aria-label={`${busy ? labels.cancel : labels.remove}: ${file.name}`}
         onClick={onRemove}
         disabled={disabled}
@@ -293,7 +293,7 @@ function FileItem({ file, entry, layout, leaving, labels, locale, disabled, onRe
 
   return (
     <li
-      className="sheen-queue-upload-item"
+      className="rax-queue-upload-item"
       data-status={status}
       data-kind={kind}
       data-state={leaving ? "closed" : "open"}
@@ -304,28 +304,28 @@ function FileItem({ file, entry, layout, leaving, labels, locale, disabled, onRe
       }}
     >
       {/* inner clips while the item collapses away; the card carries the spacing */}
-      <div className="sheen-queue-upload-item-inner">
-        <div className="sheen-queue-upload-card">
+      <div className="rax-queue-upload-item-inner">
+        <div className="rax-queue-upload-card">
           {layout === "grid" ? (
             <>
-              <div className="sheen-queue-upload-tile">
+              <div className="rax-queue-upload-tile">
                 {thumb}
                 {status === "uploading" && (
-                  <span className="sheen-queue-upload-tile-overlay">
+                  <span className="rax-queue-upload-tile-overlay">
                     <ProgressCircle value={entry!.progress} size={44} thickness={4} aria-label={`${file.name}: ${meta}`} />
                   </span>
                 )}
-                {status === "queued" && <span className="sheen-queue-upload-tile-overlay" aria-hidden="true" />}
+                {status === "queued" && <span className="rax-queue-upload-tile-overlay" aria-hidden="true" />}
                 {status === "error" && (
-                  <span className="sheen-queue-upload-tile-overlay sheen-queue-upload-tile-error">
+                  <span className="rax-queue-upload-tile-overlay rax-queue-upload-tile-error">
                     <Button type="button" size="sm" variant="secondary" onClick={onRetry} disabled={disabled}>
                       {ICONS.retry}
                       {labels.retry}
                     </Button>
                   </span>
                 )}
-                {status === "success" && <span className="sheen-queue-upload-tile-badge">{ICONS.check}</span>}
-                <span className="sheen-queue-upload-tile-remove">
+                {status === "success" && <span className="rax-queue-upload-tile-badge">{ICONS.check}</span>}
+                <span className="rax-queue-upload-tile-remove">
                   <Button
                     type="button"
                     size="icon-sm"
@@ -338,24 +338,24 @@ function FileItem({ file, entry, layout, leaving, labels, locale, disabled, onRe
                   </Button>
                 </span>
               </div>
-              <TruncatedText className="sheen-queue-upload-name">{file.name}</TruncatedText>
-              <span className="sheen-queue-upload-meta" data-error={status === "error" || undefined}>
+              <TruncatedText className="rax-queue-upload-name">{file.name}</TruncatedText>
+              <span className="rax-queue-upload-meta" data-error={status === "error" || undefined}>
                 {status === "error" ? meta : size}
               </span>
             </>
           ) : (
             <>
-              <span className="sheen-queue-upload-thumb">{thumb}</span>
-              <div className="sheen-queue-upload-body">
-                <TruncatedText className="sheen-queue-upload-name">{file.name}</TruncatedText>
-                <span className="sheen-queue-upload-meta" data-error={status === "error" || undefined}>
+              <span className="rax-queue-upload-thumb">{thumb}</span>
+              <div className="rax-queue-upload-body">
+                <TruncatedText className="rax-queue-upload-name">{file.name}</TruncatedText>
+                <span className="rax-queue-upload-meta" data-error={status === "error" || undefined}>
                   {status === "error" && ICONS.alert}
-                  {status === "success" && <span className="sheen-queue-upload-done">{ICONS.check}</span>}
+                  {status === "success" && <span className="rax-queue-upload-done">{ICONS.check}</span>}
                   <span dir="auto">{status === "error" ? meta : meta ? `${size} · ${meta}` : size}</span>
                 </span>
                 {busy && (
                   <span
-                    className="sheen-queue-upload-bar"
+                    className="rax-queue-upload-bar"
                     role="progressbar"
                     aria-label={file.name}
                     aria-valuemin={0}
@@ -367,7 +367,7 @@ function FileItem({ file, entry, layout, leaving, labels, locale, disabled, onRe
                   </span>
                 )}
               </div>
-              <div className="sheen-queue-upload-actions">{actions}</div>
+              <div className="rax-queue-upload-actions">{actions}</div>
             </>
           )}
         </div>
@@ -739,13 +739,13 @@ const QueuedFileUpload = React.forwardRef<HTMLDivElement, QueuedFileUploadProps>
         )
       ) : (
         <>
-          {multiple ? labels.title : labels.titleSingle} <span className="sheen-queue-upload-browse">{labels.browse}</span>
+          {multiple ? labels.title : labels.titleSingle} <span className="rax-queue-upload-browse">{labels.browse}</span>
         </>
       )
 
     return (
       <div
-        className={cn("sheen-queue-upload", className)}
+        className={cn("rax-queue-upload", className)}
         data-variant={variant}
         data-layout={layout}
         data-disabled={disabled || undefined}
@@ -755,7 +755,7 @@ const QueuedFileUpload = React.forwardRef<HTMLDivElement, QueuedFileUploadProps>
           ref={ref}
           role="button"
           tabIndex={disabled ? -1 : 0}
-          className="sheen-queue-upload-zone"
+          className="rax-queue-upload-zone"
           data-drag={drag ?? undefined}
           data-page-drag={(pageDrag && !drag) || undefined}
           data-invalid={isInvalid || undefined}
@@ -800,10 +800,10 @@ const QueuedFileUpload = React.forwardRef<HTMLDivElement, QueuedFileUploadProps>
             addFiles(Array.from(event.dataTransfer.files))
           }}
         >
-          <span className="sheen-queue-upload-zone-icon">{icon ?? (variant === "compact" ? ICONS.attach : ICONS.upload)}</span>
-          <span className="sheen-queue-upload-zone-text">
-            <span className="sheen-queue-upload-zone-title">{zoneTitle}</span>
-            <span className="sheen-queue-upload-zone-hint" id={hintId}>
+          <span className="rax-queue-upload-zone-icon">{icon ?? (variant === "compact" ? ICONS.attach : ICONS.upload)}</span>
+          <span className="rax-queue-upload-zone-text">
+            <span className="rax-queue-upload-zone-title">{zoneTitle}</span>
+            <span className="rax-queue-upload-zone-hint" id={hintId}>
               {hint ?? autoHint}
             </span>
           </span>
@@ -813,7 +813,7 @@ const QueuedFileUpload = React.forwardRef<HTMLDivElement, QueuedFileUploadProps>
           ref={pickerRef}
           id={id}
           type="file"
-          className="sheen-queue-upload-input"
+          className="rax-queue-upload-input"
           accept={accept}
           multiple={multiple}
           disabled={disabled}
@@ -827,15 +827,15 @@ const QueuedFileUpload = React.forwardRef<HTMLDivElement, QueuedFileUploadProps>
         )}
 
         {rejections.length > 0 && (
-          <div className="sheen-queue-upload-rejections" role="alert">
+          <div className="rax-queue-upload-rejections" role="alert">
             <ul>
               {rejections.map(({ file, message }, i) => (
                 <li key={`${fileId(file)}-${i}`}>
                   {ICONS.alert}
-                  <span className="sheen-queue-upload-rejection-name" dir="auto">
+                  <span className="rax-queue-upload-rejection-name" dir="auto">
                     {file.name}
                   </span>
-                  <span className="sheen-queue-upload-rejection-reason">{message}</span>
+                  <span className="rax-queue-upload-rejection-reason">{message}</span>
                 </li>
               ))}
             </ul>
@@ -843,7 +843,7 @@ const QueuedFileUpload = React.forwardRef<HTMLDivElement, QueuedFileUploadProps>
               type="button"
               variant="ghost"
               size="icon-sm"
-              className="sheen-queue-upload-action"
+              className="rax-queue-upload-action"
               aria-label={labels.dismiss}
               onClick={() => setRejections([])}
             >
@@ -853,16 +853,16 @@ const QueuedFileUpload = React.forwardRef<HTMLDivElement, QueuedFileUploadProps>
         )}
 
         {display.length > 0 && (
-          <div className="sheen-queue-upload-files">
+          <div className="rax-queue-upload-files">
             {files.length > 1 && (
-              <div className="sheen-queue-upload-summary">
+              <div className="rax-queue-upload-summary">
                 <span>{labels.summary(files.length, formatBytes(totalSize, locale))}</span>
                 <Button type="button" variant="link" size="sm" onClick={removeAll} disabled={disabled}>
                   {labels.removeAll}
                 </Button>
               </div>
             )}
-            <ul className="sheen-queue-upload-list">
+            <ul className="rax-queue-upload-list">
               {display.map(({ file, leaving }) => (
                 <FileItem
                   key={fileId(file)}

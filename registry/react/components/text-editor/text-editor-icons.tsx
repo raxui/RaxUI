@@ -11,7 +11,7 @@ export const Icon = ({ d, flip }: { d: string; flip?: boolean }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
     aria-hidden="true"
-    className={flip ? "sheen-editor-flip" : undefined}
+    className={flip ? "rax-editor-flip" : undefined}
   >
     <path d={d} />
   </svg>

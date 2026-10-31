@@ -152,7 +152,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
             data-orientation={orientation}
             data-invalid={invalid || undefined}
             data-disabled={disabled || undefined}
-            className={cn("sheen-field", className)}
+            className={cn("rax-field", className)}
             {...props}
           />
         </FieldDefaultsContext.Provider>
@@ -181,11 +181,11 @@ const Hints = ({
 }) => (
   <>
     {field?.required && !field.optional && requiredIndicator !== false && (
-      <span className="sheen-field-required" aria-hidden="true">
+      <span className="rax-field-required" aria-hidden="true">
         {requiredIndicator}
       </span>
     )}
-    {field?.optional && <span className="sheen-field-optional">{optionalText}</span>}
+    {field?.optional && <span className="rax-field-optional">{optionalText}</span>}
   </>
 )
 
@@ -199,7 +199,7 @@ const FieldLabel = React.forwardRef<HTMLLabelElement, FieldLabelProps>(
         ref={ref}
         id={field?.labelId}
         htmlFor={field?.controlId}
-        className={cn("sheen-field-label", className)}
+        className={cn("rax-field-label", className)}
         onClick={(event) => {
           onClick?.(event)
           if (event.defaultPrevented || !field) return
@@ -265,7 +265,7 @@ const FieldDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttrib
     const field = useField()
     const register = field?.register
     React.useLayoutEffect(() => register?.("description"), [register])
-    return <p ref={ref} id={field?.descriptionId} className={cn("sheen-field-description", className)} {...props} />
+    return <p ref={ref} id={field?.descriptionId} className={cn("rax-field-description", className)} {...props} />
   },
 )
 FieldDescription.displayName = "FieldDescription"
@@ -290,7 +290,7 @@ const FieldError = React.forwardRef<HTMLParagraphElement, FieldErrorProps>(
     if (!visible) return null
 
     return (
-      <p ref={ref} id={field?.errorId} className={cn("sheen-field-error", className)} {...props}>
+      <p ref={ref} id={field?.errorId} className={cn("rax-field-error", className)} {...props}>
         {/* CircleAlert paths from Lucide (ISC). */}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" />
@@ -328,7 +328,7 @@ const FieldSet = React.forwardRef<HTMLFieldSetElement, FieldSetProps>(
             }
             aria-invalid={invalid || undefined}
             data-invalid={invalid || undefined}
-            className={cn("sheen-fieldset", className)}
+            className={cn("rax-fieldset", className)}
             {...props}
           />
         </FieldDefaultsContext.Provider>
@@ -344,7 +344,7 @@ const FieldLegend = React.forwardRef<
 >(({ className, children, optionalText = "(Optional)", requiredIndicator = "*", ...props }, ref) => {
   const field = useField()
   return (
-    <legend ref={ref} id={field?.labelId} className={cn("sheen-field-legend", className)} {...props}>
+    <legend ref={ref} id={field?.labelId} className={cn("rax-field-legend", className)} {...props}>
       {children}
       <Hints field={field} optionalText={optionalText} requiredIndicator={requiredIndicator} />
     </legend>
@@ -361,7 +361,7 @@ FieldLegend.displayName = "FieldLegend"
  * its Field a short shake. Returns true if something was invalid.
  */
 export function focusFirstInvalid(form: HTMLElement | null) {
-  const control = form?.querySelector<HTMLElement>("[aria-invalid='true']:not(.sheen-field):not(fieldset), fieldset[aria-invalid='true']")
+  const control = form?.querySelector<HTMLElement>("[aria-invalid='true']:not(.rax-field):not(fieldset), fieldset[aria-invalid='true']")
   if (!control) return false
   const focusable = control.matches("input, textarea, select, button, [tabindex]")
     ? control
@@ -369,7 +369,7 @@ export function focusFirstInvalid(form: HTMLElement | null) {
   focusable?.focus({ preventScroll: true })
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
   control.scrollIntoView({ block: "center", behavior: reduced ? "instant" : "smooth" })
-  const field = control.closest<HTMLElement>(".sheen-field, .sheen-fieldset")
+  const field = control.closest<HTMLElement>(".rax-field, .rax-fieldset")
   if (field && !reduced) {
     field.removeAttribute("data-shake")
     void field.offsetWidth // restart the animation

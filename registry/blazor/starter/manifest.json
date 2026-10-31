@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "starter.css",
       "type": "css",
-      "sha256": "579248e81a96dd6f1cf6be64a50be90763a72223f0d8e139e75d860c101e81b7"
+      "sha256": "94aaf60e9d71e156c0ca9db88742bb365142bfb9655b02f8dbb9f58b07d8ed14"
     }
   ],
   "files": [
@@ -19,21 +19,21 @@
       "destination": "app",
       "target": "Layout/MainLayout.razor",
       "type": "razor",
-      "sha256": "22da4e4b11700d2bf1194ac40d76b238ff1ac0952eae153463aac16acd6e499e"
+      "sha256": "2764585e1fb59f7e558b79286b5f777891f6383562f48db4aaa717358eae5e62"
     },
     {
       "source": "Home.razor",
       "destination": "app",
       "target": "Pages/Home.razor",
       "type": "razor",
-      "sha256": "b8d0ac975e1ff85ff30e8273f57abc51f5a779148a95af5255f66d276f8cbd66"
+      "sha256": "efedeef231c0db394b650f3a8fa5307ceab977a7706b8cd20e5cd6d34b618ab2"
     },
     {
       "source": "app.css",
       "destination": "wwwroot",
       "target": "app.css",
       "type": "css",
-      "sha256": "5be0b5a7e49e955c0919a99816fa7f5fabf414ab6a1cfc386f13792e2c7960fc"
+      "sha256": "99db3e4bbbd4d5ceb0e04c561ea8ee8dbaaaabdde8fe69924b32ade17074496a"
     }
   ]
 }

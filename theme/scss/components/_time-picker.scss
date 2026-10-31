@@ -1,10 +1,10 @@
-.sheen-time-picker {
-  &::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.65; transition: opacity var(--sheen-duration) ease; }
+.rax-time-picker {
+  &::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.65; transition: opacity var(--rax-duration) ease; }
   &:focus::-webkit-calendar-picker-indicator { opacity: 1; }
   &:disabled::-webkit-calendar-picker-indicator { cursor: default; }
 }
 // Bootstrap's data-bs-theme="dark" supplies color-scheme: dark; Firefox keeps its native icon.
-@media (prefers-reduced-motion: reduce) { .sheen-time-picker::-webkit-calendar-picker-indicator { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .rax-time-picker::-webkit-calendar-picker-indicator { transition: none; } }
 
 // -----------------------------------------------------------------------------
 // TimePicker — iOS wheels. Scroll-snapping listboxes behind one selection band;
@@ -12,9 +12,9 @@
 // where scroll-driven animations exist, tilt like a drum as they scroll.
 // -----------------------------------------------------------------------------
 
-.sheen-time-wheel {
-  --sheen-wheel-item: 36px; // keep in sync with ITEM_HEIGHT in time-picker.tsx
-  --sheen-wheel-visible: 5;
+.rax-time-wheel {
+  --rax-wheel-item: 36px; // keep in sync with ITEM_HEIGHT in time-picker.tsx
+  --rax-wheel-visible: 5;
 
   position: relative;
   isolation: isolate;
@@ -22,7 +22,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.125rem;
-  height: calc(var(--sheen-wheel-item) * var(--sheen-wheel-visible));
+  height: calc(var(--rax-wheel-item) * var(--rax-wheel-visible));
   padding-inline: 0.375rem;
   font-variant-numeric: tabular-nums;
   user-select: none;
@@ -34,28 +34,28 @@
 }
 
 // The fixed band the centred row sits in.
-.sheen-wheel-band {
+.rax-wheel-band {
   position: absolute;
   inset-inline: 0;
   top: 50%;
   z-index: -1;
-  height: var(--sheen-wheel-item);
-  border-radius: calc(0.625rem * var(--sheen-radius-scale));
+  height: var(--rax-wheel-item);
+  border-radius: calc(0.625rem * var(--rax-radius-scale));
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
   translate: 0 -50%;
 }
 
-.sheen-wheel {
+.rax-wheel {
   position: relative;
   height: 100%;
-  border-radius: calc(0.625rem * var(--sheen-radius-scale));
+  border-radius: calc(0.625rem * var(--rax-radius-scale));
 
-  &:has(.sheen-wheel-list:focus-visible) {
+  &:has(.rax-wheel-list:focus-visible) {
     box-shadow: inset 0 0 0 2px rgba(var(--bs-primary-rgb), 0.45);
   }
 }
 
-.sheen-wheel-list {
+.rax-wheel-list {
   height: 100%;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -72,7 +72,7 @@
   &::after {
     content: "";
     display: block;
-    height: calc(var(--sheen-wheel-item) * (var(--sheen-wheel-visible) - 1) / 2);
+    height: calc(var(--rax-wheel-item) * (var(--rax-wheel-visible) - 1) / 2);
     pointer-events: none;
   }
 
@@ -81,12 +81,12 @@
   }
 }
 
-.sheen-wheel-item {
+.rax-wheel-item {
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 2.75rem;
-  height: var(--sheen-wheel-item);
+  height: var(--rax-wheel-item);
   padding-inline: 0.5rem;
   color: var(--bs-emphasis-color);
   font-size: 1.125rem;
@@ -94,7 +94,7 @@
   cursor: pointer;
 
   // Nothing picked yet: the wheels show a suggestion (now), muted.
-  .sheen-wheel-list:not([data-committed]) & {
+  .rax-wheel-list:not([data-committed]) & {
     color: var(--bs-secondary-color);
   }
 
@@ -106,14 +106,14 @@
 // Drum effect: each row tilts away as it leaves the centre.
 @supports (animation-timeline: view()) {
   @include motion-safe {
-    .sheen-wheel-item {
-      animation: sheen-wheel-tilt linear both;
+    .rax-wheel-item {
+      animation: rax-wheel-tilt linear both;
       animation-timeline: view();
     }
   }
 }
 
-@keyframes sheen-wheel-tilt {
+@keyframes rax-wheel-tilt {
   0% {
     opacity: 0.3;
     transform: rotateX(60deg) scale(0.92);
@@ -130,20 +130,20 @@
   }
 }
 
-.sheen-wheel-colon {
+.rax-wheel-colon {
   color: var(--bs-emphasis-color);
   font-size: 1.125rem;
   font-weight: 600;
 }
 
 // ---- In the date/time popover ----------------------------------------------
-.sheen-date-popover-body {
+.rax-date-popover-body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 
   // Divider only when it sits next to a calendar.
-  > .sheen-calendar + .sheen-time-wheel {
+  > .rax-calendar + .rax-time-wheel {
     padding-inline-start: 0.75rem;
     border-inline-start: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
   }
@@ -152,16 +152,16 @@
     flex-direction: column;
     align-items: stretch;
 
-    > .sheen-calendar + .sheen-time-wheel {
+    > .rax-calendar + .rax-time-wheel {
       padding: 0.75rem 0 0;
       border-inline-start: 0;
       border-top: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
-      height: calc(var(--sheen-wheel-item) * 5 + 0.75rem);
+      height: calc(var(--rax-wheel-item) * 5 + 0.75rem);
     }
   }
 }
 
-.sheen-date-popover-footer {
+.rax-date-popover-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;

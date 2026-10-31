@@ -1,15 +1,15 @@
 // -----------------------------------------------------------------------------
 // Pagination — page links with one thumb that glides (spring) to the current
 // page. PaginationContent measures the [aria-current=page] link and writes its
-// box into --sheen-pagination-{x,y,w,h}.
+// box into --rax-pagination-{x,y,w,h}.
 // Variants: glass (frosted track, raised thumb) · plain (no track, filled thumb).
 // -----------------------------------------------------------------------------
 
-.sheen-pagination {
-  --sheen-pagination-size: 2.25rem;
-  --sheen-pagination-font-size: 0.9375rem;
-  --sheen-pagination-thumb-bg: rgb(var(--bs-body-bg-rgb));
-  --sheen-pagination-active-color: rgb(var(--bs-primary-rgb));
+.rax-pagination {
+  --rax-pagination-size: 2.25rem;
+  --rax-pagination-font-size: 0.9375rem;
+  --rax-pagination-thumb-bg: rgb(var(--bs-body-bg-rgb));
+  --rax-pagination-active-color: rgb(var(--bs-primary-rgb));
 
   display: flex;
   justify-content: center;
@@ -18,23 +18,23 @@
   justify-content: safe center;
 
   &[data-size="sm"] {
-    --sheen-pagination-size: 1.875rem;
-    --sheen-pagination-font-size: 0.8125rem;
+    --rax-pagination-size: 1.875rem;
+    --rax-pagination-font-size: 0.8125rem;
   }
 
   &[data-variant="plain"] {
-    --sheen-pagination-thumb-bg: rgb(var(--bs-primary-rgb));
-    --sheen-pagination-active-color: #fff;
+    --rax-pagination-thumb-bg: rgb(var(--bs-primary-rgb));
+    --rax-pagination-active-color: #fff;
   }
 
   [data-bs-theme="dark"] &[data-variant="glass"],
   &[data-bs-theme="dark"][data-variant="glass"] {
-    --sheen-pagination-thumb-bg: rgba(255, 255, 255, 0.16);
-    --sheen-pagination-active-color: #fff;
+    --rax-pagination-thumb-bg: rgba(255, 255, 255, 0.16);
+    --rax-pagination-active-color: #fff;
   }
 }
 
-.sheen-pagination-content {
+.rax-pagination-content {
   position: relative;
   isolation: isolate; // thumb (z-index: -1) stays above the track
   display: inline-flex;
@@ -45,8 +45,8 @@
   padding: 0;
   list-style: none;
 
-  .sheen-pagination[data-variant="glass"] & {
-    @include glass($alpha: var(--sheen-glass-alpha-subtle), $shadow: var(--sheen-shadow-sm));
+  .rax-pagination[data-variant="glass"] & {
+    @include glass($alpha: var(--rax-glass-alpha-subtle), $shadow: var(--rax-shadow-sm));
     // A faint tint so the raised thumb separates from the track on white.
     background-image: linear-gradient(rgba(var(--bs-emphasis-color-rgb), 0.035), rgba(var(--bs-emphasis-color-rgb), 0.035));
     padding: 0.25rem;
@@ -54,64 +54,64 @@
   }
 }
 
-.sheen-pagination-item {
+.rax-pagination-item {
   display: flex;
 }
 
 // ---- The gliding thumb ------------------------------------------------------
-.sheen-pagination-indicator {
+.rax-pagination-indicator {
   position: absolute;
   top: 0;
   left: 0;
   z-index: -1;
-  width: var(--sheen-pagination-w, 0);
-  height: var(--sheen-pagination-h, 0);
+  width: var(--rax-pagination-w, 0);
+  height: var(--rax-pagination-h, 0);
   border-radius: 999px;
-  background-color: var(--sheen-pagination-thumb-bg);
+  background-color: var(--rax-pagination-thumb-bg);
   opacity: 0;
   pointer-events: none;
-  transform: translate(var(--sheen-pagination-x, 0), var(--sheen-pagination-y, 0));
+  transform: translate(var(--rax-pagination-x, 0), var(--rax-pagination-y, 0));
 
-  .sheen-pagination[data-variant="glass"] & {
+  .rax-pagination[data-variant="glass"] & {
     box-shadow:
       0 0 0 0.5px rgba(0, 0, 0, 0.04),
       0 1px 2px rgba(0, 0, 0, 0.08),
       0 3px 8px rgba(0, 0, 0, 0.08);
   }
 
-  .sheen-pagination[data-variant="plain"] & {
+  .rax-pagination[data-variant="plain"] & {
     box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.3);
   }
 
-  .sheen-pagination-content[data-ready] & {
+  .rax-pagination-content[data-ready] & {
     opacity: 1;
   }
 
   // Only animate after the first placement, so it doesn't fly in on load.
   @include motion-safe {
-    .sheen-pagination-content[data-animate] & {
+    .rax-pagination-content[data-animate] & {
       transition:
-        transform 500ms var(--sheen-ease-spring),
-        width 500ms var(--sheen-ease-spring);
+        transform 500ms var(--rax-ease-spring),
+        width 500ms var(--rax-ease-spring);
     }
   }
 }
 
 // ---- Links ------------------------------------------------------------------
-.sheen-pagination-link {
+.rax-pagination-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
-  min-width: var(--sheen-pagination-size);
-  height: var(--sheen-pagination-size);
+  min-width: var(--rax-pagination-size);
+  height: var(--rax-pagination-size);
   padding: 0 0.5rem;
   border: 0;
   border-radius: 999px;
   color: rgba(var(--bs-emphasis-color-rgb), 0.7);
   background: none;
   font: inherit;
-  font-size: var(--sheen-pagination-font-size);
+  font-size: var(--rax-pagination-font-size);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -121,8 +121,8 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   transition:
-    color var(--sheen-duration) ease,
-    background-color var(--sheen-duration-fast) ease;
+    color var(--rax-duration) ease,
+    background-color var(--rax-duration-fast) ease;
 
   &:hover:not([aria-current="page"]):not([data-disabled]) {
     color: var(--bs-emphasis-color);
@@ -130,14 +130,14 @@
   }
 
   &[aria-current="page"] {
-    color: var(--sheen-pagination-active-color);
+    color: var(--rax-pagination-active-color);
     font-weight: 600;
     cursor: default;
   }
 
   // Before JS measures (or without JS), paint the current page itself.
-  .sheen-pagination-content:not([data-ready]) &[aria-current="page"] {
-    background-color: var(--sheen-pagination-thumb-bg);
+  .rax-pagination-content:not([data-ready]) &[aria-current="page"] {
+    background-color: var(--rax-pagination-thumb-bg);
   }
 
   &:focus-visible {
@@ -153,9 +153,9 @@
 
   @include motion-safe {
     transition:
-      color var(--sheen-duration) ease,
-      background-color var(--sheen-duration-fast) ease,
-      transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+      color var(--rax-duration) ease,
+      background-color var(--rax-duration-fast) ease,
+      transform var(--rax-duration-slow) var(--rax-ease-spring);
 
     &:active:not([data-disabled]):not([aria-current="page"]) {
       transform: scale(0.9);
@@ -164,7 +164,7 @@
 }
 
 // ---- Previous / Next --------------------------------------------------------
-.sheen-pagination-step {
+.rax-pagination-step {
   padding-inline: 0.625rem 0.875rem;
 
   &[data-step="next"] {
@@ -192,7 +192,7 @@
 
   @include motion-safe {
     & svg {
-      transition: translate var(--sheen-duration-slow) var(--sheen-ease-spring);
+      transition: translate var(--rax-duration-slow) var(--rax-ease-spring);
     }
 
     &[data-step="previous"]:hover svg {
@@ -215,10 +215,10 @@
 
 // Icon-only steps (and on phones): keep the label for screen readers only.
 @mixin pagination-icon-only {
-  width: var(--sheen-pagination-size);
+  width: var(--rax-pagination-size);
   padding: 0;
 
-  .sheen-pagination-step-label {
+  .rax-pagination-step-label {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -228,23 +228,23 @@
   }
 }
 
-.sheen-pagination-icon-only {
+.rax-pagination-icon-only {
   @include pagination-icon-only;
 }
 
 @media (max-width: 575.98px) {
-  .sheen-pagination[data-layout="pages"] .sheen-pagination-step {
+  .rax-pagination[data-layout="pages"] .rax-pagination-step {
     @include pagination-icon-only;
   }
 }
 
 // ---- Ellipsis ---------------------------------------------------------------
-.sheen-pagination-ellipsis {
+.rax-pagination-ellipsis {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--sheen-pagination-size);
-  height: var(--sheen-pagination-size);
+  width: var(--rax-pagination-size);
+  height: var(--rax-pagination-size);
   color: var(--bs-secondary-color);
 
   & svg {
@@ -254,16 +254,16 @@
 }
 
 // ---- Compact: ‹ 3 / 12 › ----------------------------------------------------
-.sheen-pagination-status {
+.rax-pagination-status {
   align-items: baseline;
   gap: 0.3125rem;
   padding-inline: 0.5rem;
-  font-size: var(--sheen-pagination-font-size);
+  font-size: var(--rax-pagination-font-size);
   font-variant-numeric: tabular-nums;
   color: var(--bs-secondary-color);
 }
 
-.sheen-pagination-status-current {
+.rax-pagination-status-current {
   display: inline-block;
   min-width: 1ch;
   color: var(--bs-emphasis-color);
@@ -272,16 +272,16 @@
 
   @include motion-safe {
     &[data-tick] {
-      animation: sheen-pagination-tick var(--sheen-duration-slow) var(--sheen-ease-spring);
+      animation: rax-pagination-tick var(--rax-duration-slow) var(--rax-ease-spring);
     }
   }
 }
 
-.sheen-pagination-status-sep {
+.rax-pagination-status-sep {
   opacity: 0.5;
 }
 
-@keyframes sheen-pagination-tick {
+@keyframes rax-pagination-tick {
   from {
     opacity: 0;
     transform: translateY(0.4em) scale(0.85);
@@ -289,12 +289,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheen-pagination, .sheen-pagination * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .rax-pagination, .rax-pagination * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-.sheen-pagination .sheen-pagination-link svg { width: 1em; height: 1em; }
+.rax-pagination .rax-pagination-link svg { width: 1em; height: 1em; }
 
-.sheen-pagination { --sheen-pagination-size: var(--sheen-control-height-sm); }
-.sheen-pagination[data-variant="glass"] .sheen-pagination-content { background: var(--sheen-surface-bg); border-color: var(--sheen-border-color); box-shadow: var(--sheen-surface-shadow); backdrop-filter: var(--sheen-surface-filter); -webkit-backdrop-filter: var(--sheen-surface-filter); }
-.sheen-pagination-indicator { box-shadow: var(--sheen-control-shadow); }
-.sheen-pagination-link[aria-disabled="true"] { pointer-events: none; opacity: .4; }
+.rax-pagination { --rax-pagination-size: var(--rax-control-height-sm); }
+.rax-pagination[data-variant="glass"] .rax-pagination-content { background: var(--rax-surface-bg); border-color: rgba(var(--bs-emphasis-color-rgb), 0.12); box-shadow: var(--rax-glass-edge), var(--rax-shadow-sm); backdrop-filter: var(--rax-surface-filter); -webkit-backdrop-filter: var(--rax-surface-filter); }
+.rax-pagination { padding: 0.5rem 0.75rem; } // room for the track shadow: overflow-x clips it otherwise
+.rax-pagination-indicator { box-shadow: var(--rax-control-shadow); }
+.rax-pagination-link[aria-disabled="true"] { pointer-events: none; opacity: .4; }

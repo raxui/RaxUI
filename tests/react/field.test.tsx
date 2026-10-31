@@ -50,7 +50,7 @@ describe("Field", () => {
       <FieldControl><input /></FieldControl></Field><input aria-invalid="true" aria-label="Second" /></form>)
     expect(focusFirstInvalid(container)).toBe(true)
     expect(screen.getByRole("textbox", { name: "First" })).toHaveFocus()
-    const field = container.querySelector(".sheen-field")!
+    const field = container.querySelector(".rax-field")!
     expect(field).toHaveAttribute("data-shake")
     fireEvent.animationEnd(field)
     expect(field).not.toHaveAttribute("data-shake")
@@ -62,7 +62,7 @@ describe("Field", () => {
     const { container } = render(<Field invalid><FieldLabel>Name</FieldLabel><FieldControl><input /></FieldControl></Field>)
     focusFirstInvalid(container)
     expect(screen.getByRole("textbox")).toHaveFocus()
-    expect(container.querySelector(".sheen-field")).not.toHaveAttribute("data-shake")
+    expect(container.querySelector(".rax-field")).not.toHaveAttribute("data-shake")
     expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({ block: "center", behavior: "instant" })
   })
 })

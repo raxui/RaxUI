@@ -1,13 +1,13 @@
-@* SheenUI FieldLabel. Source-owned: edit freely. Names the surrounding field's control. *@
-<label @attributes="AdditionalAttributes" id="@Context?.LabelId" for="@Context?.ControlId" class="@($"sheen-field-label {Class}".TrimEnd())">
+@* RaxUI FieldLabel. Source-owned: edit freely. Names the surrounding field's control. *@
+<label @attributes="AdditionalAttributes" id="@Context?.LabelId" for="@Context?.ControlId" class="@($"rax-field-label {Class}".TrimEnd())">
     @ChildContent
     @if (Context?.Required == true && !Context.Optional && RequiredIndicator is not null)
     {
-        <span class="sheen-field-required" aria-hidden="true">@RequiredIndicator</span>
+        <span class="rax-field-required" aria-hidden="true">@RequiredIndicator</span>
     }
     @if (Context?.Optional == true)
     {
-        <span class="sheen-field-optional">@OptionalText</span>
+        <span class="rax-field-optional">@OptionalText</span>
     }
 </label>
 

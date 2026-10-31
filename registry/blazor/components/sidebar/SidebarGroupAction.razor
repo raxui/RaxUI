@@ -1,4 +1,4 @@
-<button @attributes="AdditionalAttributes" type="button" class="sheen-sidebar-group-action @Class" aria-label="@Label" data-show-on-hover="@(ShowOnHover ? "" : null)" @onclick="OnClick">@ChildContent</button>
+<button @attributes="AdditionalAttributes" type="button" class="rax-sidebar-group-action @Class" aria-label="@Label" data-show-on-hover="@(ShowOnHover ? "" : null)" @onclick="OnClick">@ChildContent</button>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }

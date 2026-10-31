@@ -1,4 +1,4 @@
-<div @attributes="AdditionalAttributes" id="@Parent?.MenuId" class="sheen-navbar-menu @Class" data-state="@(Parent?.Current == true ? "open" : "closed")" inert="@(Parent?.Current != true)"><div class="sheen-navbar-menu-clip"><nav class="sheen-navbar-menu-body" aria-label="@Label">@ChildContent</nav></div></div>
+<div @attributes="AdditionalAttributes" id="@Parent?.MenuId" class="rax-navbar-menu @Class" data-state="@(Parent?.Current == true ? "open" : "closed")" inert="@(Parent?.Current != true)"><div class="rax-navbar-menu-clip"><nav class="rax-navbar-menu-body" aria-label="@Label">@ChildContent</nav></div></div>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }

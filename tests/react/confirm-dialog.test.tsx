@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
-import { SheenThemeProvider } from "@/lib/theme"
+import { RaxThemeProvider } from "@/lib/theme"
 import { Button } from "@/components/ui/button"
 import { ConfirmDialog } from "../../registry/react/components/confirm-dialog/confirm-dialog"
 
@@ -11,19 +11,19 @@ describe("ConfirmDialog", () => {
     const user = userEvent.setup()
     const onCancel = vi.fn()
     render(
-      <SheenThemeProvider data-testid="root">
+      <RaxThemeProvider data-testid="root">
         <ConfirmDialog trigger={<Button>Delete</Button>} title="Delete file?" description="This cannot be undone." tone="destructive" onCancel={onCancel} />
-      </SheenThemeProvider>,
+      </RaxThemeProvider>,
     )
     await user.click(screen.getByRole("button", { name: "Delete" }))
 
     const dialog = screen.getByRole("alertdialog", { name: "Delete file?" })
     expect(dialog).toHaveAccessibleDescription("This cannot be undone.")
-    expect(dialog).toHaveClass("sheen-confirm")
+    expect(dialog).toHaveClass("rax-confirm")
     expect(dialog).toHaveAttribute("data-tone", "destructive")
     expect(screen.getByTestId("root")).toContainElement(dialog)
     expect(screen.getByRole("button", { name: "Cancel" })).toHaveFocus()
-    expect(screen.getByRole("button", { name: "Confirm" })).toHaveClass("btn-glass-destructive", "sheen-confirm-action")
+    expect(screen.getByRole("button", { name: "Confirm" })).toHaveClass("btn-glass-destructive", "rax-confirm-action")
 
     await user.keyboard("{Escape}")
     expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument()

@@ -26,7 +26,7 @@ const sh = (command: string, cwd: string) => {
   const result = spawnSync(command, { cwd, shell: true, encoding: "utf8" })
   const output = (result.stdout ?? "") + (result.stderr ?? "")
   if (result.status !== 0) throw new Error(`Command failed: ${command}\n${output}`)
-  if (/sheenui-react|npm run build/.test(command))
+  if (/raxui-react|npm run build/.test(command))
     expect(output).not.toMatch(/DEP0190|Deprecation Warning|SassWarning|inferred your workspace root/i)
   return result.stdout
 }
@@ -57,16 +57,16 @@ async function freePort() {
 }
 
 test.beforeAll(async () => {
-  root = mkdtempSync(path.join(tmpdir(), "sheen-next-e2e-"))
+  root = mkdtempSync(path.join(tmpdir(), "rax-next-e2e-"))
   app = path.join(root, "app")
 
   sh(`npx --yes ${CREATE_NEXT_APP} app --ts --app --no-tailwind --eslint --no-src-dir --import-alias "@/*" --use-npm --yes`, root)
 
   const packed = sh(`npm pack "${path.join(repo, "src/react-cli")}" --pack-destination "${root}" --silent`, repo).trim().split(/\r?\n/).pop()!
   sh(`npm install -D --save-exact --ignore-scripts --no-audit --no-fund "${path.join(root, packed)}"`, app)
-  sh("npx sheenui-react init", app)
+  sh("npx raxui-react init", app)
 
-  if (!readFileSync(path.join(app, "app/page.tsx"), "utf8").includes("Welcome to your SheenUI app"))
+  if (!readFileSync(path.join(app, "app/page.tsx"), "utf8").includes("Welcome to your RaxUI app"))
     throw new Error("init did not install the Next.js starter page")
   for (const leftover of ["app/page.module.css", "app/globals.css", "public/next.svg"]) {
     if (existsSync(path.join(app, leftover))) throw new Error(`init left the template file ${leftover}`)
@@ -74,7 +74,7 @@ test.beforeAll(async () => {
 
   // Phase 3 overlays under Next.js: a server page renders the client components across their
   // "use client" boundaries, and a client button raises a toast.
-  for (const item of OVERLAYS) sh(`npx sheenui-react add ${item}`, app)
+  for (const item of OVERLAYS) sh(`npx raxui-react add ${item}`, app)
   mkdirSync(path.join(app, "app/overlays"))
   writeFileSync(path.join(app, "app/overlays/toast-button.tsx"), `"use client"
 import { toast } from "@/components/ui/use-toast"
@@ -83,7 +83,7 @@ export function ToastButton() {
   return <button type="button" onClick={() => toast({ title: "Saved", tone: "success" })}>Save</button>
 }
 `)
-  writeFileSync(path.join(app, "app/overlays/page.tsx"), `import { SheenThemeProvider } from "@/lib/theme"
+  writeFileSync(path.join(app, "app/overlays/page.tsx"), `import { RaxThemeProvider } from "@/lib/theme"
 import { Tooltip } from "@/components/ui/tooltip"
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card"
 import { Toaster } from "@/components/ui/toaster"
@@ -103,7 +103,7 @@ import { ToastButton } from "./toast-button"
 
 export default function Overlays() {
   return (
-    <SheenThemeProvider className="sheen-app">
+    <RaxThemeProvider className="rax-app">
       <Tooltip content="Save your work" side="top"><button type="button">Help</button></Tooltip>
       <HoverCard><HoverCardTrigger href="#author">Author</HoverCardTrigger><HoverCardContent><p>Author details</p></HoverCardContent></HoverCard>
       <section aria-label="Date and choice parity">
@@ -133,7 +133,7 @@ export default function Overlays() {
       <CommandDialog><CommandInput /><CommandList><CommandGroup heading="Files">
         <CommandItem value="Open file">Open file</CommandItem>
       </CommandGroup><CommandEmpty /></CommandList></CommandDialog>
-    </SheenThemeProvider>
+    </RaxThemeProvider>
   )
 }
 `)
@@ -175,7 +175,7 @@ test.afterAll(() => {
   if (root) rmSync(root, { recursive: true, force: true })
 })
 
-const shell = (page: Page) => page.locator(".sheen-app")
+const shell = (page: Page) => page.locator(".rax-app")
 
 test("phase 3 overlays render from a server page and open", async ({ page }) => {
   const errors: string[] = []
@@ -196,11 +196,11 @@ test("phase 3 overlays render from a server page and open", async ({ page }) => 
   expect(errors).toEqual([])
 })
 
-test("the welcome page renders in the SheenUI shell with Bootstrap and the theme", async ({ page }) => {
+test("the welcome page renders in the RaxUI shell with Bootstrap and the theme", async ({ page }) => {
   await page.goto(baseUrl)
-  await expect(page.locator("h1")).toHaveText("Welcome to your SheenUI app")
+  await expect(page.locator("h1")).toHaveText("Welcome to your RaxUI app")
   const primary = page.getByRole("button", { name: "Primary" })
-  await expect(primary).toHaveClass(/\bbtn sheen-button btn-glass btn-glass-primary\b/)
+  await expect(primary).toHaveClass(/\bbtn rax-button btn-glass btn-glass-primary\b/)
   // inline-flex, blockified to flex inside the preview row's flex container
   await expect(primary).toHaveCSS("display", /flex$/)
   expect(await primary.evaluate((el) => getComputedStyle(el).boxShadow)).not.toBe("none")
@@ -212,11 +212,11 @@ test("the theme controls switch appearance, mode, accent, and direction", async 
   await page.getByRole("button", { name: "Dark" }).click()
   await page.getByRole("button", { name: "Emerald" }).click()
   await page.getByRole("button", { name: "RTL" }).click()
-  await expect(shell(page)).toHaveAttribute("data-sheen-appearance", "glass")
+  await expect(shell(page)).toHaveAttribute("data-rax-appearance", "glass")
   await expect(shell(page)).toHaveAttribute("data-bs-theme", "dark")
-  await expect(shell(page)).toHaveAttribute("data-sheen-accent", "emerald")
+  await expect(shell(page)).toHaveAttribute("data-rax-accent", "emerald")
   await expect(shell(page)).toHaveAttribute("dir", "rtl")
-  expect(await page.locator(".sheen-panel").first().evaluate((el) => getComputedStyle(el).backdropFilter)).toContain("blur")
+  expect(await page.locator(".rax-panel").first().evaluate((el) => getComputedStyle(el).backdropFilter)).toContain("blur")
 })
 
 test("Primary follows the selected accent in every appearance and mode, including returning to Blue", async ({ page }) => {
@@ -232,7 +232,7 @@ test("Primary follows the selected accent in every appearance and mode, includin
       await page.getByRole("button", { name: mode, exact: true }).click()
       for (const [accent, color] of Object.entries(accents)) {
         const swatch = page.getByRole("button", { name: accent, exact: true })
-        await expect(swatch).toHaveClass("sheen-accent-swatch")
+        await expect(swatch).toHaveClass("rax-accent-swatch")
         await swatch.click()
         await expect(swatch).toHaveAttribute("aria-pressed", "true")
         await expect(page.getByRole("group", { name: "Accent", exact: true }).locator('[aria-pressed="true"]')).toHaveCount(1)
@@ -260,9 +260,9 @@ test("accent swatches have distinct colors and support keyboard selection", asyn
 
 test("running init and add again changes no files", () => {
   const before = snapshot(app)
-  sh("npx sheenui-react init", app)
-  sh("npx sheenui-react add button", app)
-  for (const item of OVERLAYS) sh(`npx sheenui-react add ${item}`, app)
+  sh("npx raxui-react init", app)
+  sh("npx raxui-react add button", app)
+  for (const item of OVERLAYS) sh(`npx raxui-react add ${item}`, app)
   expect(snapshot(app)).toEqual(before)
 })
 
@@ -276,14 +276,14 @@ test("date and rich choice components hydrate from server imports and remain int
   await birthday.getByRole("spinbutton", { name: "year", exact: true }).press("ArrowUp")
   await expect(birthday.locator('input[name="birthday"]')).toHaveValue("2027-10-25")
   await birthday.getByRole("button", { name: "Choose date", exact: true }).click()
-  await expect(page.locator(".sheen-calendar")).toBeVisible()
+  await expect(page.locator(".rax-calendar")).toBeVisible()
   await page.keyboard.press("Escape")
   await section.getByRole("combobox", { name: "Frameworks", exact: true }).click()
-  const choices = page.locator(".sheen-rich-combobox-content")
+  const choices = page.locator(".rax-rich-combobox-content")
   await expect(choices).toHaveCSS("padding", "0px")
-  await expect(choices.locator(".sheen-command")).toHaveCSS("border-top-width", "0px")
-  await expect(choices.locator(".sheen-command")).toHaveCSS("background-color", "rgba(0, 0, 0, 0)")
-  await expect(choices.locator(".sheen-command")).toHaveCSS("box-shadow", "none")
+  await expect(choices.locator(".rax-command")).toHaveCSS("border-top-width", "0px")
+  await expect(choices.locator(".rax-command")).toHaveCSS("background-color", "rgba(0, 0, 0, 0)")
+  await expect(choices.locator(".rax-command")).toHaveCSS("box-shadow", "none")
   await page.getByRole("option", { name: "Vue", exact: true }).click()
   await page.keyboard.press("Escape")
   await expect(section.getByRole("button", { name: "Remove Vue", exact: true })).toBeVisible()
@@ -299,7 +299,7 @@ test("date and rich choice components hydrate from server imports and remain int
 
 test("time wheels reach both ends and select the final values", async ({ page }) => {
   await page.goto(baseUrl + "/overlays")
-  const wheels = page.locator(".sheen-time-wheel")
+  const wheels = page.locator(".rax-time-wheel")
   const hour = wheels.getByRole("listbox", { name: "hour", exact: true })
   const minute = wheels.getByRole("listbox", { name: "minute", exact: true })
   await hour.press("End")
@@ -325,7 +325,7 @@ test("segmented range hydrates, posts ISO endpoints and opens a range calendar",
   await expect(range.locator('input[name="stay_from"]')).toHaveValue("2026-10-10")
   await expect(range.locator('input[name="stay_to"]')).toHaveValue("2026-10-13")
   await range.getByRole("button", { name: "Choose dates", exact: true }).click()
-  const popup = page.locator(".sheen-date-range-popover")
+  const popup = page.locator(".rax-date-range-popover")
   await expect(popup.getByRole("grid")).toHaveCount(2)
   await popup.getByRole("button", { name: "Done", exact: true }).click()
   await range.getByRole("button", { name: "Clear dates", exact: true }).click()
@@ -340,7 +340,7 @@ test("calendar pickers hydrate and commit single dates or range drafts through t
   await page.goto(baseUrl + "/overlays")
   await page.getByRole("button", { name: "Due picker", exact: true }).click()
   const single = page.getByRole("dialog", { name: "Choose date", exact: true })
-  await expect(single.locator('.sheen-calendar-day[tabindex="0"]')).toBeFocused()
+  await expect(single.locator('.rax-calendar-day[tabindex="0"]')).toBeFocused()
   await single.locator('[data-date="2026-10-16"]').click()
   await expect(page.locator('input[name="duePicker"]')).toHaveValue("2026-10-16")
   const trigger = page.getByRole("button", { name: "Report picker", exact: true })
@@ -363,7 +363,7 @@ test("calendar pickers hydrate and commit single dates or range drafts through t
 test("app shell hydrates with stored preferences, keeps theme portals and handles desktop and mobile navigation", async ({page})=>{
  const errors:string[]=[]
  page.on("pageerror",e=>errors.push(e.message));page.on("console",m=>{if(m.type()==="error")errors.push(m.text())})
- await page.addInitScript(()=>{localStorage.setItem("acceptance-sidebar","false");localStorage.setItem("sheen-banner:acceptance-tip","dismissed")})
+ await page.addInitScript(()=>{localStorage.setItem("acceptance-sidebar","false");localStorage.setItem("rax-banner:acceptance-tip","dismissed")})
  await page.goto(baseUrl+"/shell")
  const sidebar=page.getByRole("button",{name:"Toggle sidebar"})
  await expect(sidebar).toHaveAttribute("aria-expanded","false")
@@ -374,7 +374,7 @@ test("app shell hydrates with stored preferences, keeps theme portals and handle
  for(const padding of [12,32]){
  await page.getByRole("button",{name:"Products",exact:true}).evaluate((el,p)=>el.style.paddingInline=p+"px",padding)
  await expect.poll(async()=>{
-  const trigger=await page.getByRole("button",{name:"Products",exact:true}).boundingBox(),panel=await page.locator(".sheen-nav-viewport").boundingBox()
+  const trigger=await page.getByRole("button",{name:"Products",exact:true}).boundingBox(),panel=await page.locator(".rax-nav-viewport").boundingBox()
   if(!trigger||!panel)return Infinity
   const expected=Math.max(8,Math.min(trigger.x+trigger.width-panel.width,page.viewportSize()!.width-8-panel.width))
   return Math.abs(panel.x-expected)
@@ -385,7 +385,7 @@ test("app shell hydrates with stored preferences, keeps theme portals and handle
  await page.getByRole("menuitem",{name:"View",exact:true}).click();await page.getByRole("menuitemcheckbox",{name:"Toolbar"}).click();await expect(page.getByLabel("Toolbar state")).toHaveText("true")
  await page.getByRole("textbox",{name:"Stay in the loop"}).fill("user@example.com");await page.getByRole("button",{name:"Subscribe"}).click();await expect(page.getByText("Thanks! Check your inbox to confirm.")).toBeVisible()
  await page.setViewportSize({width:390,height:844})
- await page.getByRole("button",{name:"Menu",exact:true}).click();await expect(page.locator('.sheen-navbar-menu')).toHaveAttribute("data-state","open");await page.keyboard.press("Escape")
+ await page.getByRole("button",{name:"Menu",exact:true}).click();await expect(page.locator('.rax-navbar-menu')).toHaveAttribute("data-state","open");await page.keyboard.press("Escape")
  await sidebar.click();const dialog=page.getByRole("dialog",{name:"Workspace"});await expect(dialog).toBeVisible();await expect(dialog).toHaveAttribute("data-side","right");await page.keyboard.press("Escape");await expect(sidebar).toBeFocused()
  const footer=page.getByRole("button",{name:"Resources",exact:true});await footer.click();await expect(page.getByRole("link",{name:"Guide",exact:true})).toBeVisible()
  expect(errors).toEqual([])
@@ -399,24 +399,24 @@ test("data components hydrate and handle table state, safe grid edits, reorderin
  await table.getByRole("checkbox",{name:"Select row",exact:true}).first().click();await page.getByRole("button",{name:"Use selection"}).click();await expect(page.getByLabel("Last edit")).toHaveText("1 selected");await page.getByRole("button",{name:"Clear selection"}).click()
  const grid=page.getByRole("grid",{name:"Inventory"});await expect(grid.getByRole("gridcell",{name:"Row 0001",exact:true})).toBeVisible();await grid.getByRole("gridcell",{name:"Row 0001",exact:true}).click();await grid.press("Enter");const editor=grid.getByRole("textbox",{name:"Name, row 1",exact:true});await editor.fill("Edited row");await editor.press("Enter");await expect(page.getByLabel("Last edit")).toHaveText("0:name:Edited row")
  await grid.press("Control+Home");await grid.press("ArrowRight");await grid.press("Enter");const number=grid.getByRole("textbox",{name:"Amount, row 1",exact:true});await number.fill("invalid");await number.press("Enter");await expect(grid.getByRole("alert")).toHaveText("Enter a number.");await number.press("Escape")
- await grid.press("Control+End");await expect.poll(()=>grid.getAttribute("aria-activedescendant")).toMatch(/r9999-c4$/);await expect(grid.locator('.sheen-grid-body [role=row]')).not.toHaveCount(10000)
+ await grid.press("Control+End");await expect.poll(()=>grid.getAttribute("aria-activedescendant")).toMatch(/r9999-c4$/);await expect(grid.locator('.rax-grid-body [role=row]')).not.toHaveCount(10000)
  const tasks=page.getByRole("region",{name:"Sortable demo"}),handle=tasks.locator('button[aria-label="Move Alpha"]');await handle.focus();await page.keyboard.press("Space");await expect(handle).toHaveAttribute("data-dragging","");await page.waitForTimeout(60);await page.keyboard.press("ArrowDown");await page.waitForTimeout(100);await page.keyboard.press("Space");await expect(page.getByLabel("Task order")).toHaveText("Beta,Alpha,Gamma");await expect(handle).toBeFocused()
  const separator=page.getByRole("separator",{name:"Resize panels"});await separator.focus();const old=await separator.getAttribute("aria-valuenow");await separator.press("ArrowRight");await expect(separator).not.toHaveAttribute("aria-valuenow",old!);const changed=await separator.getAttribute("aria-valuenow");await expect.poll(()=>page.evaluate(()=>localStorage.getItem("react-resizable-panels:acceptance-split"))).not.toBe("not-json")
  // Do not reset storage on reload: verify the saved layout hydrates without a mismatch.
  await page.evaluate(()=>sessionStorage.setItem("layout-tested","true"));await page.reload();await expect(page.getByRole("separator",{name:"Resize panels"})).toHaveAttribute("aria-valuenow",changed!)
- await page.getByRole("button",{name:"Toggle direction"}).click();await expect(page.locator('.sheen-resizable')).toHaveAttribute("data-mirrored","");expect(errors).toEqual([])
+ await page.getByRole("button",{name:"Toggle direction"}).click();await expect(page.locator('.rax-resizable')).toHaveAttribute("data-mirrored","");expect(errors).toEqual([])
 })
 
  test("advanced components hydrate and support keyboard, editor, QR and conversation flows",async({page})=>{
  const errors:string[]=[];page.on("pageerror",e=>errors.push(e.message));page.on("console",m=>{if(m.type()==="error")errors.push(m.text())})
- await page.goto(baseUrl+"/advanced-components");await expect(page.getByRole("heading",{name:"Advanced components"})).toBeVisible();await expect(page.locator(".sheen-carousel-counter")).toHaveText("1 / 3");await page.getByRole("button",{name:"Next slide"}).click();await expect(page.locator(".sheen-carousel-counter")).toHaveText("2 / 3")
- await page.getByPlaceholder("Compose message").fill("Hello chat");await page.getByPlaceholder("Compose message").press("Enter");await expect(page.locator(".sheen-chat-bubble").filter({hasText:"Hello chat"})).toHaveText("Hello chat")
- await page.getByPlaceholder("Ask assistant").fill("Answer");await page.getByPlaceholder("Ask assistant").press("Enter");await expect(page.locator(".sheen-ai-response")).toHaveAttribute("data-streaming","");await page.getByRole("button",{name:"Stop",exact:true}).click();await expect(page.locator(".sheen-ai-response")).not.toHaveAttribute("data-streaming","")
+ await page.goto(baseUrl+"/advanced-components");await expect(page.getByRole("heading",{name:"Advanced components"})).toBeVisible();await expect(page.locator(".rax-carousel-counter")).toHaveText("1 / 3");await page.getByRole("button",{name:"Next slide"}).click();await expect(page.locator(".rax-carousel-counter")).toHaveText("2 / 3")
+ await page.getByPlaceholder("Compose message").fill("Hello chat");await page.getByPlaceholder("Compose message").press("Enter");await expect(page.locator(".rax-chat-bubble").filter({hasText:"Hello chat"})).toHaveText("Hello chat")
+ await page.getByPlaceholder("Ask assistant").fill("Answer");await page.getByPlaceholder("Ask assistant").press("Enter");await expect(page.locator(".rax-ai-response")).toHaveAttribute("data-streaming","");await page.getByRole("button",{name:"Stop",exact:true}).click();await expect(page.locator(".rax-ai-response")).not.toHaveAttribute("data-streaming","")
  const editor=page.getByRole("textbox",{name:"Document",exact:true});await editor.fill("Edited");await expect(page.getByLabel("Saved HTML")).toContainText("Edited");await editor.press("ControlOrMeta+a");await page.getByRole("button",{name:"Bold",exact:true}).first().click();await expect(page.getByLabel("Saved HTML")).toContainText("<strong>")
  await expect(page.getByRole("img",{name:"Scan code"}).locator("path")).toHaveAttribute("d",/.+/);const download=page.waitForEvent("download");await page.getByRole("button",{name:"Download SVG"}).click();expect((await download).suggestedFilename()).toMatch(/\.svg$/)
  const trigger=page.getByRole("button",{name:"More actions"});await trigger.focus();await trigger.press("ArrowUp");await expect(page.getByRole("menuitem",{name:"Share",exact:true})).toBeFocused();await page.keyboard.press("Enter");await expect(page.getByText("Shared",{exact:true})).toBeVisible()
  const handle=page.getByRole("button",{name:"Move Alpha",exact:true});await handle.scrollIntoViewIfNeeded();await handle.focus();await page.keyboard.press("Space");await page.waitForTimeout(80);await page.keyboard.press("ArrowRight");await page.waitForTimeout(150);await page.keyboard.press("Space");await expect(page.getByLabel("Board state")).toHaveText('{"todo":["Beta"],"done":["Alpha"]}')
- await page.getByRole("button",{name:"Toggle direction"}).click();await page.getByRole("button",{name:"Toggle mode"}).click();await expect(page.locator(".sheen-kanban")).toHaveCSS("direction","rtl");expect(errors).toEqual([])
+ await page.getByRole("button",{name:"Toggle direction"}).click();await page.getByRole("button",{name:"Toggle mode"}).click();await expect(page.locator(".rax-kanban")).toHaveCSS("direction","rtl");expect(errors).toEqual([])
  })
 
 test.describe("Carousel motion",()=>{
@@ -424,9 +424,9 @@ test.describe("Carousel motion",()=>{
  test("Carousel animates through intermediate positions with its default options",async({page})=>{
   await page.goto(baseUrl+"/advanced-components")
   const carousel=page.getByRole("region",{name:"Featured slides",exact:true})
-  await expect(carousel.locator(".sheen-carousel-counter")).toHaveText("1 / 3")
+  await expect(carousel.locator(".rax-carousel-counter")).toHaveText("1 / 3")
   const positions=await carousel.evaluate(el=>new Promise<number[]>(resolve=>{
-   const track=el.querySelector<HTMLElement>(".sheen-carousel-container")!
+   const track=el.querySelector<HTMLElement>(".rax-carousel-container")!
    const x=()=>new DOMMatrixReadOnly(getComputedStyle(track).transform).m41
    const samples=[x()]
    el.querySelector<HTMLButtonElement>('button[aria-label="Next slide"]')!.click()
@@ -434,7 +434,7 @@ test.describe("Carousel motion",()=>{
    requestAnimationFrame(sample)
   }))
   expect(new Set(positions.map(x=>Math.round(x*1000)/1000)).size).toBeGreaterThan(4)
-  await expect(carousel.locator(".sheen-carousel-counter")).toHaveText("2 / 3")
+  await expect(carousel.locator(".rax-carousel-counter")).toHaveText("2 / 3")
  })
 })
 
@@ -442,7 +442,7 @@ test("FileUpload queue installs, hydrates, retries and posts its current files",
   const errors: string[] = []
   page.on("pageerror", error => errors.push(error.message))
   await page.goto(baseUrl + "/file-upload")
-  const root = page.locator(".sheen-queue-upload").first()
+  const root = page.locator(".rax-queue-upload").first()
   const picker = root.locator('input[type="file"]').first()
   await picker.setInputFiles({ name: "fail.pdf", mimeType: "application/pdf", buffer: Buffer.from("pdf") })
   await page.getByRole("button", { name: "Retry: fail.pdf", exact: true }).click()
@@ -465,7 +465,7 @@ test("FileUpload photo grid contains large images and long filenames", async ({ 
     context.fillRect(0, 0, width, height)
     return { name: "Photographed document with a long original filename " + index + ".png", data: canvas.toDataURL().split(",")[1] }
   }))
-  const grid = page.locator('.sheen-queue-upload[data-layout="grid"]')
+  const grid = page.locator('.rax-queue-upload[data-layout="grid"]')
   await grid.locator('input[type="file"]').setInputFiles(images.map(image => ({ name: image.name, mimeType: "image/png", buffer: Buffer.from(image.data, "base64") })))
   await expect(grid.locator("img")).toHaveCount(3)
   await expect.poll(() => grid.locator("img").evaluateAll(images => images.every(image => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0))).toBe(true)
@@ -473,9 +473,9 @@ test("FileUpload photo grid contains large images and long filenames", async ({ 
     await page.setViewportSize({ width, height: 900 })
     await grid.evaluate((element, direction) => { element.setAttribute("dir", direction) }, dir)
     const geometry = await grid.evaluate(element => {
-      const list = element.querySelector(".sheen-queue-upload-list")!
+      const list = element.querySelector(".rax-queue-upload-list")!
       return { overflow: list.scrollWidth - list.clientWidth, items: Array.from(list.children).map(item => {
-        const tile = item.querySelector(".sheen-queue-upload-tile")!.getBoundingClientRect()
+        const tile = item.querySelector(".rax-queue-upload-tile")!.getBoundingClientRect()
         const image = item.querySelector("img")!.getBoundingClientRect()
         return { width: item.getBoundingClientRect().width, square: Math.abs(tile.width - tile.height), tileWidth: tile.width,
           contained: image.left >= tile.left - 1 && image.right <= tile.right + 1 && image.top >= tile.top - 1 && image.bottom <= tile.bottom + 1 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-namespace SheenUI.Internal.AI;
+namespace RaxUI.Internal.AI;
 
 internal abstract record MdNode;
 internal sealed record MdText(string Value) : MdNode;

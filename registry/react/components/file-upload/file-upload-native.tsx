@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import { useFieldControlProps } from "@/components/ui/field"
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 
 export interface NativeFileUploadProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "defaultValue" | "onChange" | "onError" | "size"> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   value?: File[]
   defaultValue?: File[]
   onChange?: (files: File[]) => void
@@ -39,7 +39,7 @@ const NativeFileUpload = React.forwardRef<HTMLInputElement, NativeFileUploadProp
 }, ref) => {
   const wired = useFieldControlProps(props)
   const auto = React.useId(), id = wired.id ?? auto
-  const theme = useSheenTheme({ appearance })
+  const theme = useRaxTheme({ appearance })
   const input = React.useRef<HTMLInputElement | null>(null)
   const [internal, setInternal] = React.useState(defaultValue)
   const files = value ?? internal
@@ -63,12 +63,12 @@ const NativeFileUpload = React.forwardRef<HTMLInputElement, NativeFileUploadProp
       const data = new DataTransfer(); files.forEach(file => data.items.add(file)); el.files = data.files
     }
   }, [files])
-  return <div {...sheenThemeAttributes(theme)} className={cn("sheen-file-upload", className)}>
-    <label className="sheen-upload-zone" data-dragging={dragging || undefined} data-disabled={wired.disabled || undefined}
+  return <div {...raxThemeAttributes(theme)} className={cn("rax-file-upload", className)}>
+    <label className="rax-upload-zone" data-dragging={dragging || undefined} data-disabled={wired.disabled || undefined}
       onDragEnter={e => { e.preventDefault(); if (!wired.disabled) setDragging(true) }}
       onDragOver={e => e.preventDefault()} onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragging(false) }}
       onDrop={e => { e.preventDefault(); setDragging(false); select(Array.from(e.dataTransfer.files)) }}>
-      <input {...wired} id={id} type="file" accept={accept} multiple={multiple ?? maxFiles > 1} className="sheen-upload-input"
+      <input {...wired} id={id} type="file" accept={accept} multiple={multiple ?? maxFiles > 1} className="rax-upload-input"
         aria-invalid={error ? true : wired["aria-invalid"]}
         aria-describedby={[wired["aria-describedby"], error ? `${id}-upload-error` : undefined].filter(Boolean).join(" ") || undefined}
         ref={node => { input.current = node; if (typeof ref === "function") ref(node); else if (ref) ref.current = node }}
@@ -77,10 +77,10 @@ const NativeFileUpload = React.forwardRef<HTMLInputElement, NativeFileUploadProp
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg>
       <span>{label}</span>
     </label>
-    {error && <p id={`${id}-upload-error`} role="alert" className="sheen-field-error">{error}</p>}
-    <ul className="sheen-upload-list">{files.map((file, i) => {
+    {error && <p id={`${id}-upload-error`} role="alert" className="rax-field-error">{error}</p>}
+    <ul className="rax-upload-list">{files.map((file, i) => {
       const raw = progress?.(file), percent = raw === undefined ? undefined : Math.max(0, Math.min(100, Number.isFinite(raw) ? raw : 0))
-      return <li key={`${file.name}-${file.lastModified}-${i}`} className="sheen-upload-file">
+      return <li key={`${file.name}-${file.lastModified}-${i}`} className="rax-upload-file">
         <span>{file.name}</span>
         <button type="button" disabled={wired.disabled} title={`${removeLabel} ${file.name}`} aria-label={`${removeLabel} ${file.name}`}
           onClick={() => change(files.filter((_, index) => index !== i))}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg></button>

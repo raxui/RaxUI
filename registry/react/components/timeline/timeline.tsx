@@ -1,9 +1,9 @@
 "use client"
 
-// SheenUI timeline. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI timeline. Source-owned: edit freely. Ported from boot-ui.
 import * as React from "react"
 
-import type { SheenAppearance } from "@/lib/theme"
+import type { RaxAppearance } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 
@@ -44,7 +44,7 @@ const TimelineContext = React.createContext<TimelineContextValue>({ layout: "sta
 const ItemIndexContext = React.createContext(0)
 
 export interface TimelineProps extends React.OlHTMLAttributes<HTMLOListElement> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   layout?: "start" | "alternate" | "horizontal"
   /** Time above the title (default) or in a column of its own (start / alternate). */
   timePosition?: "inline" | "side"
@@ -73,11 +73,11 @@ const Timeline = React.forwardRef<HTMLOListElement, TimelineProps>(
     return (
       <TimelineContext.Provider value={context}>
         {/* A horizontal timeline scrolls sideways, so keyboard users must be able to focus it. */}
-        <div className="sheen-timeline-wrap" data-layout={layout} tabIndex={layout === "horizontal" ? 0 : undefined}>
+        <div className="rax-timeline-wrap" data-layout={layout} tabIndex={layout === "horizontal" ? 0 : undefined}>
           <ol
             ref={ref}
-        data-sheen-appearance={appearance}
-            className={cn("sheen-timeline", className)}
+        data-rax-appearance={appearance}
+            className={cn("rax-timeline", className)}
             data-layout={layout}
             data-time={layout === "alternate" ? "side" : layout === "horizontal" ? "inline" : timePosition}
             data-size={size}
@@ -117,7 +117,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
 
     const timeNode =
       time !== undefined ? (
-        <time className="sheen-timeline-time" dateTime={dateTime}>
+        <time className="rax-timeline-time" dateTime={dateTime}>
           {time}
         </time>
       ) : null
@@ -125,30 +125,30 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
     return (
       <li
         ref={ref}
-        className={cn("sheen-timeline-item", className)}
+        className={cn("rax-timeline-item", className)}
         data-status={status}
         data-tone={resolvedTone}
         data-marker={marker !== undefined ? "icon" : "dot"}
         data-side={index % 2 ? "start" : "end"}
         aria-current={status === "current" ? "step" : undefined}
-        style={{ "--sheen-timeline-i": index, ...style } as React.CSSProperties}
+        style={{ "--rax-timeline-i": index, ...style } as React.CSSProperties}
         {...props}
       >
-        {timeOnSide && <div className="sheen-timeline-side">{timeNode}</div>}
-        <div className="sheen-timeline-rail" aria-hidden="true">
-          <span className="sheen-timeline-marker">{marker}</span>
-          <span className="sheen-timeline-line" />
+        {timeOnSide && <div className="rax-timeline-side">{timeNode}</div>}
+        <div className="rax-timeline-rail" aria-hidden="true">
+          <span className="rax-timeline-marker">{marker}</span>
+          <span className="rax-timeline-line" />
         </div>
-        <div className="sheen-timeline-body">
+        <div className="rax-timeline-body">
           {!timeOnSide && timeNode}
           {title !== undefined && (
-            <div className="sheen-timeline-title">
+            <div className="rax-timeline-title">
               {title}
               <span className="visually-hidden"> ({labels[status]})</span>
             </div>
           )}
-          {description !== undefined && <div className="sheen-timeline-description">{description}</div>}
-          {children !== undefined && <div className="sheen-timeline-content">{children}</div>}
+          {description !== undefined && <div className="rax-timeline-description">{description}</div>}
+          {children !== undefined && <div className="rax-timeline-content">{children}</div>}
         </div>
       </li>
     )
@@ -158,8 +158,8 @@ TimelineItem.displayName = "TimelineItem"
 
 /** A heading between items: "Today", "2023", "Q3". */
 const TimelineGroup = React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(({ className, children, ...props }, ref) => (
-  <li ref={ref} className={cn("sheen-timeline-group", className)} {...props}>
-    <span className="sheen-timeline-group-label">{children}</span>
+  <li ref={ref} className={cn("rax-timeline-group", className)} {...props}>
+    <span className="rax-timeline-group-label">{children}</span>
   </li>
 ))
 TimelineGroup.displayName = "TimelineGroup"

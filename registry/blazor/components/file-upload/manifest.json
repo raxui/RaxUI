@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/file-upload.css",
       "type": "css",
-      "sha256": "19a30837dc2eeeebf5a62d3b350d0a0e98ebb08b5410bf73518874a7e9f76645"
+      "sha256": "1546baa2971a15a86b5ecf085e4c5c72f02d7fb3792026161826b228123a960c"
     }
   ],
   "files": [
@@ -21,35 +21,35 @@
       "destination": "components",
       "target": "FileUpload/FileUpload.razor",
       "type": "razor",
-      "sha256": "470ad99eccbc84fb3e7ff866a7f641cbbcc79d673b2f88687d1f06ccd5d6d4b9"
+      "sha256": "09a29bdbbc1da0681bc79376143cb90495d5cc5baec0e9873644232f46b87672"
     },
     {
       "source": "FileUpload.razor.js",
       "destination": "components",
       "target": "FileUpload/FileUpload.razor.js",
       "type": "js",
-      "sha256": "2590b725450ffabf6e5fd4a068d670c7c1ddd7a1df4e272b3db33519bb1e5426"
+      "sha256": "fedeef06c2884c58c3f9b0413a158ca8774aaef8655386a49cfdb9cc7d6c7357"
     },
     {
       "source": "FileUploadQueue.razor",
       "destination": "components",
       "target": "FileUpload/FileUploadQueue.razor",
       "type": "razor",
-      "sha256": "33b6497d601fe98a00834c3290deff4b73973d68351e4cff4e3e6aa795194e78"
+      "sha256": "61e57a9a64ac883f8626f29628057f23da223deef9f58af53989b7f2421e554f"
     },
     {
       "source": "FileUploadQueue.razor.js",
       "destination": "components",
       "target": "FileUpload/FileUploadQueue.razor.js",
       "type": "js",
-      "sha256": "c8ae05dbbae8e6b36d7851367deb6cd381bd3eff5e684c6abbc4c760c5d5a7d8"
+      "sha256": "6397a3a63d25fee4bc0fb56a2e7e16ea336ffad3baf8a0635b9778fd09d257fc"
     },
     {
       "source": "FileUploadItem.razor",
       "destination": "components",
       "target": "FileUpload/FileUploadItem.razor",
       "type": "razor",
-      "sha256": "4e028f8a57326ae4e837162a7fdf4a6ce1a2893b92708757714a7e87b47e080a"
+      "sha256": "266e313cc2bd7bfbe207e7021b3812f3f0af48de61a04ed058ebf3d5a8a3bd08"
     }
   ]
 }

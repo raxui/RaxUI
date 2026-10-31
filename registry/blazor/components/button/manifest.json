@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/button.css",
       "type": "css",
-      "sha256": "8a123eaa43f40afbbcee36911d378dec8c075cf4c34026d14ff7cd978fa57efd"
+      "sha256": "cc6ef2251325d3256a724274a9abeca891c3e5ba0d5913cdde47f870eb3dda20"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Button/Button.razor",
       "type": "razor",
-      "sha256": "eb80ccd5f4b9eb4ee13baba2cdad8ccc3f7dd8c2031029a072849b3fa7aa8514"
+      "sha256": "823ff41782997016aa21aac61e0a25d74a0f6a116b5d7badbdf8dca55dbf7e62"
     }
   ]
 }

@@ -19,25 +19,25 @@
       "source": "registry/react/components/select/select.tsx",
       "target": "components/ui/select.tsx",
       "type": "tsx",
-      "sha256": "66bfdef3e42ad37e6c2fe8e3e2ddc4c08260a0ab8e4e8b3c152eb94fbdc8b0cd"
+      "sha256": "83508a9371a8e6a38aa071164ea7ea289ff61a959359754cb61176ccc8aa1814"
     },
     {
       "source": "theme/scss/components/_select.scss",
-      "target": "styles/sheenui/components/_select.scss",
+      "target": "styles/raxui/components/_select.scss",
       "type": "scss",
-      "sha256": "dbe1ec1d24c08de64c12637b7ca0891578c7a83f2642e0df328d6eca3677db72"
+      "sha256": "83a634e5883f12d4568375c51cc5d755479b08c256e2ba053d0d83ac29c53659"
     },
     {
       "source": "registry/react/foundation/choice-highlight.tsx",
       "target": "lib/choice-highlight.tsx",
       "type": "tsx",
-      "sha256": "974ca86748703edd32d38c6e09ab872dccb62ede87b8d095bb655f0569a851cc"
+      "sha256": "74d507057039c9b7b8568ffe175901b1ccd1615728c4fa485dd02626bc920c41"
     },
     {
       "source": "theme/scss/components/_choice-highlight.scss",
-      "target": "styles/sheenui/components/_choice-highlight.scss",
+      "target": "styles/raxui/components/_choice-highlight.scss",
       "type": "scss",
-      "sha256": "91f69af6a94fc8be6b00a87c0f07ec24fa47335ec2dd4cf7af2c748f5d12f6e0"
+      "sha256": "31a57b751f8206a9becca35dffd39768dfdc18377831ca33a19fddfeeb04621c"
     }
   ]
 }

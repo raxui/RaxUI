@@ -3,7 +3,7 @@
 // Built-in SVG paths from Lucide, licensed under ISC.
 import * as React from "react"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { useClientNow } from "@/lib/client-now"
 import { cn } from "@/lib/utils"
 import { getDirection } from "@/lib/direction"
@@ -43,7 +43,7 @@ export interface DateRange {
 }
 
 interface CalendarBaseProps {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   dir?: "ltr" | "rtl"
   /** Month shown first (controlled). */
   month?: Date
@@ -114,7 +114,7 @@ function Calendar(props: CalendarProps) {
     renderDayContent,
     className,
   } = props
-  const theme = useSheenTheme({ appearance: props.appearance, direction: props.dir })
+  const theme = useRaxTheme({ appearance: props.appearance, direction: props.dir })
   const now = useClientNow()
   const today = startOfDay(now)
   const single = props.mode === "range" ? undefined : (props.selected ?? undefined)
@@ -284,7 +284,7 @@ function Calendar(props: CalendarProps) {
   const decadeStart = Math.floor(pickerYear / 12) * 12
 
   const navButton = (dir: "prev" | "next", onClick: () => void, label: string, disabled = false) => (
-    <button type="button" className="sheen-calendar-nav" data-dir={dir} onClick={onClick} aria-label={label} disabled={disabled}>
+    <button type="button" className="rax-calendar-nav" data-dir={dir} onClick={onClick} aria-label={label} disabled={disabled}>
       {dir === "prev" ? <ChevronLeft /> : <ChevronRight />}
     </button>
   )
@@ -292,9 +292,9 @@ function Calendar(props: CalendarProps) {
   if (view !== "days") {
     const isYears = view === "years"
     return (
-      <div {...sheenThemeAttributes(theme)} ref={rootRef} className={cn("sheen-calendar", className)}>
-        <div className="sheen-calendar-view" data-view={view} key={view}>
-          <div className="sheen-calendar-header">
+      <div {...raxThemeAttributes(theme)} ref={rootRef} className={cn("rax-calendar", className)}>
+        <div className="rax-calendar-view" data-view={view} key={view}>
+          <div className="rax-calendar-header">
             {navButton(
               "prev",
               () => setPickerYear((y) => y - (isYears ? 12 : 1)),
@@ -303,7 +303,7 @@ function Calendar(props: CalendarProps) {
             )}
             <button
               type="button"
-              className="sheen-calendar-caption"
+              className="rax-calendar-caption"
               onClick={() => setView(isYears ? "months" : "years")}
               aria-label={isYears ? "Back to months" : "Choose year"}
             >
@@ -319,7 +319,7 @@ function Calendar(props: CalendarProps) {
               isYears ? yearDisabled(decadeStart + 12) : yearDisabled(pickerYear + 1),
             )}
           </div>
-          <div className="sheen-calendar-picker">
+          <div className="rax-calendar-picker">
             {Array.from({ length: 12 }, (_, i) => {
               const y = isYears ? decadeStart + i : pickerYear
               const m = isYears ? 0 : i
@@ -329,7 +329,7 @@ function Calendar(props: CalendarProps) {
                 <button
                   key={i}
                   type="button"
-                  className="sheen-calendar-picker-item"
+                  className="rax-calendar-picker-item"
                   data-current={current ? "" : undefined}
                   data-today={isNow ? "" : undefined}
                   disabled={isYears ? yearDisabled(y) : monthDisabled(y, m)}
@@ -352,26 +352,26 @@ function Calendar(props: CalendarProps) {
 
   return (
     <div
-      {...sheenThemeAttributes(theme)}
+      {...raxThemeAttributes(theme)}
       ref={rootRef}
-      className={cn("sheen-calendar", className)}
+      className={cn("rax-calendar", className)}
       data-day-content={renderDayContent ? "" : undefined}
       onKeyDown={onGridKeyDown}
       onMouseLeave={() => setHovered(undefined)}
     >
-      <div className="sheen-calendar-view" data-view="days" data-from-picker={fromPicker ? "" : undefined} key="days">
-        <div className="sheen-calendar-months">
+      <div className="rax-calendar-view" data-view="days" data-from-picker={fromPicker ? "" : undefined} key="days">
+        <div className="rax-calendar-months">
           {months.map((m, index) => (
-            <div className="sheen-calendar-month" key={index}>
-              <div className="sheen-calendar-header">
+            <div className="rax-calendar-month" key={index}>
+              <div className="rax-calendar-header">
                 {index === 0 ? (
                   navButton("prev", () => goToMonth(addMonths(month, -1)), "Previous month", !!min && monthIndex(month) <= monthIndex(min))
                 ) : (
-                  <span className="sheen-calendar-nav-spacer" />
+                  <span className="rax-calendar-nav-spacer" />
                 )}
                 <button
                   type="button"
-                  className="sheen-calendar-caption"
+                  className="rax-calendar-caption"
                   onClick={() => openPicker(m)}
                   aria-label={`${fmt.caption.format(m)}, choose month and year`}
                   aria-live="polite"
@@ -387,11 +387,11 @@ function Calendar(props: CalendarProps) {
                     !!max && monthIndex(months[numberOfMonths - 1]) >= monthIndex(max),
                   )
                 ) : (
-                  <span className="sheen-calendar-nav-spacer" />
+                  <span className="rax-calendar-nav-spacer" />
                 )}
               </div>
 
-              <table role="grid" aria-label={fmt.caption.format(m)} className="sheen-calendar-grid" key={toKey(m)} data-direction={direction}>
+              <table role="grid" aria-label={fmt.caption.format(m)} className="rax-calendar-grid" key={toKey(m)} data-direction={direction}>
                 <thead>
                   <tr>
                     {weekdays.map((d) => (
@@ -427,7 +427,7 @@ function Calendar(props: CalendarProps) {
                           >
                             <button
                               type="button"
-                              className="sheen-calendar-day"
+                              className="rax-calendar-day"
                               data-date={toKey(day)}
                               data-today={isToday ? "" : undefined}
                               data-outside={outside ? "" : undefined}
@@ -444,8 +444,8 @@ function Calendar(props: CalendarProps) {
                             >
                               {renderDayContent ? (
                                 <>
-                                  <span className="sheen-calendar-day-number">{fmt.day.format(day)}</span>
-                                  <span className="sheen-calendar-day-content">{renderDayContent(day)}</span>
+                                  <span className="rax-calendar-day-number">{fmt.day.format(day)}</span>
+                                  <span className="rax-calendar-day-content">{renderDayContent(day)}</span>
                                 </>
                               ) : (
                                 fmt.day.format(day)

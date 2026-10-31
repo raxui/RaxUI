@@ -8,26 +8,26 @@
 
 :root,
 [data-bs-theme="light"] {
-  --sheen-skeleton-base: rgba(var(--bs-emphasis-color-rgb), 0.07);
-  --sheen-skeleton-highlight: rgba(255, 255, 255, 0.65);
+  --rax-skeleton-base: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  --rax-skeleton-highlight: rgba(255, 255, 255, 0.65);
 }
 
 [data-bs-theme="dark"] {
-  --sheen-skeleton-base: rgba(255, 255, 255, 0.08);
-  --sheen-skeleton-highlight: rgba(255, 255, 255, 0.07);
+  --rax-skeleton-base: rgba(255, 255, 255, 0.08);
+  --rax-skeleton-highlight: rgba(255, 255, 255, 0.07);
 }
 
 @mixin skeleton-shimmer($important: null) {
-  background-image: linear-gradient(100deg, transparent 30%, var(--sheen-skeleton-highlight) 50%, transparent 70%) $important;
+  background-image: linear-gradient(100deg, transparent 30%, var(--rax-skeleton-highlight) 50%, transparent 70%) $important;
   background-repeat: no-repeat $important;
   background-size: 60vw 100% $important;
   background-attachment: fixed $important;
-  animation: sheen-skeleton-shimmer 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation: rax-skeleton-shimmer 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
-.sheen-skeleton {
-  border-radius: calc(0.5rem * var(--sheen-radius-scale));
-  background-color: var(--sheen-skeleton-base);
+.rax-skeleton {
+  border-radius: calc(0.5rem * var(--rax-radius-scale));
+  background-color: var(--rax-skeleton-base);
   user-select: none;
   pointer-events: none;
 
@@ -54,7 +54,7 @@
   &[data-shape="text"] {
     height: 0.75em;
     margin-block: 0.375em;
-    border-radius: calc(0.25rem * var(--sheen-radius-scale));
+    border-radius: calc(0.25rem * var(--rax-radius-scale));
   }
 
   // Content mode: keep the element's box, hide everything inside it.
@@ -64,7 +64,7 @@
     box-shadow: none !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
-    background-color: var(--sheen-skeleton-base) !important;
+    background-color: var(--rax-skeleton-base) !important;
     background-image: none !important;
     cursor: default;
 
@@ -89,33 +89,33 @@
     }
 
     &[data-animation="pulse"] {
-      animation: sheen-skeleton-pulse 1.6s ease-in-out infinite;
+      animation: rax-skeleton-pulse 1.6s ease-in-out infinite;
     }
   }
 }
 
-@keyframes sheen-skeleton-shimmer {
+@keyframes rax-skeleton-shimmer {
   from { background-position: -60vw 0; }
   to { background-position: 100vw 0; }
 }
 
-@keyframes sheen-skeleton-pulse {
+@keyframes rax-skeleton-pulse {
   50% { opacity: 0.45; }
 }
 
-.sheen-skeleton-text {
+.rax-skeleton-text {
   display: block;
   width: 100%;
 }
 
 // Real content arriving: a short fade with a hint of focus-pull.
-.sheen-skeleton-reveal {
+.rax-skeleton-reveal {
   @include motion-safe {
-    animation: sheen-skeleton-reveal 450ms var(--sheen-ease-out) both;
+    animation: rax-skeleton-reveal 450ms var(--rax-ease-out) both;
   }
 }
 
-@keyframes sheen-skeleton-reveal {
+@keyframes rax-skeleton-reveal {
   from {
     opacity: 0;
     filter: blur(4px);

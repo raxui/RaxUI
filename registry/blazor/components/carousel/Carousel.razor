@@ -1,6 +1,6 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="sheen-carousel @Class" role="region" tabindex="0" aria-roledescription="@Labels.Carousel" aria-label="@Label" dir="@Direction" data-orientation="@Orientation" data-effect="@Effect" style="@Style">@ChildContent</div></CascadingValue>
+<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="rax-carousel @Class" role="region" tabindex="0" aria-roledescription="@Labels.Carousel" aria-label="@Label" dir="@Direction" data-orientation="@Orientation" data-effect="@Effect" style="@Style">@ChildContent</div></CascadingValue>
 @code {
  public sealed record Text {
  public string Carousel {get;init;}="carousel";public string Slide {get;init;}="slide";public string Previous {get;init;}="Previous slide";public string Next {get;init;}="Next slide";public string Pause {get;init;}="Pause autoplay";public string Play {get;init;}="Start autoplay";
@@ -30,7 +30,7 @@
  internal int SnapCount {get;private set;}
  internal bool Ready {get;private set;}
  internal string GoToLabel(int i)=>Labels.GoTo.Replace("{0}",(i+1).ToString(System.Globalization.CultureInfo.InvariantCulture));
- private string Style=>$"--sheen-carousel-size-base:{SlideSize};--sheen-carousel-gap:{Gap};"+(SmallSlideSize is null?"":$"--sheen-carousel-size-sm:{SmallSlideSize};")+(MediumSlideSize is null?"":$"--sheen-carousel-size-md:{MediumSlideSize};")+(LargeSlideSize is null?"":$"--sheen-carousel-size-lg:{LargeSlideSize};")+(ExtraLargeSlideSize is null?"":$"--sheen-carousel-size-xl:{ExtraLargeSlideSize};")+(AdditionalAttributes?.TryGetValue("style",out var userStyle)==true?userStyle?.ToString():"");
+ private string Style=>$"--rax-carousel-size-base:{SlideSize};--rax-carousel-gap:{Gap};"+(SmallSlideSize is null?"":$"--rax-carousel-size-sm:{SmallSlideSize};")+(MediumSlideSize is null?"":$"--rax-carousel-size-md:{MediumSlideSize};")+(LargeSlideSize is null?"":$"--rax-carousel-size-lg:{LargeSlideSize};")+(ExtraLargeSlideSize is null?"":$"--rax-carousel-size-xl:{ExtraLargeSlideSize};")+(AdditionalAttributes?.TryGetValue("style",out var userStyle)==true?userStyle?.ToString():"");
  private readonly string id=Guid.NewGuid().ToString("N");
  private bool disposed;
  private ElementReference element;

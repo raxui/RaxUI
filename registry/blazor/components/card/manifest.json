@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/card.css",
       "type": "css",
-      "sha256": "4dc6011469c69bc83969bee246783bc8472e28b98a720337b8f204ca525d2b92"
+      "sha256": "54eb4f113d20d0ae6f9e821934e16e0b67145774665c10b782b28b7ae5b8dba4"
     }
   ],
   "files": [
@@ -19,49 +19,49 @@
       "destination": "components",
       "target": "Card/Card.razor",
       "type": "razor",
-      "sha256": "563775269c740e757d1da86176f5bb92e69906568a9072ac8d1ea39a85a1af66"
+      "sha256": "b8a2a0de1bfc5ed25a3e9a2bdeccdc876f8b44fb7e126e52d330d264815a846d"
     },
     {
       "source": "CardAction.razor",
       "destination": "components",
       "target": "Card/CardAction.razor",
       "type": "razor",
-      "sha256": "0691beeb82972590fe3cdb653fac365fbe251500fed3d85e1b79682746f92d70"
+      "sha256": "1a0904e435d8e77f75884b5023b399c41f835d6f7c05df6d569cf546ea0ba030"
     },
     {
       "source": "CardContent.razor",
       "destination": "components",
       "target": "Card/CardContent.razor",
       "type": "razor",
-      "sha256": "55dbda21225b110c71889743426131df897230eb3d188053868023b164cc53f4"
+      "sha256": "8d3dbbcbb6be2f657623557d3615354bac90fb54e6e6a84b16b2ec8fa9084cd0"
     },
     {
       "source": "CardDescription.razor",
       "destination": "components",
       "target": "Card/CardDescription.razor",
       "type": "razor",
-      "sha256": "a02c4300fc087be0415165e0d4dd16a8513b3c8ebc348271ff35523c14956b04"
+      "sha256": "53b80481556a690fd52a767d66a6c1ba29d0a0636368ea5cf09394913b6b0e3d"
     },
     {
       "source": "CardFooter.razor",
       "destination": "components",
       "target": "Card/CardFooter.razor",
       "type": "razor",
-      "sha256": "3b5b75e6e0e6b9ed8e526b795f0f59e67c1b3c539db353bbe50fdb063c86209c"
+      "sha256": "74956e91917d372787777fa290a18645a7323c70190dced12faa184e20aaefbd"
     },
     {
       "source": "CardHeader.razor",
       "destination": "components",
       "target": "Card/CardHeader.razor",
       "type": "razor",
-      "sha256": "9fed16211941c83eb1a8d4e30347ac48738af0a7b879947fea031c41fd12aa2b"
+      "sha256": "3500956c5f3af1e91af4ca8bfa4681f323f1a03c80c9f0e1ca11b5002efeda61"
     },
     {
       "source": "CardTitle.razor",
       "destination": "components",
       "target": "Card/CardTitle.razor",
       "type": "razor",
-      "sha256": "f8d20701a24cfc35a7353436c39c22bb25bbe6106d6b3e1fb2af8b04c60a7118"
+      "sha256": "9e21e73b71a2653069dc06f65246be1ce7a6236202c3ab201ec85d993322ecc1"
     }
   ]
 }

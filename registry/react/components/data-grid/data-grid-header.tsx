@@ -51,8 +51,8 @@ export function DataGridHeader<TData>({
   const text = { ...DEFAULT_GRID_LABELS, ...labels }
   const alignOf = (column: Column<TData, unknown>) => column.columnDef.meta?.align
   return (
-    <div role="rowgroup" className="sheen-grid-head">
-      <div role="row" aria-rowindex={1} className="sheen-grid-row" style={{ height: rowHeight + 2 }}>
+    <div role="rowgroup" className="rax-grid-head">
+      <div role="row" aria-rowindex={1} className="rax-grid-row" style={{ height: rowHeight + 2 }}>
         {leafColumns.map((column, c) => {
           const header = headerFor(column as Column<TData, unknown>)
           const sorted = column.getIsSorted()
@@ -66,7 +66,7 @@ export function DataGridHeader<TData>({
               aria-sort={sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : column.getCanSort() ? "none" : undefined}
               data-active={isActive || undefined}
               data-align={alignOf(column as Column<TData, unknown>)}
-              className={cn("sheen-grid-hcell", column.columnDef.meta?.className)}
+              className={cn("rax-grid-hcell", column.columnDef.meta?.className)}
               style={{ width: column.getSize(), ...pinStyle(column as Column<TData, unknown>) }}
               {...pinAttrs(column as Column<TData, unknown>)}
               onPointerDownCapture={(event) => {
@@ -80,7 +80,7 @@ export function DataGridHeader<TData>({
               {header && (
                 <>
                   <span
-                    className="sheen-grid-hlabel"
+                    className="rax-grid-hlabel"
                     data-sortable={column.getCanSort() || undefined}
                     onClick={(e) => {
                       if (!commit()) return
@@ -89,7 +89,7 @@ export function DataGridHeader<TData>({
                   >
                     {flexRender(column.columnDef.header, header.getContext())}
                     {sorted && (
-                      <span className="sheen-grid-sort" data-dir={sorted} aria-hidden="true">
+                      <span className="rax-grid-sort" data-dir={sorted} aria-hidden="true">
                         <ArrowIcon />
                         {table.getState().sorting.length > 1 && <small>{column.getSortIndex() + 1}</small>}
                       </span>
@@ -98,7 +98,7 @@ export function DataGridHeader<TData>({
                   {column.id !== "select" && (
                     <DropdownMenu>
                       <DropdownMenuTrigger
-                        className="sheen-grid-hmenu"
+                        className="rax-grid-hmenu"
                         tabIndex={-1}
                         aria-label={
                           labels?.columnMenu?.(column.columnDef.meta?.label ?? column.id) ??
@@ -163,7 +163,7 @@ export function DataGridHeader<TData>({
                   )}
                   {column.getCanResize() && (
                     <span
-                      className="sheen-grid-resizer"
+                      className="rax-grid-resizer"
                       data-resizing={column.getIsResizing() || undefined}
                       onMouseDown={header.getResizeHandler()}
                       onTouchStart={header.getResizeHandler()}

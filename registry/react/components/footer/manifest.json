@@ -18,13 +18,13 @@
       "source": "registry/react/components/footer/footer.tsx",
       "target": "components/ui/footer.tsx",
       "type": "tsx",
-      "sha256": "41a32525af60973f3827533b3793b86d904c95204dd13895888174479b8042b6"
+      "sha256": "765b5fc8d01c35d40525300db121ac4c32b754a4ce9032f872e7781a951882bf"
     },
     {
       "source": "theme/scss/components/_footer.scss",
-      "target": "styles/sheenui/components/_footer.scss",
+      "target": "styles/raxui/components/_footer.scss",
       "type": "scss",
-      "sha256": "b8a664ff09e7607b0fa7192cb088b60c531ee49732a40766d429af08b9c2b5af"
+      "sha256": "6165fcb8019f67e8d8d9c8f8fbf6052e0ee5ba2012e1480d5d8974f6456ed105"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

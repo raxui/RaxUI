@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/badge.css",
       "type": "css",
-      "sha256": "022ecbeb456c6ca4783acf5b89ee9a56206684e3dadf4b0425b3da5c98951cc8"
+      "sha256": "f92dad6466c53c64a7edeeca4ecd627fbfaeef0cab9189abc227167ce5f00d6b"
     }
   ],
   "files": [
@@ -19,14 +19,14 @@
       "destination": "components",
       "target": "Badge/Badge.razor",
       "type": "razor",
-      "sha256": "455be81ee222f96c647799989a937b7793ac2260a3825bf3966bc98ef400bb7e"
+      "sha256": "2b2a5a620e5a6eb23e99559d001a0c090fcaa6098953354593b8e43b7970d775"
     },
     {
       "source": "BadgeCount.razor",
       "destination": "components",
       "target": "Badge/BadgeCount.razor",
       "type": "razor",
-      "sha256": "538e7bde536344c1929a889ab162397c1105aba762126903634bcedb20890879"
+      "sha256": "93907ccca107ff0c4dca2ea75ab26c4c606db62df69306466ceb9ce714d0449c"
     }
   ]
 }

@@ -12,12 +12,12 @@ export function sync(root, host, native, size, placeholder, scrollUpLabel, scrol
     const content = document.createElement('div')
     const list = document.createElement('div')
     trigger.type = 'button'; trigger.id = originalId; trigger.role = 'combobox'
-    content.id = `${originalId}-popup`; content.popover = 'auto'; content.className = 'sheen-popover sheen-select-content sheen-blazor-select-content'
-    list.id = `${originalId}-list`; list.role = 'listbox'; list.className = 'sheen-select-viewport sheen-choice-list'; list.tabIndex = -1
+    content.id = `${originalId}-popup`; content.popover = 'auto'; content.className = 'rax-popover rax-select-content rax-blazor-select-content'
+    list.id = `${originalId}-list`; list.role = 'listbox'; list.className = 'rax-select-viewport rax-choice-list'; list.tabIndex = -1
     trigger.setAttribute('popovertarget', content.id); trigger.setAttribute('aria-controls', list.id); trigger.setAttribute('aria-haspopup','listbox')
     let scrolling
     const scrollButtons = [-1, 1].map(direction => {
-      const button = document.createElement('button'); button.type='button'; button.tabIndex=-1; button.className='sheen-select-scroll-button'; button.hidden=true
+      const button = document.createElement('button'); button.type='button'; button.tabIndex=-1; button.className='rax-select-scroll-button'; button.hidden=true
       button.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="${direction < 0 ? 'm6 15 6-6 6 6' : 'm6 9 6 6 6-6'}"/></svg>`
       button.addEventListener('pointerenter', () => { clearInterval(scrolling); scrolling=setInterval(() => list.scrollBy(0,direction*6),16) }, {signal})
       button.addEventListener('pointerleave', () => clearInterval(scrolling), {signal})
@@ -58,7 +58,7 @@ export function sync(root, host, native, size, placeholder, scrollUpLabel, scrol
       [...list.querySelectorAll('[role="option"]')].forEach(el => {
         const selected = el.dataset.value === select.value
         el.setAttribute('aria-selected', String(selected)); el.dataset.state = selected ? 'checked' : 'unchecked'
-        el.querySelector('.sheen-select-indicator').hidden = !selected
+        el.querySelector('.rax-select-indicator').hidden = !selected
       })
       const option = select.selectedOptions[0]
       trigger.replaceChildren(document.createElement('span')); trigger.firstChild.textContent = !select.value && state.placeholder ? state.placeholder : option?.label || state.placeholder || ''
@@ -77,21 +77,21 @@ export function sync(root, host, native, size, placeholder, scrollUpLabel, scrol
   const signature = select.innerHTML
   if(signature !== state.signature) {
     popover.disposeListbox(list); list.replaceChildren()
-    const highlight = document.createElement('span'); highlight.className = 'sheen-choice-highlight'; highlight.dataset.choiceHighlight = ''; highlight.hidden = true; highlight.setAttribute('aria-hidden','true'); list.append(highlight)
+    const highlight = document.createElement('span'); highlight.className = 'rax-choice-highlight'; highlight.dataset.choiceHighlight = ''; highlight.hidden = true; highlight.setAttribute('aria-hidden','true'); list.append(highlight)
     let index = 0
     const append = (parent, options, disabled = false) => {
       for(const option of options) {
         if(option.tagName === 'OPTGROUP') {
           const group = document.createElement('div'); group.role='group'; group.setAttribute('aria-label',option.label)
-          const label = document.createElement('div'); label.className='sheen-select-label'; label.textContent=option.label; group.append(label); list.append(group)
+          const label = document.createElement('div'); label.className='rax-select-label'; label.textContent=option.label; group.append(label); list.append(group)
           append(group, option.children, option.disabled)
         } else if(option.tagName === 'OPTION' && option.hasAttribute('data-separator')) {
-          const separator=document.createElement('div');separator.role='separator';separator.className='sheen-select-separator';parent.append(separator)
+          const separator=document.createElement('div');separator.role='separator';separator.className='rax-select-separator';parent.append(separator)
         } else if(option.tagName === 'OPTION' && !option.hidden) {
-          const row=document.createElement('div');row.id=`${state.originalId}-option-${index++}`;row.role='option';row.dataset.value=option.value;row.className='sheen-select-item';row.setAttribute('aria-disabled',String(disabled || option.disabled))
+          const row=document.createElement('div');row.id=`${state.originalId}-option-${index++}`;row.role='option';row.dataset.value=option.value;row.className='rax-select-item';row.setAttribute('aria-disabled',String(disabled || option.disabled))
           row.toggleAttribute('data-disabled',disabled || option.disabled)
           const label=document.createElement('span');label.textContent=option.label
-          const indicator=document.createElement('span');indicator.className='sheen-select-indicator';indicator.innerHTML=check
+          const indicator=document.createElement('span');indicator.className='rax-select-indicator';indicator.innerHTML=check
           row.append(label,indicator);parent.append(row)
         }
       }

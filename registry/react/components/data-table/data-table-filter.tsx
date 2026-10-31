@@ -44,7 +44,7 @@ function DataTableFacetedFilter<TData, TValue>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="sm" className="sheen-table-filter-btn" data-active={selected.size ? "" : undefined}>
+        <Button variant="secondary" size="sm" className="rax-table-filter-btn" data-active={selected.size ? "" : undefined}>
           <PlusCircleIcon />
           {title}
           {selected.size > 0 && (

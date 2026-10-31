@@ -1,4 +1,4 @@
-<span @attributes="AdditionalAttributes" id="@Item.LabelId" class="sheen-speed-dial-label @Class">@ChildContent</span>
+<span @attributes="AdditionalAttributes" id="@Item.LabelId" class="rax-speed-dial-label @Class">@ChildContent</span>
 @code {
     [CascadingParameter] public SpeedDialItem Item { get; set; } = default!;
     [Parameter] public string? Class { get; set; }

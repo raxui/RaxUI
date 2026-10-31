@@ -14,7 +14,7 @@
       "destination": "styles",
       "target": "components/sidebar.css",
       "type": "css",
-      "sha256": "42950651428e028479ddbd219f8f557f1b09c70a7721643ef9386cc757ca7f3e"
+      "sha256": "5c6f7be5b6d581c8fed08a74509f08ae6007980938b437dbeb0af8810e15a326"
     }
   ],
   "files": [
@@ -23,175 +23,175 @@
       "destination": "components",
       "target": "Sidebar/Sidebar.razor",
       "type": "razor",
-      "sha256": "8aed311b6b8feefb7b34183f17861bd4f57c20b92ee1677a8a388c30e562ad0b"
+      "sha256": "c6ed7da88ce7499fd80b669eccc5575c41776d4ed3fbf551ac93e24a9d660afb"
     },
     {
       "source": "SidebarContent.razor",
       "destination": "components",
       "target": "Sidebar/SidebarContent.razor",
       "type": "razor",
-      "sha256": "bc84b2eccfa997be88fc3c8bc44b2e60507516c1b581c0d7d82477188f12bdf1"
+      "sha256": "7ab53d902e7eaa2de98c52151cf58559899ca015633306d71a7ea1c84fd345b8"
     },
     {
       "source": "SidebarFooter.razor",
       "destination": "components",
       "target": "Sidebar/SidebarFooter.razor",
       "type": "razor",
-      "sha256": "6fea9413b822fcf2848f380ab4d36ef5c7a41f7017b9840ca0fcd5f2b16e9161"
+      "sha256": "8dc8ac65913fe891068a124812cb07cdcc7d18afbc7f795df99b15c1830e123b"
     },
     {
       "source": "SidebarGroup.razor",
       "destination": "components",
       "target": "Sidebar/SidebarGroup.razor",
       "type": "razor",
-      "sha256": "2964408a635af1236348b6f8174e34ee20e312707847492effb086ba3ef6dfee"
+      "sha256": "d964d122b2953b5e996bd7e743c3d0d634089c8f4a508fe7be070b65c0d52faa"
     },
     {
       "source": "SidebarGroupAction.razor",
       "destination": "components",
       "target": "Sidebar/SidebarGroupAction.razor",
       "type": "razor",
-      "sha256": "3d1199132c1d4ac42d5883b6b2bf5501f61382b49a3b5ea469fbd5a093e6f214"
+      "sha256": "6a5579537972b382470b5cfcabc1bd0147b1bd44e14056069aa0a183e52e914d"
     },
     {
       "source": "SidebarGroupContent.razor",
       "destination": "components",
       "target": "Sidebar/SidebarGroupContent.razor",
       "type": "razor",
-      "sha256": "12d9bc25555b86fc6ed559c713def3d31ad5b8199cfad5ea05596210b38bce21"
+      "sha256": "d546535ddc6821e97c7daf4caf19fa1cfa9bd3664c7f5c5733efecf7da148f30"
     },
     {
       "source": "SidebarGroupLabel.razor",
       "destination": "components",
       "target": "Sidebar/SidebarGroupLabel.razor",
       "type": "razor",
-      "sha256": "465ae401b413414849af5f36d017458c85eeb2cead7db6ade6369af233d119ca"
+      "sha256": "97801a6e6a8e02e0448e5f9f7563d6dff5496c60a88dc518875722a060c13541"
     },
     {
       "source": "SidebarHeader.razor",
       "destination": "components",
       "target": "Sidebar/SidebarHeader.razor",
       "type": "razor",
-      "sha256": "1663bfce8d95ea052c5edeb285b6b49b6fcbc3c3352b79afd303226812482fdc"
+      "sha256": "5a3850afa33a8591ddac6b2409a4f6167d8e00633c06a204f281193a65b3dcb7"
     },
     {
       "source": "SidebarInput.razor",
       "destination": "components",
       "target": "Sidebar/SidebarInput.razor",
       "type": "razor",
-      "sha256": "a9b37aad7dcc3cbe9061ae581f85852c2480a528dee740825e58ef26e1b5af3e"
+      "sha256": "817c4528f25828f66e5eec156b2b6df8d8c1373ce1d95c7b4ceffebdc63bfe91"
     },
     {
       "source": "SidebarInset.razor",
       "destination": "components",
       "target": "Sidebar/SidebarInset.razor",
       "type": "razor",
-      "sha256": "0d990e18711048f665888f0634f22335f2ad10ab8cbbfc3387c133a25256852e"
+      "sha256": "76f427584c31cdee3b2eb0942efb28ff3a3b2f874d4e0b406019bcfb3245d0fe"
     },
     {
       "source": "SidebarMenu.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenu.razor",
       "type": "razor",
-      "sha256": "da62af3d335739813969b58cff6aa3327382ec74103b861986e868421674b85e"
+      "sha256": "ed235aae18f0a02ef70f698bf6e20179632cb35a36c66afaa897d13faf1d7869"
     },
     {
       "source": "SidebarMenuAction.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenuAction.razor",
       "type": "razor",
-      "sha256": "d794331c67f3d20d2f6660916e0e52c405c0fa8c0ea8d070626245d01cadd08e"
+      "sha256": "dd78aa6cb3d0afc151cbbe42c0fb0a9fe998da25c94357b5fa3e0e3c7f2be485"
     },
     {
       "source": "SidebarMenuBadge.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenuBadge.razor",
       "type": "razor",
-      "sha256": "3c9fbce536de74cc06cdf384ab2f4540987e8c89617bc5bef0da7ce695e301e9"
+      "sha256": "2c5fe0446f3449d2524e3179fa7a4bec54abd0aa6b152a6e0a9973a27822fa09"
     },
     {
       "source": "SidebarMenuButton.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenuButton.razor",
       "type": "razor",
-      "sha256": "6ff56d3827f71bc62e7d12c0cf297d8f70534ebcebcfa9b0d61364dca1e16083"
+      "sha256": "7ddf3cde580e2161c872d2b1581de245549e54d02f2bbb39ce96a6c8f99d0f3e"
     },
     {
       "source": "SidebarMenuCollapsible.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenuCollapsible.razor",
       "type": "razor",
-      "sha256": "b320048b2a2edcdb22f9a671f8a9d5615cdb94fcb67299c5ef7381439684bd3a"
+      "sha256": "91f7a4ca135dcee355c8aa5c0a7627d2b2a1672fa5b7908feb75f171bfd22b3a"
     },
     {
       "source": "SidebarMenuItem.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenuItem.razor",
       "type": "razor",
-      "sha256": "a7032dc8e14452a598cb1b2d669ababf4f5417fedc5ea33d63d798a78e817002"
+      "sha256": "7c908aedfc2cefa9e265205be028574e939536d4bb762aebc58135702a239510"
     },
     {
       "source": "SidebarMenuSkeleton.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenuSkeleton.razor",
       "type": "razor",
-      "sha256": "44ed0ab75c8a0165ba609ddae5127ca5b23ea9f4612d90e6a8ff2a249da51a1f"
+      "sha256": "aa092f8112347e59241f91b7c7423916ffb213f37c008dc4f1eca93b1c4c9ab8"
     },
     {
       "source": "SidebarMenuSub.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenuSub.razor",
       "type": "razor",
-      "sha256": "ed533e239967172200a8df9bae9faf912983e2e1f7f5fb4a7b0d96e8162f3f71"
+      "sha256": "ff046a7aa21fbdd88a4d03da8478f35f03ea37ebf05c56f1e9b0c2ae71d74c49"
     },
     {
       "source": "SidebarMenuSubButton.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenuSubButton.razor",
       "type": "razor",
-      "sha256": "876270dc3e61dca628634ddce7364320e9183c5376e92594fc028dc0955bab92"
+      "sha256": "49f7752917980ec0077fe0de0f873b0fa5e2b30f4ff3246039c3428b455d77eb"
     },
     {
       "source": "SidebarMenuSubItem.razor",
       "destination": "components",
       "target": "Sidebar/SidebarMenuSubItem.razor",
       "type": "razor",
-      "sha256": "f27f55f175909dd861c1387727aee7bd31b1269e68f9b54198685cb062f9b35e"
+      "sha256": "10f531d011cf4ca3c9a6fc613a7e2b3499344fc92f97abf3a9ff9b02661b93ea"
     },
     {
       "source": "SidebarProvider.razor",
       "destination": "components",
       "target": "Sidebar/SidebarProvider.razor",
       "type": "razor",
-      "sha256": "cec2b3734e41a0b74c9c3d36b2ed49b6b6d14882c42b36ad2fe89c001363f81c"
+      "sha256": "cb25cea1bc2bd66b58658e4d53aa109e8c1598afa5f847dcb21a5c9cf434a07a"
     },
     {
       "source": "SidebarProvider.razor.js",
       "destination": "components",
       "target": "Sidebar/SidebarProvider.razor.js",
       "type": "js",
-      "sha256": "db41e47752330f09fa400a172d26d34d90d3acd18f04da9bb387236115a111d9"
+      "sha256": "afcf54131f61bba556712791d11f1a37c9e3fe109d6fc113e629f0dbcda848d9"
     },
     {
       "source": "SidebarRail.razor",
       "destination": "components",
       "target": "Sidebar/SidebarRail.razor",
       "type": "razor",
-      "sha256": "d19ca5fae431a5db8cb92e67399308b509ae483af93dbb7516dd2d42ae06c5be"
+      "sha256": "b5c4e8a4980699d27a1755b3756bd4c6204233d4a6360b1850b5e1f09a33aed8"
     },
     {
       "source": "SidebarSeparator.razor",
       "destination": "components",
       "target": "Sidebar/SidebarSeparator.razor",
       "type": "razor",
-      "sha256": "ba218d881377584ad2b910928a8d4f0e0d5ee4673213611f87bded910b8a784e"
+      "sha256": "7c9ca3668d1e5ab00d2e73b12d8fbf79593be4ea0fb022542b8345a7fa10ceb3"
     },
     {
       "source": "SidebarTrigger.razor",
       "destination": "components",
       "target": "Sidebar/SidebarTrigger.razor",
       "type": "razor",
-      "sha256": "0c79776e183e76e46958a19efa19b01aa9098ce9353f7d62e986b9ca663a2c1c"
+      "sha256": "4408a5336c3e725f18d0b32387c677270a71e3b50ee2376cbed880cc904d23bb"
     }
   ]
 }

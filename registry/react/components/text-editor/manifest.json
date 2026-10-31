@@ -30,25 +30,25 @@
       "source": "registry/react/components/text-editor/text-editor.tsx",
       "target": "components/ui/text-editor.tsx",
       "type": "tsx",
-      "sha256": "6d38b162a06379433bb50fe138ddcf69c3e417b9488e687095e1a55e63129e3e"
+      "sha256": "ceb479c7432bb766b64f7d39303f19701115b31abcc85d91a80741336bd59016"
     },
     {
       "source": "theme/scss/components/_text-editor.scss",
-      "target": "styles/sheenui/components/_text-editor.scss",
+      "target": "styles/raxui/components/_text-editor.scss",
       "type": "scss",
-      "sha256": "d637733ee785169251add6defb3c47fd6be84ad14ded2d1baf42bfcfbcfe1b43"
+      "sha256": "53715e479755d17c16d9a3bf3b8ec2b4a28f603fedd78aad9f071508d3a561c2"
     },
     {
       "source": "registry/react/components/text-editor/text-editor-config.tsx",
       "target": "components/ui/text-editor-config.tsx",
       "type": "tsx",
-      "sha256": "3f16cd53601ab18e13e4644751296cb765d9fbce40b72fcd61cffe228666b733"
+      "sha256": "6af840dd0e57ee8fd85d9e8107bbc8e3df46c7941eb41219ba4ac9cfe892cb31"
     },
     {
       "source": "registry/react/components/text-editor/text-editor-icons.tsx",
       "target": "components/ui/text-editor-icons.tsx",
       "type": "tsx",
-      "sha256": "489594e9e57ba4e19c88ead89054c3e393ff7c1648305cfac431a29735beec48"
+      "sha256": "26d8119d9dc678541f0cd743fedf4303c60542e2f8f44be9b519afc0c90d13f0"
     },
     {
       "source": "registry/react/components/text-editor/text-editor-state.tsx",
@@ -60,13 +60,13 @@
       "source": "registry/react/components/text-editor/text-editor-link.tsx",
       "target": "components/ui/text-editor-link.tsx",
       "type": "tsx",
-      "sha256": "ad12946c0570ff74c8556bdaf1b3e50d360d46a8c4b2063e7faaf718ca840b7c"
+      "sha256": "b90dca50452b75944a5986e00096868c3df5f5b743c2068c456493642c78c662"
     },
     {
       "source": "registry/react/components/text-editor/text-editor-toolbar.tsx",
       "target": "components/ui/text-editor-toolbar.tsx",
       "type": "tsx",
-      "sha256": "f6a18c87c7661045ad336dc7cbd7804d07a653fab0a51f1f94ddb7a68f40e57f"
+      "sha256": "189960267c25178b196b2cefce235c37b58b89f140887bea1df851f6dcac48a2"
     }
   ]
 }

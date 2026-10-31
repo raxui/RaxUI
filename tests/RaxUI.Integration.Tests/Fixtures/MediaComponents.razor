@@ -1,0 +1,16 @@
+@page "/media-demo"
+@rendermode InteractiveServer
+<link rel="stylesheet" href="media-examples.css" />
+<div id="media-theme" data-rax-appearance="@appearance" data-bs-theme="@mode" data-rax-accent="@accent" data-rax-density="@density" dir="@direction" style="padding:1rem">
+<label>Appearance<select id="media-appearance" @bind="appearance"><option>default</option><option>flat</option><option>glass</option></select></label><label>Mode<select id="media-mode" @bind="mode"><option>light</option><option>dark</option></select></label><label>Direction<select id="media-direction" @bind="direction"><option>ltr</option><option>rtl</option></select></label><label>Accent<select id="media-accent" @bind="accent"><option>blue</option><option>emerald</option></select></label><label>Density<select id="media-density" @bind="density"><option>default</option><option>compact</option></select></label>
+<Button OnClick="()=>show=!show">Toggle media</Button>
+@if(show){<section id="qr-example"><h1>QR code</h1><QRCodeExamples /></section><section id="carousel-example" class="my-4"><h2>Carousel</h2><CarouselExamples /></section>}
+<section id="qr-probe" class="my-4"><label>Text<input id="qr-value" @bind="text" @bind:event="oninput" /></label><label>Shape<select id="qr-shape" @bind="shape"><option>square</option><option>rounded</option><option>dots</option></select></label><label>Level<select id="qr-level" @bind="level"><option>L</option><option>M</option><option>Q</option><option>H</option></select></label><label>Logo<input id="qr-logo" type="checkbox" @bind="logo" /></label><QRCode Value="@text" Size="240" Margin="4" Shape="@shape" Level="@level" Downloads Label="@("QR "+text)" Overlay="@(logo ? Logo : null)" OnError="e=>error=e" /><output id="qr-error">@error</output></section>
+<section id="dynamic-carousel" class="my-4"><Button OnClick="()=>count++">Add slide</Button><Button OnClick="()=>count=Math.Max(1,count-1)">Remove slide</Button><Carousel Label="Dynamic slides" Loop SelectedChanged="i=>selected=i"><CarouselContent ViewportStyle="height:160px">@for(var i=0;i<count;i++){var index=i;<CarouselItem @key="index"><div class="bg-primary-subtle h-100 p-4">Slide @index</div></CarouselItem>}</CarouselContent><CarouselPrevious /><CarouselNext /><CarouselDots /><CarouselCounter /></Carousel><output id="settled-index">@selected</output></section>
+<section id="autoplay-probe" class="my-4"><Carousel Label="Autoplay probe" Loop Autoplay="350"><CarouselContent ViewportStyle="height:100px">@foreach(var n in new[]{1,2,3}){<CarouselItem><div class="bg-success-subtle h-100 p-3">Autoplay @n</div></CarouselItem>}</CarouselContent><CarouselPlayPause /><CarouselDots /></Carousel></section>
+</div>
+@code {
+ private string appearance="default",mode="light",direction="ltr",accent="blue",density="default",text="https://github.com/raxui/RaxUI",shape="square",level="H",error="";
+ private bool show=true,logo;private int count=3,selected;
+ private RenderFragment Logo=>@<svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#0f172a" /><path d="M8 7h5a3 3 0 0 1 0 6H8zm0 6h6a3 3 0 0 1 0 6H8z" fill="none" stroke="white" stroke-width="2" /></svg>;
+}

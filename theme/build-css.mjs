@@ -14,15 +14,15 @@ function compile(entry) {
 }
 export function compileBlazorTheme() {
   // Imports must precede every CSS rule. The CLI edits only this marked list.
-  return "/* sheenui:imports:start */\n/* sheenui:imports:end */\n" + compile('@import "core";')
+  return "/* raxui:imports:start */\n/* raxui:imports:end */\n" + compile('@import "core";')
 }
 export function compileBlazorAssets() {
-  const assets = new Map([["registry/blazor/styles/sheenui.css", compileBlazorTheme()]])
+  const assets = new Map([["registry/blazor/styles/raxui.css", compileBlazorTheme()]])
   for (const file of readdirSync(path.join(root, "theme/scss/components"))) {
-    if (!/^_.+\.scss$/.test(file) || file === "_input-mixins.scss") continue
+    if (!/^_.+\.scss$/.test(file) || file === "_input-mixins.scss" || file === "_choice-highlight.scss") continue
     const name = file.slice(1, -5)
     const target = name === "starter" ? "registry/blazor/starter/starter.css" : `registry/blazor/styles/components/${name}.css`
-    // These partials contain definitions only; runtime tokens are emitted once by core.
+    // choice-highlight is folded into popover.css. These partials contain definitions only; runtime tokens are emitted once by core.
     assets.set(target, compile(`@import "variables"; @import "mixins"; @import "components/${name}"; ${name === "popover" ? '@import "components/choice-highlight";' : ""}`))
   }
   return assets

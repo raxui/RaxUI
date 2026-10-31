@@ -1,0 +1,29 @@
+@page "/shell-demo"
+@page "/shell-demo/{Section}"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+<div id="shell-theme" data-rax-appearance="@appearance" data-bs-theme="@mode" data-rax-accent="@accent" data-rax-density="@density" dir="@direction" style="padding:1rem">
+<label>Appearance<select id="shell-appearance" @bind="appearance"><option>default</option><option>flat</option><option>glass</option></select></label>
+<label>Mode<select id="shell-mode" @bind="mode"><option>light</option><option>dark</option></select></label>
+<label>Direction<select id="shell-direction" @bind="direction"><option>ltr</option><option>rtl</option></select></label>
+<label>Accent<select id="shell-accent" @bind="accent"><option>blue</option><option>emerald</option><option>rose</option></select></label>
+<label>Density<select id="shell-density" @bind="density"><option>default</option><option>compact</option><option>comfortable</option></select></label>
+<label>Arabic<input id="shell-arabic" type="checkbox" @bind="arabic" /></label>
+<CascadingValue Name="ShellExamplesArabic" Value="arabic">
+<section id="shell-navbar" class="my-4"><h1>Navbar</h1><NavbarExamples /></section>
+<section id="shell-sidebar" class="my-4"><h2>Sidebar</h2><SidebarExamples /></section>
+<section id="shell-navigation" class="my-4"><h2>Navigation menu</h2><NavigationMenuExamples /></section>
+<section id="shell-menubar" class="my-4"><h2>Menubar</h2><MenubarExamples /></section>
+<section id="shell-footer" class="my-4"><h2>Footer</h2><FooterExamples /></section>
+<section id="shell-banner" class="my-4"><h2>Banner</h2><BannerExamples /></section>
+</CascadingValue>
+<Navbar id="routing-navbar" Expand="always"><NavbarLinks Label="Routing"><NavbarLink Href="@BasePath">Home route</NavbarLink><NavbarLink Href="@(BasePath + "/docs")">Docs route</NavbarLink></NavbarLinks></Navbar>
+<SidebarProvider id="routing-sidebar" DefaultOpen="false"><Sidebar Collapsible="offcanvas" Label="Routing sidebar"><SidebarContent><SidebarMenu><SidebarMenuItem><SidebarMenuButton Href="@(BasePath + "/docs")">Sidebar docs route</SidebarMenuButton></SidebarMenuItem></SidebarMenu></SidebarContent></Sidebar><SidebarInset><SidebarTrigger Label="Toggle routing sidebar" /><input aria-label="Routing editor" /></SidebarInset></SidebarProvider>
+<Footer id="routing-footer"><FooterColumns><FooterColumn Title="Routing footer"><FooterLink Href="@(BasePath + "/docs")">Footer docs route</FooterLink></FooterColumn></FooterColumns></Footer>
+</div>
+@code {
+    [Parameter] public string? Section { get; set; }
+    private string appearance = "default", mode = "light", direction = "ltr", accent = "blue", density = "default";
+    private bool arabic;
+    private string BasePath => Navigation.ToBaseRelativePath(Navigation.Uri).StartsWith("static-", StringComparison.Ordinal) ? "/static-shell-demo" : "/shell-demo";
+}

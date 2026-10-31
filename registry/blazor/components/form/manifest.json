@@ -13,14 +13,14 @@
       "destination": "components",
       "target": "Form/Form.razor",
       "type": "razor",
-      "sha256": "e4f92f3a49fcd3a1d8dc0577d8b79b309f653eeab52997a9f4d8993326306095"
+      "sha256": "8c0a46458a223adde12e7223682500ac42f81ad436267936491cab65e1d8fb18"
     },
     {
       "source": "Form.razor.js",
       "destination": "components",
       "target": "Form/Form.razor.js",
       "type": "js",
-      "sha256": "8bcfaa29bb4920699c87db3b0cf71bcca0245fabcf9c607e4d027570a48856b7"
+      "sha256": "2bef3f24b0ec8ace9d3bd5f85ad16875798e459f68286f9e5b60b3bdb2a35f2a"
     }
   ]
 }

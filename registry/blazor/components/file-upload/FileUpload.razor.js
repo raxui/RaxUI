@@ -2,7 +2,7 @@
 const instances = new WeakMap()
 export function init(root) {
   if (instances.has(root)) return
-  const zone = root.querySelector(".sheen-upload-zone")
+  const zone = root.querySelector(".rax-upload-zone")
   const controller = new AbortController()
   let depth = 0
   const listen = (event, handler) => zone.addEventListener(event, handler, { signal: controller.signal })

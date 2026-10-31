@@ -3,7 +3,7 @@
 <Drawer @bind-Open="open" Title="@T("Daily steps", "الخطوات اليومية")" Description="@T("Set a goal you can keep every day.", "حدد هدفاً يمكنك تحقيقه كل يوم.")" HandleLabel="@T("Resize drawer", "تغيير ارتفاع الدروير")">
     <ChildContent><div class="d-flex align-items-center justify-content-center gap-4 py-3">
         <Button Variant="secondary" Size="icon" aria-label="@T("Decrease", "تقليل")" disabled="@(goal <= 1000)" OnClick="@(() => Step(-500))"><PanelIcon Path="M5 12h14" /></Button>
-        <div class="text-center" style="min-width:9rem"><div @key="goal" class="display-4 fw-bold lh-1 sheen-drawer-tick" style="font-variant-numeric:tabular-nums" aria-live="polite">@goal.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</div><div class="small text-body-secondary text-uppercase mt-1">@T("steps / day", "خطوة / يوم")</div></div>
+        <div class="text-center" style="min-width:9rem"><div @key="goal" class="display-4 fw-bold lh-1 rax-drawer-tick" style="font-variant-numeric:tabular-nums" aria-live="polite">@goal.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</div><div class="small text-body-secondary text-uppercase mt-1">@T("steps / day", "خطوة / يوم")</div></div>
         <Button Variant="secondary" Size="icon" aria-label="@T("Increase", "زيادة")" disabled="@(goal >= 20000)" OnClick="@(() => Step(500))"><PanelIcon Path="M12 5v14M5 12h14" /></Button>
     </div></ChildContent>
     <Footer><Button OnClick="Save">@T("Save goal", "حفظ الهدف")</Button><Button Variant="ghost" OnClick="@(() => open = false)">@T("Cancel", "إلغاء")</Button></Footer>

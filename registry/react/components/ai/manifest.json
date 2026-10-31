@@ -25,9 +25,9 @@
     },
     {
       "source": "theme/scss/components/_ai.scss",
-      "target": "styles/sheenui/components/_ai.scss",
+      "target": "styles/raxui/components/_ai.scss",
       "type": "scss",
-      "sha256": "c02dc1b7fa70af7d7d5e99385b48a07a360d38f05da12988d13206798a9d6397"
+      "sha256": "e56696b4ceef9d92b38d244ebdf0517684e7b78d916199a2aceb5120ae492f78"
     },
     {
       "source": "registry/react/components/ai/ai-shared.tsx",
@@ -39,49 +39,49 @@
       "source": "registry/react/components/ai/ai-response.tsx",
       "target": "components/ui/ai-response.tsx",
       "type": "tsx",
-      "sha256": "8e592554d8471218811315b0f96325743c0ad5b5334b547ccdbf24f201870bb6"
+      "sha256": "5bb9c76fff3ef720e5c84659f6893dc32698767577a8e3f9f23c4e9aaa36c703"
     },
     {
       "source": "registry/react/components/ai/ai-reasoning.tsx",
       "target": "components/ui/ai-reasoning.tsx",
       "type": "tsx",
-      "sha256": "e4f5eaf703ec1e827ea5cd546ee7571a228809cbd57ba3549373b2bbeeca7746"
+      "sha256": "05a802b9967595e20346c7fd7f4efb789989168db35ecd218ff0a29e1ba30010"
     },
     {
       "source": "registry/react/components/ai/ai-tool-call.tsx",
       "target": "components/ui/ai-tool-call.tsx",
       "type": "tsx",
-      "sha256": "60374145124af96469fb4d2d0307f2adef6a96a7dbbca666551e7531d98b5816"
+      "sha256": "192ad88b1d4d8f0edd18fbbfcf02a87409a928d2938811fc2476fa8a3d9aaca1"
     },
     {
       "source": "registry/react/components/ai/ai-sources.tsx",
       "target": "components/ui/ai-sources.tsx",
       "type": "tsx",
-      "sha256": "c21513c81c6fba56156c03f4130ddf975872602a618428e02cde1bb2c1f8dc59"
+      "sha256": "f5dc0e4cca5570802671ef9a2623635f3ba8cad5c6592e6bccf4efdd8c3af673"
     },
     {
       "source": "registry/react/components/ai/ai-code-block.tsx",
       "target": "components/ui/ai-code-block.tsx",
       "type": "tsx",
-      "sha256": "966576999430eccb072b15c647e57456d98131c5e7a96fa747eed47ab090d13d"
+      "sha256": "b5e27edb8abac798fc2a7e155ddd7f8df1e665a2388917f39212d4b2a8f5f379"
     },
     {
       "source": "registry/react/components/ai/ai-actions.tsx",
       "target": "components/ui/ai-actions.tsx",
       "type": "tsx",
-      "sha256": "6ea35667db6e1a9885ac8e4780f0a4fe12c5a621e036364320601a37b06a361b"
+      "sha256": "ed915c03f9aab2ca4c0004d1a7bcee0c69c05492379c3a79a57e11c9dd147a6f"
     },
     {
       "source": "registry/react/components/ai/ai-suggestions.tsx",
       "target": "components/ui/ai-suggestions.tsx",
       "type": "tsx",
-      "sha256": "acd3af65b6ae0c6da976422296d8d823817fcfb0dbf85c70dcf5ab55caa8bc9a"
+      "sha256": "4038f35bd3066fe06e3e6adc773625423c23a80455e2add08f1b904eb5fedf52"
     },
     {
       "source": "registry/react/components/ai/ai-prompt.tsx",
       "target": "components/ui/ai-prompt.tsx",
       "type": "tsx",
-      "sha256": "6408db4b47700c9822ca0d039921e203347ced1b7d8e60cddd28b43f174030b3"
+      "sha256": "df60261a0a27364d94ed334915a7cdf4077793311c63ad4fa97310833f53781f"
     }
   ]
 }

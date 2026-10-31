@@ -1,7 +1,7 @@
 @typeparam TItem
-<div @attributes="AdditionalAttributes" class="@($"sheen-avatar-group {Class}")" role="group" aria-label="@Label">
-    @for(var i=0;i<Math.Min(Max,Items.Count);i++){var item=Items[i];<Avatar @key="GetId(item)" Name="@GetName(item)" Src="@GetImage?.Invoke(item)" Size="@Size" title="@GetName(item)" style="@($"--sheen-avatar-i:{i}")" />}
-    @if(Items.Count>Max){<Avatar Size="@Size" Class="sheen-avatar-more" FallbackLabel="@(MoreLabel?.Invoke(Items.Count-Max)??$"{Items.Count-Max} more members")" title="@string.Join(", ",Items.Skip(Max).Select(GetName))" style="@($"--sheen-avatar-i:{Max}")">+@(Items.Count-Max)</Avatar>}
+<div @attributes="AdditionalAttributes" class="@($"rax-avatar-group {Class}")" role="group" aria-label="@Label">
+    @for(var i=0;i<Math.Min(Max,Items.Count);i++){var item=Items[i];<Avatar @key="GetId(item)" Name="@GetName(item)" Src="@GetImage?.Invoke(item)" Size="@Size" title="@GetName(item)" style="@($"--rax-avatar-i:{i}")" />}
+    @if(Items.Count>Max){<Avatar Size="@Size" Class="rax-avatar-more" FallbackLabel="@(MoreLabel?.Invoke(Items.Count-Max)??$"{Items.Count-Max} more members")" title="@string.Join(", ",Items.Skip(Max).Select(GetName))" style="@($"--rax-avatar-i:{Max}")">+@(Items.Count-Max)</Avatar>}
 </div>
 @code {
     [Parameter,EditorRequired] public IReadOnlyList<TItem> Items { get; set; }=Array.Empty<TItem>();

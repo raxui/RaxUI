@@ -50,7 +50,7 @@
     }
     </div></div>
     <div class="p-3 pt-0">
-        <AIPromptInput Status="@status" OnSubmit="Ask" OnStop="Stop" Placeholder="Ask about SheenUI… (try Arabic too)">
+        <AIPromptInput Status="@status" OnSubmit="Ask" OnStop="Stop" Placeholder="Ask about RaxUI… (try Arabic too)">
             <Tools>
                 <Button Variant="ghost" Size="icon-sm" Type="button" aria-label="Attach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 11-8.5 8.5a5.5 5.5 0 0 1-7.8-7.8l9-9a3.7 3.7 0 0 1 5.2 5.2l-9 9a1.8 1.8 0 0 1-2.6-2.6l8.5-8.5" /></svg></Button>
                 <select class="form-select form-select-sm border-0 bg-transparent" style="width:auto;min-width:8rem" aria-label="Model" @bind="model"><option value="sonnet">Fast model</option><option value="opus">Deep model</option></select>
@@ -68,12 +68,12 @@
     private sealed record Answer(string Reasoning, string Text, AITypes.Source[] Sources);
     private static readonly Dictionary<string, Answer> Answers = new()
     {
-        ["en"] = new("The user wants dark mode.\nSheenUI themes with data-bs-theme on <html>.\nI should show the attribute and a toggle.",
-            "Dark mode is **one attribute** on the root element. Every component reads the same tokens, so the glass, shadows and accents switch together:\n\n```html\n<html data-bs-theme=\"dark\" data-sheen-accent=\"emerald\">\n```\n\nTo make it feel native:\n\n1. Toggle `data-bs-theme` from a button.\n2. Remember the choice in `localStorage`.\n3. On the first visit, follow `prefers-color-scheme`.\n\n| Attribute | Values |\n| --- | --- |\n| `data-bs-theme` | `light` · `dark` |\n| `data-sheen-accent` | `emerald` · `indigo` · `amber` |\n\n> The playground header switches all of these live.",
-            [new("Color modes · Bootstrap", "https://getbootstrap.com/docs/5.3/customize/color-modes/"), new("SheenUI README · Accent and typeface", "https://github.com/SaadAlsaree/SheenUI#accent-and-typeface"), new("prefers-color-scheme · MDN", "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme")]),
-        ["corners"] = new("They want square corners.\nEvery radius is a base size times --sheen-radius-scale.\ndata-sheen-radius=\"none\" sets the scale to 0.",
-            "Every radius is a base size × `--sheen-radius-scale`, so **one attribute** squares everything:\n\n```html\n<html data-sheen-radius=\"none\">\n```\n\n- [x] Buttons, inputs, cards and dialogs follow\n- [x] Bootstrap's `.rounded-*` utilities follow\n- [ ] Pills and circles stay round, on purpose\n\nLevels: `none`, `xs`, `sm`, **`md`** (default), `lg` and `xl`. Put the attribute on any element to change just that part of the page.",
-            [new("SheenUI README · Corners", "https://github.com/SaadAlsaree/SheenUI#corners")]),
+        ["en"] = new("The user wants dark mode.\nRaxUI themes with data-bs-theme on <html>.\nI should show the attribute and a toggle.",
+            "Dark mode is **one attribute** on the root element. Every component reads the same tokens, so the glass, shadows and accents switch together:\n\n```html\n<html data-bs-theme=\"dark\" data-rax-accent=\"emerald\">\n```\n\nTo make it feel native:\n\n1. Toggle `data-bs-theme` from a button.\n2. Remember the choice in `localStorage`.\n3. On the first visit, follow `prefers-color-scheme`.\n\n| Attribute | Values |\n| --- | --- |\n| `data-bs-theme` | `light` · `dark` |\n| `data-rax-accent` | `emerald` · `indigo` · `amber` |\n\n> The playground header switches all of these live.",
+            [new("Color modes · Bootstrap", "https://getbootstrap.com/docs/5.3/customize/color-modes/"), new("RaxUI README · Accent and typeface", "https://github.com/raxui/RaxUI#accent-and-typeface"), new("prefers-color-scheme · MDN", "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme")]),
+        ["corners"] = new("They want square corners.\nEvery radius is a base size times --rax-radius-scale.\ndata-rax-radius=\"none\" sets the scale to 0.",
+            "Every radius is a base size × `--rax-radius-scale`, so **one attribute** squares everything:\n\n```html\n<html data-rax-radius=\"none\">\n```\n\n- [x] Buttons, inputs, cards and dialogs follow\n- [x] Bootstrap's `.rounded-*` utilities follow\n- [ ] Pills and circles stay round, on purpose\n\nLevels: `none`, `xs`, `sm`, **`md`** (default), `lg` and `xl`. Put the attribute on any element to change just that part of the page.",
+            [new("RaxUI README · Corners", "https://github.com/raxui/RaxUI#corners")]),
         ["ar"] = new("المستخدم يسأل عن الوضع الداكن.\nالمكتبة تعتمد على data-bs-theme في عنصر html.\nسأعرض الخاصية ومثالاً للتبديل.",
             "الوضع الداكن **خاصية واحدة** على العنصر الجذري. كل المكوّنات تقرأ نفس المتغيرات، فيتغيّر الزجاج والظلال والألوان معاً:\n\n```html\n<html dir=\"rtl\" data-bs-theme=\"dark\">\n```\n\nلتجربة أفضل:\n\n1. اربط `data-bs-theme` بزر تبديل.\n2. احفظ اختيار المستخدم في `localStorage`.\n3. في الزيارة الأولى اتبع إعداد النظام `prefers-color-scheme`.\n\n> يمكنك تجربة كل ذلك مباشرة من رأس صفحة العرض.",
             [new("أوضاع الألوان · Bootstrap", "https://getbootstrap.com/docs/5.3/customize/color-modes/"), new("prefers-color-scheme · MDN", "https://developer.mozilla.org/ar/docs/Web/CSS/@media/prefers-color-scheme")])

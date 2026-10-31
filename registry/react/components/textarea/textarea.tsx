@@ -17,7 +17,7 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   /** Show a "120 / 280" counter with a progress ring. Needs `maxLength`. */
   showCount?: boolean
   limitLabel?: string
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   /** Content for the bottom bar (formatting buttons, attach, send…). */
   footer?: React.ReactNode
   /** Content after the counter, at the bar's end (e.g. a Send button). */
@@ -34,13 +34,13 @@ function CountRing({ length, max, limitLabel = "Character limit reached" }: { le
   const ratio = Math.min(length / max, 1)
   const state = remaining <= 0 ? "limit" : remaining <= Math.max(10, Math.round(max * 0.1)) ? "warn" : undefined
   return (
-    <span className="sheen-textarea-count" data-state={state}>
+    <span className="rax-textarea-count" data-state={state}>
       <svg viewBox="0 0 20 20" aria-hidden="true">
-        <circle className="sheen-textarea-count-track" cx="10" cy="10" r="8" />
-        <circle className="sheen-textarea-count-bar" cx="10" cy="10" r="8" pathLength={1} style={{ strokeDashoffset: 1 - ratio }} />
+        <circle className="rax-textarea-count-track" cx="10" cy="10" r="8" />
+        <circle className="rax-textarea-count-bar" cx="10" cy="10" r="8" pathLength={1} style={{ strokeDashoffset: 1 - ratio }} />
       </svg>
       {/* Exact numbers only once they matter, like iOS / X. */}
-      <span className="sheen-textarea-count-text" dir="ltr">
+      <span className="rax-textarea-count-text" dir="ltr">
         {state ? remaining : `${length} / ${max}`}
       </span>
       {state === "limit" && (
@@ -114,13 +114,13 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const counter = showCount && props.maxLength !== undefined
     const textarea = (
       <textarea
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         ref={composedRef}
         rows={rows ?? minRows}
         data-variant={variant}
         data-auto-resize={autoResize || undefined}
         aria-invalid={invalid || props["aria-invalid"] || undefined}
-        className={cn("form-control sheen-textarea", className)}
+        className={cn("form-control rax-textarea", className)}
         onChange={(event) => {
           setUncontrolledLength(event.currentTarget.value.length)
           resize()
@@ -134,8 +134,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     return (
       <div
-        className={cn("sheen-textarea-group", wrapperClassName)}
-        data-sheen-appearance={appearance}
+        className={cn("rax-textarea-group", wrapperClassName)}
+        data-rax-appearance={appearance}
         dir={props.dir}
         // Clicking the footer's empty space focuses the field.
         onPointerDown={(event) => {
@@ -146,8 +146,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         }}
       >
         {textarea}
-        <div className="sheen-textarea-footer">
-          <div className="sheen-textarea-footer-start">{footer}</div>
+        <div className="rax-textarea-footer">
+          <div className="rax-textarea-footer-start">{footer}</div>
           {counter && <CountRing limitLabel={limitLabel} length={length} max={props.maxLength!} />}
           {footerEnd}
         </div>

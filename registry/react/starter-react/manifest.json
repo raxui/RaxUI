@@ -16,13 +16,13 @@
       "source": "registry/react/starter-react/App.tsx",
       "target": "App.tsx",
       "type": "tsx",
-      "sha256": "f68372a8ffa7ecca408f1e4ecc27b095145688f75c5d86cc7ae15ba79774e835"
+      "sha256": "27adb3a21c8024e3e9e220878dda9d23cf1b13bcc41b202bf3fbc5f6cc144ed3"
     },
     {
       "source": "theme/scss/components/_starter.scss",
-      "target": "styles/sheenui/components/_starter.scss",
+      "target": "styles/raxui/components/_starter.scss",
       "type": "scss",
-      "sha256": "b6812054651974a15b031bb28f168add6b6a963804a125a4407a86b065e522f5"
+      "sha256": "aeee34b09e5f4b67f238c936a8d2fd3629c468e42a555e93d7bfb2ce7033d90f"
     }
   ]
 }

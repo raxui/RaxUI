@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/textarea.css",
       "type": "css",
-      "sha256": "5bd93273f9e6c804077d26f1868abd07198352bbef4bf45cf8ae46784635c418"
+      "sha256": "34d9b34ee64d655ef6862c78035d2698fb061fcf4ce7cc0dee13d504243cf36b"
     }
   ],
   "files": [
@@ -21,14 +21,14 @@
       "destination": "components",
       "target": "Textarea/Textarea.razor",
       "type": "razor",
-      "sha256": "e434e3a0c62036b33d87ce6db64fc81de63a65afa6af49aeadfdd6e070382eb5"
+      "sha256": "895f12289695b41a7ab00f8ee43364355da7438cbfe0cd3cf55631d77d76cf5d"
     },
     {
       "source": "Textarea.razor.js",
       "destination": "components",
       "target": "Textarea/Textarea.razor.js",
       "type": "js",
-      "sha256": "434ed4723880108e3a5f2b85640963711e73521f225efc9676f06b5753561bd1"
+      "sha256": "45c44ff820ce1f59b011c3750cb547d25abe6ada72dc2b7ca2e451f454618883"
     },
     {
       "source": "TextareaInput.razor",

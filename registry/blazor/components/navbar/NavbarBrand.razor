@@ -1,4 +1,4 @@
-<a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" @attributes="AdditionalAttributes" class="sheen-navbar-brand @Class" href="@Href">@ChildContent</a>
+<a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" @attributes="AdditionalAttributes" class="rax-navbar-brand @Class" href="@Href">@ChildContent</a>
 @code {
     [Parameter] public bool PreventDefault { get; set; }
     [Parameter] public string? Class { get; set; }

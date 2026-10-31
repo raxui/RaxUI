@@ -16,19 +16,19 @@
       "source": "registry/react/components/chat/chat.tsx",
       "target": "components/ui/chat.tsx",
       "type": "tsx",
-      "sha256": "0fbb9e3d528cd25bb294fbb924064f8a3ccecfa4f6dbebb060ba956f2ddd97dc"
+      "sha256": "c7a8731e8eb3d1c9ce823d18e62b963b2631818c7a8de5d71fee84ed5ae059af"
     },
     {
       "source": "theme/scss/components/_chat.scss",
-      "target": "styles/sheenui/components/_chat.scss",
+      "target": "styles/raxui/components/_chat.scss",
       "type": "scss",
-      "sha256": "fc14974e6eeb0232cc3c67f26706cf8322c01d46fe0b08f98e83176b93bf2076"
+      "sha256": "8616d9293eea03022711c17315bb665f6d9cfe081486f9cae8561fa8c2183bdc"
     },
     {
       "source": "registry/react/components/chat/chat-composer.tsx",
       "target": "components/ui/chat-composer.tsx",
       "type": "tsx",
-      "sha256": "ee501b7d8b70b4b81f8f73661868af832753e6c935f89ef5d1ab5c01010fc5e4"
+      "sha256": "b5bf64a2eb177d89da64c6665d99cf9df89ee24460db24019874af9e9d19a7a7"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

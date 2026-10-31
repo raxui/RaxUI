@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/carousel.css",
       "type": "css",
-      "sha256": "2ef2b6d64b964051f750ef966618bbbb34c9cd2ef70953df2ea6b54de923c5d4"
+      "sha256": "63df5ad7778cccf5c52eb51590c8c0c4b2e0b3c20c7b2e6e3bc55fbbcf3d8efc"
     }
   ],
   "files": [
@@ -21,70 +21,70 @@
       "destination": "components",
       "target": "Carousel/Carousel.razor",
       "type": "razor",
-      "sha256": "50d3eb07aa1f8b27d5bf725551fc34b810c232b4877c1739f3ac890f4655608a"
+      "sha256": "9c742c82238bbcbe1115e318a0a1b39ff5598783f0f9608b34b520405444abab"
     },
     {
       "source": "Carousel.razor.js",
       "destination": "components",
       "target": "Carousel/Carousel.razor.js",
       "type": "js",
-      "sha256": "3ef79985c04b8e0b8794c7852a934220906df60c3d3c4b2d239e3c13fefc14de"
+      "sha256": "89990b8e4ee0338e74f695b3e8df14df2952cf5df53a9cbc8fa31e6c5025dd88"
     },
     {
       "source": "CarouselContent.razor",
       "destination": "components",
       "target": "Carousel/CarouselContent.razor",
       "type": "razor",
-      "sha256": "de0d4ed75b602df7e1bd2a551a8d7f04c1bb4715a25954024db773f719b9541e"
+      "sha256": "60d20fc793a759a80e70084bf5816da36fd12b1523c03fa476de653de78ff615"
     },
     {
       "source": "CarouselCounter.razor",
       "destination": "components",
       "target": "Carousel/CarouselCounter.razor",
       "type": "razor",
-      "sha256": "2f65a48550c2bbde60958b8b9d2e0015485b10043d2343f7d9cb2cfc3536f5ef"
+      "sha256": "4afc9c51210cf74ec5067a28dc43885125b6bce8dc65ca5a7f8641e687e63e01"
     },
     {
       "source": "CarouselDots.razor",
       "destination": "components",
       "target": "Carousel/CarouselDots.razor",
       "type": "razor",
-      "sha256": "82a40d337f6397e61e23f64f15f79b9153a34544ec20e83f69a718187a04e805"
+      "sha256": "91004b1650cdb66018d4496e65de40225b757e3cf25571e801b672691dd6fcf3"
     },
     {
       "source": "CarouselItem.razor",
       "destination": "components",
       "target": "Carousel/CarouselItem.razor",
       "type": "razor",
-      "sha256": "0da44a474081fc5bb9f76f8c891b25d881444f58cbbc63f2b951574334f0258b"
+      "sha256": "d4bd5c42658242501767e442e2a72ca300e1f446cd4b54e5a0e18761c5a7d17a"
     },
     {
       "source": "CarouselNext.razor",
       "destination": "components",
       "target": "Carousel/CarouselNext.razor",
       "type": "razor",
-      "sha256": "bb4c5d5c57bbf04bffb22a10d169ba0b7bf526b36e5eaa56c606df9a417d1309"
+      "sha256": "8e966e32e4c2bbd28aefce6707de3727165360d50bd8b6f07d849f98b56757f3"
     },
     {
       "source": "CarouselPlayPause.razor",
       "destination": "components",
       "target": "Carousel/CarouselPlayPause.razor",
       "type": "razor",
-      "sha256": "ed3661c3fd1993e759cfa9a4f6d8a9a92379e0d4071bf0fb5ac50b77870fbd26"
+      "sha256": "58a10a6de069d2856ac9e8aa0010c7e71310a36813a42aafb5d9e50b44ae17c5"
     },
     {
       "source": "CarouselPrevious.razor",
       "destination": "components",
       "target": "Carousel/CarouselPrevious.razor",
       "type": "razor",
-      "sha256": "7cc1523fc08e8e2b4367a4f3c226fe11a3e5d1ed19cb0d89b162110d872824b4"
+      "sha256": "474a60b577c2c9dd9575c6d9e5f91242ee7ed1d7b720ef1c575661a446e96988"
     },
     {
       "source": "CarouselThumbs.razor",
       "destination": "components",
       "target": "Carousel/CarouselThumbs.razor",
       "type": "razor",
-      "sha256": "09dc6073d8f081dc19e4abbef60bb2cc5ffa9bdd7f4be897af619bd8527846f8"
+      "sha256": "fd369d73e887b3686bf5f8b4cd54584458b2b7edeaa02e97dd20d092914f980b"
     },
     {
       "source": "embla-carousel-autoplay.esm.js",

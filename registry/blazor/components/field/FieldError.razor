@@ -1,8 +1,8 @@
-@* SheenUI FieldError. Source-owned: edit freely. Validation text is described by the control on focus.
+@* RaxUI FieldError. Source-owned: edit freely. Validation text is described by the control on focus.
    Set Field.HasError when supplying custom content without Field.Error or validation messages. *@
 @if ((ForceMount || Context?.Invalid == true) && (ChildContent is not null || !string.IsNullOrEmpty(Context?.Error)))
 {
-    <p @attributes="AdditionalAttributes" id="@Context?.ErrorId" class="@($"sheen-field-error {Class}".TrimEnd())">
+    <p @attributes="AdditionalAttributes" id="@Context?.ErrorId" class="@($"rax-field-error {Class}".TrimEnd())">
         @* CircleAlert paths from Lucide (ISC). *@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" />

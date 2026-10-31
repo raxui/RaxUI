@@ -7,15 +7,15 @@
 /// @param $tint    An RGB triplet (e.g. `var(--bs-primary-rgb)`) to tint with.
 /// @param $shadow  Elevation shadow appended after the glass edge.
 @mixin glass(
-  $alpha: var(--sheen-glass-alpha),
+  $alpha: var(--rax-glass-alpha),
   $tint: var(--bs-body-bg-rgb),
-  $shadow: var(--sheen-shadow-md)
+  $shadow: var(--rax-shadow-md)
 ) {
   background-color: rgba($tint, $alpha);
-  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  border: 1px solid var(--sheen-glass-border-color);
-  box-shadow: var(--sheen-glass-edge), $shadow;
+  -webkit-backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
+  backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
+  border: 1px solid var(--rax-glass-border-color);
+  box-shadow: var(--rax-glass-edge), $shadow;
 
   @media (prefers-reduced-transparency: reduce) {
     background-color: rgb($tint);
@@ -37,10 +37,10 @@
   }
 }
 
-@mixin sheen-surface {
-  background-color: var(--sheen-surface-bg);
-  border: 1px solid var(--sheen-border-color);
-  box-shadow: var(--sheen-surface-shadow);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
+@mixin rax-surface {
+  background-color: var(--rax-surface-bg);
+  border: 1px solid var(--rax-border-color);
+  box-shadow: var(--rax-surface-shadow);
+  -webkit-backdrop-filter: var(--rax-surface-filter);
+  backdrop-filter: var(--rax-surface-filter);
 }

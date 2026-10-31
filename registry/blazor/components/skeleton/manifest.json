@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/skeleton.css",
       "type": "css",
-      "sha256": "642e6f34e49f1174c1f8131bd4ccacf92038c80b500a62688e83b4710690054d"
+      "sha256": "032ae98b5eab29358e32174b18399a08978293d9841976a2e01d4bee4df61957"
     }
   ],
   "files": [
@@ -19,14 +19,14 @@
       "destination": "components",
       "target": "Skeleton/Skeleton.razor",
       "type": "razor",
-      "sha256": "0b941aaac21705feb3e1c42bd8ec47abb175ca1d98dccca466a2608c47a35d98"
+      "sha256": "7d08c14cd9f21d6b078d6365ee06f90780867248041bb87bde47f8dc6f7e7a74"
     },
     {
       "source": "SkeletonText.razor",
       "destination": "components",
       "target": "Skeleton/SkeletonText.razor",
       "type": "razor",
-      "sha256": "01bfa084dba85455de822046c7bf4e91c745c8141a0184931a2992908e7e3341"
+      "sha256": "67e2ad6af0ad19a33f6fde888bd1108d36cf25a4c75283fbce88beb904ea0ac1"
     }
   ]
 }

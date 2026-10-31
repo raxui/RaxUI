@@ -1,4 +1,4 @@
-@if(Group?.Value==Index){<div @attributes="AdditionalAttributes" class="@($"sheen-stepper-panel {Class}")" role="region" aria-labelledby="@(Index<Group.Items.Count?Group.Id+"-step-"+Index:null)" data-direction="@Group.Movement">@ChildContent</div>}
+@if(Group?.Value==Index){<div @attributes="AdditionalAttributes" class="@($"rax-stepper-panel {Class}")" role="region" aria-labelledby="@(Index<Group.Items.Count?Group.Id+"-step-"+Index:null)" data-direction="@Group.Movement">@ChildContent</div>}
 @code {
     [CascadingParameter] public Stepper? Group { get; set; }
     [Parameter] public int Index { get; set; }

@@ -1,11 +1,11 @@
 @typeparam TItem
-<div @attributes="AdditionalAttributes" class="@($"sheen-data-table {Class}")" data-sheen-appearance="@Appearance" dir="@Direction">
+<div @attributes="AdditionalAttributes" class="@($"rax-data-table {Class}")" data-rax-appearance="@Appearance" dir="@Direction">
     <div inert="@(!interactive?"":null)"><DataTableToolbar TItem="TItem" State="state" Text="Labels" Changed="Changed" Toolbar="Toolbar" /></div>
     <div><DataTableContent Interactive="interactive" TItem="TItem" State="state" Text="Labels" Label="@Label" Selectable="Selectable" Loading="Loading" MaxHeight="@MaxHeight" EmptyState="EmptyState" Changed="Changed" /></div>
     <div inert="@(!interactive?"":null)"><DataTablePager TItem="TItem" State="state" Text="Labels" Sizes="PageSizeOptions" Changed="Changed" /></div>
     @if(interactive&&state.SelectedRows.Count>0){
-        <div class="sheen-table-bulkbar" data-state="open" role="region" aria-label="@Labels.BulkActions">
-            <span class="sheen-table-bulkbar-count">@Labels.Selected(state.SelectedRows.Count)</span>
+        <div class="rax-table-bulkbar" data-state="open" role="region" aria-label="@Labels.BulkActions">
+            <span class="rax-table-bulkbar-count">@Labels.Selected(state.SelectedRows.Count)</span>
             @BulkActions?.Invoke(state.SelectedRows)
             <Button Variant="ghost" Size="sm" OnClick="ClearSelection">@Labels.ClearSelection</Button>
         </div>

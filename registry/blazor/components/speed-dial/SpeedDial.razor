@@ -1,6 +1,6 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="sheen-speed-dial @Class" data-state="@(Current ? "open" : "closed")" data-side="@Side" data-disabled="@(Disabled ? "" : null)" data-sheen-appearance="@Appearance">@ChildContent</div></CascadingValue>
+<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="rax-speed-dial @Class" data-state="@(Current ? "open" : "closed")" data-side="@Side" data-disabled="@(Disabled ? "" : null)" data-rax-appearance="@Appearance">@ChildContent</div></CascadingValue>
 @code {
     [Parameter] public bool Open { get; set; }
     [Parameter] public bool DefaultOpen { get; set; }
@@ -15,7 +15,7 @@
     [Parameter] public string? Appearance { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
-    internal string ContentId { get; } = "sheen-dial-" + Guid.NewGuid().ToString("N");
+    internal string ContentId { get; } = "rax-dial-" + Guid.NewGuid().ToString("N");
     internal bool Ready { get; private set; }
     internal bool Current => !Disabled && (OpenChanged.HasDelegate ? Open : local ?? (Open || DefaultOpen));
     private bool? local;

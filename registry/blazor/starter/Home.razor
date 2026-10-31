@@ -1,40 +1,40 @@
 @page "/"
 @inject NavigationManager Navigation
-@* SheenUI welcome page, installed by `sheenui init` (ADR 008). Source-owned: replace it with your own home page. *@
+@* RaxUI welcome page, installed by `raxui init` (ADR 008). Source-owned: replace it with your own home page. *@
 
-<PageTitle>Welcome to SheenUI</PageTitle>
+<PageTitle>Welcome to RaxUI</PageTitle>
 
-<div class="sheen-welcome">
-    <section class="sheen-welcome-intro">
-        <h1>Welcome to your SheenUI app</h1>
-        <p class="sheen-welcome-lead">
+<div class="rax-welcome">
+    <section class="rax-welcome-intro">
+        <h1>Welcome to your RaxUI app</h1>
+        <p class="rax-welcome-lead">
             Your components live in <code>Components/UI</code> and are yours to edit.
-            Try the theme below: every SheenUI component follows it.
+            Try the theme below: every RaxUI component follows it.
         </p>
     </section>
 
-    <section class="sheen-panel sheen-theme-panel" aria-labelledby="theme-heading">
+    <section class="rax-panel rax-theme-panel" aria-labelledby="theme-heading">
         <h2 id="theme-heading">Theme</h2>
         @foreach (var (label, key, options) in ThemeRows)
         {
-            <div class="sheen-theme-row">
-                <span class="sheen-theme-label">@label</span>
-                <div class="sheen-theme-options" role="group" aria-label="@label">
+            <div class="rax-theme-row">
+                <span class="rax-theme-label">@label</span>
+                <div class="rax-theme-options" role="group" aria-label="@label">
                     @foreach (var (text, value) in options)
                     {
                         var selected = Current(key) == value;
                         @if (key == "accent")
                         {
-                            <a class="sheen-accent-swatch"
-                               data-sheen-accent="@value"
-                               data-sheen-swatch="@(value ?? "blue")"
+                            <a class="rax-accent-swatch"
+                               data-rax-accent="@value"
+                               data-rax-swatch="@(value ?? "blue")"
                                href="@Navigation.GetUriWithQueryParameter(key, value)"
                                aria-label="@text" title="@text"
                                aria-current="@(selected ? "true" : null)"></a>
                         }
                         else
                         {
-                            <a class="btn sheen-button btn-glass btn-sm @(selected ? "btn-glass-primary" : "btn-glass-secondary")"
+                            <a class="btn rax-button btn-glass btn-sm @(selected ? "btn-glass-primary" : "btn-glass-secondary")"
                                href="@Navigation.GetUriWithQueryParameter(key, value)"
                                aria-current="@(selected ? "true" : null)">@text</a>
                         }
@@ -44,24 +44,24 @@
         }
     </section>
 
-    <section class="sheen-panel sheen-preview-panel" aria-labelledby="preview-heading">
+    <section class="rax-panel rax-preview-panel" aria-labelledby="preview-heading">
         <h2 id="preview-heading">Preview</h2>
-        <p class="sheen-preview-description">One component, six variants. Use the theme controls to compare their appearance.</p>
-        <div class="sheen-preview-row">
-            <button type="button" class="btn sheen-button btn-glass btn-glass-primary">Primary</button>
-            <button type="button" class="btn sheen-button btn-glass btn-glass-secondary">Secondary</button>
-            <button type="button" class="btn sheen-button btn-glass btn-glass-tinted">Tinted</button>
-            <button type="button" class="btn sheen-button btn-glass btn-glass-outline">Outline</button>
-            <button type="button" class="btn sheen-button btn-glass btn-glass-ghost">Ghost</button>
-            <button type="button" class="btn sheen-button btn-glass btn-glass-destructive">Destructive</button>
+        <p class="rax-preview-description">One component, six variants. Use the theme controls to compare their appearance.</p>
+        <div class="rax-preview-row">
+            <button type="button" class="btn rax-button btn-glass btn-glass-primary">Primary</button>
+            <button type="button" class="btn rax-button btn-glass btn-glass-secondary">Secondary</button>
+            <button type="button" class="btn rax-button btn-glass btn-glass-tinted">Tinted</button>
+            <button type="button" class="btn rax-button btn-glass btn-glass-outline">Outline</button>
+            <button type="button" class="btn rax-button btn-glass btn-glass-ghost">Ghost</button>
+            <button type="button" class="btn rax-button btn-glass btn-glass-destructive">Destructive</button>
         </div>
-        <p class="sheen-preview-hint">Use Tab to explore keyboard focus.</p>
+        <p class="rax-preview-hint">Use Tab to explore keyboard focus.</p>
     </section>
 
-    <section class="sheen-next-steps" aria-labelledby="next-heading">
+    <section class="rax-next-steps" aria-labelledby="next-heading">
         <h2 id="next-heading">Next steps</h2>
         <p>Add components, then use them in your pages:</p>
-        <pre><code>dotnet sheenui add button</code></pre>
+        <pre><code>dotnet raxui add button</code></pre>
         <p class="mt-3 mb-0">
             Edit this page in <code>Components/Pages/Home.razor</code> and the layout in
             <code>Components/Layout/MainLayout.razor</code>.

@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/tabs.css",
       "type": "css",
-      "sha256": "bd2e5e5fc1232f6b7a29d477879f915745a6ee2785e02a4002b4205c8aa233e6"
+      "sha256": "e1aba52a3a683c2c898a6211cf343fe10fc11117294376bd4f1cdc222982b336"
     }
   ],
   "files": [
@@ -19,14 +19,14 @@
       "destination": "components",
       "target": "Tabs/Tabs.razor",
       "type": "razor",
-      "sha256": "17285138466f6d8f84c66c4ed3b522a58c3c8be9a7267ccf0d982a288707224d"
+      "sha256": "3b37ee5bfd46750f3c4ffc966238e6d59d940f2152dea4f5972971e4fea05a44"
     },
     {
       "source": "Tabs.razor.js",
       "destination": "components",
       "target": "Tabs/Tabs.razor.js",
       "type": "js",
-      "sha256": "3280a1f6d6f81a2c449ada70e04a5de3d05b97a708cbda4fa335658fd119177a"
+      "sha256": "cf30f381c313b516ef3e1a42f4858ef0f608f74eda04956a3aa316c4cfd71ecf"
     }
   ]
 }

@@ -45,7 +45,7 @@ export function DataGridEditor<TData>({
               }, 0)
           }}
         >
-          <SelectTrigger size="sm" className="sheen-grid-editor" {...common}>
+          <SelectTrigger size="sm" className="rax-grid-editor" {...common}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -64,7 +64,7 @@ export function DataGridEditor<TData>({
       )
     case "date":
       return (
-        <div className="sheen-grid-editor sheen-grid-editor-date">
+        <div className="rax-grid-editor rax-grid-editor-date">
           <DateInput
             {...common}
             size="sm"
@@ -84,7 +84,7 @@ export function DataGridEditor<TData>({
         <input
           {...common}
           autoFocus
-          className="sheen-grid-editor sheen-grid-editor-input"
+          className="rax-grid-editor rax-grid-editor-input"
           inputMode={editor.type === "number" ? "decimal" : undefined}
           value={String(draft ?? "")}
           onChange={(e) => {

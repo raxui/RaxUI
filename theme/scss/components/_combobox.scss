@@ -1,17 +1,17 @@
-.sheen-combobox-trigger { display: flex; align-items: center; justify-content: space-between; text-align: start; }
-.sheen-combobox-trigger > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.sheen-combobox-trigger.sheen-input > svg { flex-shrink: 0; width: 1rem; height: 1rem; margin-inline-start: 0.5rem; }
-.sheen-combobox-panel { padding: 0.25rem; min-width: var(--radix-popover-trigger-width, 14rem); }
-.sheen-combobox-panel > .sheen-input { margin-block-end: 0.25rem; }
-.sheen-combobox-panel [role="listbox"] { max-height: 16rem; overflow-y: auto; }
+.rax-combobox-trigger { display: flex; align-items: center; justify-content: space-between; text-align: start; }
+.rax-combobox-trigger > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rax-combobox-trigger.rax-input > svg { flex-shrink: 0; width: 1rem; height: 1rem; margin-inline-start: 0.5rem; }
+.rax-combobox-panel { padding: 0.25rem; min-width: var(--radix-popover-trigger-width, 14rem); }
+.rax-combobox-panel > .rax-input { margin-block-end: 0.25rem; }
+.rax-combobox-panel [role="listbox"] { max-height: 16rem; overflow-y: auto; }
 
 // -----------------------------------------------------------------------------
-// Combobox — field on the Input surface (`.sheen-input-group`), list from
+// Combobox — field on the Input surface (`.rax-input-group`), list from
 // Command inside a glass popover. Multi-select chips wrap and grow the field;
 // the selected check pops in.
 // -----------------------------------------------------------------------------
 
-.sheen-rich-combobox {
+.rax-rich-combobox {
   cursor: pointer;
 
   &[data-disabled] {
@@ -21,14 +21,14 @@
 
   // Open: keep the focus look while the list is up.
   &[data-state="open"] {
-    --sheen-input-border: rgba(var(--sheen-input-ring-rgb), 0.65);
+    --rax-input-border: rgba(var(--rax-input-ring-rgb), 0.65);
 
-    box-shadow: 0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16);
+    box-shadow: 0 0 0 4px rgba(var(--rax-input-ring-rgb), 0.16);
   }
 }
 
 // The value area: chips + the trigger button, wrapping in multi mode.
-.sheen-rich-combobox-value.sheen-input {
+.rax-rich-combobox-value.rax-input {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -36,13 +36,13 @@
   min-width: 0;
   padding-block: 0.3125rem;
 
-  .sheen-rich-combobox:not([data-multiple]) & {
+  .rax-rich-combobox:not([data-multiple]) & {
     flex-wrap: nowrap;
     padding-block: 0;
   }
 }
 
-.sheen-rich-combobox-trigger {
+.rax-rich-combobox-trigger {
   display: flex;
   flex: 1;
   align-items: center;
@@ -62,7 +62,7 @@
   }
 }
 
-.sheen-rich-combobox-single {
+.rax-rich-combobox-single {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -76,22 +76,22 @@
   }
 }
 
-.sheen-rich-combobox-single-label,
-.sheen-rich-combobox-placeholder {
+.rax-rich-combobox-single-label,
+.rax-rich-combobox-placeholder {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 // ---- Chips -------------------------------------------------------------------
-.sheen-rich-combobox-chip {
+.rax-rich-combobox-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
   max-width: 12rem;
   height: 1.75rem;
   padding-inline: 0.625rem 0.25rem;
-  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  border-radius: calc(0.5rem * var(--rax-radius-scale));
   color: var(--bs-emphasis-color);
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
   font-size: 0.875rem;
@@ -105,30 +105,30 @@
   }
 
   @include motion-safe {
-    animation: sheen-pop-in 300ms var(--sheen-ease-spring);
+    animation: rax-pop-in 300ms var(--rax-ease-spring);
   }
 }
 
-.sheen-rich-combobox-chip-label {
+.rax-rich-combobox-chip-label {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.sheen-rich-combobox-chip-remove {
+.rax-rich-combobox-chip-remove {
   display: inline-grid;
   place-items: center;
   width: 1.25rem;
   height: 1.25rem;
   padding: 0;
   border: 0;
-  border-radius: calc(0.375rem * var(--sheen-radius-scale));
+  border-radius: calc(0.375rem * var(--rax-radius-scale));
   color: var(--bs-secondary-color);
   background: none;
   cursor: pointer;
   transition:
-    color var(--sheen-duration-fast) ease,
-    background-color var(--sheen-duration-fast) ease;
+    color var(--rax-duration-fast) ease,
+    background-color var(--rax-duration-fast) ease;
 
   svg {
     width: 0.75rem;
@@ -146,14 +146,14 @@
   }
 }
 
-.sheen-rich-combobox-more {
+.rax-rich-combobox-more {
   padding-inline: 0.375rem;
   color: var(--bs-secondary-color);
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-.sheen-rich-combobox-chevron {
+.rax-rich-combobox-chevron {
   display: inline-flex;
   color: var(--bs-secondary-color);
 
@@ -164,15 +164,15 @@
 }
 
 // ---- List ------------------------------------------------------------------------
-.sheen-rich-combobox-content.sheen-popover {
+.rax-rich-combobox-content.rax-popover {
   width: max(var(--radix-popover-trigger-width), 16rem);
   max-height: none;
   overflow: hidden;
   padding: 0;
-  border-radius: var(--sheen-radius-control);
+  border-radius: var(--rax-radius-control);
 
   // The popover is the glass; the Command inside is flat.
-  .sheen-command {
+  .rax-command {
     border: 0;
     border-radius: 0;
     background: none;
@@ -181,30 +181,30 @@
     backdrop-filter: none;
   }
 
-  .sheen-command-input-wrap {
+  .rax-command-input-wrap {
     padding-inline: 0.75rem;
   }
 
-  .sheen-command-input {
+  .rax-command-input {
     height: 2.75rem;
     font-size: 0.9375rem;
   }
 
-  .sheen-command-list {
+  .rax-command-list {
     max-height: min(18rem, var(--radix-popover-content-available-height, 18rem) - 3rem);
   }
 
-  .sheen-command-empty {
+  .rax-command-empty {
     padding-block: 1.25rem;
   }
 }
 
-.sheen-rich-combobox-item {
+.rax-rich-combobox-item {
   min-height: 2.25rem;
   padding-block: 0.375rem;
 }
 
-.sheen-rich-combobox-item-icon {
+.rax-rich-combobox-item-icon {
   display: inline-flex;
   flex-shrink: 0;
   color: var(--bs-secondary-color);
@@ -216,7 +216,7 @@
   }
 }
 
-.sheen-rich-combobox-item-text {
+.rax-rich-combobox-item-text {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -230,41 +230,41 @@
   }
 }
 
-.sheen-rich-combobox-item-description {
+.rax-rich-combobox-item-description {
   color: var(--bs-secondary-color);
   font-size: 0.8125rem;
 }
 
-.sheen-rich-combobox-check {
+.rax-rich-combobox-check {
   display: inline-flex;
   flex-shrink: 0;
   width: 1rem;
-  color: var(--sheen-primary-text);
+  color: var(--rax-primary-text);
 
   svg {
     width: 1rem;
     height: 1rem;
 
     @include motion-safe {
-      animation: sheen-pop-in 280ms var(--sheen-ease-spring);
+      animation: rax-pop-in 280ms var(--rax-ease-spring);
     }
   }
 }
 
-.sheen-rich-combobox-item[data-checked] {
+.rax-rich-combobox-item[data-checked] {
   font-weight: 500;
 }
 
-.sheen-rich-combobox-create {
-  color: var(--sheen-primary-text);
+.rax-rich-combobox-create {
+  color: var(--rax-primary-text);
 
-  .sheen-rich-combobox-item-icon {
+  .rax-rich-combobox-item-icon {
     color: inherit;
   }
 }
 
-.sheen-rich-combobox-value > .sheen-rich-combobox-trigger { flex: 1; }
-.sheen-rich-combobox-clear { align-self: center; margin-inline-end: .625rem; padding: 0; width: 1.125rem; height: 1.125rem; line-height: 1; border: 0; border-radius: 50%; background: rgba(var(--bs-emphasis-color-rgb), .3); color: var(--bs-body-bg); }
-.sheen-rich-combobox-content.sheen-popover { max-width: calc(100vw - 1rem); }
+.rax-rich-combobox-value > .rax-rich-combobox-trigger { flex: 1; }
+.rax-rich-combobox-clear { align-self: center; margin-inline-end: .625rem; padding: 0; width: 1.125rem; height: 1.125rem; line-height: 1; border: 0; border-radius: 50%; background: rgba(var(--bs-emphasis-color-rgb), .3); color: var(--bs-body-bg); }
+.rax-rich-combobox-content.rax-popover { max-width: calc(100vw - 1rem); }
 
-.sheen-rich-combobox[hidden] { display: none !important; }
+.rax-rich-combobox[hidden] { display: none !important; }

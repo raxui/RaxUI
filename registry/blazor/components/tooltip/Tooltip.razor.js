@@ -1,4 +1,4 @@
-// SheenUI manual previews: cancellable delays, hover/focus continuity, RTL positioning.
+// RaxUI manual previews: cancellable delays, hover/focus continuity, RTL positioning.
 const states = new WeakMap()
 export function init(trigger, content, side, align, openDelay, closeDelay, interactive) {
   const existing = states.get(content)

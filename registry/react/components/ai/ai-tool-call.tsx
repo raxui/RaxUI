@@ -37,39 +37,39 @@ export const AIToolCall = React.forwardRef<HTMLDivElement, AIToolCallProps>(
     const id = React.useId()
     const l = { ...TOOL_LABELS, ...labels }
     return (
-      <div ref={ref} className={cn("sheen-ai-tool", className)} data-status={status} data-state={open ? "open" : "closed"} {...props}>
-        <button type="button" className="sheen-ai-tool-head" aria-expanded={open} aria-controls={id} onClick={() => setOpen((o) => !o)}>
-          <span className="sheen-ai-tool-icon">
+      <div ref={ref} className={cn("rax-ai-tool", className)} data-status={status} data-state={open ? "open" : "closed"} {...props}>
+        <button type="button" className="rax-ai-tool-head" aria-expanded={open} aria-controls={id} onClick={() => setOpen((o) => !o)}>
+          <span className="rax-ai-tool-icon">
             <ToolIcon />
           </span>
-          <span className="sheen-ai-tool-title">{title ?? <code>{name}</code>}</span>
-          <span className="sheen-ai-tool-status" role="status">
-            {status === "running" && <span className="sheen-ai-spinner" aria-hidden="true" />}
+          <span className="rax-ai-tool-title">{title ?? <code>{name}</code>}</span>
+          <span className="rax-ai-tool-status" role="status">
+            {status === "running" && <span className="rax-ai-spinner" aria-hidden="true" />}
             {status === "completed" && <CheckIcon />}
             {l[status]}
           </span>
-          <ChevronIcon className="sheen-ai-chevron" />
+          <ChevronIcon className="rax-ai-chevron" />
         </button>
-        <div className="sheen-ai-collapse" id={id}>
+        <div className="rax-ai-collapse" id={id}>
           <div>
-            <div className="sheen-ai-tool-body">
+            <div className="rax-ai-tool-body">
               {input !== undefined && (
                 <div>
-                  <div className="sheen-ai-tool-label">{l.input}</div>
+                  <div className="rax-ai-tool-label">{l.input}</div>
                   <pre dir="ltr">{asText(input)}</pre>
                 </div>
               )}
               {status === "error" && error ? (
                 <div>
-                  <div className="sheen-ai-tool-label">{l.error}</div>
-                  <pre dir="ltr" className="sheen-ai-tool-error">
+                  <div className="rax-ai-tool-label">{l.error}</div>
+                  <pre dir="ltr" className="rax-ai-tool-error">
                     {error}
                   </pre>
                 </div>
               ) : (
                 output !== undefined && (
                   <div>
-                    <div className="sheen-ai-tool-label">{l.output}</div>
+                    <div className="rax-ai-tool-label">{l.output}</div>
                     <pre dir="ltr">{asText(output)}</pre>
                   </div>
                 )

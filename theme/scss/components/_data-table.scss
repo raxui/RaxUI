@@ -1,28 +1,28 @@
 // ---- Sortable header button --------------------------------------------------
-.sheen-table-sort {
+.rax-table-sort {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
   margin: -0.25rem -0.5rem;
   padding: 0.25rem 0.5rem;
   border: 0;
-  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  border-radius: calc(0.5rem * var(--rax-radius-scale));
   color: inherit;
   background: none;
   font: inherit;
   white-space: nowrap;
   cursor: pointer;
   transition:
-    color var(--sheen-duration-fast) ease,
-    background-color var(--sheen-duration-fast) ease;
+    color var(--rax-duration-fast) ease,
+    background-color var(--rax-duration-fast) ease;
 
   svg {
     width: 0.875rem;
     height: 0.875rem;
     opacity: 0.35;
     transition:
-      opacity var(--sheen-duration-fast) ease,
-      transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+      opacity var(--rax-duration-fast) ease,
+      transform var(--rax-duration-slow) var(--rax-ease-spring);
   }
 
   &:hover {
@@ -54,26 +54,26 @@
 }
 
 // ---- DataTable chrome --------------------------------------------------------
-.sheen-data-table {
+.rax-data-table {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   min-width: 0;
 
   // Data cells don't wrap; the table scrolls sideways on narrow screens instead.
-  .sheen-table > tbody > tr > td {
+  .rax-table > tbody > tr > td {
     white-space: nowrap;
   }
 }
 
-.sheen-data-table-toolbar {
+.rax-data-table-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
 }
 
-.sheen-table-search {
+.rax-table-search {
   position: relative;
   flex: 1 1 14rem;
   max-width: 20rem;
@@ -95,7 +95,7 @@
 }
 
 // Faceted filter trigger: dashed until a value is chosen.
-.sheen-table-filter-btn {
+.rax-table-filter-btn {
   --bs-btn-border-color: rgba(var(--bs-emphasis-color-rgb), 0.2);
   border-style: dashed;
 
@@ -108,14 +108,14 @@
   }
 }
 
-.sheen-table-frame {
+.rax-table-frame {
   overflow: hidden;
   border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
-  border-radius: var(--sheen-radius);
+  border-radius: var(--rax-radius);
   background-color: rgba(var(--bs-body-bg-rgb), 0.6);
 }
 
-.sheen-data-table-footer {
+.rax-data-table-footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -125,14 +125,14 @@
   color: var(--bs-secondary-color);
 }
 
-.sheen-table-pagination {
+.rax-table-pagination {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem 1.25rem;
 }
 
-.sheen-table-empty {
+.rax-table-empty {
   padding: 3rem 1rem !important;
   text-align: center;
   color: var(--bs-secondary-color);
@@ -145,20 +145,20 @@
   }
 }
 
-.sheen-table-skeleton {
+.rax-table-skeleton {
   display: block;
   height: 0.625rem;
   border-radius: 999px;
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
 
   @include motion-safe {
-    animation: sheen-pulse 0.9s ease-in-out infinite alternate;
+    animation: rax-pulse 0.9s ease-in-out infinite alternate;
   }
 }
 
 // ---- Floating bulk-action bar (portaled to <body>) ---------------------------
-.sheen-table-bulkbar {
-  @include sheen-surface;
+.rax-table-bulkbar {
+  @include rax-surface;
 
   position: fixed;
   bottom: 1.5rem;
@@ -177,41 +177,41 @@
   white-space: nowrap;
 
   &[data-state="open"] {
-    animation: sheen-fade-in var(--sheen-duration) ease;
+    animation: rax-fade-in var(--rax-duration) ease;
   }
 
   &[data-state="closed"] {
-    animation: sheen-fade-out var(--sheen-duration-fast) ease forwards;
+    animation: rax-fade-out var(--rax-duration-fast) ease forwards;
   }
 
   @include motion-safe {
     &[data-state="open"] {
-      animation: sheen-bulkbar-in var(--sheen-duration-slow) var(--sheen-ease-spring);
+      animation: rax-bulkbar-in var(--rax-duration-slow) var(--rax-ease-spring);
     }
 
     &[data-state="closed"] {
-      animation: sheen-bulkbar-out var(--sheen-duration) var(--sheen-ease-in) forwards;
+      animation: rax-bulkbar-out var(--rax-duration) var(--rax-ease-in) forwards;
     }
   }
 }
 
-.sheen-table-bulkbar-count {
+.rax-table-bulkbar-count {
   margin-inline-end: 0.5rem;
   font-weight: 600;
   color: var(--bs-emphasis-color);
 }
 
-.sheen-table-bulkbar-divider {
+.rax-table-bulkbar-divider {
   align-self: stretch;
   width: 1px;
   margin: 0.25rem 0.25rem;
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.12);
 }
 
-@keyframes sheen-bulkbar-in {
+@keyframes rax-bulkbar-in {
   from { opacity: 0; transform: translateY(120%) scale(0.96); }
 }
 
-@keyframes sheen-bulkbar-out {
+@keyframes rax-bulkbar-out {
   to { opacity: 0; transform: translateY(120%) scale(0.96); }
 }

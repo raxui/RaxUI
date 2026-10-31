@@ -41,7 +41,7 @@ export const AIPromptInput = React.forwardRef<HTMLTextAreaElement, AIPromptInput
 
     return (
       <form
-        className={cn("sheen-ai-prompt", className)}
+        className={cn("rax-ai-prompt", className)}
         data-status={status}
         onSubmit={(event) => {
           event.preventDefault()
@@ -61,8 +61,8 @@ export const AIPromptInput = React.forwardRef<HTMLTextAreaElement, AIPromptInput
           }}
           rows={1}
           dir="auto"
-          className="sheen-ai-prompt-field"
-          style={{ "--sheen-ai-rows": maxRows } as React.CSSProperties}
+          className="rax-ai-prompt-field"
+          style={{ "--rax-ai-rows": maxRows } as React.CSSProperties}
           placeholder={placeholder}
           aria-label={placeholder}
           value={value}
@@ -74,15 +74,15 @@ export const AIPromptInput = React.forwardRef<HTMLTextAreaElement, AIPromptInput
             }
           }}
         />
-        <div className="sheen-ai-prompt-toolbar">
-          <div className="sheen-ai-prompt-tools">{tools}</div>
+        <div className="rax-ai-prompt-toolbar">
+          <div className="rax-ai-prompt-tools">{tools}</div>
           {status === "streaming" ? (
-            <Button type="submit" size="icon-sm" className="sheen-ai-prompt-send" aria-label={l.stop} data-stop="">
-              <span className="sheen-ai-stop" aria-hidden="true" />
+            <Button type="submit" size="icon-sm" className="rax-ai-prompt-send" aria-label={l.stop} data-stop="">
+              <span className="rax-ai-stop" aria-hidden="true" />
             </Button>
           ) : (
-            <Button type="submit" size="icon-sm" className="sheen-ai-prompt-send" aria-label={l.send} disabled={!value.trim() || busy}>
-              {status === "submitted" ? <span className="sheen-ai-spinner" aria-hidden="true" /> : <ArrowUpIcon />}
+            <Button type="submit" size="icon-sm" className="rax-ai-prompt-send" aria-label={l.send} disabled={!value.trim() || busy}>
+              {status === "submitted" ? <span className="rax-ai-spinner" aria-hidden="true" /> : <ArrowUpIcon />}
             </Button>
           )}
         </div>

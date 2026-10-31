@@ -32,7 +32,7 @@ export function makeHandle(name: string, useDrag: () => DragContextValue | null,
           data-dragging={drag.isDragging ? "" : undefined}
           data-flat-cursor={context.flatCursor ? "" : undefined}
           disabled={disabled ?? drag.disabled}
-          className={cn("sheen-kanban-handle", className)}
+          className={cn("rax-kanban-handle", className)}
           {...props}
           {...(off ? {} : drag.attributes)}
           {...(off ? {} : drag.listeners)}

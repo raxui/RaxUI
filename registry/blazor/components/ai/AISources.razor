@@ -1,8 +1,8 @@
-@using SheenUI.Internal.AI
-<div @attributes="AdditionalAttributes" class="sheen-ai-sources @Class">
-<span class="sheen-ai-sources-label">@Label.Replace("{n}", Sources.Count.ToString(System.Globalization.CultureInfo.CurrentCulture))</span>
+@using RaxUI.Internal.AI
+<div @attributes="AdditionalAttributes" class="rax-ai-sources @Class">
+<span class="rax-ai-sources-label">@Label.Replace("{n}", Sources.Count.ToString(System.Globalization.CultureInfo.CurrentCulture))</span>
 <ol>@for (var i = 0; i < Sources.Count; i++) { var source = Sources[i];
-<li @key="source.Url"><a href="@AIMarkdownParser.SafeUrl(source.Url)" target="_blank" rel="noreferrer" class="sheen-ai-source" title="@source.Title"><span class="sheen-ai-source-index">@(i + 1)</span><span class="sheen-ai-source-title">@source.Title</span><span class="sheen-ai-source-host">@Host(source.Url)</span></a></li> }</ol>
+<li @key="source.Url"><a href="@AIMarkdownParser.SafeUrl(source.Url)" target="_blank" rel="noreferrer" class="rax-ai-source" title="@source.Title"><span class="rax-ai-source-index">@(i + 1)</span><span class="rax-ai-source-title">@source.Title</span><span class="rax-ai-source-host">@Host(source.Url)</span></a></li> }</ol>
 </div>
 @code {
     [Parameter, EditorRequired] public IReadOnlyList<AITypes.Source> Sources { get; set; } = Array.Empty<AITypes.Source>();

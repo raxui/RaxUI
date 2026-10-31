@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/input.css",
       "type": "css",
-      "sha256": "63811aa5a2d5c7d696e67d816ec7bff7a49ad2ccbf090f4cf2af31761cb84c90"
+      "sha256": "dbc90a35b9e3762ca1d07318edc2318807ae77922cc7589c7bbc4d2d03f81379"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Input/Input.razor",
       "type": "razor",
-      "sha256": "e0a0605bbb580271ad015ff838082e59e810063ccf6b912be9c903a71156965d"
+      "sha256": "545d8075200f9954981fc5cf4b3bb3a4010fa0ea2e7238533c98d2bb7738e4ef"
     },
     {
       "source": "Input.razor.js",
@@ -35,7 +35,7 @@
       "destination": "components",
       "target": "Input/NumberInput.razor",
       "type": "razor",
-      "sha256": "84293bf2f47bdbea404d21c2d26955c4be28529b45e291bc62a6b636ea7fa065"
+      "sha256": "a128863b8b2a38041a359077900e4543a4fb7fa9bbaf6f417540bc386e7e3a5b"
     }
   ]
 }

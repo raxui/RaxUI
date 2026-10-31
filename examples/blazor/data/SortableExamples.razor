@@ -16,7 +16,7 @@
     private IReadOnlyList<string> tags=new[]{"React","Bootstrap","Radix","SCSS","TypeScript"};
     private IReadOnlyList<string> colors=new[]{"#0ea5e9","#10b981","#f59e0b","#ef4444","#8b5cf6","#ec4899","#14b8a6","#64748b"};
     private IReadOnlyList<string> chapters=new[]{"الفاتحة","البقرة","آل عمران","النساء"};
-    private string ColorStyle(string color)=>$"background-color:{color};aspect-ratio:1;border-radius:calc(.75rem * var(--sheen-radius-scale))";
+    private string ColorStyle(string color)=>$"background-color:{color};aspect-ratio:1;border-radius:calc(.75rem * var(--rax-radius-scale))";
     private string T(string en,string ar)=>Arabic?ar:en;
     private string Instructions=>T("Press Space or Enter to pick up, arrows to move, Space to drop, Escape to cancel.","اضغط مسافة أو Enter لالتقاط العنصر، والأسهم لتحريكه، ومسافة لإفلاته، وEscape للإلغاء.");
     private string Grabbed=>T("Picked up {item}. Position {position} of {total}.","التقطت {item}. الموضع {position} من {total}.");

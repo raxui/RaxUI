@@ -3,7 +3,7 @@
 // Built-in SVG paths from Lucide, licensed under ISC.
 import * as React from "react"
 import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover"
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { useFieldControlProps } from "@/components/ui/field"
 import { ChoiceHighlight } from "@/lib/choice-highlight"
 import { AutocompleteText, type AutocompleteTextProps } from "./autocomplete-text"
@@ -63,7 +63,7 @@ export interface AutocompleteOptionsProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   "value" | "defaultValue" | "onChange" | "size" | "onSelect" | "type"
 > {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   invalid?: boolean
   variant?: "glass" | "outline" | "filled"
   clearLabel?: string
@@ -105,7 +105,7 @@ function Highlight({ text, query }: { text: string; query: string }) {
   return (
     <>
       {text.slice(0, index)}
-      <mark className="sheen-autocomplete-match">{text.slice(index, index + q.length)}</mark>
+      <mark className="rax-autocomplete-match">{text.slice(index, index + q.length)}</mark>
       {text.slice(index + q.length)}
     </>
   )
@@ -148,7 +148,7 @@ const AutocompleteOptions = React.forwardRef<HTMLInputElement, AutocompleteOptio
     id = wired.id
     inputProps = wired
     const direction = inputProps.dir === "rtl" ? "rtl" : inputProps.dir === "ltr" ? "ltr" : undefined
-    const theme = useSheenTheme({ appearance, direction })
+    const theme = useRaxTheme({ appearance, direction })
     const [query, setQueryState] = useControllable(inputValueProp, defaultInputValue)
     const [value, setValueState] = useControllable<string | null>(valueProp, defaultValue)
     const [open, setOpen] = React.useState(false)
@@ -261,12 +261,12 @@ const AutocompleteOptions = React.forwardRef<HTMLInputElement, AutocompleteOptio
     return (
       <Popover appearance={appearance} dir={direction} open={showList} onOpenChange={(next) => !next && setOpen(false)}>
         <PopoverAnchor asChild>
-          <div {...sheenThemeAttributes(theme)} dir={inputProps.dir} ref={anchorRef} className={cn("sheen-autocomplete", wrapperClassName)} data-loading={loading ? "" : undefined}>
-            <span className="sheen-autocomplete-icon" aria-hidden="true">
-              <span className="sheen-autocomplete-icon-search">
+          <div {...raxThemeAttributes(theme)} dir={inputProps.dir} ref={anchorRef} className={cn("rax-autocomplete", wrapperClassName)} data-loading={loading ? "" : undefined}>
+            <span className="rax-autocomplete-icon" aria-hidden="true">
+              <span className="rax-autocomplete-icon-search">
                 <SearchIcon />
               </span>
-              <span className="sheen-autocomplete-icon-spinner">
+              <span className="rax-autocomplete-icon-spinner">
                 <Spinner />
               </span>
             </span>
@@ -276,7 +276,7 @@ const AutocompleteOptions = React.forwardRef<HTMLInputElement, AutocompleteOptio
                 inputRef.current = node
                 assignRef(forwardedRef, node)
               }}
-              {...sheenThemeAttributes(theme)}
+              {...raxThemeAttributes(theme)}
               {...inputProps}
               data-variant={variant}
               aria-invalid={invalid || inputProps["aria-invalid"] || undefined}
@@ -289,7 +289,7 @@ const AutocompleteOptions = React.forwardRef<HTMLInputElement, AutocompleteOptio
               aria-controls={showList ? listboxId : undefined}
               aria-activedescendant={showList && activeIndex >= 0 ? optionId(activeIndex) : undefined}
               disabled={disabled}
-              className={cn("form-control sheen-input sheen-autocomplete-input", inputSizeClasses[size], className)}
+              className={cn("form-control rax-input rax-autocomplete-input", inputSizeClasses[size], className)}
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value)
@@ -305,7 +305,7 @@ const AutocompleteOptions = React.forwardRef<HTMLInputElement, AutocompleteOptio
             />
 
             {query && !disabled && !inputProps.readOnly && (
-              <button type="button" className="sheen-autocomplete-clear" aria-label={clearLabel} onClick={clear}>
+              <button type="button" className="rax-autocomplete-clear" aria-label={clearLabel} onClick={clear}>
                 <XIcon />
               </button>
             )}
@@ -322,7 +322,7 @@ const AutocompleteOptions = React.forwardRef<HTMLInputElement, AutocompleteOptio
             align="start"
             sideOffset={6}
             collisionPadding={8}
-            className={cn("sheen-autocomplete-content", contentClassName)}
+            className={cn("rax-autocomplete-content", contentClassName)}
             // Focus stays in the input the whole time (aria-activedescendant pattern).
             onOpenAutoFocus={(event) => event.preventDefault()}
             onCloseAutoFocus={(event) => event.preventDefault()}
@@ -338,17 +338,17 @@ const AutocompleteOptions = React.forwardRef<HTMLInputElement, AutocompleteOptio
               aria-labelledby={inputProps["aria-labelledby"]}
               aria-label={inputProps["aria-labelledby"] ? undefined : (inputProps["aria-label"] ?? "Suggestions")}
               aria-busy={loading}
-              className="sheen-autocomplete-listbox sheen-choice-list"
+              className="rax-autocomplete-listbox rax-choice-list"
             >
               <ChoiceHighlight />
               {results.length === 0 && loading ? (
                 [62, 48, 70].map((width, i) => (
-                  <div key={i} className="sheen-autocomplete-skeleton" aria-hidden="true">
+                  <div key={i} className="rax-autocomplete-skeleton" aria-hidden="true">
                     <span style={{ width: `${width}%` }} />
                   </div>
                 ))
               ) : results.length === 0 ? (
-                <div className="sheen-autocomplete-empty">{typeof emptyMessage === "function" ? emptyMessage(query) : emptyMessage}</div>
+                <div className="rax-autocomplete-empty">{typeof emptyMessage === "function" ? emptyMessage(query) : emptyMessage}</div>
               ) : (
                 results.map((option, index) => {
                   const active = index === activeIndex
@@ -362,7 +362,7 @@ const AutocompleteOptions = React.forwardRef<HTMLInputElement, AutocompleteOptio
                       aria-disabled={option.disabled || undefined}
                       data-highlighted={active ? "" : undefined}
                       data-disabled={option.disabled ? "" : undefined}
-                      className="sheen-autocomplete-option"
+                      className="rax-autocomplete-option"
                       onMouseMove={() => !option.disabled && activeIndex !== index && setActiveIndex(index)}
                       onMouseDown={(event) => event.preventDefault()} // keep focus in the input
                       onClick={() => select(option)}
@@ -371,17 +371,17 @@ const AutocompleteOptions = React.forwardRef<HTMLInputElement, AutocompleteOptio
                         renderOption(option, { query: searchQuery, active, selected })
                       ) : (
                         <>
-                          {option.icon && <span className="sheen-autocomplete-option-icon">{option.icon}</span>}
-                          <span className="sheen-autocomplete-option-text">
+                          {option.icon && <span className="rax-autocomplete-option-icon">{option.icon}</span>}
+                          <span className="rax-autocomplete-option-text">
                             <span>
                               <Highlight text={option.label} query={searchQuery} />
                             </span>
-                            {option.description && <span className="sheen-autocomplete-option-description">{option.description}</span>}
+                            {option.description && <span className="rax-autocomplete-option-description">{option.description}</span>}
                           </span>
                         </>
                       )}
                       {selected && (
-                        <span className="sheen-autocomplete-check">
+                        <span className="rax-autocomplete-check">
                           <CheckIcon />
                         </span>
                       )}

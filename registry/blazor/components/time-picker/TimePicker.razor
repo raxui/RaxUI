@@ -10,11 +10,11 @@
 }
 else
 {
-    <div @attributes="ControlAttributes" role="group" class="@($"sheen-time-wheel {CssClass} {Class}")" dir="ltr" data-sheen-appearance="@Appearance" data-disabled="@(EffectiveDisabled || ReadOnly ? "" : null)">
+    <div @attributes="ControlAttributes" role="group" class="@($"rax-time-wheel {CssClass} {Class}")" dir="ltr" data-rax-appearance="@Appearance" data-disabled="@(EffectiveDisabled || ReadOnly ? "" : null)">
         @StartIcon
-        <span class="sheen-wheel-band" aria-hidden="true"></span>
+        <span class="rax-wheel-band" aria-hidden="true"></span>
         <TimeWheel @key="H12" Options="Hours" Selected="@(H12 ? Shown.Hour % 12 == 0 ? 12 : Shown.Hour % 12 : Shown.Hour)" SelectedChanged="HourChanged" Label="@Words.Hour" Committed="HasValue" Disabled="@(EffectiveDisabled || ReadOnly)" AutoFocus="AutoFocus" />
-        <span class="sheen-wheel-colon" aria-hidden="true">:</span>
+        <span class="rax-wheel-colon" aria-hidden="true">:</span>
         <TimeWheel @key="MinuteStep" Options="Minutes" Selected="@OfferedMinute" SelectedChanged="MinuteChanged" Label="@Words.Minute" Committed="HasValue" Disabled="@(EffectiveDisabled || ReadOnly)" />
         @if (H12)
         {
@@ -46,7 +46,7 @@ else
     [Parameter] public string? ParsingErrorMessage { get; set; }
     [Parameter] public RenderFragment? StartIcon { get; set; }
     [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
-    private readonly string _id = $"sheen-time-{Guid.NewGuid():N}";
+    private readonly string _id = $"rax-time-{Guid.NewGuid():N}";
     private CultureInfo FormatCulture => Culture ?? CultureInfo.CurrentCulture;
     private TimeWheel.Labels Words => Text ?? (FormatCulture.TwoLetterISOLanguageName == "ar" ? TimeWheel.Labels.Arabic : new());
     private bool _ready;

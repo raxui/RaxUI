@@ -17,19 +17,19 @@
       "source": "registry/react/components/time-picker/time-picker.tsx",
       "target": "components/ui/time-picker.tsx",
       "type": "tsx",
-      "sha256": "a42e1333091970462c8765b40c893fee4801dde1794e5a9176a864adf1dc12b7"
+      "sha256": "e524e32370917c0c0c463c3f9e3b2227ed9dd887d6e230fbb6411959fa85050c"
     },
     {
       "source": "theme/scss/components/_time-picker.scss",
-      "target": "styles/sheenui/components/_time-picker.scss",
+      "target": "styles/raxui/components/_time-picker.scss",
       "type": "scss",
-      "sha256": "8b001febf03ac2b80ada30e66c2264c9d951225faccfbb766e050228b695d18e"
+      "sha256": "86d3bd4b1f84d29a2d7ab23ecdf588316c3aaed2a0762fd96e0b6ae9918b4f97"
     },
     {
       "source": "registry/react/components/time-picker/native-time-picker.tsx",
       "target": "components/ui/native-time-picker.tsx",
       "type": "tsx",
-      "sha256": "38a16e4c3dafadc1a7a37446c8bad24993234194ccf4d7ca98b51da9b4ca5641"
+      "sha256": "b2b557291d0b5e580e438abdf46a9672eff272bca2dfda9b42f02482b0f48378"
     },
     {
       "source": "registry/react/foundation/client-now.ts",

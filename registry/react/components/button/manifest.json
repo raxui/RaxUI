@@ -17,13 +17,13 @@
       "source": "registry/react/components/button/button.tsx",
       "target": "components/ui/button.tsx",
       "type": "tsx",
-      "sha256": "5510058e1d3f0d5e56076aa4f8c7155b2bee73c0004b479c526f9c6b8ea1a97a"
+      "sha256": "da69e0155c3d64125949fb86c4a010a9bb7d07ae2ddd6998c1e46e611673869f"
     },
     {
       "source": "theme/scss/components/_button.scss",
-      "target": "styles/sheenui/components/_button.scss",
+      "target": "styles/raxui/components/_button.scss",
       "type": "scss",
-      "sha256": "80835020e52ac42e78839c6d896696c7fcf64b8c90b4332f5295cf3efc11bded"
+      "sha256": "20b3dadaa6967e36900748f1400f3da1db202e3a33c21205be9bb2749fc7d61a"
     }
   ]
 }

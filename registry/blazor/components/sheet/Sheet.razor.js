@@ -15,20 +15,20 @@ function axis(state) { const side=state.physical; return { horizontal: side==='l
 function position(state, offset) {
   state.offset = offset
   const {horizontal,sign}=axis(state)
-  state.element.style.setProperty('--sheen-panel-x',`${horizontal?offset*sign:0}px`)
-  state.element.style.setProperty('--sheen-panel-y',`${horizontal?0:offset*sign}px`)
+  state.element.style.setProperty('--rax-panel-x',`${horizontal?offset*sign:0}px`)
+  state.element.style.setProperty('--rax-panel-y',`${horizontal?0:offset*sign}px`)
   let opacity = 1
   if (state.points.length > 1) {
     const index=clamp(state.options.fadeFromIndex,1,state.points.length-1), lower=state.points[index-1].size, upper=state.points[index].size
     opacity=clamp((state.size-offset-lower)/(upper-lower),0,1)
   } else if(!state.points.length) opacity=clamp(1-offset/state.size,0,1)
-  state.element.style.setProperty('--sheen-panel-backdrop-opacity',String(opacity))
+  state.element.style.setProperty('--rax-panel-backdrop-opacity',String(opacity))
   if(state.points.length) {
     const visible=state.size-offset
-    state.element.style.setProperty('--sheen-panel-visible-size',`${visible}px`)
-    const body=state.element.querySelector('.sheen-drawer-body')
-    const other=[...state.element.children].filter(el=>el!==body&&!el.matches('.sheen-drawer-close')).reduce((sum,el)=>sum+el.offsetHeight+parseFloat(getComputedStyle(el).marginTop||0)+parseFloat(getComputedStyle(el).marginBottom||0),0)
-    state.element.style.setProperty('--sheen-panel-body-max',`${Math.max(0,visible-other-2)}px`)
+    state.element.style.setProperty('--rax-panel-visible-size',`${visible}px`)
+    const body=state.element.querySelector('.rax-drawer-body')
+    const other=[...state.element.children].filter(el=>el!==body&&!el.matches('.rax-drawer-close')).reduce((sum,el)=>sum+el.offsetHeight+parseFloat(getComputedStyle(el).marginTop||0)+parseFloat(getComputedStyle(el).marginBottom||0),0)
+    state.element.style.setProperty('--rax-panel-body-max',`${Math.max(0,visible-other-2)}px`)
     state.element.toggleAttribute('data-panel-full',visible>=state.points.at(-1).size-1)
   }
 }
@@ -40,8 +40,8 @@ function layout(state) {
   const {horizontal,sign}=axis(state), viewport=horizontal?innerWidth:innerHeight
   state.points=state.options.snapPoints.map(value=>({value,size:parseSnap(value,viewport)})).sort((a,b)=>a.size-b.size).filter((p,i,all)=>!i||p.size!==all[i-1].size)
   el.toggleAttribute('data-panel-snaps',state.points.length>0)
-  el.style.setProperty('--sheen-panel-exit-x',horizontal?`calc(${sign} * (100% + 1rem))`:'0px')
-  el.style.setProperty('--sheen-panel-exit-y',horizontal?'0px':`calc(${sign} * (100% + 1rem))`)
+  el.style.setProperty('--rax-panel-exit-x',horizontal?`calc(${sign} * (100% + 1rem))`:'0px')
+  el.style.setProperty('--rax-panel-exit-y',horizontal?'0px':`calc(${sign} * (100% + 1rem))`)
   state.size=horizontal?el.offsetWidth:state.points.length?innerHeight:el.offsetHeight
   if(!el.open || state.drag?.active) return
   const active=state.points.find(p=>p.value===state.active)||state.points[0]
@@ -144,7 +144,7 @@ export async function setOpen(element,open) {
     if(!state.locked) {
       if(locks++===0){previousOverflow=document.documentElement.style.overflow;document.documentElement.style.overflow='hidden'}
       state.locked=true
-      const parent=element.parentElement?.closest('dialog.sheen-drawer-content')
+      const parent=element.parentElement?.closest('dialog.rax-drawer-content')
       if(parent?.open&&states.has(parent)){state.parent=parent;element.dataset.panelChild='';states.get(parent).children++;parent.dataset.panelNested=''}
     }
     layout(state);element.dataset.panelEntering=''

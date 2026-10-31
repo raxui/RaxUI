@@ -30,12 +30,12 @@ describe("Switch", () => {
     const { rerender } = render(<Switch aria-label="Theme" icon={<svg data-testid="sun" />} checkedIcon={<svg data-testid="moon" />} />)
     const sun = screen.getByTestId("sun").parentElement!
     const moon = screen.getByTestId("moon").parentElement!
-    expect(sun).toHaveClass("sheen-switch-icon")
+    expect(sun).toHaveClass("rax-switch-icon")
     expect(sun).toHaveAttribute("data-when", "unchecked")
     expect(moon).toHaveAttribute("data-when", "checked")
     expect(sun).toHaveAttribute("aria-hidden", "true")
     await userEvent.click(screen.getByRole("switch"))
-    expect(sun.closest(".sheen-switch-thumb")).toHaveAttribute("data-state", "checked")
+    expect(sun.closest(".rax-switch-thumb")).toHaveAttribute("data-state", "checked")
     rerender(<Switch aria-label="Theme" icon={<svg data-testid="sun" />} />)
     expect(screen.getByTestId("sun").parentElement).not.toHaveAttribute("data-when")
     rerender(<Switch aria-label="Theme" loading icon={<svg data-testid="sun" />} />)

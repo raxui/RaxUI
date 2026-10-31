@@ -3,28 +3,28 @@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @ref="root" data-sheen-appearance="@Appearance" dir="@Direction">
+<div @ref="root" data-rax-appearance="@Appearance" dir="@Direction">
     <span id="@instructionsId" class="visually-hidden">@Instructions</span>
-    <div class="@($"sheen-kanban {Class}")" style="@Style" data-orientation="@Orientation" data-sortable-content="@columnsId">
+    <div class="@($"rax-kanban {Class}")" style="@Style" data-orientation="@Orientation" data-sortable-content="@columnsId">
         @for(var c=0;c<Columns.Count;c++){
             var column=Columns[c];var titleId=$"{columnsId}-{c}";var columnOff=Disabled||!interactive||column.Disabled;
-            <div @key="column.Id" class="@($"sheen-kanban-column {ColumnClass}")" role="group" aria-labelledby="@titleId" data-sortable-id="@column.Id" data-sortable-zone data-disabled="@(column.Disabled?"":null)">
-                <div class="sheen-kanban-column-header">
-                    @if(MovableColumns){<button type="button" class="sheen-kanban-handle" data-sortable-handle disabled="@columnOff" aria-label="@($"{ColumnHandleLabel} {column.Title}")" aria-describedby="@instructionsId">@grip</button>}
+            <div @key="column.Id" class="@($"rax-kanban-column {ColumnClass}")" role="group" aria-labelledby="@titleId" data-sortable-id="@column.Id" data-sortable-zone data-disabled="@(column.Disabled?"":null)">
+                <div class="rax-kanban-column-header">
+                    @if(MovableColumns){<button type="button" class="rax-kanban-handle" data-sortable-handle disabled="@columnOff" aria-label="@($"{ColumnHandleLabel} {column.Title}")" aria-describedby="@instructionsId">@grip</button>}
                     @if(ColumnHeader is null){
-                        <h3 id="@titleId" class="sheen-kanban-column-title">@column.Title</h3>
-                        <span @key="column.Items.Count" class="sheen-kanban-column-count" data-over-limit="@(column.Items.Count>column.Limit?"":null)">@(column.Limit is null?column.Items.Count:$"{column.Items.Count}/{column.Limit}")</span>
+                        <h3 id="@titleId" class="rax-kanban-column-title">@column.Title</h3>
+                        <span @key="column.Items.Count" class="rax-kanban-column-count" data-over-limit="@(column.Items.Count>column.Limit?"":null)">@(column.Limit is null?column.Items.Count:$"{column.Items.Count}/{column.Limit}")</span>
                     }else{<div id="@titleId" style="display:contents">@ColumnHeader(column)</div>}
                 </div>
-                <div class="sheen-kanban-column-content" data-sortable-content="@cardsId" data-sortable-key="@column.Id" data-orientation="@(Orientation=="horizontal"?"vertical":"horizontal")" data-empty="@(column.Items.Count==0?"":null)">
+                <div class="rax-kanban-column-content" data-sortable-content="@cardsId" data-sortable-key="@column.Id" data-orientation="@(Orientation=="horizontal"?"vertical":"horizontal")" data-empty="@(column.Items.Count==0?"":null)">
                     @foreach(var item in column.Items){
                         var id=GetId(item);var off=Disabled||!interactive||(IsDisabled?.Invoke(item)??false);
-                        <div @key="id" class="@($"sheen-kanban-item {ItemClass}")" data-sortable-id="@id" data-disabled="@(off?"":null)" data-handle="@(AsHandle?"":null)" tabindex="@(AsHandle&&!off?"0":null)" role="@(AsHandle?"button":null)" aria-disabled="@(off?"true":null)" aria-label="@(AsHandle?GetLabel(item):null)" aria-describedby="@(AsHandle?instructionsId:null)">
-                            @if(!AsHandle){<button type="button" class="sheen-kanban-handle" data-sortable-handle disabled="@off" aria-label="@($"{ItemHandleLabel} {GetLabel(item)}")" aria-describedby="@instructionsId">@grip</button>}
+                        <div @key="id" class="@($"rax-kanban-item {ItemClass}")" data-sortable-id="@id" data-disabled="@(off?"":null)" data-handle="@(AsHandle?"":null)" tabindex="@(AsHandle&&!off?"0":null)" role="@(AsHandle?"button":null)" aria-disabled="@(off?"true":null)" aria-label="@(AsHandle?GetLabel(item):null)" aria-describedby="@(AsHandle?instructionsId:null)">
+                            @if(!AsHandle){<button type="button" class="rax-kanban-handle" data-sortable-handle disabled="@off" aria-label="@($"{ItemHandleLabel} {GetLabel(item)}")" aria-describedby="@instructionsId">@grip</button>}
                             @ItemTemplate(item)
                         </div>
                     }
-                    @if(column.Items.Count==0&&Empty is not null){<div class="sheen-kanban-empty">@Empty</div>}
+                    @if(column.Items.Count==0&&Empty is not null){<div class="rax-kanban-empty">@Empty</div>}
                 </div>
             </div>
         }
@@ -66,7 +66,7 @@
     [Parameter] public string? ColumnClass { get; set; }
     [Parameter] public string? ItemClass { get; set; }
     private static readonly RenderFragment grip=@<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg>;
-    private readonly string instructionsId=$"sheen-kanban-{Guid.NewGuid():N}";
+    private readonly string instructionsId=$"rax-kanban-{Guid.NewGuid():N}";
     private string cardsId=>instructionsId+"-cards";
     private string columnsId=>instructionsId+"-columns";
     private bool interactive;

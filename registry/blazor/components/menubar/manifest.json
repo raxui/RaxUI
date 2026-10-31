@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/menubar.css",
       "type": "css",
-      "sha256": "32c1919de1a72b1a8550cc52154ebb41d6146730360dd5166b9133fa79e7c14f"
+      "sha256": "4c7a6453f68d864df37ff7881590ff5061eb320ccf6111594a7b2cf6f00781ac"
     }
   ],
   "files": [
@@ -21,28 +21,28 @@
       "destination": "components",
       "target": "Menubar/Menubar.razor",
       "type": "razor",
-      "sha256": "567dd8b9057609b258c23ff1a445bb7a0524e334861952f09b9cf3eabf81d3ba"
+      "sha256": "ac94ec8fe3a5589ceafc7c9039348201f3cb264f30d6adf32f9390ae3f7bbd46"
     },
     {
       "source": "Menubar.razor.js",
       "destination": "components",
       "target": "Menubar/Menubar.razor.js",
       "type": "js",
-      "sha256": "c3692ebc1db12a07192a7ba000657f781b3185b2f63d28881c37d3b08be1a195"
+      "sha256": "22fc61940d92e571073e834628c433b6356bf9fd0d9bd1b1caf01e9cf9c2acee"
     },
     {
       "source": "MenubarCheckboxItem.razor",
       "destination": "components",
       "target": "Menubar/MenubarCheckboxItem.razor",
       "type": "razor",
-      "sha256": "5232920928b899307aaf2cf01755a91e9407cdff8f2495d8ba154286b3468342"
+      "sha256": "e023a5a7a68939dcf0578e644c541d56c6e2c1f2f2e9ef351f5cf363f11cddd5"
     },
     {
       "source": "MenubarContent.razor",
       "destination": "components",
       "target": "Menubar/MenubarContent.razor",
       "type": "razor",
-      "sha256": "fbff21e59473e2d3a49113c728d28efe86f82090f7ceb6d72804ae1eeef44624"
+      "sha256": "370ef6a79bd63972b8492acdfa769988ff11ebb0cb6790f4313aee5886d6aecb"
     },
     {
       "source": "MenubarGroup.razor",
@@ -56,21 +56,21 @@
       "destination": "components",
       "target": "Menubar/MenubarItem.razor",
       "type": "razor",
-      "sha256": "179c870ae5513835cd8ebc9e2a3035bfa43d32813c74e37e1705fefb4f9d2ade"
+      "sha256": "c398fbd90c723de99aa1a635b43212037f382bf8c15016eae9df11cdb1565b64"
     },
     {
       "source": "MenubarLabel.razor",
       "destination": "components",
       "target": "Menubar/MenubarLabel.razor",
       "type": "razor",
-      "sha256": "1e1b514b1be9909c22c9909f2f10e9a0688bb31992f024d58cd7eec725dbae7f"
+      "sha256": "b2af712499efeb72e1cd9401bfe1f381db3470ac65d673617f5778595a78de5f"
     },
     {
       "source": "MenubarMenu.razor",
       "destination": "components",
       "target": "Menubar/MenubarMenu.razor",
       "type": "razor",
-      "sha256": "84eda95059c3e61e70088fd683fbfcd67764072df3f47b25c21160bc851314a4"
+      "sha256": "a2d94673b5013e54cd555a3d2e248f25e7492f56c388fd70fa516573d6375881"
     },
     {
       "source": "MenubarRadioGroup.razor",
@@ -84,49 +84,49 @@
       "destination": "components",
       "target": "Menubar/MenubarRadioItem.razor",
       "type": "razor",
-      "sha256": "3624759dfd42ef87b29d6234a259818c6571679d59d8e172bf3d822de05fc2da"
+      "sha256": "18e435574a48e06f84eb1729230e63922a9e5404089b6374bb2c83a5e90159ae"
     },
     {
       "source": "MenubarSeparator.razor",
       "destination": "components",
       "target": "Menubar/MenubarSeparator.razor",
       "type": "razor",
-      "sha256": "0701552b26d5e682f428c17fc6ac20de9d87588a2d3597edcf1ccd4c5b0ff1b5"
+      "sha256": "542e95ae0ef97661dee948f1cc561233896b5bbeb0834a898db776523a09643a"
     },
     {
       "source": "MenubarShortcut.razor",
       "destination": "components",
       "target": "Menubar/MenubarShortcut.razor",
       "type": "razor",
-      "sha256": "4442a7fc8ab4973e111c79c561fd65054635049dea16158b4069be45695e596e"
+      "sha256": "e56c9a01581b1f9413398f0670d3ba4d621f4a387b18ead4f3c55854195beda3"
     },
     {
       "source": "MenubarSub.razor",
       "destination": "components",
       "target": "Menubar/MenubarSub.razor",
       "type": "razor",
-      "sha256": "9e3d3a5caeded703cdabcf8371c55cd4c2364c203d2063589033bf41b58c4638"
+      "sha256": "3c354fd6307a610dd1a1e0831d573d82d97db188f4df33cd85f843c36861c75e"
     },
     {
       "source": "MenubarSubContent.razor",
       "destination": "components",
       "target": "Menubar/MenubarSubContent.razor",
       "type": "razor",
-      "sha256": "bb6c1c140d76b9c7eb2c80ea53cedc4310d31c39c0646259b4a27f45cd3fc9a3"
+      "sha256": "6abdf8bc305a56644496fc8460263f9a0343c539a50b11068fbd4fb83e3ddb9b"
     },
     {
       "source": "MenubarSubTrigger.razor",
       "destination": "components",
       "target": "Menubar/MenubarSubTrigger.razor",
       "type": "razor",
-      "sha256": "24c459593d6718dc8a056d00b9dda19d5f2d9a2cc1e9723cdd50751760d4eb9e"
+      "sha256": "102821d081cc9262db8d2bd5cbfda39521399da5890c34a619bc23051996a103"
     },
     {
       "source": "MenubarTrigger.razor",
       "destination": "components",
       "target": "Menubar/MenubarTrigger.razor",
       "type": "razor",
-      "sha256": "0877e1026b355910684434d1eb1b707fdfde475570072a9ad8518db4c4bc2f7e"
+      "sha256": "c3c748212e2fb47cfb78a797f85b5899b27a095f6856d3a96cca5c79e280a469"
     }
   ]
 }

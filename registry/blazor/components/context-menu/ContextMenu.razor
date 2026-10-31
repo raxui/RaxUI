@@ -1,13 +1,13 @@
-@* SheenUI ContextMenu. Source-owned: edit freely. Reuses DropdownMenu items. Requires interactivity. *@
+@* RaxUI ContextMenu. Source-owned: edit freely. Reuses DropdownMenu items. Requires interactivity. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
-<div @ref="_target" class="sheen-context-target @TargetClass" tabindex="0" aria-haspopup="menu" aria-controls="@_id" aria-expanded="false">@Target</div>
+<div @ref="_target" class="rax-context-target @TargetClass" tabindex="0" aria-haspopup="menu" aria-controls="@_id" aria-expanded="false">@Target</div>
 <div @ref="_menu" @attributes="AdditionalAttributes" id="@_id" popover="manual" role="menu" tabindex="-1"
-     aria-label="@Label" class="sheen-dropdown-menu sheen-context-menu @Class" data-sheen-appearance="@Appearance">@ChildContent</div>
+     aria-label="@Label" class="rax-dropdown-menu rax-context-menu @Class" data-rax-appearance="@Appearance">@ChildContent</div>
 
 @code {
-    private readonly string _generatedId = "sheen-context-" + Guid.NewGuid().ToString("N");
+    private readonly string _generatedId = "rax-context-" + Guid.NewGuid().ToString("N");
     private ElementReference _target, _menu;
     private IJSObjectReference? _module;
     private string _id => Id ?? _generatedId;

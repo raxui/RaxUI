@@ -67,7 +67,7 @@ export function initListbox(input, list, receiver) {
   const controller = new AbortController()
   const signal = controller.signal
   const content = list.closest('[popover]')
-  const inner = list.querySelector('.sheen-command-list-inner') || list
+  const inner = list.querySelector('.rax-command-list-inner') || list
   const highlight = inner.querySelector('[data-choice-highlight]')
   let active, frame, pointerX, pointerY
   const options = () => [...list.querySelectorAll('[role="option"]:not([aria-disabled="true"])')].filter(el => !el.hidden)
@@ -150,7 +150,7 @@ export function initListbox(input, list, receiver) {
       input.value = event.key; input.dispatchEvent(new Event('input', { bubbles: true }))
     }
   }, { signal })
-  const field = trigger?.closest('.sheen-rich-combobox')
+  const field = trigger?.closest('.rax-rich-combobox')
   field?.addEventListener('pointerdown', event => {
     if(event.target.closest('button') || field.hasAttribute('data-disabled') || content.contains(event.target)) return
     event.preventDefault(); content.showPopover(); input.focus()

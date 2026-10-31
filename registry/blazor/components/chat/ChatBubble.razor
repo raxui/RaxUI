@@ -1,8 +1,8 @@
 @* Built-in SVG paths from Lucide (ISC), matching the React source. *@
-<div class="sheen-chat-row" data-status="@Status"><div @attributes="AdditionalAttributes" class="sheen-chat-bubble @Class" dir="auto">@ChildContent</div>
-@if (Footer is not null) { <div class="sheen-chat-bubble-footer">@Footer</div> }
+<div class="rax-chat-row" data-status="@Status"><div @attributes="AdditionalAttributes" class="rax-chat-bubble @Class" dir="auto">@ChildContent</div>
+@if (Footer is not null) { <div class="rax-chat-bubble-footer">@Footer</div> }
 @if (Status is not null) {
-<div class="sheen-chat-status" data-status="@Status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<div class="rax-chat-status" data-status="@Status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 @if (Status is "sending" or "failed") { <circle cx="12" cy="12" r="9" /><path d="@(Status == "sending" ? "M12 8v4l2.5 2" : "M12 7v6M12 16.5v.01")" /> }
 else { <path d="@(Status == "sent" ? "m5 12 4.5 4.5L19 7" : "m2 12 4.5 4.5L16 7M10.5 15.5l1 1L21 7")" /> }</svg><span>@StatusText</span>
 @if (Status == "failed" && OnRetry.HasDelegate) { <button type="button" @onclick="OnRetry">@Words.Retry</button> }</div>

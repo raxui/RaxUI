@@ -4,10 +4,10 @@
 // out of the text rather than popping over it.
 // -----------------------------------------------------------------------------
 
-.sheen-hover-card {
-  @include sheen-surface;
+.rax-hover-card {
+  @include rax-surface;
 
-  --sheen-hover-card-shift: 0, 6px;
+  --rax-hover-card-shift: 0, 6px;
 
   z-index: 1070;
   width: 20rem;
@@ -15,41 +15,41 @@
   max-height: var(--radix-hover-card-content-available-height);
   overflow-y: auto;
   padding: 1rem;
-  border-radius: var(--sheen-radius);
+  border-radius: var(--rax-radius);
   color: var(--bs-body-color);
   text-align: start;
   transform-origin: var(--radix-hover-card-content-transform-origin);
 
-  &[data-side="top"] { --sheen-hover-card-shift: 0, -6px; }
-  &[data-side="left"] { --sheen-hover-card-shift: -6px, 0; }
-  &[data-side="right"] { --sheen-hover-card-shift: 6px, 0; }
+  &[data-side="top"] { --rax-hover-card-shift: 0, -6px; }
+  &[data-side="left"] { --rax-hover-card-shift: -6px, 0; }
+  &[data-side="right"] { --rax-hover-card-shift: 6px, 0; }
 
   &[data-state="open"] {
-    animation: sheen-fade-in var(--sheen-duration-fast) linear;
+    animation: rax-fade-in var(--rax-duration-fast) linear;
   }
 
   &[data-state="closed"] {
-    animation: sheen-fade-out var(--sheen-duration-fast) linear forwards;
+    animation: rax-fade-out var(--rax-duration-fast) linear forwards;
   }
 
   @include motion-safe {
     &[data-state="open"] {
-      animation: sheen-hover-card-in 380ms var(--sheen-ease-spring);
+      animation: rax-hover-card-in 380ms var(--rax-ease-spring);
     }
 
     &[data-state="closed"] {
-      animation: sheen-hover-card-out 160ms var(--sheen-ease-in) forwards;
+      animation: rax-hover-card-out 160ms var(--rax-ease-in) forwards;
     }
   }
 }
 
 // A link that opens a hover card: underlined on hover only, like a quiet mention.
-.sheen-hover-link {
+.rax-hover-link {
   unicode-bidi: plaintext; // "@layla" keeps its @ in front inside Arabic text
-  color: var(--sheen-primary-text);
+  color: var(--rax-primary-text);
   font-weight: 500;
   text-decoration: none;
-  border-radius: calc(0.25rem * var(--sheen-radius-scale));
+  border-radius: calc(0.25rem * var(--rax-radius-scale));
 
   &:hover,
   &[data-state="open"] {
@@ -59,14 +59,14 @@
   }
 }
 
-@keyframes sheen-hover-card-in {
+@keyframes rax-hover-card-in {
   from {
     opacity: 0;
-    transform: translate(var(--sheen-hover-card-shift)) scale(0.96);
+    transform: translate(var(--rax-hover-card-shift)) scale(0.96);
   }
 }
 
-@keyframes sheen-hover-card-out {
+@keyframes rax-hover-card-out {
   to {
     opacity: 0;
     transform: scale(0.97);
@@ -74,10 +74,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [class*="sheen-hover-card"] { animation: none !important; transition: none !important; }
+  [class*="rax-hover-card"] { animation: none !important; transition: none !important; }
 }
 
-.sheen-hover-card[popover] { position: fixed; inset: auto; margin: 0; max-height: calc(100dvh - 1rem); }
-.sheen-hover-card[popover]:not(:popover-open) { display: none; }
+.rax-hover-card[popover] { position: fixed; inset: auto; margin: 0; max-height: calc(100dvh - 1rem); }
+.rax-hover-card[popover]:not(:popover-open) { display: none; }
 
-.sheen-hover-card { padding: calc(var(--sheen-control-height, 2.5rem) * .4); }
+.rax-hover-card { padding: calc(var(--rax-control-height, 2.5rem) * .4); }

@@ -1,20 +1,20 @@
 @import "input-mixins";
 // -----------------------------------------------------------------------------
-// Textarea — same frosted surface as Input (reuses `sheen-input-surface`), with
+// Textarea — same frosted surface as Input (reuses `rax-input-surface`), with
 // optional auto-grow, a footer bar for actions, and a character counter whose
 // ring fills toward `maxLength` and turns amber, then red.
 // Requires _input.scss to be imported first (shared mixins).
 // -----------------------------------------------------------------------------
 
-.sheen-textarea {
-  @include sheen-input-surface("&:focus");
+.rax-textarea {
+  @include rax-input-surface("&:focus");
 
-  --sheen-textarea-pad-y: 0.6875rem;
+  --rax-textarea-pad-y: 0.6875rem;
 
   display: block;
   width: 100%;
   min-height: 0;
-  padding: var(--sheen-textarea-pad-y) var(--sheen-input-pad-x);
+  padding: var(--rax-textarea-pad-y) var(--rax-input-pad-x);
   line-height: 1.5;
   resize: vertical;
   scrollbar-width: thin;
@@ -27,7 +27,7 @@
   &:disabled,
   &[readonly] {
     opacity: 0.55;
-    background-color: var(--sheen-input-bg);
+    background-color: var(--rax-input-bg);
   }
 
   // Auto-grow owns the height; the grip would fight it.
@@ -38,14 +38,14 @@
 }
 
 // ---- Field with footer / counter: the group draws the surface ----------------
-.sheen-textarea-group {
-  @include sheen-input-surface("&:focus-within");
+.rax-textarea-group {
+  @include rax-input-surface("&:focus-within");
 
   display: flex;
   flex-direction: column;
   cursor: text;
 
-  > .sheen-textarea {
+  > .rax-textarea {
     border: 0;
     border-radius: inherit;
     background: none;
@@ -56,30 +56,30 @@
     &:disabled { opacity: 1; }
   }
 
-  &:has(> .sheen-textarea:disabled) {
+  &:has(> .rax-textarea:disabled) {
     opacity: 0.55;
     cursor: default;
   }
 }
 
-.sheen-textarea-group:has(> .sheen-textarea[aria-invalid="true"]),
-.sheen-textarea[aria-invalid="true"] {
-  --sheen-input-border: rgba(var(--bs-danger-rgb), 0.6);
-  --sheen-input-ring-rgb: var(--bs-danger-rgb);
+.rax-textarea-group:has(> .rax-textarea[aria-invalid="true"]),
+.rax-textarea[aria-invalid="true"] {
+  --rax-input-border: rgba(var(--bs-danger-rgb), 0.6);
+  --rax-input-ring-rgb: var(--bs-danger-rgb);
 }
 
-.sheen-textarea-footer {
+.rax-textarea-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
   min-height: 2.5rem;
   padding: 0.25rem 0.375rem 0.375rem;
-  padding-inline-start: calc(var(--sheen-input-pad-x) - 0.5rem);
+  padding-inline-start: calc(var(--rax-input-pad-x) - 0.5rem);
   user-select: none;
 }
 
-.sheen-textarea-footer-start {
+.rax-textarea-footer-start {
   display: flex;
   flex: 1;
   flex-wrap: wrap;
@@ -89,8 +89,8 @@
 }
 
 // ---- Counter ----------------------------------------------------------------
-.sheen-textarea-count {
-  --sheen-textarea-count-rgb: var(--bs-primary-rgb);
+.rax-textarea-count {
+  --rax-textarea-count-rgb: var(--bs-primary-rgb);
 
   display: inline-flex;
   flex-shrink: 0;
@@ -114,13 +114,13 @@
   }
 
   &[data-state="warn"] {
-    --sheen-textarea-count-rgb: var(--bs-warning-rgb);
+    --rax-textarea-count-rgb: var(--bs-warning-rgb);
 
     color: rgb(var(--bs-warning-rgb));
   }
 
   &[data-state="limit"] {
-    --sheen-textarea-count-rgb: var(--bs-danger-rgb);
+    --rax-textarea-count-rgb: var(--bs-danger-rgb);
 
     color: rgb(var(--bs-danger-rgb));
     font-weight: 600;
@@ -128,7 +128,7 @@
 
   @include motion-safe {
     svg {
-      transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+      transition: transform var(--rax-duration-slow) var(--rax-ease-spring);
     }
 
     // The ring swells a little once it starts warning.
@@ -137,25 +137,25 @@
     }
 
     &[data-state="limit"] svg {
-      animation: sheen-textarea-shake 360ms var(--sheen-ease-out);
+      animation: rax-textarea-shake 360ms var(--rax-ease-out);
     }
   }
 }
 
-.sheen-textarea-count-track {
+.rax-textarea-count-track {
   stroke: rgba(var(--bs-emphasis-color-rgb), 0.12);
 }
 
-.sheen-textarea-count-bar {
-  stroke: rgb(var(--sheen-textarea-count-rgb));
+.rax-textarea-count-bar {
+  stroke: rgb(var(--rax-textarea-count-rgb));
   stroke-dasharray: 1;
   stroke-linecap: round;
   transition:
-    stroke-dashoffset var(--sheen-duration) var(--sheen-ease-out),
-    stroke var(--sheen-duration) ease;
+    stroke-dashoffset var(--rax-duration) var(--rax-ease-out),
+    stroke var(--rax-duration) ease;
 }
 
-@keyframes sheen-textarea-shake {
+@keyframes rax-textarea-shake {
   20%,
   60% {
     translate: -2px 0;
@@ -168,4 +168,4 @@
 }
 
 // Counter icons retain their size when an app icon stylesheet is loaded later.
-.sheen-textarea-group .sheen-textarea-count svg { width: 1.125rem; height: 1.125rem; }
+.rax-textarea-group .rax-textarea-count svg { width: 1.125rem; height: 1.125rem; }

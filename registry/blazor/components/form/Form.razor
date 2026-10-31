@@ -1,10 +1,10 @@
-@* SheenUI Form. Source-owned: edit freely. Place inside EditForm; keep the app's validator and submit callbacks.
+@* RaxUI Form. Source-owned: edit freely. Place inside EditForm; keep the app's validator and submit callbacks.
    OnAfterRender does not run in static SSR, so ordinary server posts never require JavaScript. *@
 @using Microsoft.AspNetCore.Components.Forms
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
-<div @ref="_element" @attributes="AdditionalAttributes" class="@($"sheen-form {Class}".TrimEnd())">
+<div @ref="_element" @attributes="AdditionalAttributes" class="@($"rax-form {Class}".TrimEnd())">
     @ChildContent
 </div>
 

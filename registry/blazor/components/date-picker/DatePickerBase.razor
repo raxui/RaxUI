@@ -30,7 +30,7 @@
     protected bool Ready;
     protected bool Open;
     protected ElementReference Anchor;
-    private readonly string _id = $"sheen-picker-{Guid.NewGuid():N}";
+    private readonly string _id = $"rax-picker-{Guid.NewGuid():N}";
     private EditContext? _subscribed;
     private ValidationMessageStore? _messages;
     private string? _lastError;
@@ -40,7 +40,7 @@
     protected bool CanClear => Clearable && Nullable.GetUnderlyingType(typeof(TValue)) is not null;
     protected string InputName => NameAttributeValue;
     protected string ControlId => Convert.ToString(ControlAttributes["id"])!;
-    protected string TriggerClass => $"form-control sheen-input sheen-picker-trigger {(Size == "default" ? "" : $"form-control-{Size}")} {CssClass} {Class}";
+    protected string TriggerClass => $"form-control rax-input rax-picker-trigger {(Size == "default" ? "" : $"form-control-{Size}")} {CssClass} {Class}";
     protected Dictionary<string, object> ControlAttributes
     {
         get

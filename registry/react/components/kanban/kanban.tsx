@@ -2,13 +2,14 @@
 
 // Ported from boot-ui. Built-in SVG paths from Lucide (ISC).
 import * as React from "react"
-import { useSheenTheme, SheenThemeBoundary, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, RaxThemeBoundary, type RaxAppearance } from "@/lib/theme"
 import { closestCenter, DndContext, getFirstCollision, MeasuringStrategy, pointerWithin, rectIntersection, type Announcements, type CollisionDetection, type DndContextProps, type DragEndEvent, type DragOverEvent, type DragStartEvent, type UniqueIdentifier } from "@dnd-kit/core"
 import { arrayMove } from "@dnd-kit/sortable"
 import { useDragSensors } from "@/components/ui/sortable"
 import { getDirection } from "@/lib/direction"
 import { type KanbanColumns, type KanbanContextValue, KanbanContext } from "./kanban-context"
 import { coordinateGetter } from "./kanban-keyboard"
+import { KanbanOverlayPortal } from "./kanban-overlay"
 
 export type KanbanLabels = {
   instructions?: string
@@ -25,7 +26,7 @@ export type ItemValueProp<T> = T extends object
 export type KanbanProps<T> = Omit<DndContextProps, "children" | "collisionDetection"> &
   ItemValueProp<T> & {
     /** Cards by column id. Key order is column order. */
-    appearance?: SheenAppearance
+    appearance?: RaxAppearance
     value: KanbanColumns<T>
     onValueChange?: (columns: KanbanColumns<T>) => void
     /** Called once a drag ends with a real change, e.g. to save it. */
@@ -62,7 +63,7 @@ export function Kanban<T>(props: KanbanProps<T>) {
     ...dndProps
   } = props as KanbanProps<T> & { getItemValue?: (item: T) => UniqueIdentifier }
 
-  const theme = useSheenTheme({ appearance })
+  const theme = useRaxTheme({ appearance })
   const [reducedMotion, setReducedMotion] = React.useState(false)
   React.useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -191,7 +192,7 @@ export function Kanban<T>(props: KanbanProps<T>) {
   }
 
   return (
-    <SheenThemeBoundary value={theme}>
+    <RaxThemeBoundary value={theme}>
     <KanbanContext.Provider value={contextValue}>
       <DndContext id={contextId}
         collisionDetection={collisionDetection}
@@ -289,9 +290,11 @@ export function Kanban<T>(props: KanbanProps<T>) {
         }}
       >
         {children}
+        {/* Without a `KanbanOverlay`, still lift a copy so the card isn't clipped by its column. */}
+        {!hasOverlay && <KanbanOverlayPortal />}
       </DndContext>
     </KanbanContext.Provider>
-    </SheenThemeBoundary>
+    </RaxThemeBoundary>
   )
 }
 export type { KanbanColumns } from "./kanban-context"

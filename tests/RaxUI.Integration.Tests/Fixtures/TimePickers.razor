@@ -1,0 +1,42 @@
+@page "/time-demo"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using CultureInfo = System.Globalization.CultureInfo
+
+<PageTitle>RaxUI time acceptance</PageTitle>
+<section class="container p-4" style="max-width:950px">
+    <h1>Time input · إدخال الوقت</h1>
+    <EditForm Model="model" FormName="times" Context="timeForm" OnValidSubmit="@(() => saved = true)">
+        <DataAnnotationsValidator />
+        <Field Id="time-ar" For="@(() => model.Time)"><FieldLabel>الوقت</FieldLabel><TimePicker @bind-Value="model.Time" Culture="Arabic" HourCycle="12" Now="@(new TimeOnly(12, 57))" Clearable /><FieldError /></Field>
+        <Field Id="date-time-en" For="@(() => model.Date)"><FieldLabel>UTC appointment</FieldLabel><DateTimeInput @bind-Value="model.Date" Culture="English" HourCycle="24" Now="@(new DateTime(2026, 10, 26, 9, 15, 0))" Min="@(new DateOnly(2024, 1, 1))" Clearable /><FieldError /></Field>
+        <Field Id="date-time-ar" For="@(() => model.Offset)"><FieldLabel>موعد بغداد</FieldLabel><DateTimeInput @bind-Value="model.Offset" Culture="Arabic" HourCycle="12" MinuteStep="5" /><FieldError /></Field>
+        <Field Id="date-time-empty" For="@(() => model.Empty)"><FieldLabel>Required appointment</FieldLabel><DateTimeInput @bind-Value="model.Empty" Culture="English" HourCycle="12" MinuteStep="5" Now="@(new DateTime(2026, 10, 26, 13, 27, 49))" Clearable /><FieldError /></Field>
+        <button id="time-save" class="btn btn-primary" type="submit" disabled="@(!ready)">Save</button>
+    </EditForm>
+    <TimePicker id="time-en" @bind-Value="englishTime" Culture="English" HourCycle="24" MinuteStep="15" />
+    <TimePicker id="time-step-empty" @bind-Value="stepTime" HourCycle="24" MinuteStep="15" Now="@(new TimeOnly(12, 57))" Culture="English" />
+    <output id="step-value">@stepTime?.ToString("HH:mm")</output>
+    <TimePicker id="time-readonly" Value="@(new TimeOnly(8, 30))" ReadOnly />
+    <TimePicker id="time-disabled" Value="@(new TimeOnly(8, 30))" Disabled />
+    <DateTimeInput id="datetime-readonly" Value="@(new DateTime(2026, 10, 26))" ReadOnly />
+    <DateTimeInput id="datetime-disabled" Value="@(new DateTime(2026, 10, 26))" Disabled />
+    <output id="time-values">@($"{model.Time:HH:mm}|{model.Date:O}|{model.Offset:O}|{model.Empty:O}|{englishTime:HH:mm}")</output>
+    <output id="time-saved">@(saved ? "Saved" : "")</output>
+</section>
+
+@code {
+    private static readonly CultureInfo Arabic = new("ar-IQ"), English = new("en-US");
+    private readonly Model model = new();
+    private TimeOnly? stepTime;
+    private TimeOnly englishTime = new(23, 45);
+    private bool ready, saved;
+    protected override void OnAfterRender(bool firstRender) { if (firstRender) { ready = true; StateHasChanged(); } }
+    public class Model
+    {
+        [Required(ErrorMessage = "اختر الوقت.")] public TimeOnly? Time { get; set; }
+        public DateTime? Date { get; set; } = new DateTime(2024, 2, 29, 23, 57, 0, DateTimeKind.Utc);
+        public DateTimeOffset Offset { get; set; } = new(new DateTime(2026, 10, 26, 23, 45, 0), TimeSpan.FromHours(3));
+        [Required(ErrorMessage = "Choose an appointment.")] public DateTime? Empty { get; set; }
+    }
+}

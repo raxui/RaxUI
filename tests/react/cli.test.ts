@@ -28,7 +28,7 @@ const DEPENDENCIES = {
 }
 
 beforeEach(() => {
-  root = mkdtempSync(path.join(tmpdir(), "sheen-react-"))
+  root = mkdtempSync(path.join(tmpdir(), "rax-react-"))
   app = path.join(root, "app")
   mkdirSync(path.join(app, "src"), { recursive: true })
   writeFileSync(path.join(app, "package.json"), JSON.stringify({ dependencies: DEPENDENCIES, devDependencies: { vite: "8.3.5" } }))
@@ -88,16 +88,16 @@ function ok(result: { code: number; err: string }) {
   expect(result.code).toBe(0)
 }
 
-it.each(["blazorui.react.json", "blazorui.react.lock.json"])("preserves former identity state %s and refuses initialization", (legacyFile) => {
+it.each(["blazorui.react.json", "blazorui.react.lock.json", "sheenui.react.json", "sheenui.react.lock.json"])("preserves former identity state %s and refuses initialization", (legacyFile) => {
   writeFileSync(file(legacyFile), "original state")
   const before = snapshot()
-  expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("former BlazorUI registry") })
+  expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("former BlazorUI or SheenUI registry") })
   expect(snapshot()).toEqual(before)
-  expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("former BlazorUI registry") })
+  expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("former BlazorUI or SheenUI registry") })
   expect(snapshot()).toEqual(before)
 })
 
-describe("sheenui-react init and add button", () => {
+describe("raxui-react init and add button", () => {
   it("installs the foundation and Button with relative imports, one stylesheet, and one entry import", () => {
     ok(cli("init"))
     ok(cli("add", "button"))
@@ -105,16 +105,16 @@ describe("sheenui-react init and add button", () => {
     expect(read("src/components/ui/button.tsx")).toContain('from "../../lib/theme"')
     expect(read("src/components/ui/button.tsx")).not.toContain("@/lib")
     expect(existsSync(file("src/lib/utils.ts"))).toBe(true)
-    expect(existsSync(file("src/styles/sheenui/_core.scss"))).toBe(true)
-    expect(existsSync(file("src/styles/sheenui/components/_button.scss"))).toBe(true)
+    expect(existsSync(file("src/styles/raxui/_core.scss"))).toBe(true)
+    expect(existsSync(file("src/styles/raxui/components/_button.scss"))).toBe(true)
 
-    const stylesheet = read("src/styles/sheenui.scss")
-    expect(stylesheet.indexOf('@import "sheenui/variables";')).toBeLessThan(stylesheet.indexOf('@import "bootstrap/scss/bootstrap";'))
-    expect(stylesheet.indexOf('@import "sheenui/core";')).toBeLessThan(stylesheet.indexOf('@import "sheenui/components/button";'))
-    expect(read("src/main.tsx").startsWith('import "./styles/sheenui.scss"\n')).toBe(true)
+    const stylesheet = read("src/styles/raxui.scss")
+    expect(stylesheet.indexOf('@import "raxui/variables";')).toBeLessThan(stylesheet.indexOf('@import "bootstrap/scss/bootstrap";'))
+    expect(stylesheet.indexOf('@import "raxui/core";')).toBeLessThan(stylesheet.indexOf('@import "raxui/components/button";'))
+    expect(read("src/main.tsx").startsWith('import "./styles/raxui.scss"\n')).toBe(true)
 
-    expect(json("sheenui.react.json")).toMatchObject({ registryVersion: VERSION, framework: "react", bundler: "vite", entry: "src/main.tsx" })
-    const button = json("sheenui.react.lock.json").items.button
+    expect(json("raxui.react.json")).toMatchObject({ registryVersion: VERSION, framework: "react", bundler: "vite", entry: "src/main.tsx" })
+    const button = json("raxui.react.lock.json").items.button
     const tsx = button.files.find((entry: { target: string }) => entry.target === "src/components/ui/button.tsx")
     expect(tsx.installedHash).not.toBe(tsx.sourceHash) // imports were rewritten
     expect(button.manifestSha256).toMatch(/^[0-9a-f]{64}$/)
@@ -130,7 +130,7 @@ describe("sheenui-react init and add button", () => {
   })
 
   it("requires init before add", () => {
-    expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("Run 'sheenui-react init' first") })
+    expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("Run 'raxui-react init' first") })
   })
 
   it("rejects projects that are not React + Vite", () => {
@@ -150,27 +150,27 @@ describe("sheenui-react init and add button", () => {
   it("keeps an installed dependency as it is, local edits included", () => {
     ok(cli("init"))
     writeFileSync(file("src/lib/theme.tsx"), "// my theme")
-    const foundation = json("sheenui.react.lock.json").items.foundation
+    const foundation = json("raxui.react.lock.json").items.foundation
     ok(cli("add", "dialog")) // dialog requires the foundation
     expect(readFileSync(file("src/lib/theme.tsx"), "utf8")).toBe("// my theme")
     expect(existsSync(file("src/components/ui/dialog.tsx"))).toBe(true)
-    expect(json("sheenui.react.lock.json").items.foundation).toEqual(foundation)
+    expect(json("raxui.react.lock.json").items.foundation).toEqual(foundation)
   })
 
   it("refuses to overwrite an unknown file", () => {
     mkdirSync(file("src/components/ui"), { recursive: true })
     writeFileSync(file("src/components/ui/button.tsx"), "// not ours")
     const before = snapshot()
-    expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("not managed by SheenUI") })
+    expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("not managed by RaxUI") })
     expect(snapshot()).toEqual(before)
   })
 
   it("does not silently update a file installed from another release", () => {
     ok(cli("init"))
     ok(cli("add", "button"))
-    const lock = json("sheenui.react.lock.json")
+    const lock = json("raxui.react.lock.json")
     lock.items.button.files[0].sourceHash = "0".repeat(64)
-    writeFileSync(file("sheenui.react.lock.json"), JSON.stringify(lock))
+    writeFileSync(file("raxui.react.lock.json"), JSON.stringify(lock))
     const before = snapshot()
     expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("Updating installed files is not supported yet") })
     expect(snapshot()).toEqual(before)
@@ -178,13 +178,13 @@ describe("sheenui-react init and add button", () => {
 
   it("rejects state written by a newer CLI and accepts an older one", () => {
     ok(cli("init"))
-    const lock = json("sheenui.react.lock.json")
-    writeFileSync(file("sheenui.react.lock.json"), JSON.stringify({ ...lock, registryVersion: "99.0.0" }))
+    const lock = json("raxui.react.lock.json")
+    writeFileSync(file("raxui.react.lock.json"), JSON.stringify({ ...lock, registryVersion: "99.0.0" }))
     expect(cli("add", "button")).toMatchObject({ code: 1, err: expect.stringContaining("newer than this CLI") })
 
-    writeFileSync(file("sheenui.react.lock.json"), JSON.stringify({ ...lock, registryVersion: "0.0.1" }))
+    writeFileSync(file("raxui.react.lock.json"), JSON.stringify({ ...lock, registryVersion: "0.0.1" }))
     ok(cli("add", "button"))
-    expect(json("sheenui.react.lock.json").registryVersion).toBe(VERSION)
+    expect(json("raxui.react.lock.json").registryVersion).toBe(VERSION)
   })
 
   it("prints manual steps and writes nothing when the entry imports Bootstrap CSS directly", () => {
@@ -196,7 +196,7 @@ describe("sheenui-react init and add button", () => {
 
   it("does not edit a stylesheet that uses @use", () => {
     mkdirSync(file("src/styles"), { recursive: true })
-    writeFileSync(file("src/styles/sheenui.scss"), '@use "bootstrap/scss/bootstrap";\n')
+    writeFileSync(file("src/styles/raxui.scss"), '@use "bootstrap/scss/bootstrap";\n')
     const before = snapshot()
     expect(cli("init")).toMatchObject({ code: 1, err: expect.stringContaining("does not edit") })
     expect(snapshot()).toEqual(before)
@@ -204,8 +204,8 @@ describe("sheenui-react init and add button", () => {
 
   it("rolls back files and new folders when a write fails midway", () => {
     // A file where the components style folder should be lets the first writes succeed, then fails.
-    mkdirSync(file("src/styles/sheenui"), { recursive: true })
-    writeFileSync(file("src/styles/sheenui/components"), "")
+    mkdirSync(file("src/styles/raxui"), { recursive: true })
+    writeFileSync(file("src/styles/raxui/components"), "")
     const before = snapshot()
     expect(cli("init").code).toBe(1)
     expect(snapshot()).toEqual(before)
@@ -226,14 +226,14 @@ describe("sheenui-react init and add button", () => {
     const template = createViteTemplateFiles()
     ok(cli("init"))
 
-    expect(read("src/App.tsx")).toContain("Welcome to your SheenUI app")
+    expect(read("src/App.tsx")).toContain("Welcome to your RaxUI app")
     expect(read("src/App.tsx")).toContain('from "./lib/theme"')
     for (const leftover of Object.keys(template).filter((name) => name !== "src/App.tsx")) {
       expect(existsSync(file(leftover)), leftover).toBe(false)
     }
     expect(read("src/main.tsx")).not.toContain("./index.css")
-    expect(read("src/styles/sheenui.scss")).toContain('@import "sheenui/components/starter";')
-    expect(json("sheenui.react.lock.json").items["starter-react"].files.map((entry: { target: string }) => entry.target)).toContain("src/App.tsx")
+    expect(read("src/styles/raxui.scss")).toContain('@import "raxui/components/starter";')
+    expect(json("raxui.react.lock.json").items["starter-react"].files.map((entry: { target: string }) => entry.target)).toContain("src/App.tsx")
 
     const before = snapshot()
     ok(cli("init"))
@@ -244,7 +244,7 @@ describe("sheenui-react init and add button", () => {
     createViteTemplateFiles("vite-react-ts-classic", VITE_CLASSIC_FILES)
     ok(cli("init"))
 
-    expect(read("src/App.tsx")).toContain("Welcome to your SheenUI app")
+    expect(read("src/App.tsx")).toContain("Welcome to your RaxUI app")
     for (const leftover of ["src/App.css", "src/index.css", "src/assets/react.svg"]) {
       expect(existsSync(file(leftover)), leftover).toBe(false)
     }
@@ -300,17 +300,17 @@ describe("sheenui-react init and add button", () => {
       expect(read(`${root}app/page.tsx`)).toContain('from "../components/ui/button"')
       expect(read(`${root}lib/theme.tsx`)).toMatch(/^"use client"/)
       expect(existsSync(file(`${root}components/ui/button.tsx`))).toBe(true)
-      expect(read(`${root}styles/sheenui.scss`)).toContain('@import "sheenui/components/starter";')
-      expect(read(`${root}styles/sheenui.scss`)).toContain(`@import "${srcDir ? "../../" : "../"}node_modules/bootstrap/scss/bootstrap";`)
+      expect(read(`${root}styles/raxui.scss`)).toContain('@import "raxui/components/starter";')
+      expect(read(`${root}styles/raxui.scss`)).toContain(`@import "${srcDir ? "../../" : "../"}node_modules/bootstrap/scss/bootstrap";`)
       for (const leftover of [`${root}app/page.module.css`, `${root}app/globals.css`, "public/next.svg", "public/vercel.svg"]) {
         expect(existsSync(file(leftover)), leftover).toBe(false)
       }
 
       const layout = read(`${root}app/layout.tsx`)
-      expect(layout.startsWith('import "../styles/sheenui.scss"\n')).toBe(true)
+      expect(layout.startsWith('import "../styles/raxui.scss"\n')).toBe(true)
       expect(layout).not.toContain("./globals.css")
       expect(layout).toContain("next/font/google") // the layout itself is kept
-      expect(json("sheenui.react.json")).toMatchObject({ bundler: "next", entry: `${root}app/layout.tsx`, stylesheet: `${root}styles/sheenui.scss` })
+      expect(json("raxui.react.json")).toMatchObject({ bundler: "next", entry: `${root}app/layout.tsx`, stylesheet: `${root}styles/raxui.scss` })
 
       const before = snapshot()
       ok(cli("init"))
@@ -354,7 +354,7 @@ describe("sheenui-react init and add button", () => {
 
   it("keeps every packed CLI file visible to git", () => {
     // A .NET-style `bin/` ignore once hid the CLI entry point, so CI packed a CLI without its command.
-    const packed = ["bin/sheenui-react.mjs", "src/cli.mjs", "src/registry.mjs", "src/safety.mjs", "src/transaction.mjs", "src/state.mjs", "package.json"]
+    const packed = ["bin/raxui-react.mjs", "src/cli.mjs", "src/registry.mjs", "src/safety.mjs", "src/transaction.mjs", "src/state.mjs", "package.json"]
     const ignored = packed.filter((relative) => {
       try {
         execFileSync("git", ["check-ignore", "-q", `src/react-cli/${relative}`])
@@ -372,4 +372,61 @@ describe("sheenui-react init and add button", () => {
     ok(result)
     expect(result.out).toContain("npm install --save-exact --ignore-scripts bootstrap@5.3.8 sass@1.106.1 clsx@2.1.1")
   })
+})
+
+describe("raxui-react init theme options and multi-component add", () => {
+  const INDEX_HTML = '<!doctype html>\n<html lang="en">\n  <head></head>\n  <body><div id="root"></div></body>\n</html>\n'
+
+  it("writes the chosen appearance and accent to <html>, the config, and the starter defaults", () => {
+    writeFileSync(file("index.html"), INDEX_HTML)
+    createViteTemplateFiles()
+    ok(cli("init", "--appearance", "glass", "--accent", "emerald"))
+
+    expect(read("index.html")).toContain('<html lang="en" data-rax-appearance="glass" data-rax-accent="emerald">')
+    expect(json("raxui.react.json").theme).toEqual({ appearance: "glass", accent: "emerald" })
+    expect(read("src/App.tsx")).toContain('useState<RaxAppearance>("glass")')
+    expect(read("src/App.tsx")).toContain('useState<Accent>("emerald")')
+  })
+
+  it("keeps the saved choice on a later init, and a flag replaces it without duplicating attributes", () => {
+    writeFileSync(file("index.html"), INDEX_HTML)
+    ok(cli("init", "--appearance", "flat", "--accent", "amber"))
+    ok(cli("init"))
+    expect(read("index.html")).toContain('data-rax-appearance="flat" data-rax-accent="amber"')
+
+    ok(cli("init", "--accent", "blue"))
+    const html = read("index.html")
+    expect(html).not.toContain("data-rax-accent")
+    expect(html.split("data-rax-appearance").length - 1).toBe(1)
+  })
+
+  it("writes no attributes for the defaults and rejects bad values before writing", () => {
+    writeFileSync(file("index.html"), INDEX_HTML)
+    ok(cli("init"))
+    expect(read("index.html")).toBe(INDEX_HTML)
+
+    const before = snapshot()
+    expect(cli("init", "--accent", "pink")).toMatchObject({ code: 1, err: expect.stringContaining("Unknown accent 'pink'") })
+    expect(cli("add", "button", "--accent", "emerald")).toMatchObject({ code: 1, err: expect.stringContaining("only supported by init") })
+    expect(snapshot()).toEqual(before)
+  })
+
+  it("adds several components in one command and installs nothing when one name is unknown", () => {
+    ok(cli("init"))
+    ok(cli("add", "button", "card", "input", "button"))
+    for (const name of ["button", "card", "input"]) expect(existsSync(file(`src/components/ui/${name}.tsx`)), name).toBe(true)
+    expect(Object.keys(json("raxui.react.lock.json").items)).toEqual(expect.arrayContaining(["button", "card", "input"]))
+
+    const before = snapshot()
+    expect(cli("add", "dialog", "nope").code).toBe(1)
+    expect(snapshot()).toEqual(before)
+  })
+})
+
+it("writes the chosen theme on the <html> tag of a Next.js layout", () => {
+  mkdirSync(file("app"), { recursive: true })
+  writeFileSync(file("package.json"), JSON.stringify({ dependencies: { ...DEPENDENCIES, next: "15.0.0" } }))
+  writeFileSync(file("app/layout.tsx"), 'export default function Layout({ children }) {\n  return <html lang="en"><body>{children}</body></html>\n}\n')
+  ok(cli("init", "--appearance", "flat", "--accent", "indigo"))
+  expect(read("app/layout.tsx")).toContain('<html lang="en" data-rax-appearance="flat" data-rax-accent="indigo">')
 })

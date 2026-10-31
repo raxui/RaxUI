@@ -3,10 +3,10 @@
 Phase 6 follows [ADR 019](adr/019-blazor-data-components.md). These components are copied into the app, with no new runtime NuGet or JavaScript package. Their models and focused view/helper files are source-owned too. Use an interactive render mode for interaction; static SSR provides a bounded, read-only initial display, without query-string sorting/paging.
 
 ```text
-sheenui add data-table
-sheenui add sortable
-sheenui add resizable
-sheenui add data-grid
+raxui add data-table
+raxui add sortable
+raxui add resizable
+raxui add data-grid
 ```
 
 `add` installs registry dependencies; `update <name>` also updates tracked dependencies that need changes. In an existing app, update `pagination` and `dropdown-menu` before adding these data components if their installed versions lack the callback/checked-menu support. Modified source files remain yours; review update conflicts instead of replacing them blindly.
@@ -80,7 +80,7 @@ Put exactly one handle between each adjacent pair of panels. Groups accept `Orie
 
 Handles accept `Label`, `WithHandle` and `Disabled`. Arrow keys resize, Shift increases the step, Home/End reach available constraints (including collapse), and double-click resets the group. Horizontal arrow/pointer direction follows RTL. LayoutChanged reports completed sizes as a dictionary of percentages; pointer motion remains local. Optional output elements with `data-resizable-size="<panelId>"` preview the rounded percentage locally during a drag, as in the live-sizes sample; C# still receives only the completed layout. Nested groups have independent axes and state.
 
-AutoSaveId opts into localStorage under `sheen-resizable:<key>`, with memory fallback if storage throws. Persisted groups require explicit stable panel IDs. Missing, malformed, mismatched or out-of-bounds saved layouts are ignored. Without a key, nothing is stored. Layout persistence stores geometry only, not application content.
+AutoSaveId opts into localStorage under `rax-resizable:<key>`, with memory fallback if storage throws. Persisted groups require explicit stable panel IDs. Missing, malformed, mismatched or out-of-bounds saved layouts are ignored. Without a key, nothing is stored. Layout persistence stores geometry only, not application content.
 
 ## Examples and verification
 

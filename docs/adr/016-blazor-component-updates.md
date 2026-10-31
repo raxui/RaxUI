@@ -11,7 +11,7 @@ Reinitializing a showcase must not overwrite its customized starter pages or res
 
 ## Decision
 
-`sheenui update [component] [--dry-run]` uses the current CLI's embedded registry.
+`raxui update [component] [--dry-run]` uses the current CLI's embedded registry.
 Without a component name it updates every installed component except `starter`.
 A named component must already be installed. Dependencies are resolved and updated
 in the same transaction, including newly required components.

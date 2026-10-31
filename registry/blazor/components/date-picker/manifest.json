@@ -15,7 +15,7 @@
       "destination": "styles",
       "target": "components/date-picker.css",
       "type": "css",
-      "sha256": "15567a5aa417e98ac7c704f52b31f944e0619348d2995d818fb48b58c7cd1305"
+      "sha256": "7484506a19f0a53b47e18c91d8fda1e7035c1bbb97e2d5d85574ac0fb7e9e0b7"
     }
   ],
   "files": [
@@ -24,14 +24,14 @@
       "destination": "components",
       "target": "DatePicker/DatePicker.razor",
       "type": "razor",
-      "sha256": "30f7ab26a98c0f02a996a04a7130a5f6d58ea6d5f59d224b13af44a83e15558f"
+      "sha256": "5b204ad8a3cdb5bc8201943b93762c9b95c770225d911cec74a9dd5f18e9a973"
     },
     {
       "source": "DatePickerBase.razor",
       "destination": "components",
       "target": "DatePicker/DatePickerBase.razor",
       "type": "razor",
-      "sha256": "795f292de232fa33d5c46fce62fbac461ec3621afbeeb00c9fdb97e7c5f5032f"
+      "sha256": "7c6d51cb727daba16512ec47bdbf6d7afe111d9642502060f59e52b7181579d8"
     }
   ]
 }

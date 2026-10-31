@@ -17,13 +17,13 @@
       "source": "registry/react/components/tooltip/tooltip.tsx",
       "target": "components/ui/tooltip.tsx",
       "type": "tsx",
-      "sha256": "6e9ad5d191de6d97819a307de9b32e7fb31282e6090c53c613ed1fb5f4513766"
+      "sha256": "d9d91a1aab7884924751266e453f4f776077402dafeabd73bd62d00259056959"
     },
     {
       "source": "theme/scss/components/_tooltip.scss",
-      "target": "styles/sheenui/components/_tooltip.scss",
+      "target": "styles/raxui/components/_tooltip.scss",
       "type": "scss",
-      "sha256": "d652764e96ddcfa3104ed6ff7b13b9bff82bf36958d0e296371300c9ad356ee1"
+      "sha256": "c6e208738c14107e8bee163eddd9d90a553a0f4c4d2265d90a6f3b0712e63efd"
     }
   ]
 }

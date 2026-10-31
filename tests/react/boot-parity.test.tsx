@@ -7,7 +7,7 @@ import { TimePicker } from "../../registry/react/components/time-picker/time-pic
 import { Combobox } from "../../registry/react/components/combobox/combobox"
 import { Autocomplete } from "../../registry/react/components/autocomplete/autocomplete"
 import { Calendar } from "../../registry/react/components/calendar/calendar"
-import { SheenThemeProvider } from "../../registry/react/foundation/theme"
+import { RaxThemeProvider } from "../../registry/react/foundation/theme"
 import { Wired } from "./control-test-utils"
 
 beforeAll(() => {
@@ -127,22 +127,22 @@ describe("segmented date and time parity", () => {
   })
   it("opens the shared custom calendar in its nearest dark theme", async () => {
     const user=userEvent.setup()
-    render(<SheenThemeProvider mode="dark" appearance="glass" data-testid="theme"><DateInput locale="en-US" defaultValue={new Date(2026,9,25)} /></SheenThemeProvider>)
+    render(<RaxThemeProvider mode="dark" appearance="glass" data-testid="theme"><DateInput locale="en-US" defaultValue={new Date(2026,9,25)} /></RaxThemeProvider>)
     await user.click(screen.getByRole("button",{name:"Choose date"}))
-    const calendar=document.querySelector('.sheen-calendar')!
+    const calendar=document.querySelector('.rax-calendar')!
     expect(screen.getByTestId("theme")).toContainElement(calendar as HTMLElement)
     expect(calendar).toHaveAttribute("data-bs-theme","dark")
-    await waitFor(() => expect(document.activeElement).toHaveClass("sheen-calendar-day"))
+    await waitFor(() => expect(document.activeElement).toHaveClass("rax-calendar-day"))
   })
   it("respects disabled calendar dates and keyboard month navigation", () => {
     const select=vi.fn()
     render(<Calendar locale="en-US" defaultMonth={new Date(2026,9,1)} selected={new Date(2026,9,25)} isDateDisabled={d=>d.getDate()===26} onSelect={select} />)
     const disabled=document.querySelector<HTMLButtonElement>('[data-date="2026-10-26"]')
-    const days=[...document.querySelectorAll<HTMLButtonElement>('.sheen-calendar-day')]
+    const days=[...document.querySelectorAll<HTMLButtonElement>('.rax-calendar-day')]
     expect(disabled ?? days.find(el=>el.textContent==="26")).toHaveAttribute("aria-disabled", "true")
-    const active=document.querySelector<HTMLElement>('.sheen-calendar-day[tabindex="0"]')!
+    const active=document.querySelector<HTMLElement>('.rax-calendar-day[tabindex="0"]')!
     fireEvent.keyDown(active,{key:"PageDown"})
-    expect(document.querySelector('.sheen-calendar')).toHaveTextContent("November")
+    expect(document.querySelector('.rax-calendar')).toHaveTextContent("November")
   })
 })
 

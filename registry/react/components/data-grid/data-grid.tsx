@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useSheenTheme, sheenThemeAttributes, SheenThemeBoundary } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, RaxThemeBoundary } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { getDirection } from "@/lib/direction"
 import type { DataGridProps } from "./data-grid-types"
@@ -15,7 +15,7 @@ import { DataGridFooter, DataGridStatus } from "./data-grid-footer"
 
 function DataGridInner<TData>(props: DataGridProps<TData>, ref: React.ForwardedRef<HTMLDivElement>) {
   const { appearance, dir, label, height = 480, toolbar, emptyState = "No rows", labels } = props
-  const theme = useSheenTheme({ appearance, direction: dir }),
+  const theme = useRaxTheme({ appearance, direction: dir }),
     density = props.density ?? theme.density ?? "comfortable"
   const gridId = React.useId().replace(/:/g, "")
   const scrollerRef = React.useRef<HTMLDivElement>(null)
@@ -62,9 +62,9 @@ function DataGridInner<TData>(props: DataGridProps<TData>, ref: React.ForwardedR
         ? cellId(active.row, active.col)
         : undefined
   return (
-    <SheenThemeBoundary value={{ ...theme, direction: isRtl ? "rtl" : "ltr" }}>
-      <div {...sheenThemeAttributes(theme)} ref={ref} className={cn("sheen-grid", props.className)} data-density={density} dir={dir}>
-        {toolbar && <div className="sheen-grid-toolbar">{toolbar(model.table)}</div>}
+    <RaxThemeBoundary value={{ ...theme, direction: isRtl ? "rtl" : "ltr" }}>
+      <div {...raxThemeAttributes(theme)} ref={ref} className={cn("rax-grid", props.className)} data-density={density} dir={dir}>
+        {toolbar && <div className="rax-grid-toolbar">{toolbar(model.table)}</div>}
         <div
           ref={scrollerRef}
           role="grid"
@@ -74,12 +74,12 @@ function DataGridInner<TData>(props: DataGridProps<TData>, ref: React.ForwardedR
           aria-multiselectable="true"
           aria-activedescendant={controller.editing ? undefined : activeDescendant}
           tabIndex={0}
-          className="sheen-grid-scroller"
+          className="rax-grid-scroller"
           style={{ maxHeight: height }}
           {...navigation}
           onScroll={(event) => event.currentTarget.toggleAttribute("data-scrolled-x", Math.abs(event.currentTarget.scrollLeft) > 0)}
         >
-          <div className="sheen-grid-canvas" style={{ width: model.totalWidth }}>
+          <div className="rax-grid-canvas" style={{ width: model.totalWidth }}>
             <DataGridHeader
               model={headerModel}
               active={active}
@@ -110,7 +110,7 @@ function DataGridInner<TData>(props: DataGridProps<TData>, ref: React.ForwardedR
           error={!controller.editing ? controller.editError : undefined}
         />
       </div>
-    </SheenThemeBoundary>
+    </RaxThemeBoundary>
   )
 }
 const DataGrid = React.forwardRef(DataGridInner) as <TData>(

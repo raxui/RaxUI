@@ -15,13 +15,13 @@
       "source": "registry/react/components/timeline/timeline.tsx",
       "target": "components/ui/timeline.tsx",
       "type": "tsx",
-      "sha256": "177f31de2f02665156b9af460bb8114d89426990d3adc99ad2a0e86cd7b995aa"
+      "sha256": "1e947793b50961cbfe17ff5f83bedf45a9569a85f2441b0f4f262f06ef295c75"
     },
     {
       "source": "theme/scss/components/_timeline.scss",
-      "target": "styles/sheenui/components/_timeline.scss",
+      "target": "styles/raxui/components/_timeline.scss",
       "type": "scss",
-      "sha256": "5c1144de2be07eca60c2eab295fb15b769bbc2fefe276dba868cf3a2b09a8ebb"
+      "sha256": "29d547881a99ce65720a4dca5aa815b7e75ca2b47399411d9a8020968fe874a3"
     }
   ]
 }

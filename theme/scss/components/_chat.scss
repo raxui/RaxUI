@@ -4,9 +4,9 @@
 // a small "tail" corner. The newest bubble rises in with a spring.
 // -----------------------------------------------------------------------------
 
-.sheen-chat {
-  --sheen-chat-radius: calc(1.125rem * var(--sheen-radius-scale));
-  --sheen-chat-radius-tight: calc(0.375rem * var(--sheen-radius-scale));
+.rax-chat {
+  --rax-chat-radius: calc(1.125rem * var(--rax-radius-scale));
+  --rax-chat-radius-tight: calc(0.375rem * var(--rax-radius-scale));
 
   display: flex;
   flex-direction: column;
@@ -16,14 +16,14 @@
 
 // ---- Messages ---------------------------------------------------------------------------
 
-.sheen-chat-messages-wrap {
+.rax-chat-messages-wrap {
   position: relative;
   display: flex;
   flex: 1;
   min-height: 0;
 }
 
-.sheen-chat-messages {
+.rax-chat-messages {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -45,7 +45,7 @@
   }
 }
 
-.sheen-chat-day {
+.rax-chat-day {
   align-self: center;
   padding: 0.1875rem 0.75rem;
   border-radius: 999px;
@@ -55,7 +55,7 @@
   font-weight: 600;
 }
 
-.sheen-chat-jump {
+.rax-chat-jump {
   position: absolute;
   bottom: 0.75rem;
   inset-inline-start: 50%;
@@ -63,21 +63,21 @@
   align-items: center;
   gap: 0.375rem;
   padding: 0.375rem 0.875rem;
-  border: 1px solid var(--sheen-glass-border-color);
+  border: 1px solid var(--rax-glass-border-color);
   border-radius: 999px;
-  color: var(--sheen-primary-text);
+  color: var(--rax-primary-text);
   background-color: rgba(var(--bs-body-bg-rgb), 0.9);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
-  box-shadow: var(--sheen-shadow-md);
+  box-shadow: var(--rax-shadow-md);
   font-size: 0.8125rem;
   font-weight: 600;
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, 0.75rem) scale(0.95);
   transition:
-    opacity var(--sheen-duration-fast) ease,
-    transform var(--sheen-duration) var(--sheen-ease-spring);
+    opacity var(--rax-duration-fast) ease,
+    transform var(--rax-duration) var(--rax-ease-spring);
 
   &:dir(rtl) {
     transform: translate(50%, 0.75rem) scale(0.95);
@@ -106,7 +106,7 @@
 
 // ---- Groups and bubbles ----------------------------------------------------------------------
 
-.sheen-chat-group {
+.rax-chat-group {
   display: flex;
   align-items: flex-end;
   gap: 0.5rem;
@@ -121,7 +121,7 @@
   }
 }
 
-.sheen-chat-avatar {
+.rax-chat-avatar {
   flex-shrink: 0;
   width: 2rem;
   margin-bottom: 0.125rem;
@@ -136,19 +136,19 @@
   }
 }
 
-.sheen-chat-stack {
+.rax-chat-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
   min-width: 0;
 
-  .sheen-chat-group[data-from="self"] > & {
+  .rax-chat-group[data-from="self"] > & {
     align-items: flex-end;
   }
 }
 
-.sheen-chat-meta {
+.rax-chat-meta {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
@@ -157,27 +157,27 @@
   font-size: 0.75rem;
 }
 
-.sheen-chat-name {
+.rax-chat-name {
   color: var(--bs-secondary-color);
   font-weight: 600;
 }
 
-.sheen-chat-time {
+.rax-chat-time {
   color: var(--bs-secondary-color);
   font-variant-numeric: tabular-nums;
 }
 
-.sheen-chat-row {
+.rax-chat-row {
   display: flex;
   flex-direction: column;
   align-items: inherit;
   max-width: 100%;
 }
 
-.sheen-chat-bubble {
+.rax-chat-bubble {
   max-width: 100%;
   padding: 0.5rem 0.875rem;
-  border-radius: var(--sheen-chat-radius);
+  border-radius: var(--rax-chat-radius);
   font-size: 0.9375rem;
   line-height: 1.45;
   white-space: pre-wrap;
@@ -187,7 +187,7 @@
   video {
     display: block;
     max-width: 100%;
-    border-radius: calc(var(--sheen-chat-radius) - 0.25rem);
+    border-radius: calc(var(--rax-chat-radius) - 0.25rem);
   }
 
   a {
@@ -197,44 +197,44 @@
   }
 
   // Others: neutral, on the start side.
-  .sheen-chat-group[data-from="other"] & {
+  .rax-chat-group[data-from="other"] & {
     color: var(--bs-emphasis-color);
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.065);
-    border-end-start-radius: var(--sheen-chat-radius-tight);
+    border-end-start-radius: var(--rax-chat-radius-tight);
   }
 
-  .sheen-chat-group[data-from="other"] .sheen-chat-row + .sheen-chat-row > & {
-    border-start-start-radius: var(--sheen-chat-radius-tight);
+  .rax-chat-group[data-from="other"] .rax-chat-row + .rax-chat-row > & {
+    border-start-start-radius: var(--rax-chat-radius-tight);
   }
 
   // You: the accent, on the end side.
-  .sheen-chat-group[data-from="self"] & {
+  .rax-chat-group[data-from="self"] & {
     color: #fff;
     background-color: rgb(var(--bs-primary-rgb));
-    border-end-end-radius: var(--sheen-chat-radius-tight);
+    border-end-end-radius: var(--rax-chat-radius-tight);
   }
 
-  .sheen-chat-group[data-from="self"] .sheen-chat-row + .sheen-chat-row > & {
-    border-start-end-radius: var(--sheen-chat-radius-tight);
+  .rax-chat-group[data-from="self"] .rax-chat-row + .rax-chat-row > & {
+    border-start-end-radius: var(--rax-chat-radius-tight);
   }
 
-  .sheen-chat-row[data-status="sending"] > & {
+  .rax-chat-row[data-status="sending"] > & {
     opacity: 0.7;
   }
 
-  .sheen-chat-row[data-status="failed"] > & {
+  .rax-chat-row[data-status="failed"] > & {
     opacity: 0.6;
   }
 }
 
 // The newest bubble rises in from its corner.
-.sheen-chat-messages > .sheen-chat-group:last-child .sheen-chat-row:last-child {
+.rax-chat-messages > .rax-chat-group:last-child .rax-chat-row:last-child {
   @include motion-safe {
-    animation: sheen-chat-in 420ms var(--sheen-ease-spring);
+    animation: rax-chat-in 420ms var(--rax-ease-spring);
   }
 }
 
-.sheen-chat-group[data-from="other"] .sheen-chat-row {
+.rax-chat-group[data-from="other"] .rax-chat-row {
   transform-origin: bottom left;
 
   &:dir(rtl) {
@@ -242,7 +242,7 @@
   }
 }
 
-.sheen-chat-group[data-from="self"] .sheen-chat-row {
+.rax-chat-group[data-from="self"] .rax-chat-row {
   transform-origin: bottom right;
 
   &:dir(rtl) {
@@ -250,14 +250,14 @@
   }
 }
 
-.sheen-chat-bubble-footer {
+.rax-chat-bubble-footer {
   display: flex;
   gap: 0.25rem;
   margin-top: -0.375rem;
   padding-inline: 0.5rem;
 }
 
-.sheen-chat-status {
+.rax-chat-status {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -272,7 +272,7 @@
   }
 
   &[data-status="read"] {
-    color: var(--sheen-primary-text);
+    color: var(--rax-primary-text);
   }
 
   &[data-status="failed"] {
@@ -292,7 +292,7 @@
 
 // ---- Typing ------------------------------------------------------------------------------
 
-.sheen-chat-dots {
+.rax-chat-dots {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -306,7 +306,7 @@
     opacity: 0.5;
 
     @include motion-safe {
-      animation: sheen-chat-dot 1.2s ease-in-out infinite;
+      animation: rax-chat-dot 1.2s ease-in-out infinite;
 
       &:nth-child(2) { animation-delay: 0.15s; }
       &:nth-child(3) { animation-delay: 0.3s; }
@@ -316,7 +316,7 @@
 
 // ---- Composer ------------------------------------------------------------------------------
 
-.sheen-chat-composer {
+.rax-chat-composer {
   display: flex;
   align-items: flex-end;
   gap: 0.5rem;
@@ -325,21 +325,21 @@
   background-color: rgba(var(--bs-body-bg-rgb), 0.85);
 }
 
-.sheen-chat-composer-actions {
+.rax-chat-composer-actions {
   display: flex;
   align-items: center;
   gap: 0.125rem;
   height: 2.5rem;
 }
 
-.sheen-chat-field {
+.rax-chat-field {
   flex: 1;
   min-width: 0;
   min-height: 2.5rem;
-  max-height: calc(var(--sheen-chat-rows, 6) * 1.4em + 1.125rem + 2px);
+  max-height: calc(var(--rax-chat-rows, 6) * 1.4em + 1.125rem + 2px);
   padding: 0.5625rem 1rem;
   border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.12);
-  border-radius: calc(1.25rem * var(--sheen-radius-scale));
+  border-radius: calc(1.25rem * var(--rax-radius-scale));
   color: var(--bs-body-color);
   background-color: var(--bs-body-bg);
   font: inherit;
@@ -349,8 +349,8 @@
   resize: none;
   outline: none;
   transition:
-    border-color var(--sheen-duration-fast) ease,
-    box-shadow var(--sheen-duration-fast) ease;
+    border-color var(--rax-duration-fast) ease,
+    box-shadow var(--rax-duration-fast) ease;
 
   &::placeholder {
     color: var(--bs-tertiary-color);
@@ -366,7 +366,7 @@
   }
 }
 
-.btn-glass.sheen-chat-send {
+.btn-glass.rax-chat-send {
   width: 2.5rem;
   height: 2.5rem;
   min-height: 2.5rem;
@@ -375,21 +375,21 @@
   @include motion-safe {
     // Springs up when there is something to send.
     &:not(:disabled) svg {
-      animation: sheen-chat-send-ready 360ms var(--sheen-ease-spring);
+      animation: rax-chat-send-ready 360ms var(--rax-ease-spring);
     }
   }
 }
 
 // ---- Motion -------------------------------------------------------------------------------
 
-@keyframes sheen-chat-in {
+@keyframes rax-chat-in {
   from {
     opacity: 0;
     transform: translateY(0.5rem) scale(0.94);
   }
 }
 
-@keyframes sheen-chat-dot {
+@keyframes rax-chat-dot {
   0%,
   60%,
   100% {
@@ -403,7 +403,7 @@
   }
 }
 
-@keyframes sheen-chat-send-ready {
+@keyframes rax-chat-send-ready {
   from {
     transform: translateY(0.375rem);
     opacity: 0;

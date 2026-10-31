@@ -1,5 +1,5 @@
-@* SheenUI ToggleGroupItem. Source-owned: edit freely. Requires ToggleGroup and interactivity. *@
-<button @attributes="AdditionalAttributes" type="button" class="@($"sheen-toggle sheen-toggle-{Group?.Variant} sheen-toggle-{Group?.Size} {Class}")"
+@* RaxUI ToggleGroupItem. Source-owned: edit freely. Requires ToggleGroup and interactivity. *@
+<button @attributes="AdditionalAttributes" type="button" class="@($"rax-toggle rax-toggle-{Group?.Variant} rax-toggle-{Group?.Size} {Class}")"
         disabled="@(Disabled || Group?.Disabled == true)" aria-pressed="@(Group?.Contains(Value) == true ? "true" : "false")"
         data-state="@(Group?.Contains(Value) == true ? "on" : "off")" @onclick="Select">@ChildContent</button>
 @code {

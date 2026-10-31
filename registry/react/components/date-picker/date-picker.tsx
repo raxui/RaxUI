@@ -3,7 +3,7 @@
 // Built-in SVG paths from Lucide, licensed under ISC.
 import * as React from "react"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { useFieldControlProps } from "@/components/ui/field"
 import { assignRef } from "@/lib/refs"
 import { useClientNow } from "@/lib/client-now"
@@ -54,7 +54,7 @@ function formatRange(range: DateRange, formatter: Intl.DateTimeFormat) {
 const focusActiveDay = (event: Event) => {
   event.preventDefault()
   const content = event.currentTarget as HTMLElement
-  requestAnimationFrame(() => content.querySelector<HTMLElement>(".sheen-calendar-day[tabindex='0']")?.focus())
+  requestAnimationFrame(() => content.querySelector<HTMLElement>(".rax-calendar-day[tabindex='0']")?.focus())
 }
 
 /** The popover is portaled to <body>, so carry the field's text direction (RTL) over to it. */
@@ -80,7 +80,7 @@ function useMediaQuery(query: string) {
 }
 
 interface SharedPickerProps {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   dir?: "ltr" | "rtl"
   variant?: "glass" | "outline" | "filled"
   invalid?: boolean
@@ -141,7 +141,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(function
 }: DatePickerProps, forwardedRef) {
   const wired = useFieldControlProps({ ...aria, id, disabled })
   disabled = wired.disabled; id = wired.id; aria = wired
-  const theme = useSheenTheme({ appearance, direction: dir })
+  const theme = useRaxTheme({ appearance, direction: dir })
   const triggerRef = React.useRef<HTMLButtonElement | null>(null)
   const popupId = React.useId()
   const [uncontrolled, setUncontrolled] = React.useState(defaultValue)
@@ -158,7 +158,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(function
   }
 
   return (
-    <div {...sheenThemeAttributes(theme)} dir={dir} ref={field.ref} className={cn("sheen-picker-field", className)} onBlur={event => { const next = event.relatedTarget as Node | null; if (!event.currentTarget.contains(next) && !document.getElementById(popupId)?.contains(next)) onBlur?.() }}>
+    <div {...raxThemeAttributes(theme)} dir={dir} ref={field.ref} className={cn("rax-picker-field", className)} onBlur={event => { const next = event.relatedTarget as Node | null; if (!event.currentTarget.contains(next) && !document.getElementById(popupId)?.contains(next)) onBlur?.() }}>
       <Popover
         appearance={appearance}
         dir={dir}
@@ -177,7 +177,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(function
             aria-disabled={readOnly || disabled || undefined}
             onClick={event => { if (readOnly) event.preventDefault() }}
             data-variant={variant}
-            className={cn("form-control sheen-input sheen-picker-trigger", inputSizeClasses[size])}
+            className={cn("form-control rax-input rax-picker-trigger", inputSizeClasses[size])}
             data-placeholder={value ? undefined : ""}
             {...aria}
             aria-invalid={isInvalid || undefined}
@@ -187,7 +187,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(function
             <span>{value ? formatter.format(value) : placeholder}</span>
           </button>
         </PopoverTrigger>
-        <PopoverContent id={popupId} aria-label={calendarLabel} align="start" className="sheen-picker-popover" onOpenAutoFocus={focusActiveDay} dir={field.dir}>
+        <PopoverContent id={popupId} aria-label={calendarLabel} align="start" className="rax-picker-popover" onOpenAutoFocus={focusActiveDay} dir={field.dir}>
           <Calendar
             dir={field.dir}
             selected={value}
@@ -204,7 +204,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(function
         </PopoverContent>
       </Popover>
       {clearable && value && !disabled && !readOnly && (
-        <button type="button" className="sheen-picker-clear" aria-label={clearLabel} onClick={() => { setValue(null); triggerRef.current?.focus() }}>
+        <button type="button" className="rax-picker-clear" aria-label={clearLabel} onClick={() => { setValue(null); triggerRef.current?.focus() }}>
           <XIcon />
         </button>
       )}
@@ -252,7 +252,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
 }: DateRangePickerProps, forwardedRef) {
   const wired = useFieldControlProps({ ...aria, id, disabled })
   disabled = wired.disabled; id = wired.id; aria = wired
-  const theme = useSheenTheme({ appearance, direction: dir })
+  const theme = useRaxTheme({ appearance, direction: dir })
   const triggerRef = React.useRef<HTMLButtonElement | null>(null)
   const popupId = React.useId()
   const now = useClientNow()
@@ -288,7 +288,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
   const hasValue = !!value.from
 
   return (
-    <div {...sheenThemeAttributes(theme)} dir={dir} ref={field.ref} className={cn("sheen-picker-field", className)} onBlur={event => { const next = event.relatedTarget as Node | null; if (!event.currentTarget.contains(next) && !document.getElementById(popupId)?.contains(next)) onBlur?.() }}>
+    <div {...raxThemeAttributes(theme)} dir={dir} ref={field.ref} className={cn("rax-picker-field", className)} onBlur={event => { const next = event.relatedTarget as Node | null; if (!event.currentTarget.contains(next) && !document.getElementById(popupId)?.contains(next)) onBlur?.() }}>
       <Popover appearance={appearance} dir={dir} open={open} onOpenChange={onOpenChange}>
         <PopoverTrigger asChild>
           <button
@@ -299,7 +299,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
             aria-disabled={readOnly || disabled || undefined}
             onClick={event => { if (readOnly) event.preventDefault() }}
             data-variant={variant}
-            className={cn("form-control sheen-input sheen-picker-trigger", inputSizeClasses[size])}
+            className={cn("form-control rax-input rax-picker-trigger", inputSizeClasses[size])}
             data-placeholder={hasValue ? undefined : ""}
             {...aria}
             aria-invalid={isInvalid || undefined}
@@ -309,10 +309,10 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
             <span>{hasValue ? formatRange(value, formatter) : placeholder}</span>
           </button>
         </PopoverTrigger>
-        <PopoverContent id={popupId} aria-label={calendarLabel} align="start" className="sheen-picker-popover" onOpenAutoFocus={focusActiveDay} dir={field.dir}>
-          <div className="sheen-picker-range-body">
+        <PopoverContent id={popupId} aria-label={calendarLabel} align="start" className="rax-picker-popover" onOpenAutoFocus={focusActiveDay} dir={field.dir}>
+          <div className="rax-picker-range-body">
             {open && presets.length > 0 && (
-              <div className="sheen-picker-presets" role="group" aria-label={presetsLabel}>
+              <div className="rax-picker-presets" role="group" aria-label={presetsLabel}>
                 {presets.map((preset) => {
                   const range = preset.range()
                   const active = isSameDay(range.from, draft.from) && isSameDay(range.to, draft.to)
@@ -320,7 +320,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
                     <button
                       key={preset.label}
                       type="button"
-                      className="sheen-picker-preset"
+                      className="rax-picker-preset"
                       data-active={active ? "" : undefined}
                       onClick={() => {
                         setDraft(range)
@@ -347,7 +347,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
               isDateDisabled={isDateDisabled}
             />
           </div>
-          <div className="sheen-picker-footer">
+          <div className="rax-picker-footer">
             <span aria-live="polite">{draft.from ? formatRange(draft, formatter) : startPrompt}</span>
             <div className="d-flex gap-2">
               <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
@@ -368,7 +368,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
         </PopoverContent>
       </Popover>
       {clearable && hasValue && !disabled && !readOnly && (
-        <button type="button" className="sheen-picker-clear" aria-label={clearLabel} onClick={() => { commit({}); triggerRef.current?.focus() }}>
+        <button type="button" className="rax-picker-clear" aria-label={clearLabel} onClick={() => { commit({}); triggerRef.current?.focus() }}>
           <XIcon />
         </button>
       )}

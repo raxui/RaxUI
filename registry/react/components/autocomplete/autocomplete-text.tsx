@@ -62,16 +62,16 @@ const AutocompleteText = React.forwardRef<HTMLInputElement, AutocompleteTextProp
         else if (e.key === "Escape") { e.preventDefault(); setOpen(false) }
         if (next !== undefined && choices[next] && !busy) { e.preventDefault(); setOpen(true); setActive(choices[next]); document.getElementById(`${id}-option-${next}`)?.scrollIntoView?.({ block: "nearest" }) }
       }} /></PopoverAnchor>
-    <PopoverContent className="sheen-autocomplete-panel" role="presentation" onOpenAutoFocus={e => e.preventDefault()} onCloseAutoFocus={e => e.preventDefault()}
+    <PopoverContent className="rax-autocomplete-panel" role="presentation" onOpenAutoFocus={e => e.preventDefault()} onCloseAutoFocus={e => e.preventDefault()}
       onInteractOutside={e => { if ((e.target as HTMLElement).closest('input[role="combobox"]')) e.preventDefault() }}>
-      <div role="listbox" id={listId} className="sheen-choice-list" aria-label={props["aria-label"] ?? props.placeholder ?? ""} aria-busy={busy}>
+      <div role="listbox" id={listId} className="rax-choice-list" aria-label={props["aria-label"] ?? props.placeholder ?? ""} aria-busy={busy}>
         <ChoiceHighlight />
         {!busy && !failed && choices.map((choice, i) => <div key={choice} id={`${id}-option-${i}`} role="option" aria-selected={choice === text}
-          className="sheen-choice-option" data-active={choice === active || undefined} onPointerDown={e => e.preventDefault()}
+          className="rax-choice-option" data-active={choice === active || undefined} onPointerDown={e => e.preventDefault()}
           onPointerMove={() => setActive(choice)} onClick={() => select(choice)}>{choice}</div>)}
       </div>
-      {busy ? <p role="status" className="sheen-choice-empty"><span className="spinner-border spinner-border-sm" aria-hidden="true" /> {loadingMessage}</p>
-        : failed || choices.length === 0 ? <p role="status" className="sheen-choice-empty">{failed ? errorMessage : emptyMessage}</p> : null}
+      {busy ? <p role="status" className="rax-choice-empty"><span className="spinner-border spinner-border-sm" aria-hidden="true" /> {loadingMessage}</p>
+        : failed || choices.length === 0 ? <p role="status" className="rax-choice-empty">{failed ? errorMessage : emptyMessage}</p> : null}
     </PopoverContent>
   </Popover>
 })

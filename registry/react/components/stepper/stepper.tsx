@@ -1,6 +1,6 @@
 "use client"
 
-// SheenUI stepper. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI stepper. Source-owned: edit freely. Ported from boot-ui.
 // Built-in icon paths from Lucide (ISC).
 
 
@@ -93,7 +93,7 @@ export function useStepper() {
 // ---- Root -------------------------------------------------------------------------------
 
 export interface StepperProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue"> {
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   value?: number
   defaultValue?: number
   onValueChange?: (index: number) => void
@@ -154,7 +154,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
 
     return (
       <StepperContext.Provider value={context}>
-        <div ref={ref} data-sheen-appearance={appearance} className={cn("sheen-stepper", className)} data-orientation={orientation} data-size={size} {...props} />
+        <div ref={ref} data-rax-appearance={appearance} className={cn("rax-stepper", className)} data-orientation={orientation} data-size={size} {...props} />
       </StepperContext.Provider>
     )
   },
@@ -173,8 +173,8 @@ const StepperNav = React.forwardRef<HTMLOListElement, React.HTMLAttributes<HTMLO
   React.useLayoutEffect(() => setCount(steps.length), [steps.length, setCount])
 
   return (
-    <div className="sheen-stepper-nav" data-orientation={orientation} data-labels={orientation === "horizontal" ? labelPlacement : undefined}>
-      <ol ref={ref} className={cn("sheen-stepper-list", className)} {...props}>
+    <div className="rax-stepper-nav" data-orientation={orientation} data-labels={orientation === "horizontal" ? labelPlacement : undefined}>
+      <ol ref={ref} className={cn("rax-stepper-list", className)} {...props}>
         {steps.map((step, index) => (
           <StepIndexContext.Provider key={step.key ?? index} value={{ index, last: index === steps.length - 1 }}>
             {step}
@@ -183,12 +183,12 @@ const StepperNav = React.forwardRef<HTMLOListElement, React.HTMLAttributes<HTMLO
       </ol>
       {/* Narrow containers hide the labels: "Step 2 of 4 · Shipping" under the dots instead. */}
       {orientation === "horizontal" && count > 0 && (
-        <p className="sheen-stepper-count" aria-hidden="true">
+        <p className="rax-stepper-count" aria-hidden="true">
           {labels.stepOf(Math.min(value + 1, count), count)}
           {currentTitle && (
             <>
               {" · "}
-              <span className="sheen-stepper-count-title">{currentTitle}</span>
+              <span className="rax-stepper-count-title">{currentTitle}</span>
             </>
           )}
         </p>
@@ -245,30 +245,30 @@ const StepperStep = React.forwardRef<HTMLLIElement, StepperStepProps>(
     return (
       <li
         ref={ref}
-        className={cn("sheen-step", className)}
+        className={cn("rax-step", className)}
         data-state={state}
         data-disabled={!reachable || undefined}
         aria-current={active ? "step" : undefined}
         {...props}
       >
-        <button type="button" className="sheen-step-trigger" disabled={!reachable} onClick={() => setValue(index)}>
-          <span className="sheen-step-indicator">
+        <button type="button" className="rax-step-trigger" disabled={!reachable} onClick={() => setValue(index)}>
+          <span className="rax-step-indicator">
             {state === "complete" ? <CheckIcon /> : state === "error" ? <AlertIcon /> : (icon ?? index + 1)}
           </span>
-          <span className="sheen-step-text">
-            <span className="sheen-step-title" id={titleId}>
+          <span className="rax-step-text">
+            <span className="rax-step-title" id={titleId}>
               {title}
             </span>
             {(typeof error === "string" || description || optional) && (
-              <span className="sheen-step-description">{typeof error === "string" ? error : (description ?? labels.optional)}</span>
+              <span className="rax-step-description">{typeof error === "string" ? error : (description ?? labels.optional)}</span>
             )}
           </span>
           {status && <span className="visually-hidden">, {status}</span>}
         </button>
-        {!last && <span className="sheen-step-connector" data-filled={connectorFilled || undefined} aria-hidden="true" />}
+        {!last && <span className="rax-step-connector" data-filled={connectorFilled || undefined} aria-hidden="true" />}
         {orientation === "vertical" && children !== undefined && (
-          <div className="sheen-step-content" data-state={active ? "open" : "closed"} role="group" aria-labelledby={titleId} hidden={!active}>
-            <div className="sheen-step-content-inner">{children}</div>
+          <div className="rax-step-content" data-state={active ? "open" : "closed"} role="group" aria-labelledby={titleId} hidden={!active}>
+            <div className="rax-step-content-inner">{children}</div>
           </div>
         )}
       </li>
@@ -310,7 +310,7 @@ const StepperPanel = React.forwardRef<HTMLDivElement, StepperPanelProps>(({ inde
       tabIndex={-1}
       hidden={!active}
       data-direction={direction === 1 ? "forward" : "backward"}
-      className={cn("sheen-stepper-panel", className)}
+      className={cn("rax-stepper-panel", className)}
       {...props}
     />
   )

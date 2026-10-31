@@ -22,7 +22,7 @@ represent the outcome of these local commands.
 ## Commands
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
+cd C:\Users\saada\source\repos\RaxUI
 npm ci
 
 # During development

@@ -1,7 +1,7 @@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @ref="root" @attributes="AdditionalAttributes" class="@($"sheen-resizable {Class}")" style="@($"display:flex;flex-direction:{(Orientation=="vertical"?"column":"row")};{Style}")" data-resizable-group data-orientation="@Orientation" data-variant="@Variant" data-sheen-appearance="@Appearance" dir="@Direction"><CascadingValue Name="SheenResizableOrientation" Value="@Orientation">@ChildContent</CascadingValue></div>
+<div @ref="root" @attributes="AdditionalAttributes" class="@($"rax-resizable {Class}")" style="@($"display:flex;flex-direction:{(Orientation=="vertical"?"column":"row")};{Style}")" data-resizable-group data-orientation="@Orientation" data-variant="@Variant" data-rax-appearance="@Appearance" dir="@Direction"><CascadingValue Name="RaxResizableOrientation" Value="@Orientation">@ChildContent</CascadingValue></div>
 @code {
     [Parameter] public string Orientation { get; set; } = "horizontal";
     [Parameter] public string Variant { get; set; } = "plain";

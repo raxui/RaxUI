@@ -30,7 +30,7 @@ for (const id of chunk.moduleIds) {
 }
 const names = [...packages.keys()].sort()
 const header = [
-  "/*! SheenUI TextEditor engine: Tiptap 3.31.4 and its dependencies, bundled unchanged by scripts/build-text-editor.mjs. Do not edit; rebuild.",
+  "/*! RaxUI TextEditor engine: Tiptap 3.31.4 and its dependencies, bundled unchanged by scripts/build-text-editor.mjs. Do not edit; rebuild.",
   ...names.map((n) => ` * ${n}@${packages.get(n).version} (${packages.get(n).license})`),
   " */",
   ...names.map((n) => `/*! ${n}@${packages.get(n).version}\n${packages.get(n).text}\n*/`),

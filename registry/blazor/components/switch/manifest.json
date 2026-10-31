@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/switch.css",
       "type": "css",
-      "sha256": "d515cc485c4eae6cdfa64b372006fc7dbf0a2c5408927956ece7b932db19a55b"
+      "sha256": "59b38550e1a42723f2a4dff343f2bb92aa69c55a38a6e72b60912e158bff69bf"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Switch/Switch.razor",
       "type": "razor",
-      "sha256": "8aaedf518554cd520171809fabf221ebb37da2bb4f4417660ab1e3f1fd94305d"
+      "sha256": "0742e106fee0be3341acf117581e13c42fc1df17eed46d87366b4838428802a1"
     }
   ]
 }

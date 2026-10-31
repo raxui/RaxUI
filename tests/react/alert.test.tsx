@@ -7,7 +7,7 @@ describe("Alert", () => {
     const alert = screen.getByRole(tone === "danger" || tone === "warning" ? "alert" : "status")
     expect(alert).toHaveAttribute("data-tone", tone)
     expect(alert).toHaveAttribute("data-variant", "outline")
-    expect(alert).toHaveAttribute("data-sheen-appearance", "flat")
+    expect(alert).toHaveAttribute("data-rax-appearance", "flat")
     expect(alert).toHaveTextContent("UpdateSavedDetails")
   })
   it("dismisses without motion and reopens controlled alerts", async () => {

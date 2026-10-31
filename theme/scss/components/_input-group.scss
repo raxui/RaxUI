@@ -4,11 +4,11 @@
 // neighbours so its ring is never cut off. Logical corners follow RTL.
 // -----------------------------------------------------------------------------
 
-.sheen-joined-inputs {
+.rax-joined-inputs {
   display: flex;
   min-width: 0;
 
-  > .sheen-joined-input {
+  > .rax-joined-input {
     position: relative;
     flex: 1 1 0;
     min-width: 0;
@@ -27,7 +27,7 @@
   }
 
   // ---- Horizontal ----
-  &[data-orientation="horizontal"] > .sheen-joined-input {
+  &[data-orientation="horizontal"] > .rax-joined-input {
     &:not(:first-child) {
       margin-inline-start: -1px;
       border-start-start-radius: 0;
@@ -44,7 +44,7 @@
   &[data-orientation="vertical"] {
     flex-direction: column;
 
-    > .sheen-joined-input {
+    > .rax-joined-input {
       flex: none;
 
       &:not(:first-child) {
@@ -61,4 +61,4 @@
   }
 }
 
-fieldset.sheen-joined-inputs { margin: 0; padding: 0; border: 0; }
+fieldset.rax-joined-inputs { margin: 0; padding: 0; border: 0; }

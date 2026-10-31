@@ -3,8 +3,8 @@ export function init(root){
  if(!root?.isConnected)return
  if(states.has(root)){states.get(root).refresh();return}
  const controller=new AbortController(),signal=controller.signal,media=matchMedia('(max-width:767.98px)'),known=new WeakSet()
- const refresh=()=>root.querySelectorAll('.sheen-footer-column').forEach(column=>{
-  const button=column.querySelector('[data-footer-toggle]'),title=column.querySelector('[data-footer-title]'),list=column.querySelector('.sheen-footer-list-wrap')
+ const refresh=()=>root.querySelectorAll('.rax-footer-column').forEach(column=>{
+  const button=column.querySelector('[data-footer-toggle]'),title=column.querySelector('[data-footer-title]'),list=column.querySelector('.rax-footer-list-wrap')
   if(!known.has(column)){known.add(column);column.dataset.footerOpen=column.dataset.defaultOpen;button.addEventListener('click',()=>{column.dataset.footerOpen=column.dataset.footerOpen==='true'?'false':'true';refresh()},{signal})}
   const open=!media.matches||column.dataset.footerOpen==='true';button.hidden=!media.matches;title.hidden=media.matches;button.setAttribute('aria-expanded',String(open));list.inert=!open
   if(media.matches)column.dataset.state=open?'open':'closed';else column.removeAttribute('data-state')

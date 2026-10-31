@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "combobox",
   "version": "0.1.0",
-  "description": "Source-owned combobox with boot-ui feature parity and SheenUI theme integration.",
+  "description": "Source-owned combobox with boot-ui feature parity and RaxUI theme integration.",
   "requires": [
     "foundation",
     "field",
@@ -20,25 +20,25 @@
       "source": "registry/react/components/combobox/combobox.tsx",
       "target": "components/ui/combobox.tsx",
       "type": "tsx",
-      "sha256": "d2ebb7220fd12d5c5cb8d780c30276c279d7c0219fc083a671b747ce29ebc09d"
+      "sha256": "7b6f1c999f6449aa549f41d9611f4292bc71f6fea5f498fb0107d2fb708432cf"
     },
     {
       "source": "theme/scss/components/_combobox.scss",
-      "target": "styles/sheenui/components/_combobox.scss",
+      "target": "styles/raxui/components/_combobox.scss",
       "type": "scss",
-      "sha256": "c9cae23ce204d02b9788effde953a6ee67937446a35f04e56e3a232f0cd0c6ab"
+      "sha256": "76842f4bffd35a25759bb0408d2ef393b662656c002a9c8a97fa1e2e5b35e2c8"
     },
     {
       "source": "registry/react/foundation/choice-highlight.tsx",
       "target": "lib/choice-highlight.tsx",
       "type": "tsx",
-      "sha256": "974ca86748703edd32d38c6e09ab872dccb62ede87b8d095bb655f0569a851cc"
+      "sha256": "74d507057039c9b7b8568ffe175901b1ccd1615728c4fa485dd02626bc920c41"
     },
     {
       "source": "theme/scss/components/_choice-highlight.scss",
-      "target": "styles/sheenui/components/_choice-highlight.scss",
+      "target": "styles/raxui/components/_choice-highlight.scss",
       "type": "scss",
-      "sha256": "91f69af6a94fc8be6b00a87c0f07ec24fa47335ec2dd4cf7af2c748f5d12f6e0"
+      "sha256": "31a57b751f8206a9becca35dffd39768dfdc18377831ca33a19fddfeeb04621c"
     },
     {
       "source": "registry/react/foundation/direction.ts",

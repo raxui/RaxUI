@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "date-input",
   "version": "0.1.0",
-  "description": "Source-owned date-input with boot-ui feature parity and SheenUI theme integration.",
+  "description": "Source-owned date-input with boot-ui feature parity and RaxUI theme integration.",
   "requires": [
     "foundation",
     "field",
@@ -21,19 +21,19 @@
       "source": "registry/react/components/date-input/date-input.tsx",
       "target": "components/ui/date-input.tsx",
       "type": "tsx",
-      "sha256": "db0a4509ac915db3a2a86be8347a88ab363592592ef30694b92d5496b47ad797"
+      "sha256": "19ec79d3105f63af4cb7a317406965f9e7fd26e746f20b110aa0130f05862228"
     },
     {
       "source": "theme/scss/components/_date-input.scss",
-      "target": "styles/sheenui/components/_date-input.scss",
+      "target": "styles/raxui/components/_date-input.scss",
       "type": "scss",
-      "sha256": "c9595e3eab44909e7309dec521c8dbb7ed2f16b1e290fe9bce02e38a3ff53f70"
+      "sha256": "b839c5c6f65d7f390efd22c5ba864a2755a4fe3433dd6535574d77259be85e28"
     },
     {
       "source": "registry/react/components/date-input/native-date-input.tsx",
       "target": "components/ui/native-date-input.tsx",
       "type": "tsx",
-      "sha256": "621ca1a11292cad95c1d41a251fcb012829ec3539199d1cbd41a73dcc978e46a"
+      "sha256": "c8b443b328e1cbcaddbcd6b4ba11b0efd666dcc5c7e74345e7d05687a0854e4e"
     },
     {
       "source": "registry/react/foundation/direction.ts",

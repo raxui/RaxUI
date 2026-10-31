@@ -1,0 +1,41 @@
+@page "/ai-demo"
+@rendermode InteractiveServer
+<div data-rax-appearance="@appearance" data-bs-theme="@mode" dir="@direction" style="padding:1rem">
+<label>Appearance<select id="ai-appearance" @bind="appearance"><option>default</option><option>flat</option><option>glass</option></select></label>
+<label>Mode<select id="ai-mode" @bind="mode"><option>light</option><option>dark</option></select></label>
+<label>Direction<select id="ai-direction" @bind="direction"><option>ltr</option><option>rtl</option></select></label>
+<h1>AI</h1>
+<section id="ai-example"><AIExamples /></section>
+<section id="ai-probe" class="my-4">
+    <AIConversation>
+        <AIMessage From="user">Show me everything</AIMessage>
+        <AIMessage From="assistant">
+            <AIReasoning Duration="3">Checked the docs.</AIReasoning>
+            <AIToolCall Name="lookup" Status="error" Input="@("{ \"q\": 1 }")" Error="Timed out" DefaultOpen />
+            <AIResponse Markdown Text="@Unsafe" />
+            <AIResponse Text="**plain text stays literal**" id="plain-response" />
+            <AISources Sources="sources" />
+            <AIActions CopyText="copied text" OnRegenerate="() => regenerated++" @bind-Feedback="feedback" />
+        </AIMessage>
+    </AIConversation>
+    <output id="probe-state">@regenerated|@feedback</output>
+    <AIResponse Markdown Streaming="@streaming" Text="@streamed" id="stream-probe" />
+    <Button OnClick="Stream">Stream probe</Button>
+    <output id="stream-renders">@streamed.Length</output>
+</section>
+</div>
+@code {
+    private string appearance = "default", mode = "light", direction = "ltr", streamed = "";
+    private string? feedback;
+    private int regenerated;
+    private bool streaming;
+    private const string Unsafe = "<script>window.__xss=1</script>\n\n<img src=x onerror=\"window.__xss=2\">\n\n[bad](javascript:window.__xss=3) [good](https://example.com)\n\n![pixel](https://tracker.example/p.png)";
+    private readonly AITypes.Source[] sources = [new("Example", "https://www.example.com/a"), new("Bad", "javascript:alert(1)")];
+    // 400 updates with no delay: AIResponse must coalesce them and still show the final text.
+    private async Task Stream()
+    {
+        streaming = true; streamed = "";
+        for (var i = 0; i < 400; i++) { streamed += i % 20 == 19 ? "**x**\n\n" : "w "; StateHasChanged(); await Task.Yield(); }
+        streaming = false;
+    }
+}

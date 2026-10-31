@@ -1,0 +1,66 @@
+@page "/rax-demo"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using CultureInfo = System.Globalization.CultureInfo
+
+<PageTitle>RaxUI · @(arabic ? "التاريخ والوقت" : "Date and time")</PageTitle>
+<section dir="@(arabic ? "rtl" : "ltr")" class="container py-4" style="max-width:950px">
+    <div class="d-flex justify-content-between align-items-center gap-3">
+        <h1 class="h4">@(arabic ? "التاريخ والوقت" : "Date and time")</h1>
+        <Button Variant="outline" OnClick="@(() => arabic = !arabic)">@(arabic ? "English" : "العربية")</Button>
+    </div>
+    <p class="text-body-secondary">@(arabic ? "اختر موعداً أو مدة إقامة. البيانات تجريبية ولا تُرسل إلى خادم حجز." : "Choose an appointment or stay. Demo data is not sent to a booking server.")</p>
+    <div class="row g-4 mt-2">
+        <div class="col-md-5">
+            <div class="rax-panel p-3 d-inline-block"><Calendar @bind-Value="calendarDay" Culture="Language" /></div>
+            <div class="mt-4">
+                <Field Id="demo-time" For="@(() => booking.Time)">
+                    <FieldLabel>@(arabic ? "وقت التنبيه" : "Alarm time")</FieldLabel>
+                    <TimePicker @bind-Value="booking.Time" Culture="Language" HourCycle="12" Clearable />
+                </Field>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <EditForm Model="booking" FormName="rax-demo" OnValidSubmit="@(() => saved = true)" Context="bookingForm">
+                <DataAnnotationsValidator />
+                <div class="vstack gap-3">
+                    <Field Id="demo-day" For="@(() => booking.Day)">
+                        <FieldLabel>@(arabic ? "موعد الوصول إلى بغداد" : "Arrival in Baghdad")</FieldLabel>
+                        <DatePicker @bind-Value="booking.Day" Culture="Language" Clearable />
+                        <FieldError />
+                    </Field>
+                    <Field Id="demo-stay" For="@(() => booking.From)">
+                        <FieldLabel>@(arabic ? "مدة الإقامة" : "Stay dates")</FieldLabel>
+                        <DateRangePicker @bind-Value="booking.From" @bind-EndValue="booking.To" Culture="Language" MinDays="1" Clearable />
+                        <FieldError />
+                    </Field>
+                    <Field Id="demo-appointment" For="@(() => booking.Appointment)">
+                        <FieldLabel>@(arabic ? "تاريخ ووقت الموعد" : "Appointment date and time")</FieldLabel>
+                        <DateTimeInput @bind-Value="booking.Appointment" Culture="Language" HourCycle="12" Clearable />
+                        <FieldError />
+                    </Field>
+                    <Button type="submit">@(arabic ? "حفظ الاختيار" : "Save selection")</Button>
+                    <output aria-live="polite">@(saved ? arabic ? "تم حفظ الاختيار التجريبي." : "Demo selection saved." : "")</output>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</section>
+
+@code {
+    private static readonly CultureInfo Arabic = new("ar-IQ"), English = new("en-US");
+    private CultureInfo Language => arabic ? Arabic : English;
+    private bool arabic = true;
+    private DateOnly? calendarDay = DateOnly.FromDateTime(DateTime.Today);
+    private readonly Booking booking = new();
+    private bool saved;
+    public class Booking
+    {
+        [Required(ErrorMessage = "اختر موعد الوصول / Choose an arrival date.")]
+        public DateOnly? Day { get; set; }
+        public DateOnly? From { get; set; }
+        public DateOnly? To { get; set; }
+        public TimeOnly? Time { get; set; } = new(9, 30);
+        public DateTime? Appointment { get; set; }
+    }
+}

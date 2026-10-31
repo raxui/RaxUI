@@ -1,65 +1,65 @@
-@mixin sheen-input-surface($focus) {
-  --sheen-input-height: var(--sheen-control-height);
-  --sheen-input-radius: var(--sheen-radius-control);
-  --sheen-input-pad-x: 0.8125rem;
-  --sheen-input-font-size: 1rem; // ≥16px: iOS doesn't zoom into the field
-  --sheen-input-bg: var(--sheen-field-bg);
-  --sheen-input-border: var(--sheen-field-border);
-  --sheen-input-shadow: var(--sheen-field-shadow);
-  --sheen-input-ring-rgb: var(--bs-primary-rgb);
+@mixin rax-input-surface($focus) {
+  --rax-input-height: var(--rax-control-height);
+  --rax-input-radius: var(--rax-radius-control);
+  --rax-input-pad-x: 0.8125rem;
+  --rax-input-font-size: 1rem; // ≥16px: iOS doesn't zoom into the field
+  --rax-input-bg: var(--rax-field-bg);
+  --rax-input-border: var(--rax-field-border);
+  --rax-input-shadow: var(--rax-field-shadow);
+  --rax-input-ring-rgb: var(--bs-primary-rgb);
 
   // Fields are recessed into their surface: no surface colour, no backdrop blur
   // (a blur inside a blurred card shows nothing and costs a full repaint).
-  min-height: var(--sheen-input-height);
-  border: 1px solid var(--sheen-input-border);
-  border-radius: var(--sheen-input-radius);
+  min-height: var(--rax-input-height);
+  border: 1px solid var(--rax-input-border);
+  border-radius: var(--rax-input-radius);
   color: var(--bs-emphasis-color);
-  background-color: var(--sheen-input-bg);
-  box-shadow: var(--sheen-input-shadow);
-  font-size: var(--sheen-input-font-size);
+  background-color: var(--rax-input-bg);
+  box-shadow: var(--rax-input-shadow);
+  font-size: var(--rax-input-font-size);
   transition:
-    border-color var(--sheen-duration) ease,
-    background-color var(--sheen-duration) ease,
-    box-shadow var(--sheen-duration) ease;
+    border-color var(--rax-duration) ease,
+    background-color var(--rax-duration) ease,
+    box-shadow var(--rax-duration) ease;
 
   // Outline: border only. Filled (default) and the legacy glass value use the field material.
   &[data-variant="outline"],
   &:has(> [data-variant="outline"]) {
-    --sheen-input-bg: transparent;
-    --sheen-input-shadow: 0 0 #0000;
+    --rax-input-bg: transparent;
+    --rax-input-shadow: 0 0 #0000;
   }
 
   &:hover {
-    --sheen-input-border: rgba(var(--bs-emphasis-color-rgb), 0.28);
+    --rax-input-border: rgba(var(--bs-emphasis-color-rgb), 0.28);
   }
 
   // Focus keeps the recess and adds the ring on top.
   #{$focus} {
-    --sheen-input-border: rgba(var(--sheen-input-ring-rgb), 0.65);
+    --rax-input-border: rgba(var(--rax-input-ring-rgb), 0.65);
 
     outline: 0;
-    border-color: var(--sheen-input-border); // outrank Bootstrap's .form-control:focus
-    background-color: var(--sheen-input-bg);
+    border-color: var(--rax-input-border); // outrank Bootstrap's .form-control:focus
+    background-color: var(--rax-input-bg);
     box-shadow:
-      var(--sheen-input-shadow),
-      0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16);
+      var(--rax-input-shadow),
+      0 0 0 4px rgba(var(--rax-input-ring-rgb), 0.16);
   }
 
   @media (min-width: 768px) {
-    --sheen-input-font-size: 0.9375rem;
+    --rax-input-font-size: 0.9375rem;
   }
 }
 
-@mixin sheen-input-sm {
-  --sheen-input-height: var(--sheen-control-height-sm);
-  --sheen-input-radius: var(--sheen-radius-sm);
-  --sheen-input-pad-x: 0.75rem;
-  --sheen-input-font-size: 0.875rem;
+@mixin rax-input-sm {
+  --rax-input-height: var(--rax-control-height-sm);
+  --rax-input-radius: var(--rax-radius-sm);
+  --rax-input-pad-x: 0.75rem;
+  --rax-input-font-size: 0.875rem;
 }
 
-@mixin sheen-input-lg {
-  --sheen-input-height: var(--sheen-control-height-lg);
-  --sheen-input-radius: var(--sheen-radius);
-  --sheen-input-pad-x: 1.125rem;
-  --sheen-input-font-size: 1.0625rem;
+@mixin rax-input-lg {
+  --rax-input-height: var(--rax-control-height-lg);
+  --rax-input-radius: var(--rax-radius);
+  --rax-input-pad-x: 1.125rem;
+  --rax-input-font-size: 1.0625rem;
 }

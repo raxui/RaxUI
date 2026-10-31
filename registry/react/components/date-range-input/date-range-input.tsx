@@ -3,7 +3,7 @@
 // Built-in SVG paths from Lucide, licensed under ISC.
 import * as React from "react"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { useFieldControlProps } from "@/components/ui/field"
 import { useClientNow } from "@/lib/client-now"
 import { cn } from "@/lib/utils"
@@ -72,7 +72,7 @@ function useMediaQuery(query: string) {
 }
 
 export interface DateRangeInputProps {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   readOnly?: boolean
   clearLabel?: string
   pickerLabel?: string
@@ -169,7 +169,7 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
     id = wired.id
     const generatedId = React.useId()
     const fieldId = id ?? generatedId
-    const theme = useSheenTheme({ appearance, direction: dir })
+    const theme = useRaxTheme({ appearance, direction: dir })
     const now = useClientNow()
     const [uncontrolled, setUncontrolled] = React.useState<DateRange>(defaultValue)
     const value = valueProp ?? uncontrolled
@@ -223,7 +223,7 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
       >
         <PopoverAnchor asChild>
           <div
-            {...sheenThemeAttributes(theme)}
+            {...raxThemeAttributes(theme)}
             ref={(node) => {
               groupRef.current = node
               if (node) node.focus = (options?: FocusOptions) => node.querySelector<HTMLElement>("[data-segment]")?.focus(options)
@@ -232,14 +232,14 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
             id={fieldId}
             role="group"
             dir={dir}
-            className={cn("sheen-input-group sheen-segmented-range", className)}
+            className={cn("rax-input-group rax-segmented-range", className)}
             data-size={size}
             data-open={open || undefined}
             data-choosing={open ? choosing : undefined}
             data-disabled={disabled || undefined}
             onBlur={(event) => {
               const next = event.relatedTarget as HTMLElement | null
-              if (!event.currentTarget.contains(next) && !next?.closest(".sheen-date-popover")) onBlur?.()
+              if (!event.currentTarget.contains(next) && !next?.closest(".rax-date-popover")) onBlur?.()
             }}
             {...aria}
             // After the spread: an injected aria-invalid={undefined} must not hide our own checks.
@@ -247,8 +247,8 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
             // Not allowed on role="group"; the halves' segments carry it.
             aria-required={undefined}
           >
-            <div className="sheen-input sheen-date-range-halves" data-variant={variant} aria-invalid={isInvalid || undefined}>
-              <div className="sheen-date-range-half" data-half="from">
+            <div className="rax-input rax-date-range-halves" data-variant={variant} aria-invalid={isInvalid || undefined}>
+              <div className="rax-date-range-half" data-half="from">
                 <DateInput
                   id={`${fieldId}-from`}
                   readOnly={readOnly}
@@ -269,10 +269,10 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
                   }}
                 />
               </div>
-              <span className="sheen-date-range-arrow" aria-hidden="true">
+              <span className="rax-date-range-arrow" aria-hidden="true">
                 <ArrowIcon />
               </span>
-              <div className="sheen-date-range-half" data-half="to">
+              <div className="rax-date-range-half" data-half="to">
                 <DateInput
                   id={`${fieldId}-to`}
                   readOnly={readOnly}
@@ -290,11 +290,11 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
                 />
               </div>
             </div>
-            <span className="sheen-input-slot" data-side="end">
+            <span className="rax-input-slot" data-side="end">
               {clearable && (value.from || value.to) && editable && (
                 <button
                   type="button"
-                  className="sheen-input-clear"
+                  className="rax-input-clear"
                   aria-label={clearLabel}
                   onClick={() => {
                     setValue({})
@@ -305,7 +305,7 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
                 </button>
               )}
               <PopoverTrigger asChild>
-                <button type="button" className="sheen-input-action" aria-label={pickerLabel} disabled={!editable}>
+                <button type="button" className="rax-input-action" aria-label={pickerLabel} disabled={!editable}>
                   <CalendarIcon />
                 </button>
               </PopoverTrigger>
@@ -321,16 +321,16 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
 
         <PopoverContent
           align="start"
-          className="sheen-date-popover sheen-date-range-popover"
+          className="rax-date-popover rax-date-range-popover"
           dir={popoverDir}
           onOpenAutoFocus={(event) => {
             event.preventDefault()
             const content = event.currentTarget as HTMLElement
-            requestAnimationFrame(() => content.querySelector<HTMLElement>(".sheen-calendar-day[tabindex='0']")?.focus())
+            requestAnimationFrame(() => content.querySelector<HTMLElement>(".rax-calendar-day[tabindex='0']")?.focus())
           }}
         >
           {open && presets.length > 0 && (
-            <div className="sheen-date-range-presets" role="group" aria-label={presetsLabel}>
+            <div className="rax-date-range-presets" role="group" aria-label={presetsLabel}>
               {presets.map((preset) => {
                 const range = preset.range()
                 const active = isSameDay(range.from, value.from) && isSameDay(range.to, value.to)
@@ -338,7 +338,7 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
                   <button
                     key={preset.label}
                     type="button"
-                    className="sheen-date-range-preset"
+                    className="rax-date-range-preset"
                     data-active={active || undefined}
                     onClick={() => {
                       setValue(range)
@@ -371,8 +371,8 @@ const DateRangeInput = React.forwardRef<HTMLDivElement, DateRangeInputProps>(
             maxDays={maxDays}
             renderDayContent={renderDayContent}
           />
-          <div className="sheen-date-footer">
-            <span className="sheen-date-range-summary" aria-live="polite" data-complete={(value.from && value.to) || undefined}>
+          <div className="rax-date-footer">
+            <span className="rax-date-range-summary" aria-live="polite" data-complete={(value.from && value.to) || undefined}>
               {summary}
             </span>
             <div className="d-flex gap-2">

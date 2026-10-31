@@ -17,13 +17,13 @@
       "source": "registry/react/components/badge/badge.tsx",
       "target": "components/ui/badge.tsx",
       "type": "tsx",
-      "sha256": "8d109a06821b8af3dab42659f3793119add7a8759b27d6aa07431b6ebe88fc66"
+      "sha256": "78709f44fda232c7293bbb16b61fffdaaf91989b20e2a45dedd26243393d8a5c"
     },
     {
       "source": "theme/scss/components/_badge.scss",
-      "target": "styles/sheenui/components/_badge.scss",
+      "target": "styles/raxui/components/_badge.scss",
       "type": "scss",
-      "sha256": "b8093a25ce389b2d63ce84999e10cec4980d039083cbeefef33c13a231a2bd0a"
+      "sha256": "b4c78455e4fbe1c64012993a48bfb55b67831982f876750a9275654cb69d7d3e"
     }
   ]
 }

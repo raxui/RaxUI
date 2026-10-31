@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/stepper.css",
       "type": "css",
-      "sha256": "df52a09217aebb7ae40c7e2513525681ac1b0ade91084f736387cf74200e4efa"
+      "sha256": "60e2ce587d3b3dd094a33fa9b831b54c7ef8d7bc693e7cdc408138e97ba2fc46"
     }
   ],
   "files": [
@@ -19,21 +19,21 @@
       "destination": "components",
       "target": "Stepper/Stepper.razor",
       "type": "razor",
-      "sha256": "a296127158a0b5959317dc886d149035cd8a34689ab1767b4ce1029753da3f95"
+      "sha256": "27cfccf8083cafd9a4292d869cd1e5a385c072a8d891f02980114cd2517bff0d"
     },
     {
       "source": "StepperPanel.razor",
       "destination": "components",
       "target": "Stepper/StepperPanel.razor",
       "type": "razor",
-      "sha256": "af4f93efc5aab7e0ba743816e0abd4c6380d51b3bb76c3a4ccc428b5c739286c"
+      "sha256": "87830383443ce5edced0a2c95d98474856e692e8256408f5e8a91ec4891c5c43"
     },
     {
       "source": "Stepper.razor.js",
       "destination": "components",
       "target": "Stepper/Stepper.razor.js",
       "type": "js",
-      "sha256": "0770fc2611066c268637b728d2a84842f2c4413a026252b7ca97da248b9386b1"
+      "sha256": "24228b4a70c6362c694c08852ff740b9a785889ef6c9e949ac7e1d9fb733badc"
     }
   ]
 }

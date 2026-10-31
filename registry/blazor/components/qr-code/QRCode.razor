@@ -1,10 +1,10 @@
-@using SheenUI.Internal.QrCode
+@using RaxUI.Internal.QrCode
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @ref="element" @attributes="AdditionalAttributes" class="sheen-qr-code @Class" data-state="@(error is null ? "ready" : "error")" data-format="@Format" style="@Style">
+<div @ref="element" @attributes="AdditionalAttributes" class="rax-qr-code @Class" data-state="@(error is null ? "ready" : "error")" data-format="@Format" style="@Style">
 @if(error is null){
-<div class="sheen-qr-code-frame" data-qr-frame><div data-qr-svg>@((MarkupString)svg)</div>@if(Format=="canvas"){<canvas data-qr-canvas role="img" aria-label="@Label" style="display:none;width:100%;height:100%"></canvas>}else if(Format=="image"){<img data-qr-image alt="@Label" width="@Size" height="@Size" style="display:none;width:100%;height:100%" />}</div>
-@if(Overlay is not null){<div class="sheen-qr-code-overlay">@Overlay</div>}
+<div class="rax-qr-code-frame" data-qr-frame><div data-qr-svg>@((MarkupString)svg)</div>@if(Format=="canvas"){<canvas data-qr-canvas role="img" aria-label="@Label" style="display:none;width:100%;height:100%"></canvas>}else if(Format=="image"){<img data-qr-image alt="@Label" width="@Size" height="@Size" style="display:none;width:100%;height:100%" />}</div>
+@if(Overlay is not null){<div class="rax-qr-code-overlay">@Overlay</div>}
 @if(Downloads){<div class="d-flex gap-2"><Button Variant="outline" Size="sm" Disabled="@(!ready)" data-qr-download="png" aria-label="@PngLabel">PNG</Button><Button Variant="outline" Size="sm" Disabled="@(!ready)" data-qr-download="svg" aria-label="@SvgLabel">SVG</Button></div>}
 }else{<div role="alert">@ErrorLabel</div>}
 @ChildContent
@@ -39,7 +39,7 @@
  private int hole;
  private ElementReference element;
  private IJSObjectReference? module;
- private string Style=>FormattableString.Invariant($"--sheen-qr-size:{Size}px;--sheen-qr-hole:{(matrix is null?0:hole*Size/(double)(matrix.size+Margin*2))}px;--sheen-qr-bg:{BackgroundColor};")+(AdditionalAttributes?.TryGetValue("style",out var userStyle)==true?userStyle?.ToString():"");
+ private string Style=>FormattableString.Invariant($"--rax-qr-size:{Size}px;--rax-qr-hole:{(matrix is null?0:hole*Size/(double)(matrix.size+Margin*2))}px;--rax-qr-bg:{BackgroundColor};")+(AdditionalAttributes?.TryGetValue("style",out var userStyle)==true?userStyle?.ToString():"");
  protected override void OnParametersSet(){
  if(Size<1||Size>4096||Margin<0||Margin>100||Resolution is <1 or >8192)throw new ArgumentOutOfRangeException(nameof(Size));
  if(Shape is not ("square" or "rounded" or "dots")||Format is not ("svg" or "canvas" or "image"))throw new ArgumentException("Invalid QR shape or format.");

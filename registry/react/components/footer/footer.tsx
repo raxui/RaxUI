@@ -5,7 +5,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 
 import { Button } from "@/components/ui/button"
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { inert, prefersReducedMotion } from "@/lib/app-shell-utils"
 
@@ -14,7 +14,7 @@ import { inert, prefersReducedMotion } from "@/lib/app-shell-utils"
 //
 //   <Footer>
 //     <FooterMain>
-//       <FooterBrand logo={…} name="SheenUI" tagline="…"><FooterSocial>…</FooterSocial></FooterBrand>
+//       <FooterBrand logo={…} name="RaxUI" tagline="…"><FooterSocial>…</FooterSocial></FooterBrand>
 //       <FooterColumns>
 //         <FooterColumn title="Product">
 //           <FooterLink href="/docs">Docs</FooterLink>
@@ -49,7 +49,7 @@ function useIsPhone() {
 }
 
 export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   variant?: "plain" | "subtle" | "glass"
   /** Max width of the content. */
   maxWidth?: string
@@ -57,21 +57,21 @@ export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
 
 const Footer = React.forwardRef<HTMLElement, FooterProps>(({ appearance, variant = "subtle", maxWidth, className, style, children, ...props }, ref) => (
   <footer
-    {...sheenThemeAttributes(useSheenTheme({ appearance }))}
+    {...raxThemeAttributes(useRaxTheme({ appearance }))}
     dir={props.dir}
     ref={ref}
-    className={cn("sheen-footer", className)}
+    className={cn("rax-footer", className)}
     data-variant={variant}
-    style={maxWidth ? ({ "--sheen-footer-max": maxWidth, ...style } as React.CSSProperties) : style}
+    style={maxWidth ? ({ "--rax-footer-max": maxWidth, ...style } as React.CSSProperties) : style}
     {...props}
   >
-    <div className="sheen-footer-inner">{children}</div>
+    <div className="rax-footer-inner">{children}</div>
   </footer>
 ))
 Footer.displayName = "Footer"
 
 const FooterMain = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-footer-main", className)} {...props} />
+  <div ref={ref} className={cn("rax-footer-main", className)} {...props} />
 ))
 FooterMain.displayName = "FooterMain"
 
@@ -84,14 +84,14 @@ export interface FooterBrandProps extends Omit<React.HTMLAttributes<HTMLDivEleme
 
 const FooterBrand = React.forwardRef<HTMLDivElement, FooterBrandProps>(
   ({ logo, name, tagline, href = "/", className, children, ...props }, ref) => (
-    <div ref={ref} className={cn("sheen-footer-brand", className)} {...props}>
+    <div ref={ref} className={cn("rax-footer-brand", className)} {...props}>
       {(logo || name) && (
-        <a href={href} className="sheen-footer-logo">
+        <a href={href} className="rax-footer-logo">
           {logo}
           {name && <span>{name}</span>}
         </a>
       )}
-      {tagline && <p className="sheen-footer-tagline">{tagline}</p>}
+      {tagline && <p className="rax-footer-tagline">{tagline}</p>}
       {children}
     </div>
   ),
@@ -99,7 +99,7 @@ const FooterBrand = React.forwardRef<HTMLDivElement, FooterBrandProps>(
 FooterBrand.displayName = "FooterBrand"
 
 const FooterColumns = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-footer-columns", className)} {...props} />
+  <div ref={ref} className={cn("rax-footer-columns", className)} {...props} />
 ))
 FooterColumns.displayName = "FooterColumns"
 
@@ -133,12 +133,12 @@ const FooterColumn = React.forwardRef<HTMLElement, FooterColumnProps>(
     return (
       <nav
         ref={ref}
-        className={cn("sheen-footer-column", className)}
+        className={cn("rax-footer-column", className)}
         data-state={phone ? (open ? "open" : "closed") : undefined}
         aria-labelledby={`${id}-title`}
         {...props}
       >
-        <h2 className="sheen-footer-heading" id={`${id}-title`}>
+        <h2 className="rax-footer-heading" id={`${id}-title`}>
           {phone ? (
             <button type="button" aria-expanded={open} aria-controls={`${id}-list`} onClick={() => setOpen((o) => !o)}>
               {title}
@@ -148,8 +148,8 @@ const FooterColumn = React.forwardRef<HTMLElement, FooterColumnProps>(
             title
           )}
         </h2>
-        <div className="sheen-footer-list-wrap" id={`${id}-list`} {...inert(folded)}>
-          <ul className="sheen-footer-list">{children}</ul>
+        <div className="rax-footer-list-wrap" id={`${id}-list`} {...inert(folded)}>
+          <ul className="rax-footer-list">{children}</ul>
         </div>
       </nav>
     )
@@ -167,10 +167,10 @@ const FooterLink = React.forwardRef<HTMLAnchorElement, FooterLinkProps>(({ asChi
   const Comp = asChild ? Slot : "a"
   return (
     <li>
-      <Comp ref={ref} className={cn("sheen-footer-link", className)} {...props}>
+      <Comp ref={ref} className={cn("rax-footer-link", className)} {...props}>
         {asChild ? children : <span>{children}</span>}
       </Comp>
-      {badge && <span className="sheen-footer-badge">{badge}</span>}
+      {badge && <span className="rax-footer-badge">{badge}</span>}
     </li>
   )
 })
@@ -178,12 +178,12 @@ FooterLink.displayName = "FooterLink"
 
 /** Icon links (give each an aria-label). */
 const FooterSocial = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-footer-social", className)} {...props} />
+  <div ref={ref} className={cn("rax-footer-social", className)} {...props} />
 ))
 FooterSocial.displayName = "FooterSocial"
 
 const FooterSocialLink = React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement> & { "aria-label": string }>(
-  ({ className, ...props }, ref) => <a ref={ref} className={cn("sheen-footer-social-link", className)} {...props} />,
+  ({ className, ...props }, ref) => <a ref={ref} className={cn("rax-footer-social-link", className)} {...props} />,
 )
 FooterSocialLink.displayName = "FooterSocialLink"
 
@@ -225,7 +225,7 @@ const FooterNewsletter = React.forwardRef<HTMLFormElement, FooterNewsletterProps
       <form
         ref={ref}
         noValidate
-        className={cn("sheen-footer-newsletter", className)}
+        className={cn("rax-footer-newsletter", className)}
         data-state={state}
         onSubmit={async (event) => {
           event.preventDefault()
@@ -241,12 +241,12 @@ const FooterNewsletter = React.forwardRef<HTMLFormElement, FooterNewsletterProps
         }}
         {...props}
       >
-        <label htmlFor={`${id}-email`} className="sheen-footer-heading">
+        <label htmlFor={`${id}-email`} className="rax-footer-heading">
           {title}
         </label>
-        {description && <p className="sheen-footer-tagline">{description}</p>}
+        {description && <p className="rax-footer-tagline">{description}</p>}
         {state === "done" ? (
-          <p className="sheen-footer-newsletter-done" role="status">
+          <p className="rax-footer-newsletter-done" role="status">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -262,7 +262,7 @@ const FooterNewsletter = React.forwardRef<HTMLFormElement, FooterNewsletterProps
           </p>
         ) : (
           <>
-            <div className="sheen-footer-newsletter-row">
+            <div className="rax-footer-newsletter-row">
               <input
                 id={`${id}-email`}
                 type="email"
@@ -284,7 +284,7 @@ const FooterNewsletter = React.forwardRef<HTMLFormElement, FooterNewsletterProps
               </Button>
             </div>
             {(state === "invalid" || state === "error") && (
-              <p id={`${id}-error`} className="sheen-footer-newsletter-error" role="alert">
+              <p id={`${id}-error`} className="rax-footer-newsletter-error" role="alert">
                 {state === "invalid" ? invalidMessage : errorMessage}
               </p>
             )}
@@ -299,7 +299,7 @@ FooterNewsletter.displayName = "FooterNewsletter"
 // ---- Bottom bar ---------------------------------------------------------------------------
 
 const FooterBottom = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-footer-bottom", className)} {...props} />
+  <div ref={ref} className={cn("rax-footer-bottom", className)} {...props} />
 ))
 FooterBottom.displayName = "FooterBottom"
 
@@ -313,7 +313,7 @@ const FooterCopyright = ({
   const [clientYear, setClientYear] = React.useState<number>()
   React.useEffect(() => setClientYear(new Date().getFullYear()), [])
   return (
-  <p className={cn("sheen-footer-copyright", className)} {...props}>
+  <p className={cn("rax-footer-copyright", className)} {...props}>
     {children ?? (
       <>
         © {year ?? clientYear} {owner}
@@ -325,7 +325,7 @@ const FooterCopyright = ({
 
 const FooterLegal = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement> & { label?: string }>(
   ({ label = "Legal", className, ...props }, ref) => (
-    <nav ref={ref} aria-label={label} className={cn("sheen-footer-legal", className)} {...props} />
+    <nav ref={ref} aria-label={label} className={cn("rax-footer-legal", className)} {...props} />
   ),
 )
 FooterLegal.displayName = "FooterLegal"
@@ -341,7 +341,7 @@ function FooterBackToTop({
     <Button
       variant="ghost"
       size="sm"
-      className={cn("sheen-footer-top", className)}
+      className={cn("rax-footer-top", className)}
       onClick={() => {
         const behavior: ScrollBehavior = prefersReducedMotion() ? "auto" : "smooth"
         ;(target?.current ?? window).scrollTo({ top: 0, behavior })

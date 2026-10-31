@@ -4,7 +4,7 @@
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
 
-import { useSheenPortalContainer, useSheenTheme } from "@/lib/theme"
+import { useRaxPortalContainer, useRaxTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 function assignRef<T>(ref: React.ForwardedRef<T>, node: T | null) { if (typeof ref === "function") ref(node); else if (ref) ref.current = node }
 
@@ -42,12 +42,12 @@ const SheetTrigger = SheetPrimitive.Trigger
 
 const SheetClose = SheetPrimitive.Close
 
-function SheetPortal(props: React.ComponentProps<typeof SheetPrimitive.Portal>) { return <SheetPrimitive.Portal container={useSheenPortalContainer()} {...props} /> }
+function SheetPortal(props: React.ComponentProps<typeof SheetPrimitive.Portal>) { return <SheetPrimitive.Portal container={useRaxPortalContainer()} {...props} /> }
 
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
->(({ className, ...props }, ref) => <SheetPrimitive.Overlay ref={ref} className={cn("sheen-sheet-overlay", className)} {...props} />)
+>(({ className, ...props }, ref) => <SheetPrimitive.Overlay ref={ref} className={cn("rax-sheet-overlay", className)} {...props} />)
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 /** Elements a drag must not start from (they need their own pointer gestures). */
@@ -81,7 +81,7 @@ const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Con
     },
     forwardedRef,
   ) => {
-    const direction = useSheenTheme().direction
+    const direction = useRaxTheme().direction
     const side = logicalSide === "start" ? (direction === "rtl" ? "right" : "left") : logicalSide === "end" ? (direction === "rtl" ? "left" : "right") : logicalSide
     const sheet = React.useContext(SheetContext)
     const contentRef = React.useRef<HTMLDivElement | null>(null)
@@ -101,11 +101,11 @@ const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Con
     const setOffset = (offset: number) => {
       const el = contentRef.current
       if (!el) return
-      el.style.setProperty(axis === "x" ? "--sheen-sheet-drag-x" : "--sheen-sheet-drag-y", `${offset * sign}px`)
+      el.style.setProperty(axis === "x" ? "--rax-sheet-drag-x" : "--rax-sheet-drag-y", `${offset * sign}px`)
       const size = axis === "x" ? el.offsetWidth : el.offsetHeight
       // Radix portals the overlay right before the content.
       const overlay = el.previousElementSibling as HTMLElement | null
-      if (overlay?.classList.contains("sheen-sheet-overlay")) overlay.style.opacity = String(1 - Math.min(1, Math.max(0, offset / size)))
+      if (overlay?.classList.contains("rax-sheet-overlay")) overlay.style.opacity = String(1 - Math.min(1, Math.max(0, offset / size)))
     }
 
     const position = (event: React.PointerEvent) => (axis === "x" ? event.clientX : event.clientY)
@@ -133,7 +133,7 @@ const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Con
             assignRef(forwardedRef, node)
           }}
           data-side={side}
-          className={cn("sheen-sheet-content", className)}
+          className={cn("rax-sheet-content", className)}
           onPointerDown={(event) => {
             onPointerDown?.(event)
             const target = event.target as HTMLElement
@@ -188,10 +188,10 @@ const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Con
           }}
           {...props}
         >
-          {showHandle && <div className="sheen-sheet-handle" aria-hidden="true" />}
+          {showHandle && <div className="rax-sheet-handle" aria-hidden="true" />}
           {children}
           {showCloseButton && (
-            <SheetPrimitive.Close className="sheen-sheet-close">
+            <SheetPrimitive.Close className="rax-sheet-close">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" aria-hidden="true">
                 <path d="M18 6 6 18M6 6l12 12" />
               </svg>
@@ -206,31 +206,31 @@ const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Con
 SheetContent.displayName = SheetPrimitive.Content.displayName
 
 const SheetHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-sheet-header", className)} {...props} />
+  <div ref={ref} className={cn("rax-sheet-header", className)} {...props} />
 ))
 SheetHeader.displayName = "SheetHeader"
 
 /** Scrollable middle section. */
 const SheetBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-sheet-body", className)} {...props} />
+  <div ref={ref} className={cn("rax-sheet-body", className)} {...props} />
 ))
 SheetBody.displayName = "SheetBody"
 
 const SheetFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-sheet-footer", className)} {...props} />
+  <div ref={ref} className={cn("rax-sheet-footer", className)} {...props} />
 ))
 SheetFooter.displayName = "SheetFooter"
 
 const SheetTitle = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
->(({ className, ...props }, ref) => <SheetPrimitive.Title ref={ref} className={cn("sheen-sheet-title", className)} {...props} />)
+>(({ className, ...props }, ref) => <SheetPrimitive.Title ref={ref} className={cn("rax-sheet-title", className)} {...props} />)
 SheetTitle.displayName = SheetPrimitive.Title.displayName
 
 const SheetDescription = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
->(({ className, ...props }, ref) => <SheetPrimitive.Description ref={ref} className={cn("sheen-sheet-description", className)} {...props} />)
+>(({ className, ...props }, ref) => <SheetPrimitive.Description ref={ref} className={cn("rax-sheet-description", className)} {...props} />)
 SheetDescription.displayName = SheetPrimitive.Description.displayName
 
 export {

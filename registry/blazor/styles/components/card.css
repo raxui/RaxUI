@@ -1,24 +1,24 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
 .card-glass {
-  --sheen-card-tint-rgb: var(--bs-primary-rgb);
-  --sheen-card-shadow: var(--sheen-glass-edge), var(--sheen-shadow-md);
+  --rax-card-tint-rgb: var(--bs-primary-rgb);
+  --rax-card-shadow: var(--rax-glass-edge), var(--rax-shadow-md);
   --bs-card-spacer-y: 1.25rem;
   --bs-card-spacer-x: 1.5rem;
   --bs-card-title-spacer-y: 0.5rem;
   --bs-card-title-color: var(--bs-emphasis-color);
   --bs-card-subtitle-color: var(--bs-secondary-color);
   --bs-card-border-width: 1px;
-  --bs-card-border-color: var(--sheen-glass-border-color);
-  --bs-card-border-radius: var(--sheen-radius-lg);
-  --bs-card-inner-border-radius: calc(var(--sheen-radius-lg) - 1px);
+  --bs-card-border-color: var(--rax-glass-border-color);
+  --bs-card-border-radius: var(--rax-radius-lg);
+  --bs-card-inner-border-radius: calc(var(--rax-radius-lg) - 1px);
   --bs-card-cap-padding-y: 1.25rem;
   --bs-card-cap-padding-x: 1.5rem;
   --bs-card-cap-bg: transparent;
   --bs-card-color: var(--bs-body-color);
-  --bs-card-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha));
-  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  box-shadow: var(--sheen-card-shadow);
+  --bs-card-bg: rgba(var(--bs-body-bg-rgb), var(--rax-glass-alpha));
+  -webkit-backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
+  backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
+  box-shadow: var(--rax-card-shadow);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .card-glass {
@@ -80,14 +80,14 @@
 }
 
 .card-glass-tinted {
-  --bs-card-border-color: rgba(var(--sheen-card-tint-rgb), 0.2);
-  background-image: linear-gradient(rgba(var(--sheen-card-tint-rgb), 0.1), rgba(var(--sheen-card-tint-rgb), 0.1));
+  --bs-card-border-color: rgba(var(--rax-card-tint-rgb), 0.2);
+  background-image: linear-gradient(rgba(var(--rax-card-tint-rgb), 0.1), rgba(var(--rax-card-tint-rgb), 0.1));
 }
 
 .card-glass-outline {
   --bs-card-bg: transparent;
   --bs-card-border-color: rgba(var(--bs-emphasis-color-rgb), 0.12);
-  --sheen-card-shadow: none;
+  --rax-card-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
@@ -97,40 +97,40 @@
   text-align: start;
   text-decoration: none;
   cursor: pointer;
-  transition: box-shadow var(--sheen-duration) var(--sheen-ease-out), border-color var(--sheen-duration) ease, background-color var(--sheen-duration) ease;
+  transition: box-shadow var(--rax-duration) var(--rax-ease-out), border-color var(--rax-duration) ease, background-color var(--rax-duration) ease;
 }
 .card-glass-interactive:hover {
-  --sheen-card-shadow: var(--sheen-glass-edge), var(--sheen-shadow-lg);
+  --rax-card-shadow: var(--rax-glass-edge), var(--rax-shadow-lg);
   color: var(--bs-card-color);
 }
 .card-glass-interactive:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(var(--sheen-card-tint-rgb), 0.35), var(--sheen-card-shadow);
+  box-shadow: 0 0 0 0.25rem rgba(var(--rax-card-tint-rgb), 0.35), var(--rax-card-shadow);
 }
 @media (prefers-reduced-motion: no-preference) {
   .card-glass-interactive {
-    transition: box-shadow var(--sheen-duration) var(--sheen-ease-out), border-color var(--sheen-duration) ease, background-color var(--sheen-duration) ease, transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+    transition: box-shadow var(--rax-duration) var(--rax-ease-out), border-color var(--rax-duration) ease, background-color var(--rax-duration) ease, transform var(--rax-duration-slow) var(--rax-ease-spring);
   }
   .card-glass-interactive:hover {
     transform: translateY(-3px);
   }
   .card-glass-interactive:active {
     transform: scale(0.98);
-    transition-duration: var(--sheen-duration-fast);
-    transition-timing-function: var(--sheen-ease-out);
+    transition-duration: var(--rax-duration-fast);
+    transition-timing-function: var(--rax-ease-out);
   }
 }
 
-.sheen-card {
-  --bs-card-bg: var(--sheen-card-bg);
-  --bs-card-border-color: var(--sheen-border-color);
-  --sheen-card-shadow: var(--sheen-surface-shadow);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
+.rax-card {
+  --bs-card-bg: var(--rax-card-bg);
+  --bs-card-border-color: var(--rax-border-color);
+  --rax-card-shadow: var(--rax-surface-shadow);
+  -webkit-backdrop-filter: var(--rax-surface-filter);
+  backdrop-filter: var(--rax-surface-filter);
 }
-.sheen-card.card-glass-outline {
+.rax-card.card-glass-outline {
   --bs-card-bg: transparent;
-  --sheen-card-shadow: none;
+  --rax-card-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }

@@ -36,7 +36,7 @@ const AWAY_KEY: Record<SpeedDialSide, string> = { top: "ArrowUp", bottom: "Arrow
 const TOWARD_KEY: Record<SpeedDialSide, string> = { top: "ArrowDown", bottom: "ArrowUp", left: "ArrowRight", right: "ArrowLeft" }
 
 const actionsOf = (content: HTMLElement | null) =>
-  Array.from(content?.querySelectorAll<HTMLButtonElement>(".sheen-speed-dial-action:not(:disabled)") ?? [])
+  Array.from(content?.querySelectorAll<HTMLButtonElement>(".rax-speed-dial-action:not(:disabled)") ?? [])
 
 // ---- Root ------------------------------------------------------------------------------------
 
@@ -140,7 +140,7 @@ const SpeedDial = React.forwardRef<HTMLDivElement, SpeedDialProps>(
           data-state={open ? "open" : "closed"}
           data-side={side}
           data-disabled={disabled ? "" : undefined}
-          className={cn("sheen-speed-dial", className)}
+          className={cn("rax-speed-dial", className)}
           onPointerEnter={(event) => {
             onPointerEnter?.(event)
             if (!hover || event.pointerType !== "mouse" || disabled) return
@@ -209,7 +209,7 @@ const SpeedDialTrigger = React.forwardRef<HTMLButtonElement, SpeedDialTriggerPro
         aria-controls={contentId}
         data-state={open ? "open" : "closed"}
         disabled={disabled}
-        className={cn("sheen-speed-dial-trigger", className)}
+        className={cn("rax-speed-dial-trigger", className)}
         onClick={(event) => {
           onClick?.(event)
           if (!event.defaultPrevented) setOpen(!open)
@@ -261,12 +261,12 @@ const SpeedDialContent = React.forwardRef<HTMLDivElement, SpeedDialContentProps>
         aria-orientation={side === "top" || side === "bottom" ? "vertical" : "horizontal"}
         data-state={open ? "open" : "closed"}
         data-side={side}
-        className={cn("sheen-speed-dial-content", className)}
+        className={cn("rax-speed-dial-content", className)}
         style={
           {
-            "--sheen-speed-dial-offset": `${offset}px`,
-            "--sheen-speed-dial-gap": `${gap}px`,
-            "--sheen-speed-dial-count": items.length,
+            "--rax-speed-dial-offset": `${offset}px`,
+            "--rax-speed-dial-gap": `${gap}px`,
+            "--rax-speed-dial-count": items.length,
             ...style,
           } as React.CSSProperties
         }
@@ -319,8 +319,8 @@ const SpeedDialItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
         ref={ref}
         role="none"
         data-state={open ? "open" : "closed"}
-        className={cn("sheen-speed-dial-item", className)}
-        style={{ "--sheen-speed-dial-index": index, ...style } as React.CSSProperties}
+        className={cn("rax-speed-dial-item", className)}
+        style={{ "--rax-speed-dial-index": index, ...style } as React.CSSProperties}
         {...props}
       />
     </SpeedDialItemContext.Provider>
@@ -345,7 +345,7 @@ const SpeedDialAction = React.forwardRef<HTMLButtonElement, SpeedDialActionProps
         variant={variant}
         size={size}
         aria-labelledby={item?.hasLabel && !props["aria-label"] ? item.labelId : undefined}
-        className={cn("sheen-speed-dial-action", className)}
+        className={cn("rax-speed-dial-action", className)}
         onClick={(event) => {
           onClick?.(event)
           onSelect?.(event)
@@ -366,7 +366,7 @@ const SpeedDialLabel = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HT
     setHasLabel?.(true)
     return () => setHasLabel?.(false)
   }, [setHasLabel])
-  return <span ref={ref} id={item?.labelId} className={cn("sheen-speed-dial-label", className)} {...props} />
+  return <span ref={ref} id={item?.labelId} className={cn("rax-speed-dial-label", className)} {...props} />
 })
 SpeedDialLabel.displayName = "SpeedDialLabel"
 

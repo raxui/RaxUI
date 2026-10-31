@@ -1,6 +1,6 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @attributes="AdditionalAttributes" class="sheen-ai-actions @Class">
+<div @attributes="AdditionalAttributes" class="rax-ai-actions @Class">
 @if (CopyText is not null) { <Button Variant="ghost" Size="icon-sm" aria-label="@(copied ? CopiedLabel : CopyLabel)" title="@(copied ? CopiedLabel : CopyLabel)" OnClick="Copy"><AIIcon Name="@(copied ? "check" : "copy")" /></Button> }
 @if (OnRegenerate.HasDelegate) { <Button Variant="ghost" Size="icon-sm" aria-label="@RegenerateLabel" title="@RegenerateLabel" OnClick="OnRegenerate"><AIIcon Name="refresh" /></Button> }
 @if (FeedbackChanged.HasDelegate) {

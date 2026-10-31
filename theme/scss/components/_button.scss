@@ -2,36 +2,36 @@
 // Button — glass variants layered on Bootstrap's `.btn` CSS-variable API.
 //
 // Markup: `btn btn-glass btn-glass-{variant} [btn-sm|btn-lg] [btn-glass-icon]`
-// Every variant only sets `--bs-btn-*` / `--sheen-btn-*` variables; Bootstrap's
+// Every variant only sets `--bs-btn-*` / `--rax-btn-*` variables; Bootstrap's
 // `.btn` rules do the painting, so hover/active/disabled/focus all keep working.
 // -----------------------------------------------------------------------------
 
 .btn-glass {
-  --sheen-btn-tint-rgb: var(--bs-primary-rgb);
+  --rax-btn-tint-rgb: var(--bs-primary-rgb);
   // Label colour for tinted / outline / link: the tint, deepened to read at 4.5:1.
-  --sheen-btn-text: color-mix(in srgb, rgb(var(--sheen-btn-tint-rgb)) var(--sheen-text-mix), var(--sheen-text-ink));
-  --sheen-btn-shadow: none;
+  --rax-btn-text: color-mix(in srgb, rgb(var(--rax-btn-tint-rgb)) var(--rax-text-mix), var(--rax-text-ink));
+  --rax-btn-shadow: none;
   --bs-btn-padding-x: 1rem;
   --bs-btn-padding-y: 0.4375rem;
   --bs-btn-font-weight: 600;
   --bs-btn-border-width: 1px;
-  --bs-btn-border-radius: var(--sheen-radius-control);
+  --bs-btn-border-radius: var(--rax-radius-control);
   --bs-btn-disabled-opacity: 0.45;
-  --bs-btn-focus-box-shadow: 0 0 0 0.25rem rgba(var(--sheen-btn-tint-rgb), 0.35);
+  --bs-btn-focus-box-shadow: 0 0 0 0.25rem rgba(var(--rax-btn-tint-rgb), 0.35);
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-height: var(--sheen-control-height); // lines up with inputs and selects
+  min-height: var(--rax-control-height); // lines up with inputs and selects
   letter-spacing: -0.005em;
   white-space: nowrap;
-  box-shadow: var(--sheen-btn-shadow);
+  box-shadow: var(--rax-btn-shadow);
   transition:
-    color var(--sheen-duration) ease,
-    background-color var(--sheen-duration) ease,
-    border-color var(--sheen-duration) ease,
-    box-shadow var(--sheen-duration) var(--sheen-ease-out);
+    color var(--rax-duration) ease,
+    background-color var(--rax-duration) ease,
+    border-color var(--rax-duration) ease,
+    box-shadow var(--rax-duration) var(--rax-ease-out);
 
   // Two classes, so icon libraries' own sizing (Blazicons' `svg[blazicon] { width: 1em }`, loaded later in
   // the app's styles.css) does not win (ADR 014).
@@ -44,23 +44,23 @@
 
   @include motion-safe {
     transition:
-      color var(--sheen-duration) ease,
-      background-color var(--sheen-duration) ease,
-      border-color var(--sheen-duration) ease,
-      box-shadow var(--sheen-duration) var(--sheen-ease-out),
-      transform var(--sheen-duration-slow) var(--sheen-ease-spring); // spring back on release
+      color var(--rax-duration) ease,
+      background-color var(--rax-duration) ease,
+      border-color var(--rax-duration) ease,
+      box-shadow var(--rax-duration) var(--rax-ease-out),
+      transform var(--rax-duration-slow) var(--rax-ease-spring); // spring back on release
 
     // Press: shrink quickly, then the transition above springs it back.
     &:active:not(:disabled):not(.disabled) {
       transform: scale(0.98);
-      transition-duration: var(--sheen-duration-fast);
-      transition-timing-function: var(--sheen-ease-out);
+      transition-duration: var(--rax-duration-fast);
+      transition-timing-function: var(--rax-ease-out);
     }
   }
 
   // Keep the elevation visible under the focus ring.
   &:focus-visible {
-    box-shadow: var(--bs-btn-focus-box-shadow), var(--sheen-btn-shadow);
+    box-shadow: var(--bs-btn-focus-box-shadow), var(--rax-btn-shadow);
   }
 
   // Sizes — reuse Bootstrap's `.btn-sm` / `.btn-lg` class names.
@@ -68,7 +68,7 @@
     --bs-btn-padding-x: 0.75rem;
     --bs-btn-padding-y: 0.3125rem;
     --bs-btn-font-size: 0.875rem;
-    --bs-btn-border-radius: var(--sheen-radius-sm);
+    --bs-btn-border-radius: var(--rax-radius-sm);
     gap: 0.375rem;
     min-height: 2rem;
   }
@@ -77,8 +77,8 @@
     --bs-btn-padding-x: 1.5rem;
     --bs-btn-padding-y: 0.6875rem;
     --bs-btn-font-size: 1.0625rem;
-    --bs-btn-border-radius: var(--sheen-radius-control);
-    min-height: var(--sheen-control-height-lg);
+    --bs-btn-border-radius: var(--rax-radius-control);
+    min-height: var(--rax-control-height-lg);
   }
 }
 
@@ -86,8 +86,8 @@
 .btn-glass-icon {
   --bs-btn-padding-x: 0;
   --bs-btn-padding-y: 0;
-  width: var(--sheen-control-height);
-  height: var(--sheen-control-height);
+  width: var(--rax-control-height);
+  height: var(--rax-control-height);
 
   // Repeat the reset: .btn-glass.btn-sm/.btn-lg set padding with higher specificity.
   &.btn-sm, &.btn-lg { --bs-btn-padding-x: 0; --bs-btn-padding-y: 0; }
@@ -102,20 +102,20 @@
   --bs-btn-hover-color: #fff;
   --bs-btn-active-color: #fff;
   --bs-btn-disabled-color: #fff;
-  --bs-btn-bg: rgb(var(--sheen-btn-tint-rgb));
-  --bs-btn-hover-bg: rgba(var(--sheen-btn-tint-rgb), 0.88);
-  --bs-btn-active-bg: rgba(var(--sheen-btn-tint-rgb), 0.8);
-  --bs-btn-disabled-bg: rgb(var(--sheen-btn-tint-rgb));
+  --bs-btn-bg: rgb(var(--rax-btn-tint-rgb));
+  --bs-btn-hover-bg: rgba(var(--rax-btn-tint-rgb), 0.88);
+  --bs-btn-active-bg: rgba(var(--rax-btn-tint-rgb), 0.8);
+  --bs-btn-disabled-bg: rgb(var(--rax-btn-tint-rgb));
   --bs-btn-border-color: transparent;
   --bs-btn-hover-border-color: transparent;
   --bs-btn-active-border-color: transparent;
   --bs-btn-disabled-border-color: transparent;
   // Flat fill; a faint top rim and a neutral contact shadow give depth.
-  --sheen-btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), var(--sheen-shadow-sm);
+  --rax-btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), var(--rax-shadow-sm);
 }
 
 .btn-glass-destructive {
-  --sheen-btn-tint-rgb: var(--bs-danger-rgb);
+  --rax-btn-tint-rgb: var(--bs-danger-rgb);
 }
 
 // ---- Secondary: neutral frosted glass ---------------------------------------
@@ -124,53 +124,53 @@
   --bs-btn-hover-color: var(--bs-emphasis-color);
   --bs-btn-active-color: var(--bs-emphasis-color);
   --bs-btn-disabled-color: var(--bs-emphasis-color);
-  --bs-btn-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha-subtle));
-  --bs-btn-hover-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha));
-  --bs-btn-active-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha));
-  --bs-btn-disabled-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha-subtle));
-  --bs-btn-border-color: var(--sheen-glass-border-color);
-  --bs-btn-hover-border-color: var(--sheen-glass-border-color);
-  --bs-btn-active-border-color: var(--sheen-glass-border-color);
-  --bs-btn-disabled-border-color: var(--sheen-glass-border-color);
-  --sheen-btn-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
+  --bs-btn-bg: rgba(var(--bs-body-bg-rgb), var(--rax-glass-alpha-subtle));
+  --bs-btn-hover-bg: rgba(var(--bs-body-bg-rgb), var(--rax-glass-alpha));
+  --bs-btn-active-bg: rgba(var(--bs-body-bg-rgb), var(--rax-glass-alpha));
+  --bs-btn-disabled-bg: rgba(var(--bs-body-bg-rgb), var(--rax-glass-alpha-subtle));
+  --bs-btn-border-color: var(--rax-glass-border-color);
+  --bs-btn-hover-border-color: var(--rax-glass-border-color);
+  --bs-btn-active-border-color: var(--rax-glass-border-color);
+  --bs-btn-disabled-border-color: var(--rax-glass-border-color);
+  --rax-btn-shadow: var(--rax-glass-edge), var(--rax-shadow-sm);
 
-  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
+  backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
 }
 
 // ---- Tinted: iOS-style translucent tint with coloured label -----------------
 .btn-glass-tinted {
-  --bs-btn-color: var(--sheen-btn-text);
-  --bs-btn-hover-color: var(--sheen-btn-text);
-  --bs-btn-active-color: var(--sheen-btn-text);
-  --bs-btn-disabled-color: var(--sheen-btn-text);
-  --bs-btn-bg: rgba(var(--sheen-btn-tint-rgb), 0.14);
-  --bs-btn-hover-bg: rgba(var(--sheen-btn-tint-rgb), 0.2);
-  --bs-btn-active-bg: rgba(var(--sheen-btn-tint-rgb), 0.26);
-  --bs-btn-disabled-bg: rgba(var(--sheen-btn-tint-rgb), 0.14);
+  --bs-btn-color: var(--rax-btn-text);
+  --bs-btn-hover-color: var(--rax-btn-text);
+  --bs-btn-active-color: var(--rax-btn-text);
+  --bs-btn-disabled-color: var(--rax-btn-text);
+  --bs-btn-bg: rgba(var(--rax-btn-tint-rgb), 0.14);
+  --bs-btn-hover-bg: rgba(var(--rax-btn-tint-rgb), 0.2);
+  --bs-btn-active-bg: rgba(var(--rax-btn-tint-rgb), 0.26);
+  --bs-btn-disabled-bg: rgba(var(--rax-btn-tint-rgb), 0.14);
   --bs-btn-border-color: transparent;
   --bs-btn-hover-border-color: transparent;
   --bs-btn-active-border-color: transparent;
   --bs-btn-disabled-border-color: transparent;
 
-  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
+  backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
 }
 
 // ---- Outline -----------------------------------------------------------------
 .btn-glass-outline {
-  --bs-btn-color: var(--sheen-btn-text);
-  --bs-btn-hover-color: var(--sheen-btn-text);
-  --bs-btn-active-color: var(--sheen-btn-text);
-  --bs-btn-disabled-color: var(--sheen-btn-text);
+  --bs-btn-color: var(--rax-btn-text);
+  --bs-btn-hover-color: var(--rax-btn-text);
+  --bs-btn-active-color: var(--rax-btn-text);
+  --bs-btn-disabled-color: var(--rax-btn-text);
   --bs-btn-bg: transparent;
-  --bs-btn-hover-bg: rgba(var(--sheen-btn-tint-rgb), 0.08);
-  --bs-btn-active-bg: rgba(var(--sheen-btn-tint-rgb), 0.14);
+  --bs-btn-hover-bg: rgba(var(--rax-btn-tint-rgb), 0.08);
+  --bs-btn-active-bg: rgba(var(--rax-btn-tint-rgb), 0.14);
   --bs-btn-disabled-bg: transparent;
-  --bs-btn-border-color: rgba(var(--sheen-btn-tint-rgb), 0.45);
-  --bs-btn-hover-border-color: rgba(var(--sheen-btn-tint-rgb), 0.7);
-  --bs-btn-active-border-color: rgba(var(--sheen-btn-tint-rgb), 0.7);
-  --bs-btn-disabled-border-color: rgba(var(--sheen-btn-tint-rgb), 0.45);
+  --bs-btn-border-color: rgba(var(--rax-btn-tint-rgb), 0.45);
+  --bs-btn-hover-border-color: rgba(var(--rax-btn-tint-rgb), 0.7);
+  --bs-btn-active-border-color: rgba(var(--rax-btn-tint-rgb), 0.7);
+  --bs-btn-disabled-border-color: rgba(var(--rax-btn-tint-rgb), 0.45);
 }
 
 // ---- Ghost -------------------------------------------------------------------
@@ -191,10 +191,10 @@
 
 // ---- Link --------------------------------------------------------------------
 .btn-glass-link {
-  --bs-btn-color: var(--sheen-btn-text);
-  --bs-btn-hover-color: var(--sheen-btn-text);
-  --bs-btn-active-color: var(--sheen-btn-text);
-  --bs-btn-disabled-color: var(--sheen-btn-text);
+  --bs-btn-color: var(--rax-btn-text);
+  --bs-btn-hover-color: var(--rax-btn-text);
+  --bs-btn-active-color: var(--rax-btn-text);
+  --bs-btn-disabled-color: var(--rax-btn-text);
   --bs-btn-bg: transparent;
   --bs-btn-hover-bg: transparent;
   --bs-btn-active-bg: transparent;
@@ -209,26 +209,26 @@
 }
 
 // Semantic class; btn-glass remains a compatibility class, not an appearance.
-.sheen-button {
-  --bs-btn-border-radius: var(--sheen-control-radius);
-  --sheen-btn-shadow: var(--sheen-control-shadow);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
+.rax-button {
+  --bs-btn-border-radius: var(--rax-control-radius);
+  --rax-btn-shadow: var(--rax-control-shadow);
+  -webkit-backdrop-filter: var(--rax-surface-filter);
+  backdrop-filter: var(--rax-surface-filter);
   &.btn-glass-secondary {
-    --bs-btn-bg: var(--sheen-surface-bg);
-    --bs-btn-hover-bg: var(--sheen-surface-bg);
-    --bs-btn-active-bg: var(--sheen-surface-bg);
-    --bs-btn-disabled-bg: var(--sheen-surface-bg);
-    --bs-btn-border-color: var(--sheen-border-color);
-    --bs-btn-hover-border-color: var(--sheen-border-color);
-    --bs-btn-active-border-color: var(--sheen-border-color);
-    --bs-btn-disabled-border-color: var(--sheen-border-color);
+    --bs-btn-bg: var(--rax-surface-bg);
+    --bs-btn-hover-bg: var(--rax-surface-bg);
+    --bs-btn-active-bg: var(--rax-surface-bg);
+    --bs-btn-disabled-bg: var(--rax-surface-bg);
+    --bs-btn-border-color: var(--rax-border-color);
+    --bs-btn-hover-border-color: var(--rax-border-color);
+    --bs-btn-active-border-color: var(--rax-border-color);
+    --bs-btn-disabled-border-color: var(--rax-border-color);
   }
-  &:is(.btn-glass-ghost, .btn-glass-link) { --sheen-btn-shadow: none; }
+  &:is(.btn-glass-ghost, .btn-glass-link) { --rax-btn-shadow: none; }
 }
 
 // App styles such as the Blazor template's app.css ring every :focus, mouse clicks included. Keep the
 // focus ring for keyboard focus (:focus-visible, from Bootstrap's --bs-btn-focus-box-shadow) only.
-.btn.sheen-button:focus:not(:focus-visible) {
-  box-shadow: var(--sheen-btn-shadow);
+.btn.rax-button:focus:not(:focus-visible) {
+  box-shadow: var(--rax-btn-shadow);
 }

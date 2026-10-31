@@ -4,29 +4,29 @@
 // three looks: default (dividers) · inset (grouped glass list) · cards.
 // -----------------------------------------------------------------------------
 
-.sheen-accordion {
-  --sheen-accordion-rgb: var(--bs-primary-rgb);
-  --sheen-accordion-ease: cubic-bezier(0.32, 0.72, 0, 1);
-  --sheen-accordion-pad-x: 0;
+.rax-accordion {
+  --rax-accordion-rgb: var(--bs-primary-rgb);
+  --rax-accordion-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --rax-accordion-pad-x: 0;
 }
 
-.sheen-accordion-item {
+.rax-accordion-item {
   border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
 }
 
-.sheen-accordion-header {
+.rax-accordion-header {
   display: flex;
   margin: 0;
 }
 
-.sheen-accordion-trigger {
+.rax-accordion-trigger {
   display: flex;
   flex: 1;
   align-items: center;
   gap: 0.875rem;
-  padding: 1rem var(--sheen-accordion-pad-x);
+  padding: 1rem var(--rax-accordion-pad-x);
   border: 0;
-  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  border-radius: calc(0.5rem * var(--rax-radius-scale));
   color: var(--bs-emphasis-color);
   background: none;
   font-size: 1rem;
@@ -34,11 +34,11 @@
   line-height: 1.35;
   text-align: start;
   cursor: pointer;
-  transition: color var(--sheen-duration-fast) ease;
+  transition: color var(--rax-duration-fast) ease;
 
   &:focus-visible {
     outline: 0;
-    box-shadow: inset 0 0 0 2px rgba(var(--sheen-accordion-rgb), 0.45);
+    box-shadow: inset 0 0 0 2px rgba(var(--rax-accordion-rgb), 0.45);
   }
 
   &[data-disabled] {
@@ -46,23 +46,23 @@
     cursor: not-allowed;
   }
 
-  &:hover:not([data-disabled]) .sheen-accordion-icon {
+  &:hover:not([data-disabled]) .rax-accordion-icon {
     color: var(--bs-emphasis-color);
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.09);
   }
 }
 
 // Leading icon tile + title/description stack.
-.sheen-accordion-leading {
+.rax-accordion-leading {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  border-radius: calc(0.625rem * var(--sheen-radius-scale));
-  color: rgb(var(--sheen-accordion-rgb));
-  background-color: rgba(var(--sheen-accordion-rgb), 0.12);
+  border-radius: calc(0.625rem * var(--rax-radius-scale));
+  color: rgb(var(--rax-accordion-rgb));
+  background-color: rgba(var(--rax-accordion-rgb), 0.12);
 
   & svg {
     width: 1.0625rem;
@@ -70,7 +70,7 @@
   }
 }
 
-.sheen-accordion-text {
+.rax-accordion-text {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -78,14 +78,14 @@
   min-width: 0;
 }
 
-.sheen-accordion-description {
+.rax-accordion-description {
   font-size: 0.875rem;
   font-weight: 400;
   color: var(--bs-secondary-color);
 }
 
 // ---- Indicator: chevron (flips) or plus (→ minus) ------------------------------
-.sheen-accordion-icon {
+.rax-accordion-icon {
   display: grid;
   flex-shrink: 0;
   place-items: center;
@@ -96,9 +96,9 @@
   color: var(--bs-secondary-color);
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.05);
   transition:
-    transform var(--sheen-duration-slow) var(--sheen-ease-spring),
-    color var(--sheen-duration) ease,
-    background-color var(--sheen-duration) ease;
+    transform var(--rax-duration-slow) var(--rax-ease-spring),
+    color var(--rax-duration) ease,
+    background-color var(--rax-duration) ease;
 
   & svg {
     width: 0.875rem;
@@ -107,8 +107,8 @@
   }
 
   [data-state="open"] > & {
-    color: rgb(var(--sheen-accordion-rgb));
-    background-color: rgba(var(--sheen-accordion-rgb), 0.12);
+    color: rgb(var(--rax-accordion-rgb));
+    background-color: rgba(var(--rax-accordion-rgb), 0.12);
   }
 
   [data-state="open"] > &[data-icon="chevron"] {
@@ -116,29 +116,29 @@
   }
 
   // Plus: the vertical stroke turns flat to make a minus.
-  .sheen-accordion-plus-v {
+  .rax-accordion-plus-v {
     transform-box: fill-box;
     transform-origin: center;
-    transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+    transition: transform var(--rax-duration-slow) var(--rax-ease-spring);
   }
 
-  [data-state="open"] > & .sheen-accordion-plus-v {
+  [data-state="open"] > & .rax-accordion-plus-v {
     transform: rotate(90deg);
   }
 }
 
 // ---- Content -----------------------------------------------------------------
-.sheen-accordion-content {
+.rax-accordion-content {
   overflow: hidden;
   color: var(--bs-body-color);
   font-size: 0.9375rem;
 
   &[data-state="open"] {
-    animation: sheen-accordion-down 320ms var(--sheen-accordion-ease);
+    animation: rax-accordion-down 320ms var(--rax-accordion-ease);
   }
 
   &[data-state="closed"] {
-    animation: sheen-accordion-up 260ms var(--sheen-accordion-ease);
+    animation: rax-accordion-up 260ms var(--rax-accordion-ease);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -146,112 +146,112 @@
   }
 }
 
-.sheen-accordion-content-inner {
-  padding: 0 var(--sheen-accordion-pad-x) 1.125rem;
+.rax-accordion-content-inner {
+  padding: 0 var(--rax-accordion-pad-x) 1.125rem;
 
   // Indent under the title when the trigger has a leading icon.
-  .sheen-accordion-item:has(.sheen-accordion-leading) & {
-    padding-inline-start: calc(var(--sheen-accordion-pad-x) + 2.875rem);
+  .rax-accordion-item:has(.rax-accordion-leading) & {
+    padding-inline-start: calc(var(--rax-accordion-pad-x) + 2.875rem);
   }
 
   @include motion-safe {
-    .sheen-accordion-content[data-state="open"] > & {
-      animation: sheen-accordion-inner-in 360ms var(--sheen-ease-out) 40ms both;
+    .rax-accordion-content[data-state="open"] > & {
+      animation: rax-accordion-inner-in 360ms var(--rax-ease-out) 40ms both;
     }
   }
 }
 
-@keyframes sheen-accordion-down {
+@keyframes rax-accordion-down {
   from { height: 0; }
   to   { height: var(--radix-accordion-content-height); }
 }
 
-@keyframes sheen-accordion-up {
+@keyframes rax-accordion-up {
   from { height: var(--radix-accordion-content-height); }
   to   { height: 0; }
 }
 
-@keyframes sheen-accordion-inner-in {
+@keyframes rax-accordion-inner-in {
   from { opacity: 0; transform: translateY(-0.375rem); }
 }
 
 // ---- Inset: iOS grouped list in one glass container ---------------------------
-.sheen-accordion[data-variant="inset"] {
-  --sheen-accordion-pad-x: 1rem;
+.rax-accordion[data-variant="inset"] {
+  --rax-accordion-pad-x: 1rem;
 
-  @include glass($alpha: calc(var(--sheen-glass-alpha) + 0.15), $shadow: var(--sheen-shadow-sm));
+  @include glass($alpha: calc(var(--rax-glass-alpha) + 0.15), $shadow: var(--rax-shadow-sm));
   overflow: hidden;
-  border-radius: var(--sheen-radius);
+  border-radius: var(--rax-radius);
 
-  .sheen-accordion-item {
+  .rax-accordion-item {
     border-bottom: 0;
 
-    + .sheen-accordion-item {
+    + .rax-accordion-item {
       box-shadow: inset 0 1px 0 rgba(var(--bs-emphasis-color-rgb), 0.08);
     }
   }
 
-  .sheen-accordion-trigger {
+  .rax-accordion-trigger {
     border-radius: 0;
   }
 
-  .sheen-accordion-trigger:hover:not([data-disabled]) {
+  .rax-accordion-trigger:hover:not([data-disabled]) {
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.025);
   }
 }
 
 // ---- Cards: separate glass cards that lift when open ----------------------------
-.sheen-accordion[data-variant="cards"] {
-  --sheen-accordion-pad-x: 1.125rem;
+.rax-accordion[data-variant="cards"] {
+  --rax-accordion-pad-x: 1.125rem;
 
   display: grid;
   gap: 0.625rem;
 
-  .sheen-accordion-item {
-    @include glass($alpha: calc(var(--sheen-glass-alpha) + 0.15), $shadow: var(--sheen-shadow-sm));
+  .rax-accordion-item {
+    @include glass($alpha: calc(var(--rax-glass-alpha) + 0.15), $shadow: var(--rax-shadow-sm));
     overflow: hidden;
-    border-radius: var(--sheen-radius);
+    border-radius: var(--rax-radius);
     transition:
-      box-shadow var(--sheen-duration) ease,
-      border-color var(--sheen-duration) ease;
+      box-shadow var(--rax-duration) ease,
+      border-color var(--rax-duration) ease;
 
     &[data-state="open"] {
-      border-color: rgba(var(--sheen-accordion-rgb), 0.25);
-      box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-md);
+      border-color: rgba(var(--rax-accordion-rgb), 0.25);
+      box-shadow: var(--rax-glass-edge), var(--rax-shadow-md);
     }
   }
 
-  .sheen-accordion-trigger {
+  .rax-accordion-trigger {
     border-radius: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheen-accordion, .sheen-accordion * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .rax-accordion, .rax-accordion * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
 // Native Blazor details use the same visual states without JavaScript.
-.sheen-accordion-item > summary { list-style: none; }
-.sheen-accordion-item > summary::-webkit-details-marker { display: none; }
-.sheen-accordion-item[open] > summary .sheen-accordion-icon[data-icon="chevron"] { transform: rotate(180deg); }
-.sheen-accordion-item[open] > summary .sheen-accordion-icon[data-icon="plus"] .sheen-accordion-plus-v { transform: rotate(90deg); }
+.rax-accordion-item > summary { list-style: none; }
+.rax-accordion-item > summary::-webkit-details-marker { display: none; }
+.rax-accordion-item[open] > summary .rax-accordion-icon[data-icon="chevron"] { transform: rotate(180deg); }
+.rax-accordion-item[open] > summary .rax-accordion-icon[data-icon="plus"] .rax-accordion-plus-v { transform: rotate(90deg); }
 @supports (interpolate-size: allow-keywords) {
-  details.sheen-accordion-item { interpolate-size: allow-keywords; }
-  details.sheen-accordion-item::details-content {
+  details.rax-accordion-item { interpolate-size: allow-keywords; }
+  details.rax-accordion-item::details-content {
     height: 0; overflow: clip;
     transition: height 320ms ease, content-visibility 320ms allow-discrete;
   }
-  details.sheen-accordion-item[open]::details-content { height: auto; }
+  details.rax-accordion-item[open]::details-content { height: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
-  details.sheen-accordion-item::details-content { transition: none; }
+  details.rax-accordion-item::details-content { transition: none; }
 }
 
-.sheen-accordion .sheen-accordion-leading svg { width: 1.0625rem; height: 1.0625rem; }
+.rax-accordion .rax-accordion-leading svg { width: 1.0625rem; height: 1.0625rem; }
 
-.sheen-accordion[data-variant="inset"], .sheen-accordion[data-variant="cards"] .sheen-accordion-item {
-  background: var(--sheen-surface-bg); border-color: var(--sheen-border-color); box-shadow: var(--sheen-surface-shadow);
-  backdrop-filter: var(--sheen-surface-filter); -webkit-backdrop-filter: var(--sheen-surface-filter);
+.rax-accordion[data-variant="inset"], .rax-accordion[data-variant="cards"] .rax-accordion-item {
+  background: var(--rax-surface-bg); border-color: var(--rax-border-color); box-shadow: var(--rax-surface-shadow);
+  backdrop-filter: var(--rax-surface-filter); -webkit-backdrop-filter: var(--rax-surface-filter);
 }
-.sheen-accordion-trigger { padding-block: calc(var(--sheen-control-height) * .4); }
-.sheen-accordion .sheen-accordion-icon svg { width: .875rem; height: .875rem; }
+.rax-accordion-trigger { padding-block: calc(var(--rax-control-height) * .4); }
+.rax-accordion .rax-accordion-icon svg { width: .875rem; height: .875rem; }

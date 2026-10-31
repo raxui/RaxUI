@@ -4,20 +4,20 @@
 // nothing here animates `transform`.
 // -----------------------------------------------------------------------------
 
-.sheen-drawer-overlay {
+.rax-drawer-overlay {
   position: fixed;
   inset: 0;
   z-index: 1040;
-  background-color: rgba(var(--sheen-overlay-rgb), var(--sheen-drawer-overlay-alpha));
-  -webkit-backdrop-filter: blur(var(--sheen-drawer-overlay-blur, 4px));
-  backdrop-filter: blur(var(--sheen-drawer-overlay-blur, 4px));
+  background-color: rgba(var(--rax-overlay-rgb), var(--rax-drawer-overlay-alpha));
+  -webkit-backdrop-filter: blur(var(--rax-drawer-overlay-blur, 4px));
+  backdrop-filter: blur(var(--rax-drawer-overlay-blur, 4px));
 }
 
-.sheen-drawer-content {
-  @include sheen-surface;
-  background-color: var(--sheen-drawer-bg);
-  -webkit-backdrop-filter: var(--sheen-drawer-filter);
-  backdrop-filter: var(--sheen-drawer-filter);
+.rax-drawer-content {
+  @include rax-surface;
+  background-color: var(--rax-drawer-bg);
+  -webkit-backdrop-filter: var(--rax-drawer-filter);
+  backdrop-filter: var(--rax-drawer-filter);
 
   position: fixed;
   z-index: 1045;
@@ -35,7 +35,7 @@
     max-height: 96dvh;
     margin-inline: auto;
     border-bottom: 0;
-    border-radius: var(--sheen-radius-lg) var(--sheen-radius-lg) 0 0;
+    border-radius: var(--rax-radius-lg) var(--rax-radius-lg) 0 0;
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
@@ -47,7 +47,7 @@
     max-height: 96dvh;
     margin-inline: auto;
     border-top: 0;
-    border-radius: 0 0 var(--sheen-radius-lg) var(--sheen-radius-lg);
+    border-radius: 0 0 var(--rax-radius-lg) var(--rax-radius-lg);
   }
 
   // Snap points: vaul measures them against the viewport, so the panel is
@@ -57,7 +57,7 @@
     max-height: none;
 
     // The part below the screen at the top snap point stays reachable.
-    .sheen-drawer-body {
+    .rax-drawer-body {
       padding-bottom: 4dvh;
     }
   }
@@ -67,7 +67,7 @@
     top: 0.5rem;
     bottom: 0.5rem;
     width: min(22rem, calc(100% - 3rem));
-    border-radius: var(--sheen-radius-lg);
+    border-radius: var(--rax-radius-lg);
   }
 
   &[data-vaul-drawer-direction="left"] { left: 0.5rem; }
@@ -75,20 +75,20 @@
 }
 
 // Vaul's edge extension would fill the gap beside a floating side drawer.
-.sheen-drawer-content[data-vaul-drawer]:is([data-vaul-drawer-direction="left"], [data-vaul-drawer-direction="right"])::after {
+.rax-drawer-content[data-vaul-drawer]:is([data-vaul-drawer-direction="left"], [data-vaul-drawer-direction="right"])::after {
   content: none;
 }
 
 // Grab handle: vaul makes it draggable, clickable (cycles snap points) and gives it a big hit area.
-.sheen-drawer-handle[data-vaul-handle] {
+.rax-drawer-handle[data-vaul-handle] {
   flex-shrink: 0;
   width: 2.25rem;
   height: 0.3125rem;
   margin-top: 0.625rem;
-  border-radius: calc(1rem * var(--sheen-radius-scale));
+  border-radius: calc(1rem * var(--rax-radius-scale));
   background: rgba(var(--bs-emphasis-color-rgb), 0.22);
   opacity: 1;
-  transition: background-color var(--sheen-duration-fast) ease;
+  transition: background-color var(--rax-duration-fast) ease;
 
   &:hover,
   &:active {
@@ -105,7 +105,7 @@
   }
 }
 
-.sheen-drawer-header {
+.rax-drawer-header {
   display: grid;
   gap: 0.25rem;
   padding: 1rem 1.25rem 0.75rem;
@@ -117,7 +117,7 @@
   }
 }
 
-.sheen-drawer-title {
+.rax-drawer-title {
   margin: 0;
   color: var(--bs-emphasis-color);
   font-size: 1.125rem;
@@ -125,21 +125,23 @@
   line-height: 1.3;
 }
 
-.sheen-drawer-description {
+.rax-drawer-description {
   margin: 0;
   color: var(--bs-secondary-color);
   font-size: 0.9375rem;
 }
 
-.sheen-drawer-body {
+.rax-drawer-body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--bs-emphasis-color-rgb), 0.28) transparent;
   overscroll-behavior: contain;
   padding: 0 1.25rem;
 }
 
-.sheen-drawer-footer {
+.rax-drawer-footer {
   display: grid;
   gap: 0.5rem;
   margin-top: auto;
@@ -147,49 +149,49 @@
 }
 
 // Small helper for values that change inside a drawer (e.g. a stepper).
-.sheen-drawer-tick {
+.rax-drawer-tick {
   @include motion-safe {
-    animation: sheen-pop-in 300ms var(--sheen-ease-spring);
+    animation: rax-pop-in 300ms var(--rax-ease-spring);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [class*="sheen-drawer"] { animation: none !important; transition: none !important; }
+  [class*="rax-drawer"] { animation: none !important; transition: none !important; }
 }
 
-dialog.sheen-drawer-content {
+dialog.rax-drawer-content {
   inset: auto; margin: 0; padding: 0; width: 100%; height: auto;
   max-width: 40rem; max-height: 96dvh; overflow: hidden;
 }
-dialog.sheen-drawer-content[data-vaul-drawer-direction="bottom"] { top: auto; bottom: 0; left: 0; right: 0; margin-inline: auto; }
-dialog.sheen-drawer-content[data-vaul-drawer-direction="top"] { top: 0; bottom: auto; left: 0; right: 0; margin-inline: auto; }
-dialog.sheen-drawer-content:is([data-vaul-drawer-direction="left"], [data-vaul-drawer-direction="right"]) {
+dialog.rax-drawer-content[data-vaul-drawer-direction="bottom"] { top: auto; bottom: 0; left: 0; right: 0; margin-inline: auto; }
+dialog.rax-drawer-content[data-vaul-drawer-direction="top"] { top: 0; bottom: auto; left: 0; right: 0; margin-inline: auto; }
+dialog.rax-drawer-content:is([data-vaul-drawer-direction="left"], [data-vaul-drawer-direction="right"]) {
   top: .5rem; bottom: .5rem; width: min(22rem, calc(100vw - 3rem)); height: calc(100dvh - 1rem); max-height: calc(100dvh - 1rem);
 }
-dialog.sheen-drawer-content[data-vaul-drawer-direction="left"] { left: .5rem; right: auto; }
-dialog.sheen-drawer-content[data-vaul-drawer-direction="right"] { right: .5rem; left: auto; }
-dialog.sheen-drawer-content[data-panel-snaps] {
+dialog.rax-drawer-content[data-vaul-drawer-direction="left"] { left: .5rem; right: auto; }
+dialog.rax-drawer-content[data-vaul-drawer-direction="right"] { right: .5rem; left: auto; }
+dialog.rax-drawer-content[data-panel-snaps] {
   height: 100dvh; max-height: none;
-  .sheen-drawer-body { max-height: var(--sheen-panel-body-max); }
-  .sheen-drawer-footer { margin-top: 0; }
-  &:not([data-panel-full]) .sheen-drawer-body { overflow-y: hidden; touch-action: none; }
+  .rax-drawer-body { max-height: var(--rax-panel-body-max); }
+  .rax-drawer-footer { margin-top: 0; }
+  &:not([data-panel-full]) .rax-drawer-body { overflow-y: hidden; touch-action: none; }
 }
-dialog.sheen-drawer-content:not([open]) { display: none; }
-dialog.sheen-drawer-content::backdrop {
-  background: rgba(var(--sheen-overlay-rgb), var(--sheen-drawer-overlay-alpha));
-  -webkit-backdrop-filter: blur(var(--sheen-drawer-overlay-blur, 4px)) saturate(1);
-  backdrop-filter: blur(var(--sheen-drawer-overlay-blur, 4px)) saturate(1);
+dialog.rax-drawer-content:not([open]) { display: none; }
+dialog.rax-drawer-content::backdrop {
+  background: rgba(var(--rax-overlay-rgb), var(--rax-drawer-overlay-alpha));
+  -webkit-backdrop-filter: blur(var(--rax-drawer-overlay-blur, 4px)) saturate(1);
+  backdrop-filter: blur(var(--rax-drawer-overlay-blur, 4px)) saturate(1);
 }
-dialog.sheen-drawer-content .sheen-drawer-handle {
+dialog.rax-drawer-content .rax-drawer-handle {
   align-self: center; border: 0; padding: 8px 0; margin-top: .5rem; background-clip: content-box;
   transition: none; box-shadow: none;
   &, &:hover, &:active { background-color: rgba(var(--bs-emphasis-color-rgb), .2); }
   box-sizing: content-box; touch-action: none; cursor: grab;
 }
-dialog.sheen-drawer-content .sheen-drawer-header { outline: none; touch-action: none; padding-block: calc(var(--sheen-control-height, 2.5rem) * .4) calc(var(--sheen-control-height, 2.5rem) * .3); }
-dialog.sheen-drawer-content [data-panel-handle]:focus-visible { outline: 2px solid rgba(var(--bs-primary-rgb), .65); outline-offset: 4px; }
-dialog.sheen-drawer-content .sheen-drawer-close { position: absolute; top: 1rem; inset-inline-end: 1rem; border: 0; background: transparent; color: inherit; }
-dialog.sheen-drawer-content .sheen-drawer-close svg { width: 1rem; height: 1rem; }
+dialog.rax-drawer-content .rax-drawer-header { outline: none; touch-action: none; padding-block: calc(var(--rax-control-height, 2.5rem) * .4) calc(var(--rax-control-height, 2.5rem) * .3); }
+dialog.rax-drawer-content [data-panel-handle]:focus-visible { outline: 2px solid rgba(var(--bs-primary-rgb), .65); outline-offset: 4px; }
+dialog.rax-drawer-content .rax-drawer-close { position: absolute; top: 1rem; inset-inline-end: 1rem; border: 0; background: transparent; color: inherit; }
+dialog.rax-drawer-content .rax-drawer-close svg { width: 1rem; height: 1rem; }
 
 // The parent already dims the page; another backdrop would obscure that panel.
-dialog.sheen-drawer-content[data-panel-child]::backdrop { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+dialog.rax-drawer-content[data-panel-child]::backdrop { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }

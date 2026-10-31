@@ -18,13 +18,13 @@
       "source": "registry/react/components/checkbox/checkbox.tsx",
       "target": "components/ui/checkbox.tsx",
       "type": "tsx",
-      "sha256": "9353bd6465ae142b025fa72c3c13ecb3a95044355de629c62e6277aa16d536d5"
+      "sha256": "513d17e013da90ac2b478df366d9761799b636243ef55c74e837e64cb740723d"
     },
     {
       "source": "theme/scss/components/_checkbox.scss",
-      "target": "styles/sheenui/components/_checkbox.scss",
+      "target": "styles/raxui/components/_checkbox.scss",
       "type": "scss",
-      "sha256": "534789aa4a64f28443d495fed0232c787fdeba9fa22b81fa343c7f7f1db7a2fa"
+      "sha256": "84f46586e6f56b021606f1832e669cee41921fd7de88adefdcba055e729b318f"
     }
   ]
 }

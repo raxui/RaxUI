@@ -1,7 +1,7 @@
 @if (Parent?.Mobile == true && Collapsible != "none") {
-<Sheet Open="@Parent.MobileOpen" OpenChanged="Parent.SetMobileOpen" Side="@Side" id="@Parent.PanelId" Title="@Label" Description="@Description" ShowCloseButton="false" ShowHandle="false" Class="@($"sheen-sidebar-sheet {Class}")" HeaderClass="visually-hidden" BodyClass="p-0 d-flex flex-column" Appearance="@Parent.Appearance"><nav class="sheen-sidebar-inner" aria-label="@Label" data-mobile>@ChildContent</nav></Sheet>
+<Sheet Open="@Parent.MobileOpen" OpenChanged="Parent.SetMobileOpen" Side="@Side" id="@Parent.PanelId" Title="@Label" Description="@Description" ShowCloseButton="false" ShowHandle="false" Class="@($"rax-sidebar-sheet {Class}")" HeaderClass="visually-hidden" BodyClass="p-0 d-flex flex-column" Appearance="@Parent.Appearance"><nav class="rax-sidebar-inner" aria-label="@Label" data-mobile>@ChildContent</nav></Sheet>
 } else {
-<div @attributes="AdditionalAttributes" class="sheen-sidebar @Class" data-state="@(Parent?.Current == false ? "collapsed" : "expanded")" data-collapsible="@(Parent?.Current == false ? Collapsible : "none")" data-variant="@Variant" data-side="@Side" id="@Parent?.PanelId"><nav class="sheen-sidebar-inner" aria-label="@Label" inert="@(Parent?.Ready == true && !Parent.Current && Collapsible == "offcanvas")">@ChildContent</nav></div>
+<div @attributes="AdditionalAttributes" class="rax-sidebar @Class" data-state="@(Parent?.Current == false ? "collapsed" : "expanded")" data-collapsible="@(Parent?.Current == false ? Collapsible : "none")" data-variant="@Variant" data-side="@Side" id="@Parent?.PanelId"><nav class="rax-sidebar-inner" aria-label="@Label" inert="@(Parent?.Ready == true && !Parent.Current && Collapsible == "offcanvas")">@ChildContent</nav></div>
 }
 @code {
     [Parameter] public string? Class { get; set; }

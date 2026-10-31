@@ -1,28 +1,28 @@
 @* Source-owned native modal panel. Shared gestures live in Sheet.razor.js. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<dialog @ref="_element" @attributes="AdditionalAttributes" id="@DialogId" class="sheen-drawer-content @Class" data-sheen-appearance="@Appearance"
+<dialog @ref="_element" @attributes="AdditionalAttributes" id="@DialogId" class="rax-drawer-content @Class" data-rax-appearance="@Appearance"
         data-side="@Side" aria-labelledby="@(_id + "-title")" aria-describedby="@(Description is null ? null : _id + "-description")" @onclose="Closed">
     @if (EffectiveHandle)
     {
-        <button type="button" class="sheen-drawer-handle" data-panel-handle data-vaul-handle aria-label="@HandleLabel" aria-controls="@DialogId"></button>
+        <button type="button" class="rax-drawer-handle" data-panel-handle data-vaul-handle aria-label="@HandleLabel" aria-controls="@DialogId"></button>
     }
-    <div class="sheen-drawer-header @HeaderClass" tabindex="-1" autofocus>
-        <h2 id="@(_id + "-title")" class="sheen-drawer-title">@Title</h2>
-        @if (Description is not null) { <p id="@(_id + "-description")" class="sheen-drawer-description">@Description</p> }
+    <div class="rax-drawer-header @HeaderClass" tabindex="-1" autofocus>
+        <h2 id="@(_id + "-title")" class="rax-drawer-title">@Title</h2>
+        @if (Description is not null) { <p id="@(_id + "-description")" class="rax-drawer-description">@Description</p> }
     </div>
-    <div class="sheen-drawer-body @BodyClass">@ChildContent</div>
-    @if (Footer is not null) { <div class="sheen-drawer-footer @FooterClass">@Footer</div> }
+    <div class="rax-drawer-body @BodyClass">@ChildContent</div>
+    @if (Footer is not null) { <div class="rax-drawer-footer @FooterClass">@Footer</div> }
     @if (ShowCloseButton)
     {
-        <button type="button" class="sheen-drawer-close" aria-label="@CloseLabel" @onclick="CloseAsync">
+        <button type="button" class="rax-drawer-close" aria-label="@CloseLabel" @onclick="CloseAsync">
             @* Lucide X, ISC license. *@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
         </button>
     }
 </dialog>
 @code {
-    private readonly string _id = "sheen-drawer-" + Guid.NewGuid().ToString("N");
+    private readonly string _id = "rax-drawer-" + Guid.NewGuid().ToString("N");
     private string DialogId => AdditionalAttributes is not null && AdditionalAttributes.TryGetValue("id", out var id) ? Convert.ToString(id) ?? _id : _id;
     private ElementReference _element;
     private IJSObjectReference? _module;

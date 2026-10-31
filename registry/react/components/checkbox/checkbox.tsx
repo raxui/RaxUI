@@ -9,13 +9,13 @@ import { useFieldControlProps } from "@/components/ui/field"
 import { cn } from "@/lib/utils"
 
 const checkboxSizeClasses = {
-  sm: "sheen-checkbox-sm",
+  sm: "rax-checkbox-sm",
   default: null,
-  lg: "sheen-checkbox-lg",
+  lg: "rax-checkbox-lg",
 } as const
 
 export interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   size?: keyof typeof checkboxSizeClasses
   /** `circle` gives the iOS Reminders look. */
   shape?: "square" | "circle"
@@ -47,12 +47,12 @@ const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root
           rootRef.current = node
           assignRef(forwardedRef, node)
         }}
-        data-sheen-appearance={appearance}
-      className={cn("sheen-checkbox", checkboxSizeClasses[size], shape === "circle" && "sheen-checkbox-circle", className)}
+        data-rax-appearance={appearance}
+      className={cn("rax-checkbox", checkboxSizeClasses[size], shape === "circle" && "rax-checkbox-circle", className)}
         {...props}
       >
         {/* Always mounted so the check can animate out as well as in. */}
-        <CheckboxPrimitive.Indicator forceMount className="sheen-checkbox-indicator">
+        <CheckboxPrimitive.Indicator forceMount className="rax-checkbox-indicator">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -62,8 +62,8 @@ const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root
             strokeLinejoin="round"
             aria-hidden="true"
           >
-            <path className="sheen-checkbox-check" d="M5.5 12.5 10 17l8.5-9.5" pathLength={1} />
-            <path className="sheen-checkbox-dash" d="M7 12h10" />
+            <path className="rax-checkbox-check" d="M5.5 12.5 10 17l8.5-9.5" pathLength={1} />
+            <path className="rax-checkbox-dash" d="M7 12h10" />
           </svg>
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>

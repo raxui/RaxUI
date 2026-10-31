@@ -1,8 +1,8 @@
-@* SheenUI RadioGroup. Source-owned: edit freely. Native form behavior also works in static SSR. *@
+@* RaxUI RadioGroup. Source-owned: edit freely. Native form behavior also works in static SSR. *@
 @using Microsoft.AspNetCore.Components.Forms
 @typeparam TValue
 <InputRadioGroup TValue="TValue" Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression">
-    <fieldset @attributes="ControlAttributes" class="@($"sheen-radio-group {Class} {ExtraClass}".TrimEnd())" data-sheen-appearance="@Appearance"
+    <fieldset @attributes="ControlAttributes" class="@($"rax-radio-group {Class} {ExtraClass}".TrimEnd())" data-rax-appearance="@Appearance"
               data-orientation="@Orientation">
         @ChildContent
     </fieldset>
@@ -27,7 +27,7 @@
     [Parameter] public string? Class { get; set; }
     private string? ExtraClass => AdditionalAttributes is not null && AdditionalAttributes.TryGetValue("class", out var value) ? Convert.ToString(value) : null;
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
-    private readonly string _autoId = $"sheen-control-{Guid.NewGuid():N}";
+    private readonly string _autoId = $"rax-control-{Guid.NewGuid():N}";
     private Dictionary<string, object> ControlAttributes
     {
         get

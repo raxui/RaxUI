@@ -62,7 +62,7 @@ const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
           data-size={size}
           data-disabled={disabled ? "" : undefined}
           data-invalid={invalid ? "" : undefined}
-          className={cn("sheen-joined-inputs", className)}
+          className={cn("rax-joined-inputs", className)}
           {...props}
         />
       </InputGroupContext.Provider>
@@ -75,7 +75,7 @@ export type InputGroupItemProps = Omit<InputProps, "size" | "startIcon" | "endIc
 
 /** The fields of the group, in order. */
 const groupFields = (input: HTMLInputElement) =>
-  Array.from(input.closest(".sheen-joined-inputs")?.querySelectorAll<HTMLInputElement>(":scope > .sheen-joined-input") ?? []).filter(
+  Array.from(input.closest(".rax-joined-inputs")?.querySelectorAll<HTMLInputElement>(":scope > .rax-joined-input") ?? []).filter(
     (field) => !field.disabled && !field.readOnly,
   )
 
@@ -108,7 +108,7 @@ const InputGroupItem = React.forwardRef<HTMLInputElement, InputGroupItemProps>(
         disabled={disabled ?? context.disabled}
         required={required ?? context.required}
         invalid={invalid ?? context.invalid}
-        className={cn("sheen-joined-input", className)}
+        className={cn("rax-joined-input", className)}
         onChange={(event) => {
           onChange?.(event)
           const input = event.currentTarget
@@ -127,7 +127,7 @@ const InputGroupItem = React.forwardRef<HTMLInputElement, InputGroupItemProps>(
             move(input, -1, "end")
           }
           // Arrows follow the screen: in RTL the previous field is on the right.
-          const rtl = getComputedStyle(input.closest(".sheen-joined-inputs") ?? input).direction === "rtl"
+          const rtl = getComputedStyle(input.closest(".rax-joined-inputs") ?? input).direction === "rtl"
           const back = rtl ? "ArrowRight" : "ArrowLeft"
           const forward = rtl ? "ArrowLeft" : "ArrowRight"
           if (event.key === back && caretAtStart) {

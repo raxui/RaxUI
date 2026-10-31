@@ -1,6 +1,6 @@
-# SheenUI
+# RaxUI
 
-Formerly BlazorUI. See [the identity change and existing-app guidance](docs/adr/012-sheenui-identity.md).
+Formerly SheenUI, and before that BlazorUI. See [the identity change and existing-app guidance](docs/adr/022-raxui-identity.md).
 
 Source-owned Blazor and React components with a shared theme, installed into your application by .NET and Node CLIs.
 Licensed under [MIT](LICENSE).
@@ -23,7 +23,7 @@ Server, Interactive WebAssembly, and Interactive Auto, per page or global
 ([ADR 021](docs/adr/021-blazor-render-modes.md)). Components never set
 `@rendermode`; choose it on your page or in `App.razor`.
 
-Run `sheenui init` and `sheenui add` in the **server project** (the one with
+Run `raxui init` and `raxui add` in the **server project** (the one with
 `Components/App.razor`). If it references a WebAssembly `.Client` project, as
 `dotnet new blazor --interactivity WebAssembly` or `Auto` creates, components
 are installed into `SampleApp.Client/Components/UI` so the browser can run them.
@@ -34,14 +34,14 @@ configuration stay in the server project. Standalone Blazor WebAssembly apps
 ```bash
 dotnet new blazor --interactivity Auto -n SampleApp
 cd SampleApp/SampleApp
-sheenui init
-sheenui add dialog
+raxui init
+raxui add dialog
 ```
 
 ## Fields and forms
 
-Install `field`, `form`, and `form-section` with `sheenui add <name>` from your
-app directory. For local development, use `dotnet run --project <repo>/src/SheenUI.Cli -- add <name>`.
+Install `field`, `form`, and `form-section` with `raxui add <name>` from your
+app directory. For local development, use `dotnet run --project <repo>/src/RaxUI.Cli -- add <name>`.
 `form` and `form-section` install `field`
 first. They share the React components' classes, theme attributes and motion.
 
@@ -92,7 +92,7 @@ field. Reduced motion disables shaking and smooth scrolling.
 }
 ```
 
-The small cascading `Field.FieldContext` is the contract for future SheenUI
+The small cascading `Field.FieldContext` is the contract for future RaxUI
 inputs. It exposes control/label/description/error IDs, state, error text and
 `ControlAttributes` (`id`, `aria-labelledby`, `aria-describedby`,
 `aria-invalid`, `aria-required`, `disabled`). Native controls and Blazor's
@@ -124,7 +124,7 @@ accepts the same validation/hint parameters. Give each control inside a group
 its own identity; do not splat the group's attributes onto every checkbox.
 All parts support `Class` and additional HTML attributes. Field, FieldSet and
 FormSection accept `Appearance`; otherwise theme, direction and density are
-inherited from `data-sheen-*` ancestors.
+inherited from `data-rax-*` ancestors.
 
 ### Static SSR and server errors
 
@@ -163,7 +163,7 @@ your app. FieldError reads the same store through EditContext.
 
 ### Optional FluentValidation through Blazilla
 
-SheenUI does not depend on a validation package. To use FluentValidation,
+RaxUI does not depend on a validation package. To use FluentValidation,
 install [Blazilla](https://packages.nuget.org/packages/Blazilla), add
 `@using Blazilla` and `@using FluentValidation`, then replace
 `<DataAnnotationsValidator />` with `<FluentValidator Validator="validator" />`:
@@ -220,7 +220,7 @@ it accepts `Label`, `Value`, `Description`, `Icon`, `IconColor`, `Destructive`,
 ## Basic controls
 
 Install `input`, `input-group`, `textarea`, `checkbox`, `radio-group`, `switch`,
-or `select` with `sheenui add <name>`. Each installs `field`. All controls wrap
+or `select` with `raxui add <name>`. Each installs `field`. All controls wrap
 Blazor's built-in form inputs: `@bind-Value`, `ValueChanged`, `ValueExpression`,
 EditContext validation, and native static SSR posting work on .NET 8, 9 and 10.
 They read the cascading Field attributes themselves; no splat is needed.
@@ -324,14 +324,24 @@ submit buttons and validators; no JavaScript is needed for server validation.
 Once the preview is published to NuGet:
 
 ```sh
-dotnet tool install --global SheenUI.Cli --version 0.1.0-preview.2
+dotnet tool install --global RaxUI.Cli --version 0.1.0-preview.2
 dotnet new blazor --interactivity Server -n MyApp
 cd MyApp
-sheenui init
-sheenui add button
+raxui init
+raxui add button
 ```
 
-`init` replaces the template's sidebar layout and sample pages with a SheenUI
+`init` asks for an appearance (`default`, `flat`, `glass`) and an accent (`blue`,
+`emerald`, `indigo`, `amber`) on its first run in a terminal. Skip the questions
+with `raxui init --appearance glass --accent emerald`; piped or CI runs use the
+flags or the defaults. The choice is saved in `raxui.json` and written as
+`data-rax-appearance` and `data-rax-accent` on `<html>` in `Components/App.razor`.
+`raxui add button card input` installs several components in one command.
+`npx raxui-react init` takes the same two flags (saved in `raxui.react.json`,
+written on `<html>` in `index.html` or `app/layout.tsx`) and
+`npx raxui-react add button card input` adds several.
+
+`init` replaces the template's sidebar layout and sample pages with a RaxUI
 app shell and a welcome page where you can try the theme, and replaces the
 template `wwwroot/app.css` with a minimal one (validation, error boundary, and
 heading focus styles only), so it no longer overrides the theme's buttons. It only replaces or
@@ -351,14 +361,14 @@ Use Button in any page, for example a new `Components/Pages/Counter.razor`:
 }
 ```
 
-`init` installs the core theme as `wwwroot/css/sheenui/sheenui.css`, plus the
+`init` installs the core theme as `wwwroot/css/raxui/raxui.css`, plus the
 starter's `starter.css`, and links the core after Bootstrap. `add button` copies
-`Components/UI/Button/Button.razor` and `wwwroot/css/sheenui/components/button.css`,
-adds its namespace to `_Imports.razor`, and adds one CSS import to `sheenui.css`.
+`Components/UI/Button/Button.razor` and `wwwroot/css/raxui/components/button.css`,
+adds its namespace to `_Imports.razor`, and adds one CSS import to `raxui.css`.
 Only installed components' CSS is loaded. Edit `components/button.css` to customize
 Button independently; the CLI keeps those edits. Keep custom core overrides in a
 separate stylesheet: the CLI manages the core's leading import list and refuses
-manual changes to `sheenui.css` ([ADR 015](docs/adr/015-per-component-css.md)). Keep the template Bootstrap and
+manual changes to `raxui.css` ([ADR 015](docs/adr/015-per-component-css.md)). Keep the template Bootstrap and
 application styles links. If `Program.cs` does not enable Interactive Server (an
 app created without `--interactivity Server`), `init` prints a warning with the
 two lines to add; it does not edit `Program.cs`.
@@ -372,7 +382,7 @@ as `success`), plus `Disabled`, `Type`, `Class`, and `OnClick`.
 Theme any part of the page with attributes; components inherit them:
 
 ```razor
-<div data-sheen-appearance="glass" data-bs-theme="dark" data-sheen-accent="emerald" dir="rtl">
+<div data-rax-appearance="glass" data-bs-theme="dark" data-rax-accent="emerald" dir="rtl">
     <Button>Glass</Button>
     <Button Appearance="flat" Color="success">Flat override</Button>
 </div>
@@ -380,7 +390,7 @@ Theme any part of the page with attributes; components inherit them:
 
 ### Icons
 
-Components take any icon markup. For your own icons, SheenUI recommends Lucide
+Components take any icon markup. For your own icons, RaxUI recommends Lucide
 through [`Blazicons.Lucide`](https://github.com/kyleherzog/Blazicons.Lucide)
 ([ADR 014](docs/adr/014-icons.md)); icons follow the text color and the slot's size:
 
@@ -391,7 +401,7 @@ through [`Blazicons.Lucide`](https://github.com/kyleherzog/Blazicons.Lucide)
 
 ### Dialog and DropdownMenu
 
-`sheenui add dialog` and `sheenui add dropdown-menu` install overlays built on the
+`raxui add dialog` and `raxui add dropdown-menu` install overlays built on the
 native `<dialog>` element and the `popover` attribute, each with a small
 collocated `.razor.js` module ([ADR 013](docs/adr/013-overlay-primitives.md)).
 They need an interactive render mode, for example `@rendermode InteractiveServer`:
@@ -418,7 +428,7 @@ They need an interactive render mode, for example `@rendermode InteractiveServer
 
 `Dialog` also takes `ShowCloseButton`, `CloseLabel`, `Appearance`, and `Class`;
 `Esc`, a click outside, and the close button set `Open` to `false`.
-`sheenui add confirm-dialog` installs a centred confirmation (from boot-ui's
+`raxui add confirm-dialog` installs a centred confirmation (from boot-ui's
 AlertDialog). A click outside nudges it instead of closing; Esc or Cancel run
 `OnCancel`. `OnConfirm` may be async: the dialog shows a spinner, closes when it
 finishes, and shows the message if it throws:
@@ -449,8 +459,8 @@ keys, `Home`/`End`, and typeahead.
   single lock-file write. A dependency that is already installed is kept as it
   is, including your edits.
 - Both CLIs write through a durable journal. If `init`, `add` or `update` is killed,
-  the next run rolls the change back, or run `sheenui recover` yourself. Files you
-  changed afterwards stop automatic rollback; `sheenui recover --keep-changes` keeps
+  the next run rolls the change back, or run `raxui recover` yourself. Files you
+  changed afterwards stop automatic rollback; `raxui recover --keep-changes` keeps
   them and restores the rest. See [ADR 018](docs/adr/018-blazor-cli-recovery.md) and
   the React [interrupted installation recovery](docs/react.md#interrupted-installation-recovery).
 - `init` and `add` support `button`, `dialog`, `confirm-dialog`, `dropdown-menu`,
@@ -464,12 +474,12 @@ Install or build the newer CLI first: its embedded registry is the update source
 From your app directory, preview and apply the changes:
 
 ```powershell
-sheenui update --dry-run
-sheenui update
+raxui update --dry-run
+raxui update
 dotnet build
 ```
 
-Use `sheenui update button` to update one installed component and its dependencies;
+Use `raxui update button` to update one installed component and its dependencies;
 the shared theme is refreshed with either form. `--cwd <app-directory>` works on
 both commands. A new dependency is installed automatically. Existing imports are
 retained, new imports are added once, and obsolete, unmodified component files are
@@ -482,17 +492,17 @@ Save your edits separately, restore the previous installed bytes, update, then
 reapply the edits. Alternatively, replace the app file with the exact new registry
 source and retry; this refreshes its baseline. Automatic three-way merges are not
 provided. There is no force-overwrite option. Locally deleted managed files,
-untracked destination files, and edits to the shared `sheenui.css` also require
+untracked destination files, and edits to the shared `raxui.css` also require
 explicit recovery; keep custom theme rules in a separate app stylesheet.
 
 Starter pages, layouts, `wwwroot/app.css`, and Bootstrap are not updated. Your
-demo pages therefore remain app-owned. Keep `sheenui.lock.json`: it supplies the
+demo pages therefore remain app-owned. Keep `raxui.lock.json`: it supplies the
 baseline needed to distinguish your changes from registry changes. React's Node
 CLI does not yet provide this update workflow.
 
 ## Slider and rating
 
-Add either item with `sheenui add slider` or `sheenui add rating`; both install `field`.
+Add either item with `raxui add slider` or `raxui add rating`; both install `field`.
 Inside an `EditForm`, bind numeric model properties just like other inputs:
 
 ```razor
@@ -541,8 +551,8 @@ and reduced-motion behavior; no collocated JavaScript is required for these cont
 ## React
 
 A React library with the same theme lives in this repository: React 18.3/19 on
-Vite 6+ or Next.js 15+ (App Router, no Tailwind), Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx sheenui-react init`,
-`npx sheenui-react add button`). It is not published to npm yet. See
+Vite 6+ or Next.js 15+ (App Router, no Tailwind), Bootstrap 5.3 SCSS, Radix UI, and a Node CLI (`npx raxui-react init`,
+`npx raxui-react add button`). It is not published to npm yet. See
 [docs/react.md](docs/react.md) for installation, usage, and customization.
 
 ## Build and test
@@ -559,12 +569,12 @@ Requires the .NET 8, 9, and 10 SDKs (the CLI multi-targets and the end-to-end
 test builds an app on each) and PowerShell 7 for Playwright's install script.
 
 ```sh
-dotnet restore SheenUI.slnx
-dotnet build SheenUI.slnx -c Release --no-restore
-pwsh tests/SheenUI.Integration.Tests/bin/Release/net10.0/playwright.ps1 install chromium
-dotnet test SheenUI.slnx -c Release --no-build
-dotnet pack src/SheenUI.Cli/SheenUI.Cli.csproj -c Release --no-build -o ./nupkg
-dotnet tool install --tool-path ./local-tools --add-source ./nupkg SheenUI.Cli --version 0.1.0-preview.2
+dotnet restore RaxUI.slnx
+dotnet build RaxUI.slnx -c Release --no-restore
+pwsh tests/RaxUI.Integration.Tests/bin/Release/net10.0/playwright.ps1 install chromium
+dotnet test RaxUI.slnx -c Release --no-build
+dotnet pack src/RaxUI.Cli/RaxUI.Cli.csproj -c Release --no-build -o ./nupkg
+dotnet tool install --tool-path ./local-tools --add-source ./nupkg RaxUI.Cli --version 0.1.0-preview.2
 ```
 
 On Linux, use `install --with-deps chromium` to install browser system dependencies.
@@ -589,7 +599,7 @@ the explicit `publish` option and an existing `v*` tag. Creating a tag alone doe
 not publish anything. When explicitly requested, the workflow builds and tests
 the tagged source, packs the CLI, attaches the package to a GitHub Release, and
 publishes to NuGet. The owner must configure
-the `NUGET_API_KEY` repository secret scoped to `SheenUI.Cli` before tagging.
+the `NUGET_API_KEY` repository secret scoped to `RaxUI.Cli` before tagging.
 The tag version controls both the package and registry release identity; component
 versions and their content hashes are independent.
 
@@ -625,7 +635,7 @@ is available from the date-time-input entry as well. Segment order, numerals and
 labels follow locale; Arabic/Persian digits, arrow stepping, visual left/right
 navigation, clearable, picker, min/max, isDateDisabled, sizes and field variants
 are supported. Time fields add hourCycle (12 or 24) and minuteStep. Picker content
-uses the shared calendar and time wheels inside the nearest SheenThemeProvider.
+uses the shared calendar and time wheels inside the nearest RaxThemeProvider.
 clearLabel, pickerLabel, nowLabel and doneLabel customize picker actions.
 
 TimePicker is the standalone wheel group: value/defaultValue are
@@ -824,7 +834,7 @@ JavaScript module; C# owns values and validates committed choices. Popover Escap
 and dismissal return focus to the field. Month/year selection uses labelled
 buttons; Escape returns to days before dismissing the enclosing popover.
 
-See `examples/blazor/SheenDemo.razor` for the validated Arabic/English booking demo.
+See `examples/blazor/RaxDemo.razor` for the validated Arabic/English booking demo.
 After `init`, `add date-range-picker` and `add date-time-input`, copy it to `Components/Pages/`.
 It uses Interactive Server. Other interactive modes require the components and globalization data in the corresponding client project.
 DatePicker/DateRangePicker remain button-based; DateTimeInput provides segmented entry.
@@ -874,7 +884,7 @@ manifests. Existing typed bindings remain valid; unbound generic use needs
 `TValue="TimeOnly"` or a typed Value. Native static SSR keeps the framework's
 wall-time parsing policy; custom Culture controls the interactive UI.
 
-`examples/blazor/SheenDemo.razor` includes the standalone wheels and combined
+`examples/blazor/RaxDemo.razor` includes the standalone wheels and combined
 field, with an Arabic/English switch. After init, add both `date-range-picker`
 and `date-time-input` before copying the page. Browser acceptance covers
 Interactive Server on .NET 8, 9 and 10; WebAssembly hosting is not covered.
@@ -905,7 +915,7 @@ control. Both retain EditContext and native static SSR forms. See the full
 
 React Popover exports Popover, PopoverTrigger, PopoverAnchor, PopoverContent and
 PopoverClose. Content uses Radix Popover 1.3.1 and portals into the nearest
-SheenThemeProvider, preserving theme attributes and accent. Open/defaultOpen and
+RaxThemeProvider, preserving theme attributes and accent. Open/defaultOpen and
 onOpenChange follow Radix. Content defaults to inline start alignment with a 4px gap.
 
 React Combobox composes Popover and Command. Options support value, label,
@@ -941,12 +951,12 @@ an external trigger with its list. No new external runtime dependency is needed.
 
 ## Display basics
 
-Install each item with `sheenui add <name>`: `alert`, `badge`, `avatar`, `card`,
+Install each item with `raxui add <name>`: `alert`, `badge`, `avatar`, `card`,
 `skeleton`, `spinner`, `progress`, `table`, and `timeline`. Each owns its compiled
-CSS and adds exactly one import to `sheenui.css`; none installs another item.
+CSS and adds exactly one import to `raxui.css`; none installs another item.
 All roots and parts accept `Class`, `Appearance` (default/flat/glass; unset
 inherits), and additional HTML attributes. Theme, accent, dark mode, density and
-RTL inherit from `data-sheen-*`, `data-bs-theme` and `dir` ancestors.
+RTL inherit from `data-rax-*`, `data-bs-theme` and `dir` ancestors.
 
 ```razor
 <Alert Tone="success" Title="Saved" Description="Your changes are ready." />
@@ -1003,7 +1013,7 @@ visible. Icon slots accept arbitrary markup with two-class sizing (ADR 014).
 ## Navigation
 
 Install `tabs`, `accordion`, `breadcrumb`, `pagination`, `stepper`, `toggle`,
-or `menu-toggle` with `sheenui add <name>`. Menu-toggle installs button;
+or `menu-toggle` with `raxui add <name>`. Menu-toggle installs button;
 all seven install their own compiled CSS. Roots accept `Appearance`, `Class`
 and additional HTML attributes. Appearance, accent, density, dark mode and RTL
 inherit from the surrounding theme. Built-in text is overridable.
@@ -1078,7 +1088,7 @@ active item before measurement and with JavaScript disabled.
 ## Overlays and feedback (phase 3)
 
 Install `tooltip`, `hover-card`, `toast`, `sheet`, `drawer`, `context-menu`, or
-`command` with `sheenui add <name>`. These items use manual native popovers or
+`command` with `raxui add <name>`. These items use manual native popovers or
 native modal dialogs and require an interactive render mode. Each installs its
 own compiled CSS and declared dependencies. Theme appearance, dark mode, accent,
 density, and direction inherit from ancestors.
@@ -1181,8 +1191,8 @@ Surface transparency and blur apply to Glass; Default and Flat keep opaque panel
 Reduced-transparency preferences still force opaque surfaces. The same theme is compiled for Blazor.
 Override the CSS properties on the theme provider or an appearance boundary to drive controls from app state:
 
-- Dialog and ConfirmDialog share --sheen-dialog-alpha, --sheen-dialog-blur, --sheen-dialog-overlay-alpha, and --sheen-dialog-overlay-blur.
-- Sheet uses the equivalent --sheen-sheet-* properties; Drawer uses --sheen-drawer-*.
+- Dialog and ConfirmDialog share --rax-dialog-alpha, --rax-dialog-blur, --rax-dialog-overlay-alpha, and --rax-dialog-overlay-blur.
+- Sheet uses the equivalent --rax-sheet-* properties; Drawer uses --rax-drawer-*.
 - Alpha is 0–1: 0.4 means 60% transparency. Blur values require a CSS length, for example 32px.
 - Light and dark dimming defaults resolve independently at data-bs-theme boundaries.
 
@@ -1191,7 +1201,7 @@ React Select, Combobox and Autocomplete include one sliding highlight matching C
 
 ## React app shell
 
-Install independently with `npx sheenui-react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
+Install independently with `npx raxui-react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
 
 | Component | Composition and behavior |
 | --- | --- |
@@ -1223,7 +1233,7 @@ The reference-based consumer examples in react-test cover all six components, in
 
 ## React data components
 
-Install independently: `npx sheenui-react add data-table`, `data-grid`, `sortable` or `resizable`. Manifests ship every supporting source and stylesheet and pin the approved packages: TanStack Table 8.21.3, TanStack Virtual 3.14.13, dnd-kit core 6.3.1/sortable 10.0.0/modifiers 9.0.0/utilities 3.2.2, and react-resizable-panels 4.14.3. Consumers install only the dependencies their selected component needs.
+Install independently: `npx raxui-react add data-table`, `data-grid`, `sortable` or `resizable`. Manifests ship every supporting source and stylesheet and pin the approved packages: TanStack Table 8.21.3, TanStack Virtual 3.14.13, dnd-kit core 6.3.1/sortable 10.0.0/modifiers 9.0.0/utilities 3.2.2, and react-resizable-panels 4.14.3. Consumers install only the dependencies their selected component needs.
 
 | Component | Public behavior |
 | --- | --- |
@@ -1248,11 +1258,11 @@ Resizable separators accept aria-label and keyboard arrows/Home/End. Pass percen
 
 DataTable labels translate controls, summaries and selection names; column helpers also accept label overrides. DataGrid labels translate menus, errors, cell names, counts and aggregates, while meta.validate can return application-specific messages. react-test contains reference-based examples for all four components, including a 10,000-row editable employee grid and RTL products. Data is local demo state; applications supply their own persistence/server callbacks. Existing Table and public source imports remain available. New Blazor counterparts are deferred in #74.
 
-React advanced components are available through the source registry: Carousel, Chat, AI, TextEditor, QRCode, SpeedDial and Kanban. Install with `npx sheenui-react add <name>`; see [React APIs and examples](docs/react.md#advanced-components). Reference-based examples are also available in react-test. Blazor counterparts remain deferred in #75.
+React advanced components are available through the source registry: Carousel, Chat, AI, TextEditor, QRCode, SpeedDial and Kanban. Install with `npx raxui-react add <name>`; see [React APIs and examples](docs/react.md#advanced-components). Reference-based examples are also available in react-test. Blazor counterparts remain deferred in #75.
 
 ### Blazor app shell
 
-Navbar, Sidebar, NavigationMenu, Menubar, Footer and Banner are available through `sheenui add <name>`. They share the React theme, provide navigable static SSR, and enhance interactive render modes with responsive navigation, gliding highlights, native popover menus and remembered state. See [Blazor app shell APIs and examples](docs/blazor-app-shell.md).
+Navbar, Sidebar, NavigationMenu, Menubar, Footer and Banner are available through `raxui add <name>`. They share the React theme, provide navigable static SSR, and enhance interactive render modes with responsive navigation, gliding highlights, native popover menus and remembered state. See [Blazor app shell APIs and examples](docs/blazor-app-shell.md).
 
 ## Blazor data components
 
@@ -1268,16 +1278,16 @@ The reusable samples now cover upload queues/photo grids/CV validation, Badge co
 
 ### Blazor Chat and SpeedDial
 
-`sheenui add chat` and `sheenui add speed-dial` install source-owned components with shared theme CSS and no new packages. English/Arabic examples cover message delivery/retry/typing/scrolling and labelled, directional and controlled-hover actions. See [the contract and SSR requirements](docs/blazor-advanced-part1.md) and [examples](examples/blazor/advanced/).
+`raxui add chat` and `raxui add speed-dial` install source-owned components with shared theme CSS and no new packages. English/Arabic examples cover message delivery/retry/typing/scrolling and labelled, directional and controlled-hover actions. See [the contract and SSR requirements](docs/blazor-advanced-part1.md) and [examples](examples/blazor/advanced/).
 
 ### Blazor Kanban
 
-`sheenui add kanban` installs a draggable board built on the Blazor Sortable engine: cards move within and between columns, columns reorder by their grip, and mouse, touch and keyboard all work, with translated announcements. C# state is the source of truth. See [the behavior contract](docs/blazor-kanban.md) and [examples](examples/blazor/kanban/README.md).
+`raxui add kanban` installs a draggable board built on the Blazor Sortable engine: cards move within and between columns, columns reorder by their grip, and mouse, touch and keyboard all work, with translated announcements. C# state is the source of truth. See [the behavior contract](docs/blazor-kanban.md) and [examples](examples/blazor/kanban/README.md).
 
 ### Blazor AI
 
-`sheenui add ai` installs the AI conversation parts: reasoning, tool calls, streamed Markdown, sources, actions, suggestions and the prompt input. Markdown uses a source-owned C# GFM subset that never renders raw HTML. See [the behavior contract](docs/blazor-ai.md) and [example](examples/blazor/ai/README.md).
+`raxui add ai` installs the AI conversation parts: reasoning, tool calls, streamed Markdown, sources, actions, suggestions and the prompt input. Markdown uses a source-owned C# GFM subset that never renders raw HTML. See [the behavior contract](docs/blazor-ai.md) and [example](examples/blazor/ai/README.md).
 
 ### Blazor TextEditor
 
-`sheenui add text-editor` installs a rich-text editor on the same Tiptap 3.31.4 engine as React, bundled reproducibly (ADR 020). It has toolbar and bubble formatting, links, task lists, alignment, a counter, EditForm validation, a streamed value for large documents, and a sanitized static SSR view. See [the behavior contract](docs/blazor-text-editor.md) and [examples](examples/blazor/text-editor/README.md).
+`raxui add text-editor` installs a rich-text editor on the same Tiptap 3.31.4 engine as React, bundled reproducibly (ADR 020). It has toolbar and bubble formatting, links, task lists, alignment, a counter, EditForm validation, a streamed value for large documents, and a sanitized static SSR view. See [the behavior contract](docs/blazor-text-editor.md) and [examples](examples/blazor/text-editor/README.md).

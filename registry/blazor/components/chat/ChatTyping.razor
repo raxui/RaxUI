@@ -1,4 +1,4 @@
-<div @attributes="AdditionalAttributes" class="sheen-chat-group sheen-chat-typing @Class" data-from="other"><div class="sheen-chat-avatar">@Avatar</div><div class="sheen-chat-stack"><div class="sheen-chat-row"><div class="sheen-chat-bubble" role="status" aria-label="@Label"><span class="sheen-chat-dots" aria-hidden="true"><span></span><span></span><span></span></span></div></div></div></div>
+<div @attributes="AdditionalAttributes" class="rax-chat-group rax-chat-typing @Class" data-from="other"><div class="rax-chat-avatar">@Avatar</div><div class="rax-chat-stack"><div class="rax-chat-row"><div class="rax-chat-bubble" role="status" aria-label="@Label"><span class="rax-chat-dots" aria-hidden="true"><span></span><span></span><span></span></span></div></div></div></div>
 @code {
     [Parameter] public string Label { get; set; } = "Someone is typing";
     [Parameter] public RenderFragment? Avatar { get; set; }

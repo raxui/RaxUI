@@ -40,10 +40,10 @@ export const AIReasoning = React.forwardRef<HTMLDivElement, AIReasoningProps>(
 
     const seconds = duration ?? Math.max(1, elapsed)
     return (
-      <div ref={ref} className={cn("sheen-ai-reasoning", className)} data-state={open ? "open" : "closed"} {...props}>
+      <div ref={ref} className={cn("rax-ai-reasoning", className)} data-state={open ? "open" : "closed"} {...props}>
         <button
           type="button"
-          className="sheen-ai-reasoning-trigger"
+          className="rax-ai-reasoning-trigger"
           aria-expanded={open}
           aria-controls={id}
           onClick={() => {
@@ -52,11 +52,11 @@ export const AIReasoning = React.forwardRef<HTMLDivElement, AIReasoningProps>(
           }}
         >
           {streaming ? <AIShimmer>{thinkingLabel}</AIShimmer> : <span>{doneLabel.replace("{s}", String(seconds))}</span>}
-          <ChevronIcon className="sheen-ai-chevron" />
+          <ChevronIcon className="rax-ai-chevron" />
         </button>
-        <div className="sheen-ai-collapse" id={id}>
+        <div className="rax-ai-collapse" id={id}>
           <div>
-            <div className="sheen-ai-reasoning-body" dir="auto">
+            <div className="rax-ai-reasoning-body" dir="auto">
               {children}
             </div>
           </div>
