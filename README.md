@@ -331,6 +331,16 @@ sheenui init
 sheenui add button
 ```
 
+`init` asks for an appearance (`default`, `flat`, `glass`) and an accent (`blue`,
+`emerald`, `indigo`, `amber`) on its first run in a terminal. Skip the questions
+with `sheenui init --appearance glass --accent emerald`; piped or CI runs use the
+flags or the defaults. The choice is saved in `sheenui.json` and written as
+`data-sheen-appearance` and `data-sheen-accent` on `<html>` in `Components/App.razor`.
+`sheenui add button card input` installs several components in one command.
+`npx sheenui-react init` takes the same two flags (saved in `sheenui.react.json`,
+written on `<html>` in `index.html` or `app/layout.tsx`) and
+`npx sheenui-react add button card input` adds several.
+
 `init` replaces the template's sidebar layout and sample pages with a SheenUI
 app shell and a welcome page where you can try the theme, and replaces the
 template `wwwroot/app.css` with a minimal one (validation, error boundary, and

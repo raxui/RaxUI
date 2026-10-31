@@ -33,7 +33,11 @@
   --sheen-surface-shadow: var(--sheen-glass-edge), var(--sheen-shadow-md);
   --sheen-border-color: var(--sheen-glass-border-color);
   @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.82);
+    // Same alphas as boot-ui: cards and dialogs are the base glass, menus and
+    // popovers +0.18, sheets +0.2, drawers +0.3.
+    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.18));
+    --sheen-card-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha));
+    --sheen-field-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha-subtle));
     --sheen-dialog-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-dialog-alpha));
     --sheen-dialog-filter: blur(var(--sheen-dialog-blur)) saturate(var(--sheen-glass-saturate));
     --sheen-sheet-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-sheet-alpha));

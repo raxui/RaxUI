@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/tabs.css",
       "type": "css",
-      "sha256": "bd2e5e5fc1232f6b7a29d477879f915745a6ee2785e02a4002b4205c8aa233e6"
+      "sha256": "f93ae41c7686505c9393342b792098f2869841f8af6038f5c61df479b8369908"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Tabs/Tabs.razor",
       "type": "razor",
-      "sha256": "17285138466f6d8f84c66c4ed3b522a58c3c8be9a7267ccf0d982a288707224d"
+      "sha256": "2723bdf1500ad9d98204e906a2977da059b00bf415d45140d17127072ce5cadf"
     },
     {
       "source": "Tabs.razor.js",

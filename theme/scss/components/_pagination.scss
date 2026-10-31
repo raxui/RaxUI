@@ -295,6 +295,7 @@
 .sheen-pagination .sheen-pagination-link svg { width: 1em; height: 1em; }
 
 .sheen-pagination { --sheen-pagination-size: var(--sheen-control-height-sm); }
-.sheen-pagination[data-variant="glass"] .sheen-pagination-content { background: var(--sheen-surface-bg); border-color: var(--sheen-border-color); box-shadow: var(--sheen-surface-shadow); backdrop-filter: var(--sheen-surface-filter); -webkit-backdrop-filter: var(--sheen-surface-filter); }
+.sheen-pagination[data-variant="glass"] .sheen-pagination-content { background: var(--sheen-surface-bg); border-color: rgba(var(--bs-emphasis-color-rgb), 0.12); box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm); backdrop-filter: var(--sheen-surface-filter); -webkit-backdrop-filter: var(--sheen-surface-filter); }
+.sheen-pagination { padding: 0.5rem 0.75rem; } // room for the track shadow: overflow-x clips it otherwise
 .sheen-pagination-indicator { box-shadow: var(--sheen-control-shadow); }
 .sheen-pagination-link[aria-disabled="true"] { pointer-events: none; opacity: .4; }

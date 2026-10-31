@@ -16,7 +16,7 @@
     @foreach (var item in Items)
     {
         <div role="tabpanel" id="@(Id + "-panel-" + item.Value)" aria-labelledby="@(Id + "-tab-" + item.Value)" tabindex="0"
-             class="sheen-tabs-content" hidden="@(Current != item.Value)" data-state="@(Current == item.Value ? "active" : "inactive")">
+             class="sheen-tabs-content" hidden="@(Current != item.Value)" data-state="@(Current == item.Value ? "active" : "inactive")" data-motion="@_motion">
             @if (Panel is not null) { @Panel(item.Value) }
         </div>
     }
@@ -34,8 +34,12 @@
     [Parameter] public string Variant { get; set; } = "segmented";
     private string? _value;
     private string? Current => Value ?? _value ?? DefaultValue ?? Items.FirstOrDefault(i => !i.Disabled)?.Value;
+    private string? _motion;
     private async Task Select(string value)
     {
+        var from = Items.ToList().FindIndex(i => i.Value == Current);
+        var to = Items.ToList().FindIndex(i => i.Value == value);
+        _motion = from < 0 || to < 0 || from == to ? null : to > from ? "from-end" : "from-start";
         if (!ValueChanged.HasDelegate) _value = value;
         await ValueChanged.InvokeAsync(value);
     }

@@ -3,7 +3,9 @@
   "name": "dropdown-menu",
   "version": "0.1.0",
   "description": "Popover menu with items, labels, separators, and keyboard navigation.",
-  "dependencies": [],
+  "dependencies": [
+    "button"
+  ],
   "assets": [
     {
       "source": "styles/components/dropdown-menu.css",

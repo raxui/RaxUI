@@ -36,7 +36,7 @@
       "source": "theme/scss/components/_text-editor.scss",
       "target": "styles/sheenui/components/_text-editor.scss",
       "type": "scss",
-      "sha256": "d637733ee785169251add6defb3c47fd6be84ad14ded2d1baf42bfcfbcfe1b43"
+      "sha256": "9521b9d5c5acf4b9733b9622db84d6c1cf1079002d48f9f8deac83ebc6904e87"
     },
     {
       "source": "registry/react/components/text-editor/text-editor-config.tsx",

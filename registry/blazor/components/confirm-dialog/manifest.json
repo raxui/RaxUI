@@ -3,7 +3,9 @@
   "name": "confirm-dialog",
   "version": "0.1.0",
   "description": "Centred confirmation on the native <dialog>: tones with icons, async confirm, and type-to-confirm.",
-  "dependencies": [],
+  "dependencies": [
+    "button"
+  ],
   "assets": [
     {
       "source": "styles/components/confirm-dialog.css",

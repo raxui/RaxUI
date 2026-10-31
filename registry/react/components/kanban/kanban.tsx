@@ -9,6 +9,7 @@ import { useDragSensors } from "@/components/ui/sortable"
 import { getDirection } from "@/lib/direction"
 import { type KanbanColumns, type KanbanContextValue, KanbanContext } from "./kanban-context"
 import { coordinateGetter } from "./kanban-keyboard"
+import { KanbanOverlayPortal } from "./kanban-overlay"
 
 export type KanbanLabels = {
   instructions?: string
@@ -289,6 +290,8 @@ export function Kanban<T>(props: KanbanProps<T>) {
         }}
       >
         {children}
+        {/* Without a `KanbanOverlay`, still lift a copy so the card isn't clipped by its column. */}
+        {!hasOverlay && <KanbanOverlayPortal />}
       </DndContext>
     </KanbanContext.Provider>
     </SheenThemeBoundary>

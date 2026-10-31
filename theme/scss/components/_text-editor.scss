@@ -17,6 +17,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  min-width: 0; // shrink in grid and flex parents; the toolbar scrolls instead
   min-height: 0;
   padding: 0;
 

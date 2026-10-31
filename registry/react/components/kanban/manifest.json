@@ -21,7 +21,7 @@
       "source": "registry/react/components/kanban/kanban.tsx",
       "target": "components/ui/kanban.tsx",
       "type": "tsx",
-      "sha256": "1b08eb6343505fdac6952df46358c796204d2e83bf4e946446388429f57f8e2b"
+      "sha256": "8013ef69385d1b953065d5b2db391b0e8fb887b50ec694a5c5ebf589771d9ab4"
     },
     {
       "source": "theme/scss/components/_kanban.scss",
@@ -51,13 +51,13 @@
       "source": "registry/react/components/kanban/kanban-column.tsx",
       "target": "components/ui/kanban-column.tsx",
       "type": "tsx",
-      "sha256": "0a05fb40fcdb28c608020cfffe73f7c7506dc32a91c53df06c75e3d0be1d04f2"
+      "sha256": "3d78f8ac82c46ac57d658831d8578b12153b89dac816e0b7739ca6edfa21733e"
     },
     {
       "source": "registry/react/components/kanban/kanban-item.tsx",
       "target": "components/ui/kanban-item.tsx",
       "type": "tsx",
-      "sha256": "ecd63d1c8128e6803cbe441d483a439e996299aaa0bdfaa9cc3b7974b15c5366"
+      "sha256": "614286dd13e81cbafff5bd4c78c5bd105941f797e0a7f29637bfd0b4ad07f32c"
     },
     {
       "source": "registry/react/components/kanban/kanban-handles.tsx",
@@ -69,7 +69,7 @@
       "source": "registry/react/components/kanban/kanban-overlay.tsx",
       "target": "components/ui/kanban-overlay.tsx",
       "type": "tsx",
-      "sha256": "b90a7d6cf56738b436edcca857cbbd3b06ffbd9bf990a5719ad1e551de7f1c82"
+      "sha256": "b9bdad7254a17ea521b5e16cbd10a9eaeedac36fbdbe693ee016e2b1f3bd6e7e"
     }
   ]
 }

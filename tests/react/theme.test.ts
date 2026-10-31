@@ -71,7 +71,7 @@ describe("shared theme", () => {
 
 it("ships the approved overlay defaults and per-panel material bindings", () => {
   const css = compileTheme(['@import "components/dialog";', '@import "components/confirm-dialog";', '@import "components/sheet";', '@import "components/drawer";', '@import "components/input";'])
-  for (const declaration of ["--sheen-dialog-alpha: 0.6", "--sheen-sheet-alpha: 0.55", "--sheen-drawer-alpha: 0.6", "--sheen-dialog-overlay-alpha: 0.25", "--sheen-sheet-overlay-alpha: 0.25", "--sheen-drawer-overlay-alpha: 0.25", "--sheen-dialog-blur: 32px", "--sheen-sheet-overlay-blur: 4px", "--sheen-drawer-overlay-blur: 4px", "--sheen-field-border: rgba(var(--bs-emphasis-color-rgb), 0.22)"]) expect(css).toContain(declaration)
+  for (const declaration of ["--sheen-dialog-alpha: 0.5", "--sheen-sheet-alpha: 0.7", "--sheen-drawer-alpha: 0.8", "--sheen-dialog-overlay-alpha: 0.25", "--sheen-sheet-overlay-alpha: 0.25", "--sheen-drawer-overlay-alpha: 0.25", "--sheen-dialog-blur: 32px", "--sheen-sheet-overlay-blur: 4px", "--sheen-drawer-overlay-blur: 4px", "--sheen-field-border: rgba(var(--bs-emphasis-color-rgb), 0.22)"]) expect(css).toContain(declaration)
   for (const name of ["dialog", "sheet", "drawer"]) {
     expect(css).toContain('background-color: var(--sheen-' + name + '-bg)')
     expect(css).toContain('blur(var(--sheen-' + name + '-overlay-blur, 4px))')

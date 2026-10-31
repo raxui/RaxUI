@@ -195,6 +195,8 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--bs-emphasis-color-rgb), 0.28) transparent;
   overscroll-behavior: contain;
   padding: 0.5rem 1.5rem 1rem;
 }

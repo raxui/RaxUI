@@ -1,5 +1,6 @@
 using System.Reflection;
 using SheenUI.Cli.Commands;
+using SheenUI.Cli.Registry;
 
 namespace SheenUI.Cli;
 
@@ -9,19 +10,21 @@ public static class Program
         SheenUI CLI — Source-first Blazor UI components installed into your project.
 
         Usage:
-          sheenui init [options]
-          sheenui add <component> [options]
+          sheenui init [--appearance <name>] [--accent <name>] [options]
+          sheenui add <component...> [options]
           sheenui update [component] [--dry-run] [options]
           sheenui recover [--keep-changes] [options]
 
         Commands:
           init              Initialize SheenUI in the current Blazor project
-          add <component>   Install a component and its assets into your project
+          add <component...> Install one or more components and their assets into your project
           update            Update installed Blazor components and the shared theme
           recover           Finish an interrupted init, add or update
 
         Options:
           -c, --cwd <dir>   Working directory (defaults to current directory)
+          --appearance <a>  init only: default | flat | glass (asked when omitted)
+          --accent <a>      init only: blue | emerald | indigo | amber (asked when omitted)
           -v, --version     Display CLI version
           -h, --help        Show help information
           --dry-run         Preview an update without writing files
@@ -30,10 +33,11 @@ public static class Program
 
     public static int Main(string[] args)
     {
-        return Run(args, Directory.GetCurrentDirectory(), Console.Out, Console.Error);
+        // Prompts only when a person is typing; piped input and CI use the flags or the defaults.
+        return Run(args, Directory.GetCurrentDirectory(), Console.Out, Console.Error, Console.IsInputRedirected ? null : Console.In);
     }
 
-    public static int Run(string[] args, string workingDirectory, TextWriter output, TextWriter error)
+    public static int Run(string[] args, string workingDirectory, TextWriter output, TextWriter error, TextReader? input = null)
     {
         if (args.Length == 0)
         {
@@ -128,17 +132,64 @@ public static class Program
                 return 0;
 
             case "init":
-                return InitCommand.Execute(cwd, output, error);
-
-            case "add":
-                var component = cleanArgs.Skip(1).FirstOrDefault();
-                if (string.IsNullOrWhiteSpace(component))
+                string? appearance = null, accent = null;
+                var initArgs = cleanArgs.Skip(1).ToArray();
+                for (var i = 0; i < initArgs.Length; i++)
                 {
-                    error.WriteLine("Error: Missing component name.");
-                    error.WriteLine("Usage: sheenui add <component>");
+                    if (initArgs[i] == "--appearance" && i + 1 < initArgs.Length && appearance == null)
+                        appearance = initArgs[++i];
+                    else if (initArgs[i] == "--accent" && i + 1 < initArgs.Length && accent == null)
+                        accent = initArgs[++i];
+                    else
+                    {
+                        error.WriteLine("Usage: sheenui init [--appearance <default|flat|glass>] [--accent <blue|emerald|indigo|amber>] [--cwd <dir>]");
+                        return 1;
+                    }
+                }
+                try
+                {
+                    // Reject a bad value before init touches anything.
+                    ThemeChoice.NormalizeAppearance(appearance);
+                    ThemeChoice.NormalizeAccent(accent);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    error.WriteLine($"Error: {ex.Message}");
                     return 1;
                 }
-                return AddCommand.Execute(cwd, component, output, error);
+                return InitCommand.Execute(cwd, output, error, appearance, accent, input);
+
+            case "add":
+                var addArgs = cleanArgs.Skip(1).ToArray();
+                var components = addArgs.Where(arg => !string.IsNullOrWhiteSpace(arg)).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+                if (components.Length == 0 || addArgs.Any(arg => arg.StartsWith('-')))
+                {
+                    error.WriteLine(components.Length == 0 ? "Error: Missing component name." : "Error: add takes component names only.");
+                    error.WriteLine("Usage: sheenui add <component...>");
+                    return 1;
+                }
+                // Check every name first so a typo late in the list does not leave earlier components half done.
+                if (components.Length > 1)
+                {
+                    var registry = new EmbeddedRegistry();
+                    var unknown = components.Where(name =>
+                    {
+                        try { registry.GetComponentManifest(name); return false; }
+                        catch (KeyNotFoundException) { return true; }
+                    }).ToArray();
+                    if (unknown.Length > 0)
+                    {
+                        error.WriteLine($"Error: Unknown component(s): {string.Join(", ", unknown)}. Nothing was installed.");
+                        return 1;
+                    }
+                }
+                foreach (var component in components)
+                {
+                    var code = AddCommand.Execute(cwd, component, output, error);
+                    if (code != 0)
+                        return code;
+                }
+                return 0;
 
             case "update":
                 var updateArgs = cleanArgs.Skip(1).ToArray();

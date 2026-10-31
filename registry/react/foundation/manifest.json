@@ -33,7 +33,7 @@
       "source": "theme/scss/_tokens.scss",
       "target": "styles/sheenui/_tokens.scss",
       "type": "scss",
-      "sha256": "6bd0cada629164b24c468864d470b93b0fc0b082afa7d7a7f6d8372fbc309d9b"
+      "sha256": "b6aa2f2dd05bc00ce6f0b2d82bd65e80e5b24b1a4cbc25ff1a0f7d027542d481"
     },
     {
       "source": "theme/scss/_accents.scss",
@@ -69,13 +69,13 @@
       "source": "theme/scss/_appearance.scss",
       "target": "styles/sheenui/_appearance.scss",
       "type": "scss",
-      "sha256": "54321fd28b936ae512c59207ff25b95a2dab6da0bb8414dc890b9bb578169a94"
+      "sha256": "b9828c588617b9223a037f442943e9ff54a083f728b192a29d2be0abcb6381d6"
     },
     {
       "source": "theme/scss/_core.scss",
       "target": "styles/sheenui/_core.scss",
       "type": "scss",
-      "sha256": "797df76eb1f6c8ec550aa79750fee642879acedd8b77f5e7a566b602c14c6b5b"
+      "sha256": "5a8eb2ab8d24033c073678dba076f2d66d5e50b163e9475debce2cc24f7d3d51"
     },
     {
       "source": "registry/react/foundation/direction.ts",

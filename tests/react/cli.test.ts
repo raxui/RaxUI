@@ -373,3 +373,60 @@ describe("sheenui-react init and add button", () => {
     expect(result.out).toContain("npm install --save-exact --ignore-scripts bootstrap@5.3.8 sass@1.106.1 clsx@2.1.1")
   })
 })
+
+describe("sheenui-react init theme options and multi-component add", () => {
+  const INDEX_HTML = '<!doctype html>\n<html lang="en">\n  <head></head>\n  <body><div id="root"></div></body>\n</html>\n'
+
+  it("writes the chosen appearance and accent to <html>, the config, and the starter defaults", () => {
+    writeFileSync(file("index.html"), INDEX_HTML)
+    createViteTemplateFiles()
+    ok(cli("init", "--appearance", "glass", "--accent", "emerald"))
+
+    expect(read("index.html")).toContain('<html lang="en" data-sheen-appearance="glass" data-sheen-accent="emerald">')
+    expect(json("sheenui.react.json").theme).toEqual({ appearance: "glass", accent: "emerald" })
+    expect(read("src/App.tsx")).toContain('useState<SheenAppearance>("glass")')
+    expect(read("src/App.tsx")).toContain('useState<Accent>("emerald")')
+  })
+
+  it("keeps the saved choice on a later init, and a flag replaces it without duplicating attributes", () => {
+    writeFileSync(file("index.html"), INDEX_HTML)
+    ok(cli("init", "--appearance", "flat", "--accent", "amber"))
+    ok(cli("init"))
+    expect(read("index.html")).toContain('data-sheen-appearance="flat" data-sheen-accent="amber"')
+
+    ok(cli("init", "--accent", "blue"))
+    const html = read("index.html")
+    expect(html).not.toContain("data-sheen-accent")
+    expect(html.split("data-sheen-appearance").length - 1).toBe(1)
+  })
+
+  it("writes no attributes for the defaults and rejects bad values before writing", () => {
+    writeFileSync(file("index.html"), INDEX_HTML)
+    ok(cli("init"))
+    expect(read("index.html")).toBe(INDEX_HTML)
+
+    const before = snapshot()
+    expect(cli("init", "--accent", "pink")).toMatchObject({ code: 1, err: expect.stringContaining("Unknown accent 'pink'") })
+    expect(cli("add", "button", "--accent", "emerald")).toMatchObject({ code: 1, err: expect.stringContaining("only supported by init") })
+    expect(snapshot()).toEqual(before)
+  })
+
+  it("adds several components in one command and installs nothing when one name is unknown", () => {
+    ok(cli("init"))
+    ok(cli("add", "button", "card", "input", "button"))
+    for (const name of ["button", "card", "input"]) expect(existsSync(file(`src/components/ui/${name}.tsx`)), name).toBe(true)
+    expect(Object.keys(json("sheenui.react.lock.json").items)).toEqual(expect.arrayContaining(["button", "card", "input"]))
+
+    const before = snapshot()
+    expect(cli("add", "dialog", "nope").code).toBe(1)
+    expect(snapshot()).toEqual(before)
+  })
+})
+
+it("writes the chosen theme on the <html> tag of a Next.js layout", () => {
+  mkdirSync(file("app"), { recursive: true })
+  writeFileSync(file("package.json"), JSON.stringify({ dependencies: { ...DEPENDENCIES, next: "15.0.0" } }))
+  writeFileSync(file("app/layout.tsx"), 'export default function Layout({ children }) {\n  return <html lang="en"><body>{children}</body></html>\n}\n')
+  ok(cli("init", "--appearance", "flat", "--accent", "indigo"))
+  expect(read("app/layout.tsx")).toContain('<html lang="en" data-sheen-appearance="flat" data-sheen-accent="indigo">')
+})

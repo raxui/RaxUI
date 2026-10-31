@@ -73,7 +73,7 @@ export const KanbanColumnLive = React.forwardRef<HTMLDivElement, KanbanColumnPro
           id={id}
           data-disabled={disabled ? "" : undefined}
           data-dragging={isDragging ? "" : undefined}
-          data-placeholder={isDragging && context.hasOverlay ? "" : undefined}
+          data-placeholder={isDragging ? "" : undefined}
           data-over={draggingCard && context.overColumn === value ? "" : undefined}
           data-handle={asHandle ? "" : undefined}
           data-flat-cursor={context.flatCursor ? "" : undefined}

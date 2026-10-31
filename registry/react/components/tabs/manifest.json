@@ -23,7 +23,7 @@
       "source": "theme/scss/components/_tabs.scss",
       "target": "styles/sheenui/components/_tabs.scss",
       "type": "scss",
-      "sha256": "de9d9c57b31007274af6d28f0691b94c0194f9d9357e9f7f547ee4f73a33fcd7"
+      "sha256": "374e8045d8cfe555d48b2a08dde78ad7531a5562f8798465f99d835bb86ea600"
     }
   ]
 }

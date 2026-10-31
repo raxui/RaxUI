@@ -21,12 +21,18 @@ public static class InitCommand
     public const string BundledBootstrapSource = "bootstrap/bootstrap.min.css";
     public const string BundledBootstrapSha256 = "d85327d99c7a3ee1f9b5d0500d1370acea3ad2db39c163c2f51f232baedbdede";
 
-    public static int Execute(string workingDirectory, TextWriter output, TextWriter error)
+    /// <param name="appearance">default | flat | glass; null asks on the first init when <paramref name="input"/> is given.</param>
+    /// <param name="accent">blue | emerald | indigo | amber; same rules as appearance.</param>
+    /// <param name="input">Console input when a person is typing; null never prompts.</param>
+    public static int Execute(string workingDirectory, TextWriter output, TextWriter error,
+        string? appearance = null, string? accent = null, TextReader? input = null)
     {
         var backup = new FileTransaction(workingDirectory);
 
         try
         {
+            appearance = ThemeChoice.NormalizeAppearance(appearance);
+            accent = ThemeChoice.NormalizeAccent(accent);
             var project = ProjectContext.Detect(workingDirectory);
             var registry = new EmbeddedRegistry();
             var index = registry.GetIndex();
@@ -35,7 +41,8 @@ public static class InitCommand
 
             output.WriteLine($"Initializing SheenUI for project '{project.ProjectName}'...");
 
-            var config = SheenUiConfig.Load(workingDirectory) ?? new SheenUiConfig
+            var existingConfig = SheenUiConfig.Load(workingDirectory);
+            var config = existingConfig ?? new SheenUiConfig
             {
                 Framework = "blazor",
                 TargetFramework = project.TargetFramework,
@@ -45,6 +52,15 @@ public static class InitCommand
                 Bootstrap = new BootstrapConfig { Managed = false },
                 Theme = new ThemeConfig { Default = "light", DarkMode = true, Rtl = false }
             };
+
+            // Ask only about what the flags left open, and only on the first init; a later init keeps the saved choice.
+            if (input != null && existingConfig == null)
+            {
+                appearance ??= ThemeChoice.Ask(input, output, "Appearance", ThemeChoice.Appearances);
+                accent ??= ThemeChoice.Ask(input, output, "Accent color", ThemeChoice.Accents);
+            }
+            if (appearance != null) config.Theme.Appearance = appearance;
+            if (accent != null) config.Theme.Accent = accent == "blue" ? null : accent;
 
             var lockFile = SheenUiLock.LoadOrCreate(workingDirectory);
             ProjectPath.Validate(workingDirectory, project.AppRazorPath);
@@ -105,7 +121,7 @@ public static class InitCommand
             }
 
             // 3. Update App.razor style links
-            UpdateAppRazor(project, backup);
+            UpdateAppRazor(project, config.Theme, backup);
 
             // 4. Starter: write the layout and welcome page, remove template leftovers
             foreach (var write in starter.Writes)
@@ -136,6 +152,7 @@ public static class InitCommand
             output.WriteLine("SheenUI initialized successfully.");
             output.WriteLine($"  - Configuration: {SheenUiConfig.DefaultFileName}");
             output.WriteLine($"  - Shared styles: {config.StylesPath}/");
+            output.WriteLine($"  - Theme: appearance {config.Theme.Appearance}, accent {config.Theme.Accent ?? "blue"}");
             output.WriteLine($"  - Host links updated in: {Path.GetRelativePath(workingDirectory, project.AppRazorPath).Replace('\\', '/')}");
             if (bootstrapUpgrade != null)
                 output.WriteLine($"  - Bootstrap 5.3: {bootstrapUpgrade.Value.RelTarget}");
@@ -248,9 +265,18 @@ public static class InitCommand
                string.Join(Environment.NewLine, missing.Select(line => "  " + line));
     }
 
-    private static void UpdateAppRazor(ProjectContext project, FileTransaction backup)
+    private static void UpdateAppRazor(ProjectContext project, ThemeConfig theme, FileTransaction backup)
     {
-        var appContent = File.ReadAllText(project.AppRazorPath);
+        var original = File.ReadAllText(project.AppRazorPath);
+        var updated = AddStyleLinks(project, original);
+        updated = ThemeChoice.SetHtmlAttribute(updated, "data-sheen-appearance", theme.Appearance == "default" ? null : theme.Appearance);
+        updated = ThemeChoice.SetHtmlAttribute(updated, "data-sheen-accent", theme.Accent);
+        if (updated != original)
+            backup.WriteText(project.AppRazorPath, updated);
+    }
+
+    private static string AddStyleLinks(ProjectContext project, string appContent)
+    {
 
         // Same form as the template's own links: @Assets[...] (fingerprinted) on .NET 9+, a plain URL on .NET 8.
         var links = new[]
@@ -262,7 +288,7 @@ public static class InitCommand
 
         var missing = links.Where(l => !appContent.Contains(l.Path, StringComparison.OrdinalIgnoreCase)).ToList();
         if (missing.Count == 0)
-            return;
+            return appContent;
 
         var lines = appContent.Split(["\r\n", "\r", "\n"], StringSplitOptions.None).ToList();
         var insertionIndex = -1;
@@ -307,6 +333,6 @@ public static class InitCommand
         lines.InsertRange(insertionIndex, missing.Select(l => indent + l.Markup));
 
         var separator = appContent.Contains("\r\n") ? "\r\n" : "\n";
-        backup.WriteText(project.AppRazorPath, string.Join(separator, lines));
+        return string.Join(separator, lines);
     }
 }

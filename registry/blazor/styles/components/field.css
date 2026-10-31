@@ -1,6 +1,7 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
 .sheen-field {
   display: grid;
+  align-content: start;
   gap: 0.375rem;
   min-width: 0;
 }

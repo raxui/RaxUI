@@ -273,10 +273,14 @@
 
 .sheen-pagination[data-variant=glass] .sheen-pagination-content {
   background: var(--sheen-surface-bg);
-  border-color: var(--sheen-border-color);
-  box-shadow: var(--sheen-surface-shadow);
+  border-color: rgba(var(--bs-emphasis-color-rgb), 0.12);
+  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
   backdrop-filter: var(--sheen-surface-filter);
   -webkit-backdrop-filter: var(--sheen-surface-filter);
+}
+
+.sheen-pagination {
+  padding: 0.5rem 0.75rem;
 }
 
 .sheen-pagination-indicator {

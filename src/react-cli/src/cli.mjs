@@ -1,6 +1,6 @@
 // sheenui-react: init and add for React projects on Vite 6+ or Next.js 15+ App Router (ADR 006, 010, 011).
 import { spawnSync } from "node:child_process"
-import { existsSync, readFileSync } from "node:fs"
+import { existsSync, readFileSync, readSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -16,6 +16,8 @@ const registryRoot = existsSync(path.join(packageRoot, "registry/react/index.jso
 export const VERSION = JSON.parse(readFileSync(path.join(packageRoot, "package.json"), "utf8")).version
 
 const STARTER_ITEMS = ["starter-react", "starter-next"]
+const APPEARANCES = ["default", "flat", "glass"]
+const ACCENTS = ["blue", "emerald", "indigo", "amber"] // blue is the unthemed default
 const MIN_VITE_MAJOR = 6 // ADR 010
 const MIN_NEXT_MAJOR = 15 // ADR 011
 
@@ -75,20 +77,56 @@ export const USAGE = `sheenui-react ${VERSION}
 React + Vite 6 or later, or Next.js 15 or later (App Router).
 
 Usage:
-  sheenui-react init [options]
-  sheenui-react add <component> [options]
+  sheenui-react init [--appearance <name>] [--accent <name>] [options]
+  sheenui-react add <component...> [options]
   sheenui-react recover [--keep-changes] [--cwd <dir>]
 
 Options:
   --cwd <dir>      Project directory (defaults to the current directory)
   --keep-changes   Recovery only: retain conflicting files and restore the rest
+  --appearance <a> init only: default | flat | glass (asked when omitted)
+  --accent <a>     init only: blue | emerald | indigo | amber (asked when omitted)
   --no-install     Print the npm install command instead of running it
   -v, --version    Print the CLI version
   -h, --help       Show this help
 `
 
-export function run(args, { cwd, stdout, stderr }) {
+/** Reads one line from stdin synchronously; "" at end of input. */
+function readLine() {
+  const bytes = []
+  const byte = Buffer.alloc(1)
+  for (;;) {
+    let count
+    try { count = readSync(0, byte, 0, 1, null) } catch (error) {
+      if (error.code === "EAGAIN") continue
+      if (error.code === "EOF") break
+      throw error
+    }
+    if (count === 0 || byte[0] === 10) break
+    bytes.push(byte[0])
+  }
+  return Buffer.from(bytes).toString("utf8").trim()
+}
+
+function ask(stdout, title, options) {
+  for (;;) {
+    stdout.write(`${title}:\n${options.map((option, i) => `  ${i + 1}) ${option}${i === 0 ? " (default)" : ""}`).join("\n")}\n> `)
+    const answer = readLine()
+    if (answer === "") return options[0]
+    const chosen = options[Number(answer) - 1] ?? options.find((option) => option === answer.toLowerCase())
+    if (chosen) return chosen
+    stdout.write(`'${answer}' is not an option.\n`)
+  }
+}
+
+function checkChoice(value, allowed, name) {
+  if (value !== undefined && !allowed.includes(value)) throw new Error(`Unknown ${name} '${value}'. Choose one of: ${allowed.join(", ")}.`)
+}
+
+export function run(args, { cwd, stdout, stderr, interactive = false }) {
   const positional = []
+  let appearance
+  let accent
   let projectDir = cwd
   let install = true
   let keepChanges = false
@@ -96,12 +134,17 @@ export function run(args, { cwd, stdout, stderr }) {
     if (args[i] === "--cwd" && i + 1 < args.length) projectDir = path.resolve(cwd, args[++i])
     else if (args[i] === "--no-install") install = false
     else if (args[i] === "--keep-changes") keepChanges = true
+    else if (args[i] === "--appearance" && i + 1 < args.length) appearance = args[++i].toLowerCase()
+    else if (args[i] === "--accent" && i + 1 < args.length) accent = args[++i].toLowerCase()
     else positional.push(args[i])
   }
 
-  const [command, name] = positional
+  const [command, ...names] = positional
   try {
     if (keepChanges && command !== "recover") throw new Error("--keep-changes is only supported by recover.")
+    if ((appearance !== undefined || accent !== undefined) && command !== "init") throw new Error("--appearance and --accent are only supported by init.")
+    checkChoice(appearance, APPEARANCES, "appearance")
+    checkChoice(accent, ACCENTS, "accent")
     switch (command) {
       case "recover":
         if (!recoverTransaction(projectDir, { keepChanges, stdout })) stdout.write("No interrupted SheenUI installation found.\n")
@@ -116,11 +159,14 @@ export function run(args, { cwd, stdout, stderr }) {
         return 0
       case "init":
         // The starter requires the foundation and Button, so this installs all three (ADR 008).
-        return installItems(projectDir, null, { init: true, install, stdout })
-      case "add":
-        if (!name) throw new Error("Missing component name. Usage: sheenui-react add <component>")
-        if (name === "foundation" || STARTER_ITEMS.includes(name)) throw new Error(`'${name}' is installed by 'sheenui-react init'.`)
-        return installItems(projectDir, name, { init: false, install, stdout })
+        if (names.length > 0) throw new Error("init takes no component names. Usage: sheenui-react init [--appearance <name>] [--accent <name>]")
+        return installItems(projectDir, [], { init: true, install, stdout, choice: { appearance, accent, interactive } })
+      case "add": {
+        if (names.length === 0) throw new Error("Missing component name. Usage: sheenui-react add <component...>")
+        for (const name of names)
+          if (name === "foundation" || STARTER_ITEMS.includes(name)) throw new Error(`'${name}' is installed by 'sheenui-react init'.`)
+        return installItems(projectDir, [...new Set(names)], { init: false, install, stdout })
+      }
       default:
         stderr.write(`Unknown command '${command ?? ""}'.\n\n${USAGE}`)
         return 1
@@ -131,7 +177,7 @@ export function run(args, { cwd, stdout, stderr }) {
   }
 }
 
-function installItems(projectDir, name, { init, install, stdout }) {
+function installItems(projectDir, names, { init, install, stdout, choice }) {
   recoverTransaction(projectDir, { stdout })
   if (["blazorui.react.json", "blazorui.react.lock.json"].some((file) => existsSync(path.join(projectDir, file))))
     throw new Error("This app uses the former BlazorUI registry. SheenUI uses different files and theme APIs. Test in a new app or follow docs/adr/012-sheenui-identity.md; existing files were not changed.")
@@ -139,14 +185,27 @@ function installItems(projectDir, name, { init, install, stdout }) {
   const config = loadConfig(projectDir, VERSION)
   if (!init && !config) throw new Error(`SheenUI is not initialized here. Run 'sheenui-react init' first.`)
   const lock = loadLock(projectDir, VERSION)
-  const items = resolveItems(registryRoot, name ?? project.starter)
+  // Several names install as one transaction; resolveItems throws on an unknown one before anything is written.
+  const requested = new Set(names.length > 0 ? names : [project.starter])
+  const items = []
+  for (const name of requested)
+    for (const item of resolveItems(registryRoot, name)) if (!items.some((existing) => existing.name === item.name)) items.push(item)
+
+  // Flags win, then the prompt on the first init, then what an earlier init saved.
+  let theme = config?.theme ?? { appearance: "default", accent: "blue" }
+  if (init) {
+    const asked = choice.interactive && !config
+    theme = {
+      appearance: choice.appearance ?? (asked ? ask(stdout, "Appearance", APPEARANCES) : theme.appearance),
+      accent: choice.accent ?? (asked ? ask(stdout, "Accent color", ACCENTS) : theme.accent),
+    }
+  }
 
   // 1. Plan every write and check every conflict before touching the disk.
   const planned = []
   const notes = []
-  // An installed dependency stays as it is, local edits included; only the requested item is (re)installed.
-  const requested = items[items.length - 1]
-  const kept = new Set(items.filter((item) => item !== requested && lock.items[item.name]).map((item) => item.name))
+  // An installed dependency stays as it is, local edits included; only the requested items are (re)installed.
+  const kept = new Set(items.filter((item) => !requested.has(item.name) && lock.items[item.name]).map((item) => item.name))
   for (const item of items) {
     if (kept.has(item.name)) continue
     // Starter files never stop init: what the developer changed is kept and reported (ADR 008).
@@ -155,7 +214,8 @@ function installItems(projectDir, name, { init, install, stdout }) {
       const target = project.target(file.target)
       const full = path.join(projectDir, ...target.split("/"))
       assertInsideProject(projectDir, full)
-      const content = rewriteImports(readFileSync(path.join(registryRoot, ...file.source.split("/"))), file)
+      let content = rewriteImports(readFileSync(path.join(registryRoot, ...file.source.split("/"))), file)
+      if (starter && file.type === "tsx") content = applyThemeDefaults(content, theme)
       const installedHash = sha256(content)
       const tracked = findTracked(lock, target)
 
@@ -195,7 +255,8 @@ function installItems(projectDir, name, { init, install, stdout }) {
   }
 
   const stylesheet = planStylesheet(projectDir, project, items)
-  const entry = planEntry(project, deletes.map(({ relative }) => relative))
+  const entry = planEntry(project, deletes.map(({ relative }) => relative), init ? theme : null)
+  const html = init && project.kind === "vite" ? planHtml(projectDir, theme, notes) : { content: null }
   const tooling = init ? planTooling(projectDir, project.kind, notes) : null
   const packageManifest = path.join(projectDir, "package.json")
   const lockfiles = ["package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb"].map((file) => path.join(projectDir, file))
@@ -207,6 +268,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
     for (const { full } of deletes) backup.delete(full)
     if (stylesheet.content !== null) backup.write(stylesheet.full, stylesheet.content)
     if (entry.content !== null) backup.write(entry.full, entry.content)
+    if (html.content !== null) backup.write(html.full, html.content)
     if (tooling) backup.write(tooling.full, tooling.content)
 
     const missing = missingPackages(project.packageJson, items)
@@ -236,6 +298,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
       bundler: project.kind,
       entry: project.entry,
       stylesheet: project.stylesheet,
+      theme,
     })
 
     for (const item of items) {
@@ -269,7 +332,7 @@ function installItems(projectDir, name, { init, install, stdout }) {
     ...deletes.map(({ relative }) => `  - ${relative} (template file)`),
     ...notes.map((note) => `Note: ${note}`),
   ]
-  stdout.write(`${init ? "SheenUI initialized" : `Added ${name}`}:\n${lines.join("\n")}\n`)
+  stdout.write(`${init ? "SheenUI initialized" : `Added ${[...requested].join(", ")}`}:\n${lines.join("\n")}\n`)
   return 0
 }
 
@@ -390,8 +453,47 @@ function planStylesheet(projectDir, project, items) {
   return { full, content: content === original ? null : content }
 }
 
+/** Sets or removes (null) one attribute on the first <html> tag of an HTML file or a Next layout; null when there is no such tag. */
+function setHtmlAttribute(content, name, value) {
+  const tag = /<html\b[^>]*>/i.exec(content)
+  if (!tag) return null
+  let updated = tag[0].replace(new RegExp(`\\s${name}="[^"]*"`), "")
+  if (value !== null) updated = `${updated.slice(0, -1)} ${name}="${value}">`
+  return content.slice(0, tag.index) + updated + content.slice(tag.index + tag[0].length)
+}
+
+/** The chosen theme as data attributes on <html>; the default appearance and the blue accent write none. */
+function applyThemeAttributes(content, theme) {
+  const withAppearance = setHtmlAttribute(content, "data-sheen-appearance", theme.appearance === "default" ? null : theme.appearance)
+  return withAppearance && setHtmlAttribute(withAppearance, "data-sheen-accent", theme.accent === "blue" ? null : theme.accent)
+}
+
+/** Starts the starter's theme playground on the chosen values instead of default and blue. */
+function applyThemeDefaults(bytes, theme) {
+  const accent = theme.accent === "blue" ? "undefined" : `"${theme.accent}"`
+  return Buffer.from(
+    bytes
+      .toString("utf8")
+      .replace('useState<SheenAppearance>("default")', `useState<SheenAppearance>("${theme.appearance}")`)
+      .replace("useState<Accent>(undefined)", `useState<Accent>(${accent})`),
+  )
+}
+
+function planHtml(projectDir, theme, notes) {
+  const full = path.join(projectDir, "index.html")
+  assertInsideProject(projectDir, full)
+  if (!existsSync(full)) return { content: null }
+  const original = readFileSync(full, "utf8")
+  const content = applyThemeAttributes(original, theme)
+  if (content === null) {
+    notes.push("index.html has no <html> tag, so add data-sheen-appearance and data-sheen-accent to it yourself.")
+    return { content: null }
+  }
+  return { full, content: content === original ? null : content }
+}
+
 /** Imports the theme stylesheet once from the entry (main.tsx or app/layout.tsx) and drops imports of deleted template CSS. */
-function planEntry({ entry, entryPath, entryImport, stylesheet }, deleted) {
+function planEntry({ entry, entryPath, entryImport, stylesheet, kind }, deleted, theme) {
   const original = readFileSync(entryPath, "utf8")
   if (/bootstrap(\/dist\/css\/bootstrap(\.min)?\.css|\.min\.css|\.css)/.test(original))
     throw new Error(`'${entry}' imports Bootstrap CSS directly. Remove that import: Bootstrap is compiled from SCSS in '${stylesheet}'. Then run init again.`)
@@ -404,6 +506,7 @@ function planEntry({ entry, entryPath, entryImport, stylesheet }, deleted) {
   }
   // First line, so the app's own CSS (imported later) can override the theme.
   if (!content.includes("styles/sheenui.scss")) content = `import "${entryImport}"${newline}${content}`
+  if (theme && kind === "next") content = applyThemeAttributes(content, theme) ?? content
   return { full: entryPath, content: content === original ? null : content }
 }
 

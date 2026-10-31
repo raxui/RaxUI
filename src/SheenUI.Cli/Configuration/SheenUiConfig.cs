@@ -89,4 +89,12 @@ public class ThemeConfig
 
     [JsonPropertyName("rtl")]
     public bool Rtl { get; set; } = false;
+
+    // data-sheen-appearance on <html>: default | flat | glass.
+    [JsonPropertyName("appearance")]
+    public string Appearance { get; set; } = "default";
+
+    // data-sheen-accent on <html>: emerald | indigo | amber; null is the default Bootstrap blue.
+    [JsonPropertyName("accent")]
+    public string? Accent { get; set; }
 }
