@@ -1,6 +1,6 @@
 const instances = new WeakMap()
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches
-function height(root) { return parseFloat(getComputedStyle(root).getPropertyValue('--sheen-wheel-item')) || 36 }
+function height(root) { return parseFloat(getComputedStyle(root).getPropertyValue('--rax-wheel-item')) || 36 }
 function move(root, index, smooth) {
   const state = instances.get(root), target = index * height(root)
   if (!state) return

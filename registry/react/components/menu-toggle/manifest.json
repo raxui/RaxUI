@@ -16,13 +16,13 @@
       "source": "registry/react/components/menu-toggle/menu-toggle.tsx",
       "target": "components/ui/menu-toggle.tsx",
       "type": "tsx",
-      "sha256": "da834164192b8c004ffeb218780adb41d7eeb37782fc756b7279be70f8b76c93"
+      "sha256": "b12cf97add215ad660dc2748665dadf1748e91e70a64d90052fb456dc369db81"
     },
     {
       "source": "theme/scss/components/_menu-toggle.scss",
-      "target": "styles/sheenui/components/_menu-toggle.scss",
+      "target": "styles/raxui/components/_menu-toggle.scss",
       "type": "scss",
-      "sha256": "20cce542f137be71d1f852e31386045a46abcf3c285f0185b9fa55ce50595bfe"
+      "sha256": "157dca574f380bc40c08145011e7a6ae75adb2305cc41256e5acc7bfbef35ec2"
     }
   ]
 }

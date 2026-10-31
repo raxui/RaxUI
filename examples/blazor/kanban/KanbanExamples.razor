@@ -2,8 +2,8 @@
     <Kanban TItem="Card" @bind-Columns="columns" GetId="c=>c.Id" GetLabel="c=>c.Title" Committed="Log" Style="height:460px" ColumnHandleLabel="Drag column">
         <ColumnHeader Context="column">
             <span class="rounded-circle flex-shrink-0" style="@($"width:8px;height:8px;background:{Dots[column.Id]}")" aria-hidden="true"></span>
-            <h3 class="sheen-kanban-column-title">@column.Title</h3>
-            <span @key="column.Items.Count" class="sheen-kanban-column-count" data-over-limit="@(column.Items.Count>column.Limit?"":null)" aria-label="@(column.Limit is null?$"{column.Items.Count} cards":$"{column.Items.Count} of {column.Limit}")">@(column.Limit is null?column.Items.Count:$"{column.Items.Count}/{column.Limit}")</span>
+            <h3 class="rax-kanban-column-title">@column.Title</h3>
+            <span @key="column.Items.Count" class="rax-kanban-column-count" data-over-limit="@(column.Items.Count>column.Limit?"":null)" aria-label="@(column.Limit is null?$"{column.Items.Count} cards":$"{column.Items.Count} of {column.Limit}")">@(column.Limit is null?column.Items.Count:$"{column.Items.Count}/{column.Limit}")</span>
             @if(column.Id=="backlog"){<Button Variant="ghost" Size="icon-sm" aria-label="Add a card to Backlog" OnClick="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></Button>}
         </ColumnHeader>
         <ItemTemplate Context="card">

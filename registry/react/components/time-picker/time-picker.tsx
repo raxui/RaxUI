@@ -3,7 +3,7 @@
 // Built-in SVG paths from Lucide, licensed under ISC.
 import * as React from "react"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { useFieldControlProps } from "@/components/ui/field"
 import { useClientNow } from "@/lib/client-now"
 import { cn } from "@/lib/utils"
@@ -20,7 +20,7 @@ export interface TimeValue {
   minutes: number
 }
 
-const ITEM_HEIGHT = 36 // px — keep in sync with --sheen-wheel-item in _time-picker.scss
+const ITEM_HEIGHT = 36 // px — keep in sync with --rax-wheel-item in _time-picker.scss
 
 interface WheelOption {
   value: number
@@ -117,7 +117,7 @@ function Wheel({ options, value, committed, onChange, label, disabled, autoFocus
   }
 
   return (
-    <div className="sheen-wheel">
+    <div className="rax-wheel">
       <div
         ref={ref}
         role="listbox"
@@ -126,7 +126,7 @@ function Wheel({ options, value, committed, onChange, label, disabled, autoFocus
         data-committed={committed || undefined}
         aria-disabled={disabled || undefined}
         tabIndex={disabled ? -1 : 0}
-        className="sheen-wheel-list"
+        className="rax-wheel-list"
         onWheel={startUserScroll}
         onPointerDown={startUserScroll}
         onScroll={onScroll}
@@ -138,7 +138,7 @@ function Wheel({ options, value, committed, onChange, label, disabled, autoFocus
             id={`${wheelId}-${option.value}`}
             role="option"
             aria-selected={committed && option.value === value}
-            className="sheen-wheel-item"
+            className="rax-wheel-item"
             onClick={() => !disabled && select(i)}
           >
             {option.label}
@@ -150,7 +150,7 @@ function Wheel({ options, value, committed, onChange, label, disabled, autoFocus
 }
 
 export interface TimePickerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "defaultValue"> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   value?: TimeValue | null
   defaultValue?: TimeValue | null
   onChange?: (value: TimeValue) => void
@@ -170,7 +170,7 @@ const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
     const wired = useFieldControlProps({ ...props, disabled })
     disabled = wired.disabled
     props = wired
-    const theme = useSheenTheme({ appearance })
+    const theme = useRaxTheme({ appearance })
     minuteStep = Math.max(1, Math.min(60, Math.floor(minuteStep) || 1))
     const [uncontrolled, setUncontrolled] = React.useState(defaultValue ?? null)
     const value = valueProp === undefined ? uncontrolled : valueProp
@@ -224,17 +224,17 @@ const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
 
     return (
       <div
-        {...sheenThemeAttributes(theme)}
+        {...raxThemeAttributes(theme)}
         ref={ref}
         role="group"
         aria-label="Time"
         data-disabled={disabled || undefined}
-        className={cn("sheen-time-wheel", className)}
+        className={cn("rax-time-wheel", className)}
         // Wheels read top-to-bottom; keep hour → minute order left-to-right in every script.
         dir="ltr"
         {...props}
       >
-        <span className="sheen-wheel-band" aria-hidden="true" />
+        <span className="rax-wheel-band" aria-hidden="true" />
         <Wheel
           label={names.hour}
           options={hourOptions}
@@ -244,7 +244,7 @@ const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
           autoFocus={autoFocus}
           onChange={(h) => set({ ...shown, hours: h12 ? (h % 12) + (isPm ? 12 : 0) : h })}
         />
-        <span className="sheen-wheel-colon" aria-hidden="true">
+        <span className="rax-wheel-colon" aria-hidden="true">
           :
         </span>
         <Wheel

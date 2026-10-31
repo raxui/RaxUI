@@ -1,121 +1,121 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
-.sheen-avatar {
-  --sheen-avatar-size: 2.5rem;
-  --sheen-avatar-radius: 50%;
-  --sheen-avatar-ring: var(--bs-body-bg);
+.rax-avatar {
+  --rax-avatar-size: 2.5rem;
+  --rax-avatar-radius: 50%;
+  --rax-avatar-ring: var(--bs-body-bg);
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
-  width: var(--sheen-avatar-size);
-  height: var(--sheen-avatar-size);
-  border-radius: var(--sheen-avatar-radius);
+  width: var(--rax-avatar-size);
+  height: var(--rax-avatar-size);
+  border-radius: var(--rax-avatar-radius);
   vertical-align: middle;
   user-select: none;
 }
 
-.sheen-avatar-xs {
-  --sheen-avatar-size: 1.5rem;
+.rax-avatar-xs {
+  --rax-avatar-size: 1.5rem;
 }
 
-.sheen-avatar-sm {
-  --sheen-avatar-size: 2rem;
+.rax-avatar-sm {
+  --rax-avatar-size: 2rem;
 }
 
-.sheen-avatar-lg {
-  --sheen-avatar-size: 3.5rem;
+.rax-avatar-lg {
+  --rax-avatar-size: 3.5rem;
 }
 
-.sheen-avatar-xl {
-  --sheen-avatar-size: 5rem;
+.rax-avatar-xl {
+  --rax-avatar-size: 5rem;
 }
 
-.sheen-avatar-rounded {
-  --sheen-avatar-radius: calc(var(--sheen-avatar-size) * 0.28);
+.rax-avatar-rounded {
+  --rax-avatar-radius: calc(var(--rax-avatar-size) * 0.28);
 }
 
-.sheen-avatar-ring {
-  box-shadow: 0 0 0 2px var(--sheen-avatar-ring), 0 0 0 4px rgb(var(--bs-primary-rgb));
+.rax-avatar-ring {
+  box-shadow: 0 0 0 2px var(--rax-avatar-ring), 0 0 0 4px rgb(var(--bs-primary-rgb));
 }
 
-.sheen-avatar-image,
-.sheen-avatar-fallback.sheen-avatar-fallback {
+.rax-avatar-image,
+.rax-avatar-fallback.rax-avatar-fallback {
   width: 100%;
   height: 100%;
   overflow: hidden;
   border-radius: inherit;
 }
 
-.sheen-avatar-image {
+.rax-avatar-image {
   object-fit: cover;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .sheen-avatar-image {
-    animation: sheen-fade-in 300ms ease;
+  .rax-avatar-image {
+    animation: rax-fade-in 300ms ease;
   }
 }
 
-.sheen-avatar-fallback.sheen-avatar-fallback {
-  --sheen-avatar-tint-rgb: var(--bs-secondary-rgb);
+.rax-avatar-fallback.rax-avatar-fallback {
+  --rax-avatar-tint-rgb: var(--bs-secondary-rgb);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: color-mix(in srgb, rgb(var(--sheen-avatar-tint-rgb)) var(--sheen-avatar-text-mix), var(--sheen-text-ink));
-  background-color: rgba(var(--sheen-avatar-tint-rgb), 0.16);
-  background-color: color-mix(in srgb, rgb(var(--sheen-avatar-tint-rgb)) 16%, var(--bs-body-bg));
-  font-size: calc(var(--sheen-avatar-size) * 0.38);
+  color: color-mix(in srgb, rgb(var(--rax-avatar-tint-rgb)) var(--rax-avatar-text-mix), var(--rax-text-ink));
+  background-color: rgba(var(--rax-avatar-tint-rgb), 0.16);
+  background-color: color-mix(in srgb, rgb(var(--rax-avatar-tint-rgb)) 16%, var(--bs-body-bg));
+  font-size: calc(var(--rax-avatar-size) * 0.38);
   font-weight: 600;
   letter-spacing: 0.01em;
   line-height: 1;
 }
-.sheen-avatar-fallback.sheen-avatar-fallback svg {
+.rax-avatar-fallback.rax-avatar-fallback svg {
   width: 55%;
   height: 55%;
 }
-[data-bs-theme=dark] .sheen-avatar-fallback.sheen-avatar-fallback {
-  background-color: rgba(var(--sheen-avatar-tint-rgb), 0.24);
-  background-color: color-mix(in srgb, rgb(var(--sheen-avatar-tint-rgb)) 24%, var(--bs-body-bg));
+[data-bs-theme=dark] .rax-avatar-fallback.rax-avatar-fallback {
+  background-color: rgba(var(--rax-avatar-tint-rgb), 0.24);
+  background-color: color-mix(in srgb, rgb(var(--rax-avatar-tint-rgb)) 24%, var(--bs-body-bg));
 }
 
-.sheen-avatar-badge {
-  --sheen-avatar-badge-rgb: var(--bs-secondary-rgb);
+.rax-avatar-badge {
+  --rax-avatar-badge-rgb: var(--bs-secondary-rgb);
   position: absolute;
   inset-inline-end: 0;
   bottom: 0;
-  width: max(0.5rem, var(--sheen-avatar-size) * 0.28);
-  height: max(0.5rem, var(--sheen-avatar-size) * 0.28);
+  width: max(0.5rem, var(--rax-avatar-size) * 0.28);
+  height: max(0.5rem, var(--rax-avatar-size) * 0.28);
   border-radius: 50%;
-  background-color: rgb(var(--sheen-avatar-badge-rgb));
-  box-shadow: 0 0 0 2px var(--sheen-avatar-ring);
+  background-color: rgb(var(--rax-avatar-badge-rgb));
+  box-shadow: 0 0 0 2px var(--rax-avatar-ring);
 }
-.sheen-avatar-rounded > .sheen-avatar-badge {
+.rax-avatar-rounded > .rax-avatar-badge {
   inset-inline-end: -2px;
   bottom: -2px;
 }
-.sheen-avatar-badge[data-status=online] {
-  --sheen-avatar-badge-rgb: var(--bs-success-rgb);
+.rax-avatar-badge[data-status=online] {
+  --rax-avatar-badge-rgb: var(--bs-success-rgb);
 }
-.sheen-avatar-badge[data-status=away] {
-  --sheen-avatar-badge-rgb: var(--bs-warning-rgb);
+.rax-avatar-badge[data-status=away] {
+  --rax-avatar-badge-rgb: var(--bs-warning-rgb);
 }
-.sheen-avatar-badge[data-status=busy] {
-  --sheen-avatar-badge-rgb: var(--bs-danger-rgb);
+.rax-avatar-badge[data-status=busy] {
+  --rax-avatar-badge-rgb: var(--bs-danger-rgb);
 }
-.sheen-avatar-badge[data-status=offline] {
-  background-color: var(--sheen-avatar-ring);
-  box-shadow: 0 0 0 2px var(--sheen-avatar-ring), inset 0 0 0 2px rgb(var(--sheen-avatar-badge-rgb));
+.rax-avatar-badge[data-status=offline] {
+  background-color: var(--rax-avatar-ring);
+  box-shadow: 0 0 0 2px var(--rax-avatar-ring), inset 0 0 0 2px rgb(var(--rax-avatar-badge-rgb));
 }
 @media (prefers-reduced-motion: no-preference) {
-  .sheen-avatar-badge[data-status=online]::after {
+  .rax-avatar-badge[data-status=online]::after {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background-color: rgb(var(--sheen-avatar-badge-rgb));
-    animation: sheen-avatar-ping 2s var(--sheen-ease-out) infinite;
+    background-color: rgb(var(--rax-avatar-badge-rgb));
+    animation: rax-avatar-ping 2s var(--rax-ease-out) infinite;
   }
 }
 
-@keyframes sheen-avatar-ping {
+@keyframes rax-avatar-ping {
   0% {
     opacity: 0.55;
     transform: scale(1);
@@ -125,40 +125,40 @@
     transform: scale(2.2);
   }
 }
-.sheen-avatar-group {
-  --sheen-avatar-overlap: 0.25;
+.rax-avatar-group {
+  --rax-avatar-overlap: 0.25;
   display: inline-flex;
   align-items: center;
 }
-.sheen-avatar-group > .sheen-avatar {
-  box-shadow: 0 0 0 2px var(--sheen-avatar-ring);
-  transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+.rax-avatar-group > .rax-avatar {
+  box-shadow: 0 0 0 2px var(--rax-avatar-ring);
+  transition: transform var(--rax-duration-slow) var(--rax-ease-spring);
 }
-.sheen-avatar-group > .sheen-avatar + .sheen-avatar {
-  margin-inline-start: calc(var(--sheen-avatar-size) * var(--sheen-avatar-overlap) * -1);
+.rax-avatar-group > .rax-avatar + .rax-avatar {
+  margin-inline-start: calc(var(--rax-avatar-size) * var(--rax-avatar-overlap) * -1);
 }
 @media (prefers-reduced-motion: no-preference) {
-  .sheen-avatar-group:hover > .sheen-avatar + .sheen-avatar {
-    transform: translateX(calc(var(--sheen-avatar-size) * 0.12 * var(--sheen-avatar-i, 1)));
+  .rax-avatar-group:hover > .rax-avatar + .rax-avatar {
+    transform: translateX(calc(var(--rax-avatar-size) * 0.12 * var(--rax-avatar-i, 1)));
   }
-  [dir=rtl] .sheen-avatar-group:hover > .sheen-avatar + .sheen-avatar {
-    transform: translateX(calc(var(--sheen-avatar-size) * -0.12 * var(--sheen-avatar-i, 1)));
+  [dir=rtl] .rax-avatar-group:hover > .rax-avatar + .rax-avatar {
+    transform: translateX(calc(var(--rax-avatar-size) * -0.12 * var(--rax-avatar-i, 1)));
   }
-  .sheen-avatar-group > .sheen-avatar:hover {
+  .rax-avatar-group > .rax-avatar:hover {
     z-index: 1;
     translate: 0 -3px;
   }
-  .sheen-avatar-group > .sheen-avatar {
-    transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring), translate var(--sheen-duration-slow) var(--sheen-ease-spring);
+  .rax-avatar-group > .rax-avatar {
+    transition: transform var(--rax-duration-slow) var(--rax-ease-spring), translate var(--rax-duration-slow) var(--rax-ease-spring);
   }
 }
 
-.sheen-avatar-more .sheen-avatar-fallback.sheen-avatar-fallback {
+.rax-avatar-more .rax-avatar-fallback.rax-avatar-fallback {
   color: var(--bs-secondary-color);
   background-color: color-mix(in srgb, var(--bs-emphasis-color) 8%, var(--bs-body-bg));
-  font-size: calc(var(--sheen-avatar-size) * 0.32);
+  font-size: calc(var(--rax-avatar-size) * 0.32);
 }
 
-.sheen-avatar > [hidden] {
+.rax-avatar > [hidden] {
   display: none;
 }

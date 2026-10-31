@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/hover-card.css",
       "type": "css",
-      "sha256": "55bc95fc49c34fd9651b3423ed7e5d18e97e7607653fea6ade4d451482f60919"
+      "sha256": "ed8614ee3c42a8370ac1fd033dad976aeb7d100d47971d0d8ddaa02d77d2cc24"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "HoverCard/HoverCard.razor",
       "type": "razor",
-      "sha256": "b3bdd140925b647c4e2dbcd5494d5ef4ae4ab37d56bc5dfc87b7310f340bb9f8"
+      "sha256": "9be2d5f4c5e507397920fc074f9a2978532e1e3ff0566287ff2f566b7587484a"
     }
   ]
 }

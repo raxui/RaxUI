@@ -1,20 +1,20 @@
-@* SheenUI Rating. Source-owned: edit freely. Native radios in a fieldset (posts without JS, arrow keys), drawn as stars. *@
+@* RaxUI Rating. Source-owned: edit freely. Native radios in a fieldset (posts without JS, arrow keys), drawn as stars. *@
 @using Microsoft.AspNetCore.Components.Forms
 <InputRadioGroup TValue="int" Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression">
-    <fieldset @attributes="ControlAttributes" class="@($"sheen-rating sheen-rating-native {Class}")" data-size="@Size" data-color="@Color" data-sheen-appearance="@Appearance">
+    <fieldset @attributes="ControlAttributes" class="@($"rax-rating rax-rating-native {Class}")" data-size="@Size" data-color="@Color" data-rax-appearance="@Appearance">
         @for (var i = 0; i <= Max; i++)
         {
             var score = i;
             @if (score > 0 || Clearable)
             {
-                <label class="sheen-rating-option">
+                <label class="rax-rating-option">
                     <InputRadio TValue="int" Value="score" aria-label="@GetValueText(score)" disabled="@(ReadOnly || FieldContext?.Disabled == true)" />
-                    @if (score == 0) { <span class="sheen-rating-clear">@ClearLabel</span> }
+                    @if (score == 0) { <span class="rax-rating-clear">@ClearLabel</span> }
                     else
                     {
-                        <span class="sheen-rating-star" data-fill="@(score <= Value ? "full" : null)" style="@($"--sheen-rating-fill: {(score <= Value ? 1 : 0)}")">
+                        <span class="rax-rating-star" data-fill="@(score <= Value ? "full" : null)" style="@($"--rax-rating-fill: {(score <= Value ? 1 : 0)}")">
                             @* Built-in star path from Lucide (ISC). *@
-                            <svg class="sheen-rating-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M11.05 2.93a1.06 1.06 0 0 1 1.9 0l2.33 4.73 5.22.76a1.06 1.06 0 0 1 .59 1.8l-3.78 3.69.89 5.2a1.06 1.06 0 0 1-1.54 1.11L12 17.77l-4.67 2.45a1.06 1.06 0 0 1-1.54-1.11l.9-5.2-3.79-3.69a1.06 1.06 0 0 1 .59-1.8l5.22-.76z" /></svg>
+                            <svg class="rax-rating-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M11.05 2.93a1.06 1.06 0 0 1 1.9 0l2.33 4.73 5.22.76a1.06 1.06 0 0 1 .59 1.8l-3.78 3.69.89 5.2a1.06 1.06 0 0 1-1.54 1.11L12 17.77l-4.67 2.45a1.06 1.06 0 0 1-1.54-1.11l.9-5.2-3.79-3.69a1.06 1.06 0 0 1 .59-1.8l5.22-.76z" /></svg>
                         </span>
                     }
                 </label>
@@ -41,7 +41,7 @@
     [Parameter] public string? Class { get; set; }
     [Parameter] public string Size { get; set; } = "default";
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
-    private readonly string _autoId = $"sheen-control-{Guid.NewGuid():N}";
+    private readonly string _autoId = $"rax-control-{Guid.NewGuid():N}";
     private Dictionary<string, object> ControlAttributes
     {
         get

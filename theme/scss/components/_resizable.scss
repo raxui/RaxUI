@@ -4,22 +4,22 @@
 // library owns flex sizing and hit areas (bigger for touch); this only paints.
 // -----------------------------------------------------------------------------
 
-.sheen-resizable {
-  --sheen-resizable-line: rgba(var(--bs-emphasis-color-rgb), 0.1);
-  --sheen-resizable-active-rgb: var(--bs-primary-rgb);
+.rax-resizable {
+  --rax-resizable-line: rgba(var(--bs-emphasis-color-rgb), 0.1);
+  --rax-resizable-active-rgb: var(--bs-primary-rgb);
 
   min-width: 0;
   min-height: 0;
 
   &[data-variant="glass"] {
-    @include sheen-surface;
+    @include rax-surface;
 
     overflow: hidden;
-    border-radius: var(--sheen-radius);
+    border-radius: var(--rax-radius);
   }
 }
 
-.sheen-resizable-panel {
+.rax-resizable-panel {
   height: 100%;
   min-width: 0;
   overflow: auto;
@@ -28,20 +28,20 @@
 
 // ---- Divider -------------------------------------------------------------------------
 
-.sheen-resizable-handle {
+.rax-resizable-handle {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-basis: 1px;
-  background-color: var(--sheen-resizable-line);
+  background-color: var(--rax-resizable-line);
   outline: none;
 
-  .sheen-resizable[data-orientation="horizontal"] > & {
+  .rax-resizable[data-orientation="horizontal"] > & {
     width: 1px;
   }
 
-  .sheen-resizable[data-orientation="vertical"] > & {
+  .rax-resizable[data-orientation="vertical"] > & {
     height: 1px;
   }
 
@@ -51,21 +51,21 @@
     position: absolute;
     z-index: 1;
     border-radius: 3px;
-    background-color: rgb(var(--sheen-resizable-active-rgb));
+    background-color: rgb(var(--rax-resizable-active-rgb));
     opacity: 0;
     transition:
-      opacity var(--sheen-duration) ease,
-      transform var(--sheen-duration) var(--sheen-ease-out);
+      opacity var(--rax-duration) ease,
+      transform var(--rax-duration) var(--rax-ease-out);
   }
 
-  .sheen-resizable[data-orientation="horizontal"] > &::after {
+  .rax-resizable[data-orientation="horizontal"] > &::after {
     inset-block: 0;
     inset-inline-start: -1px;
     width: 3px;
     transform: scaleY(0.6);
   }
 
-  .sheen-resizable[data-orientation="vertical"] > &::after {
+  .rax-resizable[data-orientation="vertical"] > &::after {
     inset-inline: 0;
     top: -1px;
     height: 3px;
@@ -73,12 +73,12 @@
   }
 
   // Full length while hovered, focused or dragged (beats the orientation rules above).
-  .sheen-resizable[data-orientation] > &:is([data-separator="hover"], [data-separator="active"], [data-separator="focus"])::after {
+  .rax-resizable[data-orientation] > &:is([data-separator="hover"], [data-separator="active"], [data-separator="focus"])::after {
     opacity: 1;
     transform: none;
   }
 
-  .sheen-resizable[data-orientation] > &[data-separator="hover"]::after {
+  .rax-resizable[data-orientation] > &[data-separator="hover"]::after {
     opacity: 0.55;
   }
 
@@ -89,7 +89,7 @@
 
 // ---- Grip ---------------------------------------------------------------------------------
 
-.sheen-resizable-grip {
+.rax-resizable-grip {
   position: relative;
   z-index: 2;
   display: inline-flex;
@@ -98,24 +98,24 @@
   justify-content: center;
   width: 0.875rem;
   height: 1.75rem;
-  border: 1px solid var(--sheen-glass-border-color);
+  border: 1px solid var(--rax-glass-border-color);
   border-radius: 999px;
   color: var(--bs-secondary-color);
   background-color: rgba(var(--bs-body-bg-rgb), 0.85);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   backdrop-filter: blur(12px) saturate(180%);
-  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
+  box-shadow: var(--rax-glass-edge), var(--rax-shadow-sm);
   transition:
-    color var(--sheen-duration) ease,
-    background-color var(--sheen-duration) ease,
-    transform var(--sheen-duration) var(--sheen-ease-spring);
+    color var(--rax-duration) ease,
+    background-color var(--rax-duration) ease,
+    transform var(--rax-duration) var(--rax-ease-spring);
 
   svg {
     width: 0.375rem;
     height: 0.875rem;
   }
 
-  .sheen-resizable[data-orientation="vertical"] > .sheen-resizable-handle > & {
+  .rax-resizable[data-orientation="vertical"] > .rax-resizable-handle > & {
     width: 1.75rem;
     height: 0.875rem;
 
@@ -124,21 +124,21 @@
     }
   }
 
-  .sheen-resizable-handle:is([data-separator="hover"], [data-separator="focus"]) > & {
-    color: rgb(var(--sheen-resizable-active-rgb));
+  .rax-resizable-handle:is([data-separator="hover"], [data-separator="focus"]) > & {
+    color: rgb(var(--rax-resizable-active-rgb));
   }
 
-  .sheen-resizable-handle[data-separator="active"] > & {
+  .rax-resizable-handle[data-separator="active"] > & {
     color: #fff;
-    background-color: rgb(var(--sheen-resizable-active-rgb));
+    background-color: rgb(var(--rax-resizable-active-rgb));
     transform: scale(1.12);
   }
 
-  .sheen-resizable-handle[data-separator="focus"] > & {
-    box-shadow: var(--sheen-glass-edge), 0 0 0 3px rgba(var(--sheen-resizable-active-rgb), 0.3);
+  .rax-resizable-handle[data-separator="focus"] > & {
+    box-shadow: var(--rax-glass-edge), 0 0 0 3px rgba(var(--rax-resizable-active-rgb), 0.3);
   }
 }
 
 // Accessible hit area without increasing the painted divider.
-.sheen-resizable-handle::before { content: ""; position: absolute; z-index: 1; inset: -8px; }
-.sheen-resizable-handle:focus-visible::after { opacity: 1; transform: none; }
+.rax-resizable-handle::before { content: ""; position: absolute; z-index: 1; inset: -8px; }
+.rax-resizable-handle:focus-visible::after { opacity: 1; transform: none; }

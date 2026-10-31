@@ -31,7 +31,7 @@ export function DataTableContent<TData>({
   const labels = useTableLabels()
   const visibleColumnCount = table.getVisibleLeafColumns().length
   return (
-    <div className="sheen-table-frame">
+    <div className="rax-table-frame">
       <Table
         aria-label={label}
         density={density}
@@ -68,7 +68,7 @@ export function DataTableContent<TData>({
                 {table.getVisibleLeafColumns().map((column, j) => (
                   <TableCell key={column.id} className={column.columnDef.meta?.className}>
                     <span
-                      className="sheen-table-skeleton"
+                      className="rax-table-skeleton"
                       style={{ width: `${40 + ((i * 7 + j * 13) % 45)}%`, animationDelay: `${(i % 4) * 0.1}s` }}
                     />
                   </TableCell>
@@ -90,7 +90,7 @@ export function DataTableContent<TData>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={visibleColumnCount} className="sheen-table-empty">
+              <TableCell colSpan={visibleColumnCount} className="rax-table-empty">
                 <InboxIcon />
                 <div className="fw-semibold text-body-emphasis">{emptyMessage}</div>
                 {isFiltered && (

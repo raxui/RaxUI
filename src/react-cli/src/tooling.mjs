@@ -28,7 +28,7 @@ export function planTooling(projectDir, kind, notes) {
   const full = path.join(projectDir, name)
   assertInsideProject(projectDir, full)
   const original = readFileSync(full, "utf8")
-  if (original.includes("// SheenUI Bootstrap 5 Sass compatibility")) return null
+  if (original.includes("// RaxUI Bootstrap 5 Sass compatibility")) return null
   const stripped = original.replace(/\/\*[\s\S]*?\*\/|\/\/[^\r\n]*/g, "")
   const anchor = kind === "next" ? /\bconst\s+nextConfig(?:\s*:\s*NextConfig)?\s*=\s*\{/ : /\bexport\s+default\s+defineConfig\(\s*\{/
   const match = anchor.exec(stripped)
@@ -43,8 +43,8 @@ export function planTooling(projectDir, kind, notes) {
   // The config file's folder, not process.cwd(): builds may run from another directory.
   const root = isEsmConfig(projectDir, name) ? "import.meta.dirname" : "__dirname"
   const settings = kind === "next"
-    ? `\n  // SheenUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  sassOptions: { ${options} },\n  turbopack: { root: ${root} },\n  outputFileTracingRoot: ${root},\n`
-    : `\n  // SheenUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  css: { preprocessorOptions: { scss: { ${options} } } },\n`
+    ? `\n  // RaxUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  sassOptions: { ${options} },\n  turbopack: { root: ${root} },\n  outputFileTracingRoot: ${root},\n`
+    : `\n  // RaxUI Bootstrap 5 Sass compatibility; other Sass diagnostics stay enabled.\n  css: { preprocessorOptions: { scss: { ${options} } } },\n`
   return { full, content: original.replace(anchor, (start) => start + settings) }
 }
 

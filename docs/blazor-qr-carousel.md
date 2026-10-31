@@ -2,7 +2,7 @@
 
 ## Installation and ownership
 
-`sheenui add qr-code` and `sheenui add carousel` install source-owned components with `button` and existing shared per-component CSS. No consumer npm, CDN, new NuGet package or project-file edits are required. ADR 020 records the C# port and the exact Embla builds/licenses. The CLI now accepts `cs` in component folders, with the same hashes, conflict protection and recovery as Razor. The C# helpers are internal and independent of the app namespace.
+`raxui add qr-code` and `raxui add carousel` install source-owned components with `button` and existing shared per-component CSS. No consumer npm, CDN, new NuGet package or project-file edits are required. ADR 020 records the C# port and the exact Embla builds/licenses. The CLI now accepts `cs` in component folders, with the same hashes, conflict protection and recovery as Razor. The C# helpers are internal and independent of the app namespace.
 
 ## QRCode
 
@@ -26,6 +26,6 @@ Slide structure and direction changes trigger reinitialization, preserving selec
 
 ## Verification
 
-Tests pin 298 Nayuki matrix hashes (all masks/levels, automatic masking, version ranges, boost, Unicode) and 18 React drawing paths on a fixed matrix. ZXing.Net 0.16.11 is test-only. Browser tests capture the QR frame including overlay, decode screenshot PNG in browser Image/canvas, and feed RGBA bytes to ZXing; no image binding is required. Arabic/emoji/mixed text, all shapes, H overlays, downloads, formats, malformed/oversized input, and static SSR are covered. The M-overlay observation case (240px, margin 4, the SheenUI URL, dots) decoded successfully; this is not a promise for every logo/payload/size.
+Tests pin 298 Nayuki matrix hashes (all masks/levels, automatic masking, version ranges, boost, Unicode) and 18 React drawing paths on a fixed matrix. ZXing.Net 0.16.11 is test-only. Browser tests capture the QR frame including overlay, decode screenshot PNG in browser Image/canvas, and feed RGBA bytes to ZXing; no image binding is required. Arabic/emoji/mixed text, all shapes, H overlays, downloads, formats, malformed/oversized input, and static SSR are covered. The M-overlay observation case (240px, margin 4, the RaxUI URL, dots) decoded successfully; this is not a promise for every logo/payload/size.
 
 Generated clean applications on .NET 8/9/10 cover installation idempotence and .cs ownership protection, animation frames, dragging, dynamic slide changes, RTL keyboard navigation, thumbnails, autoplay/manual pause, reduced motion, teardown/recreation, SSR and desktop/mobile theme combinations. Browser evidence uses Chromium; physical device scanning and other engines remain separate checks.

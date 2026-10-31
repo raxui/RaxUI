@@ -7,8 +7,8 @@
 // need to be counted in JS.
 // -----------------------------------------------------------------------------
 
-.sheen-command {
-  --sheen-command-rgb: var(--bs-primary-rgb);
+.rax-command {
+  --rax-command-rgb: var(--bs-primary-rgb);
 
   display: flex;
   flex-direction: column;
@@ -17,13 +17,13 @@
 }
 
 // Inline use: a glass panel of its own…
-.sheen-command {
-  @include sheen-surface;
-  border-radius: var(--sheen-radius);
+.rax-command {
+  @include rax-surface;
+  border-radius: var(--rax-radius);
 }
 
 // …inside the dialog the dialog is the glass.
-.sheen-command-dialog .sheen-command {
+.rax-command-dialog .rax-command {
   border: 0;
   border-radius: 0;
   background: none;
@@ -32,7 +32,7 @@
   backdrop-filter: none;
 }
 
-.sheen-command-input-wrap {
+.rax-command-input-wrap {
   display: flex;
   align-items: center;
   gap: 0.625rem;
@@ -40,7 +40,7 @@
   border-bottom: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
 }
 
-.sheen-command-input-icon.sheen-command-input-icon {
+.rax-command-input-icon.rax-command-input-icon {
   display: inline-flex;
   flex-shrink: 0;
   width: 1.125rem;
@@ -53,10 +53,10 @@
   }
 }
 
-.sheen-command-input {
+.rax-command-input {
   flex: 1;
   min-width: 0;
-  height: var(--sheen-control-height, 2.5rem);
+  height: var(--rax-control-height, 2.5rem);
   padding: 0;
   border: 0;
   outline: none;
@@ -70,101 +70,101 @@
 }
 
 // Breadcrumb chip for nested pages, e.g. "Theme".
-.sheen-command-chip {
+.rax-command-chip {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   padding: 0.125rem 0.5rem;
-  border-radius: calc(0.375rem * var(--sheen-radius-scale));
-  color: rgb(var(--sheen-command-rgb));
-  background-color: rgba(var(--sheen-command-rgb), 0.12);
+  border-radius: calc(0.375rem * var(--rax-radius-scale));
+  color: rgb(var(--rax-command-rgb));
+  background-color: rgba(var(--rax-command-rgb), 0.12);
   font-size: 0.8125rem;
   font-weight: 600;
 
   @include motion-safe {
-    animation: sheen-pop-in 300ms var(--sheen-ease-spring);
+    animation: rax-pop-in 300ms var(--rax-ease-spring);
   }
 }
 
-.sheen-command-list {
+.rax-command-list {
   max-height: min(22rem, 60dvh);
   overflow-y: auto;
   overscroll-behavior: contain;
   scroll-padding-block: 0.5rem;
 
   @include motion-safe {
-    transition: height 200ms var(--sheen-ease-out);
+    transition: height 200ms var(--rax-ease-out);
   }
 }
 
-.sheen-command-list-inner {
+.rax-command-list-inner {
   position: relative;
   padding: 0.5rem;
 }
 
 // The gliding highlight.
-.sheen-command-highlight {
+.rax-command-highlight {
   position: absolute;
   top: 0;
   right: 0.5rem;
   left: 0.5rem;
-  height: var(--sheen-command-highlight-h, 0);
-  border-radius: calc(0.625rem * var(--sheen-radius-scale));
+  height: var(--rax-command-highlight-h, 0);
+  border-radius: calc(0.625rem * var(--rax-radius-scale));
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
   opacity: 0;
   pointer-events: none;
-  transform: translateY(var(--sheen-command-highlight-y, 0));
+  transform: translateY(var(--rax-command-highlight-y, 0));
 
-  .sheen-command-list-inner[data-highlight] & {
+  .rax-command-list-inner[data-highlight] & {
     opacity: 1;
   }
 
   @include motion-safe {
     transition:
-      transform 160ms var(--sheen-ease-out),
-      height 160ms var(--sheen-ease-out),
-      opacity var(--sheen-duration-fast) ease;
+      transform 160ms var(--rax-ease-out),
+      height 160ms var(--rax-ease-out),
+      opacity var(--rax-duration-fast) ease;
   }
 }
 
-.sheen-command-group {
-  &:not(:has(.sheen-command-item)) {
+.rax-command-group {
+  &:not(:has(.rax-command-item)) {
     display: none;
   }
 }
 
-.sheen-command-group-heading {
+.rax-command-group-heading {
   padding: 0.5rem 0.625rem 0.25rem;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--bs-secondary-color);
 }
 
-.sheen-command-item.sheen-command-item {
+.rax-command-item.rax-command-item {
   position: relative; // sits above the highlight
   display: flex;
   align-items: center;
   gap: 0.75rem;
   min-height: 2.5rem;
   padding: 0.5rem 0.625rem;
-  border-radius: calc(0.625rem * var(--sheen-radius-scale));
+  border-radius: calc(0.625rem * var(--rax-radius-scale));
   color: var(--bs-emphasis-color);
   font-size: 0.9375rem;
   cursor: pointer;
   user-select: none;
 
   > svg,
-  .sheen-command-item-icon {
+  .rax-command-item-icon {
     flex-shrink: 0;
     width: 1.125rem;
     height: 1.125rem;
     color: var(--bs-secondary-color);
-    transition: color var(--sheen-duration-fast) ease;
+    transition: color var(--rax-duration-fast) ease;
   }
 
   &[data-active] > svg,
-  &[data-active] .sheen-command-item-icon {
-    color: rgb(var(--sheen-command-rgb));
+  &[data-active] .rax-command-item-icon {
+    color: rgb(var(--rax-command-rgb));
   }
 
   &[aria-disabled="true"] {
@@ -172,13 +172,13 @@
     cursor: not-allowed;
   }
 
-  .sheen-command-item-hint {
+  .rax-command-item-hint {
     font-size: 0.8125rem;
     color: var(--bs-secondary-color);
   }
 }
 
-.sheen-command-shortcut {
+.rax-command-shortcut {
   display: inline-flex;
   gap: 0.25rem;
   margin-inline-start: auto;
@@ -187,29 +187,29 @@
   color: var(--bs-tertiary-color);
 }
 
-.sheen-command-separator {
+.rax-command-separator {
   height: 1px;
   margin: 0.375rem -0.5rem;
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
 
-  .sheen-command[data-searching] & {
+  .rax-command[data-searching] & {
     display: none;
   }
 }
 
-.sheen-command-empty {
+.rax-command-empty {
   display: none;
   padding: 2rem 1rem;
   text-align: center;
   font-size: 0.9375rem;
   color: var(--bs-secondary-color);
 
-  .sheen-command-list:not(:has(.sheen-command-item)) & {
+  .rax-command-list:not(:has(.rax-command-item)) & {
     display: block;
   }
 }
 
-.sheen-command-loading {
+.rax-command-loading {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -219,7 +219,7 @@
   color: var(--bs-secondary-color);
 }
 
-.sheen-command-footer {
+.rax-command-footer {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -235,7 +235,7 @@
     min-width: 1.25rem;
     margin-inline-end: 0.25rem;
     padding: 0.0625rem 0.3125rem;
-    border-radius: calc(0.3125rem * var(--sheen-radius-scale));
+    border-radius: calc(0.3125rem * var(--rax-radius-scale));
     color: var(--bs-emphasis-color);
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
     box-shadow: inset 0 -1px 0 rgba(var(--bs-emphasis-color-rgb), 0.1);
@@ -246,20 +246,20 @@
 }
 
 // ---- Dialog --------------------------------------------------------------------
-.sheen-command-overlay {
+.rax-command-overlay {
   position: fixed;
   inset: 0;
   z-index: 1050;
-  background-color: rgba(var(--sheen-overlay-rgb), calc(var(--sheen-overlay-alpha) * 0.8));
+  background-color: rgba(var(--rax-overlay-rgb), calc(var(--rax-overlay-alpha) * 0.8));
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 
-  &[data-state="open"] { animation: sheen-fade-in var(--sheen-duration) ease; }
-  &[data-state="closed"] { animation: sheen-fade-out var(--sheen-duration-fast) ease forwards; }
+  &[data-state="open"] { animation: rax-fade-in var(--rax-duration) ease; }
+  &[data-state="closed"] { animation: rax-fade-out var(--rax-duration-fast) ease forwards; }
 }
 
-.sheen-command-dialog {
-  @include sheen-surface;
+.rax-command-dialog {
+  @include rax-surface;
 
   position: fixed;
   top: max(1rem, 14vh);
@@ -267,36 +267,36 @@
   z-index: 1055;
   width: min(40rem, calc(100vw - 1.5rem));
   overflow: hidden;
-  border-radius: var(--sheen-radius-lg);
+  border-radius: var(--rax-radius-lg);
   translate: -50% 0;
   outline: none;
   transform-origin: 50% 0;
 
-  &[data-state="open"] { animation: sheen-fade-in var(--sheen-duration-fast) ease; }
-  &[data-state="closed"] { animation: sheen-fade-out var(--sheen-duration-fast) ease forwards; }
+  &[data-state="open"] { animation: rax-fade-in var(--rax-duration-fast) ease; }
+  &[data-state="closed"] { animation: rax-fade-out var(--rax-duration-fast) ease forwards; }
 
   @include motion-safe {
-    &[data-state="open"] { animation: sheen-command-in 350ms var(--sheen-ease-spring); }
-    &[data-state="closed"] { animation: sheen-command-out 150ms var(--sheen-ease-in) forwards; }
+    &[data-state="open"] { animation: rax-command-in 350ms var(--rax-ease-spring); }
+    &[data-state="closed"] { animation: rax-command-out 150ms var(--rax-ease-in) forwards; }
   }
 }
 
-@keyframes sheen-command-in {
+@keyframes rax-command-in {
   from { opacity: 0; transform: scale(0.96) translateY(-0.5rem); }
 }
 
-@keyframes sheen-command-out {
+@keyframes rax-command-out {
   to { opacity: 0; transform: scale(0.97); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [class*="sheen-command"] { animation: none !important; transition: none !important; }
+  [class*="rax-command"] { animation: none !important; transition: none !important; }
 }
 
-dialog.sheen-command-dialog { margin: 0; padding: 0; }
-dialog.sheen-command-dialog:not([open]) { display: none; }
-dialog.sheen-command-dialog::backdrop { background: rgba(var(--sheen-overlay-rgb), var(--sheen-overlay-alpha)); }
+dialog.rax-command-dialog { margin: 0; padding: 0; }
+dialog.rax-command-dialog:not([open]) { display: none; }
+dialog.rax-command-dialog::backdrop { background: rgba(var(--rax-overlay-rgb), var(--rax-overlay-alpha)); }
 
 
 
-.sheen-command-item { min-height: var(--sheen-control-height); }
+.rax-command-item { min-height: var(--rax-control-height); }

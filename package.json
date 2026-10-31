@@ -1,8 +1,8 @@
 {
-  "name": "sheenui-monorepo",
+  "name": "raxui-monorepo",
   "private": true,
   "type": "module",
-  "description": "Node tooling for the SheenUI React library, shared theme, and their tests.",
+  "description": "Node tooling for the RaxUI React library, shared theme, and their tests.",
   "engines": {
     "node": ">=22"
   },

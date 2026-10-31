@@ -106,7 +106,7 @@ export function useDataGridNavigation<TData>({
     // Shift+F10 reaches all column actions without adding another grid tab stop.
     if (active.row === -1 && event.shiftKey && event.key === "F10") {
       event.preventDefault()
-      const menu = scrollerRef.current?.querySelector<HTMLElement>(`[id="${gridId}-h-c${active.col}"] .sheen-grid-hmenu`)
+      const menu = scrollerRef.current?.querySelector<HTMLElement>(`[id="${gridId}-h-c${active.col}"] .rax-grid-hmenu`)
       menu?.focus()
       menu?.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }))
       return

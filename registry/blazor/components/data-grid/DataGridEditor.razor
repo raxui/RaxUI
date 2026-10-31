@@ -1,12 +1,12 @@
 @typeparam TItem
 @if(Column.Editor?.Type=="select"){
-    <Select TValue="string" Value="@Session.Draft" ValueChanged="Select" aria-label="@Label" aria-invalid="@(Session.Error is not null?"true":null)" Class="sheen-grid-editor" Size="sm">
+    <Select TValue="string" Value="@Session.Draft" ValueChanged="Select" aria-label="@Label" aria-invalid="@(Session.Error is not null?"true":null)" Class="rax-grid-editor" Size="sm">
         @foreach(var option in Column.Editor.Options){<option value="@option.Value">@option.Label</option>}
     </Select>
 } else if(Column.Editor?.Type=="date"){
-    <div class="sheen-grid-editor sheen-grid-editor-date"><DateInput TValue="DateOnly?" Value="DateDraft" ValueChanged="DateChanged" aria-label="@Label" Class="sheen-grid-editor" Size="sm" /></div>
+    <div class="rax-grid-editor rax-grid-editor-date"><DateInput TValue="DateOnly?" Value="DateDraft" ValueChanged="DateChanged" aria-label="@Label" Class="rax-grid-editor" Size="sm" /></div>
 } else {
-    <input class="sheen-grid-editor sheen-grid-editor-input" aria-label="@Label" inputmode="@(Column.Editor?.Type=="number"?"decimal":null)" aria-invalid="@(Session.Error is not null?"true":null)" value="@Session.Draft" @oninput="Input" />
+    <input class="rax-grid-editor rax-grid-editor-input" aria-label="@Label" inputmode="@(Column.Editor?.Type=="number"?"decimal":null)" aria-invalid="@(Session.Error is not null?"true":null)" value="@Session.Draft" @oninput="Input" />
 }
 @code {
     [Parameter,EditorRequired] public DataGridTypes.Column<TItem> Column { get; set; } = default!;

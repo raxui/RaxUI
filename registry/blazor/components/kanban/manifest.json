@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/kanban.css",
       "type": "css",
-      "sha256": "9a2cdb41580420d738c8c7911011db1e086c420f4c12b1c334d5f63d46100ccd"
+      "sha256": "cf9c0816e05fc369f40d7bd53fe87d980b104307a9a88055021d5dfc74438af9"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Kanban/Kanban.razor",
       "type": "razor",
-      "sha256": "bf3e4e75c77486680717e1b33dce2e8840dbbed75929f78251dea2f2dab6b48c"
+      "sha256": "ae1522596c5d21e92e6ee418d7159d55f34322320630d6a1091eaaed6c5386b8"
     },
     {
       "source": "KanbanTypes.razor",

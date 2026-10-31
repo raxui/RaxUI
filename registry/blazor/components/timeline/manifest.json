@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/timeline.css",
       "type": "css",
-      "sha256": "46bf0cf939e5668d259a7acd57effcbfde75ab64b82e7f92253999556b8832d0"
+      "sha256": "d9ef48284d1f3c9c7d3676d189b42269035d089f410857ccc51d6e115561f81f"
     }
   ],
   "files": [
@@ -19,21 +19,21 @@
       "destination": "components",
       "target": "Timeline/Timeline.razor",
       "type": "razor",
-      "sha256": "fbc5c7105ae462b37a8aa4e26b875e5b037cbeba0b156cf29df29caee5bae337"
+      "sha256": "5bd9532b08d86779ec46249a5407da7c0d98014d25bc9cdf1380ad69ee9eadc6"
     },
     {
       "source": "TimelineGroup.razor",
       "destination": "components",
       "target": "Timeline/TimelineGroup.razor",
       "type": "razor",
-      "sha256": "c39720f87a84c989c4e145fec26106dfbebdd3e53bfe9eb37da8973a0f516ec1"
+      "sha256": "1140b247c75048369556832557a058480d67adcf644375bbc5a9a536fdbbe0d5"
     },
     {
       "source": "TimelineItem.razor",
       "destination": "components",
       "target": "Timeline/TimelineItem.razor",
       "type": "razor",
-      "sha256": "d1b331246fef4236f3db77e4c647950a9f4ea59447359ad2a8950527de188d08"
+      "sha256": "4889930f230144832bab629d91fbf9e05b60fb0fdd604054fbd98ba275ccabc8"
     }
   ]
 }

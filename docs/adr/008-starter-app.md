@@ -5,7 +5,7 @@
 
 ## Context
 
-After `init`, a new app still showed the framework template: the purple Blazor sidebar with Counter and Weather, or the Vite/React counter page. Nothing of SheenUI's look was visible until the developer built pages. The owner wants a fresh app to start clean, in SheenUI's own shell, in both libraries.
+After `init`, a new app still showed the framework template: the purple Blazor sidebar with Counter and Weather, or the Vite/React counter page. Nothing of RaxUI's look was visible until the developer built pages. The owner wants a fresh app to start clean, in RaxUI's own shell, in both libraries.
 
 `init` must still never overwrite or delete the developer's work (ADR 003).
 
@@ -21,7 +21,7 @@ Both CLIs install, as part of `init`:
 The shell is a header with the app name and a centered main area, styled by `theme/scss/components/_starter.scss`, shared by both libraries. The welcome page shows a theme panel (appearance, mode, accent, direction), a preview of the Button variants, and next steps.
 
 - Blazor reads the theme from the query string (`?appearance=glass&mode=dark&accent=emerald&dir=rtl`) through `[SupplyParameterFromQuery]`, so switching works without interactivity, in any render mode. Only known values reach the attributes.
-- React keeps the theme in component state and passes it to `SheenThemeProvider`.
+- React keeps the theme in component state and passes it to `RaxThemeProvider`.
 
 The layout and welcome page keep Blazor's error UI and the template's `Error`, `NotFound`, and `ReconnectModal` components. The error bar's styles (`#blazor-error-ui`, hidden until `blazor.web.js` shows it) move from the removed `MainLayout.razor.css` into `_starter.scss`.
 
@@ -44,7 +44,7 @@ A template file is replaced or removed only when its content is a known version 
 
 ## Consequences
 
-- A new app opens on the SheenUI welcome page in both frameworks, with the same look.
+- A new app opens on the RaxUI welcome page in both frameworks, with the same look.
 - New template versions are not recognized until their hashes are added; until then `init` keeps those files and says so. The real-app tests in CI catch a template change.
 - React apps get Button from `init`; `add button` afterwards is a no-op.
 - The welcome page is example content; developers are expected to replace it.

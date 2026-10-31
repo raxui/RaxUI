@@ -20,13 +20,13 @@
       "source": "registry/react/components/date-picker/date-picker.tsx",
       "target": "components/ui/date-picker.tsx",
       "type": "tsx",
-      "sha256": "ac9d87ba4143f20d157ebeaaa0ec2578a94da6d75e19abd17ade5114fc223141"
+      "sha256": "f2f61826f0906eff7d5fcdf6922d936223e6a4c0324caa9e4f512b343b994a50"
     },
     {
       "source": "theme/scss/components/_date-picker.scss",
-      "target": "styles/sheenui/components/_date-picker.scss",
+      "target": "styles/raxui/components/_date-picker.scss",
       "type": "scss",
-      "sha256": "2dced826a391671876b83ac7ecd97cbda3be598cd4ecf9f4a9823df128e3eca8"
+      "sha256": "26edd75e6e8dd26b9fc5acf60a5881acbf2c1592beb0a7bb5f43d52734e5575e"
     },
     {
       "source": "registry/react/components/calendar/date-range-presets.ts",

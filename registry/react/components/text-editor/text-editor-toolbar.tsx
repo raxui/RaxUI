@@ -33,7 +33,7 @@ export const ToolButton = React.forwardRef<
       aria-pressed={active === undefined ? undefined : active}
       aria-disabled={unavailable || undefined}
       data-active={active || undefined}
-      className={cn("sheen-editor-tool", className)}
+      className={cn("rax-editor-tool", className)}
       // Keep the text selection: don't move focus on mouse down.
       onMouseDown={(event) => event.preventDefault()}
       onClick={(event) => {
@@ -117,12 +117,12 @@ export function Toolbar({ editor, state, tools, labels, linkOpen, onLinkOpenChan
       role="toolbar"
       aria-label={labels.toolbar}
       aria-disabled={disabled || undefined}
-      className={cn("sheen-editor-toolbar", className)}
+      className={cn("rax-editor-toolbar", className)}
       onFocus={roving.onFocus}
       onKeyDown={roving.onKeyDown}
     >
       {tools.map((tool, i) => {
-        if (tool === "|") return <span key={`sep-${i}`} className="sheen-editor-sep" role="separator" aria-orientation="vertical" />
+        if (tool === "|") return <span key={`sep-${i}`} className="rax-editor-sep" role="separator" aria-orientation="vertical" />
 
         if (tool === "heading") {
           return (
@@ -132,7 +132,7 @@ export function Toolbar({ editor, state, tools, labels, linkOpen, onLinkOpenChan
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="sheen-editor-tool sheen-editor-heading-trigger"
+                    className="rax-editor-tool rax-editor-heading-trigger"
                     aria-label={`${labels.textStyle}: ${headingLabel}`}
                     aria-disabled={disabled || undefined}
                     disabled={disabled}
@@ -143,7 +143,7 @@ export function Toolbar({ editor, state, tools, labels, linkOpen, onLinkOpenChan
                   </Button>
                 </DropdownMenuTrigger>
               </Tooltip>
-              <DropdownMenuContent align="start" className="sheen-editor-menu" onCloseAutoFocus={backToText}>
+              <DropdownMenuContent align="start" className="rax-editor-menu" onCloseAutoFocus={backToText}>
                 <DropdownMenuRadioGroup
                   value={String(state.heading)}
                   onValueChange={(value) => {
@@ -154,12 +154,12 @@ export function Toolbar({ editor, state, tools, labels, linkOpen, onLinkOpenChan
                   }}
                 >
                   <DropdownMenuRadioItem value="0">
-                    <span className="sheen-editor-menu-p">{labels.paragraph}</span>
+                    <span className="rax-editor-menu-p">{labels.paragraph}</span>
                   </DropdownMenuRadioItem>
                   {([1, 2, 3] as const).map((level) => (
                     <DropdownMenuRadioItem key={level} value={String(level)}>
-                      <span className={`sheen-editor-menu-h${level}`}>{labels[`heading${level}`]}</span>
-                      <span className="sheen-editor-menu-kbd" dir="ltr">
+                      <span className={`rax-editor-menu-h${level}`}>{labels[`heading${level}`]}</span>
+                      <span className="rax-editor-menu-kbd" dir="ltr">
                         {formatShortcut(`Mod-Alt-${level}`)}
                       </span>
                     </DropdownMenuRadioItem>
@@ -184,7 +184,7 @@ export function Toolbar({ editor, state, tools, labels, linkOpen, onLinkOpenChan
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="sheen-editor-tool sheen-editor-align-trigger"
+                    className="rax-editor-tool rax-editor-align-trigger"
                     aria-label={labels.align}
                     disabled={disabled}
                     onMouseDown={(event) => event.preventDefault()}
@@ -194,7 +194,7 @@ export function Toolbar({ editor, state, tools, labels, linkOpen, onLinkOpenChan
                   </Button>
                 </DropdownMenuTrigger>
               </Tooltip>
-              <DropdownMenuContent align="start" className="sheen-editor-menu" onCloseAutoFocus={backToText}>
+              <DropdownMenuContent align="start" className="rax-editor-menu" onCloseAutoFocus={backToText}>
                 <DropdownMenuRadioGroup
                   value={state.align}
                   onValueChange={(value) => {
@@ -204,9 +204,9 @@ export function Toolbar({ editor, state, tools, labels, linkOpen, onLinkOpenChan
                 >
                   {options.map(([value, label, icon, shortcut]) => (
                     <DropdownMenuRadioItem key={value} value={value}>
-                      <span className="sheen-editor-menu-icon">{icon}</span>
+                      <span className="rax-editor-menu-icon">{icon}</span>
                       {label}
-                      <span className="sheen-editor-menu-kbd" dir="ltr">
+                      <span className="rax-editor-menu-kbd" dir="ltr">
                         {formatShortcut(shortcut)}
                       </span>
                     </DropdownMenuRadioItem>
@@ -231,7 +231,7 @@ export function Toolbar({ editor, state, tools, labels, linkOpen, onLinkOpenChan
               </PopoverTrigger>
               <PopoverContent
                 align="start"
-                className="sheen-editor-link-popover"
+                className="rax-editor-link-popover"
                 // Closing without applying: put the caret back in the text, not on the button.
                 onCloseAutoFocus={(event) => {
                   event.preventDefault()

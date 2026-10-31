@@ -4,7 +4,7 @@ import * as React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 
 import { Button } from "@/components/ui/button"
-import { useSheenPortalContainer, type SheenAppearance } from "@/lib/theme"
+import { useRaxPortalContainer, type RaxAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 
 // -----------------------------------------------------------------------------
@@ -36,10 +36,10 @@ export interface AlertDialogContentProps extends React.ComponentPropsWithoutRef<
   tone?: ConfirmTone
   /** Icon in a tinted circle above the title. `true` = the tone's icon; pass a node for your own. */
   icon?: boolean | React.ReactNode
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
 }
 
-/** The panel with its overlay, portalled into the nearest SheenThemeProvider. */
+/** The panel with its overlay, portalled into the nearest RaxThemeProvider. */
 const AlertDialogContent = React.forwardRef<React.ElementRef<typeof AlertDialogPrimitive.Content>, AlertDialogContentProps>(
   ({ className, tone = "default", icon, appearance, children, onAnimationEnd, ...props }, ref) => {
     const contentRef = React.useRef<HTMLDivElement | null>(null)
@@ -53,8 +53,8 @@ const AlertDialogContent = React.forwardRef<React.ElementRef<typeof AlertDialogP
     }
     return (
       <ToneContext.Provider value={tone}>
-        <AlertDialogPrimitive.Portal container={useSheenPortalContainer()}>
-          <AlertDialogPrimitive.Overlay className="sheen-confirm-overlay" onPointerDown={nudge} />
+        <AlertDialogPrimitive.Portal container={useRaxPortalContainer()}>
+          <AlertDialogPrimitive.Overlay className="rax-confirm-overlay" onPointerDown={nudge} />
           <AlertDialogPrimitive.Content
             ref={(node) => {
               contentRef.current = node
@@ -62,16 +62,16 @@ const AlertDialogContent = React.forwardRef<React.ElementRef<typeof AlertDialogP
               else if (ref) ref.current = node
             }}
             data-tone={tone}
-            data-sheen-appearance={appearance}
-            className={cn("sheen-confirm", className)}
+            data-rax-appearance={appearance}
+            className={cn("rax-confirm", className)}
             onAnimationEnd={(event) => {
               onAnimationEnd?.(event)
-              if (event.animationName === "sheen-alert-nudge") event.currentTarget.removeAttribute("data-nudge")
+              if (event.animationName === "rax-alert-nudge") event.currentTarget.removeAttribute("data-nudge")
             }}
             {...props}
           >
             {icon && (
-              <div className="sheen-confirm-icon" aria-hidden="true">
+              <div className="rax-confirm-icon" aria-hidden="true">
                 {icon === true ? TONE_ICONS[tone] : icon}
               </div>
             )}
@@ -85,7 +85,7 @@ const AlertDialogContent = React.forwardRef<React.ElementRef<typeof AlertDialogP
 AlertDialogContent.displayName = "AlertDialogContent"
 
 function AlertDialogHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("sheen-confirm-header", className)} {...props} />
+  return <div className={cn("rax-confirm-header", className)} {...props} />
 }
 
 export interface AlertDialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -94,20 +94,20 @@ export interface AlertDialogFooterProps extends React.HTMLAttributes<HTMLDivElem
 }
 
 function AlertDialogFooter({ className, layout = "inline", ...props }: AlertDialogFooterProps) {
-  return <div data-layout={layout} className={cn("sheen-confirm-footer", className)} {...props} />
+  return <div data-layout={layout} className={cn("rax-confirm-footer", className)} {...props} />
 }
 
 const AlertDialogTitle = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
->(({ className, ...props }, ref) => <AlertDialogPrimitive.Title ref={ref} className={cn("sheen-confirm-title", className)} {...props} />)
+>(({ className, ...props }, ref) => <AlertDialogPrimitive.Title ref={ref} className={cn("rax-confirm-title", className)} {...props} />)
 AlertDialogTitle.displayName = "AlertDialogTitle"
 
 const AlertDialogDescription = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
-  <AlertDialogPrimitive.Description ref={ref} className={cn("sheen-confirm-description", className)} {...props} />
+  <AlertDialogPrimitive.Description ref={ref} className={cn("rax-confirm-description", className)} {...props} />
 ))
 AlertDialogDescription.displayName = "AlertDialogDescription"
 
@@ -119,7 +119,7 @@ const AlertDialogAction = React.forwardRef<
   const tone = React.useContext(ToneContext)
   return (
     <AlertDialogPrimitive.Action ref={ref} asChild {...props}>
-      <Button variant={tone === "destructive" ? "destructive" : "default"} className={cn("sheen-confirm-action", className)}>
+      <Button variant={tone === "destructive" ? "destructive" : "default"} className={cn("rax-confirm-action", className)}>
         {children}
       </Button>
     </AlertDialogPrimitive.Action>
@@ -132,7 +132,7 @@ const AlertDialogCancel = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
 >(({ className, children, ...props }, ref) => (
   <AlertDialogPrimitive.Cancel ref={ref} asChild {...props}>
-    <Button variant="secondary" className={cn("sheen-confirm-cancel", className)}>
+    <Button variant="secondary" className={cn("rax-confirm-cancel", className)}>
       {children}
     </Button>
   </AlertDialogPrimitive.Cancel>
@@ -156,7 +156,7 @@ export interface ConfirmDialogProps {
   /** Label for the type-to-confirm field. */
   confirmationLabel?: React.ReactNode
   layout?: "inline" | "stacked"
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   /** Element that opens the dialog (rendered with asChild). */
   trigger?: React.ReactElement
   open?: boolean
@@ -243,7 +243,7 @@ function ConfirmDialog({
 
         {confirmationText && (
           <form
-            className="sheen-confirm-field"
+            className="rax-confirm-field"
             onSubmit={(event) => {
               event.preventDefault()
               void confirm()
@@ -271,7 +271,7 @@ function ConfirmDialog({
         )}
 
         {error && (
-          <div className="sheen-confirm-error" role="alert">
+          <div className="rax-confirm-error" role="alert">
             {error}
           </div>
         )}

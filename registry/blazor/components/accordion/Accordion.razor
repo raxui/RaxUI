@@ -1,9 +1,9 @@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-@* SheenUI Accordion. Source-owned: edit freely. Native details work in static SSR. *@
+@* RaxUI Accordion. Source-owned: edit freely. Native details work in static SSR. *@
 <CascadingValue Value="this">
-    <div @ref="root" @attributes="AdditionalAttributes" class="@($"sheen-accordion {Class}")" data-variant="@Variant" data-sheen-appearance="@Appearance">@ChildContent</div>
+    <div @ref="root" @attributes="AdditionalAttributes" class="@($"rax-accordion {Class}")" data-variant="@Variant" data-rax-appearance="@Appearance">@ChildContent</div>
 </CascadingValue>
 @code {
     [Parameter] public IReadOnlyList<string>? Values { get; set; }
@@ -16,7 +16,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender){module??=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/Accordion/Accordion.razor.js");self??=DotNetObjectReference.Create(this);await module.InvokeVoidAsync("sync",root,self,Values);}
     public async ValueTask DisposeAsync(){if(module is null)return;try{await module.InvokeVoidAsync("dispose",root);await module.DisposeAsync();}catch(JSDisconnectedException){}self?.Dispose();}
     [Parameter] public bool Multiple { get; set; }
-    [Parameter] public string Name { get; set; } = $"sheen-accordion-{Guid.NewGuid():N}";
+    [Parameter] public string Name { get; set; } = $"rax-accordion-{Guid.NewGuid():N}";
     [Parameter] public string Variant { get; set; } = "default";
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string? Appearance { get; set; }

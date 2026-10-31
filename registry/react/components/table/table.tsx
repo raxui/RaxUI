@@ -1,14 +1,14 @@
 "use client"
 
-// SheenUI table. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI table. Source-owned: edit freely. Ported from boot-ui.
 import * as React from "react"
 
-import type { SheenAppearance } from "@/lib/theme"
+import type { RaxAppearance } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 
 export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   /** `compact` tightens padding for dense data. */
   density?: "comfortable" | "compact"
   /** Pin the header while the body scrolls — give the container a max-height. */
@@ -35,17 +35,17 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
     },
     ref,
   ) => (
-    <div className={cn("sheen-table-container", containerClassName)} style={containerStyle}>
+    <div className={cn("rax-table-container", containerClassName)} style={containerStyle}>
       <table
         data-density={density}
         ref={ref}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         className={cn(
-          "table sheen-table",
+          "table rax-table",
           hover && "table-hover",
           striped && "table-striped",
-          density === "compact" && "sheen-table-compact",
-          stickyHeader && "sheen-table-sticky",
+          density === "compact" && "rax-table-compact",
+          stickyHeader && "rax-table-sticky",
           className,
         )}
         {...props}

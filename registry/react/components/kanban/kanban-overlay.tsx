@@ -33,12 +33,12 @@ export function KanbanOverlayPortal({ container, children, className, ...props }
   return ReactDOM.createPortal(
     <DragOverlay
       dropAnimation={context.reducedMotion ? null : DROP_ANIMATION}
-      className={cn("sheen-kanban-overlay", context.flatCursor && "sheen-kanban-overlay-flat", className)}
+      className={cn("rax-kanban-overlay", context.flatCursor && "rax-kanban-overlay-flat", className)}
       {...props}
     >
       <KanbanOverlayContext.Provider value={true}>
         {activeId !== null ? (
-          <div aria-hidden="true" dir={context.dir} className="sheen-kanban-overlay-content">
+          <div aria-hidden="true" dir={context.dir} className="rax-kanban-overlay-content">
             {typeof children === "function" ? children({ value: activeId, variant }) : (children ?? <KanbanOverlayClone />)}
           </div>
         ) : null}

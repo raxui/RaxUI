@@ -14,10 +14,10 @@ function compile(entry) {
 }
 export function compileBlazorTheme() {
   // Imports must precede every CSS rule. The CLI edits only this marked list.
-  return "/* sheenui:imports:start */\n/* sheenui:imports:end */\n" + compile('@import "core";')
+  return "/* raxui:imports:start */\n/* raxui:imports:end */\n" + compile('@import "core";')
 }
 export function compileBlazorAssets() {
-  const assets = new Map([["registry/blazor/styles/sheenui.css", compileBlazorTheme()]])
+  const assets = new Map([["registry/blazor/styles/raxui.css", compileBlazorTheme()]])
   for (const file of readdirSync(path.join(root, "theme/scss/components"))) {
     if (!/^_.+\.scss$/.test(file) || file === "_input-mixins.scss" || file === "_choice-highlight.scss") continue
     const name = file.slice(1, -5)

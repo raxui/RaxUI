@@ -2,18 +2,18 @@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<CascadingValue Value="this"><div @ref="root" @attributes="AdditionalAttributes" class="@($"sheen-stepper {Class}")" data-orientation="@Orientation" data-size="@Size" data-sheen-appearance="@Appearance">
-<div class="sheen-stepper-nav" data-orientation="@Orientation" data-labels="@(Orientation=="horizontal"?LabelPlacement:null)"><ol class="sheen-stepper-list" aria-label="@Label">
+<CascadingValue Value="this"><div @ref="root" @attributes="AdditionalAttributes" class="@($"rax-stepper {Class}")" data-orientation="@Orientation" data-size="@Size" data-rax-appearance="@Appearance">
+<div class="rax-stepper-nav" data-orientation="@Orientation" data-labels="@(Orientation=="horizontal"?LabelPlacement:null)"><ol class="rax-stepper-list" aria-label="@Label">
 @for(var i=0;i<Items.Count;i++){
  var index=i;var item=Items[index];var state=item.Error||item.ErrorMessage is not null?"error":index==Value?"active":item.Completed||index<Value?"complete":"upcoming";
- <li class="sheen-step" data-state="@state" aria-current="@(index==Value?"step":null)">
- @if(ValueChanged.HasDelegate){<button type="button" id="@(Id+"-step-"+index)" class="sheen-step-trigger" disabled="@(!ready||Busy||item.Disabled||(Linear&&index>Value))" @onclick="()=>Change(index)">@Contents(item,index,state)</button>}
- else{<a id="@(Id+"-step-"+index)" class="sheen-step-trigger" href="@item.Href">@Contents(item,index,state)</a>}
- @if(index<Items.Count-1){<span class="sheen-step-connector" data-filled="@(index<Value?"":null)" aria-hidden="true"></span>}
- @if(Orientation=="vertical"&&index==Value&&item.Content is not null){<div class="sheen-step-content">@item.Content</div>}
+ <li class="rax-step" data-state="@state" aria-current="@(index==Value?"step":null)">
+ @if(ValueChanged.HasDelegate){<button type="button" id="@(Id+"-step-"+index)" class="rax-step-trigger" disabled="@(!ready||Busy||item.Disabled||(Linear&&index>Value))" @onclick="()=>Change(index)">@Contents(item,index,state)</button>}
+ else{<a id="@(Id+"-step-"+index)" class="rax-step-trigger" href="@item.Href">@Contents(item,index,state)</a>}
+ @if(index<Items.Count-1){<span class="rax-step-connector" data-filled="@(index<Value?"":null)" aria-hidden="true"></span>}
+ @if(Orientation=="vertical"&&index==Value&&item.Content is not null){<div class="rax-step-content">@item.Content</div>}
  </li>
 }
-</ol><p class="sheen-stepper-count" aria-live="polite">@(Value<Items.Count?StepLabel?.Invoke(Value+1,Items.Count)??$"{Value+1} / {Items.Count}":CompletedLabel) @if(Value>=0&&Value<Items.Count){@(" ")<span class="sheen-stepper-count-title">@Items[Value].Title</span>}</p></div>
+</ol><p class="rax-stepper-count" aria-live="polite">@(Value<Items.Count?StepLabel?.Invoke(Value+1,Items.Count)??$"{Value+1} / {Items.Count}":CompletedLabel) @if(Value>=0&&Value<Items.Count){@(" ")<span class="rax-stepper-count-title">@Items[Value].Title</span>}</p></div>
 @ChildContent
 </div></CascadingValue>
 @code {
@@ -37,7 +37,7 @@
     [Parameter] public string? Appearance { get; set; }
     [Parameter] public string? Class { get; set; }
     [Parameter(CaptureUnmatchedValues=true)] public IDictionary<string,object>? AdditionalAttributes { get; set; }
-    public string Id { get; }=$"sheen-stepper-{Guid.NewGuid():N}";
+    public string Id { get; }=$"rax-stepper-{Guid.NewGuid():N}";
     public string Movement { get; private set; }="forward";
     private int previous;
     private bool ready;
@@ -45,7 +45,7 @@
     private IJSObjectReference? module;
     protected override void OnParametersSet(){if(Value<0||Value>Items.Count)throw new ArgumentOutOfRangeException(nameof(Value));if(Orientation is not ("horizontal" or "vertical"))throw new ArgumentException("Invalid stepper orientation.");Movement=Value<previous?"backward":"forward";previous=Value;}
     private async Task Change(int value){if(Busy||value<0||value>=Items.Count||Items[value].Disabled||(Linear&&value>Value))return;await ValueChanged.InvokeAsync(value);}
-    private RenderFragment Contents(Item item,int index,string state)=>@<text><span class="sheen-step-indicator" aria-hidden="true">@if(state=="complete"){<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" /></svg>}else if(state=="error"){<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 7v6M12 17h.01" /></svg>}else if(item.Icon is not null){@item.Icon}else{@(index+1)}</span><span class="sheen-step-text"><span class="sheen-step-title">@item.Title</span>@if(item.Optional){<span class="sheen-step-description">@OptionalLabel</span>}@if(item.Description is not null){<span class="sheen-step-description">@item.Description</span>}@if(item.ErrorMessage is not null){<span class="sheen-step-description text-danger">@item.ErrorMessage</span>}</span><span class="visually-hidden">@(state=="error"?ErrorLabel:state=="complete"?CompletedLabel:state=="active"?CurrentLabel:UpcomingLabel)</span></text>;
+    private RenderFragment Contents(Item item,int index,string state)=>@<text><span class="rax-step-indicator" aria-hidden="true">@if(state=="complete"){<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" /></svg>}else if(state=="error"){<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 7v6M12 17h.01" /></svg>}else if(item.Icon is not null){@item.Icon}else{@(index+1)}</span><span class="rax-step-text"><span class="rax-step-title">@item.Title</span>@if(item.Optional){<span class="rax-step-description">@OptionalLabel</span>}@if(item.Description is not null){<span class="rax-step-description">@item.Description</span>}@if(item.ErrorMessage is not null){<span class="rax-step-description text-danger">@item.ErrorMessage</span>}</span><span class="visually-hidden">@(state=="error"?ErrorLabel:state=="complete"?CompletedLabel:state=="active"?CurrentLabel:UpcomingLabel)</span></text>;
     protected override async Task OnAfterRenderAsync(bool firstRender){if(!firstRender)return;module=await JS.InvokeAsync<IJSObjectReference>("import","./Components/UI/Stepper/Stepper.razor.js");await module.InvokeVoidAsync("init",root);ready=true;StateHasChanged();}
     public async ValueTask DisposeAsync(){if(module is null)return;try{await module.InvokeVoidAsync("dispose",root);await module.DisposeAsync();}catch(JSDisconnectedException){}}
 }

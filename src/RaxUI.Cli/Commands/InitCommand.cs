@@ -1,0 +1,338 @@
+using RaxUI.Cli.Configuration;
+using RaxUI.Cli.Project;
+using RaxUI.Cli.Registry;
+
+namespace RaxUI.Cli.Commands;
+
+public static class InitCommand
+{
+    // Core theme only; component and starter assets are separately owned (ADR 015).
+    private static readonly (string Source, string TargetName)[] SharedAssets =
+    [
+        ("styles/raxui.css", "raxui.css"),
+    ];
+
+    // Stylesheets from releases before the shared theme; their tokens now come from raxui.css.
+    private static readonly string[] LegacyStylesheets = ["css/raxui/tokens.css", "css/raxui/themes.css"];
+
+    // The theme needs Bootstrap 5.3 (data-bs-theme, --bs-btn-* variables). The .NET 8 template ships 5.1,
+    // so its unmodified copy is replaced in place with the bundled 5.3 (MIT) (ADR 009).
+    private const string Bootstrap51TemplateSha256 = "cfc391e34328c09f0680ae8ff3d63e86224ae7e71c973147ccb84540b2fdd9b8";
+    public const string BundledBootstrapSource = "bootstrap/bootstrap.min.css";
+    public const string BundledBootstrapSha256 = "d85327d99c7a3ee1f9b5d0500d1370acea3ad2db39c163c2f51f232baedbdede";
+
+    /// <param name="appearance">default | flat | glass; null asks on the first init when <paramref name="input"/> is given.</param>
+    /// <param name="accent">blue | emerald | indigo | amber; same rules as appearance.</param>
+    /// <param name="input">Console input when a person is typing; null never prompts.</param>
+    public static int Execute(string workingDirectory, TextWriter output, TextWriter error,
+        string? appearance = null, string? accent = null, TextReader? input = null)
+    {
+        var backup = new FileTransaction(workingDirectory);
+
+        try
+        {
+            appearance = ThemeChoice.NormalizeAppearance(appearance);
+            accent = ThemeChoice.NormalizeAccent(accent);
+            var project = ProjectContext.Detect(workingDirectory);
+            var registry = new EmbeddedRegistry();
+            var index = registry.GetIndex();
+            // Read before any write; printed after a successful init.
+            var interactivityWarning = CheckInteractivity(workingDirectory, project);
+
+            output.WriteLine($"Initializing RaxUI for project '{project.ProjectName}'...");
+
+            var existingConfig = RaxUiConfig.Load(workingDirectory);
+            var config = existingConfig ?? new RaxUiConfig
+            {
+                Framework = "blazor",
+                TargetFramework = project.TargetFramework,
+                RegistryVersion = index.Version,
+                ComponentsPath = "Components/UI",
+                StylesPath = "wwwroot/css/raxui",
+                Bootstrap = new BootstrapConfig { Managed = false },
+                Theme = new ThemeConfig { Default = "light", DarkMode = true, Rtl = false }
+            };
+
+            // Ask only about what the flags left open, and only on the first init; a later init keeps the saved choice.
+            if (input != null && existingConfig == null)
+            {
+                appearance ??= ThemeChoice.Ask(input, output, "Appearance", ThemeChoice.Appearances);
+                accent ??= ThemeChoice.Ask(input, output, "Accent color", ThemeChoice.Accents);
+            }
+            if (appearance != null) config.Theme.Appearance = appearance;
+            if (accent != null) config.Theme.Accent = accent == "blue" ? null : accent;
+
+            var lockFile = RaxUiLock.LoadOrCreate(workingDirectory);
+            ProjectPath.Validate(workingDirectory, project.AppRazorPath);
+            ProjectPath.Validate(workingDirectory, Path.Combine(workingDirectory, RaxUiConfig.DefaultFileName));
+            lockFile.RegistryVersion = index.Version;
+            config.RegistryVersion = index.Version;
+            config.TargetFramework = project.TargetFramework; // follows a retargeted project
+
+            var stylesDir = Path.Combine(workingDirectory, config.StylesPath);
+
+            // 1. Plan shared styles and check for conflicts before writing anything
+            var plannedWrites = new List<(string TargetPath, string RelTarget, byte[] Bytes, string Hash)>();
+
+            foreach (var asset in SharedAssets)
+            {
+                var bytes = registry.GetResourceBytes(asset.Source);
+                var hash = EmbeddedRegistry.ComputeSha256(bytes);
+                var targetPath = Path.Combine(stylesDir, asset.TargetName);
+                ProjectPath.Validate(workingDirectory, targetPath);
+                var relTarget = Path.GetRelativePath(workingDirectory, targetPath).Replace('\\', '/');
+                lockFile.EnsureSameSource(relTarget, hash);
+
+                if (File.Exists(targetPath))
+                {
+                    var tracked = lockFile.FindTrackedFile(relTarget);
+
+                    if (tracked == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"File '{relTarget}' already exists and is not managed by RaxUI. Refusing to overwrite unknown file.");
+                    }
+
+                    StyleImports.Verify(File.ReadAllBytes(targetPath), tracked, bytes);
+                    bytes = File.ReadAllBytes(targetPath);
+                }
+
+                bytes = StyleImports.Append(bytes, ["starter.css"]);
+                plannedWrites.Add((targetPath, relTarget, bytes, hash));
+            }
+
+            var bootstrapUpgrade = PlanBootstrap(workingDirectory, project, lockFile, registry);
+            if (bootstrapUpgrade != null)
+                plannedWrites.Add(bootstrapUpgrade.Value);
+
+            // Starter layout and welcome page replace the unmodified template ones (ADR 008).
+            var starter = StarterApp.Prepare(workingDirectory, project.ProjectName, lockFile, registry);
+
+            // 2. Write shared styles
+            foreach (var write in plannedWrites)
+            {
+                backup.Write(write.TargetPath, write.Bytes);
+                lockFile.Assets[write.RelTarget] = new LockedFile
+                {
+                    Target = write.RelTarget,
+                    SourceHash = write.Hash,
+                    InstalledHash = EmbeddedRegistry.ComputeSha256(write.Bytes)
+                };
+            }
+
+            // 3. Update App.razor style links
+            UpdateAppRazor(project, config.Theme, backup);
+
+            // 4. Starter: write the layout and welcome page, remove template leftovers
+            foreach (var write in starter.Writes)
+                backup.Write(write.FullPath, write.Bytes);
+            foreach (var path in starter.Deletes)
+                backup.Delete(path);
+            if (starter.Writes.Count > 0)
+            {
+                var files = lockFile.Components.TryGetValue(StarterApp.ItemName, out var previous)
+                    ? previous.Files.ToDictionary(f => f.Target)
+                    : [];
+                foreach (var write in starter.Writes)
+                    files[write.RelativePath] = new LockedFile { Target = write.RelativePath, SourceHash = write.Hash, InstalledHash = write.Hash };
+                lockFile.Components[StarterApp.ItemName] = new LockedComponent
+                {
+                    Version = starter.Manifest.Version,
+                    RegistryVersion = ReleaseIdentity.Version,
+                    ManifestSha256 = starter.Manifest.ManifestSha256,
+                    Files = [.. files.Values.OrderBy(f => f.Target, StringComparer.Ordinal)],
+                };
+            }
+
+            // 5. Save config, then lock, then the durable commit
+            backup.WriteText(Path.Combine(workingDirectory, RaxUiConfig.DefaultFileName), config.ToJson());
+            backup.WriteText(Path.Combine(workingDirectory, RaxUiLock.DefaultFileName), lockFile.ToJson());
+            backup.Commit();
+
+            output.WriteLine("RaxUI initialized successfully.");
+            output.WriteLine($"  - Configuration: {RaxUiConfig.DefaultFileName}");
+            output.WriteLine($"  - Shared styles: {config.StylesPath}/");
+            output.WriteLine($"  - Theme: appearance {config.Theme.Appearance}, accent {config.Theme.Accent ?? "blue"}");
+            output.WriteLine($"  - Host links updated in: {Path.GetRelativePath(workingDirectory, project.AppRazorPath).Replace('\\', '/')}");
+            if (bootstrapUpgrade != null)
+                output.WriteLine($"  - Bootstrap 5.3: {bootstrapUpgrade.Value.RelTarget}");
+            if (project.ClientDirectory != null)
+                output.WriteLine($"  - Components install into the WebAssembly client: {Path.GetRelativePath(workingDirectory, project.ClientDirectory).Replace('\\', '/')}/{config.ComponentsPath}/");
+            foreach (var write in starter.Writes)
+                output.WriteLine($"  - Starter: {write.RelativePath}");
+            foreach (var path in starter.Deletes)
+                output.WriteLine($"  - Removed template file: {Path.GetRelativePath(workingDirectory, path).Replace('\\', '/')}");
+            foreach (var note in starter.Notes)
+                output.WriteLine($"Note: {note}");
+            if (interactivityWarning != null)
+                output.WriteLine(interactivityWarning);
+
+            var appContent = File.ReadAllText(project.AppRazorPath);
+            var legacy = LegacyStylesheets.Where(path => appContent.Contains(path, StringComparison.OrdinalIgnoreCase)).ToList();
+            if (legacy.Count > 0)
+            {
+                output.WriteLine(
+                    "Note: Components/App.razor still links stylesheets from an earlier RaxUI release (" + string.Join(", ", legacy) +
+                    "). The shared theme in css/raxui/raxui.css replaces them: remove those links and files.");
+            }
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            error.WriteLine($"Error during init: {ex.Message}");
+            backup.Restore(error);
+            return 1;
+        }
+    }
+
+    /// <summary>
+    /// Returns a write that upgrades the unmodified .NET 8 template Bootstrap 5.1 to the bundled 5.3,
+    /// or refreshes a copy installed by an earlier init. Any other Bootstrap older than 5.3 stops init
+    /// with instructions; newer or unrecognized files are left alone.
+    /// </summary>
+    private static (string TargetPath, string RelTarget, byte[] Bytes, string Hash)? PlanBootstrap(
+        string workingDirectory, ProjectContext project, RaxUiLock lockFile, EmbeddedRegistry registry)
+    {
+        var path = project.BootstrapCssPath;
+        ProjectPath.Validate(workingDirectory, path);
+        var relative = Path.GetRelativePath(workingDirectory, path).Replace('\\', '/');
+        var current = EmbeddedRegistry.ComputeSha256(File.ReadAllBytes(path));
+        var tracked = lockFile.FindTrackedFile(relative);
+
+        if (tracked != null || current == Bootstrap51TemplateSha256)
+        {
+            var bytes = registry.GetResourceBytes(BundledBootstrapSource);
+            var hash = EmbeddedRegistry.ComputeSha256(bytes);
+            if (hash != BundledBootstrapSha256)
+                throw new InvalidOperationException($"Integrity check failed for '{BundledBootstrapSource}'.");
+
+            if (tracked != null)
+            {
+                lockFile.EnsureSameSource(relative, hash);
+                if (!string.Equals(tracked.InstalledHash, current, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException($"File '{relative}' was modified locally. Refusing to overwrite.");
+            }
+
+            return (path, relative, bytes, hash);
+        }
+
+        var header = File.ReadLines(path).Take(5).FirstOrDefault(line => line.Contains("Bootstrap", StringComparison.Ordinal)) ?? "";
+        var match = System.Text.RegularExpressions.Regex.Match(header, @"Bootstrap\s+v(\d+)\.(\d+)");
+        if (!match.Success)
+            return null;
+
+        var version = new Version(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value));
+        if (version < new Version(5, 3))
+        {
+            throw new InvalidOperationException(
+                $"RaxUI needs Bootstrap 5.3 or later, but '{relative}' is Bootstrap {version}. " +
+                "Replace it with Bootstrap 5.3 (https://getbootstrap.com), then run init again.");
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Static SSR, Interactive Server, WebAssembly and Auto are supported (ADR 021). Program.cs is the developer's
+    /// code, so init only reports a missing or incomplete registration; it never edits the file.
+    /// </summary>
+    private static string? CheckInteractivity(string workingDirectory, ProjectContext project)
+    {
+        var programPath = Path.Combine(workingDirectory, "Program.cs");
+        ProjectPath.Validate(workingDirectory, programPath);
+        if (!File.Exists(programPath))
+            return null;
+
+        var program = File.ReadAllText(programPath);
+        bool Has(string call) => program.Contains(call, StringComparison.Ordinal);
+        var server = Has("AddInteractiveServerComponents") && Has("AddInteractiveServerRenderMode");
+        var webAssembly = Has("AddInteractiveWebAssemblyComponents") && Has("AddInteractiveWebAssemblyRenderMode");
+
+        if (webAssembly && project.ClientDirectory == null)
+            return "Warning: Program.cs enables Interactive WebAssembly, but this project references no Blazor WebAssembly client project, " +
+                   "so components cannot run in the browser. Create the app with 'dotnet new blazor --interactivity WebAssembly' or 'Auto'.";
+        if (server || webAssembly)
+            return null;
+
+        var missing = new List<string>();
+        if (!Has("AddInteractiveServerComponents"))
+            missing.Add("builder.Services.AddRazorComponents().AddInteractiveServerComponents();");
+        if (!Has("AddInteractiveServerRenderMode"))
+            missing.Add("app.MapRazorComponents<App>().AddInteractiveServerRenderMode();");
+        return "Note: Program.cs enables no interactive render mode, so components render as static SSR: links and forms work, " +
+               "but clicks do not run C# or JavaScript. For interactivity, create the app with 'dotnet new blazor --interactivity Server' " +
+               "(or WebAssembly, or Auto), or add:" + Environment.NewLine +
+               string.Join(Environment.NewLine, missing.Select(line => "  " + line));
+    }
+
+    private static void UpdateAppRazor(ProjectContext project, ThemeConfig theme, FileTransaction backup)
+    {
+        var original = File.ReadAllText(project.AppRazorPath);
+        var updated = AddStyleLinks(project, original);
+        updated = ThemeChoice.SetHtmlAttribute(updated, "data-rax-appearance", theme.Appearance == "default" ? null : theme.Appearance);
+        updated = ThemeChoice.SetHtmlAttribute(updated, "data-rax-accent", theme.Accent);
+        if (updated != original)
+            backup.WriteText(project.AppRazorPath, updated);
+    }
+
+    private static string AddStyleLinks(ProjectContext project, string appContent)
+    {
+
+        // Same form as the template's own links: @Assets[...] (fingerprinted) on .NET 9+, a plain URL on .NET 8.
+        var links = new[]
+        {
+            (Path: "css/raxui/raxui.css", Markup: project.UsesAssetsDirective
+                ? """<link rel="stylesheet" href="@Assets["css/raxui/raxui.css"]" />"""
+                : """<link rel="stylesheet" href="css/raxui/raxui.css" />"""),
+        };
+
+        var missing = links.Where(l => !appContent.Contains(l.Path, StringComparison.OrdinalIgnoreCase)).ToList();
+        if (missing.Count == 0)
+            return appContent;
+
+        var lines = appContent.Split(["\r\n", "\r", "\n"], StringSplitOptions.None).ToList();
+        var insertionIndex = -1;
+        string? reference = null;
+
+        // Insert after the Bootstrap link (load order: Bootstrap, shared theme, styles bundle)
+        for (int i = 0; i < lines.Count; i++)
+        {
+            if (lines[i].Contains("<link", StringComparison.OrdinalIgnoreCase) &&
+                lines[i].Contains("bootstrap", StringComparison.OrdinalIgnoreCase))
+            {
+                insertionIndex = i + 1;
+                reference = lines[i];
+                break;
+            }
+        }
+
+        // Otherwise before the generated {AssemblyName}.styles.css bundle
+        if (insertionIndex == -1)
+        {
+            var bundle = $"{project.AssemblyName}.styles.css";
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].Contains("<link", StringComparison.OrdinalIgnoreCase) &&
+                    lines[i].Contains(bundle, StringComparison.OrdinalIgnoreCase))
+                {
+                    insertionIndex = i;
+                    reference = lines[i];
+                    break;
+                }
+            }
+        }
+
+        if (insertionIndex == -1)
+        {
+            throw new InvalidOperationException(
+                $"Could not find the Bootstrap or '{project.AssemblyName}.styles.css' link in '{project.AppRazorPath}'. " +
+                "Add these links manually after Bootstrap: " + string.Join(" ", links.Select(l => l.Markup)));
+        }
+
+        var indent = new string(reference!.TakeWhile(char.IsWhiteSpace).ToArray());
+        lines.InsertRange(insertionIndex, missing.Select(l => indent + l.Markup));
+
+        var separator = appContent.Contains("\r\n") ? "\r\n" : "\n";
+        return string.Join(separator, lines);
+    }
+}

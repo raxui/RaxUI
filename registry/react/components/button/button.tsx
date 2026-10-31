@@ -1,6 +1,6 @@
 "use client"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 
@@ -37,24 +37,24 @@ export interface ButtonVariantOptions {
 
 /** Class names for a button look — use on links or any element that should look like a Button. */
 function buttonVariants({ variant = "default", size = "default", className }: ButtonVariantOptions = {}) {
-  return cn("btn sheen-button btn-glass", buttonVariantClasses[variant], buttonSizeClasses[size], className)
+  return cn("btn rax-button btn-glass", buttonVariantClasses[variant], buttonSizeClasses[size], className)
 }
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, Omit<ButtonVariantOptions, "className"> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   color?: "primary" | "secondary" | "success" | "danger" | "warning" | "info" | (string & {})
   asChild?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, type, appearance, color, style, ...props }, ref) => {
-    const theme = useSheenTheme({ appearance })
+    const theme = useRaxTheme({ appearance })
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
         ref={ref}
-        {...sheenThemeAttributes(theme)}
-        style={{ ...(color ? { "--sheen-btn-tint-rgb": `var(--bs-${color}-rgb)` } : {}), ...style } as React.CSSProperties}
+        {...raxThemeAttributes(theme)}
+        style={{ ...(color ? { "--rax-btn-tint-rgb": `var(--bs-${color}-rgb)` } : {}), ...style } as React.CSSProperties}
         // Native buttons default to type="submit"; make that opt-in.
         type={asChild ? type : (type ?? "button")}
         className={buttonVariants({ variant, size, className })}

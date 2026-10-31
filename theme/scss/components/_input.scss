@@ -1,28 +1,28 @@
 // -----------------------------------------------------------------------------
 // Input — Bootstrap `.form-control` restyled as a frosted iOS field.
 //
-// A bare <input class="form-control sheen-input"> is the surface itself. With
-// icons, `.sheen-input-group` becomes the surface (flex row: slot · input · slot)
+// A bare <input class="form-control rax-input"> is the surface itself. With
+// icons, `.rax-input-group` becomes the surface (flex row: slot · input · slot)
 // so start/end content of any width (icons, "https://", "kg", a button) never
 // overlaps the text. Icons tint to the accent colour while the field has focus.
 // -----------------------------------------------------------------------------
 
 @import "input-mixins";
 
-.sheen-input,
-.sheen-input-group {
-  --sheen-field-border: rgba(var(--bs-emphasis-color-rgb), 0.22);
+.rax-input,
+.rax-input-group {
+  --rax-field-border: rgba(var(--bs-emphasis-color-rgb), 0.22);
 }
 
 // ---- Bare field -------------------------------------------------------------
-.sheen-input {
-  @include sheen-input-surface("&:focus");
+.rax-input {
+  @include rax-input-surface("&:focus");
 
-  padding: 0 var(--sheen-input-pad-x);
+  padding: 0 var(--rax-input-pad-x);
   line-height: 1.4;
 
-  &.form-control-sm { @include sheen-input-sm; }
-  &.form-control-lg { @include sheen-input-lg; }
+  &.form-control-sm { @include rax-input-sm; }
+  &.form-control-lg { @include rax-input-lg; }
 
   &::placeholder {
     color: var(--bs-secondary-color);
@@ -32,28 +32,28 @@
   &:disabled,
   &[readonly] {
     opacity: 0.55;
-    background-color: var(--sheen-input-bg);
+    background-color: var(--rax-input-bg);
   }
 }
 
 // ---- Field with icons -------------------------------------------------------
-.sheen-input-group {
-  @include sheen-input-surface("&:focus-within");
+.rax-input-group {
+  @include rax-input-surface("&:focus-within");
 
   position: relative;
   display: flex;
   align-items: center;
   cursor: text;
 
-  &[data-size="sm"] { @include sheen-input-sm; }
-  &[data-size="lg"] { @include sheen-input-lg; }
+  &[data-size="sm"] { @include rax-input-sm; }
+  &[data-size="lg"] { @include rax-input-lg; }
 
   // The inner <input> is just text: the group draws the field.
-  > .sheen-input {
+  > .rax-input {
     flex: 1;
     min-width: 0;
-    min-height: calc(var(--sheen-input-height) - 2px);
-    padding-inline: var(--sheen-input-pad-x);
+    min-height: calc(var(--rax-input-height) - 2px);
+    padding-inline: var(--rax-input-pad-x);
     border: 0;
     border-radius: inherit;
     background: none;
@@ -62,72 +62,72 @@
     &:disabled { opacity: 1; }
   }
 
-  &[data-start] > .sheen-input { padding-inline-start: 0.5rem; }
-  &[data-end] > .sheen-input { padding-inline-end: 0.5rem; }
+  &[data-start] > .rax-input { padding-inline-start: 0.5rem; }
+  &[data-end] > .rax-input { padding-inline-end: 0.5rem; }
 
-  &:has(> .sheen-input:disabled) {
+  &:has(> .rax-input:disabled) {
     opacity: 0.55;
     cursor: default;
   }
 
   // Native search clear/decoration would double up with ours.
-  > .sheen-input::-webkit-search-cancel-button,
-  > .sheen-input::-webkit-search-decoration {
+  > .rax-input::-webkit-search-cancel-button,
+  > .rax-input::-webkit-search-decoration {
     -webkit-appearance: none;
     appearance: none;
   }
 }
 
 // Invalid: red border + ring, on either surface.
-.sheen-input[aria-invalid="true"],
-.sheen-input-group:has(> .sheen-input[aria-invalid="true"]) {
-  --sheen-input-border: rgba(var(--bs-danger-rgb), 0.6);
-  --sheen-input-ring-rgb: var(--bs-danger-rgb);
+.rax-input[aria-invalid="true"],
+.rax-input-group:has(> .rax-input[aria-invalid="true"]) {
+  --rax-input-border: rgba(var(--bs-danger-rgb), 0.6);
+  --rax-input-ring-rgb: var(--bs-danger-rgb);
 }
 
 // ---- Slots: icons, text, buttons --------------------------------------------
-.sheen-input-slot {
+.rax-input-slot {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   gap: 0.375rem;
   height: 100%;
   color: var(--bs-secondary-color);
-  font-size: var(--sheen-input-font-size);
+  font-size: var(--rax-input-font-size);
   line-height: 1.4; // text addons share the value's baseline
   white-space: nowrap;
   user-select: none;
-  transition: color var(--sheen-duration) ease;
+  transition: color var(--rax-duration) ease;
 
-  &[data-side="start"] { padding-inline-start: var(--sheen-input-pad-x); }
-  &[data-side="end"] { padding-inline-end: calc(var(--sheen-input-pad-x) - 0.25rem); }
+  &[data-side="start"] { padding-inline-start: var(--rax-input-pad-x); }
+  &[data-side="end"] { padding-inline-end: calc(var(--rax-input-pad-x) - 0.25rem); }
 
   > svg {
     width: 1.125rem;
     height: 1.125rem;
   }
 
-  .sheen-input-group[data-size="sm"] & > svg { width: 1rem; height: 1rem; }
-  .sheen-input-group[data-size="lg"] & > svg { width: 1.3125rem; height: 1.3125rem; }
+  .rax-input-group[data-size="sm"] & > svg { width: 1rem; height: 1rem; }
+  .rax-input-group[data-size="lg"] & > svg { width: 1.3125rem; height: 1.3125rem; }
 
   // Leading icon lights up with focus (with a tiny spring nudge).
-  .sheen-input-group:focus-within &[data-side="start"] {
-    color: rgb(var(--sheen-input-ring-rgb));
+  .rax-input-group:focus-within &[data-side="start"] {
+    color: rgb(var(--rax-input-ring-rgb));
   }
 
   @include motion-safe {
     > svg {
-      transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+      transition: transform var(--rax-duration-slow) var(--rax-ease-spring);
     }
 
-    .sheen-input-group:focus-within &[data-side="start"] > svg {
+    .rax-input-group:focus-within &[data-side="start"] > svg {
       transform: scale(1.08);
     }
   }
 }
 
 // Small round icon button inside a slot (password eye, copy, send…).
-.sheen-input-action {
+.rax-input-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -140,8 +140,8 @@
   background: none;
   cursor: pointer;
   transition:
-    color var(--sheen-duration-fast) ease,
-    background-color var(--sheen-duration-fast) ease;
+    color var(--rax-duration-fast) ease,
+    background-color var(--rax-duration-fast) ease;
 
   svg {
     width: 1.125rem;
@@ -162,16 +162,16 @@
 
   @include motion-safe {
     transition:
-      color var(--sheen-duration-fast) ease,
-      background-color var(--sheen-duration-fast) ease,
-      transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+      color var(--rax-duration-fast) ease,
+      background-color var(--rax-duration-fast) ease,
+      transform var(--rax-duration-slow) var(--rax-ease-spring);
 
     &:active { transform: scale(0.88); }
   }
 }
 
 // ---- Clear button (iOS) -----------------------------------------------------
-.sheen-input-clear {
+.rax-input-clear {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -184,7 +184,7 @@
   color: var(--bs-body-bg);
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.3);
   cursor: pointer;
-  transition: background-color var(--sheen-duration-fast) ease;
+  transition: background-color var(--rax-duration-fast) ease;
 
   svg {
     width: 0.5625rem;
@@ -199,46 +199,46 @@
   }
 
   @include motion-safe {
-    animation: sheen-pop-in 350ms var(--sheen-ease-spring);
+    animation: rax-pop-in 350ms var(--rax-ease-spring);
   }
 }
 
 // ---- Password eye: the slash draws in when the password is visible ----------
-.sheen-input-eye {
-  .sheen-input-eye-slash {
+.rax-input-eye {
+  .rax-input-eye-slash {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
   }
 
-  .sheen-input-eye-pupil {
+  .rax-input-eye-pupil {
     transform-origin: 12px 12px;
   }
 
-  &[data-visible] .sheen-input-eye-slash {
+  &[data-visible] .rax-input-eye-slash {
     stroke-dashoffset: 0;
   }
 
   @include motion-safe {
-    .sheen-input-eye-slash {
-      transition: stroke-dashoffset 300ms var(--sheen-ease-out);
+    .rax-input-eye-slash {
+      transition: stroke-dashoffset 300ms var(--rax-ease-out);
     }
 
-    .sheen-input-eye-pupil {
-      transition: transform 400ms var(--sheen-ease-spring);
+    .rax-input-eye-pupil {
+      transition: transform 400ms var(--rax-ease-spring);
     }
 
-    &[data-visible] .sheen-input-eye-pupil {
+    &[data-visible] .rax-input-eye-pupil {
       transform: scale(0.7);
     }
   }
 }
 
 // Two classes outrank svg[blazicon], including when app styles load later.
-.sheen-input-group .sheen-input-slot :is(svg, i) { width: 1.125rem; height: 1.125rem; font-size: 1.125rem; color: currentColor; }
-.sheen-input-group[data-size="sm"] .sheen-input-slot :is(svg, i) { width: 1rem; height: 1rem; font-size: 1rem; }
-.sheen-input-group[data-size="lg"] .sheen-input-slot :is(svg, i) { width: 1.3125rem; height: 1.3125rem; font-size: 1.3125rem; }
-.sheen-input-group .sheen-input-clear svg { width: 0.5625rem; height: 0.5625rem; }
-.sheen-input-slot { margin: 0; }
+.rax-input-group .rax-input-slot :is(svg, i) { width: 1.125rem; height: 1.125rem; font-size: 1.125rem; color: currentColor; }
+.rax-input-group[data-size="sm"] .rax-input-slot :is(svg, i) { width: 1rem; height: 1rem; font-size: 1rem; }
+.rax-input-group[data-size="lg"] .rax-input-slot :is(svg, i) { width: 1.3125rem; height: 1.3125rem; font-size: 1.3125rem; }
+.rax-input-group .rax-input-clear svg { width: 0.5625rem; height: 0.5625rem; }
+.rax-input-slot { margin: 0; }
 
-.sheen-input-group [hidden] { display: none; }
-@media (prefers-reduced-motion: reduce) { .sheen-input, .sheen-input-group, .sheen-input-slot, .sheen-input-action, .sheen-input-clear { transition: none; animation: none; } }
+.rax-input-group [hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .rax-input, .rax-input-group, .rax-input-slot, .rax-input-action, .rax-input-clear { transition: none; animation: none; } }

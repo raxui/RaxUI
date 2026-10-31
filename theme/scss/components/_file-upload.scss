@@ -1,34 +1,34 @@
-.sheen-file-upload { color: var(--bs-body-color); }
-.sheen-upload-zone {
-  background-color: var(--sheen-field-bg); box-shadow: var(--sheen-field-shadow);
+.rax-file-upload { color: var(--bs-body-color); }
+.rax-upload-zone {
+  background-color: var(--rax-field-bg); box-shadow: var(--rax-field-shadow);
   position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
-  padding: calc(var(--sheen-control-height) * 0.65); border: 2px dashed var(--sheen-field-border);
-  border-radius: var(--sheen-radius); cursor: pointer; text-align: center;
+  padding: calc(var(--rax-control-height) * 0.65); border: 2px dashed var(--rax-field-border);
+  border-radius: var(--rax-radius); cursor: pointer; text-align: center;
   &:focus-within, &[data-dragging] { border-color: var(--bs-primary); background-color: rgba(var(--bs-primary-rgb), 0.08); }
   &:focus-within { outline: 3px solid rgba(var(--bs-primary-rgb), 0.25); outline-offset: 2px; }
   &[data-disabled] { opacity: 0.55; cursor: default; }
 }
-.sheen-file-upload .sheen-upload-zone > svg { width: 2rem; height: 2rem; color: var(--bs-primary); }
+.rax-file-upload .rax-upload-zone > svg { width: 2rem; height: 2rem; color: var(--bs-primary); }
 // Native file input remains focusable; its transparent hit target accepts drag/drop without JS.
-.sheen-upload-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: inherit; }
-.sheen-upload-list { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
-.sheen-upload-file {
-  @include sheen-surface;
+.rax-upload-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: inherit; }
+.rax-upload-list { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+.rax-upload-file {
+  @include rax-surface;
   display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.5rem;
-  padding: 0.75rem; border-radius: var(--sheen-radius-sm);
+  padding: 0.75rem; border-radius: var(--rax-radius-sm);
   > span { overflow-wrap: anywhere; }
-  > button { background: transparent; border: 0; color: var(--bs-secondary-color); border-radius: var(--sheen-radius-sm); }
+  > button { background: transparent; border: 0; color: var(--bs-secondary-color); border-radius: var(--rax-radius-sm); }
   > .progress { grid-column: 1 / -1; height: 0.25rem; }
 }
-@keyframes sheen-upload-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes sheen-upload-float { 50% { transform: translateY(-3px); } }
+@keyframes rax-upload-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes rax-upload-float { 50% { transform: translateY(-3px); } }
 @media (prefers-reduced-motion: no-preference) {
-  .sheen-upload-file { animation: sheen-upload-in 240ms var(--sheen-ease-out); }
-  .sheen-upload-zone[data-dragging] > svg { animation: sheen-upload-float 700ms ease-in-out infinite; }
+  .rax-upload-file { animation: rax-upload-in 240ms var(--rax-ease-out); }
+  .rax-upload-zone[data-dragging] > svg { animation: rax-upload-float 700ms ease-in-out infinite; }
 }
-@media (prefers-reduced-motion: reduce) { .sheen-file-upload .progress-bar { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .rax-file-upload .progress-bar { transition: none; } }
 
-.sheen-upload-file button svg { width: 1rem; height: 1rem; }
+.rax-upload-file button svg { width: 1rem; height: 1rem; }
 
 // -----------------------------------------------------------------------------
 // FileUpload — dashed glass drop zone (`dropzone` or one-row `compact`) and the
@@ -37,8 +37,8 @@
 // files are being dragged anywhere on the page.
 // -----------------------------------------------------------------------------
 
-.sheen-queue-upload {
-  --sheen-queue-upload-rgb: var(--bs-primary-rgb);
+.rax-queue-upload {
+  --rax-queue-upload-rgb: var(--bs-primary-rgb);
 
   display: flex;
   flex-direction: column;
@@ -52,9 +52,9 @@
 
 // ---- Zone ---------------------------------------------------------------------------
 
-.sheen-queue-upload-zone {
-  --sheen-queue-upload-border: rgba(var(--bs-emphasis-color-rgb), 0.18);
-  --sheen-queue-upload-bg: var(--sheen-field-bg);
+.rax-queue-upload-zone {
+  --rax-queue-upload-border: rgba(var(--bs-emphasis-color-rgb), 0.18);
+  --rax-queue-upload-bg: var(--rax-field-bg);
 
   position: relative;
   display: flex;
@@ -63,55 +63,55 @@
   justify-content: center;
   gap: 0.75rem;
   padding: 2rem 1.25rem;
-  border: 1.5px dashed var(--sheen-queue-upload-border);
-  border-radius: var(--sheen-radius);
+  border: 1.5px dashed var(--rax-queue-upload-border);
+  border-radius: var(--rax-radius);
   color: var(--bs-body-color);
-  background-color: var(--sheen-queue-upload-bg);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
+  background-color: var(--rax-queue-upload-bg);
+  -webkit-backdrop-filter: var(--rax-surface-filter);
+  backdrop-filter: var(--rax-surface-filter);
   text-align: center;
   cursor: pointer;
   user-select: none;
   transition:
-    border-color var(--sheen-duration) ease,
-    background-color var(--sheen-duration) ease,
-    box-shadow var(--sheen-duration) ease;
+    border-color var(--rax-duration) ease,
+    background-color var(--rax-duration) ease,
+    box-shadow var(--rax-duration) ease;
 
   &:hover {
-    --sheen-queue-upload-border: rgba(var(--sheen-queue-upload-rgb), 0.5);
-    --sheen-queue-upload-bg: rgba(var(--sheen-queue-upload-rgb), 0.035);
+    --rax-queue-upload-border: rgba(var(--rax-queue-upload-rgb), 0.5);
+    --rax-queue-upload-bg: rgba(var(--rax-queue-upload-rgb), 0.035);
   }
 
   &:focus-visible {
-    --sheen-queue-upload-border: rgba(var(--sheen-queue-upload-rgb), 0.65);
+    --rax-queue-upload-border: rgba(var(--rax-queue-upload-rgb), 0.65);
 
     outline: 0;
-    box-shadow: 0 0 0 4px rgba(var(--sheen-queue-upload-rgb), 0.16);
+    box-shadow: 0 0 0 4px rgba(var(--rax-queue-upload-rgb), 0.16);
   }
 
   &[data-invalid] {
-    --sheen-queue-upload-rgb: var(--bs-danger-rgb);
-    --sheen-queue-upload-border: rgba(var(--bs-danger-rgb), 0.55);
+    --rax-queue-upload-rgb: var(--bs-danger-rgb);
+    --rax-queue-upload-border: rgba(var(--bs-danger-rgb), 0.55);
   }
 
   // Files are being dragged somewhere on the page: show where they can go.
   &[data-page-drag] {
-    --sheen-queue-upload-border: rgba(var(--sheen-queue-upload-rgb), 0.55);
-    --sheen-queue-upload-bg: rgba(var(--sheen-queue-upload-rgb), 0.04);
+    --rax-queue-upload-border: rgba(var(--rax-queue-upload-rgb), 0.55);
+    --rax-queue-upload-bg: rgba(var(--rax-queue-upload-rgb), 0.04);
   }
 
   &[data-drag="accept"] {
-    --sheen-queue-upload-border: rgb(var(--sheen-queue-upload-rgb));
-    --sheen-queue-upload-bg: rgba(var(--sheen-queue-upload-rgb), 0.08);
+    --rax-queue-upload-border: rgb(var(--rax-queue-upload-rgb));
+    --rax-queue-upload-bg: rgba(var(--rax-queue-upload-rgb), 0.08);
 
     border-style: solid;
-    box-shadow: 0 0 0 4px rgba(var(--sheen-queue-upload-rgb), 0.12);
+    box-shadow: 0 0 0 4px rgba(var(--rax-queue-upload-rgb), 0.12);
   }
 
   &[data-drag="reject"] {
-    --sheen-queue-upload-rgb: var(--bs-danger-rgb);
-    --sheen-queue-upload-border: rgb(var(--bs-danger-rgb));
-    --sheen-queue-upload-bg: rgba(var(--bs-danger-rgb), 0.06);
+    --rax-queue-upload-rgb: var(--bs-danger-rgb);
+    --rax-queue-upload-border: rgb(var(--bs-danger-rgb));
+    --rax-queue-upload-bg: rgba(var(--bs-danger-rgb), 0.06);
 
     border-style: solid;
     cursor: no-drop;
@@ -121,8 +121,8 @@
     cursor: not-allowed;
 
     &:hover {
-      --sheen-queue-upload-border: rgba(var(--bs-emphasis-color-rgb), 0.18);
-      --sheen-queue-upload-bg: var(--sheen-field-bg);
+      --rax-queue-upload-border: rgba(var(--bs-emphasis-color-rgb), 0.18);
+      --rax-queue-upload-bg: var(--rax-field-bg);
     }
   }
 
@@ -132,7 +132,7 @@
   }
 }
 
-.sheen-queue-upload-zone-icon {
+.rax-queue-upload-zone-icon {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -140,8 +140,8 @@
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  color: rgb(var(--sheen-queue-upload-rgb));
-  background-color: rgba(var(--sheen-queue-upload-rgb), 0.1);
+  color: rgb(var(--rax-queue-upload-rgb));
+  background-color: rgba(var(--rax-queue-upload-rgb), 0.1);
 
   svg {
     width: 1.5rem;
@@ -150,56 +150,56 @@
 
   @include motion-safe {
     transition:
-      transform var(--sheen-duration-slow) var(--sheen-ease-spring),
-      background-color var(--sheen-duration) ease,
-      color var(--sheen-duration) ease;
+      transform var(--rax-duration-slow) var(--rax-ease-spring),
+      background-color var(--rax-duration) ease,
+      color var(--rax-duration) ease;
 
-    .sheen-queue-upload-zone:hover &,
-    .sheen-queue-upload-zone[data-page-drag] & {
+    .rax-queue-upload-zone:hover &,
+    .rax-queue-upload-zone[data-page-drag] & {
       transform: translateY(-2px);
     }
 
-    .sheen-queue-upload-zone[data-drag="accept"] & {
+    .rax-queue-upload-zone[data-drag="accept"] & {
       transform: translateY(-4px) scale(1.1);
     }
 
-    .sheen-queue-upload-zone[data-drag="reject"] & {
-      animation: sheen-queue-upload-shake 360ms var(--sheen-ease-out);
+    .rax-queue-upload-zone[data-drag="reject"] & {
+      animation: rax-queue-upload-shake 360ms var(--rax-ease-out);
     }
   }
 }
 
-.sheen-queue-upload-zone-text {
+.rax-queue-upload-zone-text {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   min-width: 0;
 }
 
-.sheen-queue-upload-zone-title {
+.rax-queue-upload-zone-title {
   color: var(--bs-emphasis-color);
   font-weight: 600;
   line-height: 1.35;
 
   [data-drag] & {
-    color: rgb(var(--sheen-queue-upload-rgb));
+    color: rgb(var(--rax-queue-upload-rgb));
   }
 }
 
-.sheen-queue-upload-browse {
+.rax-queue-upload-browse {
   color: var(--bs-link-color);
   text-decoration: underline;
   text-decoration-color: rgba(var(--bs-link-color-rgb), 0.35);
   text-underline-offset: 0.18em;
 }
 
-.sheen-queue-upload-zone-hint {
+.rax-queue-upload-zone-hint {
   color: var(--bs-secondary-color);
   font-size: 0.8125rem;
 }
 
 // The picker stays in the tree (labels open it) but out of sight.
-.sheen-queue-upload-input {
+.rax-queue-upload-input {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -209,19 +209,19 @@
 }
 
 // Compact: one row, like an attachment button.
-.sheen-queue-upload[data-variant="compact"] .sheen-queue-upload-zone {
+.rax-queue-upload[data-variant="compact"] .rax-queue-upload-zone {
   flex-direction: row;
   justify-content: flex-start;
   gap: 0.75rem;
   min-height: 3.25rem;
   padding: 0.5rem 0.875rem 0.5rem 0.5rem;
-  border-radius: var(--sheen-radius-control);
+  border-radius: var(--rax-radius-control);
   text-align: start;
 
-  .sheen-queue-upload-zone-icon {
+  .rax-queue-upload-zone-icon {
     width: 2.25rem;
     height: 2.25rem;
-    border-radius: calc(0.625rem * var(--sheen-radius-scale));
+    border-radius: calc(0.625rem * var(--rax-radius-scale));
 
     svg {
       width: 1.125rem;
@@ -229,21 +229,21 @@
     }
   }
 
-  .sheen-queue-upload-zone-text {
+  .rax-queue-upload-zone-text {
     gap: 0;
   }
 
-  .sheen-queue-upload-zone-title {
+  .rax-queue-upload-zone-title {
     font-weight: 500;
     font-size: 0.9375rem;
   }
 
-  .sheen-queue-upload-zone-hint {
+  .rax-queue-upload-zone-hint {
     font-size: 0.75rem;
   }
 }
 
-@keyframes sheen-queue-upload-shake {
+@keyframes rax-queue-upload-shake {
   20%,
   60% {
     translate: -3px 0;
@@ -257,18 +257,18 @@
 
 // ---- Rejections -----------------------------------------------------------------------
 
-.sheen-queue-upload-rejections {
+.rax-queue-upload-rejections {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
   padding: 0.5rem 0.375rem 0.5rem 0.875rem;
   border: 1px solid rgba(var(--bs-danger-rgb), 0.25);
-  border-radius: var(--sheen-radius-control);
+  border-radius: var(--rax-radius-control);
   background-color: rgba(var(--bs-danger-rgb), 0.06);
   font-size: 0.875rem;
 
   @include motion-safe {
-    animation: sheen-queue-upload-in 300ms var(--sheen-ease-spring);
+    animation: rax-queue-upload-in 300ms var(--rax-ease-spring);
   }
 
   ul {
@@ -297,7 +297,7 @@
   }
 }
 
-.sheen-queue-upload-rejection-name {
+.rax-queue-upload-rejection-name {
   min-width: 0;
   overflow: hidden;
   color: var(--bs-emphasis-color);
@@ -306,20 +306,20 @@
   white-space: nowrap;
 }
 
-.sheen-queue-upload-rejection-reason {
+.rax-queue-upload-rejection-reason {
   flex-shrink: 0;
   color: var(--bs-danger-text-emphasis);
 }
 
 // ---- File list ----------------------------------------------------------------------
 
-.sheen-queue-upload-files {
+.rax-queue-upload-files {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.sheen-queue-upload-summary {
+.rax-queue-upload-summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -333,31 +333,31 @@
   }
 }
 
-.sheen-queue-upload-list {
+.rax-queue-upload-list {
   margin: 0 0 -0.5rem; // the last card's spacing
   padding: 0;
   list-style: none;
 }
 
 // Items enter with a spring; leaving ones collapse (spacing included) and fade.
-.sheen-queue-upload-item {
-  --sheen-queue-upload-kind-rgb: var(--bs-secondary-rgb);
+.rax-queue-upload-item {
+  --rax-queue-upload-kind-rgb: var(--bs-secondary-rgb);
 
   display: grid;
   grid-template-rows: 1fr;
 
   @include motion-safe {
     &[data-state="open"] {
-      animation: sheen-queue-upload-in 340ms var(--sheen-ease-spring);
+      animation: rax-queue-upload-in 340ms var(--rax-ease-spring);
     }
 
     &[data-state="closed"] {
-      animation: sheen-queue-upload-collapse 260ms var(--sheen-ease-out) forwards;
+      animation: rax-queue-upload-collapse 260ms var(--rax-ease-out) forwards;
     }
   }
 }
 
-.sheen-queue-upload-item-inner {
+.rax-queue-upload-item-inner {
   min-width: 0;
   min-height: 0;
 
@@ -366,20 +366,20 @@
   }
 }
 
-.sheen-queue-upload-card {
+.rax-queue-upload-card {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 0.5rem;
   padding: 0.5rem 0.375rem 0.5rem 0.5rem;
   border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.09);
-  border-radius: var(--sheen-radius-control);
-  background-color: var(--sheen-field-bg);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
+  border-radius: var(--rax-radius-control);
+  background-color: var(--rax-field-bg);
+  -webkit-backdrop-filter: var(--rax-surface-filter);
+  backdrop-filter: var(--rax-surface-filter);
   transition:
-    border-color var(--sheen-duration) ease,
-    background-color var(--sheen-duration) ease;
+    border-color var(--rax-duration) ease,
+    background-color var(--rax-duration) ease;
 
   [data-status="error"] & {
     border-color: rgba(var(--bs-danger-rgb), 0.3);
@@ -388,18 +388,18 @@
 }
 
 // Icon tint per file kind (Files-app style, no gradients).
-.sheen-queue-upload-item {
+.rax-queue-upload-item {
   &[data-kind="image"],
-  &[data-kind="doc"] { --sheen-queue-upload-kind-rgb: var(--bs-primary-rgb); }
-  &[data-kind="pdf"] { --sheen-queue-upload-kind-rgb: var(--bs-danger-rgb); }
-  &[data-kind="sheet"] { --sheen-queue-upload-kind-rgb: var(--bs-success-rgb); }
+  &[data-kind="doc"] { --rax-queue-upload-kind-rgb: var(--bs-primary-rgb); }
+  &[data-kind="pdf"] { --rax-queue-upload-kind-rgb: var(--bs-danger-rgb); }
+  &[data-kind="sheet"] { --rax-queue-upload-kind-rgb: var(--bs-success-rgb); }
   &[data-kind="slides"],
-  &[data-kind="archive"] { --sheen-queue-upload-kind-rgb: var(--bs-warning-rgb); }
+  &[data-kind="archive"] { --rax-queue-upload-kind-rgb: var(--bs-warning-rgb); }
   &[data-kind="video"],
-  &[data-kind="audio"] { --sheen-queue-upload-kind-rgb: var(--bs-info-rgb); }
+  &[data-kind="audio"] { --rax-queue-upload-kind-rgb: var(--bs-info-rgb); }
 }
 
-.sheen-queue-upload-thumb {
+.rax-queue-upload-thumb {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -407,13 +407,13 @@
   width: 2.75rem;
   height: 2.75rem;
   overflow: hidden;
-  border-radius: calc(0.625rem * var(--sheen-radius-scale));
-  background-color: rgba(var(--sheen-queue-upload-kind-rgb), 0.12);
+  border-radius: calc(0.625rem * var(--rax-radius-scale));
+  background-color: rgba(var(--rax-queue-upload-kind-rgb), 0.12);
 }
 
-.sheen-queue-upload-kind-icon {
+.rax-queue-upload-kind-icon {
   display: inline-flex;
-  color: rgb(var(--sheen-queue-upload-kind-rgb));
+  color: rgb(var(--rax-queue-upload-kind-rgb));
 
   svg {
     width: 1.375rem;
@@ -421,14 +421,14 @@
   }
 }
 
-.sheen-queue-upload-thumb-img {
+.rax-queue-upload-thumb-img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.sheen-queue-upload-body {
+.rax-queue-upload-body {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -436,14 +436,14 @@
   min-width: 0;
 }
 
-.sheen-queue-upload-name {
+.rax-queue-upload-name {
   color: var(--bs-emphasis-color);
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.3;
 }
 
-.sheen-queue-upload-meta {
+.rax-queue-upload-meta {
   display: flex;
   align-items: center;
   gap: 0.3125rem;
@@ -471,7 +471,7 @@
 }
 
 // Checkmark draws itself once the upload lands.
-.sheen-queue-upload-done {
+.rax-queue-upload-done {
   display: inline-flex;
   color: var(--bs-success);
 
@@ -479,12 +479,12 @@
     stroke-dasharray: 24;
 
     @include motion-safe {
-      animation: sheen-queue-upload-draw 420ms var(--sheen-ease-out) both;
+      animation: rax-queue-upload-draw 420ms var(--rax-ease-out) both;
     }
   }
 }
 
-.sheen-queue-upload-bar {
+.rax-queue-upload-bar {
   position: relative;
   display: block;
   height: 3px;
@@ -497,8 +497,8 @@
     display: block;
     height: 100%;
     border-radius: inherit;
-    background-color: rgb(var(--sheen-queue-upload-rgb));
-    transition: width var(--sheen-duration) var(--sheen-ease-out);
+    background-color: rgb(var(--rax-queue-upload-rgb));
+    transition: width var(--rax-duration) var(--rax-ease-out);
   }
 
   // Waiting in the queue: a slow sweep instead of a frozen 0%.
@@ -506,18 +506,18 @@
     width: 30% !important;
 
     @include motion-safe {
-      animation: sheen-queue-upload-sweep 1.4s ease-in-out infinite;
+      animation: rax-queue-upload-sweep 1.4s ease-in-out infinite;
     }
   }
 }
 
-.sheen-queue-upload-actions {
+.rax-queue-upload-actions {
   display: flex;
   flex-shrink: 0;
   align-items: center;
 }
 
-.sheen-queue-upload-action {
+.rax-queue-upload-action {
   &.btn-glass-icon {
     width: 2rem;
     height: 2rem;
@@ -539,25 +539,25 @@
 
 // ---- Grid (photos) ------------------------------------------------------------------
 
-.sheen-queue-upload[data-layout="grid"] {
-  .sheen-queue-upload-list {
+.rax-queue-upload[data-layout="grid"] {
+  .rax-queue-upload-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
     gap: 0.75rem;
     margin: 0;
   }
 
-  .sheen-queue-upload-item {
+  .rax-queue-upload-item {
     min-width: 0;
 
     @include motion-safe {
       &[data-state="closed"] {
-        animation: sheen-queue-upload-out 220ms var(--sheen-ease-out) forwards;
+        animation: rax-queue-upload-out 220ms var(--rax-ease-out) forwards;
       }
     }
   }
 
-  .sheen-queue-upload-card {
+  .rax-queue-upload-card {
     flex-direction: column;
     align-items: stretch;
     gap: 0.125rem;
@@ -569,17 +569,17 @@
     backdrop-filter: none;
   }
 
-  .sheen-queue-upload-name {
+  .rax-queue-upload-name {
     margin-top: 0.25rem;
     font-size: 0.8125rem;
   }
 
-  .sheen-queue-upload-meta {
+  .rax-queue-upload-meta {
     font-size: 0.75rem;
   }
 }
 
-.sheen-queue-upload-tile {
+.rax-queue-upload-tile {
   position: relative;
   width: 100%;
   display: flex;
@@ -588,15 +588,15 @@
   aspect-ratio: 1;
   overflow: hidden;
   border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);
-  border-radius: var(--sheen-radius-control);
-  background-color: rgba(var(--sheen-queue-upload-kind-rgb), 0.1);
+  border-radius: var(--rax-radius-control);
+  background-color: rgba(var(--rax-queue-upload-kind-rgb), 0.1);
 
-  .sheen-queue-upload-thumb-img {
+  .rax-queue-upload-thumb-img {
     position: absolute;
     inset: 0;
   }
 
-  .sheen-queue-upload-kind-icon svg {
+  .rax-queue-upload-kind-icon svg {
     width: 2rem;
     height: 2rem;
   }
@@ -606,7 +606,7 @@
   }
 }
 
-.sheen-queue-upload-tile-overlay {
+.rax-queue-upload-tile-overlay {
   position: absolute;
   inset: 0;
   display: flex;
@@ -617,11 +617,11 @@
   backdrop-filter: blur(6px) saturate(160%);
 
   @include motion-safe {
-    animation: sheen-fade-in var(--sheen-duration) ease;
+    animation: rax-fade-in var(--rax-duration) ease;
   }
 }
 
-.sheen-queue-upload-tile-error {
+.rax-queue-upload-tile-error {
   background-color: rgba(var(--bs-body-bg-rgb), 0.6);
 
   .btn {
@@ -636,7 +636,7 @@
   }
 }
 
-.sheen-queue-upload-tile-badge {
+.rax-queue-upload-tile-badge {
   position: absolute;
   inset-block-end: 0.375rem;
   inset-inline-end: 0.375rem;
@@ -657,11 +657,11 @@
   }
 
   @include motion-safe {
-    animation: sheen-queue-upload-pop 420ms var(--sheen-ease-spring);
+    animation: rax-queue-upload-pop 420ms var(--rax-ease-spring);
   }
 }
 
-.sheen-queue-upload-tile-remove {
+.rax-queue-upload-tile-remove {
   position: absolute;
   inset-block-start: 0.375rem;
   inset-inline-end: 0.375rem;
@@ -684,10 +684,10 @@
     opacity: 0;
     transform: scale(0.85);
     transition:
-      opacity var(--sheen-duration-fast) ease,
-      transform var(--sheen-duration) var(--sheen-ease-spring);
+      opacity var(--rax-duration-fast) ease,
+      transform var(--rax-duration) var(--rax-ease-spring);
 
-    .sheen-queue-upload-tile:hover &,
+    .rax-queue-upload-tile:hover &,
     &:focus-within {
       opacity: 1;
       transform: none;
@@ -697,34 +697,34 @@
 
 // ---- Motion -------------------------------------------------------------------------
 
-@keyframes sheen-queue-upload-in {
+@keyframes rax-queue-upload-in {
   from {
     opacity: 0;
     transform: translateY(6px) scale(0.98);
   }
 }
 
-@keyframes sheen-queue-upload-collapse {
+@keyframes rax-queue-upload-collapse {
   to {
     grid-template-rows: 0fr;
     opacity: 0;
   }
 }
 
-@keyframes sheen-queue-upload-out {
+@keyframes rax-queue-upload-out {
   to {
     opacity: 0;
     transform: scale(0.9);
   }
 }
 
-@keyframes sheen-queue-upload-pop {
+@keyframes rax-queue-upload-pop {
   from {
     transform: scale(0);
   }
 }
 
-@keyframes sheen-queue-upload-draw {
+@keyframes rax-queue-upload-draw {
   from {
     stroke-dashoffset: 24;
   }
@@ -734,7 +734,7 @@
   }
 }
 
-@keyframes sheen-queue-upload-sweep {
+@keyframes rax-queue-upload-sweep {
   from {
     transform: translateX(-100%);
   }

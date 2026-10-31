@@ -1,6 +1,6 @@
-.sheen-banner {
+.rax-banner {
   // Opaque tint: banners sit over scrolling content.
-  --sheen-banner-bg: color-mix(in srgb, rgb(var(--sheen-tone-rgb)) 10%, var(--bs-body-bg));
+  --rax-banner-bg: color-mix(in srgb, rgb(var(--rax-tone-rgb)) 10%, var(--bs-body-bg));
 
   display: grid;
   grid-template-rows: 1fr;
@@ -8,30 +8,30 @@
   font-size: 0.9rem;
 
   &[data-variant="tinted"] {
-    background-color: var(--sheen-banner-bg);
-    box-shadow: inset 0 0 0 1px rgba(var(--sheen-tone-rgb), 0.16);
+    background-color: var(--rax-banner-bg);
+    box-shadow: inset 0 0 0 1px rgba(var(--rax-tone-rgb), 0.16);
   }
 
   &[data-variant="solid"] {
-    color: var(--sheen-tone-on);
-    background-color: rgb(var(--sheen-tone-rgb));
+    color: var(--rax-tone-on);
+    background-color: rgb(var(--rax-tone-rgb));
 
-    .sheen-banner-icon,
-    .sheen-banner-message {
+    .rax-banner-icon,
+    .rax-banner-message {
       color: inherit;
     }
 
-    .sheen-banner-close:hover {
+    .rax-banner-close:hover {
       background-color: rgba(255, 255, 255, 0.18);
     }
 
     // Buttons inside a solid banner are chips a shade deeper than the banner: a lighter
     // chip would wash out the white label on green or red (WCAG 4.5:1).
     .btn {
-      --bs-btn-color: var(--sheen-tone-on);
-      --bs-btn-hover-color: var(--sheen-tone-on);
+      --bs-btn-color: var(--rax-tone-on);
+      --bs-btn-hover-color: var(--rax-tone-on);
       border-color: transparent;
-      color: var(--sheen-tone-on);
+      color: var(--rax-tone-on);
       background-color: rgba(0, 0, 0, 0.16);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 
@@ -42,12 +42,12 @@
   }
 
   &[data-variant="glass"] {
-    @include glass($alpha: calc(var(--sheen-glass-alpha) + 0.15), $shadow: var(--sheen-shadow-lg));
+    @include glass($alpha: calc(var(--rax-glass-alpha) + 0.15), $shadow: var(--rax-shadow-lg));
   }
 
   // ---- Placements ------------------------------------------------------------
   &[data-position="inline"] {
-    border-radius: var(--sheen-radius-control);
+    border-radius: var(--rax-radius-control);
   }
 
   &[data-position="top"] {
@@ -56,7 +56,7 @@
     z-index: 1020;
 
     &[data-variant="tinted"] {
-      box-shadow: inset 0 -1px 0 rgba(var(--sheen-tone-rgb), 0.18);
+      box-shadow: inset 0 -1px 0 rgba(var(--rax-tone-rgb), 0.18);
     }
   }
 
@@ -68,58 +68,58 @@
     z-index: 1090;
     max-width: 44rem;
     margin-inline: auto;
-    border-radius: var(--sheen-radius);
+    border-radius: var(--rax-radius);
 
     &:not([data-variant="glass"]) {
-      box-shadow: var(--sheen-shadow-lg);
+      box-shadow: var(--rax-shadow-lg);
     }
   }
 
   // ---- Motion ----------------------------------------------------------------
   @include motion-safe {
     &[data-state="open"] {
-      animation: sheen-msg-in 320ms var(--sheen-ease-out);
+      animation: rax-msg-in 320ms var(--rax-ease-out);
     }
 
     &[data-position="top"][data-state="open"] {
-      animation: sheen-banner-down 420ms var(--sheen-ease-spring);
+      animation: rax-banner-down 420ms var(--rax-ease-spring);
     }
 
     &[data-position="bottom"][data-state="open"] {
-      animation: sheen-banner-up 480ms var(--sheen-ease-spring);
+      animation: rax-banner-up 480ms var(--rax-ease-spring);
     }
 
     &[data-state="closed"] {
-      animation: sheen-msg-collapse 300ms var(--sheen-ease-in) forwards;
+      animation: rax-msg-collapse 300ms var(--rax-ease-in) forwards;
     }
 
     &[data-position="bottom"][data-state="closed"] {
-      animation: sheen-banner-away 260ms var(--sheen-ease-in) forwards;
+      animation: rax-banner-away 260ms var(--rax-ease-in) forwards;
     }
   }
 }
 
-@keyframes sheen-banner-down {
+@keyframes rax-banner-down {
   from {
     transform: translateY(-100%);
   }
 }
 
-@keyframes sheen-banner-up {
+@keyframes rax-banner-up {
   from {
     opacity: 0;
     transform: translateY(calc(100% + 1.5rem));
   }
 }
 
-@keyframes sheen-banner-away {
+@keyframes rax-banner-away {
   to {
     opacity: 0;
     transform: translateY(calc(100% + 1.5rem));
   }
 }
 
-.sheen-banner-inner {
+.rax-banner-inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -133,13 +133,13 @@
   }
 }
 
-.sheen-banner-icon {
+.rax-banner-icon {
   display: inline-flex;
   flex-shrink: 0;
-  color: rgb(var(--sheen-tone-rgb));
+  color: rgb(var(--rax-tone-rgb));
 
   [data-tone="warning"]:not([data-variant="solid"]) & {
-    color: var(--sheen-tone-text);
+    color: var(--rax-tone-text);
   }
 
   svg {
@@ -148,7 +148,7 @@
   }
 }
 
-.sheen-banner-text {
+.rax-banner-text {
   display: flex;
   flex: 1 1 14rem;
   flex-wrap: wrap;
@@ -158,15 +158,15 @@
   line-height: 1.4;
 }
 
-.sheen-banner-title {
+.rax-banner-title {
   font-weight: 600;
 }
 
-.sheen-banner-message {
+.rax-banner-message {
   color: rgba(var(--bs-emphasis-color-rgb), 0.78);
 }
 
-.sheen-banner-actions {
+.rax-banner-actions {
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -175,19 +175,19 @@
 }
 
 // Stacked top banners share one sticky container.
-.sheen-banner-group {
+.rax-banner-group {
   position: sticky;
   top: 0;
   z-index: 1020;
 
-  > .sheen-banner[data-position="top"] {
+  > .rax-banner[data-position="top"] {
     position: relative;
   }
 }
 
 // Icon slots override later app icon-library sizing (ADR 014).
-.sheen-banner .sheen-banner-icon svg { width: 1.125rem; height: 1.125rem; }
-.sheen-banner .sheen-banner-close svg { width: 1rem; height: 1rem; }
+.rax-banner .rax-banner-icon svg { width: 1.125rem; height: 1.125rem; }
+.rax-banner .rax-banner-close svg { width: 1rem; height: 1rem; }
 
-.sheen-banner[data-position="bottom"][popover] { width: calc(100vw - 2rem); inset: auto 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); margin-inline: auto; padding: 0; border: 0; }
-.sheen-banner[popover]:not(:popover-open) { display: none; }
+.rax-banner[data-position="bottom"][popover] { width: calc(100vw - 2rem); inset: auto 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); margin-inline: auto; padding: 0; border: 0; }
+.rax-banner[popover]:not(:popover-open) { display: none; }

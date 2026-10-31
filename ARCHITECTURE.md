@@ -1,22 +1,22 @@
-# SheenUI — Architecture
+# RaxUI — Architecture
 
 ## 1. Purpose
 
-This document defines the technical architecture, project structure, component distribution model, and implementation principles for SheenUI.
+This document defines the technical architecture, project structure, component distribution model, and implementation principles for RaxUI.
 
-SheenUI is an open-source, source-first UI component system for Blazor and React applications. It uses Bootstrap as its styling foundation and one shared theme, and provides a CLI per ecosystem that installs individual components into consumer projects: a .NET CLI for Blazor and a Node CLI for React ([ADR 005](docs/adr/005-multi-framework-shared-theme.md), [ADR 006](docs/adr/006-react-first-milestone.md)).
+RaxUI is an open-source, source-first UI component system for Blazor and React applications. It uses Bootstrap as its styling foundation and one shared theme, and provides a CLI per ecosystem that installs individual components into consumer projects: a .NET CLI for Blazor and a Node CLI for React ([ADR 005](docs/adr/005-multi-framework-shared-theme.md), [ADR 006](docs/adr/006-react-first-milestone.md)).
 
 The architecture prioritizes simplicity, developer ownership, accessibility, maintainability, and a predictable installation experience.
 
 ## 2. Architectural Principles
 
 1. **Source-first distribution:** Components are copied into consumer projects as editable source files.
-2. **No mandatory runtime service:** Installed components must work without contacting a SheenUI server or registry.
+2. **No mandatory runtime service:** Installed components must work without contacting a RaxUI server or registry.
 3. **Component-level installation:** Developers install only the components they need.
 4. **Explicit dependencies:** Every component declares its component and asset dependencies.
 5. **Bootstrap foundation:** Bootstrap provides the base grid, utilities, and selected styling conventions.
 6. **Framework-native behavior:** In Blazor, use Razor and C# for component behavior and introduce JavaScript interop only when necessary. In React, use Radix UI primitives for behavior and accessibility.
-7. **One theme, delivered per ecosystem:** React compiles the shared theme SCSS with Bootstrap. Blazor receives core `sheenui.css`, starter CSS, and per-component compiled CSS, with no consumer Sass build ([ADR 015](docs/adr/015-per-component-css.md)). Both render the same classes and read the same theme attributes.
+7. **One theme, delivered per ecosystem:** React compiles the shared theme SCSS with Bootstrap. Blazor receives core `raxui.css`, starter CSS, and per-component compiled CSS, with no consumer Sass build ([ADR 015](docs/adr/015-per-component-css.md)). Both render the same classes and read the same theme attributes.
 8. **Safe updates:** The CLI must detect local modifications and never silently overwrite them.
 9. **Accessibility by design:** Semantic HTML, keyboard navigation, focus management, and appropriate ARIA attributes are part of component development.
 10. **Rendering compatibility:** Components must account for static SSR and interactive Blazor rendering modes.
@@ -32,8 +32,8 @@ The system consists of four main parts:
 
 ```mermaid
 flowchart TD
-    Dev[Developer] --> DotnetCLI[sheenui .NET CLI]
-    Dev --> NodeCLI[sheenui-react Node CLI]
+    Dev[Developer] --> DotnetCLI[raxui .NET CLI]
+    Dev --> NodeCLI[raxui-react Node CLI]
     Theme[Shared theme SCSS] --> ReactRegistry
     DotnetCLI --> BlazorRegistry[Blazor registry]
     NodeCLI --> ReactRegistry[React registry]
@@ -54,7 +54,7 @@ The project uses a monorepo to keep the CLI, registry, shared assets, documentat
 React additions for the first React milestone:
 
 ```text
-SheenUI/
+RaxUI/
 ├── theme/scss/                  shared theme (tokens, appearance, accents, mixins, …)
 ├── registry/react/
 │   ├── index.json
@@ -73,9 +73,9 @@ The .NET CLI embeds `registry/blazor/` (as `registry/` resources); the Node CLI 
 Long-term Blazor map:
 
 ```text
-SheenUI/
+RaxUI/
 ├── src/
-│   ├── SheenUI.Cli/
+│   ├── RaxUI.Cli/
 │   │   ├── Commands/
 │   │   │   ├── InitCommand.cs
 │   │   │   ├── AddCommand.cs
@@ -90,7 +90,7 @@ SheenUI/
 │   │   ├── Bootstrap/
 │   │   └── Program.cs
 │   │
-│   └── SheenUI.Registry/
+│   └── RaxUI.Registry/
 │       ├── Models/
 │       ├── Validation/
 │       └── DependencyResolution/
@@ -98,7 +98,7 @@ SheenUI/
 ├── registry/
 │   ├── registry.json
 │   ├── styles/
-│   │   └── sheenui.css         core plus managed import list (ADR 015)
+│   │   └── raxui.css         core plus managed import list (ADR 015)
 │   │   └── components/         generated per-component CSS
 │   └── components/
 │       ├── button/
@@ -117,15 +117,15 @@ SheenUI/
 │   └── blazor-wasm/
 │
 ├── samples/
-│   ├── SheenUI.Sample.WebApp/
-│   ├── SheenUI.Sample.Server/
-│   └── SheenUI.Sample.Wasm/
+│   ├── RaxUI.Sample.WebApp/
+│   ├── RaxUI.Sample.Server/
+│   └── RaxUI.Sample.Wasm/
 │
 ├── tests/
-│   ├── SheenUI.Cli.Tests/
-│   ├── SheenUI.Registry.Tests/
-│   ├── SheenUI.Components.Tests/
-│   └── SheenUI.Integration.Tests/
+│   ├── RaxUI.Cli.Tests/
+│   ├── RaxUI.Registry.Tests/
+│   ├── RaxUI.Components.Tests/
+│   └── RaxUI.Integration.Tests/
 │
 ├── docs/
 │   └── adr/
@@ -134,7 +134,7 @@ SheenUI/
 ├── Directory.Packages.props
 ├── ARCHITECTURE.md
 ├── PROJECT_BRIEF.md
-├── SheenUI.slnx
+├── RaxUI.slnx
 ├── README.md
 ├── CONTRIBUTING.md
 └── LICENSE
@@ -144,14 +144,14 @@ The initial implementation should avoid creating unnecessary projects or abstrac
 
 ## 5. CLI Architecture
 
-The CLI is the main entry point for developers using SheenUI.
+The CLI is the main entry point for developers using RaxUI.
 
 ### 5.1 Responsibilities
 
 The CLI is responsible for:
 
 - Detecting and validating the target Blazor project.
-- Creating and validating `sheenui.json`.
+- Creating and validating `raxui.json`.
 - Downloading and validating registry manifests and files.
 - Resolving component dependencies.
 - Copying source files and assets.
@@ -159,15 +159,15 @@ The CLI is responsible for:
 - Managing the Bootstrap assets selected by the project.
 - Detecting file conflicts and generating diffs.
 - Reporting configuration and installation problems.
-- Replacing the unmodified framework template layout and pages with the SheenUI starter during `init`, keeping anything the developer changed ([ADR 008](docs/adr/008-starter-app.md)).
+- Replacing the unmodified framework template layout and pages with the RaxUI starter during `init`, keeping anything the developer changed ([ADR 008](docs/adr/008-starter-app.md)).
 
 The CLI should not contain component-specific UI logic. Component definitions and dependencies belong in the registry.
 
 ### 5.2 Initial Commands
 
 ```bash
-sheenui init
-sheenui add button
+raxui init
+raxui add button
 ```
 
 Only `init` and `add button` belong to the first implementation milestone. `list`, `update`, `diff`, `remove`, `doctor`, `theme init`, and `bootstrap update` are deferred. Configuration and lock metadata are required from the first installation even though update commands come later.
@@ -176,7 +176,7 @@ Only `init` and `add button` belong to the first implementation milestone. `list
 
 The `add` command follows this sequence:
 
-1. Read `sheenui.json`.
+1. Read `raxui.json`.
 2. Load the requested component manifest.
 3. Validate compatibility and requirements.
 4. Resolve transitive component dependencies.
@@ -191,11 +191,11 @@ Validate the complete installation plan before writing. Stage files and preserve
 
 ### 5.4 React CLI
 
-`src/react-cli` is a Node CLI (`npx sheenui-react`, provisional name) for React applications on Vite 6 or later or Next.js 15 or later with the App Router ([ADR 006](docs/adr/006-react-first-milestone.md), [ADR 010](docs/adr/010-vite-6-and-later.md), [ADR 011](docs/adr/011-nextjs.md)). For Next.js it installs under the source root (project root or `src/`), imports the stylesheet from `app/layout.tsx`, and installs the starter as `app/page.tsx`. The first React milestone provides only `init` and `add button`.
+`src/react-cli` is a Node CLI (`npx raxui-react`, provisional name) for React applications on Vite 6 or later or Next.js 15 or later with the App Router ([ADR 006](docs/adr/006-react-first-milestone.md), [ADR 010](docs/adr/010-vite-6-and-later.md), [ADR 011](docs/adr/011-nextjs.md)). For Next.js it installs under the source root (project root or `src/`), imports the stylesheet from `app/layout.tsx`, and installs the starter as `app/page.tsx`. The first React milestone provides only `init` and `add button`.
 
-- `init` checks for Vite and `src/main.tsx` or `src/main.jsx`, copies the foundation (`src/lib/theme.tsx`, `src/lib/utils.ts`, theme partials under `src/styles/sheenui/`), creates `src/styles/sheenui.scss`, adds one import to the entry, and installs pinned npm packages with `npm install --ignore-scripts`.
-- `add button` copies `src/components/ui/button.tsx` and its SCSS partial, rewrites `@/lib/*` imports to relative paths, and adds the partial to `src/styles/sheenui.scss` once.
-- Configuration is `sheenui.react.json`; the lock is `sheenui.react.lock.json`.
+- `init` checks for Vite and `src/main.tsx` or `src/main.jsx`, copies the foundation (`src/lib/theme.tsx`, `src/lib/utils.ts`, theme partials under `src/styles/raxui/`), creates `src/styles/raxui.scss`, adds one import to the entry, and installs pinned npm packages with `npm install --ignore-scripts`.
+- `add button` copies `src/components/ui/button.tsx` and its SCSS partial, rewrites `@/lib/*` imports to relative paths, and adds the partial to `src/styles/raxui.scss` once.
+- Configuration is `raxui.react.json`; the lock is `raxui.react.lock.json`.
 - It follows the same safety rules as the .NET CLI: path and link checks, refusal of unknown or modified files, refusal of silent updates from another release, staged writes with rollback, lock written last, and refusal of files written by a newer release.
 
 ## 6. Registry Architecture
@@ -217,7 +217,7 @@ Conceptual example:
 ```json
 {
   "schemaVersion": 1,
-  "name": "SheenUI",
+  "name": "RaxUI",
   "version": "0.1.0",
   "components": [
     {
@@ -259,7 +259,7 @@ Conceptual example:
 }
 ```
 
-Since [ADR 007](docs/adr/007-blazor-shared-theme.md), themed components ship no `.razor.css`; their styles are component-owned assets in `wwwroot/css/sheenui/components/<name>.css`, imported by the core stylesheet ([ADR 015](docs/adr/015-per-component-css.md)).
+Since [ADR 007](docs/adr/007-blazor-shared-theme.md), themed components ship no `.razor.css`; their styles are component-owned assets in `wwwroot/css/raxui/components/<name>.css`, imported by the core stylesheet ([ADR 015](docs/adr/015-per-component-css.md)).
 
 This abbreviated example is not an installable manifest. The schema must require SHA-256 hashes, framework requirements, shared asset references, and exact dependency versions. `destination` selects a configured base directory; `target` is relative to it. Registry templates use explicit namespace tokens, never broad text replacement (deferred: in the first milestone there is no substitution, per ADR 004). Reject unsupported schema versions and file types before writing.
 
@@ -277,12 +277,12 @@ React component manifests in `registry/react/components/<item>/manifest.json` sh
   "styles": ["components/button"],
   "files": [
     { "source": "registry/react/components/button/button.tsx", "target": "components/ui/button.tsx", "type": "tsx", "sha256": "…" },
-    { "source": "theme/scss/components/_button.scss", "target": "styles/sheenui/components/_button.scss", "type": "scss", "sha256": "…" }
+    { "source": "theme/scss/components/_button.scss", "target": "styles/raxui/components/_button.scss", "type": "scss", "sha256": "…" }
   ]
 }
 ```
 
-`source` is relative to the repository root and must be under `registry/react/` or `theme/scss/`; the packed CLI keeps the same layout. `target` is relative to the consumer's `src/`: `tsx` and `ts` files go under `lib/` or `components/ui/`, `scss` files under `styles/sheenui/`. File types are `tsx`, `ts`, and `scss`. `requires` lists other registry items, `packages` exact npm versions, and `styles` the SCSS partials to import, in order. The same rejection rules apply before writing. Values above are illustrative.
+`source` is relative to the repository root and must be under `registry/react/` or `theme/scss/`; the packed CLI keeps the same layout. `target` is relative to the consumer's `src/`: `tsx` and `ts` files go under `lib/` or `components/ui/`, `scss` files under `styles/raxui/`. File types are `tsx`, `ts`, and `scss`. `requires` lists other registry items, `packages` exact npm versions, and `styles` the SCSS partials to import, in order. The same rejection rules apply before writing. Values above are illustrative.
 
 ### 6.3 Dependency Resolution
 
@@ -310,16 +310,16 @@ Button/
 └── Button.razor
 ```
 
-The `.razor` file defines markup, parameters, and component behavior. It renders the shared class names; its styles come from `components/<name>.css`, installed by `add` and imported once by the core `sheenui.css` ([ADR 015](docs/adr/015-per-component-css.md)).
+The `.razor` file defines markup, parameters, and component behavior. It renders the shared class names; its styles come from `components/<name>.css`, installed by `add` and imported once by the core `raxui.css` ([ADR 015](docs/adr/015-per-component-css.md)).
 
 A React component is a `.tsx` file with a matching SCSS partial:
 
 ```text
 src/components/ui/button.tsx
-src/styles/sheenui/components/_button.scss
+src/styles/raxui/components/_button.scss
 ```
 
-The `.tsx` file uses Radix primitives for behavior (Button uses `@radix-ui/react-slot` for `asChild`), reads the theme through `useSheenTheme`, and renders the shared class names. The partial is compiled with Bootstrap and the theme through `src/styles/sheenui.scss`. React components forward refs, pass through native attributes, accept `className`, and default `type` to `button` where relevant.
+The `.tsx` file uses Radix primitives for behavior (Button uses `@radix-ui/react-slot` for `asChild`), reads the theme through `useRaxTheme`, and renders the shared class names. The partial is compiled with Bootstrap and the theme through `src/styles/raxui.scss`. React components forward refs, pass through native attributes, accept `className`, and default `type` to `button` where relevant.
 
 ### 7.1 Component Guidelines
 
@@ -340,10 +340,10 @@ Components should:
 Blazor follows [ADR 001](docs/adr/001-hybrid-css.md) for link rules and [ADR 007](docs/adr/007-blazor-shared-theme.md) for component styles:
 
 - Global Bootstrap CSS from the template provides layout, utilities, and `.btn`.
-- Global `sheenui.css`, compiled from `theme/scss` by `theme/build-css.mjs`, provides tokens, appearances, accents, density, and a leading managed import list. `init` imports the starter CSS; `add` imports only installed styled components, dependencies first. Each component owns its CSS in the lock. Edited component CSS is kept; manually edited core CSS is refused before writes. `FileBackup` restores both assets and imports on failure, and the lock is written last.
+- Global `raxui.css`, compiled from `theme/scss` by `theme/build-css.mjs`, provides tokens, appearances, accents, density, and a leading managed import list. `init` imports the starter CSS; `add` imports only installed styled components, dependencies first. Each component owns its CSS in the lock. Edited component CSS is kept; manually edited core CSS is refused before writes. `FileBackup` restores both assets and imports on failure, and the lock is written last.
 - The application's own `.razor.css` files keep working through the generated bundle.
 
-The supported host loads styles in this order: Bootstrap, `sheenui.css`, the application's generated `{AssemblyName}.styles.css`, then any explicit consumer overrides. Source order does not override CSS specificity; CSS variables and component parameters are the primary customization API.
+The supported host loads styles in this order: Bootstrap, `raxui.css`, the application's generated `{AssemblyName}.styles.css`, then any explicit consumer overrides. Source order does not override CSS specificity; CSS variables and component parameters are the primary customization API.
 
 `init` adds each required link exactly once in `Components/App.razor`, using the supported template's static asset conventions. It preserves existing unrelated links and verifies the generated styles bundle reference using the evaluated assembly name. It must detect an existing Bootstrap reference before adding another. Ambiguous custom host markup produces actionable instructions instead of speculative rewrites.
 
@@ -363,16 +363,16 @@ Requirements:
 - Install Bootstrap assets into a predictable directory.
 - Avoid overwriting user-managed Bootstrap files.
 - Provide a controlled update workflow.
-- Document which Bootstrap classes and utilities SheenUI expects.
+- Document which Bootstrap classes and utilities RaxUI expects.
 - Avoid using Bootstrap JavaScript for behavior already managed by Blazor.
 
-The initial implementation should use Bootstrap CSS as the foundation while allowing SheenUI to define its own component appearance.
+The initial implementation should use Bootstrap CSS as the foundation while allowing RaxUI to define its own component appearance.
 
 ## 9. Configuration and Locking
 
 ### 9.1 Application Configuration
 
-The `sheenui.json` file stores project-level settings.
+The `raxui.json` file stores project-level settings.
 
 Conceptual example:
 
@@ -384,7 +384,7 @@ Conceptual example:
   "registryVersion": "0.1.0",
   "componentsPath": "Components/UI",
   "componentsNamespace": "MyApp.Components.UI",
-  "stylesPath": "wwwroot/css/sheenui",
+  "stylesPath": "wwwroot/css/raxui",
   "bootstrap": {
     "managed": true,
     "version": "PINNED_VERSION"
@@ -405,7 +405,7 @@ Conceptual example:
 
 ### 9.2 Lock File
 
-`sheenui.lock.json` records the exact versions and installed files.
+`raxui.lock.json` records the exact versions and installed files.
 
 It should track:
 
@@ -418,7 +418,7 @@ It should track:
 - Asset versions and hashes.
 - Relevant compatibility metadata.
 
-The lock file allows the CLI to determine which files belong to SheenUI and whether they have been modified locally.
+The lock file allows the CLI to determine which files belong to RaxUI and whether they have been modified locally.
 
 ## 10. Safe Update Strategy
 
@@ -438,7 +438,7 @@ This section specifies a later milestone. The first milestone only records basel
 
 ## 11. Blazor Rendering Compatibility
 
-SheenUI must distinguish between component rendering and browser interactivity.
+RaxUI must distinguish between component rendering and browser interactivity.
 
 The tested support targets are Blazor Web Apps on .NET 8, 9, and 10 in every render mode: static SSR, Interactive Server, Interactive WebAssembly and Interactive Auto, including prerendering ([ADR 009](docs/adr/009-dotnet-8-9-10.md), [ADR 021](docs/adr/021-blazor-render-modes.md)). For WebAssembly and Auto, the CLI runs in the server project and installs components into the referenced `.Client` project. `init` reads the target framework, finds the template Bootstrap (`wwwroot/bootstrap/` on .NET 8, `wwwroot/lib/bootstrap/` on 9 and 10), upgrades the unmodified .NET 8 Bootstrap 5.1 to 5.3, and writes links in each template's form (plain URLs on .NET 8, `@Assets[...]` on 9 and 10). Standalone WebAssembly (`blazorwasm`) and additional hosting models are future support targets until tested. Reusable components do not hard-code `@rendermode`; the consumer selects interactivity at the page or application boundary.
 
@@ -489,14 +489,14 @@ Components should not rely on color alone to convey meaning. Interactive compone
 The shared theme in `theme/scss/` ([ADR 005](docs/adr/005-multi-framework-shared-theme.md)) is driven by attributes that any element may carry:
 
 - `data-bs-theme`: `light` or `dark`.
-- `data-sheen-appearance`: `default` (opaque surfaces, moderate shadow), `flat` (no elevation), or `glass` (translucent surfaces with backdrop blur; opaque where `backdrop-filter` is unsupported or the user prefers reduced transparency).
-- `data-sheen-accent`: `emerald`, `indigo`, or `amber`; omitted for Bootstrap's default colors.
-- `data-sheen-density`: `comfortable` or `compact`.
+- `data-rax-appearance`: `default` (opaque surfaces, moderate shadow), `flat` (no elevation), or `glass` (translucent surfaces with backdrop blur; opaque where `backdrop-filter` is unsupported or the user prefers reduced transparency).
+- `data-rax-accent`: `emerald`, `indigo`, or `amber`; omitted for Bootstrap's default colors.
+- `data-rax-density`: `comfortable` or `compact`.
 - `dir`: `ltr` or `rtl`.
 
-Appearances set semantic tokens (`--sheen-surface-bg`, `--sheen-border-color`, `--sheen-control-shadow`, `--sheen-control-radius`, `--sheen-surface-filter`); components consume those tokens and never test the appearance name. Precedence: explicit component value, then nearest scope, then application, then `default`.
+Appearances set semantic tokens (`--rax-surface-bg`, `--rax-border-color`, `--rax-control-shadow`, `--rax-control-radius`, `--rax-surface-filter`); components consume those tokens and never test the appearance name. Precedence: explicit component value, then nearest scope, then application, then `default`.
 
-In React, `SheenThemeProvider` and `SheenAppearanceScope` carry the theme through context and render the attributes; a component's `appearance` prop overrides it. Blazor components render inline, so the attributes reach them through ordinary DOM inheritance: put them on `<html>` or any wrapper, and use a component's `Appearance` parameter to override ([ADR 007](docs/adr/007-blazor-shared-theme.md)). `CascadingValue` will be needed only for components that render outside their parent's subtree.
+In React, `RaxThemeProvider` and `RaxAppearanceScope` carry the theme through context and render the attributes; a component's `appearance` prop overrides it. Blazor components render inline, so the attributes reach them through ordinary DOM inheritance: put them on `<html>` or any wrapper, and use a component's `Appearance` parameter to override ([ADR 007](docs/adr/007-blazor-shared-theme.md)). `CascadingValue` will be needed only for components that render outside their parent's subtree.
 
 ## 13. Testing Strategy
 
@@ -566,9 +566,10 @@ Accepted ADRs:
 - [009 — Blazor on .NET 8, 9, and 10](docs/adr/009-dotnet-8-9-10.md)
 - [010 — React on Vite 6 and later](docs/adr/010-vite-6-and-later.md)
 - [011 — Next.js 15+ (App Router)](docs/adr/011-nextjs.md)
-- [012 — SheenUI identity and existing applications](docs/adr/012-sheenui-identity.md)
+- [012 — SheenUI identity and existing applications](docs/adr/012-sheenui-identity.md) (superseded by 022)
 
 - [015 — Per-component CSS and aligned React registry layout](docs/adr/015-per-component-css.md)
+- [022 — RaxUI identity](docs/adr/022-raxui-identity.md)
 
 ADRs should record the context, decision, alternatives considered, and consequences.
 
@@ -582,8 +583,8 @@ The CLI, embedded Button registry, installation tests, and browser verification 
 2. Design and validate the registry manifest schema.
 3. Implement registry parsing and validation for Button and its shared assets.
 4. Create the .NET CLI foundation.
-5. Implement project detection and `sheenui init`.
-6. Implement `sheenui add` for a simple Button component.
+5. Implement project detection and `raxui init`.
+6. Implement `raxui add` for a simple Button component.
 7. Install and reference component CSS reliably.
 8. Add installation tracking and safe update detection.
 9. Validate generated applications with automated tests.
@@ -591,6 +592,6 @@ The CLI, embedded Button registry, installation tests, and browser verification 
 
 ## 17. Definition of Architectural Success
 
-The architecture is successful when a developer can initialize SheenUI in a supported Blazor application, install a component and its dependencies, customize the resulting source files, build and run the application without a remote runtime dependency, and safely inspect future updates.
+The architecture is successful when a developer can initialize RaxUI in a supported Blazor application, install a component and its dependencies, customize the resulting source files, build and run the application without a remote runtime dependency, and safely inspect future updates.
 
 The initial priority is a reliable end-to-end source installation workflow, not a large component catalog or unnecessary infrastructure.

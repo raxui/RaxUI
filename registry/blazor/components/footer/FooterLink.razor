@@ -1,4 +1,4 @@
-<li><a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" @attributes="AdditionalAttributes" class="sheen-footer-link @Class" aria-current="@(Parent?.IsCurrent(Href) == true ? "page" : null)" href="@Href"><span>@ChildContent</span></a>@if (Badge is not null) { <span class="sheen-footer-badge">@Badge</span> }</li>
+<li><a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" @attributes="AdditionalAttributes" class="rax-footer-link @Class" aria-current="@(Parent?.IsCurrent(Href) == true ? "page" : null)" href="@Href"><span>@ChildContent</span></a>@if (Badge is not null) { <span class="rax-footer-badge">@Badge</span> }</li>
 @code {
     [CascadingParameter] public Footer? Parent { get; set; }
     [Parameter] public bool PreventDefault { get; set; }

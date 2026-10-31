@@ -1,6 +1,6 @@
-<div @attributes="AdditionalAttributes" class="sheen-chat-group @Class" data-from="@From">
-@if (From == "other") { <div class="sheen-chat-avatar">@Avatar</div> }
-<div class="sheen-chat-stack">@if (Name is not null || Time is not null) { <div class="sheen-chat-meta">@if (Name is not null) { <span class="sheen-chat-name">@Name</span> }@if (Time is not null) { <span class="sheen-chat-time">@Time</span> }</div> }@ChildContent</div></div>
+<div @attributes="AdditionalAttributes" class="rax-chat-group @Class" data-from="@From">
+@if (From == "other") { <div class="rax-chat-avatar">@Avatar</div> }
+<div class="rax-chat-stack">@if (Name is not null || Time is not null) { <div class="rax-chat-meta">@if (Name is not null) { <span class="rax-chat-name">@Name</span> }@if (Time is not null) { <span class="rax-chat-time">@Time</span> }</div> }@ChildContent</div></div>
 @code {
     [Parameter] public string From { get; set; } = "other";
     [Parameter] public string? Name { get; set; }

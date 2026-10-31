@@ -1,19 +1,19 @@
-@* SheenUI FormSection. Source-owned: edit freely. A grouped settings card, from boot-ui. *@
-<section @attributes="AdditionalAttributes" class="@($"sheen-form-section {Class}".TrimEnd())"
-         aria-labelledby="@(Title is null ? null : _titleId)" data-sheen-appearance="@Appearance">
+@* RaxUI FormSection. Source-owned: edit freely. A grouped settings card, from boot-ui. *@
+<section @attributes="AdditionalAttributes" class="@($"rax-form-section {Class}".TrimEnd())"
+         aria-labelledby="@(Title is null ? null : _titleId)" data-rax-appearance="@Appearance">
     @if (Title is not null)
     {
-        <h3 id="@_titleId" class="sheen-form-section-title">@Title</h3>
+        <h3 id="@_titleId" class="rax-form-section-title">@Title</h3>
     }
-    <div class="sheen-form-section-card">@ChildContent</div>
+    <div class="rax-form-section-card">@ChildContent</div>
     @if (Footer is not null)
     {
-        <p class="sheen-form-section-footer">@Footer</p>
+        <p class="rax-form-section-footer">@Footer</p>
     }
 </section>
 
 @code {
-    private readonly string _titleId = $"sheen-section-{Guid.NewGuid():N}";
+    private readonly string _titleId = $"rax-section-{Guid.NewGuid():N}";
     /// <summary>Small heading above the group.</summary>
     [Parameter] public string? Title { get; set; }
     /// <summary>Explanatory content below the group.</summary>

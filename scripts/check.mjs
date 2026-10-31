@@ -51,21 +51,21 @@ run("Blazor TextEditor engine reproduces from package-lock.json", process.execPa
 npm("TypeScript", ["run", "typecheck"])
 npm("React, CLI, registry, and theme tests", ["test"])
 npm("React CLI crash/restart recovery", ["run", "test:recovery"])
-run("Build .NET 8/9/10", "dotnet", ["build", "SheenUI.slnx", "-c", "Release"])
-run("C# formatting", "dotnet", ["format", "SheenUI.slnx", "--verify-no-changes", "--no-restore"])
+run("Build .NET 8/9/10", "dotnet", ["build", "RaxUI.slnx", "-c", "Release"])
+run("C# formatting", "dotnet", ["format", "RaxUI.slnx", "--verify-no-changes", "--no-restore"])
 
 if (full) {
-  run("Install Blazor test browser", "pwsh", ["-NoProfile", "-File", "tests/SheenUI.Integration.Tests/bin/Release/net10.0/playwright.ps1", "install", "chromium"])
+  run("Install Blazor test browser", "pwsh", ["-NoProfile", "-File", "tests/RaxUI.Integration.Tests/bin/Release/net10.0/playwright.ps1", "install", "chromium"])
   npm("Install React test browser", ["exec", "--", "playwright", "install", "chromium"])
 }
 
 run(full ? "All .NET tests and real Blazor apps" : ".NET tests without browser E2E", "dotnet", [
-  "test", "SheenUI.slnx", "-c", "Release", "--no-build",
+  "test", "RaxUI.slnx", "-c", "Release", "--no-build",
   ...(!full ? ["--filter", "Category!=E2E"] : []),
 ])
 
 if (full) {
-  run("Pack .NET CLI locally", "dotnet", ["pack", "src/SheenUI.Cli/SheenUI.Cli.csproj", "-c", "Release", "--no-build", "-o", "nupkg"])
+  run("Pack .NET CLI locally", "dotnet", ["pack", "src/RaxUI.Cli/RaxUI.Cli.csproj", "-c", "Release", "--no-build", "-o", "nupkg"])
   for (const version of ["6.5.0", "7.1.3", "9.3.1"])
     npm(`Vite acceptance: create-vite ${version}`, ["run", "test:acceptance"], { CREATE_VITE_VERSION: version })
   for (const version of ["15.5.28", "16.4.3"])

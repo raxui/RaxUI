@@ -1,18 +1,18 @@
-.sheen-popover {
-  @include sheen-surface;
+.rax-popover {
+  @include rax-surface;
   z-index: 1060; min-width: 12rem; max-width: calc(100vw - 1rem); max-height: min(24rem, calc(100vh - 1rem));
-  margin: 0; padding: 0.75rem; border-radius: var(--sheen-radius); color: var(--bs-body-color);
-  box-shadow: var(--sheen-surface-shadow), var(--sheen-shadow-md); overflow: auto;
+  margin: 0; padding: 0.75rem; border-radius: var(--rax-radius); color: var(--bs-body-color);
+  box-shadow: var(--rax-surface-shadow), var(--rax-shadow-md); overflow: auto;
   transform-origin: var(--radix-popover-content-transform-origin, top);
   &[popover] { position: fixed; inset: auto; }
 }
-@keyframes sheen-popover-in { from { opacity: 0; transform: translateY(4px) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes rax-popover-in { from { opacity: 0; transform: translateY(4px) scale(0.96); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: no-preference) {
-  .sheen-popover:popover-open, .sheen-popover[data-state="open"] { animation: sheen-popover-in 180ms var(--sheen-ease-spring); }
+  .rax-popover:popover-open, .rax-popover[data-state="open"] { animation: rax-popover-in 180ms var(--rax-ease-spring); }
 }
 
-.sheen-choice-option { padding: 0.5rem 0.75rem; border-radius: var(--sheen-radius-sm); cursor: default; }
-.sheen-choice-option[data-active] { background: rgba(var(--bs-primary-rgb), 0.12); }
-.sheen-choice-option[aria-selected="true"] { color: var(--bs-primary); font-weight: 600; }
-.sheen-choice-option[aria-disabled="true"] { opacity: 0.5; pointer-events: none; }
-.sheen-choice-empty { margin: 0; padding: 0.75rem; color: var(--bs-secondary-color); }
+.rax-choice-option { padding: 0.5rem 0.75rem; border-radius: var(--rax-radius-sm); cursor: default; }
+.rax-choice-option[data-active] { background: rgba(var(--bs-primary-rgb), 0.12); }
+.rax-choice-option[aria-selected="true"] { color: var(--bs-primary); font-weight: 600; }
+.rax-choice-option[aria-disabled="true"] { opacity: 0.5; pointer-events: none; }
+.rax-choice-empty { margin: 0; padding: 0.75rem; color: var(--bs-secondary-color); }

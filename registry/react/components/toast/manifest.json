@@ -19,7 +19,7 @@
       "source": "registry/react/components/toast/toast.tsx",
       "target": "components/ui/toast.tsx",
       "type": "tsx",
-      "sha256": "cbe631afe7d43f620f9a874ed32a0fd08e970812e5e656a7f7b382dab55d8e30"
+      "sha256": "803f0e7ab9ae6ae6164a7d8889fc7b183cac377a17c0142e852b3ac953a6b8a1"
     },
     {
       "source": "registry/react/components/toast/toaster.tsx",
@@ -35,9 +35,9 @@
     },
     {
       "source": "theme/scss/components/_toast.scss",
-      "target": "styles/sheenui/components/_toast.scss",
+      "target": "styles/raxui/components/_toast.scss",
       "type": "scss",
-      "sha256": "28e0812eefd36266de8be63ee3440f239de9870c1669680f4cf7c732ba1c5c59"
+      "sha256": "46164ba80362bbaae95c087bf5f0ebdb365edd53bbcaf02b3f3290713da341ad"
     }
   ]
 }

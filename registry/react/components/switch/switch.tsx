@@ -6,13 +6,13 @@ import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { useFieldControlProps } from "@/components/ui/field"
 import { cn } from "@/lib/utils"
 const switchSizeClasses = {
-  sm: "sheen-switch-sm",
+  sm: "rax-switch-sm",
   default: null,
-  lg: "sheen-switch-lg",
+  lg: "rax-switch-lg",
 } as const
 
 export interface SwitchProps extends React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root> {
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   size?: keyof typeof switchSizeClasses
   /** Shows a spinner in the thumb and blocks input, e.g. while a change saves. */
   loading?: boolean
@@ -28,20 +28,20 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitive.Root>, S
     return (
       <SwitchPrimitive.Root
         ref={ref}
-        data-sheen-appearance={appearance}
-        className={cn("sheen-switch", switchSizeClasses[size], className)}
+        data-rax-appearance={appearance}
+        className={cn("rax-switch", switchSizeClasses[size], className)}
         aria-busy={loading || undefined}
         data-loading={loading ? "" : undefined}
         {...wired}
         disabled={wired.disabled || loading}
       >
-        <SwitchPrimitive.Thumb className="sheen-switch-thumb">
+        <SwitchPrimitive.Thumb className="rax-switch-thumb">
           {loading ? (
             <span className="spinner-border spinner-border-sm" aria-hidden="true" />
           ) : (
             <>
-              {icon && <span className="sheen-switch-icon" data-when={checkedIcon ? "unchecked" : undefined} aria-hidden="true">{icon}</span>}
-              {checkedIcon && <span className="sheen-switch-icon" data-when="checked" aria-hidden="true">{checkedIcon}</span>}
+              {icon && <span className="rax-switch-icon" data-when={checkedIcon ? "unchecked" : undefined} aria-hidden="true">{icon}</span>}
+              {checkedIcon && <span className="rax-switch-icon" data-when="checked" aria-hidden="true">{checkedIcon}</span>}
             </>
           )}
         </SwitchPrimitive.Thumb>

@@ -4,7 +4,7 @@
 import * as React from "react"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { withoutTransition } from "@/lib/app-shell-utils"
 import { getDirection } from "@/lib/direction"
@@ -19,7 +19,7 @@ import { useMergedRef } from "@/lib/refs"
 //       <NavigationMenuItem>
 //         <NavigationMenuTrigger>Products</NavigationMenuTrigger>
 //         <NavigationMenuContent>
-//           <ul className="sheen-nav-grid">
+//           <ul className="rax-nav-grid">
 //             <NavigationMenuListItem href="/ui" title="UI kit" description="…" icon={<Icon />} />
 //           </ul>
 //         </NavigationMenuContent>
@@ -42,7 +42,7 @@ import { useMergedRef } from "@/lib/refs"
 
 const ChevronDownIcon = () => (
   <svg
-    className="sheen-nav-chevron"
+    className="rax-nav-chevron"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -57,7 +57,7 @@ const ChevronDownIcon = () => (
 
 export interface NavigationMenuProps extends React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root> {
   /** Render the shared panel. Turn off to position each NavigationMenuContent yourself. */
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   viewport?: boolean
   /** Align the panel with the open trigger's logical start (clamped to the window), or the start of the bar. */
   viewportAlign?: "trigger" | "start"
@@ -65,7 +65,7 @@ export interface NavigationMenuProps extends React.ComponentPropsWithoutRef<type
 
 const NavigationMenu = React.forwardRef<React.ElementRef<typeof NavigationMenuPrimitive.Root>, NavigationMenuProps>(
   ({ appearance, className, children, viewport = true, viewportAlign = "trigger", dir, ...props }, ref) => {
-    const theme = useSheenTheme({ appearance, direction: dir })
+    const theme = useRaxTheme({ appearance, direction: dir })
     const rootRef = React.useRef<HTMLElement>(null)
     const composedRef = useMergedRef(ref, rootRef)
 
@@ -82,8 +82,8 @@ const NavigationMenu = React.forwardRef<React.ElementRef<typeof NavigationMenuPr
     return (
       <NavigationMenuPrimitive.Root
         ref={composedRef}
-        className={cn("sheen-nav", className)}
-        {...sheenThemeAttributes(theme)}
+        className={cn("rax-nav", className)}
+        {...raxThemeAttributes(theme)}
         dir={dir ?? pageDir ?? theme.direction}
         data-viewport={viewport ? viewportAlign : undefined}
         {...props}
@@ -104,14 +104,14 @@ function useViewportPlacement(rootRef: React.RefObject<HTMLElement | null>, enab
   React.useLayoutEffect(() => {
     const root = rootRef.current
     if (!root || !enabled) return
-    const wrap = root.querySelector<HTMLElement>(":scope > .sheen-nav-viewport-wrap")
+    const wrap = root.querySelector<HTMLElement>(":scope > .rax-nav-viewport-wrap")
     if (!wrap) return
     let wasOpen = false
 
     const place = () => {
       // The panel only exists while a menu is open.
-      const viewport = wrap.querySelector<HTMLElement>(".sheen-nav-viewport")
-      const trigger = root.querySelector<HTMLElement>(".sheen-nav-trigger[data-state=open]")
+      const viewport = wrap.querySelector<HTMLElement>(".rax-nav-viewport")
+      const trigger = root.querySelector<HTMLElement>(".rax-nav-trigger[data-state=open]")
       const width = parseFloat(viewport?.style.getPropertyValue("--radix-navigation-menu-viewport-width") ?? "")
       if (!trigger || !width) {
         if (!trigger) wasOpen = false
@@ -121,7 +121,7 @@ function useViewportPlacement(rootRef: React.RefObject<HTMLElement | null>, enab
       const triggerBox = trigger.getBoundingClientRect()
       const start = direction === "rtl" ? triggerBox.right - width : triggerBox.left
       const left = Math.max(8, Math.min(start, window.innerWidth - 8 - width))
-      const set = () => wrap.style.setProperty("--sheen-nav-viewport-x", `${Math.round(left - rootBox.left)}px`)
+      const set = () => wrap.style.setProperty("--rax-nav-viewport-x", `${Math.round(left - rootBox.left)}px`)
       if (wasOpen) set()
       else withoutTransition(wrap, set)
       wasOpen = true
@@ -130,10 +130,10 @@ function useViewportPlacement(rootRef: React.RefObject<HTMLElement | null>, enab
     place()
     const sizes = new ResizeObserver(place)
     sizes.observe(root)
-    root.querySelectorAll(".sheen-nav-trigger").forEach(trigger => sizes.observe(trigger))
+    root.querySelectorAll(".rax-nav-trigger").forEach(trigger => sizes.observe(trigger))
     // A trigger opens or closes, or the panel learns its new content's size.
     const mutations = new MutationObserver((records) => {
-      if (records.some((r) => r.attributeName === "data-state" || (r.target as Element).classList.contains("sheen-nav-viewport"))) place()
+      if (records.some((r) => r.attributeName === "data-state" || (r.target as Element).classList.contains("rax-nav-viewport"))) place()
     })
     mutations.observe(root, { subtree: true, attributes: true, attributeFilter: ["data-state", "style"] })
     window.addEventListener("resize", place)
@@ -148,14 +148,14 @@ function useViewportPlacement(rootRef: React.RefObject<HTMLElement | null>, enab
 const NavigationMenuList = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.List>
->(({ className, ...props }, ref) => <NavigationMenuPrimitive.List ref={ref} className={cn("sheen-nav-list", className)} {...props} />)
+>(({ className, ...props }, ref) => <NavigationMenuPrimitive.List ref={ref} className={cn("rax-nav-list", className)} {...props} />)
 NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName
 
 const NavigationMenuItem = NavigationMenuPrimitive.Item
 
 /** Class names for a top-level link that should look like a trigger. */
 function navigationMenuTriggerStyle(className?: string) {
-  return cn("sheen-nav-trigger", className)
+  return cn("rax-nav-trigger", className)
 }
 
 const NavigationMenuTrigger = React.forwardRef<
@@ -172,15 +172,15 @@ NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName
 const NavigationMenuContent = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Content>
->(({ className, ...props }, ref) => <NavigationMenuPrimitive.Content ref={ref} className={cn("sheen-nav-content", className)} {...props} />)
+>(({ className, ...props }, ref) => <NavigationMenuPrimitive.Content ref={ref} className={cn("rax-nav-content", className)} {...props} />)
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName
 
 const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport>
 >(({ className, ...props }, ref) => (
-  <div className="sheen-nav-viewport-wrap">
-    <NavigationMenuPrimitive.Viewport ref={ref} className={cn("sheen-nav-viewport", className)} {...props} />
+  <div className="rax-nav-viewport-wrap">
+    <NavigationMenuPrimitive.Viewport ref={ref} className={cn("rax-nav-viewport", className)} {...props} />
   </div>
 ))
 NavigationMenuViewport.displayName = NavigationMenuPrimitive.Viewport.displayName
@@ -188,7 +188,7 @@ NavigationMenuViewport.displayName = NavigationMenuPrimitive.Viewport.displayNam
 const NavigationMenuLink = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Link>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link>
->(({ className, ...props }, ref) => <NavigationMenuPrimitive.Link ref={ref} className={cn("sheen-nav-link", className)} {...props} />)
+>(({ className, ...props }, ref) => <NavigationMenuPrimitive.Link ref={ref} className={cn("rax-nav-link", className)} {...props} />)
 NavigationMenuLink.displayName = NavigationMenuPrimitive.Link.displayName
 
 /** A small caret under the open trigger that slides along with it. */
@@ -196,7 +196,7 @@ const NavigationMenuIndicator = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Indicator>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Indicator>
 >(({ className, ...props }, ref) => (
-  <NavigationMenuPrimitive.Indicator ref={ref} className={cn("sheen-nav-indicator", className)} {...props}>
+  <NavigationMenuPrimitive.Indicator ref={ref} className={cn("rax-nav-indicator", className)} {...props}>
     <span />
   </NavigationMenuPrimitive.Indicator>
 ))
@@ -215,11 +215,11 @@ const NavigationMenuListItem = React.forwardRef<HTMLAnchorElement, NavigationMen
   ({ title, description, icon, active, className, ...props }, ref) => (
     <li>
       <NavigationMenuPrimitive.Link asChild active={active}>
-        <a ref={ref} className={cn("sheen-nav-item-link", className)} {...props}>
-          {icon && <span className="sheen-nav-item-icon">{icon}</span>}
-          <span className="sheen-nav-item-text">
-            <span className="sheen-nav-item-title">{title}</span>
-            {description && <span className="sheen-nav-item-description">{description}</span>}
+        <a ref={ref} className={cn("rax-nav-item-link", className)} {...props}>
+          {icon && <span className="rax-nav-item-icon">{icon}</span>}
+          <span className="rax-nav-item-text">
+            <span className="rax-nav-item-title">{title}</span>
+            {description && <span className="rax-nav-item-description">{description}</span>}
           </span>
         </a>
       </NavigationMenuPrimitive.Link>

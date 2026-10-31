@@ -13,7 +13,7 @@
       "destination": "styles",
       "target": "components/time-picker.css",
       "type": "css",
-      "sha256": "2f4ba4ada92caa74910dcf6b536f0999a46dd7fdab1adca29a7b9a8048d075bc"
+      "sha256": "9ed5a060e93b626bb8af5a82146b571e3d41576dee4cf60ec820f2e2a7e62aa8"
     }
   ],
   "files": [
@@ -22,28 +22,28 @@
       "destination": "components",
       "target": "TimePicker/TimePicker.razor",
       "type": "razor",
-      "sha256": "5c3f9b754d978a49f17203b67fb08368320bf91cc4e1684a14bae90d2a2c6d5f"
+      "sha256": "69ca4972dc0190165266d2b3e57a47a987f22e6a98cc6e34687ccce1cb41f768"
     },
     {
       "source": "TimeWheel.razor",
       "destination": "components",
       "target": "TimePicker/TimeWheel.razor",
       "type": "razor",
-      "sha256": "c88d74a04d9ec974ca69e66a0d2768b7769077c6caef8ce178a9ce6037bf2b97"
+      "sha256": "ee1b55468f613368058d118e85866874547dae671d5522ec8a461129fb0e9775"
     },
     {
       "source": "TimeWheel.razor.js",
       "destination": "components",
       "target": "TimePicker/TimeWheel.razor.js",
       "type": "js",
-      "sha256": "5c19033c043ebfd6c8ab1ed51dc272911b40b98272d996cecb4270bae1eed010"
+      "sha256": "1470fbb11c046fc46cb7e064f70e6a58620e344d6f789c3d876971db011d0791"
     },
     {
       "source": "NativeTimePicker.razor",
       "destination": "components",
       "target": "TimePicker/NativeTimePicker.razor",
       "type": "razor",
-      "sha256": "6dd4a6fac11b27ef25e5fbc91eac17e822a280cc6177bd6ffb42ce8cf72282f5"
+      "sha256": "8e1376c7fd766ab97e30efed744df30821e122761bf1a1e6aea57964c0d81eb2"
     }
   ]
 }

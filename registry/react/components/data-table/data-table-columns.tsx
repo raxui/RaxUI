@@ -24,7 +24,7 @@ function DataTableColumnHeader<TData, TValue>({
   return (
     <button
       type="button"
-      className={cn("sheen-table-sort", className)}
+      className={cn("rax-table-sort", className)}
       data-sort={sorted || undefined}
       onClick={column.getToggleSortingHandler()}
     >
@@ -63,7 +63,7 @@ function getSelectColumn<TData>(selectionLabels?: Partial<Pick<DataTableLabels, 
     },
     enableSorting: false,
     enableHiding: false,
-    meta: { className: "sheen-table-select" },
+    meta: { className: "rax-table-select" },
   }
 }
 export { DataTableColumnHeader, getSelectColumn }

@@ -1,5 +1,5 @@
-@* SheenUI Card. Source-owned: edit freely. Styled by the card component CSS. *@
-<div @attributes="AdditionalAttributes" class="@($"card sheen-card card-glass {(Variant == "default" ? "" : $"card-glass-{Variant}")} {Class}")" data-sheen-appearance="@Appearance">@ChildContent</div>
+@* RaxUI Card. Source-owned: edit freely. Styled by the card component CSS. *@
+<div @attributes="AdditionalAttributes" class="@($"card rax-card card-glass {(Variant == "default" ? "" : $"card-glass-{Variant}")} {Class}")" data-rax-appearance="@Appearance">@ChildContent</div>
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>default, flat, or glass; null inherits the surrounding theme.</summary>

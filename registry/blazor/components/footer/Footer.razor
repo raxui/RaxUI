@@ -1,7 +1,7 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
-<CascadingValue Value="this"><footer @ref="element" @attributes="AdditionalAttributes" class="sheen-footer @Class" data-variant="@Variant" data-sheen-appearance="@Appearance" style="@(Style + (MaxWidth is null ? "" : $";--sheen-footer-max:{MaxWidth}"))"><div class="sheen-footer-inner">@ChildContent</div></footer></CascadingValue>
+<CascadingValue Value="this"><footer @ref="element" @attributes="AdditionalAttributes" class="rax-footer @Class" data-variant="@Variant" data-rax-appearance="@Appearance" style="@(Style + (MaxWidth is null ? "" : $";--rax-footer-max:{MaxWidth}"))"><div class="rax-footer-inner">@ChildContent</div></footer></CascadingValue>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }

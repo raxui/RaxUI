@@ -17,13 +17,13 @@
       "source": "registry/react/components/resizable/resizable.tsx",
       "target": "components/ui/resizable.tsx",
       "type": "tsx",
-      "sha256": "d6674cfca9c2392f67eae755346f94b3b562eaeca48090a4bd026db7c2e23637"
+      "sha256": "a637db789a2965090337c15ae321077328a012439bfc023bb56fb4261052b22c"
     },
     {
       "source": "theme/scss/components/_resizable.scss",
-      "target": "styles/sheenui/components/_resizable.scss",
+      "target": "styles/raxui/components/_resizable.scss",
       "type": "scss",
-      "sha256": "aa7730d81acda1afd00097d819f428a94cd126dbc50d7a9e9670073f46e08a19"
+      "sha256": "557a08daf36ae2dedede4e057d69aeade43736c207d8ec2624f4dec94932b200"
     }
   ]
 }

@@ -18,13 +18,13 @@
       "source": "registry/react/components/form-section/form-section.tsx",
       "target": "components/ui/form-section.tsx",
       "type": "tsx",
-      "sha256": "9ff22baf7a1e69485faee1e60f36fdd795f8fbd2cd0b01c08b7db6053dce9984"
+      "sha256": "d8f04e7fd316969b4beb981fab7f585b0ae38fe83e41474ff0bdb7b4d5b85977"
     },
     {
       "source": "theme/scss/components/_form-section.scss",
-      "target": "styles/sheenui/components/_form-section.scss",
+      "target": "styles/raxui/components/_form-section.scss",
       "type": "scss",
-      "sha256": "20b075da1844bd891e24641d590f20b06cb2b00c2808cabb398ace4efbdf0a3b"
+      "sha256": "bb1255e1949f6fd26c5a0d1f87c32b3041d0abe707c0a94cb1eab88b6bc2d880"
     }
   ]
 }

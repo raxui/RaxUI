@@ -1,4 +1,4 @@
-@* SheenUI Field. Source-owned: edit freely. The cascading FieldContext is the control contract:
+@* RaxUI Field. Source-owned: edit freely. The cascading FieldContext is the control contract:
    future inputs read ControlAttributes (id, ARIA and disabled), while native/InputBase controls can
    splat it explicitly through ChildContent's context. No DOM rewriting or dependency on Form.
    Description is a slot so its presence is known during static SSR, before the control is rendered. *@
@@ -12,7 +12,7 @@
     {
         <fieldset @attributes="AdditionalAttributes" class="@CssClass" disabled="@Disabled"
                   aria-describedby="@_context.DescribedBy" aria-invalid="@(_context.Invalid ? "true" : null)"
-                  data-invalid="@(_context.Invalid ? "true" : null)" data-sheen-appearance="@Appearance">
+                  data-invalid="@(_context.Invalid ? "true" : null)" data-rax-appearance="@Appearance">
             @Content
         </fieldset>
     }
@@ -20,14 +20,14 @@
     {
         <div @attributes="AdditionalAttributes" class="@CssClass" data-orientation="@Orientation"
              data-invalid="@(_context.Invalid ? "true" : null)" data-disabled="@(Disabled ? "true" : null)"
-             data-sheen-appearance="@Appearance">
+             data-rax-appearance="@Appearance">
             @Content
         </div>
     }
 </CascadingValue>
 
 @code {
-    private readonly string _autoId = $"sheen-field-{Guid.NewGuid():N}";
+    private readonly string _autoId = $"rax-field-{Guid.NewGuid():N}";
     private EditContext? _subscribed;
     private FieldContext _context = new();
 
@@ -79,7 +79,7 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private string CssClass => $"{(IsFieldSet ? "sheen-fieldset" : "sheen-field")} {Class}".TrimEnd();
+    private string CssClass => $"{(IsFieldSet ? "rax-fieldset" : "rax-field")} {Class}".TrimEnd();
     private RenderFragment Content => @<text>
         @ChildContent?.Invoke(_context)
         @if (Description is not null)

@@ -5,7 +5,7 @@ import * as React from "react"
 import { createPortal } from "react-dom"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 
-import { useSheenPortalContainer } from "@/lib/theme"
+import { useRaxPortalContainer } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
@@ -39,7 +39,7 @@ const ToastViewport = React.forwardRef<
     container?: HTMLElement | null
   }
 >(({ className, position = "top-center", container, label = "Notifications ({hotkey})", ...props }, ref) => {
-  const themeContainer = useSheenPortalContainer()
+  const themeContainer = useRaxPortalContainer()
   // Portal out so `position: fixed` is relative to the screen even when the
   // Toaster sits inside a glass surface (backdrop-filter creates a containing block).
   const [mounted, setMounted] = React.useState(false)
@@ -47,7 +47,7 @@ const ToastViewport = React.forwardRef<
   if (!mounted) return null
 
   return createPortal(
-    <ToastPrimitives.Viewport ref={ref} label={label} data-position={position} className={cn("sheen-toast-viewport", className)} {...props} />,
+    <ToastPrimitives.Viewport ref={ref} label={label} data-position={position} className={cn("rax-toast-viewport", className)} {...props} />,
     container ?? themeContainer ?? document.body,
   )
 })
@@ -62,7 +62,7 @@ const Toast = React.forwardRef<
     data-variant={tone === "danger" ? "destructive" : tone ?? variant}
     // Errors interrupt screen readers; everything else waits politely.
     type={tone === "danger" || variant === "destructive" ? "foreground" : "background"}
-    className={cn("sheen-toast", className)}
+    className={cn("rax-toast", className)}
     {...props}
   />
 ))
@@ -78,10 +78,10 @@ const variantIcons: Partial<Record<ToastVariant, React.ReactNode>> = {
 
 /** Leading badge: a custom `icon`, or the variant's own glyph. Renders nothing for plain toasts. */
 const ToastIcon = ({ variant = "default", icon }: { variant?: ToastVariant; icon?: React.ReactNode }) => {
-  if (icon) return <span className="sheen-toast-icon sheen-toast-icon-custom">{icon}</span>
+  if (icon) return <span className="rax-toast-icon rax-toast-icon-custom">{icon}</span>
   const glyph = variantIcons[variant]
   return glyph ? (
-    <span className="sheen-toast-icon" aria-hidden="true">
+    <span className="rax-toast-icon" aria-hidden="true">
       {glyph}
     </span>
   ) : null
@@ -89,20 +89,20 @@ const ToastIcon = ({ variant = "default", icon }: { variant?: ToastVariant; icon
 ToastIcon.displayName = "ToastIcon"
 
 const ToastBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-toast-body", className)} {...props} />
+  <div ref={ref} className={cn("rax-toast-body", className)} {...props} />
 ))
 ToastBody.displayName = "ToastBody"
 
 const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
->(({ className, ...props }, ref) => <ToastPrimitives.Title ref={ref} className={cn("sheen-toast-title", className)} {...props} />)
+>(({ className, ...props }, ref) => <ToastPrimitives.Title ref={ref} className={cn("rax-toast-title", className)} {...props} />)
 ToastTitle.displayName = ToastPrimitives.Title.displayName
 
 const ToastDescription = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Description>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Description>
->(({ className, ...props }, ref) => <ToastPrimitives.Description ref={ref} className={cn("sheen-toast-description", className)} {...props} />)
+>(({ className, ...props }, ref) => <ToastPrimitives.Description ref={ref} className={cn("rax-toast-description", className)} {...props} />)
 ToastDescription.displayName = ToastPrimitives.Description.displayName
 
 const ToastAction = React.forwardRef<
@@ -111,7 +111,7 @@ const ToastAction = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}
-    className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "sheen-toast-action", className)}
+    className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "rax-toast-action", className)}
     {...props}
   />
 ))
@@ -121,7 +121,7 @@ const ToastClose = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Close>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
 >(({ className, ...props }, ref) => (
-  <ToastPrimitives.Close ref={ref} aria-label="Dismiss" className={cn("sheen-toast-close", className)} {...props}>
+  <ToastPrimitives.Close ref={ref} aria-label="Dismiss" className={cn("rax-toast-close", className)} {...props}>
     <Icon d="M18 6 6 18M6 6l12 12" />
   </ToastPrimitives.Close>
 ))

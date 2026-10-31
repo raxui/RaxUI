@@ -7,7 +7,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 import { DataTable, DataTableColumnHeader, getSelectColumn } from "../../registry/react/components/data-table/data-table"
 import { DataGrid } from "../../registry/react/components/data-grid/data-grid"
 import { Sortable, SortableContent, SortableItem, SortableItemHandle } from "../../registry/react/components/sortable/sortable"
-import { SheenThemeProvider } from "../../registry/react/foundation/theme"
+import { RaxThemeProvider } from "../../registry/react/foundation/theme"
 
 beforeAll(() => {
   window.matchMedia ??= ((query: string) => ({
@@ -37,7 +37,7 @@ beforeAll(() => {
   )
   const original = HTMLElement.prototype.getBoundingClientRect
   HTMLElement.prototype.getBoundingClientRect = function () {
-    return this.classList.contains("sheen-grid-scroller")
+    return this.classList.contains("rax-grid-scroller")
       ? {
           ...new DOMRect(0, 0, 800, 320),
           width: 800,
@@ -57,7 +57,7 @@ beforeAll(() => {
   Object.defineProperty(HTMLElement.prototype, "offsetHeight", {
     configurable: true,
     get() {
-      return this.classList.contains("sheen-grid-scroller") ? 320 : 34
+      return this.classList.contains("rax-grid-scroller") ? 320 : 34
     },
   })
   Object.defineProperty(HTMLElement.prototype, "offsetWidth", {
@@ -111,7 +111,7 @@ describe("DataTable", () => {
     const user = userEvent.setup(),
       ref = React.createRef<HTMLDivElement>()
     render(<DataTable ref={ref} columns={columns} data={items} initialPageSize={2} pageSizeOptions={[2, 3]} label="Orders" />)
-    expect(ref.current).toHaveClass("sheen-data-table")
+    expect(ref.current).toHaveClass("rax-data-table")
     expect(screen.getByRole("table", { name: "Orders" })).toBeInTheDocument()
     expect(screen.queryByText("Gamma")).not.toBeInTheDocument()
     await user.click(screen.getByRole("button", { name: "Next page" }))
@@ -155,20 +155,20 @@ describe("DataTable", () => {
     expect(screen.queryByRole("columnheader", { name: "Amount" })).not.toBeInTheDocument()
     await user.click(screen.getByRole("menuitemradio", { name: "Compact" }))
     await user.keyboard("{Escape}")
-    expect(screen.getByRole("table")).toHaveClass("sheen-table-compact")
+    expect(screen.getByRole("table")).toHaveClass("rax-table-compact")
   })
   it("preserves selected row IDs while sorting and clears the themed bulk toolbar", async () => {
     const user = userEvent.setup(),
       selected = vi.fn()
     render(
-      <SheenThemeProvider mode="dark">
+      <RaxThemeProvider mode="dark">
         <DataTable
           columns={columns}
           data={items}
           getRowId={(row) => row.id}
           bulkActions={(rows) => <button onClick={() => selected(rows.map((r) => r.id))}>Process</button>}
         />
-      </SheenThemeProvider>,
+      </RaxThemeProvider>,
     )
     await user.click(screen.getAllByRole("checkbox", { name: "Select row" })[0])
     const toolbar = await screen.findByRole("toolbar", { name: "Actions for selected rows" })
@@ -296,7 +296,7 @@ describe("Sortable", () => {
         </SortableContent>
       </Sortable>,
     )
-    expect(ref.current).toHaveClass("sheen-sortable")
+    expect(ref.current).toHaveClass("rax-sortable")
     expect(screen.getByRole("button", { name: "Move Alpha" })).toHaveAttribute("aria-describedby")
     expect(screen.getByRole("button", { name: "Move Beta" })).toBeDisabled()
   })

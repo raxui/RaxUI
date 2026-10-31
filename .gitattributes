@@ -2,4 +2,4 @@
 registry/** text eol=lf
 theme/** text eol=lf
 tests/react/fixtures/** -text
-tests/SheenUI.Integration.Tests/TestRegistry/** text eol=lf
+tests/RaxUI.Integration.Tests/TestRegistry/** text eol=lf

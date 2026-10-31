@@ -1,7 +1,7 @@
 @* Built-in SVG paths from Lucide (ISC), matching the React source. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div class="sheen-chat-messages-wrap"><div @ref="element" @attributes="AdditionalAttributes" class="sheen-chat-messages @Class" role="log" aria-label="@Label" aria-live="polite" aria-relevant="additions" tabindex="0">@ChildContent</div><button type="button" class="sheen-chat-jump" tabindex="-1" aria-hidden="true">@JumpLabel<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" /></svg></button></div>
+<div class="rax-chat-messages-wrap"><div @ref="element" @attributes="AdditionalAttributes" class="rax-chat-messages @Class" role="log" aria-label="@Label" aria-live="polite" aria-relevant="additions" tabindex="0">@ChildContent</div><button type="button" class="rax-chat-jump" tabindex="-1" aria-hidden="true">@JumpLabel<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" /></svg></button></div>
 @code {
     [Parameter] public string Label { get; set; } = "Messages";
     [Parameter] public string JumpLabel { get; set; } = "New messages";

@@ -30,7 +30,7 @@ export function sync(root, dotnet, options) {
 // The send button's enabled state follows the local draft without a server round trip.
 function update(s) {
   s.field.style.height = 'auto'; s.field.style.height = `${s.field.scrollHeight}px`
-  const send = s.root.querySelector('.sheen-ai-prompt-send')
+  const send = s.root.querySelector('.rax-ai-prompt-send')
   if (send && !send.hasAttribute('data-stop')) send.disabled = s.options.status !== 'ready' || !s.field.value.trim()
 }
 export function dispose(id) { instances.get(id)?.controller.abort(); instances.delete(id) }

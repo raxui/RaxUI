@@ -1,8 +1,8 @@
 @typeparam TItem
-<div class="sheen-data-table-toolbar">
-    <div class="sheen-table-search"><input type="search" class="form-control sheen-input form-control-sm" aria-label="@Text.Search" placeholder="@Text.Search" value="@State.Query" @oninput="Search" /></div>
+<div class="rax-data-table-toolbar">
+    <div class="rax-table-search"><input type="search" class="form-control rax-input form-control-sm" aria-label="@Text.Search" placeholder="@Text.Search" value="@State.Query" @oninput="Search" /></div>
     @foreach(var column in State.Columns.Where(c=>c.Options.Count>0)){
-        <DropdownMenu TriggerClass="btn-sm sheen-table-filter-btn" Class="sheen-table-filter">
+        <DropdownMenu TriggerClass="btn-sm rax-table-filter-btn" Class="rax-table-filter">
             <Trigger>@column.Title@if(State.Filters.TryGetValue(column.Id,out var chosen)&&chosen.Count>0){<span class="badge bg-primary-subtle text-primary-emphasis">@chosen.Count</span>}</Trigger>
             <ChildContent>
                 @foreach(var option in column.Options){
@@ -14,7 +14,7 @@
     }
     @if(State.IsFiltered){<Button Variant="ghost" Size="sm" OnClick="Reset">@Text.Reset</Button>}
     @Toolbar
-    <div class="ms-auto"><DropdownMenu TriggerClass="btn-sm" Class="sheen-table-view-options">
+    <div class="ms-auto"><DropdownMenu TriggerClass="btn-sm" Class="rax-table-view-options">
         <Trigger>@Text.View</Trigger><ChildContent>
             <DropdownMenuLabel>@Text.Columns</DropdownMenuLabel>
             @foreach(var column in State.Columns.Where(c=>c.Hideable)){

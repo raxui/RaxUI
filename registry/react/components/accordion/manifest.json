@@ -17,13 +17,13 @@
       "source": "registry/react/components/accordion/accordion.tsx",
       "target": "components/ui/accordion.tsx",
       "type": "tsx",
-      "sha256": "c9d3ef8aee07586d68c44f3db7d6b700fa3d3fe7c2323e6ccdd048601148a87e"
+      "sha256": "b3bbd4bfdc1d50b8be2aed7c0a5bd7cc404611a971d85502c8724553dffc5e5c"
     },
     {
       "source": "theme/scss/components/_accordion.scss",
-      "target": "styles/sheenui/components/_accordion.scss",
+      "target": "styles/raxui/components/_accordion.scss",
       "type": "scss",
-      "sha256": "2ddf2a8682401a043b9ad0598b1885b9a27301c79b7d567757665939535cfc96"
+      "sha256": "dda8722f118b381bec27eaa178438142f1275e38ab28586587f4bc2039f0c0f5"
     }
   ]
 }

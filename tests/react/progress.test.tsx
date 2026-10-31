@@ -23,11 +23,11 @@ describe("Progress", () => {
     const bar = screen.getByRole("progressbar", { name: "Loading" })
     expect(bar).not.toHaveAttribute("aria-valuenow")
     expect(bar).toHaveAttribute("data-state", "indeterminate")
-    expect(bar.querySelector(".sheen-progress-indicator")).toBeInTheDocument()
+    expect(bar.querySelector(".rax-progress-indicator")).toBeInTheDocument()
   })
   it("fills segments in turn and renders circle values", () => {
     render(<><Progress value={50} segments={4} /><ProgressCircle value={25} aria-label="Circle" /></>)
-    expect(document.querySelectorAll(".sheen-progress-segment")).toHaveLength(4)
+    expect(document.querySelectorAll(".rax-progress-segment")).toHaveLength(4)
     expect(screen.getByRole("progressbar", { name: "Circle" })).toHaveAttribute("aria-valuenow", "25")
   })
 })

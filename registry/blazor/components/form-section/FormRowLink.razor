@@ -1,4 +1,4 @@
-@* SheenUI FormRowLink. Source-owned: edit freely. A navigation link or an action button in a settings group. *@
+@* RaxUI FormRowLink. Source-owned: edit freely. A navigation link or an action button in a settings group. *@
 @if (Href is not null)
 {
     <a @attributes="AdditionalAttributes" href="@Href" class="@CssClass" data-has-icon="@(Icon is not null ? "" : null)"
@@ -27,26 +27,26 @@ else
     /// <summary>Extra CSS classes appended after the component's own classes.</summary>
     [Parameter] public string? Class { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
-    private string CssClass => $"sheen-form-row sheen-form-row-link {Class}".TrimEnd();
+    private string CssClass => $"rax-form-row rax-form-row-link {Class}".TrimEnd();
     private RenderFragment Content => @<text>
         @if (Icon is not null)
         {
-            <span class="sheen-form-row-icon" data-color="@IconColor" aria-hidden="true">@Icon</span>
+            <span class="rax-form-row-icon" data-color="@IconColor" aria-hidden="true">@Icon</span>
         }
-        <span class="sheen-form-row-text">
-            <span class="sheen-form-row-link-label">@Label</span>
+        <span class="rax-form-row-text">
+            <span class="rax-form-row-link-label">@Label</span>
             @if (Description is not null)
             {
-                <span class="sheen-field-description">@Description</span>
+                <span class="rax-field-description">@Description</span>
             }
         </span>
         @if (Value is not null)
         {
-            <span class="sheen-form-row-value">@Value</span>
+            <span class="rax-form-row-value">@Value</span>
         }
         @if (!Destructive)
         {
-            <span class="sheen-form-row-chevron">
+            <span class="rax-form-row-chevron">
                 @* ChevronRight path from Lucide (ISC). *@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
             </span>

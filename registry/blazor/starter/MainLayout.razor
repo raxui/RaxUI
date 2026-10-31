@@ -1,19 +1,19 @@
 @inherits LayoutComponentBase
-@* SheenUI starter layout, installed by `sheenui init` (ADR 008). Source-owned: edit freely.
+@* RaxUI starter layout, installed by `raxui init` (ADR 008). Source-owned: edit freely.
    Theme attributes come from the query string (?appearance=glass&mode=dark&accent=emerald&dir=rtl),
    so switching works without interactivity. Put them on <html> instead to fix a theme for the whole app. *@
 
-<div class="sheen-app"
-     data-sheen-appearance="@Pick(Appearance, "default", "flat", "glass")"
+<div class="rax-app"
+     data-rax-appearance="@Pick(Appearance, "default", "flat", "glass")"
      data-bs-theme="@Pick(Mode, "light", "dark")"
-     data-sheen-accent="@Pick(Accent, "emerald", "indigo", "amber")"
+     data-rax-accent="@Pick(Accent, "emerald", "indigo", "amber")"
      dir="@Pick(Dir, "ltr", "rtl")">
-    <header class="sheen-app-header">
-        <a class="sheen-app-brand" href="">SheenUI</a>
-        <span class="sheen-app-header-end">Theme playground</span>
+    <header class="rax-app-header">
+        <a class="rax-app-brand" href="">RaxUI</a>
+        <span class="rax-app-header-end">Theme playground</span>
     </header>
 
-    <main class="sheen-app-main">
+    <main class="rax-app-main">
         @Body
     </main>
 </div>

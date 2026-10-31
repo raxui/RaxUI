@@ -9,6 +9,6 @@ describe("Table", () => {
     expect(screen.getByRole("table", { name: "People" })).toBe(ref.current)
     expect(screen.getByRole("columnheader", { name: "Name" })).toHaveAttribute("scope", "col")
     expect(screen.getByRole("cell", { name: "Saad" })).toBeVisible()
-    expect(ref.current).toHaveClass("sheen-table-compact", "table-striped", "sheen-table-sticky", "table-hover")
+    expect(ref.current).toHaveClass("rax-table-compact", "table-striped", "rax-table-sticky", "table-hover")
   })
 })

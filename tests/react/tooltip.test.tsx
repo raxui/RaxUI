@@ -1,11 +1,11 @@
 import { act, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, it, vi } from "vitest"
-import { SheenThemeProvider } from "../../registry/react/foundation/theme"
+import { RaxThemeProvider } from "../../registry/react/foundation/theme"
 import { Tooltip, TooltipTrigger, TooltipContent } from "../../registry/react/components/tooltip/tooltip"
 afterEach(() => vi.useRealTimers())
 it("delays hover, describes focus, portals into the theme, and escapes", async () => {
   vi.useFakeTimers()
-  render(<SheenThemeProvider data-testid="theme"><Tooltip delayDuration={400}><TooltipTrigger>Help</TooltipTrigger><TooltipContent>Helpful text</TooltipContent></Tooltip></SheenThemeProvider>)
+  render(<RaxThemeProvider data-testid="theme"><Tooltip delayDuration={400}><TooltipTrigger>Help</TooltipTrigger><TooltipContent>Helpful text</TooltipContent></Tooltip></RaxThemeProvider>)
   const trigger = screen.getByRole("button", { name: "Help" })
   fireEvent.pointerMove(trigger, { pointerType: "mouse" })
   expect(screen.queryByRole("tooltip")).toBeNull()

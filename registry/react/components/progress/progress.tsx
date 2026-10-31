@@ -1,10 +1,10 @@
 "use client"
 
-// SheenUI progress. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI progress. Source-owned: edit freely. Ported from boot-ui.
 import * as React from "react"
 import * as ProgressPrimitive from "@radix-ui/react-progress"
 
-import type { SheenAppearance } from "@/lib/theme"
+import type { RaxAppearance } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 
@@ -21,7 +21,7 @@ const percentOf = (value: number | null | undefined, max: number) =>
 
 export interface ProgressProps extends RootProps {
   accessibleLabel?: string
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   color?: ProgressColor
   size?: "sm" | "default" | "lg"
   /** Text above the bar (also the accessible name). */
@@ -66,7 +66,7 @@ const Progress = React.forwardRef<React.ElementRef<typeof ProgressPrimitive.Root
     const bar = (
       <ProgressPrimitive.Root
         ref={ref}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         value={value}
         max={max}
         data-value={value ?? undefined}
@@ -76,7 +76,7 @@ const Progress = React.forwardRef<React.ElementRef<typeof ProgressPrimitive.Root
         aria-label={label ? undefined : accessibleLabel}
         aria-labelledby={label ? labelId : undefined}
         getValueLabel={getValueLabel ?? ((v, m) => formatValue(v, m))}
-        className={cn("sheen-progress", !label && !showValue && className)}
+        className={cn("rax-progress", !label && !showValue && className)}
         {...props}
       >
         {segments && pct != null ? (
@@ -84,9 +84,9 @@ const Progress = React.forwardRef<React.ElementRef<typeof ProgressPrimitive.Root
           Array.from({ length: segments }, (_, i) => {
             const fill = pct == null ? 0 : Math.min(Math.max((pct / 100) * segments - i, 0), 1)
             return (
-              <span key={i} className="sheen-progress-segment">
+              <span key={i} className="rax-progress-segment">
                 <span
-                  className="sheen-progress-indicator"
+                  className="rax-progress-indicator"
                   data-empty={fill === 0 || undefined}
                   style={{ transform: `translateX(${(fill - 1) * 100}%)` }}
                 />
@@ -95,7 +95,7 @@ const Progress = React.forwardRef<React.ElementRef<typeof ProgressPrimitive.Root
           })
         ) : (
           <ProgressPrimitive.Indicator
-            className="sheen-progress-indicator"
+            className="rax-progress-indicator"
             style={pct == null ? undefined : { transform: `translateX(${pct - 100}%)` }}
           />
         )}
@@ -105,15 +105,15 @@ const Progress = React.forwardRef<React.ElementRef<typeof ProgressPrimitive.Root
     if (!label && !showValue) return bar
 
     return (
-      <div className={cn("sheen-progress-field", className)} data-complete={complete || undefined}>
-        <div className="sheen-progress-label-row">
+      <div className={cn("rax-progress-field", className)} data-complete={complete || undefined}>
+        <div className="rax-progress-label-row">
           {label && (
-            <span id={labelId} className="sheen-progress-label">
+            <span id={labelId} className="rax-progress-label">
               {label}
             </span>
           )}
           {showValue && value != null && (
-            <span className="sheen-progress-value" aria-hidden="true">
+            <span className="rax-progress-value" aria-hidden="true">
               {formatValue(value, max)}
             </span>
           )}
@@ -130,7 +130,7 @@ Progress.displayName = "Progress"
 // -----------------------------------------------------------------------------
 
 export interface ProgressCircleProps extends RootProps {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   color?: ProgressColor
   /** Diameter in px. */
   size?: number
@@ -176,16 +176,16 @@ const ProgressCircle = React.forwardRef<React.ElementRef<typeof ProgressPrimitiv
         max={max}
         getValueLabel={formatValue}
         data-color={tone}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         data-value={value ?? undefined}
-        className={cn("sheen-progress-circle", className)}
+        className={cn("rax-progress-circle", className)}
         style={{ width: size, height: size, ...style }}
         {...props}
       >
         <svg viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
-          <circle className="sheen-progress-circle-track" cx={size / 2} cy={size / 2} r={radius} strokeWidth={stroke} />
+          <circle className="rax-progress-circle-track" cx={size / 2} cy={size / 2} r={radius} strokeWidth={stroke} />
           <circle
-            className="sheen-progress-circle-bar"
+            className="rax-progress-circle-bar"
             cx={size / 2}
             cy={size / 2}
             r={radius}
@@ -195,7 +195,7 @@ const ProgressCircle = React.forwardRef<React.ElementRef<typeof ProgressPrimitiv
           />
         </svg>
         {(children ?? (showValue && pct != null)) && (
-          <span className="sheen-progress-circle-content" style={{ fontSize: Math.max(10, size * 0.24) }}>
+          <span className="rax-progress-circle-content" style={{ fontSize: Math.max(10, size * 0.24) }}>
             {children ?? formatValue(value!, max)}
           </span>
         )}

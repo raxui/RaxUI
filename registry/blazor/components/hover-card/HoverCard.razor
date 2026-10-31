@@ -1,13 +1,13 @@
-@* SheenUI HoverCard. Source-owned: edit freely. Manual popover; requires interactivity. Static SSR keeps content hidden. *@
+@* RaxUI HoverCard. Source-owned: edit freely. Manual popover; requires interactivity. Static SSR keeps content hidden. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
 <button @ref="_trigger" type="button" class="@TriggerClass" aria-describedby="@_id">@Trigger</button>
 <div @ref="_content" @attributes="AdditionalAttributes" id="@_id" popover="manual" role="region" aria-label="@Label"
-     class="sheen-hover-card @Class" data-sheen-appearance="@Appearance" tabindex="-1">@ChildContent</div>
+     class="rax-hover-card @Class" data-rax-appearance="@Appearance" tabindex="-1">@ChildContent</div>
 
 @code {
-    private readonly string _generatedId = "sheen-hover-card-" + Guid.NewGuid().ToString("N");
+    private readonly string _generatedId = "rax-hover-card-" + Guid.NewGuid().ToString("N");
     private ElementReference _trigger, _content;
     private IJSObjectReference? _module;
     private string _id => Id ?? _generatedId;

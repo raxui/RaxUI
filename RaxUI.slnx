@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/RaxUI.Cli/RaxUI.Cli.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RaxUI.Cli.Tests/RaxUI.Cli.Tests.csproj" />
+    <Project Path="tests/RaxUI.Integration.Tests/RaxUI.Integration.Tests.csproj" />
+  </Folder>
+</Solution>

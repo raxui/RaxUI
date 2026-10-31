@@ -1,6 +1,6 @@
 # Blazor Kanban
 
-`sheenui add kanban` installs `Kanban` and `KanbanTypes` with its `sortable` dependency and the shared `kanban.css`. No consumer npm, CDN or new NuGet package is required. Kanban reuses `Sortable.razor.js` (ADR 019): one engine instance moves cards between columns and a second reorders columns. C# state is the source of truth; the browser only previews a move and reports the result.
+`raxui add kanban` installs `Kanban` and `KanbanTypes` with its `sortable` dependency and the shared `kanban.css`. No consumer npm, CDN or new NuGet package is required. Kanban reuses `Sortable.razor.js` (ADR 019): one engine instance moves cards between columns and a second reorders columns. C# state is the source of truth; the browser only previews a move and reports the result.
 
 ```razor
 <Kanban TItem="Card" @bind-Columns="columns" GetId="c=>c.Id" GetLabel="c=>c.Title" Committed="Save">
@@ -37,8 +37,8 @@ Accessible text is parameterized: `Instructions`, `ItemHandleLabel`, `ColumnHand
 
 ## SSR and tests
 
-Static SSR renders the full board read-only: grips are disabled and cards are not focusable. Use an interactive render mode to move cards. `GeneratedAppTests.Kanban.cs` installs Kanban into generated .NET 8/9/10 apps. It covers keyboard, mouse and touch moves, cross-column moves, disabled cards and columns, Escape, column reordering, limits, RTL with Arabic announcements, flat/glass/dark appearance, and static SSR. `examples/blazor/kanban/` contains the copyable English and Arabic boards; the test renders them, and SheenDemo hosts them at `#kanban`.
+Static SSR renders the full board read-only: grips are disabled and cards are not focusable. Use an interactive render mode to move cards. `GeneratedAppTests.Kanban.cs` installs Kanban into generated .NET 8/9/10 apps. It covers keyboard, mouse and touch moves, cross-column moves, disabled cards and columns, Escape, column reordering, limits, RTL with Arabic announcements, flat/glass/dark appearance, and static SSR. `examples/blazor/kanban/` contains the copyable English and Arabic boards; the test renders them, and RaxDemo hosts them at `#kanban`.
 
 ## Sortable engine change
 
-`Sortable.razor.js` now supports several lists per instance and several instances per root. Lists are `[data-sortable-content="<instance id>"]`, and the .NET callback receives `(id, list key, index)`. `Sortable` behavior is unchanged; run `sheenui update sortable` before adding Kanban to an existing app.
+`Sortable.razor.js` now supports several lists per instance and several instances per root. Lists are `[data-sortable-content="<instance id>"]`, and the .NET callback receives `(id, list key, index)`. `Sortable` behavior is unchanged; run `raxui update sortable` before adding Kanban to an existing app.

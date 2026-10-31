@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/pagination.css",
       "type": "css",
-      "sha256": "4f07df1a9a2ed1ccd42aaedd48ec04a261f260da65efd7dee678780ce077aa65"
+      "sha256": "0cae28bd18d626a5fa08823c3b56ab1f1b806cf067c66c792780770b229f8432"
     }
   ],
   "files": [
@@ -19,14 +19,14 @@
       "destination": "components",
       "target": "Pagination/Pagination.razor",
       "type": "razor",
-      "sha256": "accbb86168ee220958bbe19f1058126ba91c9d3ab5cc941fd98eaa0c9532b222"
+      "sha256": "1b3b1c61e63df0dfe458d90d504a4e97c4add8afb9e86048ea0e22e424f0bcdd"
     },
     {
       "source": "Pagination.razor.js",
       "destination": "components",
       "target": "Pagination/Pagination.razor.js",
       "type": "js",
-      "sha256": "0eabb17dbda3c043baadf56d5f390ade5ca6ee43e28528770981afbdfc9b4999"
+      "sha256": "24e3d8f4c6b84d5e20e371bb05975081d855943f8db19e4a7972f65305fe746f"
     }
   ]
 }

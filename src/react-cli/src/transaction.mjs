@@ -4,7 +4,7 @@ import { createHash } from "node:crypto"
 import path from "node:path"
 import { assertInsideProject } from "./safety.mjs"
 
-export const TRANSACTION_DIR = ".sheenui-react-transaction"
+export const TRANSACTION_DIR = ".raxui-react-transaction"
 const hash = bytes => bytes === null ? null : createHash("sha256").update(bytes).digest("hex")
 const same = (a, b) => process.platform === "win32" ? a.toLowerCase() === b.toLowerCase() : a === b
 const digest = value => typeof value === "string" && /^[a-f0-9]{64}$/.test(value)
@@ -121,7 +121,7 @@ function rollback(root, j, keepChanges = false) {
   })
   if ((j.external || conflicts.length) && !keepChanges) {
     const paths = conflicts.map(e => e.target).join(", ")
-    throw new Error(`Interrupted installation: recovery stopped without changing files. ${j.external ? "npm was interrupted; stop any remaining npm process first. " : ""}Preserved changed paths: ${paths || "package files"}. Original backups are in ${TRANSACTION_DIR}. Review them, then run 'sheenui-react recover --keep-changes' to retain changed paths and restore the remaining files.`)
+    throw new Error(`Interrupted installation: recovery stopped without changing files. ${j.external ? "npm was interrupted; stop any remaining npm process first. " : ""}Preserved changed paths: ${paths || "package files"}. Original backups are in ${TRANSACTION_DIR}. Review them, then run 'raxui-react recover --keep-changes' to retain changed paths and restore the remaining files.`)
   }
   const skip = new Set(conflicts.map(e => e.target))
   for (const entry of [...j.files].reverse()) {
@@ -149,7 +149,7 @@ export function recoverTransaction(projectDir, { keepChanges = false, stdout = p
   try {
     checked(root, TRANSACTION_DIR, true)
     const j = load(root)
-    if (alive(j.pid)) throw new Error(`SheenUI CLI process ${j.pid} is still running; retry after it exits.`)
+    if (alive(j.pid)) throw new Error(`RaxUI CLI process ${j.pid} is still running; retry after it exits.`)
     const lock = checked(root, `${TRANSACTION_DIR}/recovery.lock`, true)
     if (present(lock)) throw new Error(`Recovery lock exists. After confirming no recovery process is running, remove only ${TRANSACTION_DIR}/recovery.lock and retry.`)
     durable(lock, String(process.pid))
@@ -159,7 +159,7 @@ export function recoverTransaction(projectDir, { keepChanges = false, stdout = p
       j.phase = committed ? "committed" : "recovered"
       persist(root, j)
       cleanup(root)
-      stdout.write(committed ? "Cleaned up a completed SheenUI installation.\n" : `Recovered interrupted SheenUI installation.${kept.length ? ` Kept changed paths: ${kept.join(", ")}.` : ""}\n`)
+      stdout.write(committed ? "Cleaned up a completed RaxUI installation.\n" : `Recovered interrupted RaxUI installation.${kept.length ? ` Kept changed paths: ${kept.join(", ")}.` : ""}\n`)
       return true
     } catch (error) {
       if (present(lock)) unlinkSync(checked(root, `${TRANSACTION_DIR}/recovery.lock`, true))

@@ -11,11 +11,11 @@ ADR 002 deferred static SSR-only apps, Interactive WebAssembly and Interactive A
 
 Support every render mode of a Blazor Web App on .NET 8, 9 and 10: static SSR, Interactive Server, Interactive WebAssembly and Interactive Auto, per page or global.
 
-- `init`, `add` and `update` still run in the server project, which keeps `sheenui.json`, `sheenui.lock.json`, the shared styles and the `App.razor` links.
+- `init`, `add` and `update` still run in the server project, which keeps `raxui.json`, `raxui.lock.json`, the shared styles and the `App.razor` links.
 - When the server project references exactly one Blazor WebAssembly project, that client project receives `Components/UI`. Component usings go into both `_Imports.razor` files, so server pages and client pages can use the components. The namespace is the client's root namespace.
 - Lock targets remain project-relative (`Components/UI/...`). Targets under `componentsPath` resolve against the client project; all others resolve against the server project. Every path is still validated against the project that owns it.
 - The recovery journal (ADR 018) moves to the folder that holds both projects, so a single transaction covers writes to both. Each command recovers a journal in the project folder and in its parent folder.
-- The client must be a sibling folder, as the template creates it. Running SheenUI inside the client project, or in a standalone Blazor WebAssembly app (`dotnet new blazorwasm`, which has `index.html` instead of `App.razor`), fails with a message saying where to run it.
+- The client must be a sibling folder, as the template creates it. Running RaxUI inside the client project, or in a standalone Blazor WebAssembly app (`dotnet new blazorwasm`, which has `index.html` instead of `App.razor`), fails with a message saying where to run it.
 - `init` no longer warns when an app has no interactive render mode. Static SSR is supported, so it prints a note instead. It warns when WebAssembly is registered but no client project is referenced.
 
 The client project serves collocated JavaScript and scoped CSS at the same paths as the server project: `/Components/UI/...` and the bundle imported by `{App}.styles.css`. Components therefore need no changes.

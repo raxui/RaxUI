@@ -6,7 +6,7 @@ describe("Card", () => {
   it.each(["default", "flat", "glass"] as const)("composes content with %s appearance and forwarded ref", (appearance) => {
     const ref = React.createRef<HTMLDivElement>()
     render(<Card ref={ref} appearance={appearance} variant="outline"><CardHeader><CardTitle>Account</CardTitle><CardDescription>Settings</CardDescription></CardHeader><CardContent>Profile</CardContent><CardFooter>Updated</CardFooter></Card>)
-    expect(ref.current).toHaveAttribute("data-sheen-appearance", appearance)
+    expect(ref.current).toHaveAttribute("data-rax-appearance", appearance)
     expect(ref.current).toHaveClass("card-glass-outline")
     expect(ref.current).toHaveTextContent("AccountSettingsProfileUpdated")
   })

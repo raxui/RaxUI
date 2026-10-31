@@ -7,7 +7,7 @@ import {
   type Table as TanstackTable,
   type VisibilityState,
 } from "@tanstack/react-table"
-import { type SheenAppearance } from "@/lib/theme"
+import { type RaxAppearance } from "@/lib/theme"
 
 // -----------------------------------------------------------------------------
 // DataGrid — a spreadsheet-like grid on TanStack Table + Virtual.
@@ -41,7 +41,7 @@ export interface DataGridCellEdit<TData> {
 }
 
 export interface DataGridProps<TData> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   data: TData[]
   columns: ColumnDef<TData, any>[] // eslint-disable-line @typescript-eslint/no-explicit-any
   getRowId?: (row: TData, index: number) => string

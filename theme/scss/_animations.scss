@@ -8,56 +8,56 @@
 // keyframes inside `@include motion-safe`.
 // -----------------------------------------------------------------------------
 
-@keyframes sheen-fade-in {
+@keyframes rax-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-@keyframes sheen-fade-out {
+@keyframes rax-fade-out {
   from { opacity: 1; }
   to   { opacity: 0; }
 }
 
 // Centered surfaces: grow from slightly small, overshoot, settle.
-@keyframes sheen-zoom-in {
+@keyframes rax-zoom-in {
   from { opacity: 0; transform: scale(0.9) translateY(0.5rem); }
   to   { opacity: 1; transform: none; }
 }
 
-@keyframes sheen-zoom-out {
+@keyframes rax-zoom-out {
   from { opacity: 1; transform: none; }
   to   { opacity: 0; transform: scale(0.95); }
 }
 
 // Bottom sheets (mobile dialogs).
-@keyframes sheen-sheet-in {
+@keyframes rax-sheet-in {
   from { transform: translateY(105%); }
   to   { transform: none; }
 }
 
-@keyframes sheen-sheet-out {
+@keyframes rax-sheet-out {
   from { transform: none; }
   to   { transform: translateY(105%); }
 }
 
 // Anchored popovers (menus, popovers, selects): scale from the trigger.
 // Pair with `transform-origin: var(--radix-*-content-transform-origin)`.
-@keyframes sheen-pop-in {
+@keyframes rax-pop-in {
   from { opacity: 0; transform: scale(0.92); }
   to   { opacity: 1; transform: none; }
 }
 
-@keyframes sheen-pop-out {
+@keyframes rax-pop-out {
   from { opacity: 1; transform: none; }
   to   { opacity: 0; transform: scale(0.96); }
 }
 
 // Activity indicators.
-@keyframes sheen-spin {
+@keyframes rax-spin {
   to { transform: rotate(360deg); }
 }
 
-@keyframes sheen-pulse {
+@keyframes rax-pulse {
   from { opacity: 1; }
   to   { opacity: 0.45; }
 }

@@ -1,4 +1,4 @@
-<span @attributes="AdditionalAttributes" class="sheen-carousel-counter @Class" aria-hidden="true">@(Carousel.Selected+1) / @Carousel.SnapCount</span>
+<span @attributes="AdditionalAttributes" class="rax-carousel-counter @Class" aria-hidden="true">@(Carousel.Selected+1) / @Carousel.SnapCount</span>
 @code {
  [CascadingParameter] public Carousel Carousel {get;set;}=default!;
  [Parameter] public string? Class {get;set;}

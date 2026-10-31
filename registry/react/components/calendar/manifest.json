@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "calendar",
   "version": "0.1.0",
-  "description": "Source-owned calendar with boot-ui feature parity and SheenUI theme integration.",
+  "description": "Source-owned calendar with boot-ui feature parity and RaxUI theme integration.",
   "requires": [
     "foundation"
   ],
@@ -15,13 +15,13 @@
       "source": "registry/react/components/calendar/calendar.tsx",
       "target": "components/ui/calendar.tsx",
       "type": "tsx",
-      "sha256": "f7a4c7597cd6d510a585e9d05f2630715bbcd83166132d10ab9dac950bf8159f"
+      "sha256": "b5ede318e8a53885732505c1e047120eccd6e255bdf84d27ef2264d88d9a144b"
     },
     {
       "source": "theme/scss/components/_calendar.scss",
-      "target": "styles/sheenui/components/_calendar.scss",
+      "target": "styles/raxui/components/_calendar.scss",
       "type": "scss",
-      "sha256": "c3bd1285f69e16d27e001e451e62438613dfdb4466d1a03d27d784ab81e239d2"
+      "sha256": "3299ee58a1e15c76a93b264d1a67cd784073595b472dd51885c60529e54cc35d"
     },
     {
       "source": "registry/react/foundation/direction.ts",

@@ -21,13 +21,13 @@
       "source": "registry/react/components/kanban/kanban.tsx",
       "target": "components/ui/kanban.tsx",
       "type": "tsx",
-      "sha256": "8013ef69385d1b953065d5b2db391b0e8fb887b50ec694a5c5ebf589771d9ab4"
+      "sha256": "e8574718ac9505bca9f3efc929fb94b79e5bd8bbf02c9034cecd0f3de337d0df"
     },
     {
       "source": "theme/scss/components/_kanban.scss",
-      "target": "styles/sheenui/components/_kanban.scss",
+      "target": "styles/raxui/components/_kanban.scss",
       "type": "scss",
-      "sha256": "5159825403633f0fd2f607db56faf6d266d3a89a7095d9ee5437bb3395da6ab4"
+      "sha256": "722a95b0577f8e96e1522e82e5a79c587232f694fb4436daad4022fc241b1af2"
     },
     {
       "source": "registry/react/components/kanban/kanban-context.tsx",
@@ -45,31 +45,31 @@
       "source": "registry/react/components/kanban/kanban-board.tsx",
       "target": "components/ui/kanban-board.tsx",
       "type": "tsx",
-      "sha256": "0f6a9b69062d5b67b237f182a1b34d6f88ece7ff753bdc01ae42d5d646ed5cc0"
+      "sha256": "ac12622d20f131ec6b0dc961b2315231789758923fc1615c3464678239e06d5e"
     },
     {
       "source": "registry/react/components/kanban/kanban-column.tsx",
       "target": "components/ui/kanban-column.tsx",
       "type": "tsx",
-      "sha256": "3d78f8ac82c46ac57d658831d8578b12153b89dac816e0b7739ca6edfa21733e"
+      "sha256": "ec85abb450d3ecb1e5e8e8974cfb6aeb219d9761ca9db958c77a296ba9a51fed"
     },
     {
       "source": "registry/react/components/kanban/kanban-item.tsx",
       "target": "components/ui/kanban-item.tsx",
       "type": "tsx",
-      "sha256": "614286dd13e81cbafff5bd4c78c5bd105941f797e0a7f29637bfd0b4ad07f32c"
+      "sha256": "8d9880caece463e39574641c7013498a89797c4242cac9804e3c5656cd0dad3a"
     },
     {
       "source": "registry/react/components/kanban/kanban-handles.tsx",
       "target": "components/ui/kanban-handles.tsx",
       "type": "tsx",
-      "sha256": "3aa2a2432d3c76c4e8121d98417b81e0363222d3addb5eae72ab409f616b0ed1"
+      "sha256": "7bb5b8fd81f5d43d337a9a394dedac29d6a6a800e4caa3cddd6c78fe9a1cdda8"
     },
     {
       "source": "registry/react/components/kanban/kanban-overlay.tsx",
       "target": "components/ui/kanban-overlay.tsx",
       "type": "tsx",
-      "sha256": "b9bdad7254a17ea521b5e16cbd10a9eaeedac36fbdbe693ee016e2b1f3bd6e7e"
+      "sha256": "21536bf3c7e8733f015ccff8b591f3571fa11ae293a93087f7c2ab206c8d8db1"
     }
   ]
 }

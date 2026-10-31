@@ -2,7 +2,7 @@
 
 - **Status:** Accepted. Calculated, positioned rows were selected after the comparative experiment; the complete data components pass generated-app tests on .NET 8/9/10.
 - **Date:** 2026-10-27
-- **Tracking:** [Blazor phase 6, #74](https://github.com/SaadAlsaree/SheenUI/issues/74); [Blazor roadmap, #71](https://github.com/SaadAlsaree/SheenUI/issues/71).
+- **Tracking:** [Blazor phase 6, #74](https://github.com/raxui/RaxUI/issues/74); [Blazor roadmap, #71](https://github.com/raxui/RaxUI/issues/71).
 
 ## Context
 
@@ -14,7 +14,7 @@ The Blazor manifest currently declares registry component dependencies, not NuGe
 
 ### Shared styling
 
-Reuse the existing shared classes and partials in theme/scss/components/ (for example sheen-grid-*). Blazor components emit the same class names and data attributes as React; do not create a separate Blazor SCSS source. New styles needed by both frameworks go into the shared partials. One shared style source still produces the per-framework, per-component CSS outputs that [ADR 015](015-per-component-css.md) requires.
+Reuse the existing shared classes and partials in theme/scss/components/ (for example rax-grid-*). Blazor components emit the same class names and data attributes as React; do not create a separate Blazor SCSS source. New styles needed by both frameworks go into the shared partials. One shared style source still produces the per-framework, per-component CSS outputs that [ADR 015](015-per-component-css.md) requires.
 
 ### DataTable
 
@@ -24,7 +24,7 @@ Match React search, sorting, faceted filters, pagination, row selection and bulk
 
 ### DataGrid
 
-Provide the React scope: fixed-height virtualized rows, editable text/number/select/date/checkbox cells with validation, keyboard navigation, copy/paste, row selection, column visibility, width adjustment and pinning, footer aggregates and status labels. Reuse existing SheenUI controls and shared styles.
+Provide the React scope: fixed-height virtualized rows, editable text/number/select/date/checkbox cells with validation, keyboard navigation, copy/paste, row selection, column visibility, width adjustment and pinning, footer aggregates and status labels. Reuse existing RaxUI controls and shared styles.
 
 Keep editing state in C#, keyed by the pair of stable row ID and column ID, including draft value and validation state. An input element is a view of the draft, not its storage. A rerender or virtualization change must not silently discard a draft. Use stable @key values for rows and editors. Track active identity separately from its current position in the sorted/filtered view.
 
@@ -67,7 +67,7 @@ Evaluate whether it can keep the active/editor row mounted outside its ordinary 
 
 ### Candidate B: calculated window with positioned rows
 
-Follow the existing React body geometry: a relatively positioned sheen-grid-body has height rowCount * rowHeight. Rendered rows are absolutely positioned with transform: translateY(index * rowHeight) and the fixed row height. This represents distant active rows without spacer gaps or changing the visible rows' coordinates.
+Follow the existing React body geometry: a relatively positioned rax-grid-body has height rowCount * rowHeight. Rendered rows are absolutely positioned with transform: translateY(index * rowHeight) and the fixed row height. This represents distant active rows without spacer gaps or changing the visible rows' coordinates.
 
 Calculate the visible range from the body's scroll offset and viewport height, with bounded overscan. Render the union of that range and the active/editor row indexes, remove duplicates and sort indexes ascending before rendering. Account for header/footer geometry when converting the scroller offset to a body row index. Clamp empty, end-of-data and resized viewport cases; recalculate on density/row-height changes.
 
@@ -110,7 +110,7 @@ The interactive features require an interactive render mode. Document the bounda
 3. Resizable.
 4. DataGrid, after resolving the virtualization experiment.
 
-Keep the components independently installable through the existing registry contract. Declare their component dependencies and assets, generate per-component CSS and refresh hashes. Add React-equivalent examples to SheenDemo, including Arabic and English, rather than inventing a smaller substitute scope. Reuse models and existing helpers where appropriate without coupling independent components or adding speculative abstractions.
+Keep the components independently installable through the existing registry contract. Declare their component dependencies and assets, generate per-component CSS and refresh hashes. Add React-equivalent examples to RaxDemo, including Arabic and English, rather than inventing a smaller substitute scope. Reuse models and existing helpers where appropriate without coupling independent components or adding speculative abstractions.
 
 Verify state logic with focused .NET tests and verify focus, keyboard, pointer/touch interactions, clipboard, movement and geometry in actual browser tests. Cover .NET 8/9/10, both languages/directions, default/flat/glass, light/dark, relevant density changes, desktop/mobile sizes and reduced motion. Browser touch emulation is not evidence of physical touch-device testing; DOM assertions are not a substitute for recording any screen-reader checks separately.
 
@@ -118,7 +118,7 @@ A documentation draft does not mark #74 complete. Acceptance requires the implem
 
 ## Alternatives not selected
 
-- QuickGrid: introduces a separate package installation/versioning concern and an additional rendering contract to adapt to SheenUI. Build on the existing table/pagination components for this phase.
+- QuickGrid: introduces a separate package installation/versioning concern and an additional rendering contract to adapt to RaxUI. Build on the existing table/pagination components for this phase.
 - React package wrappers inside Blazor: add a second UI runtime and do not provide Blazor-native ownership or binding.
 - Native HTML drag/drop alone: does not meet the accepted mouse/touch/keyboard interaction scope without additional behavior.
 - Canceling editing on scroll: violates the agreed draft/focus continuity contract.
@@ -126,4 +126,4 @@ A documentation draft does not mark #74 complete. Acceptance requires the implem
 
 ## Consequences and remaining evidence
 
-SheenUI owns the C# state and JavaScript interaction/accessibility behavior and must test both. The phase adds no new external runtime package or NuGet-installation capability. The calculated window resolves the virtualization choice. Registry installation/idempotence, C# state checks, keyboard/pointer/emulated-touch interactions, clipboard/editing, themes/RTL and static SSR passed in generated .NET 8/9/10 apps. Firefox/WebKit, physical touch devices, screen readers, WebAssembly and Auto were not verified; those remain separate validation work.
+RaxUI owns the C# state and JavaScript interaction/accessibility behavior and must test both. The phase adds no new external runtime package or NuGet-installation capability. The calculated window resolves the virtualization choice. Registry installation/idempotence, C# state checks, keyboard/pointer/emulated-touch interactions, clipboard/editing, themes/RTL and static SSR passed in generated .NET 8/9/10 apps. Firefox/WebKit, physical touch devices, screen readers, WebAssembly and Auto were not verified; those remain separate validation work.

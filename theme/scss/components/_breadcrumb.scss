@@ -5,9 +5,9 @@
 // New crumbs (BreadcrumbTrail) slide in with a spring.
 // -----------------------------------------------------------------------------
 
-.sheen-breadcrumb {
-  --sheen-breadcrumb-font-size: 0.9375rem;
-  --sheen-breadcrumb-max-width: 12rem; // longest label before it truncates
+.rax-breadcrumb {
+  --rax-breadcrumb-font-size: 0.9375rem;
+  --rax-breadcrumb-max-width: 12rem; // longest label before it truncates
 
   min-width: 0;
   max-width: 100%;
@@ -17,8 +17,8 @@
   }
 }
 
-.sheen-breadcrumb-list {
-  --sheen-breadcrumb-dir: 1; // flips the enter slide in RTL
+.rax-breadcrumb-list {
+  --rax-breadcrumb-dir: 1; // flips the enter slide in RTL
 
   display: flex;
   flex-wrap: wrap;
@@ -28,46 +28,46 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: var(--sheen-breadcrumb-font-size);
+  font-size: var(--rax-breadcrumb-font-size);
   line-height: 1.3;
 
   [dir="rtl"] & {
-    --sheen-breadcrumb-dir: -1;
+    --rax-breadcrumb-dir: -1;
   }
 
   // Hover pills bleed into the gutter so the first label aligns with the text above.
-  .sheen-breadcrumb[data-variant="default"] & {
+  .rax-breadcrumb[data-variant="default"] & {
     margin-inline-start: -0.5rem;
   }
 
-  .sheen-breadcrumb[data-variant="glass"] & {
-    @include glass($alpha: var(--sheen-glass-alpha-subtle), $shadow: var(--sheen-shadow-sm));
+  .rax-breadcrumb[data-variant="glass"] & {
+    @include glass($alpha: var(--rax-glass-alpha-subtle), $shadow: var(--rax-shadow-sm));
     flex-wrap: nowrap;
     padding: 0.25rem 0.375rem;
     border-radius: 999px;
   }
 }
 
-.sheen-breadcrumb-item {
+.rax-breadcrumb-item {
   display: inline-flex;
   align-items: center;
   min-width: 0;
 
   @include motion-safe {
     &[data-enter] {
-      animation: sheen-breadcrumb-in var(--sheen-duration-slow) var(--sheen-ease-spring);
+      animation: rax-breadcrumb-in var(--rax-duration-slow) var(--rax-ease-spring);
     }
   }
 }
 
 // ---- Links & current page ---------------------------------------------------
-.sheen-breadcrumb-link,
-.sheen-breadcrumb-page {
+.rax-breadcrumb-link,
+.rax-breadcrumb-page {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
   min-width: 0;
-  max-width: var(--sheen-breadcrumb-max-width);
+  max-width: var(--rax-breadcrumb-max-width);
   padding: 0.3125rem 0.5rem;
   border-radius: 999px;
 
@@ -78,7 +78,7 @@
   }
 }
 
-.sheen-breadcrumb-link {
+.rax-breadcrumb-link {
   border: 0;
   color: var(--bs-secondary-color);
   background: none;
@@ -87,8 +87,8 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition:
-    color var(--sheen-duration-fast) ease,
-    background-color var(--sheen-duration-fast) ease;
+    color var(--rax-duration-fast) ease,
+    background-color var(--rax-duration-fast) ease;
 
   &:hover,
   &[data-state="open"] {
@@ -103,9 +103,9 @@
 
   @include motion-safe {
     transition:
-      color var(--sheen-duration-fast) ease,
-      background-color var(--sheen-duration-fast) ease,
-      transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+      color var(--rax-duration-fast) ease,
+      background-color var(--rax-duration-fast) ease,
+      transform var(--rax-duration-slow) var(--rax-ease-spring);
 
     &:active {
       transform: scale(0.94);
@@ -113,12 +113,12 @@
   }
 }
 
-.sheen-breadcrumb-page {
+.rax-breadcrumb-page {
   color: var(--bs-emphasis-color);
   font-weight: 600;
 
   // In the glass pill the current page sits on its own raised chip.
-  .sheen-breadcrumb[data-variant="glass"] & {
+  .rax-breadcrumb[data-variant="glass"] & {
     background-color: rgb(var(--bs-body-bg-rgb));
     box-shadow:
       0 0 0 0.5px rgba(0, 0, 0, 0.04),
@@ -131,14 +131,14 @@
   }
 }
 
-.sheen-breadcrumb-text {
+.rax-breadcrumb-text {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 // ---- Separators -------------------------------------------------------------
-.sheen-breadcrumb-separator {
+.rax-breadcrumb-separator {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -171,17 +171,17 @@
 
   @include motion-safe {
     &[data-enter] {
-      animation: sheen-breadcrumb-in var(--sheen-duration-slow) var(--sheen-ease-spring);
+      animation: rax-breadcrumb-in var(--rax-duration-slow) var(--rax-ease-spring);
     }
   }
 }
 
 // ---- Collapsed middle -------------------------------------------------------
-.sheen-breadcrumb-more {
+.rax-breadcrumb-more {
   padding-inline: 0.375rem;
 }
 
-.sheen-breadcrumb-ellipsis {
+.rax-breadcrumb-ellipsis {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -194,22 +194,22 @@
 }
 
 // New crumbs slide out from behind the previous one.
-@keyframes sheen-breadcrumb-in {
+@keyframes rax-breadcrumb-in {
   from {
     opacity: 0;
-    translate: calc(-0.75rem * var(--sheen-breadcrumb-dir, 1)) 0;
+    translate: calc(-0.75rem * var(--rax-breadcrumb-dir, 1)) 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheen-breadcrumb, .sheen-breadcrumb * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .rax-breadcrumb, .rax-breadcrumb * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-.sheen-breadcrumb-collapse { position: relative; }
-.sheen-breadcrumb-collapse > ul { position: absolute; z-index: 1; min-width: max-content; padding: 1rem; background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: var(--sheen-radius); }
+.rax-breadcrumb-collapse { position: relative; }
+.rax-breadcrumb-collapse > ul { position: absolute; z-index: 1; min-width: max-content; padding: 1rem; background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: var(--rax-radius); }
 
-.sheen-breadcrumb .sheen-breadcrumb-link svg { width: 1em; height: 1em; }
+.rax-breadcrumb .rax-breadcrumb-link svg { width: 1em; height: 1em; }
 
-.sheen-breadcrumb[data-variant="glass"] { background: var(--sheen-surface-bg); border-color: var(--sheen-border-color); box-shadow: var(--sheen-surface-shadow); backdrop-filter: var(--sheen-surface-filter); -webkit-backdrop-filter: var(--sheen-surface-filter); }
+.rax-breadcrumb[data-variant="glass"] { background: var(--rax-surface-bg); border-color: var(--rax-border-color); box-shadow: var(--rax-surface-shadow); backdrop-filter: var(--rax-surface-filter); -webkit-backdrop-filter: var(--rax-surface-filter); }
 
-.sheen-breadcrumb .sheen-breadcrumb-page svg, .sheen-breadcrumb .sheen-breadcrumb-separator svg { width: 1em; height: 1em; }
+.rax-breadcrumb .rax-breadcrumb-page svg, .rax-breadcrumb .rax-breadcrumb-separator svg { width: 1em; height: 1em; }

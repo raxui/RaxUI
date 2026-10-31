@@ -1,6 +1,6 @@
-@* SheenUI Table. Source-owned: edit freely. Styled by the table component CSS. *@
-<div class="@($"sheen-table-container {ContainerClass}")" style="@ContainerStyle">
-    <table data-density="@Density" @attributes="AdditionalAttributes" class="@($"table sheen-table {(Hover ? "table-hover" : "")} {(Striped ? "table-striped" : "")} {(Density == "compact" ? "sheen-table-compact" : "")} {(StickyHeader ? "sheen-table-sticky" : "")} {Class}")" data-sheen-appearance="@Appearance">@ChildContent</table>
+@* RaxUI Table. Source-owned: edit freely. Styled by the table component CSS. *@
+<div class="@($"rax-table-container {ContainerClass}")" style="@ContainerStyle">
+    <table data-density="@Density" @attributes="AdditionalAttributes" class="@($"table rax-table {(Hover ? "table-hover" : "")} {(Striped ? "table-striped" : "")} {(Density == "compact" ? "rax-table-compact" : "")} {(StickyHeader ? "rax-table-sticky" : "")} {Class}")" data-rax-appearance="@Appearance">@ChildContent</table>
 </div>
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }

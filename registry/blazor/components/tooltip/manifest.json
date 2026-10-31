@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/tooltip.css",
       "type": "css",
-      "sha256": "119c9fd4b2998c3461263f71f3294e680131530167f1b862ae07e2161e2cf306"
+      "sha256": "6970c0ca8cafc95c8d30449c34584d2fdb326a9952c00f0808bb43d1fb9c58ee"
     }
   ],
   "files": [
@@ -19,14 +19,14 @@
       "destination": "components",
       "target": "Tooltip/Tooltip.razor",
       "type": "razor",
-      "sha256": "7af714dea6998a37feb52c1be1ac1453ac6bc86c7719cadb2bc6910f442471c9"
+      "sha256": "da5d0289d15adf67c44a4c4ddfdb01b04919db1b90d54575dcbecdbc88562872"
     },
     {
       "source": "Tooltip.razor.js",
       "destination": "components",
       "target": "Tooltip/Tooltip.razor.js",
       "type": "js",
-      "sha256": "b61174689142ee858058af75f2e88080f1d618dc838fc104ed6632a576106c33"
+      "sha256": "dc4ad57349a0094eb738ae99df62f790aba5dec6bc8c6c8d68e1ff828043e547"
     }
   ]
 }

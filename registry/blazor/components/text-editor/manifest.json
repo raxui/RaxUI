@@ -16,7 +16,7 @@
       "destination": "styles",
       "target": "components/text-editor.css",
       "type": "css",
-      "sha256": "fd0a78dc5e1b34caddf79abf17308d7c3148e43cfd19ae4849b677e10d08d613"
+      "sha256": "62f4e08e7cafb8cad3de4074f9f7a0e4b04a0ac85f987c2d10e2f5c62525cf24"
     }
   ],
   "files": [
@@ -25,35 +25,35 @@
       "destination": "components",
       "target": "TextEditor/TextEditor.razor",
       "type": "razor",
-      "sha256": "bad805bb5670879d39c9d6d81129c77781328d5f107e07501f530587711189b4"
+      "sha256": "db020a63e73c61e45db0b9cca0110f518c25b41fb95d6262568f3143f0cf5c44"
     },
     {
       "source": "TextEditor.razor.js",
       "destination": "components",
       "target": "TextEditor/TextEditor.razor.js",
       "type": "js",
-      "sha256": "cd22112b67f24fafe1062e54918399c7cf0f9f9fada97f8eccff930d9a8211ad"
+      "sha256": "625ba41081050d78fa19d66b9f5a0914bf09a8005846bf2e771e39ce7662b855"
     },
     {
       "source": "TextEditorContent.razor",
       "destination": "components",
       "target": "TextEditor/TextEditorContent.razor",
       "type": "razor",
-      "sha256": "51f76f0fee721960245a9fb7f3acecdb11642f9f285266f44aebf6e9092db545"
+      "sha256": "2413f4fc957067d518009ceaf7d9090653396a8f26e30089e3ebef6a58c4e812"
     },
     {
       "source": "TextEditorContent.razor.js",
       "destination": "components",
       "target": "TextEditor/TextEditorContent.razor.js",
       "type": "js",
-      "sha256": "12b5dd5e6b70f51b4679297cb1207b76db44c1238f11d31c8f9d664bcf43e92d"
+      "sha256": "5ccb9ed4b8813420b0812f2cc0ea03a7d82aa425af06756a90a0b9c5ba602a59"
     },
     {
       "source": "TextEditorHtml.cs",
       "destination": "components",
       "target": "TextEditor/TextEditorHtml.cs",
       "type": "cs",
-      "sha256": "fd547b94d1f2805f8a4c889a19a39e457074318c2b32521f8af64719fcc1303f"
+      "sha256": "749c7906eb06e33d6ed29ef2297aec07eb5405a15e47861df1c5b4bc6c7e9ca4"
     },
     {
       "source": "TextEditorTypes.razor",
@@ -67,7 +67,7 @@
       "destination": "components",
       "target": "TextEditor/TextEditorView.razor",
       "type": "razor",
-      "sha256": "32d034da5bbf2fc43e907f962af97022da15e5c8b12fa235d674ba663b950df3"
+      "sha256": "e59742fde9a9895a1570ff2d7f2e4416f03c009b727223e179186df6994123e1"
     }
   ]
 }

@@ -5,26 +5,26 @@ import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 
 import { useFieldControlProps } from "@/components/ui/field"
 import { cn } from "@/lib/utils"
-import { useSheenTheme, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, type RaxAppearance } from "@/lib/theme"
 
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> & { appearance?: SheenAppearance }
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> & { appearance?: RaxAppearance }
 >(({ className, appearance, dir, ...props }, ref) => {
-  const theme = useSheenTheme({ appearance, direction: dir })
+  const theme = useRaxTheme({ appearance, direction: dir })
   const wired = useFieldControlProps(props)
-  return <RadioGroupPrimitive.Root ref={ref} dir={theme.direction} data-sheen-appearance={appearance} className={cn("sheen-radio-group", className)} {...wired} />
+  return <RadioGroupPrimitive.Root ref={ref} dir={theme.direction} data-rax-appearance={appearance} className={cn("rax-radio-group", className)} {...wired} />
 })
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
 
 const radioSizeClasses = {
-  sm: "sheen-radio-sm",
+  sm: "rax-radio-sm",
   default: null,
-  lg: "sheen-radio-lg",
+  lg: "rax-radio-lg",
 } as const
 
 export interface RadioGroupItemProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   size?: keyof typeof radioSizeClasses
 }
 
@@ -52,12 +52,12 @@ const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimit
           itemRef.current = node
           assignRef(forwardedRef, node)
         }}
-        data-sheen-appearance={appearance}
-        className={cn("sheen-radio", radioSizeClasses[size], className)}
+        data-rax-appearance={appearance}
+        className={cn("rax-radio", radioSizeClasses[size], className)}
         {...props}
       >
         {/* Always mounted so the dot can shrink away when another option is picked. */}
-        <RadioGroupPrimitive.Indicator forceMount className="sheen-radio-indicator" />
+        <RadioGroupPrimitive.Indicator forceMount className="rax-radio-indicator" />
       </RadioGroupPrimitive.Item>
     )
   },

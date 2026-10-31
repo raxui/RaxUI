@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/spinner.css",
       "type": "css",
-      "sha256": "29e18a1b798b117dfb3b035e850037fbc7b574df3df406268361052b703eb3c3"
+      "sha256": "853525b6905bb9c6c76475f2202f2f9b4f6248df166f394aad257f025c387aac"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Spinner/Spinner.razor",
       "type": "razor",
-      "sha256": "4d3e571301acfd61fb6e034e239b90fd75c55f2a690a669ff41a58ef4de74018"
+      "sha256": "cdefdf32c84c99cc0b479f4b11fbce77cf79da618d3c8ee1d79ced46e7a866ff"
     }
   ]
 }

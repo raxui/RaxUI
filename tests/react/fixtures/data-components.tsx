@@ -1,7 +1,7 @@
 "use client"
 import * as React from "react"
 import type { ColumnDef } from "@tanstack/react-table"
-import { SheenThemeProvider } from "@/lib/theme"
+import { RaxThemeProvider } from "@/lib/theme"
 import { DataTable, DataTableColumnHeader, getSelectColumn } from "@/components/ui/data-table"
 import { DataGrid } from "@/components/ui/data-grid"
 import { Sortable, SortableContent, SortableItem, SortableItemHandle, SortableOverlay } from "@/components/ui/sortable"
@@ -48,7 +48,7 @@ export default function DataDemo() {
     [dir, setDir] = React.useState<"ltr" | "rtl">("ltr"),
     [edit, setEdit] = React.useState("")
   return (
-    <SheenThemeProvider mode="dark" appearance="glass" direction={dir} style={{ padding: 16 }} data-testid="data-theme">
+    <RaxThemeProvider mode="dark" appearance="glass" direction={dir} style={{ padding: 16 }} data-testid="data-theme">
       <button onClick={() => setDir((d) => (d === "ltr" ? "rtl" : "ltr"))}>Toggle direction</button>
       <section aria-label="Table demo">
         <DataTable
@@ -100,6 +100,6 @@ export default function DataDemo() {
           </ResizablePanel>
         </ResizablePanelGroup>
       </section>
-    </SheenThemeProvider>
+    </RaxThemeProvider>
   )
 }

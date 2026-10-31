@@ -1,13 +1,13 @@
-@* SheenUI Tooltip. Source-owned: edit freely. Manual popover; requires interactivity. Static SSR keeps content hidden. *@
+@* RaxUI Tooltip. Source-owned: edit freely. Manual popover; requires interactivity. Static SSR keeps content hidden. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
 <button @ref="_trigger" type="button" class="@TriggerClass" aria-describedby="@_id">@Trigger</button>
 <div @ref="_content" @attributes="AdditionalAttributes" id="@_id" popover="manual" role="tooltip"
-     class="sheen-tooltip-content @Class" data-sheen-appearance="@Appearance" tabindex="-1">@ChildContent</div>
+     class="rax-tooltip-content @Class" data-rax-appearance="@Appearance" tabindex="-1">@ChildContent</div>
 
 @code {
-    private readonly string _generatedId = "sheen-tooltip-" + Guid.NewGuid().ToString("N");
+    private readonly string _generatedId = "rax-tooltip-" + Guid.NewGuid().ToString("N");
     private ElementReference _trigger, _content;
     private IJSObjectReference? _module;
     private string _id => Id ?? _generatedId;

@@ -1,5 +1,5 @@
-@* SheenUI SkeletonText. Source-owned: edit freely. Styled by the skeleton component CSS. *@
-<span @attributes="AdditionalAttributes" class="@($"sheen-skeleton-text {Class}")" aria-hidden="true" data-sheen-appearance="@Appearance">
+@* RaxUI SkeletonText. Source-owned: edit freely. Styled by the skeleton component CSS. *@
+<span @attributes="AdditionalAttributes" class="@($"rax-skeleton-text {Class}")" aria-hidden="true" data-rax-appearance="@Appearance">
     @for (var i = 0; i < Lines; i++) { <Skeleton Shape="text" Animation="@Animation" Width="@(i == Lines - 1 && Lines > 1 ? LastLineWidth : "100%")" /> }
 </span>
 @code {

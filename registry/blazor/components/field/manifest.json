@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/field.css",
       "type": "css",
-      "sha256": "a0e088ec0a1bcc9fd03a668e7333f3e601dd91aa83a89722ef550a4a84cb70c2"
+      "sha256": "bc4b78d29158ac0e09956e19ff6e8848760454804032fd816aa4c97cacfd4c5a"
     }
   ],
   "files": [
@@ -19,42 +19,42 @@
       "destination": "components",
       "target": "Field/Field.razor",
       "type": "razor",
-      "sha256": "3e8dd0bf60baa59244eddc0f6e2e04b4fc13fb70bee964ffc97e0cdd0eb4d382"
+      "sha256": "ec4b6bde32d64425b74a1a12d526c1026be87022ee24ae007c3ff30307bc3d04"
     },
     {
       "source": "FieldDescription.razor",
       "destination": "components",
       "target": "Field/FieldDescription.razor",
       "type": "razor",
-      "sha256": "770f726c7454e5a27cb0dd00d060e2ca2e1c6b77999f627fbedac7e445b01400"
+      "sha256": "0d945361076ae118d648bfaacb1d94bfcf20c702c33004046eb077d171b8f6e6"
     },
     {
       "source": "FieldError.razor",
       "destination": "components",
       "target": "Field/FieldError.razor",
       "type": "razor",
-      "sha256": "edc396dc7e434fd926aeb5d1c40dca74a1f2f5565f235cca31a679ec8030a751"
+      "sha256": "43ea7c5890a763d546552e3ab5a10e3ff3453f425ed59f6a7353ef5952931e27"
     },
     {
       "source": "FieldLabel.razor",
       "destination": "components",
       "target": "Field/FieldLabel.razor",
       "type": "razor",
-      "sha256": "6afff8528c6c31dd5d64edc511fcdea2f2e2cdd63d18a2ac124062ff69e6e399"
+      "sha256": "fdaec71d126236bf80514cf8d435ad33af855b315725a2845b54bfe7f30fe76b"
     },
     {
       "source": "FieldLegend.razor",
       "destination": "components",
       "target": "Field/FieldLegend.razor",
       "type": "razor",
-      "sha256": "ff5a2c006d6ea87de7fff313f1e74e318242e8d027582efe2b31f8c70168eb03"
+      "sha256": "f055ac3554dec5d60358a4373f2d64043f9d8060a34d3a405a4ffe1849d231b8"
     },
     {
       "source": "FieldSet.razor",
       "destination": "components",
       "target": "Field/FieldSet.razor",
       "type": "razor",
-      "sha256": "2daba9c28341135a6d56083489f1c736d4b129eb15468e93006087ccce90ca49"
+      "sha256": "6ba6c8cccc08611aefcf5468e80d2b8e8a7abc460205620f4319174e31951084"
     }
   ]
 }

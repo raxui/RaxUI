@@ -1,6 +1,6 @@
 "use client"
 
-// SheenUI accordion. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI accordion. Source-owned: edit freely. Ported from boot-ui.
 // Built-in icon paths from Lucide (ISC).
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
@@ -25,7 +25,7 @@ const AccordionIconContext = React.createContext<AccordionIcon>("chevron")
 
 export type AccordionProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & {
   /** `inset` = grouped glass list (iOS Settings), `cards` = separate glass cards. */
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   variant?: "default" | "inset" | "cards"
   /** Open/close indicator. */
   icon?: AccordionIcon
@@ -45,9 +45,9 @@ const Accordion = React.forwardRef<React.ElementRef<typeof AccordionPrimitive.Ro
           assignRef(forwardedRef, node)
         }}
         dir={dir}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         data-variant={variant}
-        className={cn("sheen-accordion", className)}
+        className={cn("rax-accordion", className)}
         {...(props as React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>)}
       />
     </AccordionIconContext.Provider>
@@ -58,18 +58,18 @@ Accordion.displayName = "Accordion"
 const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => <AccordionPrimitive.Item ref={ref} className={cn("sheen-accordion-item", className)} {...props} />)
+>(({ className, ...props }, ref) => <AccordionPrimitive.Item ref={ref} className={cn("rax-accordion-item", className)} {...props} />)
 AccordionItem.displayName = "AccordionItem"
 
 const Indicator = ({ type }: { type: AccordionIcon }) => (
-  <span className="sheen-accordion-icon" data-icon={type} aria-hidden="true">
+  <span className="rax-accordion-icon" data-icon={type} aria-hidden="true">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
       {type === "chevron" ? (
         <path d="m6 9 6 6 6-6" />
       ) : (
         <>
           <path d="M5 12h14" />
-          <path className="sheen-accordion-plus-v" d="M12 5v14" />
+          <path className="rax-accordion-plus-v" d="M12 5v14" />
         </>
       )}
     </svg>
@@ -87,12 +87,12 @@ const AccordionTrigger = React.forwardRef<React.ElementRef<typeof AccordionPrimi
   ({ className, icon, description, children, ...props }, ref) => {
     const indicator = React.useContext(AccordionIconContext)
     return (
-      <AccordionPrimitive.Header className="sheen-accordion-header">
-        <AccordionPrimitive.Trigger ref={ref} className={cn("sheen-accordion-trigger", className)} {...props}>
-          {icon && <span className="sheen-accordion-leading">{icon}</span>}
-          <span className="sheen-accordion-text">
+      <AccordionPrimitive.Header className="rax-accordion-header">
+        <AccordionPrimitive.Trigger ref={ref} className={cn("rax-accordion-trigger", className)} {...props}>
+          {icon && <span className="rax-accordion-leading">{icon}</span>}
+          <span className="rax-accordion-text">
             <span>{children}</span>
-            {description && <span className="sheen-accordion-description">{description}</span>}
+            {description && <span className="rax-accordion-description">{description}</span>}
           </span>
           <Indicator type={indicator} />
         </AccordionPrimitive.Trigger>
@@ -106,8 +106,8 @@ const AccordionContent = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content ref={ref} className="sheen-accordion-content" {...props}>
-    <div className={cn("sheen-accordion-content-inner", className)}>{children}</div>
+  <AccordionPrimitive.Content ref={ref} className="rax-accordion-content" {...props}>
+    <div className={cn("rax-accordion-content-inner", className)}>{children}</div>
   </AccordionPrimitive.Content>
 ))
 AccordionContent.displayName = AccordionPrimitive.Content.displayName

@@ -1,4 +1,4 @@
-<MenuToggle @attributes="AdditionalAttributes" Open="@(Parent?.Current ?? false)" OpenChanged="Changed" OpenLabel="@OpenLabel" CloseLabel="@CloseLabel" Class="@($"sheen-navbar-toggle {Class}")" Disabled="@(Disabled || Parent?.Ready != true)" aria-controls="@Parent?.MenuId" />
+<MenuToggle @attributes="AdditionalAttributes" Open="@(Parent?.Current ?? false)" OpenChanged="Changed" OpenLabel="@OpenLabel" CloseLabel="@CloseLabel" Class="@($"rax-navbar-toggle {Class}")" Disabled="@(Disabled || Parent?.Ready != true)" aria-controls="@Parent?.MenuId" />
 @code {
     [CascadingParameter] public Navbar? Parent { get; set; }
     [Parameter] public string OpenLabel { get; set; } = "Open menu";

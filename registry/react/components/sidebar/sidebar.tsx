@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tooltip } from "@/components/ui/tooltip"
-import { useSheenTheme, sheenThemeAttributes, SheenThemeBoundary, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, RaxThemeBoundary, type RaxAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { withoutTransition } from "@/lib/app-shell-utils"
 import { inert } from "@/lib/app-shell-utils"
@@ -103,7 +103,7 @@ const isEditable = (target: EventTarget | null) =>
 // ---- Provider -----------------------------------------------------------------------
 
 export interface SidebarProviderProps extends React.HTMLAttributes<HTMLDivElement> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void
@@ -115,7 +115,7 @@ export interface SidebarProviderProps extends React.HTMLAttributes<HTMLDivElemen
 
 const SidebarProvider = React.forwardRef<HTMLDivElement, SidebarProviderProps>(
   ({ appearance, defaultOpen = true, open: openProp, onOpenChange, storageKey, shortcut = "b", className, children, ...props }, ref) => {
-    const theme = useSheenTheme({ appearance, direction: props.dir === "rtl" || props.dir === "ltr" ? props.dir : undefined })
+    const theme = useRaxTheme({ appearance, direction: props.dir === "rtl" || props.dir === "ltr" ? props.dir : undefined })
     const isMobile = useIsMobile()
     const [openMobile, setOpenMobile] = React.useState(false)
     const [uncontrolled, setUncontrolled] = React.useState(defaultOpen)
@@ -173,23 +173,23 @@ const SidebarProvider = React.forwardRef<HTMLDivElement, SidebarProviderProps>(
     )
 
     return (
-      <SheenThemeBoundary value={{ ...theme, direction: dir }}>
+      <RaxThemeBoundary value={{ ...theme, direction: dir }}>
       <SidebarContext.Provider value={value}>
         <div
           ref={(node) => {
             wrapperRef.current = node
             assignRef(ref, node)
           }}
-          className={cn("sheen-sidebar-wrapper", className)}
+          className={cn("rax-sidebar-wrapper", className)}
           data-state={state}
-          {...sheenThemeAttributes(theme)}
+          {...raxThemeAttributes(theme)}
           dir={props.dir}
           {...props}
         >
           {children}
         </div>
       </SidebarContext.Provider>
-      </SheenThemeBoundary>
+      </RaxThemeBoundary>
     )
   },
 )
@@ -217,8 +217,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 
     if (collapsible === "none") {
       return (
-        <div ref={ref} className={cn("sheen-sidebar", className)} data-collapsible="none" data-variant={variant} data-side={side} {...props}>
-          <nav className="sheen-sidebar-inner" aria-label={label}>
+        <div ref={ref} className={cn("rax-sidebar", className)} data-collapsible="none" data-variant={variant} data-side={side} {...props}>
+          <nav className="rax-sidebar-inner" aria-label={label}>
             {children}
           </nav>
         </div>
@@ -228,10 +228,10 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-          <SheetContent side={side} showCloseButton={false} className="sheen-sidebar-sheet" onCloseAutoFocus={event => { event.preventDefault(); triggerRef.current?.focus() }}>
+          <SheetContent side={side} showCloseButton={false} className="rax-sidebar-sheet" onCloseAutoFocus={event => { event.preventDefault(); triggerRef.current?.focus() }}>
             <SheetTitle className="visually-hidden">{label}</SheetTitle>
             <SheetDescription className="visually-hidden">{description}</SheetDescription>
-            <nav className="sheen-sidebar-inner" aria-label={label} data-mobile="">
+            <nav className="rax-sidebar-inner" aria-label={label} data-mobile="">
               {children}
             </nav>
           </SheetContent>
@@ -242,14 +242,14 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     return (
       <div
         ref={ref}
-        className={cn("sheen-sidebar", className)}
+        className={cn("rax-sidebar", className)}
         data-state={state}
         data-collapsible={state === "collapsed" ? collapsible : ""}
         data-variant={variant}
         data-side={side}
         {...props}
       >
-        <nav className="sheen-sidebar-inner" aria-label={label} {...inert(state === "collapsed" && collapsible === "offcanvas")}>
+        <nav className="rax-sidebar-inner" aria-label={label} {...inert(state === "collapsed" && collapsible === "offcanvas")}>
           {children}
         </nav>
       </div>
@@ -280,7 +280,7 @@ const SidebarTrigger = React.forwardRef<HTMLButtonElement, React.ComponentProps<
       ref={ref}
       variant="ghost"
       size="icon-sm"
-      className={cn("sheen-sidebar-trigger", className)}
+      className={cn("rax-sidebar-trigger", className)}
       aria-label="Toggle sidebar"
       aria-expanded={isMobile ? openMobile : open}
       onClick={(event) => {
@@ -305,7 +305,7 @@ const SidebarRail = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttribut
       tabIndex={-1}
       aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
       title={open ? "Collapse" : "Expand"}
-      className={cn("sheen-sidebar-rail", className)}
+      className={cn("rax-sidebar-rail", className)}
       onClick={toggleSidebar}
       {...props}
     />
@@ -314,7 +314,7 @@ const SidebarRail = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttribut
 SidebarRail.displayName = "SidebarRail"
 
 const SidebarInset = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(({ className, ...props }, ref) => (
-  <main ref={ref} className={cn("sheen-sidebar-inset", className)} {...props} />
+  <main ref={ref} className={cn("rax-sidebar-inset", className)} {...props} />
 ))
 SidebarInset.displayName = "SidebarInset"
 
@@ -322,7 +322,7 @@ SidebarInset.displayName = "SidebarInset"
 
 const part = (name: string, tag: "div" | "ul" | "li" = "div") => {
   const Part = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(({ className, ...props }, ref) =>
-    React.createElement(tag, { ref, className: cn(`sheen-sidebar-${name}`, className), "data-sidebar": name, ...props }),
+    React.createElement(tag, { ref, className: cn(`rax-sidebar-${name}`, className), "data-sidebar": name, ...props }),
   )
   Part.displayName = `Sidebar${name.replace(/(^|-)(\w)/g, (_, __, c: string) => c.toUpperCase())}`
   return Part
@@ -336,15 +336,15 @@ const SidebarMenu = part("menu", "ul")
 const SidebarMenuItem = part("menu-item", "li")
 
 const SidebarSeparator = ({ className, ...props }: React.HTMLAttributes<HTMLHRElement>) => (
-  <hr className={cn("sheen-sidebar-separator", className)} {...props} />
+  <hr className={cn("rax-sidebar-separator", className)} {...props} />
 )
 
 const SidebarInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(({ className, ...props }, ref) => (
-  <input ref={ref} className={cn("form-control form-control-sm sheen-sidebar-input", className)} {...props} />
+  <input ref={ref} className={cn("form-control form-control-sm rax-sidebar-input", className)} {...props} />
 ))
 SidebarInput.displayName = "SidebarInput"
 
-const hoverItems = "[data-sidebar=menu-button], .sheen-sidebar-menu-sub-button"
+const hoverItems = "[data-sidebar=menu-button], .rax-sidebar-menu-sub-button"
 
 /** Scrolling middle part. Holds the highlight that glides to the active item and the pill that follows the pointer. */
 const SidebarContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
@@ -358,23 +358,23 @@ const SidebarContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
     onPointerOver?.(event)
     const content = event.currentTarget
     const button = (event.target as Element).closest<HTMLElement>(hoverItems)
-    if (!button || button.closest(".sheen-sidebar-content") !== content || button.matches("[aria-disabled=true], :disabled")) return
+    if (!button || button.closest(".rax-sidebar-content") !== content || button.matches("[aria-disabled=true], :disabled")) return
     const box = button.getBoundingClientRect()
     const origin = content.getBoundingClientRect()
     const set = () => {
-      content.style.setProperty("--sheen-sidebar-hover-x", `${box.left - origin.left + content.scrollLeft}px`)
-      content.style.setProperty("--sheen-sidebar-hover-y", `${box.top - origin.top + content.scrollTop}px`)
-      content.style.setProperty("--sheen-sidebar-hover-w", `${box.width}px`)
-      content.style.setProperty("--sheen-sidebar-hover-h", `${box.height}px`)
+      content.style.setProperty("--rax-sidebar-hover-x", `${box.left - origin.left + content.scrollLeft}px`)
+      content.style.setProperty("--rax-sidebar-hover-y", `${box.top - origin.top + content.scrollTop}px`)
+      content.style.setProperty("--rax-sidebar-hover-w", `${box.width}px`)
+      content.style.setProperty("--rax-sidebar-hover-h", `${box.height}px`)
     }
     if (content.hasAttribute("data-hover")) set()
-    else withoutTransition(content.querySelector<HTMLElement>(":scope > .sheen-sidebar-hover"), set)
+    else withoutTransition(content.querySelector<HTMLElement>(":scope > .rax-sidebar-hover"), set)
     content.setAttribute("data-hover", "")
   }
   const handlePointerOut = (event: React.PointerEvent<HTMLDivElement>) => {
     onPointerOut?.(event)
     const next = (event.relatedTarget as Element | null)?.closest?.(hoverItems)
-    if (next?.closest(".sheen-sidebar-content") !== event.currentTarget) event.currentTarget.removeAttribute("data-hover")
+    if (next?.closest(".rax-sidebar-content") !== event.currentTarget) event.currentTarget.removeAttribute("data-hover")
   }
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
     onScroll?.(event)
@@ -387,15 +387,15 @@ const SidebarContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
         contentRef.current = node
         assignRef(ref, node)
       }}
-      className={cn("sheen-sidebar-content", className)}
+      className={cn("rax-sidebar-content", className)}
       data-sidebar="content"
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
       onScroll={handleScroll}
       {...props}
     >
-      <span className="sheen-sidebar-hover" aria-hidden="true" />
-      <span className="sheen-sidebar-highlight" aria-hidden="true" />
+      <span className="rax-sidebar-hover" aria-hidden="true" />
+      <span className="rax-sidebar-highlight" aria-hidden="true" />
       {children}
     </div>
   )
@@ -418,7 +418,7 @@ function useActiveHighlight(contentRef: React.RefObject<HTMLDivElement | null>, 
 
     const place = () => {
       const active = Array.from(content.querySelectorAll<HTMLElement>("[data-sidebar=menu-button][data-active]")).find(
-        (el) => el.closest(".sheen-sidebar-content") === content && el.offsetParent !== null,
+        (el) => el.closest(".rax-sidebar-content") === content && el.offsetParent !== null,
       )
       if (!active) {
         content.removeAttribute("data-highlight")
@@ -428,14 +428,14 @@ function useActiveHighlight(contentRef: React.RefObject<HTMLDivElement | null>, 
       const box = active.getBoundingClientRect()
       const origin = content.getBoundingClientRect()
       const set = () => {
-        content.style.setProperty("--sheen-sidebar-hl-x", `${box.left - origin.left + content.scrollLeft}px`)
-        content.style.setProperty("--sheen-sidebar-hl-y", `${box.top - origin.top + content.scrollTop}px`)
-        content.style.setProperty("--sheen-sidebar-hl-w", `${box.width}px`)
-        content.style.setProperty("--sheen-sidebar-hl-h", `${box.height}px`)
+        content.style.setProperty("--rax-sidebar-hl-x", `${box.left - origin.left + content.scrollLeft}px`)
+        content.style.setProperty("--rax-sidebar-hl-y", `${box.top - origin.top + content.scrollTop}px`)
+        content.style.setProperty("--rax-sidebar-hl-w", `${box.width}px`)
+        content.style.setProperty("--rax-sidebar-hl-h", `${box.height}px`)
       }
       // Glide only when another item became active; otherwise follow at once.
       if (last !== null && last !== active && !instant) set()
-      else withoutTransition(content.querySelector<HTMLElement>(":scope > .sheen-sidebar-highlight"), set)
+      else withoutTransition(content.querySelector<HTMLElement>(":scope > .rax-sidebar-highlight"), set)
       instant = false
       content.setAttribute("data-highlight", "")
       last = active
@@ -465,7 +465,7 @@ function useActiveHighlight(contentRef: React.RefObject<HTMLDivElement | null>, 
 const SidebarGroupLabel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { asChild?: boolean }>(
   ({ className, asChild, ...props }, ref) => {
     const Comp = asChild ? Slot : "div"
-    return <Comp ref={ref} className={cn("sheen-sidebar-group-label", className)} data-sidebar="group-label" {...props} />
+    return <Comp ref={ref} className={cn("rax-sidebar-group-label", className)} data-sidebar="group-label" {...props} />
   },
 )
 SidebarGroupLabel.displayName = "SidebarGroupLabel"
@@ -477,7 +477,7 @@ const SidebarGroupAction = React.forwardRef<HTMLButtonElement, React.ButtonHTMLA
       <Comp
         ref={ref}
         type={asChild ? undefined : "button"}
-        className={cn("sheen-sidebar-group-action", className)}
+        className={cn("rax-sidebar-group-action", className)}
         data-sidebar="group-action"
         {...props}
       />
@@ -504,7 +504,7 @@ const SidebarMenuButton = React.forwardRef<HTMLButtonElement, SidebarMenuButtonP
       <Comp
         ref={ref}
         type={asChild ? undefined : "button"}
-        className={cn("sheen-sidebar-menu-button", className)}
+        className={cn("rax-sidebar-menu-button", className)}
         data-sidebar="menu-button"
         data-size={size}
         data-active={isActive ? "" : undefined}
@@ -534,7 +534,7 @@ const SidebarMenuAction = React.forwardRef<
     <Comp
       ref={ref}
       type={asChild ? undefined : "button"}
-      className={cn("sheen-sidebar-menu-action", className)}
+      className={cn("rax-sidebar-menu-action", className)}
       data-sidebar="menu-action"
       data-show-on-hover={showOnHover ? "" : undefined}
       {...props}
@@ -544,16 +544,16 @@ const SidebarMenuAction = React.forwardRef<
 SidebarMenuAction.displayName = "SidebarMenuAction"
 
 const SidebarMenuBadge = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => (
-  <span className={cn("sheen-sidebar-menu-badge", className)} data-sidebar="menu-badge" {...props} />
+  <span className={cn("rax-sidebar-menu-badge", className)} data-sidebar="menu-badge" {...props} />
 )
 
 const SidebarMenuSkeleton = ({ showIcon = true, className, ...props }: React.HTMLAttributes<HTMLDivElement> & { showIcon?: boolean }) => {
   // A stable, slightly different width per row.
   const width = "70%"
   return (
-    <div className={cn("sheen-sidebar-menu-skeleton", className)} data-sidebar="menu-skeleton" {...props}>
-      {showIcon && <Skeleton className="sheen-sidebar-skeleton-icon" />}
-      <Skeleton className="sheen-sidebar-skeleton-text" style={{ maxWidth: width }} />
+    <div className={cn("rax-sidebar-menu-skeleton", className)} data-sidebar="menu-skeleton" {...props}>
+      {showIcon && <Skeleton className="rax-sidebar-skeleton-icon" />}
+      <Skeleton className="rax-sidebar-skeleton-text" style={{ maxWidth: width }} />
     </div>
   )
 }
@@ -569,7 +569,7 @@ const SidebarMenuSubButton = React.forwardRef<
   return (
     <Comp
       ref={ref}
-      className={cn("sheen-sidebar-menu-sub-button", className)}
+      className={cn("rax-sidebar-menu-sub-button", className)}
       data-sidebar="menu-sub-button"
       data-size={size}
       data-active={isActive ? "" : undefined}
@@ -582,7 +582,7 @@ SidebarMenuSubButton.displayName = "SidebarMenuSubButton"
 
 const ChevronIcon = () => (
   <svg
-    className="sheen-sidebar-chevron"
+    className="rax-sidebar-chevron"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -622,7 +622,7 @@ function SidebarMenuCollapsible({
   const id = React.useId()
   const folded = state === "collapsed" && collapsible === "icon" && !isMobile
   return (
-    <SidebarMenuItem className={cn("sheen-sidebar-collapsible", className)} data-state={open ? "open" : "closed"} {...props}>
+    <SidebarMenuItem className={cn("rax-sidebar-collapsible", className)} data-state={open ? "open" : "closed"} {...props}>
       <SidebarMenuButton
         isActive={isActive}
         tooltip={tooltip ?? title}
@@ -639,7 +639,7 @@ function SidebarMenuCollapsible({
         <span>{title}</span>
         <ChevronIcon />
       </SidebarMenuButton>
-      <div className="sheen-sidebar-collapsible-body" id={id} {...inert(!open || folded)}>
+      <div className="rax-sidebar-collapsible-body" id={id} {...inert(!open || folded)}>
         <div>
           <SidebarMenuSub>{children}</SidebarMenuSub>
         </div>

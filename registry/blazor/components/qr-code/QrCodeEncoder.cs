@@ -26,8 +26,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static SheenUI.Internal.QrCode.QrCodeEncoder;
-namespace SheenUI.Internal.QrCode;
+using static RaxUI.Internal.QrCode.QrCodeEncoder;
+namespace RaxUI.Internal.QrCode;
 
 internal sealed class QrCodeEncoder
 {

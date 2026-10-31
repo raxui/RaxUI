@@ -7,7 +7,7 @@
         <p class="small text-body-secondary mb-2">Markdown shortcuts work while typing: <code># </code>, <code>- </code>, <code>1. </code>, <code>[] </code>, <code>&gt; </code>, <code>```</code>, <code>**bold**</code>. Select text for the floating menu; ⌘K / Ctrl+K adds a link.</p>
         <TextEditor aria-label="Release notes" @bind-Value="document" MaxHeight="380px" Placeholder="Write release notes…" data-example="document" />
         <div class="d-flex align-items-center gap-2 small text-body-secondary align-self-start">
-            <Switch id="show-html" Class="sheen-switch-sm" @bind-Value="showHtml" /><label for="show-html" class="mb-0">Show HTML output</label>
+            <Switch id="show-html" Class="rax-switch-sm" @bind-Value="showHtml" /><label for="show-html" class="mb-0">Show HTML output</label>
         </div>
         @if (showHtml) { <pre class="small mb-0 p-3 rounded-4 bg-body-tertiary" style="max-height:200px;white-space:pre-wrap" data-example="html">@(string.IsNullOrEmpty(document) ? "(empty)" : document)</pre> }
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 @code {
-    private const string ReleaseNotes = "<h2>SheenUI 3.0</h2><p>This release brings <strong>forms</strong>, <em>dates</em> and a <mark>virtualized data grid</mark>. Read the <a href='https://github.com/saadalsaree/SheenUI'>full changelog</a> for details.</p><h3>Highlights</h3><ul><li><p>Field, FormSection and DataAnnotations wiring</p></li><li><p>Calendar range picker with presets</p></li><li><p>Alerts and banners</p></li></ul><h3>Before you upgrade</h3><ul data-type='taskList'><li data-type='taskItem' data-checked='true'><label><input type='checkbox' checked><span></span></label><div><p>Update Bootstrap to 5.3</p></div></li><li data-type='taskItem' data-checked='false'><label><input type='checkbox'><span></span></label><div><p>Replace <code>&lt;Tooltip title&gt;</code> with <code>content</code></p></div></li></ul><blockquote><p>Glass everywhere, springs where it counts.</p></blockquote><pre><code>dotnet tool install --global SheenUI.Cli --prerelease</code></pre>";
+    private const string ReleaseNotes = "<h2>RaxUI 3.0</h2><p>This release brings <strong>forms</strong>, <em>dates</em> and a <mark>virtualized data grid</mark>. Read the <a href='https://github.com/saadalsaree/RaxUI'>full changelog</a> for details.</p><h3>Highlights</h3><ul><li><p>Field, FormSection and DataAnnotations wiring</p></li><li><p>Calendar range picker with presets</p></li><li><p>Alerts and banners</p></li></ul><h3>Before you upgrade</h3><ul data-type='taskList'><li data-type='taskItem' data-checked='true'><label><input type='checkbox' checked><span></span></label><div><p>Update Bootstrap to 5.3</p></div></li><li data-type='taskItem' data-checked='false'><label><input type='checkbox'><span></span></label><div><p>Replace <code>&lt;Tooltip title&gt;</code> with <code>content</code></p></div></li></ul><blockquote><p>Glass everywhere, springs where it counts.</p></blockquote><pre><code>dotnet tool install --global RaxUI.Cli --prerelease</code></pre>";
     private static readonly IReadOnlyList<string> CommentTools = ["bold", "italic", "strike", "code", "|", "link", "bulletList"];
     private static readonly IReadOnlyList<string> ArabicTools = ["undo", "redo", "|", "heading", "|", "bold", "italic", "underline", "highlight", "|", "link", "|", "bulletList", "orderedList", "taskList", "|", "align"];
     private static readonly TextEditorTypes.Labels ArabicLabels = new()

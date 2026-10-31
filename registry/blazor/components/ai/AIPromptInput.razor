@@ -1,11 +1,11 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<form @ref="element" @attributes="AdditionalAttributes" class="sheen-ai-prompt @Class" data-status="@Status">
-<textarea rows="1" dir="auto" class="sheen-ai-prompt-field" style="@($"--sheen-ai-rows:{Math.Clamp(MaxRows, 1, 100)}")" placeholder="@Placeholder" aria-label="@(Label ?? Placeholder)" disabled="@(!ready)"></textarea>
-<div class="sheen-ai-prompt-toolbar">
-<div class="sheen-ai-prompt-tools">@Tools</div>
-@if (Status == "streaming") { <Button Type="submit" Size="icon-sm" Class="sheen-ai-prompt-send" aria-label="@StopLabel" data-stop=""><span class="sheen-ai-stop" aria-hidden="true"></span></Button> }
-else { <Button Type="submit" Size="icon-sm" Class="sheen-ai-prompt-send" aria-label="@SendLabel" Disabled="true">@if (Status == "submitted") { <span class="sheen-ai-spinner" aria-hidden="true"></span> } else { <AIIcon Name="arrow-up" /> }</Button> }
+<form @ref="element" @attributes="AdditionalAttributes" class="rax-ai-prompt @Class" data-status="@Status">
+<textarea rows="1" dir="auto" class="rax-ai-prompt-field" style="@($"--rax-ai-rows:{Math.Clamp(MaxRows, 1, 100)}")" placeholder="@Placeholder" aria-label="@(Label ?? Placeholder)" disabled="@(!ready)"></textarea>
+<div class="rax-ai-prompt-toolbar">
+<div class="rax-ai-prompt-tools">@Tools</div>
+@if (Status == "streaming") { <Button Type="submit" Size="icon-sm" Class="rax-ai-prompt-send" aria-label="@StopLabel" data-stop=""><span class="rax-ai-stop" aria-hidden="true"></span></Button> }
+else { <Button Type="submit" Size="icon-sm" Class="rax-ai-prompt-send" aria-label="@SendLabel" Disabled="true">@if (Status == "submitted") { <span class="rax-ai-spinner" aria-hidden="true"></span> } else { <AIIcon Name="arrow-up" /> }</Button> }
 </div>
 </form>
 @code {

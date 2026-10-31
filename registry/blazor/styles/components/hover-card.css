@@ -1,88 +1,88 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
-.sheen-hover-card {
-  background-color: var(--sheen-surface-bg);
-  border: 1px solid var(--sheen-border-color);
-  box-shadow: var(--sheen-surface-shadow);
-  -webkit-backdrop-filter: var(--sheen-surface-filter);
-  backdrop-filter: var(--sheen-surface-filter);
-  --sheen-hover-card-shift: 0, 6px;
+.rax-hover-card {
+  background-color: var(--rax-surface-bg);
+  border: 1px solid var(--rax-border-color);
+  box-shadow: var(--rax-surface-shadow);
+  -webkit-backdrop-filter: var(--rax-surface-filter);
+  backdrop-filter: var(--rax-surface-filter);
+  --rax-hover-card-shift: 0, 6px;
   z-index: 1070;
   width: 20rem;
   max-width: calc(100vw - 1rem);
   max-height: var(--radix-hover-card-content-available-height);
   overflow-y: auto;
   padding: 1rem;
-  border-radius: var(--sheen-radius);
+  border-radius: var(--rax-radius);
   color: var(--bs-body-color);
   text-align: start;
   transform-origin: var(--radix-hover-card-content-transform-origin);
 }
-.sheen-hover-card[data-side=top] {
-  --sheen-hover-card-shift: 0, -6px;
+.rax-hover-card[data-side=top] {
+  --rax-hover-card-shift: 0, -6px;
 }
-.sheen-hover-card[data-side=left] {
-  --sheen-hover-card-shift: -6px, 0;
+.rax-hover-card[data-side=left] {
+  --rax-hover-card-shift: -6px, 0;
 }
-.sheen-hover-card[data-side=right] {
-  --sheen-hover-card-shift: 6px, 0;
+.rax-hover-card[data-side=right] {
+  --rax-hover-card-shift: 6px, 0;
 }
-.sheen-hover-card[data-state=open] {
-  animation: sheen-fade-in var(--sheen-duration-fast) linear;
+.rax-hover-card[data-state=open] {
+  animation: rax-fade-in var(--rax-duration-fast) linear;
 }
-.sheen-hover-card[data-state=closed] {
-  animation: sheen-fade-out var(--sheen-duration-fast) linear forwards;
+.rax-hover-card[data-state=closed] {
+  animation: rax-fade-out var(--rax-duration-fast) linear forwards;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .sheen-hover-card[data-state=open] {
-    animation: sheen-hover-card-in 380ms var(--sheen-ease-spring);
+  .rax-hover-card[data-state=open] {
+    animation: rax-hover-card-in 380ms var(--rax-ease-spring);
   }
-  .sheen-hover-card[data-state=closed] {
-    animation: sheen-hover-card-out 160ms var(--sheen-ease-in) forwards;
+  .rax-hover-card[data-state=closed] {
+    animation: rax-hover-card-out 160ms var(--rax-ease-in) forwards;
   }
 }
 
-.sheen-hover-link {
+.rax-hover-link {
   unicode-bidi: plaintext;
-  color: var(--sheen-primary-text);
+  color: var(--rax-primary-text);
   font-weight: 500;
   text-decoration: none;
-  border-radius: calc(0.25rem * var(--sheen-radius-scale));
+  border-radius: calc(0.25rem * var(--rax-radius-scale));
 }
-.sheen-hover-link:hover, .sheen-hover-link[data-state=open] {
+.rax-hover-link:hover, .rax-hover-link[data-state=open] {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
 
-@keyframes sheen-hover-card-in {
+@keyframes rax-hover-card-in {
   from {
     opacity: 0;
-    transform: translate(var(--sheen-hover-card-shift)) scale(0.96);
+    transform: translate(var(--rax-hover-card-shift)) scale(0.96);
   }
 }
-@keyframes sheen-hover-card-out {
+@keyframes rax-hover-card-out {
   to {
     opacity: 0;
     transform: scale(0.97);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  [class*=sheen-hover-card] {
+  [class*=rax-hover-card] {
     animation: none !important;
     transition: none !important;
   }
 }
-.sheen-hover-card[popover] {
+.rax-hover-card[popover] {
   position: fixed;
   inset: auto;
   margin: 0;
   max-height: calc(100dvh - 1rem);
 }
 
-.sheen-hover-card[popover]:not(:popover-open) {
+.rax-hover-card[popover]:not(:popover-open) {
   display: none;
 }
 
-.sheen-hover-card {
-  padding: calc(var(--sheen-control-height, 2.5rem) * 0.4);
+.rax-hover-card {
+  padding: calc(var(--rax-control-height, 2.5rem) * 0.4);
 }

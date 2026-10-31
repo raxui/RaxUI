@@ -2,15 +2,15 @@
 // DatePicker / DateRangePicker — a `.form-control` trigger + Calendar popover.
 // -----------------------------------------------------------------------------
 
-.sheen-picker-field {
+.rax-picker-field {
   position: relative;
 }
 
-.sheen-picker-trigger {
-  min-height: var(--sheen-control-height); // same height as inputs and buttons
+.rax-picker-trigger {
+  min-height: var(--rax-control-height); // same height as inputs and buttons
 
-  &.form-control-sm { min-height: var(--sheen-control-height-sm); }
-  &.form-control-lg { min-height: var(--sheen-control-height-lg); }
+  &.form-control-sm { min-height: var(--rax-control-height-sm); }
+  &.form-control-lg { min-height: var(--rax-control-height-lg); }
 
   display: flex;
   align-items: center;
@@ -46,7 +46,7 @@
   }
 }
 
-.sheen-picker-clear {
+.rax-picker-clear {
   position: absolute;
   top: 50%;
   inset-inline-end: 0.625rem;
@@ -61,7 +61,7 @@
   color: var(--bs-body-bg);
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.3);
   translate: 0 -50%;
-  transition: background-color var(--sheen-duration-fast) ease;
+  transition: background-color var(--rax-duration-fast) ease;
 
   svg {
     width: 0.5625rem;
@@ -78,24 +78,24 @@
   }
 
   @include motion-safe {
-    animation: sheen-pop-in 350ms var(--sheen-ease-spring);
+    animation: rax-pop-in 350ms var(--rax-ease-spring);
   }
 }
 
 // Popover sized to its calendar.
-.sheen-popover.sheen-picker-popover {
+.rax-popover.rax-picker-popover {
   max-height: min(40rem, calc(100dvh - 1rem), var(--radix-popover-content-available-height, 40rem));
   width: auto;
   max-width: calc(100vw - 1rem);
   padding: 0.75rem;
 }
 
-.sheen-picker-range-body {
+.rax-picker-range-body {
   display: flex;
   gap: 1rem;
 }
 
-.sheen-picker-presets {
+.rax-picker-presets {
   display: none;
   flex-direction: column;
   gap: 0.125rem;
@@ -108,10 +108,10 @@
   }
 }
 
-.sheen-picker-preset {
+.rax-picker-preset {
   padding: 0.4375rem 0.625rem;
   border: 0;
-  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  border-radius: calc(0.5rem * var(--rax-radius-scale));
   color: var(--bs-body-color);
   background: none;
   font-size: 0.875rem;
@@ -119,15 +119,15 @@
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background-color var(--sheen-duration-fast) ease,
-    color var(--sheen-duration-fast) ease;
+    background-color var(--rax-duration-fast) ease,
+    color var(--rax-duration-fast) ease;
 
   &:hover {
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
   }
 
   &[data-active] {
-    color: var(--sheen-primary-text);
+    color: var(--rax-primary-text);
     background-color: rgba(var(--bs-primary-rgb), 0.1);
     font-weight: 600;
   }
@@ -138,7 +138,7 @@
   }
 }
 
-.sheen-picker-footer {
+.rax-picker-footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;

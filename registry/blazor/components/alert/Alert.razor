@@ -1,11 +1,11 @@
-@* SheenUI Alert. Source-owned: edit freely. Styled by the alert component CSS. *@
+@* RaxUI Alert. Source-owned: edit freely. Styled by the alert component CSS. *@
 @if (Open && !_dismissed)
 {
-    <div @attributes="AdditionalAttributes" role="@Role" class="@($"sheen-alert-box {Class}")" data-tone="@Tone" data-variant="@Variant" data-state="open" data-sheen-appearance="@Appearance">
-        <div class="sheen-alert-box-inner">
+    <div @attributes="AdditionalAttributes" role="@Role" class="@($"rax-alert-box {Class}")" data-tone="@Tone" data-variant="@Variant" data-state="open" data-rax-appearance="@Appearance">
+        <div class="rax-alert-box-inner">
             @if (ShowIcon)
             {
-                <span class="sheen-alert-box-icon" aria-hidden="true">
+                <span class="rax-alert-box-icon" aria-hidden="true">
                     @if (Icon is not null) { @Icon }
                     else
                     {
@@ -14,14 +14,14 @@
                     }
                 </span>
             }
-            <div class="sheen-alert-box-body">
+            <div class="rax-alert-box-body">
                 @if (Title is not null) { <AlertTitle>@Title</AlertTitle> }
                 @if (Description is not null) { <AlertDescription>@Description</AlertDescription> }
                 @ChildContent
             </div>
             @if (Dismissible && _interactive)
             {
-                <button type="button" class="sheen-alert-box-close" aria-label="@DismissLabel" @onclick="DismissAsync">
+                <button type="button" class="rax-alert-box-close" aria-label="@DismissLabel" @onclick="DismissAsync">
                     @* Built-in X path from Lucide (ISC). *@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
                 </button>

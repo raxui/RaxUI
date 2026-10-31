@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "autocomplete",
   "version": "0.1.0",
-  "description": "Source-owned autocomplete with boot-ui feature parity and SheenUI theme integration.",
+  "description": "Source-owned autocomplete with boot-ui feature parity and RaxUI theme integration.",
   "requires": [
     "foundation",
     "field",
@@ -20,31 +20,31 @@
       "source": "registry/react/components/autocomplete/autocomplete.tsx",
       "target": "components/ui/autocomplete.tsx",
       "type": "tsx",
-      "sha256": "89eba0e80da76000dd496b320277a459eacb549e8af8fa5b766002a43a7d9b26"
+      "sha256": "54f60b044e283df12235487067698c3351cc19b04b901caa94cebe56f2afb98a"
     },
     {
       "source": "theme/scss/components/_autocomplete.scss",
-      "target": "styles/sheenui/components/_autocomplete.scss",
+      "target": "styles/raxui/components/_autocomplete.scss",
       "type": "scss",
-      "sha256": "01c9a0e3bf84ce66302cda842a83deace0e7630364866c2db8cdc763c61d4539"
+      "sha256": "5ee503636e8fbf0cafbe9c1f551410fc9d4e12410e4e0c3d03a6aff1588cf782"
     },
     {
       "source": "registry/react/foundation/choice-highlight.tsx",
       "target": "lib/choice-highlight.tsx",
       "type": "tsx",
-      "sha256": "974ca86748703edd32d38c6e09ab872dccb62ede87b8d095bb655f0569a851cc"
+      "sha256": "74d507057039c9b7b8568ffe175901b1ccd1615728c4fa485dd02626bc920c41"
     },
     {
       "source": "theme/scss/components/_choice-highlight.scss",
-      "target": "styles/sheenui/components/_choice-highlight.scss",
+      "target": "styles/raxui/components/_choice-highlight.scss",
       "type": "scss",
-      "sha256": "91f69af6a94fc8be6b00a87c0f07ec24fa47335ec2dd4cf7af2c748f5d12f6e0"
+      "sha256": "31a57b751f8206a9becca35dffd39768dfdc18377831ca33a19fddfeeb04621c"
     },
     {
       "source": "registry/react/components/autocomplete/autocomplete-text.tsx",
       "target": "components/ui/autocomplete-text.tsx",
       "type": "tsx",
-      "sha256": "2df3342032b005a5c3a4ff983e7d984d7202bafa0432cb73d7dc56050a0e46e6"
+      "sha256": "c1bfad1efc620fd5525564618f6b7ebff161227b07ce61a49c40e08701f95f0e"
     },
     {
       "source": "registry/react/foundation/direction.ts",

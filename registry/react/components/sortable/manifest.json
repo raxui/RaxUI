@@ -21,13 +21,13 @@
       "source": "registry/react/components/sortable/sortable.tsx",
       "target": "components/ui/sortable.tsx",
       "type": "tsx",
-      "sha256": "48a14c654887a85c5a96475edec049b9c1ab299325f4c012c420c0c181f0af81"
+      "sha256": "a0f0e2192b8c1580885f62ebd9410113ab3284fafec48835ae00995d76bae938"
     },
     {
       "source": "theme/scss/components/_sortable.scss",
-      "target": "styles/sheenui/components/_sortable.scss",
+      "target": "styles/raxui/components/_sortable.scss",
       "type": "scss",
-      "sha256": "5f1fba13ce23f434e85c5433907d3e4bbbd1289aa484b8c8d7d18e64a1096f3a"
+      "sha256": "d2f2f6659f12f18ec75ffb13d7568792a95064c434125f8d38ac9acd351f58b1"
     }
   ]
 }

@@ -2,11 +2,11 @@
 @inject IJSRuntime JS
 @* Lucide tone icons / X, ISC. *@
 @if (present) {
-<div @ref="element" @attributes="AdditionalAttributes" class="sheen-banner @Class" role="@(Tone is "warning" or "danger" ? "alert" : "status")" aria-label="@Label" data-tone="@Tone" data-variant="@Variant" data-position="@Position" data-state="@(Current ? "open" : "closed")" data-sheen-appearance="@Appearance"><div class="sheen-banner-inner">
-@if (ShowIcon) { <span class="sheen-banner-icon">@if (Icon is not null) { @Icon } else {<svg class="" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="@IconPath" /></svg>}</span> }
-<div class="sheen-banner-text">@if (Title is not null) { <strong class="sheen-banner-title">@Title</strong> }<span class="sheen-banner-message">@ChildContent</span></div>
-@if (Action is not null) { <div class="sheen-banner-actions">@Action</div> }
-@if (Dismissible) { <button type="button" class="sheen-banner-close" aria-label="@DismissLabel" disabled="@(!ready)" @onclick="Dismiss"><svg class="" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg></button> }
+<div @ref="element" @attributes="AdditionalAttributes" class="rax-banner @Class" role="@(Tone is "warning" or "danger" ? "alert" : "status")" aria-label="@Label" data-tone="@Tone" data-variant="@Variant" data-position="@Position" data-state="@(Current ? "open" : "closed")" data-rax-appearance="@Appearance"><div class="rax-banner-inner">
+@if (ShowIcon) { <span class="rax-banner-icon">@if (Icon is not null) { @Icon } else {<svg class="" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="@IconPath" /></svg>}</span> }
+<div class="rax-banner-text">@if (Title is not null) { <strong class="rax-banner-title">@Title</strong> }<span class="rax-banner-message">@ChildContent</span></div>
+@if (Action is not null) { <div class="rax-banner-actions">@Action</div> }
+@if (Dismissible) { <button type="button" class="rax-banner-close" aria-label="@DismissLabel" disabled="@(!ready)" @onclick="Dismiss"><svg class="" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg></button> }
 </div></div>
 }
 @code {

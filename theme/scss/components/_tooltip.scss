@@ -6,22 +6,22 @@
 // moving between tooltips in a group (Radix "instant-open") it just appears.
 // -----------------------------------------------------------------------------
 
-.sheen-tooltip-content {
-  --sheen-tooltip-bg: rgba(28, 28, 30, 0.9);
-  --sheen-tooltip-fg: #fff;
-  --sheen-tooltip-kbd-bg: rgba(255, 255, 255, 0.16);
+.rax-tooltip-content {
+  --rax-tooltip-bg: rgba(28, 28, 30, 0.9);
+  --rax-tooltip-fg: #fff;
+  --rax-tooltip-kbd-bg: rgba(255, 255, 255, 0.16);
 
   z-index: 1080;
   max-width: 18rem;
   padding: 0.375rem 0.625rem;
-  border-radius: calc(0.5rem * var(--sheen-radius-scale));
-  color: var(--sheen-tooltip-fg);
-  background-color: var(--sheen-tooltip-bg);
+  border-radius: calc(0.5rem * var(--rax-radius-scale));
+  color: var(--rax-tooltip-fg);
+  background-color: var(--rax-tooltip-bg);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   backdrop-filter: blur(12px) saturate(180%);
   box-shadow:
     inset 0 0 0 0.5px rgba(255, 255, 255, 0.08),
-    var(--sheen-shadow-md);
+    var(--rax-shadow-md);
   font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.35;
@@ -30,16 +30,16 @@
   transform-origin: var(--radix-tooltip-content-transform-origin);
 
   [data-bs-theme="dark"] & {
-    --sheen-tooltip-bg: rgba(58, 58, 60, 0.9);
+    --rax-tooltip-bg: rgba(58, 58, 60, 0.9);
   }
 
   // Keyboard shortcut hint: <TooltipShortcut>⌘B</TooltipShortcut> (or a plain <kbd>)
   kbd {
     margin-inline-start: 0.5rem;
     padding: 0.0625rem 0.3125rem;
-    border-radius: calc(0.25rem * var(--sheen-radius-scale));
+    border-radius: calc(0.25rem * var(--rax-radius-scale));
     color: inherit;
-    background-color: var(--sheen-tooltip-kbd-bg);
+    background-color: var(--rax-tooltip-kbd-bg);
     box-shadow: none;
     font-family: inherit;
     font-size: 0.75rem;
@@ -49,78 +49,78 @@
 
   // ---- Motion ----------------------------------------------------------------
   &[data-state="delayed-open"] {
-    animation: sheen-fade-in var(--sheen-duration-fast) ease;
+    animation: rax-fade-in var(--rax-duration-fast) ease;
   }
 
   &[data-state="instant-open"] {
-    animation: sheen-fade-in 80ms linear;
+    animation: rax-fade-in 80ms linear;
   }
 
   &[data-state="closed"] {
-    animation: sheen-fade-out 100ms ease forwards;
+    animation: rax-fade-out 100ms ease forwards;
   }
 
   @include motion-safe {
     &[data-state="closed"] {
-      animation: sheen-tooltip-out 120ms ease forwards;
+      animation: rax-tooltip-out 120ms ease forwards;
     }
   }
 
   @include motion-safe {
     @each $side in (top, right, bottom, left) {
       &[data-state="delayed-open"][data-side="#{$side}"] {
-        animation: sheen-tooltip-in-#{$side} 300ms var(--sheen-ease-spring);
+        animation: rax-tooltip-in-#{$side} 300ms var(--rax-ease-spring);
       }
     }
   }
 }
 
-.sheen-tooltip-glass {
-  --sheen-tooltip-fg: var(--bs-emphasis-color);
-  --sheen-tooltip-kbd-bg: rgba(var(--bs-emphasis-color-rgb), 0.08);
-  --sheen-tooltip-bg: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.25));
+.rax-tooltip-glass {
+  --rax-tooltip-fg: var(--bs-emphasis-color);
+  --rax-tooltip-kbd-bg: rgba(var(--bs-emphasis-color-rgb), 0.08);
+  --rax-tooltip-bg: rgba(var(--bs-body-bg-rgb), calc(var(--rax-glass-alpha) + 0.25));
 
-  border: 1px solid var(--sheen-glass-border-color);
-  box-shadow: var(--sheen-glass-edge), var(--sheen-shadow-md);
-  -webkit-backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
-  backdrop-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+  border: 1px solid var(--rax-glass-border-color);
+  box-shadow: var(--rax-glass-edge), var(--rax-shadow-md);
+  -webkit-backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
+  backdrop-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
 
   [data-bs-theme="dark"] & {
-    --sheen-tooltip-bg: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.25));
+    --rax-tooltip-bg: rgba(var(--bs-body-bg-rgb), calc(var(--rax-glass-alpha) + 0.25));
   }
 }
 
 // Two-line tooltip: bold title over a regular-weight description.
-.sheen-tooltip-content:has(.sheen-tooltip-title) {
+.rax-tooltip-content:has(.rax-tooltip-title) {
   padding: 0.5rem 0.75rem;
   font-weight: 400;
   text-wrap: pretty;
 }
 
-.sheen-tooltip-title {
+.rax-tooltip-title {
   display: block;
   margin-bottom: 0.125rem;
   font-weight: 600;
 }
 
-.sheen-tooltip-wide {
+.rax-tooltip-wide {
   max-width: min(28rem, calc(100vw - 1rem));
   text-wrap: pretty;
   user-select: text;
 }
 
-.sheen-tooltip-arrow {
-  fill: var(--sheen-tooltip-bg);
+.rax-tooltip-arrow {
+  fill: var(--rax-tooltip-bg);
 }
 
-$sheen-tooltip-offsets: (
+$rax-tooltip-offsets: (
   top: translateY(4px),
   right: translateX(-4px),
   bottom: translateY(-4px),
   left: translateX(4px),
 );
 
-@keyframes sheen-tooltip-out {
+@keyframes rax-tooltip-out {
   to {
     opacity: 0;
     transform: scale(0.96);
@@ -128,9 +128,9 @@ $sheen-tooltip-offsets: (
 }
 
 // Wrapper TooltipTrigger puts around a disabled control.
-.sheen-tooltip-disabled {
+.rax-tooltip-disabled {
   display: inline-flex;
-  border-radius: var(--sheen-radius-control);
+  border-radius: var(--rax-radius-control);
   cursor: not-allowed;
 
   > * {
@@ -145,12 +145,12 @@ $sheen-tooltip-offsets: (
 
 // Tooltip triggers on touch: long-press shouldn't select text or pop the callout.
 [data-state][aria-describedby],
-.sheen-truncate {
+.rax-truncate {
   -webkit-touch-callout: none;
 }
 
 // <TruncatedText>: one line with an ellipsis, or a line clamp.
-.sheen-truncate {
+.rax-truncate {
   display: block;
   min-width: 0;
   overflow: hidden;
@@ -164,8 +164,8 @@ $sheen-tooltip-offsets: (
   }
 }
 
-@each $side, $offset in $sheen-tooltip-offsets {
-  @keyframes sheen-tooltip-in-#{$side} {
+@each $side, $offset in $rax-tooltip-offsets {
+  @keyframes rax-tooltip-in-#{$side} {
     from {
       opacity: 0;
       transform: #{$offset} scale(0.94);
@@ -174,13 +174,13 @@ $sheen-tooltip-offsets: (
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [class*="sheen-tooltip"] { animation: none !important; transition: none !important; }
+  [class*="rax-tooltip"] { animation: none !important; transition: none !important; }
 }
 
-.sheen-tooltip-content[popover] { position: fixed; inset: auto; margin: 0; border: 0; max-height: calc(100dvh - 1rem); overflow: auto; }
-.sheen-tooltip-content[popover]:not(:popover-open) { display: none; }
+.rax-tooltip-content[popover] { position: fixed; inset: auto; margin: 0; border: 0; max-height: calc(100dvh - 1rem); overflow: auto; }
+.rax-tooltip-content[popover]:not(:popover-open) { display: none; }
 
 // Preview density follows the shared control scale without changing text size.
-.sheen-tooltip-content { padding-block: calc(var(--sheen-control-height, 2.5rem) * .15); }
-[data-sheen-appearance="flat"] .sheen-tooltip-content, .sheen-tooltip-content[data-sheen-appearance="flat"] { backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
-[data-sheen-appearance="glass"] .sheen-tooltip-content, .sheen-tooltip-content[data-sheen-appearance="glass"] { @include sheen-surface; color: var(--bs-emphasis-color); }
+.rax-tooltip-content { padding-block: calc(var(--rax-control-height, 2.5rem) * .15); }
+[data-rax-appearance="flat"] .rax-tooltip-content, .rax-tooltip-content[data-rax-appearance="flat"] { backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+[data-rax-appearance="glass"] .rax-tooltip-content, .rax-tooltip-content[data-rax-appearance="glass"] { @include rax-surface; color: var(--bs-emphasis-color); }

@@ -5,7 +5,7 @@ export function sync(root,generation,retained,released,id){
  let state=instances.get(root)
  if(!state){
   const controller=new AbortController();state={root,controller,urls:new Set(),files:new Map(),generation};instances.set(root,state);owners.set(id,state)
-  const zone=root.querySelector('.sheen-queue-upload-zone')
+  const zone=root.querySelector('.rax-queue-upload-zone')
   const current=()=>root.querySelector(`[data-upload-batch="${state.generation}"] input`)
   const disabled=()=>root.hasAttribute('data-disabled')
   const feed=files=>{if(disabled()||!files.length)return;const input=current(),data=new DataTransfer();for(const file of files)data.items.add(file);input.files=data.files;input.dispatchEvent(new Event('change',{bubbles:true}))}

@@ -30,7 +30,7 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>(({ labels, class
   const merged = React.useMemo(() => ({ ...DEFAULT_LABELS, ...labels }), [labels])
   return (
     <ChatLabelsContext.Provider value={merged}>
-      <div ref={ref} className={cn("sheen-chat", className)} {...props} />
+      <div ref={ref} className={cn("rax-chat", className)} {...props} />
     </ChatLabelsContext.Provider>
   )
 })
@@ -71,13 +71,13 @@ export const ChatMessages = React.forwardRef<HTMLDivElement, ChatMessagesProps>(
     }, [toBottom])
 
     return (
-      <div className="sheen-chat-messages-wrap">
+      <div className="rax-chat-messages-wrap">
         <div
           ref={(node) => {
             scrollRef.current = node
             assignRef(ref, node)
           }}
-          className={cn("sheen-chat-messages", className)}
+          className={cn("rax-chat-messages", className)}
           role="log"
           aria-live="polite"
           aria-relevant="additions"
@@ -93,7 +93,7 @@ export const ChatMessages = React.forwardRef<HTMLDivElement, ChatMessagesProps>(
         </div>
         <button
           type="button"
-          className="sheen-chat-jump"
+          className="rax-chat-jump"
           data-visible={unseen ? "" : undefined}
           tabIndex={unseen ? 0 : -1}
           aria-hidden={!unseen}
@@ -123,7 +123,7 @@ export const ChatMessages = React.forwardRef<HTMLDivElement, ChatMessagesProps>(
 ChatMessages.displayName = "ChatMessages"
 
 export const ChatDaySeparator = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("sheen-chat-day", className)} role="separator" {...props} />
+  <div className={cn("rax-chat-day", className)} role="separator" {...props} />
 )
 
 export interface ChatMessageGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
@@ -136,13 +136,13 @@ export interface ChatMessageGroupProps extends Omit<React.HTMLAttributes<HTMLDiv
 
 export const ChatMessageGroup = React.forwardRef<HTMLDivElement, ChatMessageGroupProps>(
   ({ from, name, avatar, time, className, children, ...props }, ref) => (
-    <div ref={ref} className={cn("sheen-chat-group", className)} data-from={from} {...props}>
-      {from === "other" && <div className="sheen-chat-avatar">{avatar}</div>}
-      <div className="sheen-chat-stack">
+    <div ref={ref} className={cn("rax-chat-group", className)} data-from={from} {...props}>
+      {from === "other" && <div className="rax-chat-avatar">{avatar}</div>}
+      <div className="rax-chat-stack">
         {(name || time) && (
-          <div className="sheen-chat-meta">
-            {name && <span className="sheen-chat-name">{name}</span>}
-            {time && <span className="sheen-chat-time">{time}</span>}
+          <div className="rax-chat-meta">
+            {name && <span className="rax-chat-name">{name}</span>}
+            {time && <span className="rax-chat-time">{time}</span>}
           </div>
         )}
         {children}
@@ -195,13 +195,13 @@ export interface ChatBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
 export const ChatBubble = React.forwardRef<HTMLDivElement, ChatBubbleProps>(({ status, onRetry, footer, className, children, ...props }, ref) => {
   const labels = React.useContext(ChatLabelsContext)
   return (
-    <div className="sheen-chat-row" data-status={status}>
-      <div ref={ref} className={cn("sheen-chat-bubble", className)} dir="auto" {...props}>
+    <div className="rax-chat-row" data-status={status}>
+      <div ref={ref} className={cn("rax-chat-bubble", className)} dir="auto" {...props}>
         {children}
       </div>
-      {footer && <div className="sheen-chat-bubble-footer">{footer}</div>}
+      {footer && <div className="rax-chat-bubble-footer">{footer}</div>}
       {status && (
-        <div className="sheen-chat-status" data-status={status}>
+        <div className="rax-chat-status" data-status={status}>
           <StatusIcon status={status} />
           <span>{labels[status]}</span>
           {status === "failed" && onRetry && (
@@ -224,16 +224,16 @@ export const ChatTyping = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & { name?: React.ReactNode; avatar?: React.ReactNode; label?: React.ReactNode }) => (
-  <div className={cn("sheen-chat-group sheen-chat-typing", className)} data-from="other" {...props}>
-    <div className="sheen-chat-avatar">{avatar}</div>
-    <div className="sheen-chat-stack">
-      <div className="sheen-chat-row">
+  <div className={cn("rax-chat-group rax-chat-typing", className)} data-from="other" {...props}>
+    <div className="rax-chat-avatar">{avatar}</div>
+    <div className="rax-chat-stack">
+      <div className="rax-chat-row">
         <div
-          className="sheen-chat-bubble"
+          className="rax-chat-bubble"
           aria-label={typeof label === "string" ? label : `${typeof name === "string" ? name : "Someone"} is typing`}
           role="status"
         >
-          <span className="sheen-chat-dots" aria-hidden="true">
+          <span className="rax-chat-dots" aria-hidden="true">
             <span />
             <span />
             <span />

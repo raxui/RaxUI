@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/toast.css",
       "type": "css",
-      "sha256": "23f8daa3ee4afff5608826e6bc3e4fb80dca787986694b128a43aa9aa7c5940e"
+      "sha256": "a1fd80f907f0288c3f2cd8caa16183c49ce39e01807cfc27d8a529e59c977b80"
     }
   ],
   "files": [
@@ -21,7 +21,7 @@
       "destination": "components",
       "target": "Toast/Toaster.razor",
       "type": "razor",
-      "sha256": "d2eed1a36cf52571383084f4debfc00f0410855777a41441e38ffb201fa84d61"
+      "sha256": "331c26c51b372261b19c84fcaa3f282961300fa75075490fe087b24057f0f01f"
     },
     {
       "source": "Toaster.razor.js",

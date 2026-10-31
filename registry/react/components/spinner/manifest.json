@@ -15,13 +15,13 @@
       "source": "registry/react/components/spinner/spinner.tsx",
       "target": "components/ui/spinner.tsx",
       "type": "tsx",
-      "sha256": "d0b485df5abdc92f4c1aa44b92df51cbd35d5c28ece462accb0b389090eda3ba"
+      "sha256": "d4a5af564ab8c88bf9950c9f3cfe8a47c62c1c0f9a4681213754d960f06ae20f"
     },
     {
       "source": "theme/scss/components/_spinner.scss",
-      "target": "styles/sheenui/components/_spinner.scss",
+      "target": "styles/raxui/components/_spinner.scss",
       "type": "scss",
-      "sha256": "0d98b2c82d91397c3cf6eff2904a192f51cd12a29d1a71d084b79841034fdc6f"
+      "sha256": "cab5085d3343de48e9005afc7d6177f4155a2307e47961cb820d1702ce0c0325"
     }
   ]
 }

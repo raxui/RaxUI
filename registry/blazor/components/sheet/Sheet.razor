@@ -1,28 +1,28 @@
 @* Source-owned native modal panel. Shared gestures live in Sheet.razor.js. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<dialog @ref="_element" @attributes="AdditionalAttributes" id="@DialogId" class="sheen-sheet-content @Class" data-sheen-appearance="@Appearance"
+<dialog @ref="_element" @attributes="AdditionalAttributes" id="@DialogId" class="rax-sheet-content @Class" data-rax-appearance="@Appearance"
         data-side="@Side" aria-labelledby="@(_id + "-title")" aria-describedby="@(Description is null ? null : _id + "-description")" @onclose="Closed">
     @if (EffectiveHandle)
     {
-        <button type="button" class="sheen-sheet-handle" data-panel-handle aria-label="@HandleLabel" aria-controls="@DialogId"></button>
+        <button type="button" class="rax-sheet-handle" data-panel-handle aria-label="@HandleLabel" aria-controls="@DialogId"></button>
     }
-    <div class="sheen-sheet-header @HeaderClass">
-        <h2 id="@(_id + "-title")" class="sheen-sheet-title">@Title</h2>
-        @if (Description is not null) { <p id="@(_id + "-description")" class="sheen-sheet-description">@Description</p> }
+    <div class="rax-sheet-header @HeaderClass">
+        <h2 id="@(_id + "-title")" class="rax-sheet-title">@Title</h2>
+        @if (Description is not null) { <p id="@(_id + "-description")" class="rax-sheet-description">@Description</p> }
     </div>
-    <div class="sheen-sheet-body @BodyClass">@ChildContent</div>
-    @if (Footer is not null) { <div class="sheen-sheet-footer @FooterClass">@Footer</div> }
+    <div class="rax-sheet-body @BodyClass">@ChildContent</div>
+    @if (Footer is not null) { <div class="rax-sheet-footer @FooterClass">@Footer</div> }
     @if (ShowCloseButton)
     {
-        <button type="button" class="sheen-sheet-close" aria-label="@CloseLabel" @onclick="CloseAsync">
+        <button type="button" class="rax-sheet-close" aria-label="@CloseLabel" @onclick="CloseAsync">
             @* Lucide X, ISC license. *@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
         </button>
     }
 </dialog>
 @code {
-    private readonly string _id = "sheen-sheet-" + Guid.NewGuid().ToString("N");
+    private readonly string _id = "rax-sheet-" + Guid.NewGuid().ToString("N");
     private string DialogId => AdditionalAttributes is not null && AdditionalAttributes.TryGetValue("id", out var id) ? Convert.ToString(id) ?? _id : _id;
     private ElementReference _element;
     private IJSObjectReference? _module;

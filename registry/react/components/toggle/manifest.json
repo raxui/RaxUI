@@ -18,13 +18,13 @@
       "source": "registry/react/components/toggle/toggle.tsx",
       "target": "components/ui/toggle.tsx",
       "type": "tsx",
-      "sha256": "a23239df72c2ff0c971731e81c159870f4cf82efc2ac49e98b5a598b312e00a9"
+      "sha256": "6a68a46c1ac26908f0f70c279d98f589f6b2f169b720f7a14080cc00a2948208"
     },
     {
       "source": "theme/scss/components/_toggle.scss",
-      "target": "styles/sheenui/components/_toggle.scss",
+      "target": "styles/raxui/components/_toggle.scss",
       "type": "scss",
-      "sha256": "56a3b2971cee004737478429c9d3c9b975bf2f1e98d0c1ec75e14f3c9a28dc13"
+      "sha256": "4264009f6ddfcfc5634e2bef8b45b52e2be13f7c5aa686f64c1839723ef80d6c"
     }
   ]
 }

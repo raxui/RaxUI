@@ -1,11 +1,11 @@
-// SheenUI TextEditor behavior over the bundled Tiptap engine (TextEditorContent.razor.js, ADR 020). Source-owned: edit freely.
+// RaxUI TextEditor behavior over the bundled Tiptap engine (TextEditorContent.razor.js, ADR 020). Source-owned: edit freely.
 // Toolbar state, menus, the link form and the counter update here, so formatting never waits for a server round trip;
 // .NET receives the HTML debounced (300 ms and on blur), as a stream when it is large.
 import { BubbleMenu, CharacterCount, Editor, Extension, Highlight, Placeholder, StarterKit, TaskItem, TaskList, TextAlign } from "./TextEditorContent.razor.js"
 
 const instances = new Map()
 const IS_MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)
-const THEME = ["data-bs-theme", "data-sheen-appearance", "data-sheen-accent", "data-sheen-density", "dir"]
+const THEME = ["data-bs-theme", "data-rax-appearance", "data-rax-accent", "data-rax-density", "dir"]
 const STREAM_AT = 16000 // characters; SignalR's default message limit is 32 KB
 
 export function formatShortcut(keys) {
@@ -128,11 +128,11 @@ export function init(key, root, dotnet, options) {
       TaskItem.configure({ nested: true }),
       // dir="auto" on text blocks only, so lists still guess direction from their items' text.
       Extension.create({
-        name: "sheenAutoDirection",
+        name: "raxAutoDirection",
         addGlobalAttributes: () => [{ types: ["paragraph", "heading"], attributes: { dir: { default: "auto", parseHTML: (el) => el.getAttribute("dir") || "auto", renderHTML: (a) => ({ dir: a.dir }) } } }],
       }),
       Extension.create({
-        name: "sheenShortcuts",
+        name: "raxShortcuts",
         priority: 1000, // before TextAlign's left / right shortcuts
         addKeyboardShortcuts() {
           const align = (value) => () => setAlign(this.editor, value)
@@ -142,7 +142,7 @@ export function init(key, root, dotnet, options) {
       ...(bubble ? [BubbleMenu.configure({
         element: bubble,
         appendTo: () => document.body,
-        pluginKey: "sheenBubbleMenu",
+        pluginKey: "raxBubbleMenu",
         options: { placement: "top", offset: 8, flip: true, shift: { padding: 8 } },
         shouldShow: ({ editor: e, view, state, element }) => {
           if (s.bubbleLink) return true
@@ -156,7 +156,7 @@ export function init(key, root, dotnet, options) {
     editable: options.editable,
     autofocus: options.autofocus ? "end" : false,
     editorProps: {
-      attributes: { ...attributes(options), class: `sheen-prose sheen-editor-content ${options.contentClass ?? ""}`.trim() },
+      attributes: { ...attributes(options), class: `rax-prose rax-editor-content ${options.contentClass ?? ""}`.trim() },
       // Ctrl/⌘+K: link. Stopped here so page-level shortcuts (a command palette) don't also see it.
       handleKeyDown: (view, event) => {
         const mod = IS_MAC ? event.metaKey : event.ctrlKey
@@ -183,12 +183,12 @@ export function init(key, root, dotnet, options) {
     if (!bubble) return
     s.bubbleLink = link
     if (link) bubble.dataset.mode = "link"; else bubble.removeAttribute("data-mode")
-    bubble.querySelector(".sheen-editor-bubble-tools").hidden = link
+    bubble.querySelector(".rax-editor-bubble-tools").hidden = link
     bubble.querySelector("[data-editor-link-form]").hidden = !link
   }
   bubbleMode(false)
-  const hideBubble = () => { bubbleMode(false); editor.view.dispatch(editor.state.tr.setMeta("sheenBubbleMenu", "hide")) }
-  const openBubbleLink = () => { bubbleMode(true); fillLink(bubble.querySelector("[data-editor-link-form]")); editor.view.dispatch(editor.state.tr.setMeta("sheenBubbleMenu", "updatePosition")) }
+  const hideBubble = () => { bubbleMode(false); editor.view.dispatch(editor.state.tr.setMeta("raxBubbleMenu", "hide")) }
+  const openBubbleLink = () => { bubbleMode(true); fillLink(bubble.querySelector("[data-editor-link-form]")); editor.view.dispatch(editor.state.tr.setMeta("raxBubbleMenu", "updatePosition")) }
 
   // Shortcuts in titles and menus, in the platform's notation.
   for (const el of [root, bubble].filter(Boolean).flatMap((r) => [...r.querySelectorAll("[data-shortcut]")])) if (el.dataset.shortcut) el.title = `${el.getAttribute("aria-label")} (${formatShortcut(el.dataset.shortcut)})`
@@ -212,14 +212,14 @@ export function init(key, root, dotnet, options) {
     const label = root.querySelector("[data-editor-heading-label]")
     if (label) { label.textContent = heading; label.closest("button")?.setAttribute("aria-label", `${s.options.textStyle}: ${heading}`) }
     for (const icon of root.querySelectorAll("[data-editor-align-icon]")) icon.hidden = icon.dataset.editorAlignIcon !== state.align
-    for (const button of root.querySelectorAll(".sheen-editor-heading-trigger, .sheen-editor-align-trigger")) button.disabled = !editable
+    for (const button of root.querySelectorAll(".rax-editor-heading-trigger, .rax-editor-align-trigger")) button.disabled = !editable
     const count = root.querySelector("[data-editor-count]")
     if (count && s.options.maxLength) {
       const max = s.options.maxLength, length = state.characters
       const status = length >= max ? "limit" : max - length <= Math.max(10, Math.round(max * 0.1)) ? "warn" : null
       if (status) count.dataset.state = status; else count.removeAttribute("data-state")
-      count.querySelector(".sheen-textarea-count-bar").style.strokeDashoffset = String(1 - Math.min(length / max, 1))
-      count.querySelector(".sheen-textarea-count-text").textContent = status ? String(max - length) : `${length} / ${max}`
+      count.querySelector(".rax-textarea-count-bar").style.strokeDashoffset = String(1 - Math.min(length / max, 1))
+      count.querySelector(".rax-textarea-count-text").textContent = status ? String(max - length) : `${length} / ${max}`
       count.querySelector("[data-count-status]").textContent = status === "limit" ? s.options.limitLabel : ""
     }
     s.state = state
@@ -231,7 +231,7 @@ export function init(key, root, dotnet, options) {
     if (!el || el.getAttribute("aria-disabled") === "true") return
     const command = el.dataset.editorCommand
     if (command === "link") {
-      if (el.closest(".sheen-editor-bubble")) { event.preventDefault(); openBubbleLink() }
+      if (el.closest(".rax-editor-bubble")) { event.preventDefault(); openBubbleLink() }
       return // the toolbar link button opens its popover natively
     }
     COMMANDS[command]?.(editor, el)
@@ -252,14 +252,14 @@ export function init(key, root, dotnet, options) {
   const closeLink = (form) => {
     const popover = form.closest("[popover]")
     if (popover?.matches(":popover-open")) popover.hidePopover()
-    if (form.closest(".sheen-editor-bubble")) bubbleMode(false)
+    if (form.closest(".rax-editor-bubble")) bubbleMode(false)
     editor.commands.focus()
   }
   for (const form of [root, bubble].filter(Boolean).flatMap((r) => [...r.querySelectorAll("[data-editor-link-form]")])) {
     listen(form, "submit", (event) => { event.preventDefault(); event.stopPropagation(); applyLink(editor, form.querySelector("[data-editor-link-input]").value); closeLink(form) })
     listen(form.querySelector("[data-editor-link-remove]"), "click", () => { editor.chain().focus().extendMarkRange("link").unsetLink().run(); closeLink(form) })
     listen(form, "keydown", (event) => { if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); closeLink(form) } })
-    if (form.closest(".sheen-editor-bubble")) listen(form, "focusout", (event) => { if (!form.contains(event.relatedTarget)) hideBubble() })
+    if (form.closest(".rax-editor-bubble")) listen(form, "focusout", (event) => { if (!form.contains(event.relatedTarget)) hideBubble() })
   }
   const popover = root.querySelector("[data-editor-link-popover]")
   if (popover) listen(popover, "toggle", (event) => {

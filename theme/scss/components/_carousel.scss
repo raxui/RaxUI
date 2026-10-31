@@ -1,46 +1,46 @@
 // -----------------------------------------------------------------------------
 // Carousel — Embla viewport + flex track. Slide width comes from CSS vars per
-// breakpoint (set by `slideSize`), spacing from --sheen-carousel-gap. Glass
+// breakpoint (set by `slideSize`), spacing from --rax-carousel-gap. Glass
 // arrows appear on hover / focus; dots stretch into a pill for the current
 // slide and fill with autoplay progress.
 // -----------------------------------------------------------------------------
 
-.sheen-carousel {
-  --sheen-carousel-gap: 1rem;
-  --sheen-carousel-size: var(--sheen-carousel-size-base, 100%);
+.rax-carousel {
+  --rax-carousel-gap: 1rem;
+  --rax-carousel-size: var(--rax-carousel-size-base, 100%);
 
   position: relative;
   min-width: 0;
 
   @media (min-width: 576px) {
-    --sheen-carousel-size: var(--sheen-carousel-size-sm, var(--sheen-carousel-size-base, 100%));
+    --rax-carousel-size: var(--rax-carousel-size-sm, var(--rax-carousel-size-base, 100%));
   }
 
   @media (min-width: 768px) {
-    --sheen-carousel-size: var(--sheen-carousel-size-md, var(--sheen-carousel-size-sm, var(--sheen-carousel-size-base, 100%)));
+    --rax-carousel-size: var(--rax-carousel-size-md, var(--rax-carousel-size-sm, var(--rax-carousel-size-base, 100%)));
   }
 
   @media (min-width: 992px) {
-    --sheen-carousel-size: var(--sheen-carousel-size-lg, var(--sheen-carousel-size-md, var(--sheen-carousel-size-sm, var(--sheen-carousel-size-base, 100%))));
+    --rax-carousel-size: var(--rax-carousel-size-lg, var(--rax-carousel-size-md, var(--rax-carousel-size-sm, var(--rax-carousel-size-base, 100%))));
   }
 
   @media (min-width: 1200px) {
-    --sheen-carousel-size: var(
-      --sheen-carousel-size-xl,
-      var(--sheen-carousel-size-lg, var(--sheen-carousel-size-md, var(--sheen-carousel-size-sm, var(--sheen-carousel-size-base, 100%))))
+    --rax-carousel-size: var(
+      --rax-carousel-size-xl,
+      var(--rax-carousel-size-lg, var(--rax-carousel-size-md, var(--rax-carousel-size-sm, var(--rax-carousel-size-base, 100%))))
     );
   }
 }
 
-.sheen-carousel-viewport {
+.rax-carousel-viewport {
   position: relative;
   overflow: hidden;
   border-radius: inherit;
 }
 
-.sheen-carousel-container {
+.rax-carousel-container {
   display: flex;
-  margin-inline-start: calc(var(--sheen-carousel-gap) * -1);
+  margin-inline-start: calc(var(--rax-carousel-gap) * -1);
   touch-action: pan-y pinch-zoom;
   backface-visibility: hidden;
 
@@ -48,20 +48,20 @@
     flex-direction: column;
     height: 100%;
     margin-inline-start: 0;
-    margin-top: calc(var(--sheen-carousel-gap) * -1);
+    margin-top: calc(var(--rax-carousel-gap) * -1);
     touch-action: pan-x pinch-zoom;
   }
 }
 
-.sheen-carousel-item {
-  flex: 0 0 var(--sheen-carousel-size);
+.rax-carousel-item {
+  flex: 0 0 var(--rax-carousel-size);
   min-width: 0;
-  padding-inline-start: var(--sheen-carousel-gap);
+  padding-inline-start: var(--rax-carousel-gap);
 
   [data-orientation="vertical"] & {
     min-height: 0;
     padding-inline-start: 0;
-    padding-top: var(--sheen-carousel-gap);
+    padding-top: var(--rax-carousel-gap);
   }
 
   // Fade stacks the slides: no spacing between them.
@@ -70,29 +70,29 @@
   }
 }
 
-.sheen-carousel[data-effect="fade"] .sheen-carousel-container {
+.rax-carousel[data-effect="fade"] .rax-carousel-container {
   margin-inline-start: 0;
 
-  > .sheen-carousel-item {
+  > .rax-carousel-item {
     padding-inline-start: 0;
   }
 }
 
 // Scale: neighbours shrink and dim (App Store cards).
-.sheen-carousel[data-effect="scale"] .sheen-carousel-item > * {
+.rax-carousel[data-effect="scale"] .rax-carousel-item > * {
   transition:
-    transform var(--sheen-duration-slow) var(--sheen-ease-spring),
-    opacity var(--sheen-duration-slow) ease;
+    transform var(--rax-duration-slow) var(--rax-ease-spring),
+    opacity var(--rax-duration-slow) ease;
 }
 
-.sheen-carousel[data-effect="scale"] .sheen-carousel-item:not([data-active]) > * {
+.rax-carousel[data-effect="scale"] .rax-carousel-item:not([data-active]) > * {
   opacity: 0.55;
   transform: scale(0.9);
 }
 
 // ---- Arrows ---------------------------------------------------------------------------
 
-.sheen-carousel-nav {
+.rax-carousel-nav {
   position: absolute;
   top: 50%;
   z-index: 2;
@@ -117,18 +117,18 @@
     opacity: 0;
     scale: 0.9;
     transition:
-      opacity var(--sheen-duration) ease,
-      scale var(--sheen-duration) var(--sheen-ease-spring);
+      opacity var(--rax-duration) ease,
+      scale var(--rax-duration) var(--rax-ease-spring);
 
-    .sheen-carousel:hover &,
-    .sheen-carousel:focus-within & {
+    .rax-carousel:hover &,
+    .rax-carousel:focus-within & {
       opacity: 1;
       scale: 1;
     }
   }
 }
 
-.sheen-carousel-prev {
+.rax-carousel-prev {
   inset-inline-start: 0.75rem;
 
   svg {
@@ -140,7 +140,7 @@
   }
 }
 
-.sheen-carousel-next {
+.rax-carousel-next {
   inset-inline-end: 0.75rem;
 
   &:dir(rtl) svg {
@@ -148,12 +148,12 @@
   }
 }
 
-.sheen-carousel-nav[data-orientation="vertical"] {
+.rax-carousel-nav[data-orientation="vertical"] {
   inset-inline: 0;
   margin-inline: auto;
   translate: none;
 
-  &.sheen-carousel-prev {
+  &.rax-carousel-prev {
     top: 0.75rem;
 
     svg {
@@ -161,7 +161,7 @@
     }
   }
 
-  &.sheen-carousel-next {
+  &.rax-carousel-next {
     top: auto;
     bottom: 0.75rem;
 
@@ -173,7 +173,7 @@
 
 // ---- Dots -----------------------------------------------------------------------------
 
-.sheen-carousel-dots {
+.rax-carousel-dots {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -195,9 +195,9 @@
   }
 }
 
-.sheen-carousel-dot {
-  --sheen-dot-rgb: var(--bs-emphasis-color-rgb);
-  --sheen-dot-active: var(--bs-primary-rgb);
+.rax-carousel-dot {
+  --rax-dot-rgb: var(--bs-emphasis-color-rgb);
+  --rax-dot-active: var(--bs-primary-rgb);
 
   position: relative;
   flex-shrink: 0;
@@ -207,21 +207,21 @@
   overflow: hidden;
   border: 0;
   border-radius: 999px;
-  background-color: rgba(var(--sheen-dot-rgb), 0.22);
+  background-color: rgba(var(--rax-dot-rgb), 0.22);
   cursor: pointer;
   transition:
-    width var(--sheen-duration-slow) var(--sheen-ease-spring),
-    background-color var(--sheen-duration) ease;
+    width var(--rax-duration-slow) var(--rax-ease-spring),
+    background-color var(--rax-duration) ease;
 
   [data-variant="overlay"] & {
-    --sheen-dot-rgb: 255, 255, 255;
-    --sheen-dot-active: 255, 255, 255;
+    --rax-dot-rgb: 255, 255, 255;
+    --rax-dot-active: 255, 255, 255;
 
     background-color: rgba(255, 255, 255, 0.45);
   }
 
   &:hover {
-    background-color: rgba(var(--sheen-dot-rgb), 0.4);
+    background-color: rgba(var(--rax-dot-rgb), 0.4);
   }
 
   &:focus-visible {
@@ -231,12 +231,12 @@
 
   &[data-active] {
     width: 1.5rem;
-    background-color: rgb(var(--sheen-dot-active));
+    background-color: rgb(var(--rax-dot-active));
   }
 
   // Autoplaying: the pill is a track that fills until the next slide.
-  &[data-active]:has(.sheen-carousel-dot-progress) {
-    background-color: rgba(var(--sheen-dot-rgb), 0.25);
+  &[data-active]:has(.rax-carousel-dot-progress) {
+    background-color: rgba(var(--rax-dot-rgb), 0.25);
 
     [data-variant="overlay"] & {
       background-color: rgba(255, 255, 255, 0.4);
@@ -244,20 +244,20 @@
   }
 }
 
-.sheen-carousel-dot-progress {
+.rax-carousel-dot-progress {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background-color: rgb(var(--sheen-dot-active));
+  background-color: rgb(var(--rax-dot-active));
   transform-origin: left center;
-  animation: sheen-carousel-progress linear forwards;
+  animation: rax-carousel-progress linear forwards;
 
   &:dir(rtl) {
     transform-origin: right center;
   }
 }
 
-@keyframes sheen-carousel-progress {
+@keyframes rax-carousel-progress {
   from {
     transform: scaleX(0);
   }
@@ -265,7 +265,7 @@
 
 // ---- Counter / play-pause --------------------------------------------------------------
 
-.sheen-carousel-counter {
+.rax-carousel-counter {
   position: absolute;
   top: 0.75rem;
   inset-inline-end: 0.75rem;
@@ -282,7 +282,7 @@
   pointer-events: none;
 }
 
-.sheen-carousel-playpause {
+.rax-carousel-playpause {
   &.btn-glass-icon {
     border-radius: 50%;
   }
@@ -295,7 +295,7 @@
 
 // ---- Thumbnails -----------------------------------------------------------------------
 
-.sheen-carousel-thumbs {
+.rax-carousel-thumbs {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.75rem;
@@ -308,20 +308,20 @@
   }
 }
 
-.sheen-carousel-thumb {
+.rax-carousel-thumb {
   flex: 0 0 4rem;
   aspect-ratio: 1;
   padding: 0;
   overflow: hidden;
   border: 0;
-  border-radius: calc(0.75rem * var(--sheen-radius-scale));
+  border-radius: calc(0.75rem * var(--rax-radius-scale));
   background: rgba(var(--bs-emphasis-color-rgb), 0.06);
   opacity: 0.5;
   cursor: pointer;
   transition:
-    opacity var(--sheen-duration) ease,
-    transform var(--sheen-duration) var(--sheen-ease-spring),
-    box-shadow var(--sheen-duration) ease;
+    opacity var(--rax-duration) ease,
+    transform var(--rax-duration) var(--rax-ease-spring),
+    box-shadow var(--rax-duration) ease;
 
   img {
     display: block;

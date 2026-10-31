@@ -13,7 +13,7 @@
       "destination": "styles",
       "target": "components/date-range-input.css",
       "type": "css",
-      "sha256": "f4fee10f416af81d39c4e9eacf5d3a1012f694a9a70b30933f008cacf2f69eaa"
+      "sha256": "a919655c89718097987fd7e5f53b523c699b50f4dafe6a1e22982f6de0b40a59"
     }
   ],
   "files": [
@@ -22,7 +22,7 @@
       "destination": "components",
       "target": "DateRangeInput/DateRangeInput.razor",
       "type": "razor",
-      "sha256": "3ab91b08c043741e5f5fd001041b953fef9cfa78645f8d8963798f8588e239a6"
+      "sha256": "8f7935f1c1c2fa7d415c8f1429d7c980c3f96202fbafd4c4356a61789bb2fc41"
     }
   ]
 }

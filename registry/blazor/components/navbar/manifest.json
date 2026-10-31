@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/navbar.css",
       "type": "css",
-      "sha256": "e1bc633844ce8da868d486d5e1d80dfe91450e7d450b905c14f7378ee1e3747d"
+      "sha256": "7e18861cdbfbdd7fb428fd5b6e5fd14adc58067a84f5d2082815b7891a64c9a6"
     }
   ],
   "files": [
@@ -21,63 +21,63 @@
       "destination": "components",
       "target": "Navbar/Navbar.razor",
       "type": "razor",
-      "sha256": "c1cac8941e6a1abb878c6149d7965e783e0dffeae74c625af89193bb3c4090e0"
+      "sha256": "108278f95dae8b54e9c428546ed7979b7e0314d167342437f27d28a58428a7cf"
     },
     {
       "source": "Navbar.razor.js",
       "destination": "components",
       "target": "Navbar/Navbar.razor.js",
       "type": "js",
-      "sha256": "a68d06fbf3cf5de3bf3b64409f8820cfe0732c776c1cea59537a71d226b4f477"
+      "sha256": "07da8ca759359bff03d240e518786d3aee4fa27796761d8ad752bd8b407c7460"
     },
     {
       "source": "NavbarActions.razor",
       "destination": "components",
       "target": "Navbar/NavbarActions.razor",
       "type": "razor",
-      "sha256": "8ef79bcdbcf40ef2ef05249656feb7ad21b081068bdafb1553be70ab77ecbb86"
+      "sha256": "12e489e1775c2d684576c98fc307cc4aab3fee6a1928fa41349831796b477eda"
     },
     {
       "source": "NavbarBrand.razor",
       "destination": "components",
       "target": "Navbar/NavbarBrand.razor",
       "type": "razor",
-      "sha256": "c39cb3196514ea10beeb7be1410efb5647b3cb97b41cc0ac11b85e12758cf118"
+      "sha256": "84db2f6a184f130f25b9ab0592a3033650d77b623c78405f4626e17fb1737b90"
     },
     {
       "source": "NavbarLink.razor",
       "destination": "components",
       "target": "Navbar/NavbarLink.razor",
       "type": "razor",
-      "sha256": "08bad3a1a409100ec294a6adf093ed04c8390abff5a851a6b7da474d6e36e630"
+      "sha256": "4aea3ae6c175ad2046f58abc1494a95c139645815aec5be304c16a02198c9347"
     },
     {
       "source": "NavbarLinks.razor",
       "destination": "components",
       "target": "Navbar/NavbarLinks.razor",
       "type": "razor",
-      "sha256": "1b3b4c71aef1799ff2eb7a4156ea026a86ee759074e3b4b41db3ec564bcb4488"
+      "sha256": "0a458925785ae5b54588f549368091473cb1eb0838febfef9d51c8c8a0ad3925"
     },
     {
       "source": "NavbarMenu.razor",
       "destination": "components",
       "target": "Navbar/NavbarMenu.razor",
       "type": "razor",
-      "sha256": "8851a41b3e1845b1c39b22c30ace3f8b9dbe4f02fccee2ac6d7f6f58d6418643"
+      "sha256": "71752298df3954dd427549db9e11c26594b52f2a17ccf7febb9a6c6331560758"
     },
     {
       "source": "NavbarMenuLink.razor",
       "destination": "components",
       "target": "Navbar/NavbarMenuLink.razor",
       "type": "razor",
-      "sha256": "3980acecdd7133e800f97f4da171f86f061b394dc895c8340e3c28cfc2a9d189"
+      "sha256": "2277d8155983e571e3c2617723944072523e6c7404d72e8c6525f6cdf93eb5b7"
     },
     {
       "source": "NavbarToggle.razor",
       "destination": "components",
       "target": "Navbar/NavbarToggle.razor",
       "type": "razor",
-      "sha256": "59240c85fc6c70c1e55e73dc19ceaea0f8f9d83290daedbe8b4047a2c9fa331d"
+      "sha256": "44752f250bf633daebf7d407e366dbaee543d60e700fe18e4d62f7e10c16559c"
     }
   ]
 }

@@ -10,19 +10,19 @@
         @foreach (var option in Options ?? Array.Empty<Option>()) { <option value="@option.Value" disabled="@option.Disabled">@option.Label</option> }
     </InputSelect>
 }
-<div class="sheen-autocomplete @WrapperClass" data-loading="@(Busy ? "" : null)" data-sheen-appearance="@Appearance" hidden="@(Rich && !_interactive)">
+<div class="rax-autocomplete @WrapperClass" data-loading="@(Busy ? "" : null)" data-rax-appearance="@Appearance" hidden="@(Rich && !_interactive)">
     @if (Rich && _interactive) { <input type="hidden" name="@NameAttributeValue" value="@CurrentValueAsString" disabled="@IsDisabled" /> }
-    <input @ref="_input" @attributes="InputAttributes" type="text" name="@(!Rich ? NameAttributeValue : null)" class="@($"form-control sheen-input sheen-autocomplete-input {CssClass} {Class} {(Size == "sm" ? "form-control-sm" : Size == "lg" ? "form-control-lg" : "")}")"
-           data-sheen-appearance="@Appearance" data-variant="@Variant" value="@_text" @oninput="Changed" @onfocus="Focused" placeholder="@EffectivePlaceholder"
+    <input @ref="_input" @attributes="InputAttributes" type="text" name="@(!Rich ? NameAttributeValue : null)" class="@($"form-control rax-input rax-autocomplete-input {CssClass} {Class} {(Size == "sm" ? "form-control-sm" : Size == "lg" ? "form-control-lg" : "")}")"
+           data-rax-appearance="@Appearance" data-variant="@Variant" value="@_text" @oninput="Changed" @onfocus="Focused" placeholder="@EffectivePlaceholder"
            role="@(_interactive ? "combobox" : null)" aria-autocomplete="@(_interactive ? "list" : null)"
            aria-expanded="@(_interactive ? (_open ? "true" : "false") : null)" aria-controls="@(_interactive ? _autoId + "-list" : null)"
            list="@(!_interactive && !Rich ? _autoId + "-datalist" : null)" autocomplete="off" />
-    <span class="sheen-autocomplete-icon" aria-hidden="true">
-        <span class="sheen-autocomplete-icon-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg></span>
-        <span class="sheen-autocomplete-icon-spinner"><span class="spinner-border spinner-border-sm"></span></span>
+    <span class="rax-autocomplete-icon" aria-hidden="true">
+        <span class="rax-autocomplete-icon-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg></span>
+        <span class="rax-autocomplete-icon-spinner"><span class="spinner-border spinner-border-sm"></span></span>
     </span>
     @if (Clearable && _text.Length > 0 && !IsDisabled && !IsReadOnly)
-    { <button type="button" class="sheen-autocomplete-clear" aria-label="@ClearLabel" @onclick="Clear"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 3 6 6m0-6-6 6"/></svg></button> }
+    { <button type="button" class="rax-autocomplete-clear" aria-label="@ClearLabel" @onclick="Clear"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 3 6 6m0-6-6 6"/></svg></button> }
 </div>
 @if (!_interactive && !Rich)
 {
@@ -30,31 +30,31 @@
 }
 else if (_interactive)
 {
-    <Popover Id="@(_autoId + "-popup")" Anchor="_input" @bind-Open="_open" Role="presentation" Class="@($"sheen-autocomplete-content {ContentClass}")" Appearance="@Appearance">
-        <div @ref="_list" id="@(_autoId + "-list")" role="listbox" class="sheen-autocomplete-listbox sheen-choice-list" data-min-chars="@MinChars" aria-label="@SuggestionsLabel" aria-busy="@(Busy ? "true" : "false")">
-            <span class="sheen-choice-highlight" data-choice-highlight hidden aria-hidden="true"></span>
+    <Popover Id="@(_autoId + "-popup")" Anchor="_input" @bind-Open="_open" Role="presentation" Class="@($"rax-autocomplete-content {ContentClass}")" Appearance="@Appearance">
+        <div @ref="_list" id="@(_autoId + "-list")" role="listbox" class="rax-autocomplete-listbox rax-choice-list" data-min-chars="@MinChars" aria-label="@SuggestionsLabel" aria-busy="@(Busy ? "true" : "false")">
+            <span class="rax-choice-highlight" data-choice-highlight hidden aria-hidden="true"></span>
             @if (!_failed)
             {
                 @foreach (var option in Filtered)
                 {
-                    <div @key="option.Value" id="@OptionId(option)" role="option" aria-selected="@(option.Value == CurrentValue ? "true" : "false")" aria-disabled="@(option.Disabled || Busy ? "true" : "false")" data-disabled="@(option.Disabled ? "" : null)" class="sheen-autocomplete-option"
+                    <div @key="option.Value" id="@OptionId(option)" role="option" aria-selected="@(option.Value == CurrentValue ? "true" : "false")" aria-disabled="@(option.Disabled || Busy ? "true" : "false")" data-disabled="@(option.Disabled ? "" : null)" class="rax-autocomplete-option"
                          data-value="@option.Value" @onclick="@(() => Select(option.Value))">
                         @if (OptionTemplate is not null) { @OptionTemplate(option) }
                         else
                         {
-                            @if (option.Icon is not null) { <span class="sheen-autocomplete-option-icon">@option.Icon</span> }
-                            <span class="sheen-autocomplete-option-text"><span>@MatchedLabel(option.Label)</span>@if (option.Description is not null) { <span class="sheen-autocomplete-option-description">@option.Description</span> }</span>
+                            @if (option.Icon is not null) { <span class="rax-autocomplete-option-icon">@option.Icon</span> }
+                            <span class="rax-autocomplete-option-text"><span>@MatchedLabel(option.Label)</span>@if (option.Description is not null) { <span class="rax-autocomplete-option-description">@option.Description</span> }</span>
                         }
-                        @if (option.Value == CurrentValue) { <span class="sheen-autocomplete-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span> }
+                        @if (option.Value == CurrentValue) { <span class="rax-autocomplete-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span> }
                     </div>
                 }
             }
             @if (Busy)
             {
-                @if (!Filtered.Any()) { @for (var i = 0; i < 3; i++) { <div class="sheen-autocomplete-skeleton" aria-hidden="true"><span style="width:60%"></span></div> } }
+                @if (!Filtered.Any()) { @for (var i = 0; i < 3; i++) { <div class="rax-autocomplete-skeleton" aria-hidden="true"><span style="width:60%"></span></div> } }
                 <span role="status" class="visually-hidden">@LoadingMessage</span>
             }
-            else if (_failed || !Filtered.Any()) { <div role="status" class="sheen-autocomplete-empty">@(_failed ? ErrorMessage : EmptyMessage)</div> }
+            else if (_failed || !Filtered.Any()) { <div role="status" class="rax-autocomplete-empty">@(_failed ? ErrorMessage : EmptyMessage)</div> }
         </div>
     </Popover>
 }
@@ -111,7 +111,7 @@ else if (_interactive)
     private RenderFragment MatchedLabel(string label) => builder => {
         var index = _text.Length > 0 ? label.IndexOf(_text, StringComparison.CurrentCultureIgnoreCase) : -1;
         if (index < 0) { builder.AddContent(0, label); return; }
-        builder.AddContent(1, label[..index]); builder.OpenElement(2, "mark"); builder.AddAttribute(3, "class", "sheen-autocomplete-match"); builder.AddContent(4, label.Substring(index, _text.Length)); builder.CloseElement(); builder.AddContent(5, label[(index + _text.Length)..]);
+        builder.AddContent(1, label[..index]); builder.OpenElement(2, "mark"); builder.AddAttribute(3, "class", "rax-autocomplete-match"); builder.AddContent(4, label.Substring(index, _text.Length)); builder.CloseElement(); builder.AddContent(5, label[(index + _text.Length)..]);
     };
     private bool _interactive, _open, _pending, _failed, _disposed;
     private bool Busy => Loading || _pending;
@@ -186,7 +186,7 @@ else if (_interactive)
     /// <summary>Extra CSS classes appended to the control.</summary>
     [Parameter] public string? Class { get; set; }
     private string? ExtraClass => AdditionalAttributes is not null && AdditionalAttributes.TryGetValue("class", out var value) ? Convert.ToString(value) : null;
-    private readonly string _autoId = $"sheen-control-{Guid.NewGuid():N}";
+    private readonly string _autoId = $"rax-control-{Guid.NewGuid():N}";
     private Dictionary<string, object> ControlAttributes
     {
         get

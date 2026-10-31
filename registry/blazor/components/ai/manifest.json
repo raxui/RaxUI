@@ -13,7 +13,7 @@
       "destination": "styles",
       "target": "components/ai.css",
       "type": "css",
-      "sha256": "54e2b1fc98d7925b65447f744587db82dce462f6a5cacff103df4721a74864fc"
+      "sha256": "cf9e1c7dfdf24438674f70daf46d7cc1c4a245cc927d44c3d94a7aaf9214aafb"
     }
   ],
   "files": [
@@ -22,14 +22,14 @@
       "destination": "components",
       "target": "AI/AIActions.razor",
       "type": "razor",
-      "sha256": "546187a5c9edc42b4470aaf09ef8ecc446c26f4d0100a074add3df163bb959de"
+      "sha256": "4b87dfd27bd54af15681668500cca0a1b59fe8cf1d7e6dff97997911e3586646"
     },
     {
       "source": "AICodeBlock.razor",
       "destination": "components",
       "target": "AI/AICodeBlock.razor",
       "type": "razor",
-      "sha256": "f14c22886eb600996dc20004e442516a986f9daff1484d824ce60463c0ac77e2"
+      "sha256": "79a7b7c2bbfd5773a999398884fbf0d6c3648b093cce512a709ba639dc37a3be"
     },
     {
       "source": "AICodeBlock.razor.js",
@@ -43,7 +43,7 @@
       "destination": "components",
       "target": "AI/AIConversation.razor",
       "type": "razor",
-      "sha256": "88ba04ce602867b9c667bf9153d96c9f05fb853ff614756de2d96270d6b7e8a9"
+      "sha256": "b9dcba1aa926bc1890a6363a482a8b190d6384b57288ea9ae7a8be328866d318"
     },
     {
       "source": "AIIcon.razor",
@@ -57,77 +57,77 @@
       "destination": "components",
       "target": "AI/AIMarkdown.razor",
       "type": "razor",
-      "sha256": "2aebe9a2a9d23202cf5c6a3915fe2dc9317aee941767d40806cb7381fa3469a3"
+      "sha256": "738fc2e69ccd4139bc275e59635037ac3529218d31860e6ce6121faef5c15088"
     },
     {
       "source": "AIMarkdownParser.cs",
       "destination": "components",
       "target": "AI/AIMarkdownParser.cs",
       "type": "cs",
-      "sha256": "f8714242c670c320a95ed9d5a854f5b379e9780036bc9ff3cdea8f48edd5f951"
+      "sha256": "f3c6f7579cdb4c6cca40fa723e06aba7343592c677b94b38f10029852ae64e16"
     },
     {
       "source": "AIMessage.razor",
       "destination": "components",
       "target": "AI/AIMessage.razor",
       "type": "razor",
-      "sha256": "b0d9074149049d90cf0fec6697396ec6283eb45085b8287e948a6372f1b3e68c"
+      "sha256": "428e84084961bf25d3883839194642a4aa10e73710cd6b30c588a8968e0f6d47"
     },
     {
       "source": "AIPromptInput.razor",
       "destination": "components",
       "target": "AI/AIPromptInput.razor",
       "type": "razor",
-      "sha256": "42371296d3e53a3b87c3492aab65a9dee0f3a2e1deb4876a0f7e81c6b6ffd088"
+      "sha256": "0f25f5cac922ebbb4987a0c45426bcb187afd1f229c13913599d3a1add532b68"
     },
     {
       "source": "AIPromptInput.razor.js",
       "destination": "components",
       "target": "AI/AIPromptInput.razor.js",
       "type": "js",
-      "sha256": "3166b452c6062b5288a2c45a78a1e2e62d13b8818f79f3a746e184131d5f2975"
+      "sha256": "6148128580fc1c4cffc1e0f3a5386143dc2c83d9e2c45795a0a6fef526446ca9"
     },
     {
       "source": "AIReasoning.razor",
       "destination": "components",
       "target": "AI/AIReasoning.razor",
       "type": "razor",
-      "sha256": "32e5a96e44c9afe5d6e9cd3cf3c568a626d3cf61dd158233c6f57da1ce13e77f"
+      "sha256": "958a6ca200fbf61db168395ec137d43116e59b950b2e0c1727872d467091f7a0"
     },
     {
       "source": "AIResponse.razor",
       "destination": "components",
       "target": "AI/AIResponse.razor",
       "type": "razor",
-      "sha256": "6d14db422b088802ec87ff95833415453cbd51a8bbb19df62902692aff9a8db8"
+      "sha256": "7d5b23ea86639c965774e2227115b9946972e3903ea7a8b222b665518cb9ce59"
     },
     {
       "source": "AIShimmer.razor",
       "destination": "components",
       "target": "AI/AIShimmer.razor",
       "type": "razor",
-      "sha256": "fc2c0688ad685058e1307b946a6faabf72709afb9365741e84d1322d65d70d10"
+      "sha256": "546596ab40d4564d7b42924a769c757097ea3d5b16bf14182773bca4ebb1d83b"
     },
     {
       "source": "AISources.razor",
       "destination": "components",
       "target": "AI/AISources.razor",
       "type": "razor",
-      "sha256": "270254c34b0a6ce5340f5e78f562c62883e801f3ba196f3eb17b7c1f812dea3c"
+      "sha256": "64321f082ca2dae097d83d2444d9074fd089f3d33a0aed2476ad86fcd8f3990d"
     },
     {
       "source": "AISuggestions.razor",
       "destination": "components",
       "target": "AI/AISuggestions.razor",
       "type": "razor",
-      "sha256": "9bac1696c62b62ed0dbab8b2aec65b48ddee2fa54ab5290fcfaa47717b482827"
+      "sha256": "d33e276d29f4ac23ae5aefa514ee8c2d5885e55e4ff663fc0b77315b0ca36076"
     },
     {
       "source": "AIToolCall.razor",
       "destination": "components",
       "target": "AI/AIToolCall.razor",
       "type": "razor",
-      "sha256": "1414359a06ce5525162d04f9d09cbe1c6373578c64f4c9f0cf309d9098849a8e"
+      "sha256": "dc907f30ed68f0fcf0021930e1c5832df02e114a0fbadfb697b60577d8b05fd9"
     },
     {
       "source": "AITypes.razor",

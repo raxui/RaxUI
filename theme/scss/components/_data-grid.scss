@@ -5,11 +5,11 @@
 // an active-cell ring, inline editors and a green flash on edited cells.
 // -----------------------------------------------------------------------------
 
-.sheen-grid {
-  --sheen-grid-line: rgba(var(--bs-emphasis-color-rgb), 0.07);
+.rax-grid {
+  --rax-grid-line: rgba(var(--bs-emphasis-color-rgb), 0.07);
   // Opaque: content scrolls under the header, footer and pinned columns.
-  --sheen-grid-surface: rgb(var(--bs-body-bg-rgb));
-  --sheen-grid-active-rgb: var(--bs-primary-rgb);
+  --rax-grid-surface: rgb(var(--bs-body-bg-rgb));
+  --rax-grid-active-rgb: var(--bs-primary-rgb);
 
   display: flex;
   flex-direction: column;
@@ -19,12 +19,12 @@
   contain: inline-size;
 
   [data-bs-theme="dark"] & {
-    --sheen-grid-line: rgba(255, 255, 255, 0.08);
-    --sheen-grid-surface: #1b1e22;
+    --rax-grid-line: rgba(255, 255, 255, 0.08);
+    --rax-grid-surface: #1b1e22;
   }
 }
 
-.sheen-grid-toolbar {
+.rax-grid-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -32,40 +32,40 @@
   margin-bottom: 0.75rem;
 }
 
-.sheen-grid-scroller {
-  @include sheen-surface;
+.rax-grid-scroller {
+  @include rax-surface;
 
   position: relative;
   // A data surface, not decoration: solid, so rows read cleanly while scrolling.
-  background-color: var(--sheen-grid-surface);
+  background-color: var(--rax-grid-surface);
   overflow: auto;
   overscroll-behavior: contain;
-  border-radius: var(--sheen-radius);
+  border-radius: var(--rax-radius);
   font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
   outline: none;
 
   &:focus-visible {
     box-shadow:
-      var(--sheen-glass-edge),
-      0 0 0 3px rgba(var(--sheen-grid-active-rgb), 0.3);
+      var(--rax-glass-edge),
+      0 0 0 3px rgba(var(--rax-grid-active-rgb), 0.3);
   }
 }
 
-.sheen-grid-canvas {
+.rax-grid-canvas {
   position: relative;
   min-width: 100%;
 }
 
-.sheen-grid-row {
+.rax-grid-row {
   display: flex;
   width: 100%;
 }
 
-.sheen-grid-body {
+.rax-grid-body {
   position: relative;
 
-  > .sheen-grid-row {
+  > .rax-grid-row {
     position: absolute;
     top: 0;
     inset-inline-start: 0;
@@ -83,8 +83,8 @@
 }
 
 // ---- Cells ----------------------------------------------------------------------
-.sheen-grid-cell,
-.sheen-grid-hcell {
+.rax-grid-cell,
+.rax-grid-hcell {
   position: relative;
   display: flex;
   flex-shrink: 0;
@@ -92,8 +92,8 @@
   gap: 0.375rem;
   min-width: 0;
   padding: 0 0.75rem;
-  border-bottom: 1px solid var(--sheen-grid-line);
-  border-inline-end: 1px solid var(--sheen-grid-line);
+  border-bottom: 1px solid var(--rax-grid-line);
+  border-inline-end: 1px solid var(--rax-grid-line);
   white-space: nowrap;
 
   &[data-align="end"] {
@@ -106,80 +106,80 @@
   }
 }
 
-.sheen-grid-cell {
+.rax-grid-cell {
   overflow: hidden;
   color: var(--bs-body-color);
   text-overflow: ellipsis;
   cursor: cell;
   user-select: none;
 
-  > :not(.sheen-grid-error) {
+  > :not(.rax-grid-error) {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 }
 
-.sheen-grid-row:hover > .sheen-grid-cell:not([data-active]) {
-  background-color: color-mix(in srgb, var(--bs-emphasis-color) 2.5%, var(--sheen-grid-surface));
+.rax-grid-row:hover > .rax-grid-cell:not([data-active]) {
+  background-color: color-mix(in srgb, var(--bs-emphasis-color) 2.5%, var(--rax-grid-surface));
 }
 
-.sheen-grid-row[data-selected] > .sheen-grid-cell {
-  background-color: color-mix(in srgb, rgb(var(--sheen-grid-active-rgb)) 7%, var(--sheen-grid-surface));
+.rax-grid-row[data-selected] > .rax-grid-cell {
+  background-color: color-mix(in srgb, rgb(var(--rax-grid-active-rgb)) 7%, var(--rax-grid-surface));
 }
 
 // Active cell (keyboard / click target) and the cell being edited.
-.sheen-grid-cell[data-active],
-.sheen-grid-hcell[data-active] {
+.rax-grid-cell[data-active],
+.rax-grid-hcell[data-active] {
   z-index: 3 !important;
-  box-shadow: inset 0 0 0 2px rgb(var(--sheen-grid-active-rgb));
-  border-radius: calc(0.25rem * var(--sheen-radius-scale));
+  box-shadow: inset 0 0 0 2px rgb(var(--rax-grid-active-rgb));
+  border-radius: calc(0.25rem * var(--rax-radius-scale));
 }
 
-.sheen-grid-scroller:not(:focus-within) .sheen-grid-cell[data-active]:not([data-editing]),
-.sheen-grid-scroller:not(:focus-within) .sheen-grid-hcell[data-active] {
+.rax-grid-scroller:not(:focus-within) .rax-grid-cell[data-active]:not([data-editing]),
+.rax-grid-scroller:not(:focus-within) .rax-grid-hcell[data-active] {
   box-shadow: inset 0 0 0 1.5px rgba(var(--bs-emphasis-color-rgb), 0.2);
 }
 
-.sheen-grid-cell[data-editing] {
+.rax-grid-cell[data-editing] {
   overflow: visible;
   padding: 0;
   background-color: rgb(var(--bs-body-bg-rgb)) !important;
   box-shadow:
-    inset 0 0 0 2px rgb(var(--sheen-grid-active-rgb)),
-    0 6px 20px rgba(var(--sheen-shadow-rgb), 0.12);
+    inset 0 0 0 2px rgb(var(--rax-grid-active-rgb)),
+    0 6px 20px rgba(var(--rax-shadow-rgb), 0.12);
 
   &[aria-invalid="true"] {
-    --sheen-grid-active-rgb: var(--bs-danger-rgb);
+    --rax-grid-active-rgb: var(--bs-danger-rgb);
   }
 }
 
 // Editable cells: subtle "you can type here" cursor & double-click hint.
-.sheen-grid-cell[data-editable] {
+.rax-grid-cell[data-editable] {
   cursor: text;
 }
 
 // Edited value lands with a short green flash.
-.sheen-grid-cell[data-flash] {
+.rax-grid-cell[data-flash] {
   @include motion-safe {
-    animation: sheen-grid-flash 900ms ease-out;
+    animation: rax-grid-flash 900ms ease-out;
   }
 }
 
-@keyframes sheen-grid-flash {
+@keyframes rax-grid-flash {
   0%,
   30% {
-    background-color: color-mix(in srgb, rgb(var(--bs-success-rgb)) 20%, var(--sheen-grid-surface));
+    background-color: color-mix(in srgb, rgb(var(--bs-success-rgb)) 20%, var(--rax-grid-surface));
   }
 }
 
 // ---- Editors ----------------------------------------------------------------------
-.sheen-grid-editor-input {
+.rax-grid-editor-input {
   width: 100%;
   height: 100%;
   padding: 0 0.75rem;
   border: 0;
-  border-radius: calc(0.25rem * var(--sheen-radius-scale));
+  border-radius: calc(0.25rem * var(--rax-radius-scale));
   color: var(--bs-emphasis-color);
   background: none;
   font: inherit;
@@ -190,7 +190,7 @@
   }
 }
 
-.sheen-grid-editor.form-select {
+.rax-grid-editor.form-select {
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -201,10 +201,10 @@
   font-size: inherit;
 }
 
-.sheen-grid-editor-date {
+.rax-grid-editor-date {
   width: 100%;
 
-  .sheen-input-group {
+  .rax-input-group {
     min-height: 0;
     height: 100%;
     border: 0;
@@ -215,46 +215,46 @@
   }
 }
 
-.sheen-grid-error {
+.rax-grid-error {
   position: absolute;
   top: calc(100% + 0.25rem);
   inset-inline-start: 0;
   z-index: 5;
   padding: 0.3125rem 0.625rem;
-  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  border-radius: calc(0.5rem * var(--rax-radius-scale));
   color: #fff;
   background-color: rgb(var(--bs-danger-rgb));
-  box-shadow: var(--sheen-shadow-md);
+  box-shadow: var(--rax-shadow-md);
   font-size: 0.75rem;
   font-weight: 500;
   white-space: nowrap;
 
   @include motion-safe {
-    animation: sheen-pop-in 220ms var(--sheen-ease-spring);
+    animation: rax-pop-in 220ms var(--rax-ease-spring);
   }
 }
 
 // ---- Header ------------------------------------------------------------------------
-.sheen-grid-head,
-.sheen-grid-foot {
+.rax-grid-head,
+.rax-grid-foot {
   position: sticky;
   z-index: 4;
 
-  .sheen-grid-hcell,
-  .sheen-grid-fcell {
-    background-color: var(--sheen-grid-surface);
+  .rax-grid-hcell,
+  .rax-grid-fcell {
+    background-color: var(--rax-grid-surface);
   }
 }
 
-.sheen-grid-head {
+.rax-grid-head {
   top: 0;
 }
 
-.sheen-grid-foot {
+.rax-grid-foot {
   bottom: 0;
 
-  .sheen-grid-fcell {
-    border-top: 1px solid var(--sheen-grid-line);
+  .rax-grid-fcell {
+    border-top: 1px solid var(--rax-grid-line);
     border-bottom: 0;
     color: var(--bs-emphasis-color);
     font-weight: 600;
@@ -262,7 +262,7 @@
   }
 }
 
-.sheen-grid-agg-label {
+.rax-grid-agg-label {
   margin-inline-end: auto;
   color: var(--bs-secondary-color);
   font-size: 0.6875rem;
@@ -271,7 +271,7 @@
   text-transform: uppercase;
 }
 
-.sheen-grid-hcell {
+.rax-grid-hcell {
   color: var(--bs-secondary-color);
   font-size: 0.75rem;
   font-weight: 600;
@@ -279,7 +279,7 @@
   user-select: none;
 }
 
-.sheen-grid-hlabel {
+.rax-grid-hlabel {
   display: inline-flex;
   flex: 1;
   align-items: center;
@@ -301,17 +301,17 @@
   }
 }
 
-.sheen-grid-sort {
+.rax-grid-sort {
   display: inline-flex;
   align-items: center;
-  color: rgb(var(--sheen-grid-active-rgb));
+  color: rgb(var(--rax-grid-active-rgb));
 
   svg {
     width: 0.8125rem;
     height: 0.8125rem;
 
     @include motion-safe {
-      transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+      transition: transform var(--rax-duration-slow) var(--rax-ease-spring);
     }
   }
 
@@ -324,7 +324,7 @@
   }
 }
 
-.sheen-grid-hmenu {
+.rax-grid-hmenu {
   display: inline-grid;
   flex-shrink: 0;
   place-items: center;
@@ -332,22 +332,22 @@
   height: 1.375rem;
   padding: 0;
   border: 0;
-  border-radius: calc(0.375rem * var(--sheen-radius-scale));
+  border-radius: calc(0.375rem * var(--rax-radius-scale));
   color: var(--bs-secondary-color);
   background: none;
   opacity: 0;
   cursor: pointer;
   transition:
-    opacity var(--sheen-duration-fast) ease,
-    background-color var(--sheen-duration-fast) ease;
+    opacity var(--rax-duration-fast) ease,
+    background-color var(--rax-duration-fast) ease;
 
   svg {
     width: 0.9375rem;
     height: 0.9375rem;
   }
 
-  .sheen-grid-hcell:hover &,
-  .sheen-grid-hcell[data-active] &,
+  .rax-grid-hcell:hover &,
+  .rax-grid-hcell[data-active] &,
   &[data-state="open"] {
     opacity: 1;
   }
@@ -359,7 +359,7 @@
 }
 
 // Resize handle on the inline-end edge of each header.
-.sheen-grid-resizer {
+.rax-grid-resizer {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -378,48 +378,48 @@
     width: 2px;
     border-radius: 2px;
     background-color: transparent;
-    transition: background-color var(--sheen-duration-fast) ease;
+    transition: background-color var(--rax-duration-fast) ease;
   }
 
   &:hover::after,
   &[data-resizing]::after {
     top: 0;
     bottom: 0;
-    background-color: rgb(var(--sheen-grid-active-rgb));
+    background-color: rgb(var(--rax-grid-active-rgb));
   }
 }
 
 // ---- Pinned columns ------------------------------------------------------------------
-.sheen-grid-cell[data-pinned],
-.sheen-grid-hcell[data-pinned] {
+.rax-grid-cell[data-pinned],
+.rax-grid-hcell[data-pinned] {
   // Pinned cells must cover scrolling cells, including the active cell's layer.
   z-index: 4;
-  background-color: var(--sheen-grid-surface);
+  background-color: var(--rax-grid-surface);
 }
 
-.sheen-grid-row[data-selected] > .sheen-grid-cell[data-pinned] {
-  background-color: color-mix(in srgb, rgb(var(--sheen-grid-active-rgb)) 7%, var(--sheen-grid-surface));
+.rax-grid-row[data-selected] > .rax-grid-cell[data-pinned] {
+  background-color: color-mix(in srgb, rgb(var(--rax-grid-active-rgb)) 7%, var(--rax-grid-surface));
 }
 
 // The edge of the pinned block casts a soft shadow once content scrolls under it.
-.sheen-grid-scroller[data-scrolled-x] [data-pinned="start"][data-pin-edge] {
-  box-shadow: 6px 0 12px -6px rgba(var(--sheen-shadow-rgb), 0.25);
+.rax-grid-scroller[data-scrolled-x] [data-pinned="start"][data-pin-edge] {
+  box-shadow: 6px 0 12px -6px rgba(var(--rax-shadow-rgb), 0.25);
 
   [dir="rtl"] & {
-    box-shadow: -6px 0 12px -6px rgba(var(--sheen-shadow-rgb), 0.25);
+    box-shadow: -6px 0 12px -6px rgba(var(--rax-shadow-rgb), 0.25);
   }
 }
 
 [data-pinned="end"][data-pin-edge] {
-  box-shadow: -6px 0 12px -6px rgba(var(--sheen-shadow-rgb), 0.2);
+  box-shadow: -6px 0 12px -6px rgba(var(--rax-shadow-rgb), 0.2);
 
   [dir="rtl"] & {
-    box-shadow: 6px 0 12px -6px rgba(var(--sheen-shadow-rgb), 0.2);
+    box-shadow: 6px 0 12px -6px rgba(var(--rax-shadow-rgb), 0.2);
   }
 }
 
 // ---- Misc ----------------------------------------------------------------------------
-.sheen-grid-empty {
+.rax-grid-empty {
   position: sticky;
   inset-inline-start: 0;
   width: min(100%, 100cqw);
@@ -428,7 +428,7 @@
   text-align: center;
 }
 
-.sheen-grid-status {
+.rax-grid-status {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem 1.25rem;
@@ -438,24 +438,24 @@
   font-variant-numeric: tabular-nums;
 }
 
-.sheen-grid-status-pos {
+.rax-grid-status-pos {
   margin-inline-start: auto;
 }
 
-.sheen-grid[data-density="compact"] .sheen-grid-cell {
+.rax-grid[data-density="compact"] .rax-grid-cell {
   font-size: 0.8125rem;
 }
 
 // The selection checkbox column hugs its content.
-.sheen-grid .sheen-table-select {
+.rax-grid .rax-table-select {
   justify-content: center;
   padding: 0;
 }
 
 // Grid-level errors remain in document flow; date editors fill their cell.
-.sheen-grid > .sheen-grid-error { position: static; align-self: flex-start; }
-.sheen-grid-editor-date .sheen-date-input { height: 100%; min-height: 0; border: 0; box-shadow: none; background: transparent; }
+.rax-grid > .rax-grid-error { position: static; align-self: flex-start; }
+.rax-grid-editor-date .rax-date-input { height: 100%; min-height: 0; border: 0; box-shadow: none; background: transparent; }
 
 // Native select adapter slots fill the same editor height as React triggers.
-.sheen-grid-cell[data-editing] > .sheen-blazor-select,
-.sheen-grid-cell[data-editing] > .sheen-blazor-select > span { display: block; width: 100%; height: 100%; }
+.rax-grid-cell[data-editing] > .rax-blazor-select,
+.rax-grid-cell[data-editing] > .rax-blazor-select > span { display: block; width: 100%; height: 100%; }

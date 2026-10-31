@@ -5,11 +5,11 @@
 // raised thumb that slides between them (single) or appears per item (multiple).
 // -----------------------------------------------------------------------------
 
-.sheen-toggle {
-  --sheen-toggle-rgb: var(--bs-primary-rgb);
-  --sheen-toggle-text: color-mix(in srgb, rgb(var(--sheen-toggle-rgb)) var(--sheen-text-mix), var(--sheen-text-ink));
-  --sheen-toggle-height: var(--sheen-control-height);
-  --sheen-toggle-radius: var(--sheen-radius-control);
+.rax-toggle {
+  --rax-toggle-rgb: var(--bs-primary-rgb);
+  --rax-toggle-text: color-mix(in srgb, rgb(var(--rax-toggle-rgb)) var(--rax-text-mix), var(--rax-text-ink));
+  --rax-toggle-height: var(--rax-control-height);
+  --rax-toggle-radius: var(--rax-radius-control);
 
   position: relative;
   display: inline-flex;
@@ -17,10 +17,10 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-height: var(--sheen-toggle-height);
+  min-height: var(--rax-toggle-height);
   padding: 0.375rem 0.75rem;
   border: 1px solid transparent;
-  border-radius: var(--sheen-toggle-radius);
+  border-radius: var(--rax-toggle-radius);
   color: rgba(var(--bs-emphasis-color-rgb), 0.72);
   background-color: transparent;
   font: inherit;
@@ -32,10 +32,10 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   transition:
-    color var(--sheen-duration) ease,
-    background-color var(--sheen-duration) ease,
-    border-color var(--sheen-duration) ease,
-    box-shadow var(--sheen-duration) var(--sheen-ease-out);
+    color var(--rax-duration) ease,
+    background-color var(--rax-duration) ease,
+    border-color var(--rax-duration) ease,
+    box-shadow var(--rax-duration) var(--rax-ease-out);
 
   & svg {
     width: 1.125em;
@@ -52,7 +52,7 @@
   &:focus-visible {
     z-index: 2;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(var(--sheen-toggle-rgb), 0.35);
+    box-shadow: 0 0 0 0.25rem rgba(var(--rax-toggle-rgb), 0.35);
   }
 
   &:disabled {
@@ -61,66 +61,66 @@
   }
 
   &[data-state="on"] {
-    color: var(--sheen-toggle-text);
-    background-color: rgba(var(--sheen-toggle-rgb), 0.12);
+    color: var(--rax-toggle-text);
+    background-color: rgba(var(--rax-toggle-rgb), 0.12);
 
     &:hover:not(:disabled) {
-      color: var(--sheen-toggle-text);
-      background-color: rgba(var(--sheen-toggle-rgb), 0.17);
+      color: var(--rax-toggle-text);
+      background-color: rgba(var(--rax-toggle-rgb), 0.17);
     }
   }
 
   @include motion-safe {
     transition:
-      color var(--sheen-duration) ease,
-      background-color var(--sheen-duration) ease,
-      border-color var(--sheen-duration) ease,
-      box-shadow var(--sheen-duration) var(--sheen-ease-out),
-      transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+      color var(--rax-duration) ease,
+      background-color var(--rax-duration) ease,
+      border-color var(--rax-duration) ease,
+      box-shadow var(--rax-duration) var(--rax-ease-out),
+      transform var(--rax-duration-slow) var(--rax-ease-spring);
 
     &:active:not(:disabled) {
       transform: scale(0.95);
-      transition-duration: var(--sheen-duration-fast);
+      transition-duration: var(--rax-duration-fast);
     }
 
     &[data-state="on"] svg {
-      animation: sheen-toggle-pop 420ms var(--sheen-ease-spring);
+      animation: rax-toggle-pop 420ms var(--rax-ease-spring);
     }
   }
 
   // Sizes
-  &.sheen-toggle-sm {
-    --sheen-toggle-height: 2rem;
-    --sheen-toggle-radius: var(--sheen-radius-sm);
+  &.rax-toggle-sm {
+    --rax-toggle-height: 2rem;
+    --rax-toggle-radius: var(--rax-radius-sm);
     gap: 0.375rem;
     padding: 0.25rem 0.625rem;
     font-size: 0.875rem;
   }
 
-  &.sheen-toggle-lg {
-    --sheen-toggle-height: var(--sheen-control-height-lg);
+  &.rax-toggle-lg {
+    --rax-toggle-height: var(--rax-control-height-lg);
     padding: 0.5rem 1rem;
     font-size: 1rem;
   }
 
-  &.sheen-toggle-icon {
-    width: var(--sheen-toggle-height);
+  &.rax-toggle-icon {
+    width: var(--rax-toggle-height);
     padding: 0;
   }
 }
 
 // Outline
-.sheen-toggle-outline {
+.rax-toggle-outline {
   border-color: rgba(var(--bs-emphasis-color-rgb), 0.14);
 
   &[data-state="on"] {
-    border-color: rgba(var(--sheen-toggle-rgb), 0.4);
+    border-color: rgba(var(--rax-toggle-rgb), 0.4);
   }
 }
 
 // ---- Group --------------------------------------------------------------------------------
 
-.sheen-toggle-group {
+.rax-toggle-group {
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -139,20 +139,20 @@
     flex-wrap: nowrap;
     gap: 0;
 
-    > .sheen-toggle {
+    > .rax-toggle {
       border-radius: 0;
 
       &:first-of-type {
-        border-start-start-radius: var(--sheen-toggle-radius);
-        border-end-start-radius: var(--sheen-toggle-radius);
+        border-start-start-radius: var(--rax-toggle-radius);
+        border-end-start-radius: var(--rax-toggle-radius);
       }
 
       &:last-of-type {
-        border-start-end-radius: var(--sheen-toggle-radius);
-        border-end-end-radius: var(--sheen-toggle-radius);
+        border-start-end-radius: var(--rax-toggle-radius);
+        border-end-end-radius: var(--rax-toggle-radius);
       }
 
-      + .sheen-toggle {
+      + .rax-toggle {
         margin-inline-start: -1px;
       }
 
@@ -162,16 +162,16 @@
       }
     }
 
-    &[data-orientation="vertical"] > .sheen-toggle {
+    &[data-orientation="vertical"] > .rax-toggle {
       &:first-of-type {
-        border-radius: var(--sheen-toggle-radius) var(--sheen-toggle-radius) 0 0;
+        border-radius: var(--rax-toggle-radius) var(--rax-toggle-radius) 0 0;
       }
 
       &:last-of-type {
-        border-radius: 0 0 var(--sheen-toggle-radius) var(--sheen-toggle-radius);
+        border-radius: 0 0 var(--rax-toggle-radius) var(--rax-toggle-radius);
       }
 
-      + .sheen-toggle {
+      + .rax-toggle {
         margin-inline-start: 0;
         margin-top: -1px;
       }
@@ -181,9 +181,9 @@
 
 // ---- Segmented ------------------------------------------------------------------------------
 
-.sheen-toggle-group[data-variant="segmented"] {
-  --sheen-thumb-bg: rgb(var(--bs-body-bg-rgb));
-  --sheen-thumb-shadow:
+.rax-toggle-group[data-variant="segmented"] {
+  --rax-thumb-bg: rgb(var(--bs-body-bg-rgb));
+  --rax-thumb-shadow:
     0 0 0 0.5px rgba(0, 0, 0, 0.04),
     0 1px 2px rgba(0, 0, 0, 0.08),
     0 3px 8px rgba(0, 0, 0, 0.06);
@@ -191,22 +191,22 @@
   flex-wrap: nowrap;
   gap: 0.125rem;
   padding: 0.1875rem;
-  border-radius: var(--sheen-radius-control);
+  border-radius: var(--rax-radius-control);
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
 
   [data-bs-theme="dark"] & {
-    --sheen-thumb-bg: rgba(255, 255, 255, 0.14);
+    --rax-thumb-bg: rgba(255, 255, 255, 0.14);
   }
 
-  > .sheen-toggle {
-    --sheen-toggle-height: calc(var(--sheen-control-height) - 0.375rem);
-    --sheen-toggle-radius: calc(var(--sheen-radius-control) - 0.1875rem);
+  > .rax-toggle {
+    --rax-toggle-height: calc(var(--rax-control-height) - 0.375rem);
+    --rax-toggle-radius: calc(var(--rax-radius-control) - 0.1875rem);
 
     flex: 1 1 auto;
     background-color: transparent;
 
-    &.sheen-toggle-sm { --sheen-toggle-height: calc(2rem - 0.375rem); }
-    &.sheen-toggle-lg { --sheen-toggle-height: calc(var(--sheen-control-height-lg) - 0.375rem); }
+    &.rax-toggle-sm { --rax-toggle-height: calc(2rem - 0.375rem); }
+    &.rax-toggle-lg { --rax-toggle-height: calc(var(--rax-control-height-lg) - 0.375rem); }
 
     &:hover:not(:disabled) {
       background-color: transparent;
@@ -214,88 +214,88 @@
 
     &[data-state="on"] {
       color: var(--bs-emphasis-color);
-      background-color: var(--sheen-thumb-bg);
-      box-shadow: var(--sheen-thumb-shadow);
+      background-color: var(--rax-thumb-bg);
+      box-shadow: var(--rax-thumb-shadow);
 
       & svg {
-        color: rgb(var(--sheen-toggle-rgb));
+        color: rgb(var(--rax-toggle-rgb));
       }
     }
 
     &[data-state="on"]:focus-visible {
-      box-shadow: 0 0 0 0.25rem rgba(var(--sheen-toggle-rgb), 0.35), var(--sheen-thumb-shadow);
+      box-shadow: 0 0 0 0.25rem rgba(var(--rax-toggle-rgb), 0.35), var(--rax-thumb-shadow);
     }
 
     // Multiple: each thumb springs in on its own.
     @include motion-safe {
       &[data-state="on"] {
-        animation: sheen-toggle-thumb-in 360ms var(--sheen-ease-spring);
+        animation: rax-toggle-thumb-in 360ms var(--rax-ease-spring);
       }
     }
   }
 
   // Single: the items stay transparent and one thumb slides between them.
-  &[data-sliding][data-ready] > .sheen-toggle[data-state="on"] {
+  &[data-sliding][data-ready] > .rax-toggle[data-state="on"] {
     background-color: transparent;
     box-shadow: none;
     animation: none;
 
     &:focus-visible {
-      box-shadow: 0 0 0 0.25rem rgba(var(--sheen-toggle-rgb), 0.35);
+      box-shadow: 0 0 0 0.25rem rgba(var(--rax-toggle-rgb), 0.35);
     }
   }
 }
 
-.sheen-toggle-group-thumb {
+.rax-toggle-group-thumb {
   position: absolute;
   top: 0;
   left: 0;
   z-index: -1;
-  width: var(--sheen-thumb-w, 0);
-  height: var(--sheen-thumb-h, 0);
-  border-radius: calc(var(--sheen-radius-control) - 0.1875rem);
-  background-color: var(--sheen-thumb-bg);
-  box-shadow: var(--sheen-thumb-shadow);
+  width: var(--rax-thumb-w, 0);
+  height: var(--rax-thumb-h, 0);
+  border-radius: calc(var(--rax-radius-control) - 0.1875rem);
+  background-color: var(--rax-thumb-bg);
+  box-shadow: var(--rax-thumb-shadow);
   opacity: 0;
   pointer-events: none;
-  transform: translate(var(--sheen-thumb-x, 0), var(--sheen-thumb-y, 0));
+  transform: translate(var(--rax-thumb-x, 0), var(--rax-thumb-y, 0));
 
-  .sheen-toggle-group[data-ready] > & {
+  .rax-toggle-group[data-ready] > & {
     opacity: 1;
   }
 
   @include motion-safe {
-    .sheen-toggle-group[data-animate] > & {
+    .rax-toggle-group[data-animate] > & {
       transition:
-        transform 450ms var(--sheen-ease-spring),
-        width 450ms var(--sheen-ease-spring),
-        height 450ms var(--sheen-ease-spring);
+        transform 450ms var(--rax-ease-spring),
+        width 450ms var(--rax-ease-spring),
+        height 450ms var(--rax-ease-spring);
     }
   }
 }
 
 // ---- Motion -----------------------------------------------------------------------------
 
-@keyframes sheen-toggle-pop {
+@keyframes rax-toggle-pop {
   40% {
     transform: scale(1.22);
   }
 }
 
-@keyframes sheen-toggle-thumb-in {
+@keyframes rax-toggle-thumb-in {
   from {
     transform: scale(0.85);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheen-toggle, .sheen-toggle * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .rax-toggle, .rax-toggle * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-.sheen-toggle .sheen-toggle svg { width: 1em; height: 1em; }
+.rax-toggle .rax-toggle svg { width: 1em; height: 1em; }
 
-.sheen-toggle.sheen-toggle svg { width: 1em; height: 1em; }
-.sheen-toggle-group[data-variant="segmented"] { background: var(--sheen-surface-bg); box-shadow: var(--sheen-control-shadow); backdrop-filter: var(--sheen-surface-filter); }
-.sheen-toggle-group-thumb { box-shadow: var(--sheen-control-shadow); }
-.sheen-toggle-icon-sm { width: var(--sheen-control-height-sm); padding-inline: 0; }
-.sheen-toggle-icon-lg { width: var(--sheen-control-height-lg); padding-inline: 0; }
+.rax-toggle.rax-toggle svg { width: 1em; height: 1em; }
+.rax-toggle-group[data-variant="segmented"] { background: var(--rax-surface-bg); box-shadow: var(--rax-control-shadow); backdrop-filter: var(--rax-surface-filter); }
+.rax-toggle-group-thumb { box-shadow: var(--rax-control-shadow); }
+.rax-toggle-icon-sm { width: var(--rax-control-height-sm); padding-inline: 0; }
+.rax-toggle-icon-lg { width: var(--rax-control-height-lg); padding-inline: 0; }

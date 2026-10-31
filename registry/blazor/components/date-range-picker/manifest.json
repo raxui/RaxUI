@@ -13,7 +13,7 @@
       "destination": "components",
       "target": "DateRangePicker/DateRangePicker.razor",
       "type": "razor",
-      "sha256": "649170bd3609d5aa69af60d521c50f3e4d8e4dc18d5eeee38f32bef5e88dfc60"
+      "sha256": "baf2096c3c1717904933c45e1d0cde52fed7ad001019b743c1613562f78dc5bf"
     }
   ]
 }

@@ -1,4 +1,4 @@
-@* SheenUI DropdownMenuItem. Source-owned: edit freely. Selecting it runs OnSelect and closes the menu. *@
+@* RaxUI DropdownMenuItem. Source-owned: edit freely. Selecting it runs OnSelect and closes the menu. *@
 
 <button @attributes="AdditionalAttributes"
         type="button"
@@ -26,5 +26,5 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private string CssClass => string.IsNullOrEmpty(Class) ? "sheen-dropdown-item" : $"sheen-dropdown-item {Class}";
+    private string CssClass => string.IsNullOrEmpty(Class) ? "rax-dropdown-item" : $"rax-dropdown-item {Class}";
 }

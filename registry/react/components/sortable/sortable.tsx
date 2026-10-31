@@ -38,7 +38,7 @@ import {
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
-import { useSheenTheme, sheenThemeAttributes, SheenThemeBoundary, useSheenPortalContainer, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, RaxThemeBoundary, useRaxPortalContainer, type RaxAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { getDirection } from "@/lib/direction"
 import { assignRef } from "@/lib/refs"
@@ -97,7 +97,7 @@ export const DRAG_COPY = {
 export function useOverlayContainer(container: Element | DocumentFragment | null | undefined) {
   const [mounted, setMounted] = React.useState(false)
   React.useEffect(() => setMounted(true), [])
-  const themeContainer = useSheenPortalContainer()
+  const themeContainer = useRaxPortalContainer()
   return mounted ? container ?? themeContainer ?? document.body : null
 }
 
@@ -150,7 +150,7 @@ type ItemValueProp<T> = T extends object
 
 export type SortableProps<T> = Omit<DndContextProps, "children"> &
   ItemValueProp<T> & {
-    appearance?: SheenAppearance
+    appearance?: RaxAppearance
     value: T[]
     onValueChange?: (items: T[]) => void
     /** Replaces the default reorder; gets the drop event with both indexes. */
@@ -193,7 +193,7 @@ function Sortable<T>(props: SortableProps<T>) {
     ...dndProps
   } = props as SortableProps<T> & { getItemValue?: (item: T) => UniqueIdentifier }
 
-  const theme = useSheenTheme({ appearance })
+  const theme = useRaxTheme({ appearance })
   const contextId = React.useId()
   const [activeId, setActiveId] = React.useState<UniqueIdentifier | null>(null)
   const [hasOverlay, setHasOverlay] = React.useState(false)
@@ -266,7 +266,7 @@ function Sortable<T>(props: SortableProps<T>) {
   )
 
   return (
-    <SheenThemeBoundary value={theme}>
+    <RaxThemeBoundary value={theme}>
     <SortableRootContext.Provider value={contextValue}>
       <DndContext
         id={contextId}
@@ -299,7 +299,7 @@ function Sortable<T>(props: SortableProps<T>) {
         {props.children}
       </DndContext>
     </SortableRootContext.Provider>
-    </SheenThemeBoundary>
+    </RaxThemeBoundary>
   )
 }
 
@@ -317,7 +317,7 @@ export interface SortableContentProps extends React.HTMLAttributes<HTMLDivElemen
 /** The list the items live in. */
 const SortableContent = React.forwardRef<HTMLDivElement, SortableContentProps>(
   ({ strategy, asChild, withoutSlot, className, children, ...props }, ref) => {
-    const theme = useSheenTheme()
+    const theme = useRaxTheme()
     const context = useSortableRoot("SortableContent")
     const Comp = asChild ? Slot : "div"
     return (
@@ -326,7 +326,7 @@ const SortableContent = React.forwardRef<HTMLDivElement, SortableContentProps>(
           {withoutSlot ? (
             children
           ) : (
-            <Comp {...sheenThemeAttributes(theme)} dir={props.dir} ref={ref} data-sorting={context.activeId !== null ? "" : undefined} className={cn("sheen-sortable", className)} {...props}>
+            <Comp {...raxThemeAttributes(theme)} dir={props.dir} ref={ref} data-sorting={context.activeId !== null ? "" : undefined} className={cn("rax-sortable", className)} {...props}>
               {children}
             </Comp>
           )}
@@ -402,7 +402,7 @@ const SortableItemLive = React.forwardRef<HTMLDivElement, SortableItemProps>(
           data-placeholder={isDragging && context.hasOverlay ? "" : undefined}
           data-handle={asHandle ? "" : undefined}
           data-flat-cursor={context.flatCursor ? "" : undefined}
-          className={cn("sheen-sortable-item", className)}
+          className={cn("rax-sortable-item", className)}
           style={{ transform: CSS.Translate.toString(transform), transition, ...style }}
           {...props}
           {...(draggable ? attributes : {})}
@@ -425,7 +425,7 @@ const SortableItemCopy = React.forwardRef<HTMLDivElement, SortableItemProps>(
           data-overlay=""
           data-handle={asHandle ? "" : undefined}
           data-flat-cursor={context.flatCursor ? "" : undefined}
-          className={cn("sheen-sortable-item", className)}
+          className={cn("rax-sortable-item", className)}
           {...props}
         />
       </SortableItemContext.Provider>
@@ -459,7 +459,7 @@ const SortableItemHandle = React.forwardRef<HTMLButtonElement, SortableItemHandl
         data-dragging={item.isDragging ? "" : undefined}
         data-flat-cursor={context.flatCursor ? "" : undefined}
         disabled={isDisabled}
-        className={cn("sheen-sortable-handle", className)}
+        className={cn("rax-sortable-handle", className)}
         {...props}
         {...(isDisabled || inOverlay ? {} : item.attributes)}
         {...(isDisabled || inOverlay ? {} : item.listeners)}
@@ -489,16 +489,16 @@ function SortableOverlay({ container, children, className, ...props }: SortableO
     return () => setHasOverlay(false)
   }, [setHasOverlay])
 
-  const theme = useSheenTheme()
+  const theme = useRaxTheme()
   const target = useOverlayContainer(container)
   if (!target) return null
   return ReactDOM.createPortal(
     <DragOverlay
-      {...sheenThemeAttributes(theme)}
+      {...raxThemeAttributes(theme)}
       aria-hidden="true"
       dropAnimation={context.reducedMotion ? null : DROP_ANIMATION}
       modifiers={context.modifiers}
-      className={cn("sheen-sortable-overlay", context.flatCursor && "sheen-sortable-overlay-flat", className)}
+      className={cn("rax-sortable-overlay", context.flatCursor && "rax-sortable-overlay-flat", className)}
       {...props}
     >
       <SortableOverlayContext.Provider value={true}>

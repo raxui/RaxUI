@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/footer.css",
       "type": "css",
-      "sha256": "ae1d8ee20cdde9ae859bcd7167ee74e6a68b610cb31a214471a49ab4bda07bd3"
+      "sha256": "b197e7b4d263837fbea22c519bbf29e73e5df2910dc677aeb1d321cfdd46dedc"
     }
   ],
   "files": [
@@ -21,98 +21,98 @@
       "destination": "components",
       "target": "Footer/Footer.razor",
       "type": "razor",
-      "sha256": "4da04d7c0f6ad5ee1ffdd233a0c620fe4dc908ec0def01c679589d4a1d16395b"
+      "sha256": "c74949bf18d1e6a335e6c1de8ff46fbba5cc691e893315ee855aa3c3105e78f0"
     },
     {
       "source": "Footer.razor.js",
       "destination": "components",
       "target": "Footer/Footer.razor.js",
       "type": "js",
-      "sha256": "26f75715f6b2e7ef907267e59fa24954a75aaab3f8b4f56061dee3ba14700f77"
+      "sha256": "137290c0c6b46dddc702166b3b0b790395fe437dc51fae089aa2c5324d651154"
     },
     {
       "source": "FooterBackToTop.razor",
       "destination": "components",
       "target": "Footer/FooterBackToTop.razor",
       "type": "razor",
-      "sha256": "7bf69fc75b013e2e25cb963fd7760fe02f619e2b13556ed9df5ab70295ce22cc"
+      "sha256": "4f9634d7a82e12d274888ce515bbfc9c8053fc1a5ae82a1b3ec515af0b295aea"
     },
     {
       "source": "FooterBottom.razor",
       "destination": "components",
       "target": "Footer/FooterBottom.razor",
       "type": "razor",
-      "sha256": "64f1e07d06e4525d9fbd3f29d2df3d6d8350105bda6b0e21b1d66c9bf497767a"
+      "sha256": "c808706cf72ce0ed5c113c3507fd1c7aa47a01343a4fec9436b1428d57abc644"
     },
     {
       "source": "FooterBrand.razor",
       "destination": "components",
       "target": "Footer/FooterBrand.razor",
       "type": "razor",
-      "sha256": "f5569e39fbf2f74943cd15fe597884dd0c9409011bd063660c7d1c81c3ac914d"
+      "sha256": "168bb41ff8c3fc07c4f92ed3e8d500f5820653e8f18f66ceba52a7781a943eb6"
     },
     {
       "source": "FooterColumn.razor",
       "destination": "components",
       "target": "Footer/FooterColumn.razor",
       "type": "razor",
-      "sha256": "df1c596148af0fe489702d7c213f0b0438261859343a6c3331abc9a229cb96ec"
+      "sha256": "2b30b8a4c3790fef22e80de3c9b2381141038fa25736384294c19a568ae21f84"
     },
     {
       "source": "FooterColumns.razor",
       "destination": "components",
       "target": "Footer/FooterColumns.razor",
       "type": "razor",
-      "sha256": "3839b63c5c355fb3dc30bf951434efa12a0e196d269c843ec35a22d2ae7229c1"
+      "sha256": "aceebb4bd4ba7df00f1952832434630d2ac03ebb82ca04445071607a858e4d15"
     },
     {
       "source": "FooterCopyright.razor",
       "destination": "components",
       "target": "Footer/FooterCopyright.razor",
       "type": "razor",
-      "sha256": "66a84a1f3567afcda17d7e976266ede61f3a54467ce1be1c4b1d5d9d5303f37b"
+      "sha256": "1a9e437f1a679506907078bca8498ed471e8c1c723d9e856411861cc74c5f3a6"
     },
     {
       "source": "FooterLegal.razor",
       "destination": "components",
       "target": "Footer/FooterLegal.razor",
       "type": "razor",
-      "sha256": "2f3ce5e91b3b00d6915a7fe1a120d271d2a323e6ff2d89ec6c3e8918df675bdc"
+      "sha256": "a93ba4009a5aaa70bdf8eab96bc8ec724b875b01904cc37dba60736c99905e21"
     },
     {
       "source": "FooterLink.razor",
       "destination": "components",
       "target": "Footer/FooterLink.razor",
       "type": "razor",
-      "sha256": "26000b3ebdbc7ed2305444b453711c9553451a3cd39bb81fb158b101a5ea151e"
+      "sha256": "26f6e16824a8a83f04a3dc6c74508e6cdbd6761a65892f3856a4e41dd5c82179"
     },
     {
       "source": "FooterMain.razor",
       "destination": "components",
       "target": "Footer/FooterMain.razor",
       "type": "razor",
-      "sha256": "a1462f94a19f92b7eb16e44b4a6bfcc172dbea5d8bf05ca1d4ebfba616d91b39"
+      "sha256": "ad398ac854928d3fe319fc3788684cd3d00ec499fe5db55235cf8fabcbc94e74"
     },
     {
       "source": "FooterNewsletter.razor",
       "destination": "components",
       "target": "Footer/FooterNewsletter.razor",
       "type": "razor",
-      "sha256": "4a9c8e20c141e12ba3bc08ed601afbaf69c654ea36a323ddf83a88a7c5e3c378"
+      "sha256": "a6162e9089c9af2a006cd2aef25897391e5997f5b4e7cd5c6add3ef53dec46bf"
     },
     {
       "source": "FooterSocial.razor",
       "destination": "components",
       "target": "Footer/FooterSocial.razor",
       "type": "razor",
-      "sha256": "420ec2751540614e49e0cbb5dc608f49ba617269d7278ab2902d333fdf7ef1c2"
+      "sha256": "2603a34602dd36d873c2ccf831fb233fafce9ff2b0284ef16f84e15cceb70674"
     },
     {
       "source": "FooterSocialLink.razor",
       "destination": "components",
       "target": "Footer/FooterSocialLink.razor",
       "type": "razor",
-      "sha256": "e20d39c6712d0fd5cd9d2e2f1454afbff6f464b17b813e9cf4046749c6b3774a"
+      "sha256": "e9e1657987c3b56afae71db0c9afea9466e2d7ed5a44384867140f29593ad057"
     }
   ]
 }

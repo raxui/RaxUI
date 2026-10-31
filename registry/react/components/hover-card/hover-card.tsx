@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
-import { useSheenPortalContainer, useSheenTheme } from "@/lib/theme"
+import { useRaxPortalContainer, useRaxTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 
 interface PreviewState {
@@ -53,11 +53,11 @@ HoverCardTrigger.displayName = "HoverCardTrigger"
 const HoverCardContent = React.forwardRef<React.ElementRef<typeof HoverCardPrimitive.Content>, React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>>(
   ({ className, align = "center", sideOffset = 8, collisionPadding = 8, dir, onFocusCapture, onBlurCapture, onEscapeKeyDown, onKeyDown, ...props }, ref) => {
     const state = React.useContext(PreviewContext)
-    const theme = useSheenTheme()
-    return <HoverCardPrimitive.Portal container={useSheenPortalContainer()}>
+    const theme = useRaxTheme()
+    return <HoverCardPrimitive.Portal container={useRaxPortalContainer()}>
       <HoverCardPrimitive.Content {...props} ref={node => { assignRef(ref, node); assignRef(state?.content, node) }}
         align={align} sideOffset={sideOffset} collisionPadding={collisionPadding} dir={dir ?? theme.direction}
-        className={cn("sheen-hover-card", className)}
+        className={cn("rax-hover-card", className)}
         onFocusCapture={event => { onFocusCapture?.(event); state?.setOpen(true) }}
         onBlurCapture={event => { onBlurCapture?.(event); if (!event.currentTarget.contains(event.relatedTarget) && event.relatedTarget !== state?.trigger.current) state?.setOpen(false) }}
         onEscapeKeyDown={event => {

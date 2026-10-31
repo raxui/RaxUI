@@ -1,25 +1,25 @@
-@* SheenUI TextEditor. Source-owned: edit freely. Razor renders the toolbar, menus, link form and counter; TextEditor.razor.js
+@* RaxUI TextEditor. Source-owned: edit freely. Razor renders the toolbar, menus, link form and counter; TextEditor.razor.js
    runs the Tiptap engine and owns toolbar state, so formatting and selection changes never wait for the server.
    Built-in SVG paths from Lucide (ISC), matching the React source. *@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @ref="root" @attributes="RootAttributes" class="@($"sheen-editor {Class}".TrimEnd())" data-variant="@Variant" data-disabled="@(Disabled ? "" : null)"
-     data-readonly="@(ReadOnly ? "" : null)" data-invalid="@(IsInvalid ? "" : null)" dir="@Direction" data-sheen-appearance="@Appearance"
+<div @ref="root" @attributes="RootAttributes" class="@($"rax-editor {Class}".TrimEnd())" data-variant="@Variant" data-disabled="@(Disabled ? "" : null)"
+     data-readonly="@(ReadOnly ? "" : null)" data-invalid="@(IsInvalid ? "" : null)" dir="@Direction" data-rax-appearance="@Appearance"
      aria-busy="@(mounted ? null : "true")" style="@RootStyle">
     @if (ToolbarPosition == "top") { @ToolbarFragment(false) }
     <TextEditorContent Html="@Value" Mounted="mounted" ContentClass="@ContentClass" Attributes="ContentAttributes" />
     @if ((ToolbarPosition == "bottom" && ToolList.Count > 0) || Counter || FooterEnd is not null)
     {
-        <div class="sheen-editor-footer">
-            <div class="sheen-editor-footer-start">@if (ToolbarPosition == "bottom") { @ToolbarFragment(true) }</div>
+        <div class="rax-editor-footer">
+            <div class="rax-editor-footer-start">@if (ToolbarPosition == "bottom") { @ToolbarFragment(true) }</div>
             @if (Counter)
             {
-                var length = SheenUI.Internal.TextEditor.TextEditorHtml.TextLength(Value);
-                <span class="sheen-textarea-count" data-editor-count data-state="@CountState(length)" data-count-max="@MaxLength">
-                    <svg viewBox="0 0 20 20" aria-hidden="true"><circle class="sheen-textarea-count-track" cx="10" cy="10" r="8" /><circle class="sheen-textarea-count-bar" cx="10" cy="10" r="8" pathLength="1" style="@($"stroke-dashoffset:{(1 - Math.Min((double)length / MaxLength!.Value, 1)).ToString(System.Globalization.CultureInfo.InvariantCulture)}")" /></svg>
-                    <span class="sheen-textarea-count-text" dir="ltr">@(CountState(length) is null ? $"{length} / {MaxLength}" : $"{MaxLength - length}")</span>
+                var length = RaxUI.Internal.TextEditor.TextEditorHtml.TextLength(Value);
+                <span class="rax-textarea-count" data-editor-count data-state="@CountState(length)" data-count-max="@MaxLength">
+                    <svg viewBox="0 0 20 20" aria-hidden="true"><circle class="rax-textarea-count-track" cx="10" cy="10" r="8" /><circle class="rax-textarea-count-bar" cx="10" cy="10" r="8" pathLength="1" style="@($"stroke-dashoffset:{(1 - Math.Min((double)length / MaxLength!.Value, 1)).ToString(System.Globalization.CultureInfo.InvariantCulture)}")" /></svg>
+                    <span class="rax-textarea-count-text" dir="ltr">@(CountState(length) is null ? $"{length} / {MaxLength}" : $"{MaxLength - length}")</span>
                     <span class="visually-hidden" role="status" data-count-status>@(CountState(length) == "limit" ? LimitLabel : "")</span>
                 </span>
             }
@@ -31,8 +31,8 @@
     {
         @* A template: the script clones it into <body> so the menu is never clipped and Blazor never sees it move. *@
         <template data-editor-bubble>
-            <div class="sheen-editor-bubble" dir="@Direction">
-                <div class="sheen-editor-bubble-tools" role="toolbar" aria-label="@L.Toolbar">
+            <div class="rax-editor-bubble" dir="@Direction">
+                <div class="rax-editor-bubble-tools" role="toolbar" aria-label="@L.Toolbar">
                     @foreach (var tool in TextEditorTypes.Tools.Bubble) { @ToolButton(tool) }
                 </div>
                 @LinkForm
@@ -126,7 +126,7 @@
     private bool Editable => !Disabled && !ReadOnly;
     private bool IsInvalid => Invalid || (fieldId is { } f && EditContext is not null && EditContext.GetValidationMessages(f).Any())
         || (AdditionalAttributes?.TryGetValue("aria-invalid", out var invalid) == true && Convert.ToString(invalid) == "true");
-    private string RootStyle => $"--sheen-editor-min-h:{MinHeight};{(MaxHeight is null ? "" : $"--sheen-editor-max-h:{MaxHeight};")}{(AdditionalAttributes?.TryGetValue("style", out var s) == true ? s : "")}";
+    private string RootStyle => $"--rax-editor-min-h:{MinHeight};{(MaxHeight is null ? "" : $"--rax-editor-max-h:{MaxHeight};")}{(AdditionalAttributes?.TryGetValue("style", out var s) == true ? s : "")}";
     private IEnumerable<KeyValuePair<string, object>> RootAttributes => AdditionalAttributes?.Where(a => !ContentKeys.Contains(a.Key) && a.Key != "style") ?? [];
     private Dictionary<string, object> ContentAttributes
     {
@@ -142,47 +142,47 @@
     }
     private string? CountState(int length) => MaxLength is not > 0 ? null : length >= MaxLength ? "limit" : MaxLength - length <= Math.Max(10, (int)Math.Round(MaxLength.Value * .1, MidpointRounding.AwayFromZero)) ? "warn" : null;
 
-    private RenderFragment Icon(string name) => @<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="@(Icons[name].Flip ? "sheen-editor-flip" : null)"><path d="@Icons[name].Path" /></svg>;
-    private RenderFragment ToolButton(string tool) => tool == "|" ? @<span class="sheen-editor-sep" role="separator" aria-orientation="vertical"></span>
-        : @<button type="button" class="btn sheen-button btn-glass btn-glass-ghost btn-glass-icon btn-sm sheen-editor-tool" data-editor-command="@tool" data-shortcut="@Shortcuts.GetValueOrDefault(tool)"
+    private RenderFragment Icon(string name) => @<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="@(Icons[name].Flip ? "rax-editor-flip" : null)"><path d="@Icons[name].Path" /></svg>;
+    private RenderFragment ToolButton(string tool) => tool == "|" ? @<span class="rax-editor-sep" role="separator" aria-orientation="vertical"></span>
+        : @<button type="button" class="btn rax-button btn-glass btn-glass-ghost btn-glass-icon btn-sm rax-editor-tool" data-editor-command="@tool" data-shortcut="@Shortcuts.GetValueOrDefault(tool)"
                    aria-label="@L.For(tool)" title="@L.For(tool)" aria-pressed="@(tool is "undo" or "redo" or "horizontalRule" or "clear" ? null : "false")" aria-disabled="@(Editable && tool is not ("undo" or "redo") ? null : "true")">@Icon(tool)</button>;
-    private RenderFragment LinkForm => @<form class="sheen-editor-link-form" data-editor-link-form>
-        <input type="text" class="form-control form-control-sm sheen-input flex-fill" inputmode="url" autocomplete="url" dir="ltr" placeholder="@L.LinkPlaceholder" aria-label="@L.Link" data-editor-link-input />
-        <button type="submit" class="btn sheen-button btn-glass btn-glass-tinted btn-glass-icon btn-sm" aria-label="@L.LinkApply" title="@L.LinkApply">@Icon("check")</button>
-        <a class="btn sheen-button btn-glass btn-glass-ghost btn-glass-icon btn-sm" target="_blank" rel="noopener noreferrer" aria-label="@L.LinkOpen" title="@L.LinkOpen" data-editor-link-open hidden>@Icon("open")</a>
-        <button type="button" class="btn sheen-button btn-glass btn-glass-ghost btn-glass-icon btn-sm" aria-label="@L.LinkRemove" title="@L.LinkRemove" data-editor-link-remove hidden>@Icon("unlink")</button>
+    private RenderFragment LinkForm => @<form class="rax-editor-link-form" data-editor-link-form>
+        <input type="text" class="form-control form-control-sm rax-input flex-fill" inputmode="url" autocomplete="url" dir="ltr" placeholder="@L.LinkPlaceholder" aria-label="@L.Link" data-editor-link-input />
+        <button type="submit" class="btn rax-button btn-glass btn-glass-tinted btn-glass-icon btn-sm" aria-label="@L.LinkApply" title="@L.LinkApply">@Icon("check")</button>
+        <a class="btn rax-button btn-glass btn-glass-ghost btn-glass-icon btn-sm" target="_blank" rel="noopener noreferrer" aria-label="@L.LinkOpen" title="@L.LinkOpen" data-editor-link-open hidden>@Icon("open")</a>
+        <button type="button" class="btn rax-button btn-glass btn-glass-ghost btn-glass-icon btn-sm" aria-label="@L.LinkRemove" title="@L.LinkRemove" data-editor-link-remove hidden>@Icon("unlink")</button>
     </form>;
-    private RenderFragment ToolbarFragment(bool inline) => @<div role="toolbar" aria-label="@L.Toolbar" aria-disabled="@(Editable ? null : "true")" class="@(inline ? "sheen-editor-toolbar sheen-editor-toolbar-inline" : "sheen-editor-toolbar")" data-editor-toolbar>
+    private RenderFragment ToolbarFragment(bool inline) => @<div role="toolbar" aria-label="@L.Toolbar" aria-disabled="@(Editable ? null : "true")" class="@(inline ? "rax-editor-toolbar rax-editor-toolbar-inline" : "rax-editor-toolbar")" data-editor-toolbar>
         @foreach (var tool in ToolList)
         {
             if (tool == "heading")
             {
-                <DropdownMenu TriggerVariant="ghost" TriggerClass="btn-sm sheen-editor-tool sheen-editor-heading-trigger" TriggerLabel="@($"{L.TextStyle}: {L.Paragraph}")" Disabled="!Editable" Class="sheen-editor-menu" data-editor-menu="heading">
+                <DropdownMenu TriggerVariant="ghost" TriggerClass="btn-sm rax-editor-tool rax-editor-heading-trigger" TriggerLabel="@($"{L.TextStyle}: {L.Paragraph}")" Disabled="!Editable" Class="rax-editor-menu" data-editor-menu="heading">
                     <Trigger><span class="text-truncate" data-editor-heading-label>@L.Paragraph</span>@Icon("chevron")</Trigger>
                     <ChildContent>
-                        <DropdownMenuItem Role="menuitemradio" aria-checked="true" data-editor-command="heading" data-level="0"><span class="sheen-editor-menu-p">@L.Paragraph</span></DropdownMenuItem>
+                        <DropdownMenuItem Role="menuitemradio" aria-checked="true" data-editor-command="heading" data-level="0"><span class="rax-editor-menu-p">@L.Paragraph</span></DropdownMenuItem>
                         @foreach (var level in new[] { 1, 2, 3 })
                         {
-                            <DropdownMenuItem Role="menuitemradio" aria-checked="false" data-editor-command="heading" data-level="@level"><span class="@($"sheen-editor-menu-h{level}")">@(level switch { 1 => L.Heading1, 2 => L.Heading2, _ => L.Heading3 })</span><span class="sheen-editor-menu-kbd" dir="ltr" data-kbd="@($"Mod-Alt-{level}")"></span></DropdownMenuItem>
+                            <DropdownMenuItem Role="menuitemradio" aria-checked="false" data-editor-command="heading" data-level="@level"><span class="@($"rax-editor-menu-h{level}")">@(level switch { 1 => L.Heading1, 2 => L.Heading2, _ => L.Heading3 })</span><span class="rax-editor-menu-kbd" dir="ltr" data-kbd="@($"Mod-Alt-{level}")"></span></DropdownMenuItem>
                         }
                     </ChildContent>
                 </DropdownMenu>
             }
             else if (tool == "align")
             {
-                <DropdownMenu TriggerVariant="ghost" TriggerClass="btn-sm sheen-editor-tool sheen-editor-align-trigger" TriggerLabel="@L.Align" Disabled="!Editable" Class="sheen-editor-menu" data-editor-menu="align">
+                <DropdownMenu TriggerVariant="ghost" TriggerClass="btn-sm rax-editor-tool rax-editor-align-trigger" TriggerLabel="@L.Align" Disabled="!Editable" Class="rax-editor-menu" data-editor-menu="align">
                     <Trigger>@foreach (var a in AlignValues) { <span data-editor-align-icon="@a" hidden="@(a != "start")" style="display:contents">@Icon(a)</span> }@Icon("chevron")</Trigger>
                     <ChildContent>
                         @foreach (var a in AlignValues)
                         {
-                            <DropdownMenuItem Role="menuitemradio" aria-checked="@(a == "start" ? "true" : "false")" data-editor-command="align" data-align="@a"><span class="sheen-editor-menu-icon">@Icon(a)</span>@(a switch { "start" => L.AlignStart, "center" => L.AlignCenter, "end" => L.AlignEnd, _ => L.AlignJustify })<span class="sheen-editor-menu-kbd" dir="ltr" data-kbd="@($"Mod-Shift-{a switch { "start" => "L", "center" => "E", "end" => "R", _ => "J" }}")"></span></DropdownMenuItem>
+                            <DropdownMenuItem Role="menuitemradio" aria-checked="@(a == "start" ? "true" : "false")" data-editor-command="align" data-align="@a"><span class="rax-editor-menu-icon">@Icon(a)</span>@(a switch { "start" => L.AlignStart, "center" => L.AlignCenter, "end" => L.AlignEnd, _ => L.AlignJustify })<span class="rax-editor-menu-kbd" dir="ltr" data-kbd="@($"Mod-Shift-{a switch { "start" => "L", "center" => "E", "end" => "R", _ => "J" }}")"></span></DropdownMenuItem>
                         }
                     </ChildContent>
                 </DropdownMenu>
             }
             else if (tool == "link")
             {
-                <Popover TriggerClass="btn sheen-button btn-glass btn-glass-ghost btn-glass-icon btn-sm sheen-editor-tool" Class="sheen-editor-link-popover" Label="@L.Link" data-editor-link-popover
+                <Popover TriggerClass="btn rax-button btn-glass btn-glass-ghost btn-glass-icon btn-sm rax-editor-tool" Class="rax-editor-link-popover" Label="@L.Link" data-editor-link-popover
                          TriggerAttributes="@(new Dictionary<string, object> { ["data-editor-command"] = "link", ["data-shortcut"] = "Mod-K", ["aria-label"] = L.Link, ["title"] = L.Link, ["aria-pressed"] = "false" })">
                     <Trigger>@Icon("link")</Trigger>
                     <ChildContent>@LinkForm</ChildContent>

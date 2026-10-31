@@ -1,7 +1,7 @@
 const instances = new WeakMap()
 const keyOf = date => date.toISOString().slice(0, 10)
 const read = key => new Date(`${key}T12:00:00Z`)
-const dayButton = (root, key) => root.querySelector(`.sheen-calendar-day[data-date="${key}"]:not([data-outside])`)
+const dayButton = (root, key) => root.querySelector(`.rax-calendar-day[data-date="${key}"]:not([data-outside])`)
 function moveMonth(date, amount) {
   const day = date.getUTCDate()
   date.setUTCDate(1); date.setUTCMonth(date.getUTCMonth() + amount)
@@ -10,9 +10,9 @@ function moveMonth(date, amount) {
   return date
 }
 function focus(root, key, activate) {
-  const target = dayButton(root, key) ?? root.querySelector('.sheen-calendar-day[tabindex="0"]') ?? root.querySelector('.sheen-calendar-day:not([data-outside])')
+  const target = dayButton(root, key) ?? root.querySelector('.rax-calendar-day[tabindex="0"]') ?? root.querySelector('.rax-calendar-day:not([data-outside])')
   if (!target) return
-  root.querySelectorAll('.sheen-calendar-day').forEach(day => { day.tabIndex = day === target ? 0 : -1 })
+  root.querySelectorAll('.rax-calendar-day').forEach(day => { day.tabIndex = day === target ? 0 : -1 })
   const state = instances.get(root); if (state) state.focused = target.dataset.date
   if (activate) target.focus({ preventScroll: true })
 }
@@ -24,7 +24,7 @@ function paint(root, hovered) {
     last = from > hovered.dataset.date ? from : hovered.dataset.date
     preview = true
   }
-  root.querySelectorAll('.sheen-calendar-day').forEach(day => {
+  root.querySelectorAll('.rax-calendar-day').forEach(day => {
     const key = day.dataset.date, cell = day.closest('td'), start = key === first, end = key === last, inside = !!last && key > first && key < last
     cell.toggleAttribute('data-range-start', start && !!last); cell.toggleAttribute('data-range-end', end)
     cell.toggleAttribute('data-in-range', inside); cell.toggleAttribute('data-preview', preview && (start || end || inside))
@@ -39,14 +39,14 @@ export function init(root, receiver) {
   const media = matchMedia('(max-width: 639px)'), state = { controller, focused: null }
   instances.set(root, state)
   root.addEventListener('focusin', event => {
-    const target = event.target.closest('.sheen-calendar-day')
+    const target = event.target.closest('.rax-calendar-day')
     if (target) focus(root, target.dataset.date, false)
   }, options)
   root.addEventListener('keydown', event => {
     if (event.key === 'Escape' && root.dataset.view !== 'days') {
       event.preventDefault(); event.stopPropagation(); receiver.invokeMethodAsync('ShowDays').catch(() => {}); return
     }
-    const target = event.target.closest('.sheen-calendar-day')
+    const target = event.target.closest('.rax-calendar-day')
     if (!target) return
     const date = read(target.dataset.date), rtl = getComputedStyle(root).direction === 'rtl'
     const offset = (date.getUTCDay() - Number(root.dataset.weekStart) + 7) % 7
@@ -61,7 +61,7 @@ export function init(root, receiver) {
     if (dayButton(root, key)) focus(root, key, true)
     else receiver.invokeMethodAsync('Navigate', key).catch(() => {})
   }, options)
-  root.addEventListener('pointerover', event => { if (root.hasAttribute('data-range')) paint(root, event.target.closest('.sheen-calendar-day')) }, options)
+  root.addEventListener('pointerover', event => { if (root.hasAttribute('data-range')) paint(root, event.target.closest('.rax-calendar-day')) }, options)
   root.addEventListener('pointerleave', () => { if (root.hasAttribute('data-range')) paint(root, null) }, options)
   if (root.hasAttribute('data-responsive')) media.addEventListener('change', () => receiver.invokeMethodAsync('SetCompact', media.matches).catch(() => {}), options)
   return media.matches

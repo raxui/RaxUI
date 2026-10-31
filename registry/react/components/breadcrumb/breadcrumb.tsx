@@ -1,6 +1,6 @@
 "use client"
 
-// SheenUI breadcrumb. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI breadcrumb. Source-owned: edit freely. Ported from boot-ui.
 // Built-in icon paths from Lucide (ISC).
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
@@ -17,7 +17,7 @@ const BreadcrumbContext = React.createContext<{ separator: BreadcrumbSeparatorSt
 // -----------------------------------------------------------------------------
 
 export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   label?: string
   /** `glass` wraps the trail in a frosted pill (for headers over content). */
   variant?: "default" | "glass"
@@ -28,19 +28,19 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
 const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
   ({ className, appearance, label = "Breadcrumb", variant = "default", separator = "chevron", ...props }, ref) => (
     <BreadcrumbContext.Provider value={{ separator }}>
-      <nav ref={ref} aria-label={label} data-sheen-appearance={appearance} data-variant={variant} className={cn("sheen-breadcrumb", className)} {...props} />
+      <nav ref={ref} aria-label={label} data-rax-appearance={appearance} data-variant={variant} className={cn("rax-breadcrumb", className)} {...props} />
     </BreadcrumbContext.Provider>
   ),
 )
 Breadcrumb.displayName = "Breadcrumb"
 
 const BreadcrumbList = React.forwardRef<HTMLOListElement, React.OlHTMLAttributes<HTMLOListElement>>(({ className, ...props }, ref) => (
-  <ol ref={ref} className={cn("sheen-breadcrumb-list", className)} {...props} />
+  <ol ref={ref} className={cn("rax-breadcrumb-list", className)} {...props} />
 ))
 BreadcrumbList.displayName = "BreadcrumbList"
 
 const BreadcrumbItem = React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(({ className, ...props }, ref) => (
-  <li ref={ref} className={cn("sheen-breadcrumb-item", className)} {...props} />
+  <li ref={ref} className={cn("rax-breadcrumb-item", className)} {...props} />
 ))
 BreadcrumbItem.displayName = "BreadcrumbItem"
 
@@ -53,13 +53,13 @@ export interface BreadcrumbLinkProps extends React.AnchorHTMLAttributes<HTMLAnch
 const BreadcrumbLink = React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(({ className, asChild, href, ...props }, ref) => {
   const isButton = !asChild && href === undefined
   const Comp: React.ElementType = asChild ? Slot : isButton ? "button" : "a"
-  return <Comp ref={ref} className={cn("sheen-breadcrumb-link", className)} {...(isButton ? { type: "button" } : { href })} {...props} />
+  return <Comp ref={ref} className={cn("rax-breadcrumb-link", className)} {...(isButton ? { type: "button" } : { href })} {...props} />
 })
 BreadcrumbLink.displayName = "BreadcrumbLink"
 
 /** The current page: not a link. */
 const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(({ className, ...props }, ref) => (
-  <span ref={ref} aria-current="page" className={cn("sheen-breadcrumb-page", className)} {...props} />
+  <span ref={ref} aria-current="page" className={cn("rax-breadcrumb-page", className)} {...props} />
 ))
 BreadcrumbPage.displayName = "BreadcrumbPage"
 
@@ -72,7 +72,7 @@ const ChevronIcon = () => (
 const BreadcrumbSeparator = React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(({ children, className, ...props }, ref) => {
   const { separator } = React.useContext(BreadcrumbContext)
   return (
-    <li ref={ref} role="presentation" aria-hidden="true" data-separator={separator} className={cn("sheen-breadcrumb-separator", className)} {...props}>
+    <li ref={ref} role="presentation" aria-hidden="true" data-separator={separator} className={cn("rax-breadcrumb-separator", className)} {...props}>
       {children ?? (separator === "chevron" ? <ChevronIcon /> : separator === "slash" ? "/" : "·")}
     </li>
   )
@@ -81,7 +81,7 @@ BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
 
 const BreadcrumbEllipsis = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
   ({ className, children, ...props }, ref) => (
-    <span ref={ref} className={cn("sheen-breadcrumb-ellipsis", className)} {...props}>
+    <span ref={ref} className={cn("rax-breadcrumb-ellipsis", className)} {...props}>
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <circle cx="5" cy="12" r="1.6" />
         <circle cx="12" cy="12" r="1.6" />
@@ -150,12 +150,12 @@ const BreadcrumbTrail = React.forwardRef<HTMLElement, BreadcrumbTrailProps>(
         {index === last ? (
           <BreadcrumbPage>
             {item.icon}
-            <span className="sheen-breadcrumb-text">{item.label}</span>
+            <span className="rax-breadcrumb-text">{item.label}</span>
           </BreadcrumbPage>
         ) : (
           <BreadcrumbLink href={item.href} onClick={item.onClick}>
             {item.icon}
-            <span className="sheen-breadcrumb-text">{item.label}</span>
+            <span className="rax-breadcrumb-text">{item.label}</span>
           </BreadcrumbLink>
         )}
       </TrailItem>
@@ -171,7 +171,7 @@ const BreadcrumbTrail = React.forwardRef<HTMLElement, BreadcrumbTrailProps>(
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <DropdownMenu dir={props.dir === "rtl" ? "rtl" : undefined}>
-                    <DropdownMenuTrigger className="sheen-breadcrumb-link sheen-breadcrumb-more" aria-label={collapsedLabel}>
+                    <DropdownMenuTrigger className="rax-breadcrumb-link rax-breadcrumb-more" aria-label={collapsedLabel}>
                       <BreadcrumbEllipsis />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" appearance={props.appearance}>

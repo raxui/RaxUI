@@ -79,7 +79,7 @@ function DataGridCell<TData>({
       data-editable={editor ? "" : undefined}
       data-align={alignOf(column)}
       data-flash={flash === `${row.id}:${column.id}` || undefined}
-      className={cn("sheen-grid-cell", meta?.className)}
+      className={cn("rax-grid-cell", meta?.className)}
       style={{ width: column.getSize(), ...pinStyle(column) }}
       {...pinAttrs(column)}
       onPointerDown={(event) => {
@@ -93,7 +93,7 @@ function DataGridCell<TData>({
     >
       {content}
       {isEditing && editError && (
-        <span className="sheen-grid-error" role="alert">
+        <span className="rax-grid-error" role="alert">
           {editError}
         </span>
       )}
@@ -110,8 +110,8 @@ export function DataGridBody<TData>(props: GridBodyProps<TData>) {
   } = props
   const virtualRows = virtualizer.getVirtualItems()
   return (
-    <div role="rowgroup" className="sheen-grid-body" style={{ height: virtualizer.getTotalSize() }}>
-      {rows.length === 0 && <div className="sheen-grid-empty">{emptyState}</div>}
+    <div role="rowgroup" className="rax-grid-body" style={{ height: virtualizer.getTotalSize() }}>
+      {rows.length === 0 && <div className="rax-grid-empty">{emptyState}</div>}
       {virtualRows.map((vr) => {
         const row = rows[vr.index]
         const cells = [...row.getLeftVisibleCells(), ...row.getCenterVisibleCells(), ...row.getRightVisibleCells()]
@@ -124,7 +124,7 @@ export function DataGridBody<TData>(props: GridBodyProps<TData>) {
             data-selected={row.getIsSelected() || undefined}
             data-active-row={active.row === vr.index || undefined}
             data-editing-row={(active.row === vr.index && !!editing) || undefined}
-            className="sheen-grid-row"
+            className="rax-grid-row"
             style={{ height: rowHeight, transform: `translateY(${vr.start}px)` }}
           >
             {cells.map((cell, c) => (

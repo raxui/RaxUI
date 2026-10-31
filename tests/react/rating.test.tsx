@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
 import { Rating } from "../../registry/react/components/rating/rating"
 import { Wired, expectWiring } from "./control-test-utils"
-import { SheenThemeProvider } from "../../registry/react/foundation/theme"
+import { RaxThemeProvider } from "../../registry/react/foundation/theme"
 
 describe("Rating", () => {
   it("wires Field and exposes translated value labels", async () => {
@@ -19,7 +19,7 @@ describe("Rating", () => {
   it("supports controlled half steps and theme RTL", async () => {
     function Example() {
       const [value, setValue] = React.useState(2)
-      return <SheenThemeProvider direction="rtl"><Rating value={value} onChange={setValue} allowHalf aria-label="Score" /></SheenThemeProvider>
+      return <RaxThemeProvider direction="rtl"><Rating value={value} onChange={setValue} allowHalf aria-label="Score" /></RaxThemeProvider>
     }
     render(<Example />)
     const control = screen.getByRole("slider")

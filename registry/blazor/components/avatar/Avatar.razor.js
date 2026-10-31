@@ -5,7 +5,7 @@ export function init(root) {
   const image = root.querySelector("img")
   if (bindings.get(root)?.image === image) return
   dispose(root)
-  const fallback = root.querySelector(".sheen-avatar-fallback")
+  const fallback = root.querySelector(".rax-avatar-fallback")
   if (!image) { fallback.hidden = false; return }
   const update = () => {
     const failed = image.complete && image.naturalWidth === 0

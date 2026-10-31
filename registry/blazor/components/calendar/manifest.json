@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/calendar.css",
       "type": "css",
-      "sha256": "6ca928b9fffe2acbbf82b3f63bc651494e005fe53ea19b422b5cb2b4e1857d78"
+      "sha256": "15bdb27dc21bd61dc4bf1f4d3d5fd78e9c78371f834c3d5c3893613c68a811b3"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Calendar/Calendar.razor",
       "type": "razor",
-      "sha256": "eb346cf5f1bd321520246965ee68e7fa437b71f8891b36c651e974732b167ef7"
+      "sha256": "cd54d5d465b9f9bbcfcdf996f7bf2c469588dbee529eb7c59603fa9677e84ca7"
     },
     {
       "source": "CalendarState.razor",
@@ -33,7 +33,7 @@
       "destination": "components",
       "target": "Calendar/Calendar.razor.js",
       "type": "js",
-      "sha256": "5fabf130190413258ad386fcacaffd721ac17f9ca3e3588c2c08fca0570f2baf"
+      "sha256": "d1cd33e2975f3faab4df7551c9180499bcfa5923da249c6209da9087c3ef9b2f"
     }
   ]
 }

@@ -40,7 +40,7 @@ describe("FileUpload", () => {
   it("does not accept a drop through a disabled Field", () => {
     const changed = vi.fn()
     render(<Field disabled><FieldLabel>Files</FieldLabel><FileUpload onChange={changed} /></Field>)
-    fireEvent.drop(document.querySelector(".sheen-upload-zone")!, { dataTransfer: { files: [file()] } })
+    fireEvent.drop(document.querySelector(".rax-upload-zone")!, { dataTransfer: { files: [file()] } })
     expect(changed).not.toHaveBeenCalled()
   })
   it("binds File[] through Controller and Field and submits it", async () => {

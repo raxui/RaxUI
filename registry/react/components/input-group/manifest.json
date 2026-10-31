@@ -17,13 +17,13 @@
       "source": "registry/react/components/input-group/input-group.tsx",
       "target": "components/ui/input-group.tsx",
       "type": "tsx",
-      "sha256": "feb15572ea487fa230c488781ebd0381d63266e13059381fa4458d65af5de19c"
+      "sha256": "4bef5221aa6834ec17d2a6bbbe481634b14414b2ccb1c8e37cf9e9d5b48e0206"
     },
     {
       "source": "theme/scss/components/_input-group.scss",
-      "target": "styles/sheenui/components/_input-group.scss",
+      "target": "styles/raxui/components/_input-group.scss",
       "type": "scss",
-      "sha256": "0b6bf30188b3daec8b358c4ea3efc106b84617389e7721037cab77db0ccf0ad2"
+      "sha256": "93c8ce6b79763f61d0c6aac5f047448f17810d603de0414575eb34651b850b4b"
     }
   ]
 }

@@ -3,7 +3,7 @@
 // Built-in SVG paths from Lucide, licensed under ISC.
 import * as React from "react"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { useFieldControlProps } from "@/components/ui/field"
 import { cn } from "@/lib/utils"
 import { getDirection } from "@/lib/direction"
@@ -30,7 +30,7 @@ export interface ComboboxOption {
 }
 
 interface ComboboxBaseProps {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   /** Compatibility alias for emptyText. */
   emptyMessage?: string
   /** Compatibility callback; new code should use onValueChange. */
@@ -153,7 +153,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
     onBlur,
     ...aria
   } = props
-  const theme = useSheenTheme({ appearance, direction: dir })
+  const theme = useRaxTheme({ appearance, direction: dir })
   const ariaProps = {
     "aria-label": aria["aria-label"],
     "aria-labelledby": aria["aria-labelledby"],
@@ -237,13 +237,13 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
       {selected.slice(0, maxChips).map((value) => {
         const option = optionFor(value)
         return (
-          <span key={value} className="sheen-rich-combobox-chip">
+          <span key={value} className="rax-rich-combobox-chip">
             {option.icon}
-            <span className="sheen-rich-combobox-chip-label">{option.label}</span>
+            <span className="rax-rich-combobox-chip-label">{option.label}</span>
             {!disabled && (
               <button
                 type="button"
-                className="sheen-rich-combobox-chip-remove"
+                className="rax-rich-combobox-chip-remove"
                 aria-label={removeLabel(option.label)}
                 onClick={(event) => {
                   event.stopPropagation()
@@ -257,7 +257,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
           </span>
         )
       })}
-      {selected.length > maxChips && <span className="sheen-rich-combobox-more">+{selected.length - maxChips}</span>}
+      {selected.length > maxChips && <span className="rax-rich-combobox-more">+{selected.length - maxChips}</span>}
     </>
   )
 
@@ -277,8 +277,8 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
     >
       <PopoverAnchor asChild>
         <div
-          {...sheenThemeAttributes(theme)}
-          className={cn("sheen-input-group sheen-rich-combobox", className)}
+          {...raxThemeAttributes(theme)}
+          className={cn("rax-input-group rax-rich-combobox", className)}
           data-size={size}
           data-multiple={props.multiple || undefined}
           data-disabled={disabled || undefined}
@@ -292,7 +292,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
             setOpen(true)
           }}
         >
-          <div className="sheen-input sheen-rich-combobox-value" data-variant={variant} aria-invalid={isInvalid || undefined}>
+          <div className="rax-input rax-rich-combobox-value" data-variant={variant} aria-invalid={isInvalid || undefined}>
             {chips}
             <PopoverTrigger asChild>
               <button
@@ -311,7 +311,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
                 aria-haspopup="listbox"
                 aria-invalid={isInvalid || undefined}
                 disabled={disabled}
-                className="sheen-rich-combobox-trigger"
+                className="rax-rich-combobox-trigger"
                 data-placeholder={(props.multiple ? selected.length === 0 : !single) || undefined}
                 onKeyDown={(event) => {
                   onKeyDown?.(event)
@@ -329,23 +329,23 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
                 {...ariaProps}
               >
                 {single ? (
-                  <span className="sheen-rich-combobox-single">
+                  <span className="rax-rich-combobox-single">
                     {single.icon}
-                    <span className="sheen-rich-combobox-single-label">{single.label}</span>
+                    <span className="rax-rich-combobox-single-label">{single.label}</span>
                   </span>
                 ) : props.multiple && selected.length ? (
                   <span className="visually-hidden">{selected.map((v) => optionFor(v).label).join(", ")}</span>
                 ) : (
-                  <span className="sheen-rich-combobox-placeholder">{placeholder}</span>
+                  <span className="rax-rich-combobox-placeholder">{placeholder}</span>
                 )}
               </button>
             </PopoverTrigger>
           </div>
-          <span className="sheen-input-slot" data-side="end">
+          <span className="rax-input-slot" data-side="end">
             {clearable && selected.length > 0 && !disabled && (
               <button
                 type="button"
-                className="sheen-input-clear"
+                className="rax-input-clear"
                 aria-label={clearLabel}
                 onClick={() => {
                   setSelected([])
@@ -355,7 +355,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
                 <XIcon strokeWidth={4} />
               </button>
             )}
-            <span className="sheen-rich-combobox-chevron" aria-hidden="true">
+            <span className="rax-rich-combobox-chevron" aria-hidden="true">
               <ChevronsIcon />
             </span>
           </span>
@@ -365,7 +365,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
 
       <PopoverContent
         align="start"
-        className="sheen-rich-combobox-content"
+        className="rax-rich-combobox-content"
         dir={popoverDir}
         onOpenAutoFocus={(event) => {
           event.preventDefault()
@@ -397,14 +397,14 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
                     onSelect={() => toggle(option.value)}
                     // Keep focus in the search field so typing continues after a click (multi-select).
                     onMouseDown={(event) => event.preventDefault()}
-                    className="sheen-rich-combobox-item"
+                    className="rax-rich-combobox-item"
                   >
-                    {option.icon && <span className="sheen-rich-combobox-item-icon">{option.icon}</span>}
-                    <span className="sheen-rich-combobox-item-text">
+                    {option.icon && <span className="rax-rich-combobox-item-icon">{option.icon}</span>}
+                    <span className="rax-rich-combobox-item-text">
                       <span>{option.label}</span>
-                      {option.description && <span className="sheen-rich-combobox-item-description">{option.description}</span>}
+                      {option.description && <span className="rax-rich-combobox-item-description">{option.description}</span>}
                     </span>
-                    <span className="sheen-rich-combobox-check">{checked && <CheckIcon />}</span>
+                    <span className="rax-rich-combobox-check">{checked && <CheckIcon />}</span>
                     {checked && <span className="visually-hidden">, {selectedText}</span>}
                   </CommandItem>
                 )
@@ -423,12 +423,12 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Com
                 forceMount
                 onSelect={create}
                 onMouseDown={(event) => event.preventDefault()}
-                className="sheen-rich-combobox-item sheen-rich-combobox-create"
+                className="rax-rich-combobox-item rax-rich-combobox-create"
               >
-                <span className="sheen-rich-combobox-item-icon">
+                <span className="rax-rich-combobox-item-icon">
                   <PlusIcon />
                 </span>
-                <span className="sheen-rich-combobox-item-text">
+                <span className="rax-rich-combobox-item-text">
                   <span>
                     {createLabel(search.trim())}
                   </span>

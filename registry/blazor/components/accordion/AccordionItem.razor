@@ -1,11 +1,11 @@
-@* SheenUI AccordionItem. Source-owned: edit freely. Built-in icon paths from Lucide (ISC). *@
-<details @attributes="AdditionalAttributes" class="@($"sheen-accordion-item {Class}")" name="@(Group?.Multiple == false ? Group.Name : null)" open="@IsOpen" data-value="@ItemValue">
-    <summary inert="@(Disabled?"":null)" class="sheen-accordion-trigger" aria-disabled="@(Disabled?"true":null)" data-disabled="@(Disabled?"":null)" tabindex="@(Disabled?-1:0)" data-state="@(IsOpen?"open":"closed")">
-        @if (Icon is not null) { <span class="sheen-accordion-leading">@Icon</span> }
-        <span class="sheen-accordion-text"><span>@Title</span>@if (Description is not null) { <span class="sheen-accordion-description">@Description</span> }</span>
-        <span class="sheen-accordion-icon" data-icon="@(Group?.Icon??"chevron")" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">@if(Group?.Icon=="plus"){<path d="M5 12h14" /><path class="sheen-accordion-plus-v" d="M12 5v14" />}else{<path d="m6 9 6 6 6-6" />}</svg></span>
+@* RaxUI AccordionItem. Source-owned: edit freely. Built-in icon paths from Lucide (ISC). *@
+<details @attributes="AdditionalAttributes" class="@($"rax-accordion-item {Class}")" name="@(Group?.Multiple == false ? Group.Name : null)" open="@IsOpen" data-value="@ItemValue">
+    <summary inert="@(Disabled?"":null)" class="rax-accordion-trigger" aria-disabled="@(Disabled?"true":null)" data-disabled="@(Disabled?"":null)" tabindex="@(Disabled?-1:0)" data-state="@(IsOpen?"open":"closed")">
+        @if (Icon is not null) { <span class="rax-accordion-leading">@Icon</span> }
+        <span class="rax-accordion-text"><span>@Title</span>@if (Description is not null) { <span class="rax-accordion-description">@Description</span> }</span>
+        <span class="rax-accordion-icon" data-icon="@(Group?.Icon??"chevron")" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">@if(Group?.Icon=="plus"){<path d="M5 12h14" /><path class="rax-accordion-plus-v" d="M12 5v14" />}else{<path d="m6 9 6 6 6-6" />}</svg></span>
     </summary>
-    <div class="sheen-accordion-content"><div class="sheen-accordion-content-inner">@ChildContent</div></div>
+    <div class="rax-accordion-content"><div class="rax-accordion-content-inner">@ChildContent</div></div>
 </details>
 @code {
     [CascadingParameter] public Accordion? Group { get; set; }

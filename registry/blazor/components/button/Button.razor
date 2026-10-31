@@ -1,4 +1,4 @@
-@* SheenUI Button. Source-owned: edit freely. Styled by the shared theme (css/sheenui/sheenui.css, ADR 007),
+@* RaxUI Button. Source-owned: edit freely. Styled by the shared theme (css/raxui/raxui.css, ADR 007),
    with the same classes and options as the React Button. *@
 
 <button @attributes="AdditionalAttributes"
@@ -6,7 +6,7 @@
         class="@CssClass"
         style="@Style"
         disabled="@Disabled"
-        data-sheen-appearance="@Appearance"
+        data-rax-appearance="@Appearance"
         @onclick="OnClick">
     @ChildContent
 </button>
@@ -40,7 +40,7 @@
     /// <summary>default, sm, lg, icon, icon-sm, or icon-lg.</summary>
     [Parameter] public string Size { get; set; } = "default";
 
-    /// <summary>default, flat, or glass. When null, the button inherits it from the nearest ancestor with data-sheen-appearance.</summary>
+    /// <summary>default, flat, or glass. When null, the button inherits it from the nearest ancestor with data-rax-appearance.</summary>
     [Parameter] public string? Appearance { get; set; }
 
     /// <summary>A Bootstrap theme color (primary, success, danger, …) that tints the button.</summary>
@@ -63,7 +63,7 @@
 
     private string CssClass => string.Join(" ", new[]
     {
-        "btn sheen-button btn-glass",
+        "btn rax-button btn-glass",
         VariantClasses.GetValueOrDefault(Variant, "btn-glass-primary"),
         SizeClasses.GetValueOrDefault(Size),
         Class,
@@ -77,7 +77,7 @@
             // Only a plain color name may reach the CSS variable.
             if (string.IsNullOrEmpty(Color) || !Color.All(c => char.IsAsciiLetterOrDigit(c) || c == '-'))
                 return userStyle;
-            return $"--sheen-btn-tint-rgb: var(--bs-{Color}-rgb);{(userStyle is null ? "" : " " + userStyle)}";
+            return $"--rax-btn-tint-rgb: var(--bs-{Color}-rgb);{(userStyle is null ? "" : " " + userStyle)}";
         }
     }
 }

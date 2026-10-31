@@ -1,23 +1,23 @@
 "use client"
 
-// SheenUI avatar. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI avatar. Source-owned: edit freely. Ported from boot-ui.
 import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
-import type { SheenAppearance } from "@/lib/theme"
+import type { RaxAppearance } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 
 const avatarSizeClasses = {
-  xs: "sheen-avatar-xs",
-  sm: "sheen-avatar-sm",
+  xs: "rax-avatar-xs",
+  sm: "rax-avatar-sm",
   default: null,
-  lg: "sheen-avatar-lg",
-  xl: "sheen-avatar-xl",
+  lg: "rax-avatar-lg",
+  xl: "rax-avatar-xl",
 } as const
 
 export interface AvatarProps extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   size?: keyof typeof avatarSizeClasses
   /** `rounded` = app-icon squircle. */
   shape?: "circle" | "rounded"
@@ -29,12 +29,12 @@ const Avatar = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Root>, A
   ({ appearance, className, size = "default", shape = "circle", ring = false, ...props }, ref) => (
     <AvatarPrimitive.Root
       ref={ref}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
       className={cn(
-        "sheen-avatar",
+        "rax-avatar",
         avatarSizeClasses[size],
-        shape === "rounded" && "sheen-avatar-rounded",
-        ring && "sheen-avatar-ring",
+        shape === "rounded" && "rax-avatar-rounded",
+        ring && "rax-avatar-ring",
         className,
       )}
       {...props}
@@ -46,7 +46,7 @@ Avatar.displayName = AvatarPrimitive.Root.displayName
 const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => <AvatarPrimitive.Image ref={ref} className={cn("sheen-avatar-image", className)} {...props} />)
+>(({ className, ...props }, ref) => <AvatarPrimitive.Image ref={ref} className={cn("rax-avatar-image", className)} {...props} />)
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
 /** "Saad Alsaree" → "SA", "noura" → "N", "نورة القحطاني" → "نق" (skips the Arabic article "ال"). */
@@ -93,9 +93,9 @@ const AvatarFallback = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.
   ({ className, name, fallbackLabel = "Avatar", style, children, ...props }, ref) => (
     <AvatarPrimitive.Fallback
       ref={ref}
-      className={cn("sheen-avatar-fallback", className)}
+      className={cn("rax-avatar-fallback", className)}
       role="img" aria-label={name || fallbackLabel}
-      style={name ? ({ "--sheen-avatar-tint-rgb": tintFor(name), ...style } as React.CSSProperties) : style}
+      style={name ? ({ "--rax-avatar-tint-rgb": tintFor(name), ...style } as React.CSSProperties) : style}
       {...props}
     >
       {children ?? (name ? getInitials(name) : <PersonIcon />)}
@@ -108,7 +108,7 @@ export type AvatarStatus = "online" | "away" | "busy" | "offline"
 
 /** Presence dot in the corner. */
 const AvatarBadge = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement> & { status: AvatarStatus; label?: string }>(({ status, label = status, className, ...props }, ref) => (
-  <span ref={ref} role="img" aria-label={label} data-status={status} className={cn("sheen-avatar-badge", className)} {...props} />
+  <span ref={ref} role="img" aria-label={label} data-status={status} className={cn("rax-avatar-badge", className)} {...props} />
 ))
 AvatarBadge.displayName = "AvatarBadge"
 
@@ -125,17 +125,17 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(({ classN
   const visible = max !== undefined ? items.slice(0, max) : items
   const hidden = items.length - visible.length
   return (
-    <div ref={ref} role="group" className={cn("sheen-avatar-group", className)} {...props}>
+    <div ref={ref} role="group" className={cn("rax-avatar-group", className)} {...props}>
       {visible.map((child, i) =>
         React.cloneElement(child as React.ReactElement<{ style?: React.CSSProperties }>, {
-          style: { ...(child.props as { style?: React.CSSProperties }).style, "--sheen-avatar-i": i } as React.CSSProperties,
+          style: { ...(child.props as { style?: React.CSSProperties }).style, "--rax-avatar-i": i } as React.CSSProperties,
         }),
       )}
       {hidden > 0 && (
         <Avatar
           size={size}
-          className="sheen-avatar-more"
-          style={{ "--sheen-avatar-i": visible.length } as React.CSSProperties}
+          className="rax-avatar-more"
+          style={{ "--rax-avatar-i": visible.length } as React.CSSProperties}
           aria-label={getMoreLabel(hidden)}
         >
           <AvatarFallback>+{hidden}</AvatarFallback>

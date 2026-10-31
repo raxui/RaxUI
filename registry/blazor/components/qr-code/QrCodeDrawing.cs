@@ -1,9 +1,9 @@
-// Drawing ported from SheenUI React qr-code-drawing.tsx; independent of the encoder.
+// Drawing ported from RaxUI React qr-code-drawing.tsx; independent of the encoder.
 using System;
 using System.Globalization;
 using System.Security;
 using System.Text;
-namespace SheenUI.Internal.QrCode;
+namespace RaxUI.Internal.QrCode;
 
 internal static class QrCodeDrawing
 {

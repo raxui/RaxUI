@@ -20,13 +20,13 @@
       "source": "registry/react/components/carousel/carousel.tsx",
       "target": "components/ui/carousel.tsx",
       "type": "tsx",
-      "sha256": "09028a695d095bbaa1a0e093a27f26b7671a48cd748f381529af8b50ed88601a"
+      "sha256": "8a3d5b7f11438ce26e2ff39802a86d1312d85139ec52e7a76835a8cc6c36594e"
     },
     {
       "source": "theme/scss/components/_carousel.scss",
-      "target": "styles/sheenui/components/_carousel.scss",
+      "target": "styles/raxui/components/_carousel.scss",
       "type": "scss",
-      "sha256": "fd9147e1a1c320a4b04d9af76696702bb7f3c619f98ac53b0125a4a3165afdf4"
+      "sha256": "c1ffac22357ac2ea28d58e1c7de5af61cf64eda34ba706c038ef59aec8f831bc"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

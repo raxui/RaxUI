@@ -1,7 +1,7 @@
 @typeparam TItem
-<div class="sheen-data-table-footer">
+<div class="rax-data-table-footer">
     <span aria-live="polite">@Text.Results(State.Filtered.Count) · @Text.Selected(State.SelectedRows.Count)</span>
-    <div class="sheen-table-pagination">
+    <div class="rax-table-pagination">
         <label class="d-flex align-items-center gap-2">@Text.RowsPerPage
             <Select TValue="int" Value="State.PageSize" ValueChanged="Size" Size="sm" aria-label="@Text.RowsPerPage">
                 @foreach(var size in Sizes.Append(State.PageSize).Distinct().OrderBy(x=>x)){<option value="@size">@size</option>}

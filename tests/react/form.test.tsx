@@ -35,7 +35,7 @@ describe("Form", () => {
     expect(screen.getByText("*")).toBeInTheDocument()
     expect(screen.getByRole("textbox", { name: /Nickname/ })).not.toHaveAttribute("aria-required")
     expect(screen.getByText("(Optional)")).toBeInTheDocument()
-    expect(screen.getByRole("region", { name: "Profile" })).toHaveClass("sheen-form-section")
+    expect(screen.getByRole("region", { name: "Profile" })).toHaveClass("rax-form-section")
     expect(screen.getByRole("button", { name: /Settings/ })).toHaveAttribute("type", "button")
   })
 

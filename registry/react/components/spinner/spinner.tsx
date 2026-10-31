@@ -1,14 +1,14 @@
 "use client"
 
-// SheenUI spinner. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI spinner. Source-owned: edit freely. Ported from boot-ui.
 import * as React from "react"
 
-import type { SheenAppearance } from "@/lib/theme"
+import type { RaxAppearance } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 
 export interface SpinnerProps extends React.SVGProps<SVGSVGElement> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   /** Accessible label. Pass `aria-hidden` instead when another element already announces loading. */
   size?: "sm" | "default" | "lg"
   color?: "primary" | "secondary" | "success" | "warning" | "danger" | "info" | "neutral"
@@ -20,7 +20,7 @@ const SPOKES = Array.from({ length: 8 }, (_, i) => i)
 const Spinner = React.forwardRef<SVGSVGElement, SpinnerProps>(({ appearance, className, label = "Loading", size = "default", color = "primary", ...props }, ref) => (
   <svg
     ref={ref}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
     data-size={size} data-color={color}
     viewBox="0 0 24 24"
     fill="none"
@@ -29,7 +29,7 @@ const Spinner = React.forwardRef<SVGSVGElement, SpinnerProps>(({ appearance, cla
     strokeLinecap="round"
     role="status"
     aria-label={label}
-    className={cn("sheen-spinner", className)}
+    className={cn("rax-spinner", className)}
     {...props}
   >
     {SPOKES.map((i) => (

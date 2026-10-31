@@ -11,7 +11,7 @@ export function ChoiceHighlight() {
     if (!highlight || !list) return
     let observed: HTMLElement | null = null
     const update = () => {
-      const active = list.querySelector<HTMLElement>('.sheen-autocomplete-option[data-highlighted]:not([data-disabled]), .sheen-select-item[data-highlighted]:not([data-disabled]), .sheen-choice-option[data-active]:not([aria-disabled="true"])')
+      const active = list.querySelector<HTMLElement>('.rax-autocomplete-option[data-highlighted]:not([data-disabled]), .rax-select-item[data-highlighted]:not([data-disabled]), .rax-choice-option[data-active]:not([aria-disabled="true"])')
       if (active !== observed) {
         if (observed) resize?.unobserve(observed)
         if (active) resize?.observe(active)
@@ -35,5 +35,5 @@ export function ChoiceHighlight() {
     update()
     return () => { resize?.disconnect(); mutations.disconnect() }
   }, [])
-  return <span ref={ref} className="sheen-choice-highlight" aria-hidden="true" hidden />
+  return <span ref={ref} className="rax-choice-highlight" aria-hidden="true" hidden />
 }

@@ -19,25 +19,25 @@
       "source": "registry/react/components/file-upload/file-upload.tsx",
       "target": "components/ui/file-upload.tsx",
       "type": "tsx",
-      "sha256": "fd1b0409ad77be355989b51718d5c114687da8c9a1dbfbb0d506ae239687f162"
+      "sha256": "1378d770798c25b849213b46a17f9738a56d83688359e398f1b10aecd8c0c36c"
     },
     {
       "source": "theme/scss/components/_file-upload.scss",
-      "target": "styles/sheenui/components/_file-upload.scss",
+      "target": "styles/raxui/components/_file-upload.scss",
       "type": "scss",
-      "sha256": "36172ea183f3b1c4e52bbf766cb5a951712f4a651a4dce16641449824eb28ce4"
+      "sha256": "c31a098f029f76a9ecd7231771eb3cc7bece3f60b94ca7f49e64ab74daf68e3b"
     },
     {
       "source": "registry/react/components/file-upload/file-upload-native.tsx",
       "target": "components/ui/file-upload-native.tsx",
       "type": "tsx",
-      "sha256": "5719e0b3ad6b6f2e85283d1da30ef9ac7818cfe02d614f873f5f9a1290471344"
+      "sha256": "8fae15586d6312a0eee3b4b5696a3d13339b18531665b595034a260f90be4311"
     },
     {
       "source": "registry/react/components/file-upload/file-upload-queue.tsx",
       "target": "components/ui/file-upload-queue.tsx",
       "type": "tsx",
-      "sha256": "d782bb9dbb81524e9384e1a24ba310978d74c0ca1ec6fb823575e75394150377"
+      "sha256": "f9750f787abd88ceb90feef84813c7a35ab1d491079d1069d1ceeb4c6962365a"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

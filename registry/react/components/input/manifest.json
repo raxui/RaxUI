@@ -16,19 +16,19 @@
       "source": "registry/react/components/input/input.tsx",
       "target": "components/ui/input.tsx",
       "type": "tsx",
-      "sha256": "f7773234a66e4d5fb3071016aa6c182697c7e2f173aa528a932293631cc1e36f"
+      "sha256": "126d0ee2a3f381712c885bd5506380769d4eac9af8e7dfe76c70022cf617ba86"
     },
     {
       "source": "theme/scss/components/_input-mixins.scss",
-      "target": "styles/sheenui/components/_input-mixins.scss",
+      "target": "styles/raxui/components/_input-mixins.scss",
       "type": "scss",
-      "sha256": "3f2c8c383806e0ec681a8b02a5b3a5cd669c41ee7e9beae48947e06196f92476"
+      "sha256": "0ddae1d48f050f1d2eeb0ff0eecda0b4bb3797fbd056efa8dcf853a7bc995fa8"
     },
     {
       "source": "theme/scss/components/_input.scss",
-      "target": "styles/sheenui/components/_input.scss",
+      "target": "styles/raxui/components/_input.scss",
       "type": "scss",
-      "sha256": "087b1add7b386719ac827592790c63d8d1abbe4246a870e3eb4cba6e430cc23a"
+      "sha256": "ec5134b644e2aa7bb4449c4926e24682c928bfa52ccb6f13e356a80d3a9d8c28"
     }
   ]
 }

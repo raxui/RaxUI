@@ -1,7 +1,7 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
-<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="sheen-menubar @Class" data-blazor-shell data-sheen-appearance="@Appearance" role="menubar" aria-label="@Label"><span class="sheen-menubar-highlight" aria-hidden="true"></span>@ChildContent</div></CascadingValue>
+<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="rax-menubar @Class" data-blazor-shell data-rax-appearance="@Appearance" role="menubar" aria-label="@Label"><span class="rax-menubar-highlight" aria-hidden="true"></span>@ChildContent</div></CascadingValue>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }

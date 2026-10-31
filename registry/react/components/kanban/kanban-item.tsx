@@ -60,7 +60,7 @@ export const KanbanItemLive = React.forwardRef<HTMLDivElement, KanbanItemProps>(
           data-placeholder={isDragging ? "" : undefined}
           data-handle={asHandle ? "" : undefined}
           data-flat-cursor={context.flatCursor ? "" : undefined}
-          className={cn("sheen-kanban-item", className)}
+          className={cn("rax-kanban-item", className)}
           style={{ transform: CSS.Translate.toString(transform), transition, ...style }}
           {...props}
           {...(draggable ? attributes : {})}
@@ -83,7 +83,7 @@ export const KanbanItemCopy = React.forwardRef<HTMLDivElement, KanbanItemProps>(
           data-overlay=""
           data-handle={asHandle ? "" : undefined}
           data-flat-cursor={context.flatCursor ? "" : undefined}
-          className={cn("sheen-kanban-item", className)}
+          className={cn("rax-kanban-item", className)}
           {...props}
         />
       </KanbanItemContext.Provider>

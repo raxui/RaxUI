@@ -1,22 +1,22 @@
-@* SheenUI FormRow. Source-owned: edit freely. A Field in a settings row; ChildContent receives the control attributes. *@
+@* RaxUI FormRow. Source-owned: edit freely. A Field in a settings row; ChildContent receives the control attributes. *@
 @using System.Linq.Expressions
 
 <Field For="For" Id="@Id" Invalid="Invalid" Required="Required" Optional="Optional" Disabled="Disabled"
-       Error="@Error" HasDescription="@(Description is not null)" Class="@($"sheen-form-row {Class}".TrimEnd())"
+       Error="@Error" HasDescription="@(Description is not null)" Class="@($"rax-form-row {Class}".TrimEnd())"
        data-layout="@Layout" data-has-icon="@(Icon is not null ? "" : null)" @attributes="AdditionalAttributes">
     <ChildContent Context="field">
         @if (Icon is not null)
         {
-            <span class="sheen-form-row-icon" data-color="@IconColor" aria-hidden="true">@Icon</span>
+            <span class="rax-form-row-icon" data-color="@IconColor" aria-hidden="true">@Icon</span>
         }
-        <div class="sheen-form-row-text">
+        <div class="rax-form-row-text">
             <FieldLabel OptionalText="@OptionalText" RequiredIndicator="@RequiredIndicator">@Label</FieldLabel>
             @if (Description is not null)
             {
                 <FieldDescription>@Description</FieldDescription>
             }
         </div>
-        <div class="sheen-form-row-control">@ChildContent?.Invoke(field)</div>
+        <div class="rax-form-row-control">@ChildContent?.Invoke(field)</div>
         <FieldError />
     </ChildContent>
 </Field>

@@ -1,8 +1,8 @@
-@* SheenUI Skeleton. Source-owned: edit freely. Styled by the skeleton component CSS. *@
+@* RaxUI Skeleton. Source-owned: edit freely. Styled by the skeleton component CSS. *@
 @if (ChildContent is not null && !Loading) { @ChildContent }
 else
 {
-    <span @attributes="AdditionalAttributes" class="@($"sheen-skeleton {Class}")" aria-hidden="true" inert="@(ChildContent is not null ? "" : null)" data-content="@(ChildContent is not null ? "true" : null)" data-shape="@Shape" data-animation="@Animation" data-sheen-appearance="@Appearance" style="@CssStyle">@ChildContent</span>
+    <span @attributes="AdditionalAttributes" class="@($"rax-skeleton {Class}")" aria-hidden="true" inert="@(ChildContent is not null ? "" : null)" data-content="@(ChildContent is not null ? "true" : null)" data-shape="@Shape" data-animation="@Animation" data-rax-appearance="@Appearance" style="@CssStyle">@ChildContent</span>
 }
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }

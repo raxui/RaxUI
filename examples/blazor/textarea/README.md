@@ -3,7 +3,7 @@
 These samples match `react-test/src/examples/textarea-usage-example.tsx` and use
 the library components and shared theme, without an extra UI dependency.
 
-Install `textarea`, `input` and `button` with the SheenUI CLI. `input` supplies the
+Install `textarea`, `input` and `button` with the RaxUI CLI. `input` supplies the
 optional toolbar action styles. Copy the three `.razor` files in this folder
 into an interactive page/component namespace and render:
 
@@ -13,7 +13,7 @@ into an interactive page/component namespace and render:
 
 Set `Arabic="true"` and the surrounding `dir="rtl"` to preview the Arabic version.
 The independent notes example always uses RTL. Theme appearance and light/dark
-mode inherit from the surrounding SheenUI theme.
+mode inherit from the surrounding RaxUI theme.
 
 - Composer: auto-grow from 2 to 8 rows, 280-character ring, warning/limit states,
   disabled empty submit, Post and Ctrl/Meta+Enter, newest three trimmed posts.

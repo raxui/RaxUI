@@ -1,11 +1,11 @@
 "use client"
 
-// SheenUI tabs. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI tabs. Source-owned: edit freely. Ported from boot-ui.
 // Built-in icon paths from Lucide (ISC).
 
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 
-import { useSheenTheme } from "@/lib/theme"
+import { useRaxTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import * as React from "react"
 
@@ -40,15 +40,15 @@ const TabsMotionContext = React.createContext<TabsMotion | undefined>(undefined)
 
 /** Triggers that belong to this Tabs root (ignores nested Tabs). */
 function ownTriggers(root: HTMLElement) {
-  return Array.from(root.querySelectorAll<HTMLElement>("[role=tab][data-value]")).filter((tab) => tab.closest(".sheen-tabs") === root)
+  return Array.from(root.querySelectorAll<HTMLElement>("[role=tab][data-value]")).filter((tab) => tab.closest(".rax-tabs") === root)
 }
 
-const Tabs = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Root>, React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> & { appearance?: import("@/lib/theme").SheenAppearance }>(
+const Tabs = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Root>, React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> & { appearance?: import("@/lib/theme").RaxAppearance }>(
   ({ className, appearance, dir, value: valueProp, defaultValue, onValueChange, ...props }, ref) => {
     const rootRef = React.useRef<HTMLDivElement>(null)
     const composedRef = useMergedRef(ref, rootRef)
 
-    const theme = useSheenTheme()
+    const theme = useRaxTheme()
     const [pageDir, setPageDir] = React.useState<"ltr" | "rtl">()
     React.useLayoutEffect(() => { setPageDir(rootRef.current && getComputedStyle(rootRef.current).direction === "rtl" ? "rtl" : "ltr") }, [])
 
@@ -72,10 +72,10 @@ const Tabs = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Root>, React
     return (
       <TabsMotionContext.Provider value={motion}>
         <TabsPrimitive.Root
-          data-sheen-appearance={appearance}
+          data-rax-appearance={appearance}
           dir={dir ?? theme.direction ?? pageDir}
           ref={composedRef}
-          className={cn("sheen-tabs", className)}
+          className={cn("rax-tabs", className)}
           value={value}
           onValueChange={(next) => {
             if (valueProp === undefined) setUncontrolledValue(next)
@@ -105,7 +105,7 @@ const TabsList = React.forwardRef<
 
     const measure = () => {
       const active = Array.from(list.querySelectorAll<HTMLElement>("[role=tab][data-state=active]")).find(
-        (tab) => tab.closest(".sheen-tabs-list") === list,
+        (tab) => tab.closest(".rax-tabs-list") === list,
       )
       if (!active) {
         list.removeAttribute("data-ready")
@@ -113,12 +113,12 @@ const TabsList = React.forwardRef<
       }
 
       const place = () => {
-        list.style.setProperty("--sheen-tabs-indicator-x", `${active.offsetLeft}px`)
-        list.style.setProperty("--sheen-tabs-indicator-y", `${active.offsetTop}px`)
-        list.style.setProperty("--sheen-tabs-indicator-width", `${active.offsetWidth}px`)
-        list.style.setProperty("--sheen-tabs-indicator-height", `${active.offsetHeight}px`)
+        list.style.setProperty("--rax-tabs-indicator-x", `${active.offsetLeft}px`)
+        list.style.setProperty("--rax-tabs-indicator-y", `${active.offsetTop}px`)
+        list.style.setProperty("--rax-tabs-indicator-width", `${active.offsetWidth}px`)
+        list.style.setProperty("--rax-tabs-indicator-height", `${active.offsetHeight}px`)
       }
-      if (!list.hasAttribute("data-ready")) withoutTransition(list.querySelector(".sheen-tabs-indicator"), place)
+      if (!list.hasAttribute("data-ready")) withoutTransition(list.querySelector(".rax-tabs-indicator"), place)
       else place()
 
       // First placement is instant; glide from the next frame on. Checked separately from
@@ -152,8 +152,8 @@ const TabsList = React.forwardRef<
   }, [])
 
   return (
-    <TabsPrimitive.List ref={composedRef} data-variant={variant} className={cn("sheen-tabs-list", className)} {...props}>
-      <span className="sheen-tabs-indicator" aria-hidden="true" />
+    <TabsPrimitive.List ref={composedRef} data-variant={variant} className={cn("rax-tabs-list", className)} {...props}>
+      <span className="rax-tabs-indicator" aria-hidden="true" />
       {children}
     </TabsPrimitive.List>
   )
@@ -164,7 +164,7 @@ const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
 >(({ className, value, ...props }, ref) => (
-  <TabsPrimitive.Trigger ref={ref} value={value} data-value={value} className={cn("sheen-tabs-trigger", className)} {...props} />
+  <TabsPrimitive.Trigger ref={ref} value={value} data-value={value} className={cn("rax-tabs-trigger", className)} {...props} />
 ))
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 
@@ -173,7 +173,7 @@ const TabsContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(({ className, ...props }, ref) => {
   const motion = React.useContext(TabsMotionContext)
-  return <TabsPrimitive.Content ref={ref} data-motion={motion} className={cn("sheen-tabs-content", className)} {...props} />
+  return <TabsPrimitive.Content ref={ref} data-motion={motion} className={cn("rax-tabs-content", className)} {...props} />
 })
 TabsContent.displayName = TabsPrimitive.Content.displayName
 

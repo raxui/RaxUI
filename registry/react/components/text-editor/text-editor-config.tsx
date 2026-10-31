@@ -55,7 +55,7 @@ export const TOOLBARS: Record<"full" | "basic", TextEditorTool[]> = {
   basic: ["bold", "italic", "underline", "|", "link", "|", "bulletList", "orderedList"],
 }
 
-export const BUBBLE_KEY = "sheenBubbleMenu"
+export const BUBBLE_KEY = "raxBubbleMenu"
 
 export const hideBubble = (editor: Editor) => editor.view.dispatch(editor.state.tr.setMeta(BUBBLE_KEY, "hide"))
 

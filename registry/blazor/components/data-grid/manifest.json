@@ -17,7 +17,7 @@
       "destination": "styles",
       "target": "components/data-grid.css",
       "type": "css",
-      "sha256": "e3f7a934dbbede4e5caf4df2b41fce3393aef32a1009b20b454fdae3db8d97e0"
+      "sha256": "82538203c6e225ecbd5187e2b4d83e9378fa3cc5c71d59acf4f296b736e719a8"
     }
   ],
   "files": [
@@ -26,14 +26,14 @@
       "destination": "components",
       "target": "DataGrid/DataGrid.razor",
       "type": "razor",
-      "sha256": "85bfaa15c895b3021abc82e77ddd2f395d9b0cb8c92312045d751e8f6f1131d5"
+      "sha256": "c9fcfa6218b1b0fae36b2a9ebbf33ae033c1364e66c042fc2c784928517dfea1"
     },
     {
       "source": "DataGrid.razor.js",
       "destination": "components",
       "target": "DataGrid/DataGrid.razor.js",
       "type": "js",
-      "sha256": "a0b1d1e5e55af858a615278c55e11a1716ef8c56e4bf8badafb44c1c39255e0f"
+      "sha256": "99eb4729f4c1fcdc4136d4e0e7dd8c169e1013654b1040b962b953bcee43ad4f"
     },
     {
       "source": "DataGridEditing.razor",
@@ -47,21 +47,21 @@
       "destination": "components",
       "target": "DataGrid/DataGridEditor.razor",
       "type": "razor",
-      "sha256": "aa58dfd13572acad08828c632dfea864c445f74466d1bce4438875cf06f56f55"
+      "sha256": "e58fd2f0bd00fe9af7209d2b65c1d9fdd9ea2b3abee929bef1296e7cadba4815"
     },
     {
       "source": "DataGridFooter.razor",
       "destination": "components",
       "target": "DataGrid/DataGridFooter.razor",
       "type": "razor",
-      "sha256": "3ccf371cde0e3426bb8b242476cf2ad5a5051a648959b52d4b8cd93ffdbef05e"
+      "sha256": "913399110cbb04bb2313eea46d56d02fa3ac849cefbc5f6aeb5452cccad63785"
     },
     {
       "source": "DataGridHeader.razor",
       "destination": "components",
       "target": "DataGrid/DataGridHeader.razor",
       "type": "razor",
-      "sha256": "5e562b1abce1de418105c50b59b960d5618d59e68e83356b011467a6f3c05d1b"
+      "sha256": "25587888eaa9ea3cc03c6fbe4ff2dd8ca2d6ddb801891cf8b2c1742b7c1d4abd"
     },
     {
       "source": "DataGridModel.razor",
@@ -75,7 +75,7 @@
       "destination": "components",
       "target": "DataGrid/DataGridRow.razor",
       "type": "razor",
-      "sha256": "663beff224fd78bf7b486929c7d5772c787f4ac5c6a4a3551cc076fe770dc836"
+      "sha256": "7873392652467351e3bf1f6a80501abdcdc731886f3a09f9fc62337b47d6ef26"
     },
     {
       "source": "DataGridTypes.razor",

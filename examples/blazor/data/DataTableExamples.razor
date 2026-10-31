@@ -1,5 +1,5 @@
 <div class="vstack gap-5">
-    <section><h3 class="h6">@T("Recent invoices","الفواتير الأخيرة")</h3><div class="sheen-table-frame">
+    <section><h3 class="h6">@T("Recent invoices","الفواتير الأخيرة")</h3><div class="rax-table-frame">
         <Table><TableHeader><TableRow><TableHead>@T("Invoice","الفاتورة")</TableHead><TableHead>@T("Status","الحالة")</TableHead><TableHead>@T("Method","الدفع")</TableHead><TableHead Class="text-end">@T("Amount","المبلغ")</TableHead></TableRow></TableHeader>
             <TableBody>@foreach(var row in recent){<TableRow @key="row.Id"><TableCell>@row.Id</TableCell><TableCell>@Status(row.Status)</TableCell><TableCell>@Method(row.Method)</TableCell><TableCell Class="text-end">@Money(row.Amount)</TableCell></TableRow>}</TableBody>
             <TableFooter><TableRow><TableCell colspan="3">@T("Total","المجموع")</TableCell><TableCell Class="text-end">@Money(recent.Sum(x=>x.Amount))</TableCell></TableRow></TableFooter>

@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/speed-dial.css",
       "type": "css",
-      "sha256": "d490c1459f99cea779da26a77270d3030ea723863bad1d6842c1f70eefd565da"
+      "sha256": "f1d8b591056dca916f519517d952adb656178b5af6a8407254a3fc48f08e984b"
     }
   ],
   "files": [
@@ -21,49 +21,49 @@
       "destination": "components",
       "target": "SpeedDial/SpeedDial.razor",
       "type": "razor",
-      "sha256": "d0c535fb7f9f26f98c70b5ee262414e6d9e53ae65939a903d217000cf0e0c1eb"
+      "sha256": "0f33df62b0320312e2ea5441964a8bb70ff260da68fd17eb6fd98ae7dc0eb13c"
     },
     {
       "source": "SpeedDial.razor.js",
       "destination": "components",
       "target": "SpeedDial/SpeedDial.razor.js",
       "type": "js",
-      "sha256": "5133759abc4491bdcef4bb71f210e59233f4e9b5038f1f5845fdfd7b1bff377e"
+      "sha256": "880c67a60ac92bc962c6e767f976bcef249938a04787f79e1f6696984799399a"
     },
     {
       "source": "SpeedDialAction.razor",
       "destination": "components",
       "target": "SpeedDial/SpeedDialAction.razor",
       "type": "razor",
-      "sha256": "859ad23b4289415fcf07ce04d4ae9be453735193fa4ab1e4a3e29cdf212e8264"
+      "sha256": "5c518fc34ee6e54327033cd45e9abed4b20284885799bf08bdacbe6f1ae5470c"
     },
     {
       "source": "SpeedDialContent.razor",
       "destination": "components",
       "target": "SpeedDial/SpeedDialContent.razor",
       "type": "razor",
-      "sha256": "7cd030115953489ae087be7b78eb7502e2d2de9bdf6deea51f6220fb2e8b3f32"
+      "sha256": "3ec0b630410ff2bb1a47ebe6255069036573698a10b0d257f4d3aa2da97677c1"
     },
     {
       "source": "SpeedDialItem.razor",
       "destination": "components",
       "target": "SpeedDial/SpeedDialItem.razor",
       "type": "razor",
-      "sha256": "3b0ef43fb1957fb7bff07e7a2c7d29cecca16c27855699f42cc183bb09efcde5"
+      "sha256": "76b53305e06a0dd025b95f65250b6b1aa00b3fbfcc7f783597e52e9245a3d9e3"
     },
     {
       "source": "SpeedDialLabel.razor",
       "destination": "components",
       "target": "SpeedDial/SpeedDialLabel.razor",
       "type": "razor",
-      "sha256": "8abb2b62d43465072ae98599d3b9e37f5a329d5c58eb39aaa06eb2ca9146df0a"
+      "sha256": "6894c678a6c127f9c5afef9e53642e0d8fc493fe9047b0e8be2c3560a67d3afc"
     },
     {
       "source": "SpeedDialTrigger.razor",
       "destination": "components",
       "target": "SpeedDial/SpeedDialTrigger.razor",
       "type": "razor",
-      "sha256": "477e0b5a558e5beb31d98ad011e0ed0bacd6897698afbf16ae630e0dfd6627cc"
+      "sha256": "3575d7268ed0b6e44d4ec70f43acaf0ff726428db0e06e9308b4c717927f4d33"
     }
   ]
 }

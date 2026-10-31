@@ -1,4 +1,4 @@
-<p @attributes="AdditionalAttributes" class="sheen-footer-copyright @Class">@if (ChildContent is not null) { @ChildContent } else { <text>© @(Year ?? DateTime.UtcNow.Year) @Owner</text> }</p>
+<p @attributes="AdditionalAttributes" class="rax-footer-copyright @Class">@if (ChildContent is not null) { @ChildContent } else { <text>© @(Year ?? DateTime.UtcNow.Year) @Owner</text> }</p>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }

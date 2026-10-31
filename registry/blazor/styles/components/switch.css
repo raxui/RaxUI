@@ -1,17 +1,17 @@
 /* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
-.sheen-switch {
-  --sheen-switch-on-rgb: var(--bs-success-rgb);
-  --sheen-switch-w: calc(var(--sheen-control-height) * 1.1);
-  --sheen-switch-h: calc(var(--sheen-control-height) * 0.65);
-  --sheen-switch-p: 0.125rem;
-  --sheen-switch-thumb: calc(var(--sheen-switch-h) - 2 * var(--sheen-switch-p));
-  --sheen-switch-thumb-w: var(--sheen-switch-thumb);
-  --sheen-switch-dir: 1;
+.rax-switch {
+  --rax-switch-on-rgb: var(--bs-success-rgb);
+  --rax-switch-w: calc(var(--rax-control-height) * 1.1);
+  --rax-switch-h: calc(var(--rax-control-height) * 0.65);
+  --rax-switch-p: 0.125rem;
+  --rax-switch-thumb: calc(var(--rax-switch-h) - 2 * var(--rax-switch-p));
+  --rax-switch-thumb-w: var(--rax-switch-thumb);
+  --rax-switch-dir: 1;
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
-  width: var(--sheen-switch-w);
-  height: var(--sheen-switch-h);
+  width: var(--rax-switch-w);
+  height: var(--rax-switch-h);
   padding: 0;
   border: 0;
   border-radius: 999px;
@@ -19,108 +19,108 @@
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.14);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: background-color var(--sheen-duration) ease, box-shadow var(--sheen-duration-fast) ease;
+  transition: background-color var(--rax-duration) ease, box-shadow var(--rax-duration-fast) ease;
 }
-.sheen-switch[data-state=checked] {
-  background-color: rgb(var(--sheen-switch-on-rgb));
+.rax-switch[data-state=checked] {
+  background-color: rgb(var(--rax-switch-on-rgb));
 }
-.sheen-switch:focus-visible {
+.rax-switch:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(var(--sheen-switch-on-rgb), 0.35);
+  box-shadow: 0 0 0 0.25rem rgba(var(--rax-switch-on-rgb), 0.35);
 }
-.sheen-switch:active:not(:disabled) {
-  --sheen-switch-thumb-w: calc(var(--sheen-switch-thumb) * 1.25);
+.rax-switch:active:not(:disabled) {
+  --rax-switch-thumb-w: calc(var(--rax-switch-thumb) * 1.25);
 }
-.sheen-switch:disabled:not([data-loading]) {
+.rax-switch:disabled:not([data-loading]) {
   opacity: 0.45;
   cursor: not-allowed;
 }
-.sheen-switch[data-loading] {
+.rax-switch[data-loading] {
   cursor: progress;
 }
-[dir=rtl] .sheen-switch {
-  --sheen-switch-dir: -1;
+[dir=rtl] .rax-switch {
+  --rax-switch-dir: -1;
 }
 
-.sheen-switch-sm {
-  --sheen-switch-w: 2.25rem;
-  --sheen-switch-h: 1.375rem;
+.rax-switch-sm {
+  --rax-switch-w: 2.25rem;
+  --rax-switch-h: 1.375rem;
 }
 
-.sheen-switch-lg {
-  --sheen-switch-w: 3.1875rem;
-  --sheen-switch-h: 1.9375rem;
+.rax-switch-lg {
+  --rax-switch-w: 3.1875rem;
+  --rax-switch-h: 1.9375rem;
 }
 
-.sheen-switch-thumb {
+.rax-switch-thumb {
   position: absolute;
-  top: var(--sheen-switch-p);
-  inset-inline-start: var(--sheen-switch-p);
+  top: var(--rax-switch-p);
+  inset-inline-start: var(--rax-switch-p);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--sheen-switch-thumb-w);
-  height: var(--sheen-switch-thumb);
+  width: var(--rax-switch-thumb-w);
+  height: var(--rax-switch-thumb);
   border-radius: 999px;
   background-color: #fff;
   box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.04), 0 3px 1px rgba(0, 0, 0, 0.06), 0 3px 8px rgba(0, 0, 0, 0.15);
   pointer-events: none;
-  transition: transform var(--sheen-duration-fast) ease, width var(--sheen-duration-fast) ease;
+  transition: transform var(--rax-duration-fast) ease, width var(--rax-duration-fast) ease;
 }
-.sheen-switch-thumb[data-state=checked] {
-  transform: translateX(calc((var(--sheen-switch-w) - 2 * var(--sheen-switch-p) - var(--sheen-switch-thumb-w)) * var(--sheen-switch-dir)));
+.rax-switch-thumb[data-state=checked] {
+  transform: translateX(calc((var(--rax-switch-w) - 2 * var(--rax-switch-p) - var(--rax-switch-thumb-w)) * var(--rax-switch-dir)));
 }
 @media (prefers-reduced-motion: no-preference) {
-  .sheen-switch-thumb {
-    transition: transform 450ms var(--sheen-ease-spring), width 300ms var(--sheen-ease-spring);
+  .rax-switch-thumb {
+    transition: transform 450ms var(--rax-ease-spring), width 300ms var(--rax-ease-spring);
   }
 }
-.sheen-switch-thumb .spinner-border {
+.rax-switch-thumb .spinner-border {
   width: 62%;
   height: 62%;
   color: #8e8e93;
 }
-.sheen-switch-thumb[data-state=checked] .sheen-switch-icon {
-  color: rgb(var(--sheen-switch-on-rgb));
+.rax-switch-thumb[data-state=checked] .rax-switch-icon {
+  color: rgb(var(--rax-switch-on-rgb));
 }
-.sheen-switch-thumb[data-state=checked] .sheen-switch-icon[data-when=checked] {
+.rax-switch-thumb[data-state=checked] .rax-switch-icon[data-when=checked] {
   display: inline-flex;
 }
-.sheen-switch-thumb[data-state=checked] .sheen-switch-icon[data-when=unchecked] {
+.rax-switch-thumb[data-state=checked] .rax-switch-icon[data-when=unchecked] {
   display: none;
 }
 
-.sheen-switch-icon {
+.rax-switch-icon {
   display: inline-flex;
   width: 62%;
   height: 62%;
   color: #8e8e93;
-  transition: color var(--sheen-duration) ease;
+  transition: color var(--rax-duration) ease;
 }
-.sheen-switch-icon svg {
+.rax-switch-icon svg {
   width: 100%;
   height: 100%;
 }
-.sheen-switch-icon[data-when=checked] {
+.rax-switch-icon[data-when=checked] {
   display: none;
 }
 
-.sheen-switch-native:has(> .sheen-switch-input:checked) {
-  background-color: rgb(var(--sheen-switch-on-rgb));
+.rax-switch-native:has(> .rax-switch-input:checked) {
+  background-color: rgb(var(--rax-switch-on-rgb));
 }
-.sheen-switch-native:has(> .sheen-switch-input:focus-visible) {
-  box-shadow: 0 0 0 0.25rem rgba(var(--sheen-switch-on-rgb), 0.35);
+.rax-switch-native:has(> .rax-switch-input:focus-visible) {
+  box-shadow: 0 0 0 0.25rem rgba(var(--rax-switch-on-rgb), 0.35);
 }
-.sheen-switch-native:has(> .sheen-switch-input[aria-invalid=true]) {
+.rax-switch-native:has(> .rax-switch-input[aria-invalid=true]) {
   outline: 1px solid var(--bs-form-invalid-border-color);
 }
-.sheen-switch-native:has(> .sheen-switch-input:disabled) {
-  --sheen-switch-thumb-w: var(--sheen-switch-thumb);
+.rax-switch-native:has(> .rax-switch-input:disabled) {
+  --rax-switch-thumb-w: var(--rax-switch-thumb);
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-.sheen-switch-input {
+.rax-switch-input {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -131,21 +131,21 @@
   opacity: 0;
   cursor: inherit;
 }
-.sheen-switch-input:checked + .sheen-switch-thumb .sheen-switch-icon {
-  color: rgb(var(--sheen-switch-on-rgb));
+.rax-switch-input:checked + .rax-switch-thumb .rax-switch-icon {
+  color: rgb(var(--rax-switch-on-rgb));
 }
-.sheen-switch-input:checked + .sheen-switch-thumb .sheen-switch-icon[data-when=checked] {
+.rax-switch-input:checked + .rax-switch-thumb .rax-switch-icon[data-when=checked] {
   display: inline-flex;
 }
-.sheen-switch-input:checked + .sheen-switch-thumb .sheen-switch-icon[data-when=unchecked] {
+.rax-switch-input:checked + .rax-switch-thumb .rax-switch-icon[data-when=unchecked] {
   display: none;
 }
-.sheen-switch-input:checked + .sheen-switch-thumb {
-  transform: translateX(calc((var(--sheen-switch-w) - 2 * var(--sheen-switch-p) - var(--sheen-switch-thumb-w)) * var(--sheen-switch-dir)));
+.rax-switch-input:checked + .rax-switch-thumb {
+  transform: translateX(calc((var(--rax-switch-w) - 2 * var(--rax-switch-p) - var(--rax-switch-thumb-w)) * var(--rax-switch-dir)));
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheen-switch, .sheen-switch-thumb, .sheen-switch-native {
+  .rax-switch, .rax-switch-thumb, .rax-switch-native {
     transition: none;
   }
 }

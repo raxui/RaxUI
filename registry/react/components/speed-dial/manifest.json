@@ -16,13 +16,13 @@
       "source": "registry/react/components/speed-dial/speed-dial.tsx",
       "target": "components/ui/speed-dial.tsx",
       "type": "tsx",
-      "sha256": "13ff35f89f18dd76a42f8c905e83299845665431af22d5b088a992c17d52fc3e"
+      "sha256": "b942c5ffd0d7d51ae8f23eca099f6ca4a1262774078997ab12c3a7ddab687a71"
     },
     {
       "source": "theme/scss/components/_speed-dial.scss",
-      "target": "styles/sheenui/components/_speed-dial.scss",
+      "target": "styles/raxui/components/_speed-dial.scss",
       "type": "scss",
-      "sha256": "5302bc034910b2e565d94cb170e30d5423db348cfb6393b67136fe6c1c07c430"
+      "sha256": "a0c7e12c6d61b990ceee363a834be9a6842b0a571277c84e1bc115547ecd1c5d"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",

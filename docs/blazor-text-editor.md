@@ -1,6 +1,6 @@
 # Blazor TextEditor
 
-`sheenui add text-editor` installs a rich-text editor with `button`, `dropdown-menu`, `popover`, `input`, `textarea` and the shared `text-editor.css`. It runs the same engine as React, Tiptap 3.31.4, bundled reproducibly into `TextEditorContent.razor.js` (ADR 020, #121). No npm package, CDN or NuGet package is added.
+`raxui add text-editor` installs a rich-text editor with `button`, `dropdown-menu`, `popover`, `input`, `textarea` and the shared `text-editor.css`. It runs the same engine as React, Tiptap 3.31.4, bundled reproducibly into `TextEditorContent.razor.js` (ADR 020, #121). No npm package, CDN or NuGet package is added.
 
 ```razor
 <TextEditor aria-label="Release notes" @bind-Value="html" MaxLength="2000" ShowCount Placeholder="Write…" />
@@ -36,4 +36,4 @@ React's `extensions` and `editorRef` are not available: the engine is a fixed, r
 
 ## Tests
 
-`TextEditorHtmlTests` covers the schema and 20 injection vectors. `GeneratedAppTests.TextEditor.cs` installs the editor into generated .NET 8/9/10 apps. It covers bubble placement on the first selection, bubble and toolbar formatting, the heading menu, the link popover, undo, the C# round trip, the comment composer, `EditForm` validation, Arabic RTL keyboard order, injection safety, a 40 KB value over the stream, read-only toggling, the hidden form value, themes, and static SSR. `examples/blazor/text-editor/` holds the React-equivalent examples, which SheenDemo hosts at `#text-editor`. `npm run check` verifies the engine bundle rebuilds byte for byte.
+`TextEditorHtmlTests` covers the schema and 20 injection vectors. `GeneratedAppTests.TextEditor.cs` installs the editor into generated .NET 8/9/10 apps. It covers bubble placement on the first selection, bubble and toolbar formatting, the heading menu, the link popover, undo, the C# round trip, the comment composer, `EditForm` validation, Arabic RTL keyboard order, injection safety, a 40 KB value over the stream, read-only toggling, the hidden form value, themes, and static SSR. `examples/blazor/text-editor/` holds the React-equivalent examples, which RaxDemo hosts at `#text-editor`. `npm run check` verifies the engine bundle rebuilds byte for byte.

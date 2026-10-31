@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useSheenTheme, sheenThemeAttributes, SheenThemeBoundary } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, RaxThemeBoundary } from "@/lib/theme"
 import { getDirection } from "@/lib/direction"
 import { useMergedRef } from "@/lib/refs"
 import { cn } from "@/lib/utils"
@@ -29,7 +29,7 @@ function DataTableInner<TData, TValue>(props: DataTableProps<TData, TValue>, ref
     emptyMessage,
     className,
   } = props
-  const theme = useSheenTheme({ appearance, direction: dir })
+  const theme = useRaxTheme({ appearance, direction: dir })
   const rootRef = React.useRef<HTMLDivElement>(null),
     mergedRef = useMergedRef<HTMLDivElement | null>(ref, rootRef)
   const [direction, setDirection] = React.useState(theme.direction)
@@ -38,8 +38,8 @@ function DataTableInner<TData, TValue>(props: DataTableProps<TData, TValue>, ref
   const state = useDataTableState(props, theme.density)
   return (
     <TableLabelsContext.Provider value={labels}>
-      <SheenThemeBoundary value={{ ...theme, direction }}>
-        <div {...sheenThemeAttributes(theme)} dir={dir} ref={mergedRef} className={cn("sheen-data-table", className)}>
+      <RaxThemeBoundary value={{ ...theme, direction }}>
+        <div {...raxThemeAttributes(theme)} dir={dir} ref={mergedRef} className={cn("rax-data-table", className)}>
           <DataTableToolbar {...state} filters={filters} toolbar={toolbar} searchPlaceholder={searchPlaceholder} />
           <DataTableContent {...state} label={label} maxHeight={maxHeight} loading={loading} emptyMessage={emptyMessage} />
           <DataTablePagination table={state.table} pageSizeOptions={pageSizeOptions} />
@@ -49,7 +49,7 @@ function DataTableInner<TData, TValue>(props: DataTableProps<TData, TValue>, ref
             </DataTableBulkBar>
           )}
         </div>
-      </SheenThemeBoundary>
+      </RaxThemeBoundary>
     </TableLabelsContext.Provider>
   )
 }

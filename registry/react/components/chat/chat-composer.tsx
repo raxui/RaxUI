@@ -59,7 +59,7 @@ export const ChatComposer = React.forwardRef<HTMLTextAreaElement, ChatComposerPr
     const fieldRef = React.useRef<HTMLTextAreaElement | null>(null)
     const empty = !value.trim()
 
-    // Grow with the text; CSS caps it at maxRows (--sheen-chat-rows), then it scrolls.
+    // Grow with the text; CSS caps it at maxRows (--rax-chat-rows), then it scrolls.
     React.useLayoutEffect(() => {
       const field = fieldRef.current
       if (!field) return
@@ -76,7 +76,7 @@ export const ChatComposer = React.forwardRef<HTMLTextAreaElement, ChatComposerPr
 
     return (
       <form
-        className={cn("sheen-chat-composer", className)}
+        className={cn("rax-chat-composer", className)}
         data-disabled={disabled ? "" : undefined}
         onSubmit={(event) => {
           event.preventDefault()
@@ -84,7 +84,7 @@ export const ChatComposer = React.forwardRef<HTMLTextAreaElement, ChatComposerPr
         }}
         {...props}
       >
-        {actions && <div className="sheen-chat-composer-actions">{actions}</div>}
+        {actions && <div className="rax-chat-composer-actions">{actions}</div>}
         <textarea
           ref={(node) => {
             fieldRef.current = node
@@ -92,8 +92,8 @@ export const ChatComposer = React.forwardRef<HTMLTextAreaElement, ChatComposerPr
           }}
           rows={1}
           dir="auto"
-          className="sheen-chat-field"
-          style={{ "--sheen-chat-rows": maxRows } as React.CSSProperties}
+          className="rax-chat-field"
+          style={{ "--rax-chat-rows": maxRows } as React.CSSProperties}
           placeholder={placeholder}
           aria-label={placeholder}
           value={value}
@@ -107,7 +107,7 @@ export const ChatComposer = React.forwardRef<HTMLTextAreaElement, ChatComposerPr
             }
           }}
         />
-        <Button type="submit" size="icon-sm" className="sheen-chat-send" disabled={empty || disabled} aria-label={sendLabel}>
+        <Button type="submit" size="icon-sm" className="rax-chat-send" disabled={empty || disabled} aria-label={sendLabel}>
           <SendIcon />
         </Button>
       </form>

@@ -5,7 +5,7 @@
     "ignoreValues": [
       {
         "rule": "bounce-easing",
-        "value": "var(--sheen-ease-spring)",
+        "value": "var(--rax-ease-spring)",
         "createdAt": "2026-10-23T22:52:10.243Z",
         "reason": "User asked to port all boot-ui animations; boot-ui's design language uses --bui-ease-spring for dialogs, menus, and button press (already in _button.scss)"
       }

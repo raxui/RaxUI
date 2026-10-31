@@ -8,6 +8,6 @@
     [Parameter] public bool Inset { get; set; }
     [Parameter] public string Variant { get; set; } = "default";
     [Parameter] public EventCallback<MouseEventArgs> OnSelect { get; set; }
-    private string Css => $"sheen-dropdown-item {(Inset ? "sheen-dropdown-inset" : "")} {(Variant == "destructive" ? "sheen-dropdown-item-destructive" : "")} {Class}";
+    private string Css => $"rax-dropdown-item {(Inset ? "rax-dropdown-inset" : "")} {(Variant == "destructive" ? "rax-dropdown-item-destructive" : "")} {Class}";
     private Task Selected(MouseEventArgs args) => Disabled ? Task.CompletedTask : OnSelect.InvokeAsync(args);
 }

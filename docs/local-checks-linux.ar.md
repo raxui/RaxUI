@@ -1,6 +1,6 @@
 # الفحص المحلي على Linux وWSL 2
 
-هذا الدليل لتشغيل اختبارات SheenUI داخل **Ubuntu 24.04**، سواء كانت توزيعة
+هذا الدليل لتشغيل اختبارات RaxUI داخل **Ubuntu 24.04**، سواء كانت توزيعة
 Linux مستقلة أو تعمل على Windows عبر WSL 2. يكمّل
 [دليل أدوات الفحص المحلي](local-checks.ar.md) الذي يشرح تغطية الاختبارات وقراءة نتائجها.
 
@@ -63,7 +63,7 @@ git --version
 
 ## 3. نسخة مستقلة داخل نظام ملفات Linux
 
-ضع المشروع تحت `~/projects/SheenUI`، لا تحت `/mnt/c/`، للاستفادة من أداء
+ضع المشروع تحت `~/projects/RaxUI`، لا تحت `/mnt/c/`، للاستفادة من أداء
 نظام ملفات Linux وسلوكه في الصلاحيات والروابط وحالة أحرف أسماء الملفات.
 لا تنسخ `node_modules` أو `bin` أو `obj` من Windows.
 [توصية Microsoft بشأن الملفات](https://learn.microsoft.com/en-us/windows/wsl/filesystems).
@@ -71,16 +71,16 @@ git --version
 ### من نسخة Windows المحلية دون تسجيل دخول GitHub أول مرة
 
 المثال يستخدم المجلد الحالي باسم `BlazorUI`. إذا غيّرت اسمه فعلياً إلى
-`SheenUI`، فعدّل مسار المصدر. نفّذ الاستنساخ مرة واحدة، إلى مجلد غير موجود:
+`RaxUI`، فعدّل مسار المصدر. نفّذ الاستنساخ مرة واحدة، إلى مجلد غير موجود:
 
 ```bash
 mkdir -p ~/projects
 git clone --no-hardlinks --branch saad \
   /mnt/c/Users/saada/source/repos/BlazorUI \
-  ~/projects/SheenUI
+  ~/projects/RaxUI
 
-cd ~/projects/SheenUI
-git remote set-url origin https://github.com/SaadAlsaree/SheenUI.git
+cd ~/projects/RaxUI
+git remote set-url origin https://github.com/raxui/RaxUI.git
 ```
 
 الاستنساخ يأخذ التغييرات المحفوظة في commits فقط، ولا ينقل تعديلات Windows
@@ -92,15 +92,15 @@ git remote set-url origin https://github.com/SaadAlsaree/SheenUI.git
 
 ```bash
 mkdir -p ~/projects
-git clone --branch saad https://github.com/SaadAlsaree/SheenUI.git ~/projects/SheenUI
-cd ~/projects/SheenUI
+git clone --branch saad https://github.com/raxui/RaxUI.git ~/projects/RaxUI
+cd ~/projects/RaxUI
 ```
 
 اختر طريقة واحدة؛ لا تعِد الاستنساخ فوق مجلد موجود.
 
 ## 4. الاعتماديات والمتصفح أول مرة
 
-من داخل `~/projects/SheenUI`، كمستخدم Linux العادي:
+من داخل `~/projects/RaxUI`، كمستخدم Linux العادي:
 
 ```bash
 npm ci
@@ -119,7 +119,7 @@ Playwright في Node و.NET.
 ## 5. تشغيل الفحص
 
 ```bash
-cd ~/projects/SheenUI
+cd ~/projects/RaxUI
 source ~/.nvm/nvm.sh
 
 # أثناء التطوير
@@ -153,7 +153,7 @@ echo $?
 راجع التعديلات المحلية أولاً، ثم حدّث فرع `saad` من GitHub إذا كانت نسختك نظيفة:
 
 ```bash
-cd ~/projects/SheenUI
+cd ~/projects/RaxUI
 git status --short
 git switch saad
 git pull --ff-only origin saad

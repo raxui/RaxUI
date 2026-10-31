@@ -28,7 +28,7 @@
       "source": "registry/react/components/data-table/data-table.tsx",
       "target": "components/ui/data-table.tsx",
       "type": "tsx",
-      "sha256": "2aabefd3ca812d023298081c3521cf43c648ca1c89f79c0b0072d8dfc85f4172"
+      "sha256": "546bc73fa5e90a7c6728f2a4f6e32a18522a7ad630451e7ba437148399b35d6c"
     },
     {
       "source": "registry/react/components/data-table/data-table-view-options.tsx",
@@ -40,19 +40,19 @@
       "source": "registry/react/components/data-table/data-table-types.ts",
       "target": "components/ui/data-table-types.ts",
       "type": "ts",
-      "sha256": "87901a038f1a4efecc38a30e6c3d8ef42414ae6bf6793c26ae7389248d85cacb"
+      "sha256": "c788d09670bc4e2596e4a9166ed34b86949522a70b24d6b3312146453c85fd36"
     },
     {
       "source": "registry/react/components/data-table/data-table-toolbar.tsx",
       "target": "components/ui/data-table-toolbar.tsx",
       "type": "tsx",
-      "sha256": "da278026bf92648203ba2751e1ead81cddf2e91b323766a0dc17914e993f6f66"
+      "sha256": "cf80bacd943fbf36f16bc9a4c5e02cd74ff20c04e4a499c5f9255791ee97ba71"
     },
     {
       "source": "registry/react/components/data-table/data-table-pagination.tsx",
       "target": "components/ui/data-table-pagination.tsx",
       "type": "tsx",
-      "sha256": "eff64d0280ded2208cc9915de7bf86fd38f4d4db1e4af96aaa57a0b6817e345e"
+      "sha256": "78c8ee252b28e905580b4181405281f1b9a6487918507ac7aa1ef7fb887dc4e6"
     },
     {
       "source": "registry/react/components/data-table/data-table-labels.tsx",
@@ -70,31 +70,31 @@
       "source": "registry/react/components/data-table/data-table-filter.tsx",
       "target": "components/ui/data-table-filter.tsx",
       "type": "tsx",
-      "sha256": "d0d40083c6977d0b986642e89db94b72aef765e19f654d46ff25b63831b02471"
+      "sha256": "20d9d9f2689cfa0db4b233b07e8c05252d0763e8fa42e1ed650167f37057e65b"
     },
     {
       "source": "registry/react/components/data-table/data-table-content.tsx",
       "target": "components/ui/data-table-content.tsx",
       "type": "tsx",
-      "sha256": "1a527f37ede281ffab27e25806492f691265c3e0b3fc4cea1493c22875c7e751"
+      "sha256": "c8183a14aa94c961694f178c243cbfa410052b51759ae8ef2ef9892bc96032ff"
     },
     {
       "source": "registry/react/components/data-table/data-table-columns.tsx",
       "target": "components/ui/data-table-columns.tsx",
       "type": "tsx",
-      "sha256": "874f15f2c9817c7bfd4b5db9121cc4eecabd8d653337428c69925895874239dc"
+      "sha256": "55e0fcb2694d6c12e1de029da3a5fb418c1e87ee78b139f67ebf325034352971"
     },
     {
       "source": "registry/react/components/data-table/data-table-bulk-bar.tsx",
       "target": "components/ui/data-table-bulk-bar.tsx",
       "type": "tsx",
-      "sha256": "919b4c316e512002b9858af88cc156aed868e55819537fb7da67c06e41c73583"
+      "sha256": "d3b0682c7c95cda2ae2a0d47c25228cef1d6839eb2f3961246c535c3f808e2e8"
     },
     {
       "source": "theme/scss/components/_data-table.scss",
-      "target": "styles/sheenui/components/_data-table.scss",
+      "target": "styles/raxui/components/_data-table.scss",
       "type": "scss",
-      "sha256": "0dee02996cb64852598e62dc399acf8ec320813b1e268c91d6eeb45ba6e972d7"
+      "sha256": "5bf686ba985a214c40e27bf9ace457cd5f7b6062d1f35b68505d9c2adb10009c"
     }
   ]
 }

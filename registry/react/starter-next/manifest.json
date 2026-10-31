@@ -16,13 +16,13 @@
       "source": "registry/react/starter-next/page.tsx",
       "target": "app/page.tsx",
       "type": "tsx",
-      "sha256": "c1601bf9eaa5b373b9c048bfd22848cb67737054a936166e66771358913c1096"
+      "sha256": "e146628663fb4e3a93d17fb951fd88225213232708053f780e7fc4261df24b4c"
     },
     {
       "source": "theme/scss/components/_starter.scss",
-      "target": "styles/sheenui/components/_starter.scss",
+      "target": "styles/raxui/components/_starter.scss",
       "type": "scss",
-      "sha256": "b6812054651974a15b031bb28f168add6b6a963804a125a4407a86b065e522f5"
+      "sha256": "aeee34b09e5f4b67f238c936a8d2fd3629c468e42a555e93d7bfb2ce7033d90f"
     }
   ]
 }

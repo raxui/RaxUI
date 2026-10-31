@@ -3,7 +3,7 @@
 // Built-in SVG paths from Lucide, licensed under ISC.
 import * as React from "react"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import { useFieldControlProps } from "@/components/ui/field"
 import { useClientNow } from "@/lib/client-now"
 import { cn } from "@/lib/utils"
@@ -141,7 +141,7 @@ function limits(type: NumericType, parts: Parts, h12: boolean): [number, number]
 // -----------------------------------------------------------------------------
 
 interface FieldBaseProps {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   dir?: "ltr" | "rtl"
   clearLabel?: string
   pickerLabel?: string
@@ -258,7 +258,7 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
     const { disabled: fieldDisabled, ...fieldAria } = useFieldControlProps({ ...aria, id, disabled })
     aria = fieldAria
     disabled = fieldDisabled
-    const theme = useSheenTheme({ appearance, direction: dir })
+    const theme = useRaxTheme({ appearance, direction: dir })
     minuteStep = Math.max(1, Math.min(60, Math.floor(minuteStep) || 1))
     const today = useClientNow()
     const layout = useLayout(locale, date, time, hourCycle)
@@ -479,7 +479,7 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
     const renderSegment = (seg: Segment, i: number) => {
       if (seg.type === "literal")
         return (
-          <span key={`l${i}`} className="sheen-date-literal" aria-hidden="true">
+          <span key={`l${i}`} className="rax-date-literal" aria-hidden="true">
             {seg.text}
           </span>
         )
@@ -511,14 +511,14 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
           aria-readonly={readOnly || undefined}
           aria-disabled={disabled || undefined}
           aria-required={ariaRequired}
-          className="sheen-date-segment"
+          className="rax-date-segment"
           onKeyDown={onKeyDown(type)}
           onFocus={() => (typed.current = { type: null, buffer: "" })}
           onBlur={() => (typed.current = { type: null, buffer: "" })}
           onPaste={(e) => e.preventDefault()}
         >
           {/* Keyed so a new value re-enters with a tick (not on first paint). */}
-          <span key={ticks.current[type] ?? 0} className="sheen-date-segment-value" data-tick={ticks.current[type] ? "" : undefined}>
+          <span key={ticks.current[type] ?? 0} className="rax-date-segment-value" data-tick={ticks.current[type] ? "" : undefined}>
             {display(type)}
           </span>
         </span>
@@ -536,7 +536,7 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
           i += 2
         }
         rendered.push(
-          <span key="time" dir="ltr" className="sheen-date-run">
+          <span key="time" dir="ltr" className="rax-date-run">
             {run.map((s, j) => renderSegment(s, i * 10 + j))}
           </span>,
         )
@@ -558,7 +558,7 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
 
     const field = (
       <div
-        {...sheenThemeAttributes(theme)}
+        {...raxThemeAttributes(theme)}
         dir={dir}
         ref={(node) => {
           groupRef.current = node
@@ -573,9 +573,9 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
         onBlur={(event) => {
           const next = event.relatedTarget as HTMLElement | null
           // Moving into our own calendar / wheels popover isn't leaving the field.
-          if (!event.currentTarget.contains(next) && !next?.closest(".sheen-date-popover")) onBlur?.()
+          if (!event.currentTarget.contains(next) && !next?.closest(".rax-date-popover")) onBlur?.()
         }}
-        className={cn("sheen-input-group sheen-date-field", className)}
+        className={cn("rax-input-group rax-date-field", className)}
         data-size={size}
         data-start={picker ? undefined : ""}
         data-end={picker || clearable ? "" : undefined}
@@ -594,20 +594,20 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
       >
         {/* Decorative icon only when there's no picker button carrying the same icon. */}
         {!picker && (
-          <span className="sheen-input-slot" data-side="start" aria-hidden="true">
+          <span className="rax-input-slot" data-side="start" aria-hidden="true">
             {date ? <CalendarIcon /> : <ClockIcon />}
           </span>
         )}
         {/* Carries the variant / invalid hooks the input surface styles look for. */}
-        <div className="sheen-input sheen-date-segments" data-variant={variant} aria-invalid={isInvalid || undefined}>
+        <div className="rax-input rax-date-segments" data-variant={variant} aria-invalid={isInvalid || undefined}>
           {rendered}
         </div>
         {(picker || clearable) && (
-          <span className="sheen-input-slot" data-side="end">
+          <span className="rax-input-slot" data-side="end">
             {clearable && hasAny && editable && (
               <button
                 type="button"
-                className="sheen-input-clear"
+                className="rax-input-clear"
                 aria-label={clearLabel}
                 onClick={() => {
                   commit({})
@@ -621,7 +621,7 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
               <PopoverTrigger asChild>
                 <button
                   type="button"
-                  className="sheen-input-action"
+                  className="rax-input-action"
                   aria-label={pickerLabel ?? (date && time ? "Choose date and time" : date ? "Choose date" : "Choose time")}
                   disabled={!editable}
                 >
@@ -651,16 +651,16 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
         <PopoverAnchor asChild>{field}</PopoverAnchor>
         <PopoverContent
           align="start"
-          className="sheen-date-popover"
+          className="rax-date-popover"
           dir={popoverDir}
           onOpenAutoFocus={(event) => {
             event.preventDefault()
             const content = event.currentTarget as HTMLElement
             // Calendar: focus the active day. Time only: the hour wheel.
-            requestAnimationFrame(() => content.querySelector<HTMLElement>(".sheen-calendar-day[tabindex='0'], .sheen-wheel-list")?.focus())
+            requestAnimationFrame(() => content.querySelector<HTMLElement>(".rax-calendar-day[tabindex='0'], .rax-wheel-list")?.focus())
           }}
         >
-          <div className="sheen-date-popover-body">
+          <div className="rax-date-popover-body">
             {date && (
               <Calendar
                 dir={popoverDir}
@@ -702,7 +702,7 @@ const DateTimeField = React.forwardRef<HTMLDivElement, InternalProps>(
             )}
           </div>
           {time && (
-            <div className="sheen-date-popover-footer">
+            <div className="rax-date-popover-footer">
               <Button
                 size="sm"
                 variant="ghost"

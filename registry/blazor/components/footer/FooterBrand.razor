@@ -1,4 +1,4 @@
-<div @attributes="AdditionalAttributes" class="sheen-footer-brand @Class"><a class="sheen-footer-logo" href="@Href">@Logo@if (Name is not null) { <span>@Name</span> }</a>@if (Tagline is not null) { <p class="sheen-footer-tagline">@Tagline</p> }@ChildContent</div>
+<div @attributes="AdditionalAttributes" class="rax-footer-brand @Class"><a class="rax-footer-logo" href="@Href">@Logo@if (Name is not null) { <span>@Name</span> }</a>@if (Tagline is not null) { <p class="rax-footer-tagline">@Tagline</p> }@ChildContent</div>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }

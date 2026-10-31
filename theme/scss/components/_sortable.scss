@@ -4,7 +4,7 @@
 // as a dashed placeholder while the lifted copy follows the pointer.
 // -----------------------------------------------------------------------------
 
-.sheen-sortable-item {
+.rax-sortable-item {
   position: relative;
   touch-action: manipulation;
 
@@ -26,14 +26,14 @@
   &:focus-visible {
     outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
     outline-offset: 2px;
-    border-radius: var(--sheen-radius-sm);
+    border-radius: var(--rax-radius-sm);
   }
 
   // Moving itself (no overlay): lift it above the rest.
   &[data-dragging]:not([data-placeholder]) {
     z-index: 10;
     cursor: grabbing;
-    box-shadow: var(--sheen-shadow-lg);
+    box-shadow: var(--rax-shadow-lg);
     scale: 1.02;
   }
 
@@ -59,23 +59,23 @@
   // The copy in the overlay.
   &[data-overlay] {
     cursor: grabbing;
-    box-shadow: var(--sheen-shadow-lg);
+    box-shadow: var(--rax-shadow-lg);
 
     @include motion-safe {
-      animation: sheen-sortable-lift 220ms var(--sheen-ease-out) forwards;
+      animation: rax-sortable-lift 220ms var(--rax-ease-out) forwards;
     }
   }
 }
 
-.sheen-sortable-overlay {
+.rax-sortable-overlay {
   cursor: grabbing;
 
-  &.sheen-sortable-overlay-flat {
+  &.rax-sortable-overlay-flat {
     cursor: default;
   }
 }
 
-.sheen-sortable-handle {
+.rax-sortable-handle {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -84,14 +84,14 @@
   height: 1.75rem;
   padding: 0;
   border: 0;
-  border-radius: var(--sheen-radius-sm);
+  border-radius: var(--rax-radius-sm);
   color: var(--bs-tertiary-color);
   background: none;
   cursor: grab;
   touch-action: none;
   transition:
-    color var(--sheen-duration-fast) ease,
-    background-color var(--sheen-duration-fast) ease;
+    color var(--rax-duration-fast) ease,
+    background-color var(--rax-duration-fast) ease;
 
   svg {
     width: 1.125rem;
@@ -110,7 +110,7 @@
 
   &[data-dragging] {
     cursor: grabbing;
-    color: var(--sheen-primary-text);
+    color: var(--rax-primary-text);
   }
 
   &[data-flat-cursor] {
@@ -124,12 +124,12 @@
 }
 
 // While sorting, text doesn't get selected along the way.
-.sheen-sortable[data-sorting] {
+.rax-sortable[data-sorting] {
   user-select: none;
   -webkit-user-select: none;
 }
 
-@keyframes sheen-sortable-lift {
+@keyframes rax-sortable-lift {
   to {
     scale: 1.03;
   }

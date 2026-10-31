@@ -1,15 +1,15 @@
-@* SheenUI Slider. Source-owned: edit freely. Native range inputs (static SSR and keyboard without JS); a Range uses
+@* RaxUI Slider. Source-owned: edit freely. Native range inputs (static SSR and keyboard without JS); a Range uses
    two inputs whose limits stop the thumbs crossing, sized in CSS so both thumbs line up with one track. *@
 @using Microsoft.AspNetCore.Components.Forms
 @using System.Globalization
-<div class="@($"sheen-slider sheen-slider-native sheen-slider-{Size} {(Variant == "bar" ? "sheen-slider-bar" : "")} {Class}")" data-sheen-appearance="@Appearance"
-     style="@($"--sheen-slider-start: {Percent(Range ? Value : Min)}; --sheen-slider-end: {Percent(Range ? EndValue : Value)}")">
-    <span class="sheen-slider-track" aria-hidden="true"><span class="sheen-slider-range"></span></span>
-    <SliderInput @attributes="StartAttributes" class="sheen-slider-input" Min="Min" Max="@(Range ? Math.Clamp(EndValue, Min, Max) : Max)" Step="Step"
+<div class="@($"rax-slider rax-slider-native rax-slider-{Size} {(Variant == "bar" ? "rax-slider-bar" : "")} {Class}")" data-rax-appearance="@Appearance"
+     style="@($"--rax-slider-start: {Percent(Range ? Value : Min)}; --rax-slider-end: {Percent(Range ? EndValue : Value)}")">
+    <span class="rax-slider-track" aria-hidden="true"><span class="rax-slider-range"></span></span>
+    <SliderInput @attributes="StartAttributes" class="rax-slider-input" Min="Min" Max="@(Range ? Math.Clamp(EndValue, Min, Max) : Max)" Step="Step"
                  Value="Value" ValueChanged="ValueChanged" ValueExpression="OwnValueExpression" />
     @if (Range)
     {
-        <SliderInput @attributes="EndAttributes" class="sheen-slider-input" Min="@Math.Clamp(Value, Min, Max)" Max="Max" Step="Step"
+        <SliderInput @attributes="EndAttributes" class="rax-slider-input" Min="@Math.Clamp(Value, Min, Max)" Max="Max" Step="Step"
                      Value="EndValue" ValueChanged="EndValueChanged" ValueExpression="OwnEndValueExpression" />
     }
 </div>
@@ -57,7 +57,7 @@
     [Parameter] public string? Class { get; set; }
     [Parameter] public string Size { get; set; } = "default";
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
-    private readonly string _autoId = $"sheen-control-{Guid.NewGuid():N}";
+    private readonly string _autoId = $"rax-control-{Guid.NewGuid():N}";
     private Dictionary<string, object> ControlAttributes
     {
         get

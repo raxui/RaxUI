@@ -1,22 +1,22 @@
-@* SheenUI Tabs. Source-owned: edit freely. Static SSR shows the initial panel; switching requires interactivity. *@
+@* RaxUI Tabs. Source-owned: edit freely. Static SSR shows the initial panel; switching requires interactivity. *@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @attributes="AdditionalAttributes" id="@Id" class="@($"sheen-tabs {Class}")" data-sheen-appearance="@Appearance" data-orientation="@Orientation">
-    <div @ref="_root" class="sheen-tabs-list" role="tablist" aria-label="@Label" aria-orientation="@Orientation" data-orientation="@Orientation" data-variant="@Variant">
-        <span class="sheen-tabs-indicator" aria-hidden="true"></span>
+<div @attributes="AdditionalAttributes" id="@Id" class="@($"rax-tabs {Class}")" data-rax-appearance="@Appearance" data-orientation="@Orientation">
+    <div @ref="_root" class="rax-tabs-list" role="tablist" aria-label="@Label" aria-orientation="@Orientation" data-orientation="@Orientation" data-variant="@Variant">
+        <span class="rax-tabs-indicator" aria-hidden="true"></span>
         @foreach (var item in Items)
         {
             <button type="button" role="tab" id="@(Id + "-tab-" + item.Value)" aria-controls="@(Id + "-panel-" + item.Value)"
                     aria-selected="@(Current == item.Value ? "true" : "false")" tabindex="@(Current == item.Value ? 0 : -1)"
-                    disabled="@item.Disabled" data-disabled="@(item.Disabled ? "" : null)" class="sheen-tabs-trigger" data-state="@(Current == item.Value ? "active" : "inactive")"
+                    disabled="@item.Disabled" data-disabled="@(item.Disabled ? "" : null)" class="rax-tabs-trigger" data-state="@(Current == item.Value ? "active" : "inactive")"
                     @onclick="@(() => Select(item.Value))">@item.Label</button>
         }
     </div>
     @foreach (var item in Items)
     {
         <div role="tabpanel" id="@(Id + "-panel-" + item.Value)" aria-labelledby="@(Id + "-tab-" + item.Value)" tabindex="0"
-             class="sheen-tabs-content" hidden="@(Current != item.Value)" data-state="@(Current == item.Value ? "active" : "inactive")" data-motion="@_motion">
+             class="rax-tabs-content" hidden="@(Current != item.Value)" data-state="@(Current == item.Value ? "active" : "inactive")" data-motion="@_motion">
             @if (Panel is not null) { @Panel(item.Value) }
         </div>
     }
@@ -25,7 +25,7 @@
     public record Item(string Value, string Label, bool Disabled = false);
     [Parameter] public IReadOnlyList<Item> Items { get; set; } = Array.Empty<Item>();
     [Parameter] public RenderFragment<string>? Panel { get; set; }
-    [Parameter] public string Id { get; set; } = $"sheen-tabs-{Guid.NewGuid():N}";
+    [Parameter] public string Id { get; set; } = $"rax-tabs-{Guid.NewGuid():N}";
     [Parameter] public string? Value { get; set; }
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
     [Parameter] public string? DefaultValue { get; set; }

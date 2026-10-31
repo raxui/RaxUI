@@ -77,7 +77,7 @@ export const KanbanColumnLive = React.forwardRef<HTMLDivElement, KanbanColumnPro
           data-over={draggingCard && context.overColumn === value ? "" : undefined}
           data-handle={asHandle ? "" : undefined}
           data-flat-cursor={context.flatCursor ? "" : undefined}
-          className={cn("sheen-kanban-column", className)}
+          className={cn("rax-kanban-column", className)}
           style={{ transform: CSS.Translate.toString(transform), transition, ...style }}
           {...props}
           {...(draggable ? attributes : {})}
@@ -103,7 +103,7 @@ export const KanbanColumnCopy = React.forwardRef<HTMLDivElement, KanbanColumnPro
           data-overlay=""
           data-handle={asHandle ? "" : undefined}
           data-flat-cursor={context.flatCursor ? "" : undefined}
-          className={cn("sheen-kanban-column", className)}
+          className={cn("rax-kanban-column", className)}
           {...props}
         />
       </KanbanColumnContext.Provider>
@@ -112,13 +112,13 @@ export const KanbanColumnCopy = React.forwardRef<HTMLDivElement, KanbanColumnPro
 )
 
 export const KanbanColumnHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-kanban-column-header", className)} {...props} />
+  <div ref={ref} className={cn("rax-kanban-column-header", className)} {...props} />
 ))
 
 KanbanColumnHeader.displayName = "KanbanColumnHeader"
 
 export const KanbanColumnTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(({ className, ...props }, ref) => (
-  <h3 ref={ref} className={cn("sheen-kanban-column-title", className)} {...props} />
+  <h3 ref={ref} className={cn("rax-kanban-column-title", className)} {...props} />
 ))
 
 KanbanColumnTitle.displayName = "KanbanColumnTitle"
@@ -132,7 +132,7 @@ export const KanbanColumnCount = React.forwardRef<HTMLSpanElement, React.HTMLAtt
       <span
         ref={ref}
         key={count}
-        className={cn("sheen-kanban-column-count", className)}
+        className={cn("rax-kanban-column-count", className)}
         data-over-limit={max !== undefined && count > max ? "" : undefined}
         {...props}
       >
@@ -160,9 +160,9 @@ export const KanbanColumnContent = React.forwardRef<HTMLDivElement, KanbanColumn
       items={items}
       strategy={context.orientation === "horizontal" ? verticalListSortingStrategy : horizontalListSortingStrategy}
     >
-      <div ref={ref} data-empty={isEmpty ? "" : undefined} className={cn("sheen-kanban-column-content", className)} {...props}>
+      <div ref={ref} data-empty={isEmpty ? "" : undefined} className={cn("rax-kanban-column-content", className)} {...props}>
         {children}
-        {isEmpty && empty !== undefined && <div className="sheen-kanban-empty">{empty}</div>}
+        {isEmpty && empty !== undefined && <div className="rax-kanban-empty">{empty}</div>}
       </div>
     </SortableContext>
   )

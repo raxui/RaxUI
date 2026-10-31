@@ -4,20 +4,20 @@ import * as React from "react"
 import * as SliderPrimitive from "@radix-ui/react-slider"
 
 import { useFieldControlProps } from "@/components/ui/field"
-import { useSheenTheme } from "@/lib/theme"
+import { useRaxTheme } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 
 const sliderSizeClasses = {
-  sm: "sheen-slider-sm",
+  sm: "rax-slider-sm",
   default: null,
-  lg: "sheen-slider-lg",
+  lg: "rax-slider-lg",
 } as const
 
 export type SliderMark = number | { value: number; label?: React.ReactNode }
 
 export interface SliderProps extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   size?: keyof typeof sliderSizeClasses
   /** `bar` is the thick Control Center style. */
   variant?: "default" | "bar"
@@ -63,7 +63,7 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
     ref,
   ) => {
     const wired = useFieldControlProps({ ...props, "aria-label": ariaLabel, "aria-labelledby": labelledBy, "aria-describedby": describedBy, "aria-invalid": ariaInvalid })
-    const theme = useSheenTheme({ appearance, direction: dir })
+    const theme = useRaxTheme({ appearance, direction: dir })
     const rootRef = React.useRef<HTMLSpanElement | null>(null)
     const [computedDir, setComputedDir] = React.useState<"ltr" | "rtl">("ltr")
     React.useLayoutEffect(() => {
@@ -94,12 +94,12 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
     const rangeStart = values.length > 1 ? Math.min(...values) : min
     const rangeEnd = Math.max(...values)
 
-    const barIcon = variant === "bar" && icon ? <span className="sheen-slider-bar-icon">{icon}</span> : null
+    const barIcon = variant === "bar" && icon ? <span className="rax-slider-bar-icon">{icon}</span> : null
 
     return (
       <SliderPrimitive.Root
         ref={(node) => { rootRef.current = node; if (typeof ref === "function") ref(node); else if (ref) ref.current = node }}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         dir={direction}
         min={min}
         max={max}
@@ -121,33 +121,33 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
           setDragging(false)
         }}
         className={cn(
-          "sheen-slider",
+          "rax-slider",
           sliderSizeClasses[size],
-          variant === "bar" && "sheen-slider-bar",
-          showValue === "always" && "sheen-slider-value-always",
-          hasLabels && "sheen-slider-has-labels",
+          variant === "bar" && "rax-slider-bar",
+          showValue === "always" && "rax-slider-value-always",
+          hasLabels && "rax-slider-has-labels",
           className,
         )}
         {...wired}
         id={undefined}
       >
-        <SliderPrimitive.Track className="sheen-slider-track">
+        <SliderPrimitive.Track className="rax-slider-track">
           {barIcon}
-          <SliderPrimitive.Range className="sheen-slider-range">{barIcon}</SliderPrimitive.Range>
+          <SliderPrimitive.Range className="rax-slider-range">{barIcon}</SliderPrimitive.Range>
         </SliderPrimitive.Track>
 
         {normalizedMarks.length > 0 && (
-          <span className="sheen-slider-marks" aria-hidden="true">
+          <span className="rax-slider-marks" aria-hidden="true">
             {normalizedMarks.map((mark) => {
               const p = percent(mark.value)
               // Same in-bounds offset Radix applies to thumbs, so marks sit under them exactly.
-              const offset = `calc(${p}% + var(--sheen-slider-thumb) * ${0.5 - p / 100})`
+              const offset = `calc(${p}% + var(--rax-slider-thumb) * ${0.5 - p / 100})`
               const inRange = mark.value >= rangeStart && mark.value <= rangeEnd
               return (
                 <React.Fragment key={mark.value}>
-                  <span className="sheen-slider-mark" style={{ [direction === "rtl" ? "right" : "left"]: offset }} data-in-range={inRange ? "" : undefined} />
+                  <span className="rax-slider-mark" style={{ [direction === "rtl" ? "right" : "left"]: offset }} data-in-range={inRange ? "" : undefined} />
                   {mark.label !== undefined && (
-                    <span className="sheen-slider-mark-label" style={{ [direction === "rtl" ? "right" : "left"]: offset }} data-active={values.includes(mark.value) ? "" : undefined}>
+                    <span className="rax-slider-mark-label" style={{ [direction === "rtl" ? "right" : "left"]: offset }} data-active={values.includes(mark.value) ? "" : undefined}>
                       {mark.label}
                     </span>
                   )}
@@ -162,13 +162,13 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
             key={i}
             id={i === 0 ? wired.id : undefined}
             aria-required={wired["aria-required"]}
-            className="sheen-slider-thumb"
+            className="rax-slider-thumb"
             aria-label={thumbLabels?.[i] ?? (wired["aria-labelledby"] ? undefined : wired["aria-label"])}
             aria-labelledby={thumbLabels?.[i] ? undefined : wired["aria-labelledby"]}
             aria-describedby={wired["aria-describedby"]}
             aria-invalid={wired["aria-invalid"]}
           >
-            {showValue !== false && <span className="sheen-slider-value">{formatValue(v)}</span>}
+            {showValue !== false && <span className="rax-slider-value">{formatValue(v)}</span>}
           </SliderPrimitive.Thumb>
         ))}
       </SliderPrimitive.Root>

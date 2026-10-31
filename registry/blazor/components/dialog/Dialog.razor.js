@@ -1,4 +1,4 @@
-// SheenUI native dialog lifecycle. Source-owned: edit freely.
+// RaxUI native dialog lifecycle. Source-owned: edit freely.
 const states = new WeakMap()
 export function init(dialog) {
   if (states.has(dialog)) return

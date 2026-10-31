@@ -1,4 +1,4 @@
-// SheenUI DropdownMenu: positioning and keyboard navigation for the popover menu (ADR 013).
+// RaxUI DropdownMenu: positioning and keyboard navigation for the popover menu (ADR 013).
 // The popover attribute already gives the top layer, Esc, and closing on a click outside. Source-owned: edit freely.
 
 const instances = new Map()
@@ -59,14 +59,14 @@ export function dispose(id) { instances.get(id)?.(); instances.delete(id) }
 
 // Slides the highlight to the focused item; it appears in place first, then glides from item to item.
 function glide(menu, item) {
-  const highlight = menu.querySelector(":scope > .sheen-dropdown-highlight")
+  const highlight = menu.querySelector(":scope > .rax-dropdown-highlight")
   if (!highlight) return
   if (!item) return menu.removeAttribute("data-hover")
   const set = () => {
-    menu.style.setProperty("--sheen-menu-hover-y", `${item.offsetTop}px`)
-    menu.style.setProperty("--sheen-menu-hover-h", `${item.offsetHeight}px`)
+    menu.style.setProperty("--rax-menu-hover-y", `${item.offsetTop}px`)
+    menu.style.setProperty("--rax-menu-hover-h", `${item.offsetHeight}px`)
   }
-  if (menu.style.getPropertyValue("--sheen-menu-hover-y")) {
+  if (menu.style.getPropertyValue("--rax-menu-hover-y")) {
     set()
     menu.setAttribute("data-hover", "")
     return

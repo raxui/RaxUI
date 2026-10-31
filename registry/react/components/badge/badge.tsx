@@ -1,17 +1,17 @@
 "use client"
 
-// SheenUI badge. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI badge. Source-owned: edit freely. Ported from boot-ui.
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 
-import type { SheenAppearance } from "@/lib/theme"
+import type { RaxAppearance } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 
 export type BadgeColor = "primary" | "secondary" | "success" | "warning" | "danger" | "info" | "neutral"
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   /** `tinted` soft fill (default) · `solid` · `outline` · `glass` frosted, for use over photos. */
   variant?: "tinted" | "solid" | "outline" | "glass"
   color?: BadgeColor
@@ -57,10 +57,10 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       children
     ) : (
       <>
-        {dot && <span className="sheen-badge-dot" data-pulse={dot === "pulse" || undefined} aria-hidden="true" />}
+        {dot && <span className="rax-badge-dot" data-pulse={dot === "pulse" || undefined} aria-hidden="true" />}
         {children}
         {onRemove && (
-          <button type="button" className="sheen-badge-remove" aria-label={removeLabel} onClick={onRemove}>
+          <button type="button" className="rax-badge-remove" aria-label={removeLabel} onClick={onRemove}>
             <RemoveIcon />
           </button>
         )}
@@ -69,12 +69,12 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     return (
       <Comp
         ref={ref}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         data-variant={variant}
         data-color={color}
         data-size={size}
         data-shape={shape}
-        className={cn("sheen-badge", className)}
+        className={cn("rax-badge", className)}
         {...props}
       >
         {content}
@@ -130,12 +130,12 @@ const BadgeCount = React.forwardRef<HTMLSpanElement, BadgeCountProps>(
     const text = count > max ? `${max}+` : String(count)
 
     return (
-      <span ref={ref} className={cn("sheen-badge-anchor", className)} {...props}>
+      <span ref={ref} className={cn("rax-badge-anchor", className)} {...props}>
         {children}
         {visible && (
           <span
             key={dot ? "dot" : count}
-            className="sheen-badge-count"
+            className="rax-badge-count"
             data-color={color}
             data-dot={dot || undefined}
             data-placement={placement}

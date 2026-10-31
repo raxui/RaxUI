@@ -1,6 +1,6 @@
-<div @attributes="AdditionalAttributes" class="sheen-ai-suggestions @Class">
+<div @attributes="AdditionalAttributes" class="rax-ai-suggestions @Class">
 @for (var i = 0; i < Suggestions.Count; i++) { var suggestion = Suggestions[i];
-<button @key="suggestion" type="button" class="sheen-ai-suggestion" style="@($"--sheen-i:{i}")" dir="auto" @onclick="() => OnSelect.InvokeAsync(suggestion)">@suggestion</button> }
+<button @key="suggestion" type="button" class="rax-ai-suggestion" style="@($"--rax-i:{i}")" dir="auto" @onclick="() => OnSelect.InvokeAsync(suggestion)">@suggestion</button> }
 </div>
 @code {
     [Parameter, EditorRequired] public IReadOnlyList<string> Suggestions { get; set; } = Array.Empty<string>();

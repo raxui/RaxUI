@@ -1,4 +1,4 @@
-@* SheenUI ConfirmDialog. Source-owned: edit freely. A centred confirmation on the native <dialog> (ADR 013),
+@* RaxUI ConfirmDialog. Source-owned: edit freely. A centred confirmation on the native <dialog> (ADR 013),
    from boot-ui's AlertDialog, with the same classes and behavior as the React ConfirmDialog. A click outside
    nudges the panel instead of closing it; Esc or Cancel close it. Needs an interactive render mode. *@
 @implements IAsyncDisposable
@@ -12,26 +12,26 @@
         aria-labelledby="@TitleId"
         aria-describedby="@(Description is null ? null : DescriptionId)"
         aria-busy="@(_pending ? "true" : null)"
-        data-sheen-appearance="@Appearance"
+        data-rax-appearance="@Appearance"
         @onclose="HandleCloseAsync">
     @if (ShowIcon)
     {
-        <div class="sheen-confirm-icon" aria-hidden="true">
+        <div class="rax-confirm-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="@IconPath" />
             </svg>
         </div>
     }
-    <div class="sheen-confirm-header">
-        <h2 id="@TitleId" class="sheen-confirm-title">@Title</h2>
+    <div class="rax-confirm-header">
+        <h2 id="@TitleId" class="rax-confirm-title">@Title</h2>
         @if (Description is not null)
         {
-            <p id="@DescriptionId" class="sheen-confirm-description">@Description</p>
+            <p id="@DescriptionId" class="rax-confirm-description">@Description</p>
         }
     </div>
     @if (ConfirmationText is not null)
     {
-        <form class="sheen-confirm-field" @onsubmit="ConfirmAsync" @onsubmit:preventDefault>
+        <form class="rax-confirm-field" @onsubmit="ConfirmAsync" @onsubmit:preventDefault>
             <label for="@FieldId" class="form-label small">@(ConfirmationLabel ?? $"Type {ConfirmationText} to confirm")</label>
             <input id="@FieldId" class="form-control form-control-sm" @bind="_typed" @bind:event="oninput"
                    autocomplete="off" autocapitalize="off" spellcheck="false" disabled="@_pending" placeholder="@ConfirmationText" />
@@ -39,13 +39,13 @@
     }
     @if (_error is not null)
     {
-        <div class="sheen-confirm-error" role="alert">@_error</div>
+        <div class="rax-confirm-error" role="alert">@_error</div>
     }
-    <div class="sheen-confirm-footer" data-layout="@Layout">
+    <div class="rax-confirm-footer" data-layout="@Layout">
         @* Focus starts on Cancel, the safe choice, unless there is a field to type into. *@
-        <button type="button" class="btn sheen-button btn-glass btn-glass-secondary sheen-confirm-cancel"
+        <button type="button" class="btn rax-button btn-glass btn-glass-secondary rax-confirm-cancel"
                 autofocus="@(ConfirmationText is null)" disabled="@_pending" @onclick="CancelAsync">@CancelText</button>
-        <button type="button" class="btn sheen-button btn-glass @ActionClass sheen-confirm-action"
+        <button type="button" class="btn rax-button btn-glass @ActionClass rax-confirm-action"
                 disabled="@(!CanConfirm)" data-pending="@(_pending ? "" : null)" @onclick="ConfirmAsync">
             @if (_pending)
             {
@@ -65,7 +65,7 @@
         ["success"] = "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM8 12.5l2.5 2.5L16 9.5",
     };
 
-    private readonly string _id = $"sheen-confirm-{Guid.NewGuid():N}";
+    private readonly string _id = $"rax-confirm-{Guid.NewGuid():N}";
     private ElementReference _element;
     private IJSObjectReference? _module;
     private bool _shown;
@@ -111,7 +111,7 @@
     /// <summary>Runs when the dialog closes without confirming: Cancel or Esc.</summary>
     [Parameter] public EventCallback OnCancel { get; set; }
 
-    /// <summary>default, flat, or glass. When null, the dialog inherits it from the nearest ancestor with data-sheen-appearance.</summary>
+    /// <summary>default, flat, or glass. When null, the dialog inherits it from the nearest ancestor with data-rax-appearance.</summary>
     [Parameter] public string? Appearance { get; set; }
 
     /// <summary>Extra CSS classes appended after the component's own classes.</summary>
@@ -123,7 +123,7 @@
     private string TitleId => $"{_id}-title";
     private string DescriptionId => $"{_id}-description";
     private string FieldId => $"{_id}-field";
-    private string CssClass => string.IsNullOrEmpty(Class) ? "sheen-confirm" : $"sheen-confirm {Class}";
+    private string CssClass => string.IsNullOrEmpty(Class) ? "rax-confirm" : $"rax-confirm {Class}";
     private string IconPath => IconPaths.GetValueOrDefault(Tone, IconPaths["default"]);
     private string ActionClass => Tone == "destructive" ? "btn-glass-destructive" : "btn-glass-primary";
     private bool CanConfirm => !_pending && (ConfirmationText is null || _typed.Trim() == ConfirmationText);

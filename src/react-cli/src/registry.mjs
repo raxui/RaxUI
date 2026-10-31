@@ -13,7 +13,7 @@ const SOURCE_ROOTS = ["registry/react/", "theme/scss/"]
 const TARGETS = {
   tsx: ["lib/", "components/ui/", "App.tsx", "app/page.tsx"], // App.tsx, app/page.tsx: starters (ADR 008, 011)
   ts: ["lib/", "components/ui/"],
-  scss: ["styles/sheenui/"],
+  scss: ["styles/raxui/"],
 }
 const PACKAGE_NAME = /^(@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/
 const EXACT_VERSION = /^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/

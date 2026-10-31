@@ -2,24 +2,24 @@
 
 import * as React from "react"
 
-export type SheenAppearance = "default" | "flat" | "glass"
-export interface SheenTheme {
-  appearance: SheenAppearance
+export type RaxAppearance = "default" | "flat" | "glass"
+export interface RaxTheme {
+  appearance: RaxAppearance
   mode?: "light" | "dark"
   density?: "comfortable" | "compact"
   direction?: "ltr" | "rtl"
 }
-export type SheenThemeOptions = Partial<SheenTheme>
-const ThemeContext = React.createContext<SheenTheme>({ appearance: "default" })
+export type RaxThemeOptions = Partial<RaxTheme>
+const ThemeContext = React.createContext<RaxTheme>({ appearance: "default" })
 const PortalContainerContext = React.createContext<HTMLElement | null>(null)
 
-/** The nearest SheenThemeProvider element. Overlays portal into it to inherit its theme attributes and accent. */
-export function useSheenPortalContainer(): HTMLElement | undefined {
+/** The nearest RaxThemeProvider element. Overlays portal into it to inherit its theme attributes and accent. */
+export function useRaxPortalContainer(): HTMLElement | undefined {
   return React.useContext(PortalContainerContext) ?? undefined
 }
 
 /** Undefined inherits; explicit `default` resets the appearance. No global DOM mutations. */
-export function useSheenTheme(options: SheenThemeOptions = {}): SheenTheme {
+export function useRaxTheme(options: RaxThemeOptions = {}): RaxTheme {
   const parent = React.useContext(ThemeContext)
   const appearance = options.appearance ?? parent.appearance
   const mode = options.mode ?? parent.mode
@@ -28,34 +28,34 @@ export function useSheenTheme(options: SheenThemeOptions = {}): SheenTheme {
   return React.useMemo(() => ({ appearance, mode, density, direction }), [appearance, mode, density, direction])
 }
 
-export function sheenThemeAttributes(theme: SheenTheme) {
+export function raxThemeAttributes(theme: RaxTheme) {
   return {
-    "data-sheen-appearance": theme.appearance,
+    "data-rax-appearance": theme.appearance,
     "data-bs-theme": theme.mode,
-    "data-sheen-density": theme.density,
+    "data-rax-density": theme.density,
     dir: theme.direction,
   }
 }
 
 /** Context-only boundary used by composite components and their React portals. */
-export function SheenThemeBoundary({ value, children }: { value: SheenTheme; children: React.ReactNode }) {
+export function RaxThemeBoundary({ value, children }: { value: RaxTheme; children: React.ReactNode }) {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
-export interface SheenThemeProviderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "dir">, SheenThemeOptions {}
+export interface RaxThemeProviderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "dir">, RaxThemeOptions {}
 
-export function SheenThemeProvider({ appearance, mode, density, direction, children, ...props }: SheenThemeProviderProps) {
-  const theme = useSheenTheme({ appearance, mode, density, direction })
+export function RaxThemeProvider({ appearance, mode, density, direction, children, ...props }: RaxThemeProviderProps) {
+  const theme = useRaxTheme({ appearance, mode, density, direction })
   const [element, setElement] = React.useState<HTMLDivElement | null>(null)
   return (
-    <SheenThemeBoundary value={theme}>
+    <RaxThemeBoundary value={theme}>
       <PortalContainerContext.Provider value={element}>
-        <div ref={setElement} {...props} {...sheenThemeAttributes(theme)}>
+        <div ref={setElement} {...props} {...raxThemeAttributes(theme)}>
           {children}
         </div>
       </PortalContainerContext.Provider>
-    </SheenThemeBoundary>
+    </RaxThemeBoundary>
   )
 }
 
-export const SheenAppearanceScope = SheenThemeProvider
+export const RaxAppearanceScope = RaxThemeProvider

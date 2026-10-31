@@ -28,7 +28,7 @@
       "source": "registry/react/components/data-grid/use-data-grid-navigation.ts",
       "target": "components/ui/use-data-grid-navigation.ts",
       "type": "ts",
-      "sha256": "609446a881486c370ad31b6a3a081dfab9b61354d9bcbed362a8e1dc78aab210"
+      "sha256": "e9e85022b06b62aa4e028aba1e050a87f3bc55f8adc07518161e811dc4dcd3dc"
     },
     {
       "source": "registry/react/components/data-grid/use-data-grid-model.ts",
@@ -46,7 +46,7 @@
       "source": "registry/react/components/data-grid/data-grid.tsx",
       "target": "components/ui/data-grid.tsx",
       "type": "tsx",
-      "sha256": "f11efd76303d8357fdcfd3bbbcb0a29630444fcc5f0e25122aaf224821d4ff16"
+      "sha256": "d8c68fb98ce7aefffaa2a45f25cec4adf126acccd5f2d72f70e8098f423e8e2d"
     },
     {
       "source": "registry/react/components/data-grid/data-grid-utils.ts",
@@ -58,37 +58,37 @@
       "source": "registry/react/components/data-grid/data-grid-types.ts",
       "target": "components/ui/data-grid-types.ts",
       "type": "ts",
-      "sha256": "f553f34e60886af4af690831b50144cd41b96aeb32c7f6b55058f6d2c1bda991"
+      "sha256": "fa891053ba9eda8dbecf05c5be0ecb9b88db53d7c8f584f8251a06f8a3cec55e"
     },
     {
       "source": "registry/react/components/data-grid/data-grid-header.tsx",
       "target": "components/ui/data-grid-header.tsx",
       "type": "tsx",
-      "sha256": "f25855709949cd5161f8d92034fbf3149159204ee8812673d5578b18d47b69c4"
+      "sha256": "cda2a2c73d1cc69c793d5c98ae02267c7fab607e9dc893496519e34034632e39"
     },
     {
       "source": "registry/react/components/data-grid/data-grid-footer.tsx",
       "target": "components/ui/data-grid-footer.tsx",
       "type": "tsx",
-      "sha256": "c93da14444c7a1fe40ca372e2158d5cbe46f10d2d276b52f08e473a9a618be78"
+      "sha256": "4101917eef4a02428d51c40cd78f666d4c390d6aa8b4948db626df7ad41b1328"
     },
     {
       "source": "registry/react/components/data-grid/data-grid-editor.tsx",
       "target": "components/ui/data-grid-editor.tsx",
       "type": "tsx",
-      "sha256": "b0591445e2c8383ce09e910cc26215984eb8ad60e78358aa4383f0ef8c9a8273"
+      "sha256": "c06a880dfe57cf953eb2d46b2bce0f666aa574cdc95c8d2dc9b4d30f04ddfdee"
     },
     {
       "source": "registry/react/components/data-grid/data-grid-body.tsx",
       "target": "components/ui/data-grid-body.tsx",
       "type": "tsx",
-      "sha256": "8a29913b26146c523247288d4c21e173b2e91db2dcd68ae698c1c48a1673cdea"
+      "sha256": "2c3334ad55799ec72c4504e9e3173af138dd7096dc4e35cf7a42a58d9059d5ac"
     },
     {
       "source": "theme/scss/components/_data-grid.scss",
-      "target": "styles/sheenui/components/_data-grid.scss",
+      "target": "styles/raxui/components/_data-grid.scss",
       "type": "scss",
-      "sha256": "544a07b07a4418f153137480a73a010f7e45b59a532dd55b0d1cf2ba8ade5856"
+      "sha256": "c537fb023fb9b9d45a427eda79a419e99611cc988451651f03c5d46ddb59d427"
     }
   ]
 }

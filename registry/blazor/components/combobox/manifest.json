@@ -16,7 +16,7 @@
       "destination": "styles",
       "target": "components/combobox.css",
       "type": "css",
-      "sha256": "aa0e7467baef4f971511fe310d7a1aa56077e52a4611bb2194f48fd8aefc8c9f"
+      "sha256": "10ac534d48abdba755988359526ee3a69f650e689e68171943cd56172d706c4c"
     }
   ],
   "files": [
@@ -25,7 +25,7 @@
       "destination": "components",
       "target": "Combobox/Combobox.razor",
       "type": "razor",
-      "sha256": "46ea5df95db66453ce2ab4fee0c5982e1a48ee953a31414deb869b3b2a9e63b0"
+      "sha256": "24f2abfd0b979990ac6b48e960bf789a892c7b859bd3a8852c02d9a1972eb17d"
     }
   ]
 }

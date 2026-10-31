@@ -1,6 +1,6 @@
 "use client"
 
-// SheenUI pagination. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI pagination. Source-owned: edit freely. Ported from boot-ui.
 // Built-in icon paths from Lucide (ISC).
 
 import { Slot } from "@radix-ui/react-slot"
@@ -76,7 +76,7 @@ export function paginationRange({ page, pageCount, siblings = 1, boundaries = 1 
 // -----------------------------------------------------------------------------
 
 export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   label?: string
   /** `glass` = frosted track with a floating thumb · `plain` = no track, filled thumb. */
   variant?: "glass" | "plain"
@@ -84,7 +84,7 @@ export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const Pagination = React.forwardRef<HTMLElement, PaginationProps>(({ className, appearance, label = "Pagination", variant = "glass", size = "default", ...props }, ref) => (
-  <nav ref={ref} aria-label={label} data-sheen-appearance={appearance} data-variant={variant} data-size={size} className={cn("sheen-pagination", className)} {...props} />
+  <nav ref={ref} aria-label={label} data-rax-appearance={appearance} data-variant={variant} data-size={size} className={cn("rax-pagination", className)} {...props} />
 ))
 Pagination.displayName = "Pagination"
 
@@ -112,7 +112,7 @@ const PaginationContent = React.forwardRef<HTMLUListElement, React.HTMLAttribute
       media.addEventListener("change", motionChanged)
       const flip = () => {
         const animate = list.hasAttribute("data-animate") && !prefersReducedMotion()
-        list.querySelectorAll<HTMLElement>(".sheen-pagination-link:not(.sheen-pagination-step), .sheen-pagination-ellipsis").forEach((el) => {
+        list.querySelectorAll<HTMLElement>(".rax-pagination-link:not(.rax-pagination-step), .rax-pagination-ellipsis").forEach((el) => {
           const previous = positions.get(el)
           const current = el.offsetLeft
           positions.set(el, current)
@@ -135,12 +135,12 @@ const PaginationContent = React.forwardRef<HTMLUListElement, React.HTMLAttribute
           return
         }
         const place = () => {
-          list.style.setProperty("--sheen-pagination-x", `${active.offsetLeft}px`)
-          list.style.setProperty("--sheen-pagination-y", `${active.offsetTop}px`)
-          list.style.setProperty("--sheen-pagination-w", `${active.offsetWidth}px`)
-          list.style.setProperty("--sheen-pagination-h", `${active.offsetHeight}px`)
+          list.style.setProperty("--rax-pagination-x", `${active.offsetLeft}px`)
+          list.style.setProperty("--rax-pagination-y", `${active.offsetTop}px`)
+          list.style.setProperty("--rax-pagination-w", `${active.offsetWidth}px`)
+          list.style.setProperty("--rax-pagination-h", `${active.offsetHeight}px`)
         }
-        if (!list.hasAttribute("data-ready")) withoutTransition(list.querySelector(".sheen-pagination-indicator"), place)
+        if (!list.hasAttribute("data-ready")) withoutTransition(list.querySelector(".rax-pagination-indicator"), place)
         else place()
 
         // First placement is instant; glide from the next frame on. Checked separately from
@@ -165,8 +165,8 @@ const PaginationContent = React.forwardRef<HTMLUListElement, React.HTMLAttribute
     }, [])
 
     return (
-      <ul ref={composedRef} className={cn("sheen-pagination-content", className)} {...props}>
-        <li className="sheen-pagination-indicator" aria-hidden="true" role="presentation" />
+      <ul ref={composedRef} className={cn("rax-pagination-content", className)} {...props}>
+        <li className="rax-pagination-indicator" aria-hidden="true" role="presentation" />
         {children}
       </ul>
     )
@@ -175,7 +175,7 @@ const PaginationContent = React.forwardRef<HTMLUListElement, React.HTMLAttribute
 PaginationContent.displayName = "PaginationContent"
 
 const PaginationItem = React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(({ className, ...props }, ref) => (
-  <li ref={ref} className={cn("sheen-pagination-item", className)} {...props} />
+  <li ref={ref} className={cn("rax-pagination-item", className)} {...props} />
 ))
 PaginationItem.displayName = "PaginationItem"
 
@@ -196,7 +196,7 @@ const PaginationLink = React.forwardRef<HTMLAnchorElement, PaginationLinkProps>(
         ref={ref}
         aria-current={isActive ? "page" : undefined}
         data-disabled={disabled ? "" : undefined}
-        className={cn("sheen-pagination-link", className)}
+        className={cn("rax-pagination-link", className)}
         {...(isButton
           ? { type: "button", disabled }
           : // A disabled link has no destination.
@@ -231,11 +231,11 @@ const PaginationPrevious = React.forwardRef<HTMLAnchorElement, StepLinkProps>(({
   <PaginationLink
     ref={ref}
     data-step="previous"
-    className={cn("sheen-pagination-step", iconOnly && "sheen-pagination-icon-only", className)}
+    className={cn("rax-pagination-step", iconOnly && "rax-pagination-icon-only", className)}
     {...props}
   >
     <ChevronIcon />
-    <span className="sheen-pagination-step-label">{children ?? "Previous"}</span>
+    <span className="rax-pagination-step-label">{children ?? "Previous"}</span>
   </PaginationLink>
 ))
 PaginationPrevious.displayName = "PaginationPrevious"
@@ -244,17 +244,17 @@ const PaginationNext = React.forwardRef<HTMLAnchorElement, StepLinkProps>(({ cla
   <PaginationLink
     ref={ref}
     data-step="next"
-    className={cn("sheen-pagination-step", iconOnly && "sheen-pagination-icon-only", className)}
+    className={cn("rax-pagination-step", iconOnly && "rax-pagination-icon-only", className)}
     {...props}
   >
-    <span className="sheen-pagination-step-label">{children ?? "Next"}</span>
+    <span className="rax-pagination-step-label">{children ?? "Next"}</span>
     <ChevronIcon />
   </PaginationLink>
 ))
 PaginationNext.displayName = "PaginationNext"
 
 const PaginationEllipsis = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(({ className, ...props }, ref) => (
-  <span ref={ref} aria-hidden="true" className={cn("sheen-pagination-ellipsis", className)} {...props}>
+  <span ref={ref} aria-hidden="true" className={cn("rax-pagination-ellipsis", className)} {...props}>
     <svg viewBox="0 0 24 24" fill="currentColor">
       <circle cx="5" cy="12" r="1.6" />
       <circle cx="12" cy="12" r="1.6" />
@@ -342,12 +342,12 @@ const PaginationControl = React.forwardRef<HTMLElement, PaginationControlProps>(
           </PaginationItem>
 
           {layout === "compact" ? (
-            <PaginationItem className="sheen-pagination-status" aria-live="polite">
+            <PaginationItem className="rax-pagination-status" aria-live="polite">
               {/* Keyed so the number re-enters (and re-animates) on every change. */}
-              <span key={page} className="sheen-pagination-status-current" data-tick={hasMoved || undefined}>
+              <span key={page} className="rax-pagination-status-current" data-tick={hasMoved || undefined}>
                 {formatPage(page)}
               </span>
-              <span className="sheen-pagination-status-sep">/</span>
+              <span className="rax-pagination-status-sep">/</span>
               <span>{formatPage(pageCount)}</span>
             </PaginationItem>
           ) : (

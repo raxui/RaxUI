@@ -1,4 +1,4 @@
-// sheenui-react: init and add for React projects on Vite 6+ or Next.js 15+ App Router (ADR 006, 010, 011).
+// raxui-react: init and add for React projects on Vite 6+ or Next.js 15+ App Router (ADR 006, 010, 011).
 import { spawnSync } from "node:child_process"
 import { existsSync, readFileSync, readSync } from "node:fs"
 import path from "node:path"
@@ -66,20 +66,20 @@ const NEXT_TEMPLATE = {
   "public/window.svg": ["644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1"],
 }
 
-const baseImports = ({ bootstrapImport }) => ['@import "sheenui/variables";', `@import "${bootstrapImport}";`, '@import "sheenui/core";']
-const stylesheetTemplate = (project) => `// SheenUI theme. Set Bootstrap Sass variables above the imports, for example:
+const baseImports = ({ bootstrapImport }) => ['@import "raxui/variables";', `@import "${bootstrapImport}";`, '@import "raxui/core";']
+const stylesheetTemplate = (project) => `// RaxUI theme. Set Bootstrap Sass variables above the imports, for example:
 // $primary: #0a84ff;
 ${baseImports(project).join("\n")}
 `
 
-export const USAGE = `sheenui-react ${VERSION}
+export const USAGE = `raxui-react ${VERSION}
 
 React + Vite 6 or later, or Next.js 15 or later (App Router).
 
 Usage:
-  sheenui-react init [--appearance <name>] [--accent <name>] [options]
-  sheenui-react add <component...> [options]
-  sheenui-react recover [--keep-changes] [--cwd <dir>]
+  raxui-react init [--appearance <name>] [--accent <name>] [options]
+  raxui-react add <component...> [options]
+  raxui-react recover [--keep-changes] [--cwd <dir>]
 
 Options:
   --cwd <dir>      Project directory (defaults to the current directory)
@@ -147,7 +147,7 @@ export function run(args, { cwd, stdout, stderr, interactive = false }) {
     checkChoice(accent, ACCENTS, "accent")
     switch (command) {
       case "recover":
-        if (!recoverTransaction(projectDir, { keepChanges, stdout })) stdout.write("No interrupted SheenUI installation found.\n")
+        if (!recoverTransaction(projectDir, { keepChanges, stdout })) stdout.write("No interrupted RaxUI installation found.\n")
         return 0
       case "-h":
       case "--help":
@@ -159,12 +159,12 @@ export function run(args, { cwd, stdout, stderr, interactive = false }) {
         return 0
       case "init":
         // The starter requires the foundation and Button, so this installs all three (ADR 008).
-        if (names.length > 0) throw new Error("init takes no component names. Usage: sheenui-react init [--appearance <name>] [--accent <name>]")
+        if (names.length > 0) throw new Error("init takes no component names. Usage: raxui-react init [--appearance <name>] [--accent <name>]")
         return installItems(projectDir, [], { init: true, install, stdout, choice: { appearance, accent, interactive } })
       case "add": {
-        if (names.length === 0) throw new Error("Missing component name. Usage: sheenui-react add <component...>")
+        if (names.length === 0) throw new Error("Missing component name. Usage: raxui-react add <component...>")
         for (const name of names)
-          if (name === "foundation" || STARTER_ITEMS.includes(name)) throw new Error(`'${name}' is installed by 'sheenui-react init'.`)
+          if (name === "foundation" || STARTER_ITEMS.includes(name)) throw new Error(`'${name}' is installed by 'raxui-react init'.`)
         return installItems(projectDir, [...new Set(names)], { init: false, install, stdout })
       }
       default:
@@ -179,11 +179,11 @@ export function run(args, { cwd, stdout, stderr, interactive = false }) {
 
 function installItems(projectDir, names, { init, install, stdout, choice }) {
   recoverTransaction(projectDir, { stdout })
-  if (["blazorui.react.json", "blazorui.react.lock.json"].some((file) => existsSync(path.join(projectDir, file))))
-    throw new Error("This app uses the former BlazorUI registry. SheenUI uses different files and theme APIs. Test in a new app or follow docs/adr/012-sheenui-identity.md; existing files were not changed.")
+  if (["blazorui.react.json", "blazorui.react.lock.json", "sheenui.react.json", "sheenui.react.lock.json"].some((file) => existsSync(path.join(projectDir, file))))
+    throw new Error("This app uses the former BlazorUI or SheenUI registry. RaxUI uses different files and theme APIs. Test in a new app or follow docs/adr/022-raxui-identity.md; existing files were not changed.")
   const project = detectProject(projectDir)
   const config = loadConfig(projectDir, VERSION)
-  if (!init && !config) throw new Error(`SheenUI is not initialized here. Run 'sheenui-react init' first.`)
+  if (!init && !config) throw new Error(`RaxUI is not initialized here. Run 'raxui-react init' first.`)
   const lock = loadLock(projectDir, VERSION)
   // Several names install as one transaction; resolveItems throws on an unknown one before anything is written.
   const requested = new Set(names.length > 0 ? names : [project.starter])
@@ -221,15 +221,15 @@ function installItems(projectDir, names, { init, install, stdout, choice }) {
 
       if (tracked && tracked.sourceHash !== file.sha256) {
         if (starter) {
-          notes.push(`Kept ${target} from an earlier SheenUI release.`)
+          notes.push(`Kept ${target} from an earlier RaxUI release.`)
           continue
         }
         throw new Error(`'${target}' was installed from another registry release and differs from this CLI's version. Updating installed files is not supported yet.`)
       }
       if (existsSync(full)) {
         if (!tracked && !(starter && isTemplate(projectDir, project, target))) {
-          if (!starter) throw new Error(`'${target}' already exists and is not managed by SheenUI. Refusing to overwrite unknown file.`)
-          notes.push(`Kept your ${target} (it differs from the ${project.label} template), so the SheenUI version was not installed.`)
+          if (!starter) throw new Error(`'${target}' already exists and is not managed by RaxUI. Refusing to overwrite unknown file.`)
+          notes.push(`Kept your ${target} (it differs from the ${project.label} template), so the RaxUI version was not installed.`)
           continue
         }
         if (tracked && sha256(readFileSync(full)) !== tracked.installedHash) {
@@ -319,7 +319,7 @@ function installItems(projectDir, names, { init, install, stdout, choice }) {
     writeState(backup, projectDir, LOCK_FILE, lock)
   } catch (error) {
     try { backup.restore() } catch (recoveryError) {
-      throw new Error(`${error.message}\nRollback incomplete: ${recoveryError.message}\nOriginal backups retained in .sheenui-react-transaction; run recover before retrying.`)
+      throw new Error(`${error.message}\nRollback incomplete: ${recoveryError.message}\nOriginal backups retained in .raxui-react-transaction; run recover before retrying.`)
     }
     throw error
   }
@@ -332,7 +332,7 @@ function installItems(projectDir, names, { init, install, stdout, choice }) {
     ...deletes.map(({ relative }) => `  - ${relative} (template file)`),
     ...notes.map((note) => `Note: ${note}`),
   ]
-  stdout.write(`${init ? "SheenUI initialized" : `Added ${[...requested].join(", ")}`}:\n${lines.join("\n")}\n`)
+  stdout.write(`${init ? "RaxUI initialized" : `Added ${[...requested].join(", ")}`}:\n${lines.join("\n")}\n`)
   return 0
 }
 
@@ -363,8 +363,8 @@ function detectVite(projectDir, dependencies) {
     label: "Vite",
     sourceRoot: "src",
     entry,
-    entryImport: "./styles/sheenui.scss",
-    stylesheet: "src/styles/sheenui.scss",
+    entryImport: "./styles/raxui.scss",
+    stylesheet: "src/styles/raxui.scss",
     bootstrapImport: "bootstrap/scss/bootstrap",
     starter: "starter-react",
     starterTarget: "src/App.tsx",
@@ -396,13 +396,13 @@ function detectNext(projectDir, dependencies) {
   const template = Object.fromEntries(
     Object.entries(NEXT_TEMPLATE).map(([key, hashes]) => [key.startsWith("app/") && sourceRoot ? `${sourceRoot}/${key}` : key, hashes]),
   )
-  const stylesheet = sourceRoot ? `${sourceRoot}/styles/sheenui.scss` : "styles/sheenui.scss"
+  const stylesheet = sourceRoot ? `${sourceRoot}/styles/raxui.scss` : "styles/raxui.scss"
   return {
     kind: "next",
     label: "Next.js",
     sourceRoot,
     entry,
-    entryImport: "../styles/sheenui.scss",
+    entryImport: "../styles/raxui.scss",
     stylesheet,
     // Next's Sass pipeline cannot follow Bootstrap's own relative imports when it is imported by package
     // name, so the stylesheet imports it by path. shortcut: assumes node_modules at the project root; a
@@ -443,11 +443,11 @@ function planStylesheet(projectDir, project, items) {
   const base = baseImports(project)
   if (/^\s*@use\s/m.test(content) || !base.every((line) => content.includes(line))) {
     throw new Error(
-      `'${stylesheet}' is customized in a way this CLI does not edit (@use, or missing base imports). Make sure it contains, in order:\n  ${base.join("\n  ")}\nthen one '@import "sheenui/<style>";' line per installed component.`,
+      `'${stylesheet}' is customized in a way this CLI does not edit (@use, or missing base imports). Make sure it contains, in order:\n  ${base.join("\n  ")}\nthen one '@import "raxui/<style>";' line per installed component.`,
     )
   }
   for (const style of items.flatMap((item) => item.styles ?? [])) {
-    const line = `@import "sheenui/${style}";`
+    const line = `@import "raxui/${style}";`
     if (!content.split(/\r?\n/).some((existing) => existing.trim() === line)) content = content.replace(/\s*$/, `\n${line}\n`)
   }
   return { full, content: content === original ? null : content }
@@ -464,8 +464,8 @@ function setHtmlAttribute(content, name, value) {
 
 /** The chosen theme as data attributes on <html>; the default appearance and the blue accent write none. */
 function applyThemeAttributes(content, theme) {
-  const withAppearance = setHtmlAttribute(content, "data-sheen-appearance", theme.appearance === "default" ? null : theme.appearance)
-  return withAppearance && setHtmlAttribute(withAppearance, "data-sheen-accent", theme.accent === "blue" ? null : theme.accent)
+  const withAppearance = setHtmlAttribute(content, "data-rax-appearance", theme.appearance === "default" ? null : theme.appearance)
+  return withAppearance && setHtmlAttribute(withAppearance, "data-rax-accent", theme.accent === "blue" ? null : theme.accent)
 }
 
 /** Starts the starter's theme playground on the chosen values instead of default and blue. */
@@ -474,7 +474,7 @@ function applyThemeDefaults(bytes, theme) {
   return Buffer.from(
     bytes
       .toString("utf8")
-      .replace('useState<SheenAppearance>("default")', `useState<SheenAppearance>("${theme.appearance}")`)
+      .replace('useState<RaxAppearance>("default")', `useState<RaxAppearance>("${theme.appearance}")`)
       .replace("useState<Accent>(undefined)", `useState<Accent>(${accent})`),
   )
 }
@@ -486,7 +486,7 @@ function planHtml(projectDir, theme, notes) {
   const original = readFileSync(full, "utf8")
   const content = applyThemeAttributes(original, theme)
   if (content === null) {
-    notes.push("index.html has no <html> tag, so add data-sheen-appearance and data-sheen-accent to it yourself.")
+    notes.push("index.html has no <html> tag, so add data-rax-appearance and data-rax-accent to it yourself.")
     return { content: null }
   }
   return { full, content: content === original ? null : content }
@@ -505,7 +505,7 @@ function planEntry({ entry, entryPath, entryImport, stylesheet, kind }, deleted,
     content = content.replace(new RegExp(`^import ['"]\\./${name}['"];?\\r?\\n`, "m"), "")
   }
   // First line, so the app's own CSS (imported later) can override the theme.
-  if (!content.includes("styles/sheenui.scss")) content = `import "${entryImport}"${newline}${content}`
+  if (!content.includes("styles/raxui.scss")) content = `import "${entryImport}"${newline}${content}`
   if (theme && kind === "next") content = applyThemeAttributes(content, theme) ?? content
   return { full: entryPath, content: content === original ? null : content }
 }

@@ -3,13 +3,13 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 
-<div class="sheen-wheel">
+<div class="rax-wheel">
     <div @ref="_root" role="listbox" aria-label="@Label" aria-activedescendant="@(Committed ? $"{_id}-{Selected}" : null)"
-         aria-disabled="@(Disabled ? "true" : null)" tabindex="@(Disabled ? -1 : 0)" class="sheen-wheel-list" data-index="@Index"
+         aria-disabled="@(Disabled ? "true" : null)" tabindex="@(Disabled ? -1 : 0)" class="rax-wheel-list" data-index="@Index"
          data-committed="@(Committed ? "" : null)" data-disabled="@(Disabled ? "" : null)">
         @foreach (var option in Options)
         {
-            <div id="@($"{_id}-{option.Value}")" role="option" aria-selected="@(Committed && option.Value == Selected ? "true" : "false")" class="sheen-wheel-item">@option.Label</div>
+            <div id="@($"{_id}-{option.Value}")" role="option" aria-selected="@(Committed && option.Value == Selected ? "true" : "false")" class="rax-wheel-item">@option.Label</div>
         }
     </div>
 </div>
@@ -38,7 +38,7 @@
     [Parameter] public bool Committed { get; set; }
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public bool AutoFocus { get; set; }
-    private readonly string _id = $"sheen-wheel-{Guid.NewGuid():N}";
+    private readonly string _id = $"rax-wheel-{Guid.NewGuid():N}";
     private int Index => Math.Max(0, Options.ToList().FindIndex(option => option.Value == Selected));
     private ElementReference _root;
     private IJSObjectReference? _module;

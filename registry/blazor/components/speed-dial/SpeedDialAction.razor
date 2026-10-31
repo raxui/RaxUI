@@ -1,4 +1,4 @@
-<Button @attributes="AdditionalAttributes" Class="@($"sheen-speed-dial-action {Class}")" Variant="@Variant" Size="@Size" Disabled="@(Disabled || Dial.Disabled)" role="menuitem" aria-label="@Label" data-close="@(CloseOnSelect ? "true" : "false")" OnClick="OnSelect">@ChildContent</Button>
+<Button @attributes="AdditionalAttributes" Class="@($"rax-speed-dial-action {Class}")" Variant="@Variant" Size="@Size" Disabled="@(Disabled || Dial.Disabled)" role="menuitem" aria-label="@Label" data-close="@(CloseOnSelect ? "true" : "false")" OnClick="OnSelect">@ChildContent</Button>
 @code {
     [CascadingParameter] public SpeedDial Dial { get; set; } = default!;
     [Parameter] public string? Label { get; set; }

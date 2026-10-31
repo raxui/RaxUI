@@ -18,13 +18,13 @@
       "source": "registry/react/components/hover-card/hover-card.tsx",
       "target": "components/ui/hover-card.tsx",
       "type": "tsx",
-      "sha256": "ba1e1c12e13238f91a418b9c84a0f56e6c962b3c66fbe06a5841a6d9a2a7947b"
+      "sha256": "7feeacf5a1280c66ad56c483bf3be4dbc7d1af8ed2af5716994c5ecbf4a789ef"
     },
     {
       "source": "theme/scss/components/_hover-card.scss",
-      "target": "styles/sheenui/components/_hover-card.scss",
+      "target": "styles/raxui/components/_hover-card.scss",
       "type": "scss",
-      "sha256": "eef45f78e14b9c7cc0141639c1cbdd79c6b5db56633819130d2e3057a0077e2f"
+      "sha256": "0874ff473191faffb8d66b0d4c02dca31d99b27cdccee839f3781a10e3b90067"
     }
   ]
 }

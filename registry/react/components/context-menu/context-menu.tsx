@@ -4,7 +4,7 @@
 import * as React from "react"
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
 
-import { useSheenPortalContainer } from "@/lib/theme"
+import { useRaxPortalContainer } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 function useReportDirection<T extends HTMLElement>(report?: ((dir: "ltr" | "rtl") => void) | null) {
   const ref = React.useRef<T | null>(null)
@@ -17,7 +17,7 @@ function useMergedRef<T>(a: React.Ref<T>, b: React.RefObject<T | null>) {
 
 // -----------------------------------------------------------------------------
 // Context Menu — the right-click menu (long-press on touch), on Radix
-// ContextMenu. Same glass and items as Dropdown Menu (`sheen-dropdown-*`); it opens
+// ContextMenu. Same glass and items as Dropdown Menu (`rax-dropdown-*`); it opens
 // at the pointer and grows out of it.
 //
 //   <ContextMenu>
@@ -30,7 +30,7 @@ function useMergedRef<T>(a: React.Ref<T>, b: React.RefObject<T | null>) {
 //   </ContextMenu>
 //
 // The trigger keeps data-state="open" while its menu is up, so the thing you
-// right-clicked can stay highlighted (`sheen-context-target` does that). In RTL
+// right-clicked can stay highlighted (`rax-context-target` does that). In RTL
 // the content, the submenu side and the arrow keys follow the page direction.
 // -----------------------------------------------------------------------------
 
@@ -101,7 +101,7 @@ ContextMenuTrigger.displayName = ContextMenuPrimitive.Trigger.displayName
 
 const ContextMenuGroup = ContextMenuPrimitive.Group
 
-function ContextMenuPortal(props: React.ComponentProps<typeof ContextMenuPrimitive.Portal>) { return <ContextMenuPrimitive.Portal container={useSheenPortalContainer()} {...props} /> }
+function ContextMenuPortal(props: React.ComponentProps<typeof ContextMenuPrimitive.Portal>) { return <ContextMenuPrimitive.Portal container={useRaxPortalContainer()} {...props} /> }
 
 const ContextMenuSub = ContextMenuPrimitive.Sub
 
@@ -111,9 +111,9 @@ const ContextMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubTrigger> & { inset?: boolean }
 >(({ className, inset, children, ...props }, ref) => (
-  <ContextMenuPrimitive.SubTrigger ref={ref} className={cn("sheen-dropdown-item", inset && "sheen-dropdown-inset", className)} {...props}>
+  <ContextMenuPrimitive.SubTrigger ref={ref} className={cn("rax-dropdown-item", inset && "rax-dropdown-inset", className)} {...props}>
     {children}
-    <ChevronRightIcon className="sheen-dropdown-chevron" />
+    <ChevronRightIcon className="rax-dropdown-chevron" />
   </ContextMenuPrimitive.SubTrigger>
 ))
 ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName
@@ -122,12 +122,12 @@ const ContextMenuSubContent = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubContent>
 >(({ className, sideOffset = 6, collisionPadding = 8, ...props }, ref) => (
-  <ContextMenuPrimitive.Portal container={useSheenPortalContainer()}>
+  <ContextMenuPrimitive.Portal container={useRaxPortalContainer()}>
     <ContextMenuPrimitive.SubContent
       ref={ref}
       sideOffset={sideOffset}
       collisionPadding={collisionPadding}
-      className={cn("sheen-dropdown-menu sheen-context-menu", className)}
+      className={cn("rax-dropdown-menu rax-context-menu", className)}
       {...props}
     />
   </ContextMenuPrimitive.Portal>
@@ -138,11 +138,11 @@ const ContextMenuContent = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>
 >(({ className, collisionPadding = 8, ...props }, ref) => (
-  <ContextMenuPrimitive.Portal container={useSheenPortalContainer()}>
+  <ContextMenuPrimitive.Portal container={useRaxPortalContainer()}>
     <ContextMenuPrimitive.Content
       ref={ref}
       collisionPadding={collisionPadding}
-      className={cn("sheen-dropdown-menu sheen-context-menu", className)}
+      className={cn("rax-dropdown-menu rax-context-menu", className)}
       {...props}
     />
   </ContextMenuPrimitive.Portal>
@@ -158,7 +158,7 @@ const ContextMenuItem = React.forwardRef<
 >(({ className, inset, variant = "default", ...props }, ref) => (
   <ContextMenuPrimitive.Item
     ref={ref}
-    className={cn("sheen-dropdown-item", variant === "destructive" && "sheen-dropdown-item-destructive", inset && "sheen-dropdown-inset", className)}
+    className={cn("rax-dropdown-item", variant === "destructive" && "rax-dropdown-item-destructive", inset && "rax-dropdown-inset", className)}
     {...props}
   />
 ))
@@ -168,8 +168,8 @@ const ContextMenuCheckboxItem = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.CheckboxItem>
 >(({ className, children, ...props }, ref) => (
-  <ContextMenuPrimitive.CheckboxItem ref={ref} className={cn("sheen-dropdown-item sheen-dropdown-inset", className)} {...props}>
-    <span className="sheen-dropdown-indicator">
+  <ContextMenuPrimitive.CheckboxItem ref={ref} className={cn("rax-dropdown-item rax-dropdown-inset", className)} {...props}>
+    <span className="rax-dropdown-indicator">
       <ContextMenuPrimitive.ItemIndicator>
         <CheckIcon />
       </ContextMenuPrimitive.ItemIndicator>
@@ -183,8 +183,8 @@ const ContextMenuRadioItem = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.RadioItem>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.RadioItem>
 >(({ className, children, ...props }, ref) => (
-  <ContextMenuPrimitive.RadioItem ref={ref} className={cn("sheen-dropdown-item sheen-dropdown-inset", className)} {...props}>
-    <span className="sheen-dropdown-indicator">
+  <ContextMenuPrimitive.RadioItem ref={ref} className={cn("rax-dropdown-item rax-dropdown-inset", className)} {...props}>
+    <span className="rax-dropdown-indicator">
       <ContextMenuPrimitive.ItemIndicator>
         <DotIcon />
       </ContextMenuPrimitive.ItemIndicator>
@@ -198,18 +198,18 @@ const ContextMenuLabel = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label> & { inset?: boolean }
 >(({ className, inset, ...props }, ref) => (
-  <ContextMenuPrimitive.Label ref={ref} className={cn("sheen-dropdown-label", inset && "sheen-dropdown-inset", className)} {...props} />
+  <ContextMenuPrimitive.Label ref={ref} className={cn("rax-dropdown-label", inset && "rax-dropdown-inset", className)} {...props} />
 ))
 ContextMenuLabel.displayName = ContextMenuPrimitive.Label.displayName
 
 const ContextMenuSeparator = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Separator>
->(({ className, ...props }, ref) => <ContextMenuPrimitive.Separator ref={ref} className={cn("sheen-dropdown-separator", className)} {...props} />)
+>(({ className, ...props }, ref) => <ContextMenuPrimitive.Separator ref={ref} className={cn("rax-dropdown-separator", className)} {...props} />)
 ContextMenuSeparator.displayName = ContextMenuPrimitive.Separator.displayName
 
 const ContextMenuShortcut = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(({ className, ...props }, ref) => (
-  <span ref={ref} className={cn("sheen-dropdown-shortcut", className)} {...props} />
+  <span ref={ref} className={cn("rax-dropdown-shortcut", className)} {...props} />
 ))
 ContextMenuShortcut.displayName = "ContextMenuShortcut"
 

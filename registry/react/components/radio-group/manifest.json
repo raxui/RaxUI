@@ -18,13 +18,13 @@
       "source": "registry/react/components/radio-group/radio-group.tsx",
       "target": "components/ui/radio-group.tsx",
       "type": "tsx",
-      "sha256": "4dc92cd7370f1274b4fc09ad37e24e8c783fcecd2d0c703c3d31dd336fc4290f"
+      "sha256": "ea26a2c74da79dea91664e3fa654f55dc12c632050d0cc2cdbc5c4cbd6c11d87"
     },
     {
       "source": "theme/scss/components/_radio-group.scss",
-      "target": "styles/sheenui/components/_radio-group.scss",
+      "target": "styles/raxui/components/_radio-group.scss",
       "type": "scss",
-      "sha256": "ab4e1b10659143657390be952d3bb03914b488a30d1b341f0f5fa5034714ad7e"
+      "sha256": "b3feaa3fa65a3d3f04c251b29fe47de638494578f30b0b457a52314753ddb024"
     }
   ]
 }

@@ -1,7 +1,7 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
-<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="sheen-sidebar-wrapper @Class" data-blazor-shell data-state="@(Current ? "expanded" : "collapsed")" data-sheen-appearance="@Appearance">@ChildContent</div></CascadingValue>
+<CascadingValue Value="this"><div @ref="element" @attributes="AdditionalAttributes" class="rax-sidebar-wrapper @Class" data-blazor-shell data-state="@(Current ? "expanded" : "collapsed")" data-rax-appearance="@Appearance">@ChildContent</div></CascadingValue>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -20,7 +20,7 @@
     /// <summary>True once the browser module is ready; a custom trigger should stay disabled until then.</summary>
     public bool Ready { get; private set; }
     /// <summary>The panel id, for a custom trigger's aria-controls.</summary>
-    public string PanelId { get; } = "sheen-sidebar-" + Guid.NewGuid().ToString("N");
+    public string PanelId { get; } = "rax-sidebar-" + Guid.NewGuid().ToString("N");
     private bool? localOpen;
     private bool disposed;
     private ElementReference element; private IJSObjectReference? module; private DotNetObjectReference<SidebarProvider>? self;

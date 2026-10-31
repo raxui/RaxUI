@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/resizable.css",
       "type": "css",
-      "sha256": "6964e3c03e131092dac5cf368ea83fd5ee8d0e791a5bf2c7a99708f0592dfc83"
+      "sha256": "9aa4317c12a2bbfe1c806cbaa17d8905cc8916dbb42032c2a6f7efef1e7d8be4"
     }
   ],
   "files": [
@@ -19,28 +19,28 @@
       "destination": "components",
       "target": "Resizable/ResizableHandle.razor",
       "type": "razor",
-      "sha256": "2943a3b4ecd4559009b63f9510a8f0e42dc055123515bdc23e9ab9fe429b8ad8"
+      "sha256": "54e4d295999df09259b6a6449715bfc3b1c63377033644fa1fd8a06cbb601fd6"
     },
     {
       "source": "ResizablePanel.razor",
       "destination": "components",
       "target": "Resizable/ResizablePanel.razor",
       "type": "razor",
-      "sha256": "b16f72cb9ef2a8ef4f5a841c7e6cd459ad9ff9018f793bd7b670471ff9e0685d"
+      "sha256": "4d9ffa7d09a1913b42fd2e5cbb080d89010bbbf117f575bf8b309aa11fd75d7f"
     },
     {
       "source": "ResizablePanelGroup.razor",
       "destination": "components",
       "target": "Resizable/ResizablePanelGroup.razor",
       "type": "razor",
-      "sha256": "b36d251c2ec29d4dde6c4624c1fe2c8b6c40df50dbb9f38b0cbbea70d3e30a0d"
+      "sha256": "cd0327bfa6619dd5ccdd133e0c36ea03eda827c74d742e9d31e83fdc837bb78a"
     },
     {
       "source": "ResizablePanelGroup.razor.js",
       "destination": "components",
       "target": "Resizable/ResizablePanelGroup.razor.js",
       "type": "js",
-      "sha256": "89e671db3dea0e52b4ee1cd9333dce9407200bc62bfaa7d63b0a2859f1255d9a"
+      "sha256": "14c621a57b7662ee40acbff9d82aa03f9abd1c4963e033421368db3fd528b14c"
     }
   ]
 }

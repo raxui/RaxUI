@@ -1,26 +1,26 @@
-.sheen-date-input {
-  &::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.65; transition: opacity var(--sheen-duration) ease; }
+.rax-date-input {
+  &::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.65; transition: opacity var(--rax-duration) ease; }
   &:focus::-webkit-calendar-picker-indicator { opacity: 1; }
   &:disabled::-webkit-calendar-picker-indicator { cursor: default; }
 }
 // Bootstrap's data-bs-theme="dark" supplies color-scheme: dark; Firefox keeps its native icon.
-@media (prefers-reduced-motion: reduce) { .sheen-date-input::-webkit-calendar-picker-indicator { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .rax-date-input::-webkit-calendar-picker-indicator { transition: none; } }
 
 // -----------------------------------------------------------------------------
 // DateInput / TimeInput / DateTimeInput — typed segment fields on the Input
-// surface (`.sheen-input-group`, so sizes, variants, focus ring and invalid state
+// surface (`.rax-input-group`, so sizes, variants, focus ring and invalid state
 // come from _input.scss). The focused segment becomes a tinted pill; a value
 // that changes ticks in from below.
 // -----------------------------------------------------------------------------
 
-.sheen-date-field {
+.rax-date-field {
   &[data-disabled] {
     opacity: 0.55;
     cursor: default;
   }
 }
 
-.sheen-date-segments {
+.rax-date-segments {
   display: flex;
   align-items: center;
   min-width: 0;
@@ -31,21 +31,21 @@
 }
 
 // hour:minute run (always LTR) behaves like one inline group.
-.sheen-date-run {
+.rax-date-run {
   display: inline-flex;
   align-items: center;
 }
 
-.sheen-date-literal {
+.rax-date-literal {
   color: var(--bs-secondary-color);
   user-select: none;
   white-space: pre;
 }
 
-.sheen-date-segment {
+.rax-date-segment {
   display: inline-block;
   padding: 0.125rem 0.125rem;
-  border-radius: calc(0.3125rem * var(--sheen-radius-scale));
+  border-radius: calc(0.3125rem * var(--rax-radius-scale));
   color: var(--bs-emphasis-color);
   text-align: center;
   outline: 0;
@@ -54,16 +54,16 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   transition:
-    background-color var(--sheen-duration-fast) ease,
-    color var(--sheen-duration-fast) ease;
+    background-color var(--rax-duration-fast) ease,
+    color var(--rax-duration-fast) ease;
 
   &[data-placeholder] {
     color: var(--bs-secondary-color);
   }
 
   &:focus {
-    color: rgb(var(--sheen-input-ring-rgb, var(--bs-primary-rgb)));
-    background-color: rgba(var(--sheen-input-ring-rgb, var(--bs-primary-rgb)), 0.14);
+    color: rgb(var(--rax-input-ring-rgb, var(--bs-primary-rgb)));
+    background-color: rgba(var(--rax-input-ring-rgb, var(--bs-primary-rgb)), 0.14);
     opacity: 1;
   }
 
@@ -73,17 +73,17 @@
   }
 }
 
-.sheen-date-segment-value {
+.rax-date-segment-value {
   display: inline-block;
 
   @include motion-safe {
     &[data-tick] {
-      animation: sheen-date-tick 260ms var(--sheen-ease-spring);
+      animation: rax-date-tick 260ms var(--rax-ease-spring);
     }
   }
 }
 
-@keyframes sheen-date-tick {
+@keyframes rax-date-tick {
   from {
     opacity: 0.2;
     transform: translateY(0.35em);
@@ -91,6 +91,6 @@
 }
 
 // Leave room for calendar, wheels and actions when the viewport allows it.
-.sheen-popover.sheen-date-popover {
+.rax-popover.rax-date-popover {
   max-height: min(40rem, calc(100dvh - 1rem), var(--radix-popover-content-available-height, 40rem));
 }

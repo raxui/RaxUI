@@ -18,13 +18,13 @@
       "source": "registry/react/components/confirm-dialog/confirm-dialog.tsx",
       "target": "components/ui/confirm-dialog.tsx",
       "type": "tsx",
-      "sha256": "b6fd117d3809bbef53e64b33f74c5e8200e32e1121ac8b54e0d040325966868d"
+      "sha256": "5e655138a0227e2e7ef2a696e1ae347c3b8389d077cc89633f625db1cfce6767"
     },
     {
       "source": "theme/scss/components/_confirm-dialog.scss",
-      "target": "styles/sheenui/components/_confirm-dialog.scss",
+      "target": "styles/raxui/components/_confirm-dialog.scss",
       "type": "scss",
-      "sha256": "20226db1f458a77a9efc1cd368b05839fcc08ceb10d6bb82fed01a93280b20ec"
+      "sha256": "73314b05714ebd60889ad05e654e32648dfc829cb7a53a37fd112d249dfd3287"
     }
   ]
 }

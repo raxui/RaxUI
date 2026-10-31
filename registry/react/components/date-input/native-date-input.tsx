@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 export type NativeDateInputProps = Omit<InputProps, "type">
 const NativeDateInput = React.forwardRef<HTMLInputElement, NativeDateInputProps>(({ className, ...props }, ref) => (
-  <Input {...props} ref={ref} type="date" className={cn("sheen-date-input", className)} />
+  <Input {...props} ref={ref} type="date" className={cn("rax-date-input", className)} />
 ))
 NativeDateInput.displayName = "NativeDateInput"
 export { NativeDateInput }

@@ -1,61 +1,61 @@
 // Each boundary defines a complete material, so explicit default resets glass.
-:root, [data-sheen-appearance="default"], [data-sheen-appearance="flat"], [data-sheen-appearance="glass"],
-:where([data-bs-theme]:not([data-sheen-appearance="flat"] *, [data-sheen-appearance="glass"] *)) {
-  --sheen-surface-bg: var(--bs-body-bg);
-  // SheenUI fields and cards use separate tokens for the same boot-ui material.
-  --sheen-card-bg: var(--sheen-surface-bg);
-  --sheen-field-bg: var(--sheen-surface-bg);
-  --sheen-field-border: var(--sheen-border-color);
-  --sheen-field-shadow: var(--sheen-control-shadow);
-  --sheen-border-color: var(--bs-border-color);
-  --sheen-control-shadow: 0 1px 3px rgba(var(--bs-emphasis-color-rgb), 0.12);
-  --sheen-surface-shadow: var(--sheen-control-shadow);
-  --sheen-control-radius: var(--sheen-radius-control);
-  --sheen-surface-filter: none;
-  --sheen-dialog-bg: var(--sheen-surface-bg);
-  --sheen-dialog-filter: none;
-  --sheen-sheet-bg: var(--sheen-surface-bg);
-  --sheen-sheet-filter: none;
-  --sheen-drawer-bg: var(--sheen-surface-bg);
-  --sheen-drawer-filter: none;
+:root, [data-rax-appearance="default"], [data-rax-appearance="flat"], [data-rax-appearance="glass"],
+:where([data-bs-theme]:not([data-rax-appearance="flat"] *, [data-rax-appearance="glass"] *)) {
+  --rax-surface-bg: var(--bs-body-bg);
+  // RaxUI fields and cards use separate tokens for the same boot-ui material.
+  --rax-card-bg: var(--rax-surface-bg);
+  --rax-field-bg: var(--rax-surface-bg);
+  --rax-field-border: var(--rax-border-color);
+  --rax-field-shadow: var(--rax-control-shadow);
+  --rax-border-color: var(--bs-border-color);
+  --rax-control-shadow: 0 1px 3px rgba(var(--bs-emphasis-color-rgb), 0.12);
+  --rax-surface-shadow: var(--rax-control-shadow);
+  --rax-control-radius: var(--rax-radius-control);
+  --rax-surface-filter: none;
+  --rax-dialog-bg: var(--rax-surface-bg);
+  --rax-dialog-filter: none;
+  --rax-sheet-bg: var(--rax-surface-bg);
+  --rax-sheet-filter: none;
+  --rax-drawer-bg: var(--rax-surface-bg);
+  --rax-drawer-filter: none;
 }
-[data-sheen-appearance="flat"] {
-  --sheen-control-shadow: none;
-  --sheen-surface-shadow: none;
+[data-rax-appearance="flat"] {
+  --rax-control-shadow: none;
+  --rax-surface-shadow: none;
 }
-[data-sheen-appearance="glass"] {
-  --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
-  --sheen-dialog-bg: var(--sheen-surface-bg);
-  --sheen-sheet-bg: var(--sheen-surface-bg);
-  --sheen-drawer-bg: var(--sheen-surface-bg);
+[data-rax-appearance="glass"] {
+  --rax-surface-bg: rgba(var(--bs-body-bg-rgb), 0.96);
+  --rax-dialog-bg: var(--rax-surface-bg);
+  --rax-sheet-bg: var(--rax-surface-bg);
+  --rax-drawer-bg: var(--rax-surface-bg);
   // Controls get a light lift; panels (cards, dialogs, menus) keep the deeper glass shadow.
-  --sheen-control-shadow: var(--sheen-glass-edge), var(--sheen-shadow-sm);
-  --sheen-surface-shadow: var(--sheen-glass-edge), var(--sheen-shadow-md);
-  --sheen-border-color: var(--sheen-glass-border-color);
+  --rax-control-shadow: var(--rax-glass-edge), var(--rax-shadow-sm);
+  --rax-surface-shadow: var(--rax-glass-edge), var(--rax-shadow-md);
+  --rax-border-color: var(--rax-glass-border-color);
   @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     // Same alphas as boot-ui: cards and dialogs are the base glass, menus and
     // popovers +0.18, sheets +0.2, drawers +0.3.
-    --sheen-surface-bg: rgba(var(--bs-body-bg-rgb), calc(var(--sheen-glass-alpha) + 0.18));
-    --sheen-card-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha));
-    --sheen-field-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-glass-alpha-subtle));
-    --sheen-dialog-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-dialog-alpha));
-    --sheen-dialog-filter: blur(var(--sheen-dialog-blur)) saturate(var(--sheen-glass-saturate));
-    --sheen-sheet-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-sheet-alpha));
-    --sheen-sheet-filter: blur(var(--sheen-sheet-blur)) saturate(var(--sheen-glass-saturate));
-    --sheen-drawer-bg: rgba(var(--bs-body-bg-rgb), var(--sheen-drawer-alpha));
-    --sheen-drawer-filter: blur(var(--sheen-drawer-blur)) saturate(var(--sheen-glass-saturate));
-    --sheen-surface-filter: blur(var(--sheen-glass-blur)) saturate(var(--sheen-glass-saturate));
+    --rax-surface-bg: rgba(var(--bs-body-bg-rgb), calc(var(--rax-glass-alpha) + 0.18));
+    --rax-card-bg: rgba(var(--bs-body-bg-rgb), var(--rax-glass-alpha));
+    --rax-field-bg: rgba(var(--bs-body-bg-rgb), var(--rax-glass-alpha-subtle));
+    --rax-dialog-bg: rgba(var(--bs-body-bg-rgb), var(--rax-dialog-alpha));
+    --rax-dialog-filter: blur(var(--rax-dialog-blur)) saturate(var(--rax-glass-saturate));
+    --rax-sheet-bg: rgba(var(--bs-body-bg-rgb), var(--rax-sheet-alpha));
+    --rax-sheet-filter: blur(var(--rax-sheet-blur)) saturate(var(--rax-glass-saturate));
+    --rax-drawer-bg: rgba(var(--bs-body-bg-rgb), var(--rax-drawer-alpha));
+    --rax-drawer-filter: blur(var(--rax-drawer-blur)) saturate(var(--rax-glass-saturate));
+    --rax-surface-filter: blur(var(--rax-glass-blur)) saturate(var(--rax-glass-saturate));
   }
 }
-[data-sheen-density="compact"] {
-  --sheen-control-height: 2rem;
-  --sheen-control-height-sm: 1.75rem;
-  --sheen-control-height-lg: 2.5rem;
+[data-rax-density="compact"] {
+  --rax-control-height: 2rem;
+  --rax-control-height-sm: 1.75rem;
+  --rax-control-height-lg: 2.5rem;
 }
-[data-sheen-density="comfortable"] {
-  --sheen-control-height: 2.5rem;
-  --sheen-control-height-sm: 2.25rem;
-  --sheen-control-height-lg: 3rem;
+[data-rax-density="comfortable"] {
+  --rax-control-height: 2.5rem;
+  --rax-control-height-sm: 2.25rem;
+  --rax-control-height-lg: 3rem;
 }
 
 
@@ -65,17 +65,17 @@
   *,
   ::before,
   ::after {
-    --sheen-glass-alpha: 1 !important;
-    --sheen-glass-alpha-subtle: 1 !important;
-    --sheen-glass-blur: 0px !important;
-    --sheen-surface-bg: var(--bs-body-bg) !important;
-    --sheen-card-bg: var(--bs-body-bg) !important;
-    --sheen-surface-filter: none !important;
-    --sheen-dialog-bg: var(--bs-body-bg) !important;
-    --sheen-dialog-filter: none !important;
-    --sheen-sheet-bg: var(--bs-body-bg) !important;
-    --sheen-sheet-filter: none !important;
-    --sheen-drawer-bg: var(--bs-body-bg) !important;
-    --sheen-drawer-filter: none !important;
+    --rax-glass-alpha: 1 !important;
+    --rax-glass-alpha-subtle: 1 !important;
+    --rax-glass-blur: 0px !important;
+    --rax-surface-bg: var(--bs-body-bg) !important;
+    --rax-card-bg: var(--bs-body-bg) !important;
+    --rax-surface-filter: none !important;
+    --rax-dialog-bg: var(--bs-body-bg) !important;
+    --rax-dialog-filter: none !important;
+    --rax-sheet-bg: var(--bs-body-bg) !important;
+    --rax-sheet-filter: none !important;
+    --rax-drawer-bg: var(--bs-body-bg) !important;
+    --rax-drawer-filter: none !important;
   }
 }

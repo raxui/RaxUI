@@ -10,7 +10,7 @@
       "destination": "styles",
       "target": "components/progress.css",
       "type": "css",
-      "sha256": "bce9d749e353310f88ca979729e136ac430a3615d1cb33315fc1211801c08035"
+      "sha256": "9ce87b32b0b6b7f008dd9baadb32eeb7cbd346c945e0d44443857edb8cd8c321"
     }
   ],
   "files": [
@@ -19,7 +19,7 @@
       "destination": "components",
       "target": "Progress/Progress.razor",
       "type": "razor",
-      "sha256": "9f5edb4195294140f7562f0aff0d76d9711a3e7d7b2e282912932567779230bf"
+      "sha256": "b3bd24e8242421c69b06429b5c652826b6b803b1929e6cfe26dc88e574fc69c9"
     }
   ]
 }

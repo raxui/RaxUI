@@ -1,6 +1,6 @@
 "use client"
 
-import { useSheenTheme, sheenThemeAttributes, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, type RaxAppearance } from "@/lib/theme"
 import * as React from "react"
 
 // Built-in icon paths from Lucide (ISC).
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 const sizeClasses = { sm: "form-control-sm", default: null, lg: "form-control-lg" } as const
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   size?: keyof typeof sizeClasses
   /** `glass` is a deprecated alias for outline; use appearance="glass" for the material. */
   variant?: "glass" | "outline" | "filled"
@@ -56,7 +56,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref,
   ) => {
     props = useFieldControlProps(props)
-    const theme = useSheenTheme({ appearance })
+    const theme = useRaxTheme({ appearance })
     const inputRef = React.useRef<HTMLInputElement>(null)
     const composedRef = useMergedRef(ref, inputRef)
 
@@ -68,13 +68,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const input = (
       <input
-        {...sheenThemeAttributes(theme)}
+        {...raxThemeAttributes(theme)}
         {...props}
         ref={composedRef}
         type={type}
         data-variant={variant}
         aria-invalid={ariaInvalid}
-        className={cn("form-control sheen-input", sizeClasses[size], className)}
+        className={cn("form-control rax-input", sizeClasses[size], className)}
         onChange={(event) => {
           setUncontrolledFilled(event.currentTarget.value !== "")
           onChange?.(event)
@@ -88,25 +88,25 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div
-        className={cn("sheen-input-group", wrapperClassName)}
-        {...sheenThemeAttributes(theme)}
+        className={cn("rax-input-group", wrapperClassName)}
+        {...raxThemeAttributes(theme)}
         dir={props.dir ?? theme.direction}
         data-size={size}
         data-start={startIcon ? "" : undefined}
         data-end={endIcon || clearable ? "" : undefined}
       >
         {startIcon && (
-          <span className="sheen-input-slot" data-side="start" onPointerDown={focusInput(inputRef)}>
+          <span className="rax-input-slot" data-side="start" onPointerDown={focusInput(inputRef)}>
             {startIcon}
           </span>
         )}
         {input}
         {(endIcon || clearable) && (
-          <span className="sheen-input-slot" data-side="end" onPointerDown={focusInput(inputRef)}>
+          <span className="rax-input-slot" data-side="end" onPointerDown={focusInput(inputRef)}>
             {showClear && (
               <button
                 type="button"
-                className="sheen-input-clear"
+                className="rax-input-clear"
                 aria-label={clearLabel}
                 onClick={() => {
                   const el = inputRef.current
@@ -160,7 +160,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
         endIcon={
           <button
             type="button"
-            className="sheen-input-action sheen-input-eye"
+            className="rax-input-action rax-input-eye"
             aria-label={visible ? hideLabel : showLabel}
             aria-pressed={visible}
             data-visible={visible || undefined}
@@ -177,8 +177,8 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
               aria-hidden="true"
             >
               <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
-              <circle className="sheen-input-eye-pupil" cx="12" cy="12" r="3" />
-              <path className="sheen-input-eye-slash" d="M4 4l16 16" pathLength={1} />
+              <circle className="rax-input-eye-pupil" cx="12" cy="12" r="3" />
+              <path className="rax-input-eye-slash" d="M4 4l16 16" pathLength={1} />
             </svg>
           </button>
         }

@@ -20,13 +20,13 @@ export function sync(root,dotnet,saveId){
    if(!available.length)break;for(const i of available)result[i]+=delta/available.length
   }
   return result}
- const read=()=>{if(!saveId)return null;let raw;try{raw=localStorage.getItem('sheen-resizable:'+saveId)??memory.get(saveId)}catch{raw=memory.get(saveId)}try{const data=JSON.parse(raw);if(!data||Array.isArray(data)||Object.keys(data).length!==panels.length)return null;const values=panels.map(p=>data[p.id]);return valid(values)?values:null}catch{return null}}
+ const read=()=>{if(!saveId)return null;let raw;try{raw=localStorage.getItem('rax-resizable:'+saveId)??memory.get(saveId)}catch{raw=memory.get(saveId)}try{const data=JSON.parse(raw);if(!data||Array.isArray(data)||Object.keys(data).length!==panels.length)return null;const values=panels.map(p=>data[p.id]);return valid(values)?values:null}catch{return null}}
  const layout=()=>Object.fromEntries(panels.map((p,i)=>[p.id,Number(sizes[i].toFixed(4))]))
  const apply=()=>{panels.forEach((p,i)=>{p.style.flex=`${sizes[i]} 1 0%`;p.style.minWidth='0';p.style.minHeight='0';p.style.visibility=sizes[i]<.01?'hidden':'';p.dataset.collapsedState=sizes[i]<.01?'true':'false'})
   for(const output of root.querySelectorAll('[data-resizable-size]')){if(output.closest('[data-resizable-group]')!==root)continue;const index=panels.findIndex(p=>p.id===output.dataset.resizableSize);if(index<0)continue;const value=Math.round(sizes[index])+'%';if(output.firstChild?.nodeType===Node.TEXT_NODE)output.firstChild.nodeValue=value;else output.textContent=value}
   const limits=bounds();handles.forEach((h,i)=>{h.setAttribute('aria-orientation',vertical()?'horizontal':'vertical');h.setAttribute('aria-controls',panels[i].id);h.setAttribute('aria-valuenow',String(Math.round(sizes[i])));h.setAttribute('aria-valuemin',String(Math.round(limits[i].collapsible?limits[i].collapsed:limits[i].min)));h.setAttribute('aria-valuemax',String(Math.round(Math.min(limits[i].max,sizes[i]+sizes[i+1]-(limits[i+1].collapsible?limits[i+1].collapsed:limits[i+1].min)))));h.tabIndex=h.hasAttribute('data-disabled')?-1:0})
  }
- const commit=()=>{const values=layout();if(saveId){const raw=JSON.stringify(values);memory.set(saveId,raw);try{localStorage.setItem('sheen-resizable:'+saveId,raw)}catch{}}void dotnet.invokeMethodAsync('Changed',values).catch(console.error)}
+ const commit=()=>{const values=layout();if(saveId){const raw=JSON.stringify(values);memory.set(saveId,raw);try{localStorage.setItem('rax-resizable:'+saveId,raw)}catch{}}void dotnet.invokeMethodAsync('Changed',values).catch(console.error)}
  const adjust=(index,value)=>{const limits=bounds(),a=limits[index],b=limits[index+1],sum=sizes[index]+sizes[index+1]
   const low=Math.max(a.collapsible?a.collapsed:a.min,sum-b.max),high=Math.min(a.max,sum-(b.collapsible?b.collapsed:b.min))
   value=Math.max(low,Math.min(high,value))

@@ -6,7 +6,7 @@ import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-reac
 import Autoplay from "embla-carousel-autoplay"
 import Fade from "embla-carousel-fade"
 
-import { useSheenTheme } from "@/lib/theme"
+import { useRaxTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { prefersReducedMotion } from "@/lib/app-shell-utils"
 import { getDirection } from "@/lib/direction"
@@ -77,7 +77,7 @@ function sizeVars(size: SlideSize | undefined) {
   if (!size) return {}
   const s = typeof size === "string" ? { base: size } : size
   const vars: Record<string, string> = {}
-  for (const [bp, value] of Object.entries(s)) if (value) vars[`--sheen-carousel-size-${bp}`] = value
+  for (const [bp, value] of Object.entries(s)) if (value) vars[`--rax-carousel-size-${bp}`] = value
   return vars
 }
 
@@ -123,7 +123,7 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
     },
     ref,
   ) => {
-    const theme = useSheenTheme()
+    const theme = useRaxTheme()
     const rootRef = React.useRef<HTMLDivElement | null>(null)
     const labels = React.useMemo(() => ({ ...DEFAULT_LABELS, ...labelsProp }), [labelsProp])
 
@@ -252,10 +252,10 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
           aria-roledescription={labels.carousel}
           aria-label={label}
           dir={dirProp}
-          className={cn("sheen-carousel", className)}
+          className={cn("rax-carousel", className)}
           data-orientation={orientation}
           data-effect={effect}
-          style={{ ...sizeVars(slideSize), ...(gap ? { "--sheen-carousel-gap": gap } : {}), ...style } as React.CSSProperties}
+          style={{ ...sizeVars(slideSize), ...(gap ? { "--rax-carousel-gap": gap } : {}), ...style } as React.CSSProperties}
           onKeyDownCapture={(event) => {
             onKeyDownCapture?.(event)
             const target = event.target as HTMLElement
@@ -293,9 +293,9 @@ const CarouselContent = React.forwardRef<HTMLDivElement, CarouselContentProps>(
   ({ className, viewportClassName, viewportStyle, ...props }, ref) => {
     const { carouselRef, playing } = useCarousel()
     return (
-      <div ref={carouselRef} className={cn("sheen-carousel-viewport", viewportClassName)} style={viewportStyle}>
+      <div ref={carouselRef} className={cn("rax-carousel-viewport", viewportClassName)} style={viewportStyle}>
         {/* Announce slide changes, except while it moves by itself. */}
-        <div ref={ref} className={cn("sheen-carousel-container", className)} aria-live={playing ? "off" : "polite"} {...props} />
+        <div ref={ref} className={cn("rax-carousel-container", className)} aria-live={playing ? "off" : "polite"} {...props} />
       </div>
     )
   },
@@ -331,7 +331,7 @@ const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
       aria-roledescription={labels.slide}
       aria-label={index !== null && slideCount ? labels.slideOf(index + 1, slideCount) : undefined}
       data-active={active || undefined}
-      className={cn("sheen-carousel-item", className)}
+      className={cn("rax-carousel-item", className)}
       {...props}
     />
   )
@@ -362,7 +362,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         variant={variant}
         size={size}
-        className={cn("sheen-carousel-nav sheen-carousel-prev", className)}
+        className={cn("rax-carousel-nav rax-carousel-prev", className)}
         data-orientation={orientation}
         disabled={!canPrev}
         aria-label={labels.previous}
@@ -384,7 +384,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         variant={variant}
         size={size}
-        className={cn("sheen-carousel-nav sheen-carousel-next", className)}
+        className={cn("rax-carousel-nav rax-carousel-next", className)}
         data-orientation={orientation}
         disabled={!canNext}
         aria-label={labels.next}
@@ -408,19 +408,19 @@ const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(({ clas
   const { snapCount, selected, goTo, timer, labels } = useCarousel()
   if (snapCount < 2) return null
   return (
-    <div ref={ref} className={cn("sheen-carousel-dots", className)} data-variant={variant} {...props}>
+    <div ref={ref} className={cn("rax-carousel-dots", className)} data-variant={variant} {...props}>
       {Array.from({ length: snapCount }, (_, i) => (
         <button
           key={i}
           type="button"
-          className="sheen-carousel-dot"
+          className="rax-carousel-dot"
           data-active={i === selected || undefined}
           aria-label={labels.goTo(i + 1)}
           aria-current={i === selected || undefined}
           onClick={() => goTo(i)}
         >
           {i === selected && timer && (
-            <span key={timer.key} className="sheen-carousel-dot-progress" style={{ animationDuration: `${timer.ms}ms` }} />
+            <span key={timer.key} className="rax-carousel-dot-progress" style={{ animationDuration: `${timer.ms}ms` }} />
           )}
         </button>
       ))}
@@ -434,7 +434,7 @@ const CarouselCounter = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<H
   const { selected, snapCount } = useCarousel()
   if (!snapCount) return null
   return (
-    <span ref={ref} className={cn("sheen-carousel-counter", className)} aria-hidden="true" {...props}>
+    <span ref={ref} className={cn("rax-carousel-counter", className)} aria-hidden="true" {...props}>
       {selected + 1} / {snapCount}
     </span>
   )
@@ -451,7 +451,7 @@ const CarouselPlayPause = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         variant={variant}
         size={size}
-        className={cn("sheen-carousel-playpause", className)}
+        className={cn("rax-carousel-playpause", className)}
         aria-label={playing ? labels.pause : labels.play}
         aria-pressed={!playing}
         onClick={togglePlay}
@@ -495,14 +495,14 @@ const CarouselThumbs = React.forwardRef<HTMLDivElement, CarouselThumbsProps>(({ 
         stripRef.current = node
         assignRef(ref, node)
       }}
-      className={cn("sheen-carousel-thumbs", className)}
+      className={cn("rax-carousel-thumbs", className)}
       {...props}
     >
       {Array.from({ length: snapCount }, (_, i) => (
         <button
           key={i}
           type="button"
-          className="sheen-carousel-thumb"
+          className="rax-carousel-thumb"
           data-active={i === selected || undefined}
           aria-label={labels.goTo(i + 1)}
           aria-current={i === selected || undefined}

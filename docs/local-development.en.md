@@ -1,4 +1,4 @@
-# Using SheenUI locally on Windows 11
+# Using RaxUI locally on Windows 11
 
 [العربية](local-development.ar.md) | English
 
@@ -7,7 +7,7 @@ packages to npm or NuGet. Run the commands in **PowerShell**. Examples assume
 the repository is located at:
 
 ```text
-C:\Users\saada\source\repos\SheenUI
+C:\Users\saada\source\repos\RaxUI
 ```
 
 Adjust the paths for your machine. App creation commands require a new directory;
@@ -47,13 +47,13 @@ project file.
 ### Build the Blazor CLI package
 
 ```powershell
-$repo = "C:\Users\saada\source\repos\SheenUI"
+$repo = "C:\Users\saada\source\repos\RaxUI"
 $version = "0.1.0-local.$(Get-Date -Format yyyyMMddHHmmss)"
 $tools = "$repo\local-tools\$version"
 
 cd $repo
 
-dotnet pack .\src\SheenUI.Cli\SheenUI.Cli.csproj `
+dotnet pack .\src\RaxUI.Cli\RaxUI.Cli.csproj `
   -c Release `
   -o .\nupkg `
   -p:Version=$version
@@ -62,7 +62,7 @@ dotnet pack .\src\SheenUI.Cli\SheenUI.Cli.csproj `
 ### React and Next.js package (not required for Blazor)
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
+cd C:\Users\saada\source\repos\RaxUI
 npm ci
 npm pack ./src/react-cli --pack-destination .
 ```
@@ -71,8 +71,8 @@ The .NET package filename includes the generated `$version`. If you also ran
 the React commands, its package uses the current React CLI version:
 
 ```text
-SheenUI\nupkg\SheenUI.Cli.<version>.nupkg
-SheenUI\sheenui-react-0.1.0-preview.1.tgz
+RaxUI\nupkg\RaxUI.Cli.<version>.nupkg
+RaxUI\raxui-react-0.1.0-preview.1.tgz
 ```
 
 These commands only create local packages. Do not run `npm publish` or
@@ -86,7 +86,7 @@ React CLI version changes, use the actual generated `.tgz` filename when install
 ```powershell
 cd $repo
 
-dotnet tool install SheenUI.Cli `
+dotnet tool install RaxUI.Cli `
   --tool-path "$tools" `
   --add-source "$repo\nupkg" `
   --version "$version"
@@ -101,8 +101,8 @@ Running directly from source remains an alternative in section 7.
 
 ```powershell
 cd C:\Users\saada\source\repos
-dotnet new blazor -n SheenDemo --framework net10.0 --interactivity Server
-cd SheenDemo
+dotnet new blazor -n RaxDemo --framework net10.0 --interactivity Server
+cd RaxDemo
 ```
 
 For .NET 8 or 9, replace `net10.0` with `net8.0` or `net9.0` and install the
@@ -114,8 +114,8 @@ with Interactive Server**.
 Open the directory containing your application's `.csproj`, then run:
 
 ```powershell
-& "$tools\sheenui.exe" init
-& "$tools\sheenui.exe" add button
+& "$tools\raxui.exe" init
+& "$tools\raxui.exe" add button
 dotnet build
 dotnet run
 ```
@@ -126,7 +126,7 @@ layout, and welcome page, and cleans up recognized, unmodified template files,
 including the default `app.css`. Files you have changed are preserved and reported.
 
 The component is installed at `Components/UI/Button/Button.razor`, and the theme
-at `wwwroot/css/sheenui/sheenui.css`.
+at `wwwroot/css/raxui/raxui.css`.
 
 ### Use Button
 
@@ -178,13 +178,13 @@ npm install
 Install the library in this application, or in an existing Vite 6+ application:
 
 ```powershell
-npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\SheenUI\sheenui-react-0.1.0-preview.1.tgz"
-npx sheenui-react init
+npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\RaxUI\raxui-react-0.1.0-preview.1.tgz"
+npx raxui-react init
 npm run dev
 ```
 
 Open the URL printed in the terminal, usually `http://localhost:5173`.
-`init` installs Button automatically; running `npx sheenui-react add button`
+`init` installs Button automatically; running `npx raxui-react add button`
 afterward does not install another copy.
 
 The main installed files are:
@@ -193,8 +193,8 @@ The main installed files are:
 src/App.tsx                         Welcome page and application shell
 src/components/ui/button.tsx         Component
 src/lib/theme.tsx                    Theme provider
-src/styles/sheenui.scss             Stylesheet entry point
-src/styles/sheenui/                 Theme and component partials
+src/styles/raxui.scss             Stylesheet entry point
+src/styles/raxui/                 Theme and component partials
 ```
 
 Verify the production build:
@@ -217,8 +217,8 @@ cd next-test
 Inside the application, run:
 
 ```powershell
-npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\SheenUI\sheenui-react-0.1.0-preview.1.tgz"
-npx sheenui-react init
+npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\RaxUI\raxui-react-0.1.0-preview.1.tgz"
+npx raxui-react init
 npm run dev
 ```
 
@@ -230,7 +230,7 @@ app/page.tsx                       Welcome page
 app/layout.tsx                     Adds the theme import to the existing layout
 components/ui/button.tsx           Component
 lib/theme.tsx                      Theme provider
-styles/sheenui.scss               Stylesheet entry point
+styles/raxui.scss               Stylesheet entry point
 ```
 
 With `--src-dir`, these files live under `src/` instead of the application root.
@@ -257,14 +257,14 @@ Use the following React example in Vite's `src/App.tsx`. For Next.js
 "use client"
 
 import { Button } from "./components/ui/button"
-import { SheenThemeProvider } from "./lib/theme"
+import { RaxThemeProvider } from "./lib/theme"
 
 export default function App() {
   return (
-    <SheenThemeProvider className="sheen-app" mode="dark" appearance="glass" direction="rtl">
+    <RaxThemeProvider className="rax-app" mode="dark" appearance="glass" direction="rtl">
       <Button onClick={() => alert("Saved")}>Save</Button>
       <Button variant="outline" appearance="flat">Cancel</Button>
-    </SheenThemeProvider>
+    </RaxThemeProvider>
   )
 }
 ```
@@ -272,13 +272,13 @@ export default function App() {
 In Blazor, apply theme attributes to a component's container:
 
 ```razor
-<div data-bs-theme="dark" data-sheen-appearance="glass" dir="rtl">
+<div data-bs-theme="dark" data-rax-appearance="glass" dir="rtl">
     <Button>Save</Button>
 </div>
 ```
 
 The dark welcome page has a black background with corner gradients. To set the
-page's initial theme, edit the `.sheen-app` container in the Blazor layout, or the
+page's initial theme, edit the `.rax-app` container in the Blazor layout, or the
 state values in the React page.
 
 ## 7. Test library changes during development
@@ -292,10 +292,10 @@ React and Next.js still require a separate test app or a reviewed manual merge.
 After rebuilding the theme as described below, run the current CLI from source:
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
-dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- update --dry-run --cwd "C:\Users\saada\source\repos\SheenDemo"
-dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- update --cwd "C:\Users\saada\source\repos\SheenDemo"
-dotnet build ..\SheenDemo\SheenDemo.csproj
+cd C:\Users\saada\source\repos\RaxUI
+dotnet run --project .\src\RaxUI.Cli -c Release -f net10.0 -- update --dry-run --cwd "C:\Users\saada\source\repos\RaxDemo"
+dotnet run --project .\src\RaxUI.Cli -c Release -f net10.0 -- update --cwd "C:\Users\saada\source\repos\RaxDemo"
+dotnet build ..\RaxDemo\RaxDemo.csproj
 ```
 
 Use `update button` to update one installed component and its dependencies. Both
@@ -307,7 +307,7 @@ The update keeps starter pages, app layout, app styles and Bootstrap. Locally
 edited component files are kept when their upstream source is unchanged. If both
 changed, the complete operation stops without writing. Save your edits separately,
 restore the installed bytes, update, then reapply the edits; or replace the file
-with the exact new registry source and retry. Keep `sheenui.lock.json`. There is no force overwrite.
+with the exact new registry source and retry. Keep `raxui.lock.json`. There is no force overwrite.
 See [the full update contract](../README.md#updating-an-existing-blazor-application).
 
 ### Blazor: run the CLI from source
@@ -316,9 +316,9 @@ This bypasses the previously installed tool and package caching when reusing a
 version number:
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
-dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- init --cwd "C:\Users\saada\source\repos\blazor-test-new"
-dotnet run --project .\src\SheenUI.Cli -c Release -f net10.0 -- add button --cwd "C:\Users\saada\source\repos\blazor-test-new"
+cd C:\Users\saada\source\repos\RaxUI
+dotnet run --project .\src\RaxUI.Cli -c Release -f net10.0 -- init --cwd "C:\Users\saada\source\repos\blazor-test-new"
+dotnet run --project .\src\RaxUI.Cli -c Release -f net10.0 -- add button --cwd "C:\Users\saada\source\repos\blazor-test-new"
 ```
 
 Create the new application before running these commands.
@@ -326,7 +326,7 @@ Create the new application before running these commands.
 ### React and Next.js: rebuild the package
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
+cd C:\Users\saada\source\repos\RaxUI
 npm pack ./src/react-cli --pack-destination .
 ```
 
@@ -338,7 +338,7 @@ application. Rebuilding the `.tgz` alone does not change existing applications.
 The shared source is in `theme/scss/`. After editing it, run:
 
 ```powershell
-cd C:\Users\saada\source\repos\SheenUI
+cd C:\Users\saada\source\repos\RaxUI
 npm run theme:css
 node src/react-cli/scripts/update-hashes.mjs
 ```

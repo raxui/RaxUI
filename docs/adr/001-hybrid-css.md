@@ -1,6 +1,6 @@
 # ADR 001 — Hybrid CSS
 
-- **Status:** Accepted; component styling superseded by [ADR 007](007-blazor-shared-theme.md): themed Blazor components get their styles from the shared `sheenui.css`, not `.razor.css` isolation. The load order and `init` link rules below still apply.
+- **Status:** Accepted; component styling superseded by [ADR 007](007-blazor-shared-theme.md): themed Blazor components get their styles from the shared `raxui.css`, not `.razor.css` isolation. The load order and `init` link rules below still apply.
 - **Date:** 2026-10-23
 
 ## Context

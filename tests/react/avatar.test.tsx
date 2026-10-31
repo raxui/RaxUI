@@ -6,7 +6,7 @@ describe("Avatar", () => {
     render(<Avatar size="lg" shape="rounded" ring><AvatarFallback name="Saad Alsaree" /><AvatarBadge status="online" label="Available" /></Avatar>)
     expect(screen.getByRole("img", { name: "Saad Alsaree" })).toHaveTextContent("SA")
     expect(screen.getByRole("img", { name: "Available" })).toHaveAttribute("data-status", "online")
-    expect(document.querySelector(".sheen-avatar")).toHaveClass("sheen-avatar-lg", "sheen-avatar-rounded", "sheen-avatar-ring")
+    expect(document.querySelector(".rax-avatar")).toHaveClass("rax-avatar-lg", "rax-avatar-rounded", "rax-avatar-ring")
     expect(getInitials("???? ????????")).toBe("??")
     expect(getInitials(" ")).toBe("")
   })

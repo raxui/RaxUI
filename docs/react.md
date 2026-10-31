@@ -1,6 +1,6 @@
-# SheenUI for React
+# RaxUI for React
 
-Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared SheenUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. It supports **React 18.3 or 19 with TypeScript** on **Vite 6 or later** or **Next.js 15 or later (App Router, without Tailwind)**, with buttons, overlays, fields, forms and basic controls ([ADR 006](adr/006-react-first-milestone.md), [ADR 010](adr/010-vite-6-and-later.md), [ADR 011](adr/011-nextjs.md)).
+Source-owned React components on Bootstrap 5.3 SCSS and Radix UI, with the shared RaxUI theme: `default`, `flat`, and `glass` appearances, light and dark mode, accents, density, and RTL. It supports **React 18.3 or 19 with TypeScript** on **Vite 6 or later** or **Next.js 15 or later (App Router, without Tailwind)**, with buttons, overlays, fields, forms and basic controls ([ADR 006](adr/006-react-first-milestone.md), [ADR 010](adr/010-vite-6-and-later.md), [ADR 011](adr/011-nextjs.md)).
 
 The registry keeps components under `registry/react/components/<name>/`, the
 foundation under `registry/react/foundation/`, and starters under `starter-react/`
@@ -10,7 +10,7 @@ Installed component and SCSS paths in your app are unchanged.
 ## Basic controls
 
 Install `input`, `input-group`, `textarea`, `checkbox`, `radio-group`, `switch`,
-or `select` with `npx sheenui-react add <name>`. They require `foundation` and
+or `select` with `npx raxui-react add <name>`. They require `foundation` and
 `field`; `input-group` also installs `input`. Selection controls pin Radix
 Checkbox **1.4.1**, RadioGroup **1.5.1**, Switch **1.4.1**, and Select **2.4.1**.
 The installer adds each control's SCSS import; input and textarea share a mixin
@@ -59,7 +59,7 @@ Controls also read `useFieldControlProps` directly, so they work with
 `FieldControl` and react-hook-form's `FormControl` without duplicate description
 IDs. For Select, put the trigger inside Field; Root has no DOM element. Each
 joined-input member gets its own identity. Supply individual member labels.
-Wrap themed areas in `SheenThemeProvider`; Select portals into its nearest
+Wrap themed areas in `RaxThemeProvider`; Select portals into its nearest
 element to preserve appearance, mode, accent, density and direction.
 
 | Control | Props beyond native / Radix props and forwarded refs |
@@ -95,7 +95,7 @@ motion respects reduced-motion preferences.
 
 ## Fields and forms
 
-Install with `npx sheenui-react add field`, `add form`, or `add form-section`.
+Install with `npx raxui-react add field`, `add form`, or `add form-section`.
 Dependencies are installed first: Form and FormSection require Field and the
 foundation. Form pins `react-hook-form` **7.91.0**, `zod` **4.6.7**, and
 `@hookform/resolvers` **5.9.2**. All new sources are client components.
@@ -139,7 +139,7 @@ Field so its label targets the same ID. Inputs must forward props and refs.
 `requiredIndicator={false}` hides the visual marker. FieldError supports
 `forceMount`. FieldSet renders a native fieldset for grouped controls.
 All parts accept `className` and native HTML attributes. Theme with ancestor
-`data-sheen-appearance`, `data-bs-theme`, `data-sheen-accent`, and `dir`.
+`data-rax-appearance`, `data-bs-theme`, `data-rax-accent`, and `dir`.
 
 ### Form
 
@@ -222,32 +222,32 @@ npm pack ./src/react-cli --pack-destination .
 In a React + Vite (TypeScript) app:
 
 ```sh
-npm install -D --save-exact --ignore-scripts /path/to/sheenui-react-0.1.0-preview.1.tgz
-npx sheenui-react init
-npx sheenui-react add button
+npm install -D --save-exact --ignore-scripts /path/to/raxui-react-0.1.0-preview.1.tgz
+npx raxui-react init
+npx raxui-react add button
 ```
 
 `init`:
 
-- copies `src/lib/theme.tsx`, `src/lib/utils.ts`, and the theme partials into `src/styles/sheenui/`;
-- creates `src/styles/sheenui.scss` (theme variables, then Bootstrap, then the theme core);
-- adds `import "./styles/sheenui.scss"` as the first line of `src/main.tsx` (or `src/main.jsx`);
+- copies `src/lib/theme.tsx`, `src/lib/utils.ts`, and the theme partials into `src/styles/raxui/`;
+- creates `src/styles/raxui.scss` (theme variables, then Bootstrap, then the theme core);
+- adds `import "./styles/raxui.scss"` as the first line of `src/main.tsx` (or `src/main.jsx`);
 - installs Button (`src/components/ui/button.tsx` and its style partial), used by the welcome page;
-- replaces the unmodified Vite template `src/App.tsx` with a SheenUI app shell and welcome page where you can try the theme, and removes the template files only that App used (`App.css`, `index.css` and its import, `src/assets/*`, `public/icons.svg`). Files you changed are kept and reported ([ADR 008](adr/008-starter-app.md));
+- replaces the unmodified Vite template `src/App.tsx` with a RaxUI app shell and welcome page where you can try the theme, and removes the template files only that App used (`App.css`, `index.css` and its import, `src/assets/*`, `public/icons.svg`). Files you changed are kept and reported ([ADR 008](adr/008-starter-app.md));
 - installs missing packages (`bootstrap`, `sass`, `clsx`, `@radix-ui/react-slot`) with `npm install --save-exact --ignore-scripts`.
 
-`add <component>` copies a component and its style partial and adds the style import to `src/styles/sheenui.scss`. `add button` after `init` changes nothing, since Button is already installed.
+`add <component>` copies a component and its style partial and adds the style import to `src/styles/raxui.scss`. `add button` after `init` changes nothing, since Button is already installed.
 
 Options: `--cwd <dir>`, `--no-install` (print the npm command instead of running it). With Yarn, pnpm, or Bun lockfiles the CLI prints the command for you to run.
 
-If your entry already imports Bootstrap CSS (for example `bootstrap/dist/css/bootstrap.min.css`), remove that import first: Bootstrap is compiled from SCSS in `src/styles/sheenui.scss`.
+If your entry already imports Bootstrap CSS (for example `bootstrap/dist/css/bootstrap.min.css`), remove that import first: Bootstrap is compiled from SCSS in `src/styles/raxui.scss`.
 
 ## Next.js
 
 In a Next.js 15+ App Router project created without Tailwind (`npx create-next-app@latest --ts --app --no-tailwind`), the same commands work. The CLI detects Next.js and:
 
 - installs into the project root, or into `src/` when you used `--src-dir`;
-- creates `styles/sheenui.scss`, which imports Bootstrap by path (`../node_modules/bootstrap/scss/bootstrap`), and imports it as the first line of `app/layout.tsx`. Your layout is kept;
+- creates `styles/raxui.scss`, which imports Bootstrap by path (`../node_modules/bootstrap/scss/bootstrap`), and imports it as the first line of `app/layout.tsx`. Your layout is kept;
 - replaces the unmodified template `app/page.tsx` with the welcome page (a client component), and removes the template `page.module.css`, `globals.css` (and its import), and `public/*.svg`. Changed files are kept and reported;
 - installs `lib/theme.tsx` and `components/ui/button.tsx` with `"use client"`, so use them from client components or pass them into server components as children.
 
@@ -285,11 +285,11 @@ Windows package installation runs `npm-cli.js` directly with Node, without a she
 
 ```tsx
 import { Button } from "./components/ui/button"
-import { SheenAppearanceScope, SheenThemeProvider } from "./lib/theme"
+import { RaxAppearanceScope, RaxThemeProvider } from "./lib/theme"
 
 export default function App() {
   return (
-    <SheenThemeProvider appearance="default" mode="light" direction="ltr" density="comfortable">
+    <RaxThemeProvider appearance="default" mode="light" direction="ltr" density="comfortable">
       <Button onClick={() => alert("Saved")}>Save</Button>
       <Button variant="outline" size="sm">Cancel</Button>
       <Button color="success">Approve</Button>
@@ -297,11 +297,11 @@ export default function App() {
         <a href="/docs">Docs</a>
       </Button>
 
-      <SheenAppearanceScope appearance="glass">
+      <RaxAppearanceScope appearance="glass">
         <Button>Glass</Button>
         <Button appearance="flat">Flat override</Button>
-      </SheenAppearanceScope>
-    </SheenThemeProvider>
+      </RaxAppearanceScope>
+    </RaxThemeProvider>
   )
 }
 ```
@@ -320,7 +320,7 @@ Plus every native `<button>` attribute and a forwarded `ref`. `type` defaults to
 
 ### Icons
 
-Components take any icon node. For your own icons, SheenUI recommends [`lucide-react`](https://lucide.dev) ([ADR 014](adr/014-icons.md)); icons follow the text color and the slot's size:
+Components take any icon node. For your own icons, RaxUI recommends [`lucide-react`](https://lucide.dev) ([ADR 014](adr/014-icons.md)); icons follow the text color and the slot's size:
 
 ```tsx
 import { Trash2 } from "lucide-react"
@@ -330,7 +330,7 @@ import { Trash2 } from "lucide-react"
 
 ### Dialog and DropdownMenu
 
-`npx sheenui-react add dialog` and `npx sheenui-react add dropdown-menu` install wrappers over Radix with the shared styles ([ADR 013](adr/013-overlay-primitives.md)). Their content renders inside the nearest `SheenThemeProvider`, so mode, appearance, accent, and direction apply to it.
+`npx raxui-react add dialog` and `npx raxui-react add dropdown-menu` install wrappers over Radix with the shared styles ([ADR 013](adr/013-overlay-primitives.md)). Their content renders inside the nearest `RaxThemeProvider`, so mode, appearance, accent, and direction apply to it.
 
 ```tsx
 <Dialog>
@@ -362,7 +362,7 @@ import { Trash2 } from "lucide-react"
 
 ### ConfirmDialog
 
-`npx sheenui-react add confirm-dialog` installs boot-ui's confirmation on Radix AlertDialog (it also installs Button). A click outside nudges it instead of closing; focus starts on Cancel.
+`npx raxui-react add confirm-dialog` installs boot-ui's confirmation on Radix AlertDialog (it also installs Button). A click outside nudges it instead of closing; focus starts on Cancel.
 
 ```tsx
 <ConfirmDialog
@@ -378,12 +378,12 @@ import { Trash2 } from "lucide-react"
 
 Props: `tone` (`default`, `destructive`, `warning`, `success`), `icon`, `cancelText`, `confirmationLabel`, `layout` (`inline` or `stacked`), `appearance`, `open`/`defaultOpen`/`onOpenChange`, and `onCancel`. The file also exports the `AlertDialog*` parts for custom layouts.
 
-Appearance precedence: the component's `appearance`, then the nearest `SheenAppearanceScope`, then `SheenThemeProvider`, then `default`. `mode`, `direction`, and `density` travel the same way.
+Appearance precedence: the component's `appearance`, then the nearest `RaxAppearanceScope`, then `RaxThemeProvider`, then `default`. `mode`, `direction`, and `density` travel the same way.
 
 ## Slider and rating
 
-`npx sheenui-react add slider` installs `@radix-ui/react-slider` **1.6.1**;
-`npx sheenui-react add rating` adds no packages. Both require `foundation` and
+`npx raxui-react add slider` installs `@radix-ui/react-slider` **1.6.1**;
+`npx raxui-react add rating` adds no packages. Both require `foundation` and
 `field`. Import `Slider` from `@/components/ui/slider` and `Rating` (or
 `RatingBreakdown`) from `@/components/ui/rating`.
 
@@ -428,20 +428,20 @@ All English text is overridable: `getValueText(value, max, label)` defaults to
 to "1,284 ratings", and `formatBar(stars, count, percent)` names each summary bar.
 `labels` supplies app-defined score words. Supply `thumbLabels` for distinct
 range endpoint names. Appearance, density, dark mode and accents inherit the
-shared theme; direction uses `useSheenTheme` and falls back to computed CSS direction.
+shared theme; direction uses `useRaxTheme` and falls back to computed CSS direction.
 
 ## Customize
 
-- **Bootstrap variables:** set them at the top of `src/styles/sheenui.scss`, above the imports, for example `$primary: #0a84ff;`.
-- **Theme tokens:** override `--sheen-*` custom properties in your own CSS, for example `--sheen-radius-control` or `--sheen-glass-blur`.
-- **Accent:** add `data-sheen-accent="emerald"` (or `indigo`, `amber`) on `<html>` or any wrapper.
+- **Bootstrap variables:** set them at the top of `src/styles/raxui.scss`, above the imports, for example `$primary: #0a84ff;`.
+- **Theme tokens:** override `--rax-*` custom properties in your own CSS, for example `--rax-radius-control` or `--rax-glass-blur`.
+- **Accent:** add `data-rax-accent="emerald"` (or `indigo`, `amber`) on `<html>` or any wrapper.
 - **Source:** component files such as `button.tsx` and `_button.scss` are yours to edit. Repeated `init`/`add` never overwrite files you changed.
 
 Users who set their system to reduce transparency get opaque glass automatically.
 
 ## Guarantees and limits
 
-- `sheenui.react.json` and `sheenui.react.lock.json` record the CLI release and SHA-256 hashes of installed files.
+- `raxui.react.json` and `raxui.react.lock.json` record the CLI release and SHA-256 hashes of installed files.
 - Unknown files, locally modified files, and files from another release are never silently replaced. Paths that escape the project, including through symlinks or junctions, are rejected.
 - Ordinary write failures restore original files and remove new empty folders.
 - Sass prints `@import` deprecation warnings that come from Bootstrap 5.3 itself.
@@ -476,7 +476,7 @@ is available from the date-time-input entry as well. Segment order, numerals and
 labels follow locale; Arabic/Persian digits, arrow stepping, visual left/right
 navigation, clearable, picker, min/max, isDateDisabled, sizes and field variants
 are supported. Time fields add hourCycle (12 or 24) and minuteStep. Picker content
-uses the shared calendar and time wheels inside the nearest SheenThemeProvider.
+uses the shared calendar and time wheels inside the nearest RaxThemeProvider.
 clearLabel, pickerLabel, nowLabel and doneLabel customize picker actions.
 
 TimePicker is the standalone wheel group: value/defaultValue are
@@ -675,7 +675,7 @@ JavaScript module; C# owns values and validates committed choices. Popover Escap
 and dismissal return focus to the field. Month/year selection uses labelled
 buttons; Escape returns to days before dismissing the enclosing popover.
 
-See `examples/blazor/SheenDemo.razor` for the validated Arabic/English booking demo.
+See `examples/blazor/RaxDemo.razor` for the validated Arabic/English booking demo.
 After `init`, `add date-range-picker` and `add date-time-input`, copy it to `Components/Pages/`.
 It uses Interactive Server. Other interactive modes require the components and globalization data in the corresponding client project.
 DatePicker/DateRangePicker remain button-based; DateTimeInput provides segmented entry.
@@ -725,7 +725,7 @@ manifests. Existing typed bindings remain valid; unbound generic use needs
 `TValue="TimeOnly"` or a typed Value. Native static SSR keeps the framework's
 wall-time parsing policy; custom Culture controls the interactive UI.
 
-`examples/blazor/SheenDemo.razor` includes the standalone wheels and combined
+`examples/blazor/RaxDemo.razor` includes the standalone wheels and combined
 field, with an Arabic/English switch. After init, add both `date-range-picker`
 and `date-time-input` before copying the page. Browser acceptance covers
 Interactive Server on .NET 8, 9 and 10; WebAssembly hosting is not covered.
@@ -756,7 +756,7 @@ control. Both retain EditContext and native static SSR forms. See the full
 
 React Popover exports Popover, PopoverTrigger, PopoverAnchor, PopoverContent and
 PopoverClose. Content uses Radix Popover 1.3.1 and portals into the nearest
-SheenThemeProvider, preserving theme attributes and accent. Open/defaultOpen and
+RaxThemeProvider, preserving theme attributes and accent. Open/defaultOpen and
 onOpenChange follow Radix. Content defaults to inline start alignment with a 4px gap.
 
 React Combobox composes Popover and Command. Options support value, label,
@@ -793,7 +793,7 @@ an external trigger with its list. No new external runtime dependency is needed.
 ## Display basics
 
 Install `alert`, `badge`, `avatar`, `card`, `skeleton`, `spinner`, `progress`,
-`table`, or `timeline` with `npx sheenui-react add <name>`. Each requires only
+`table`, or `timeline` with `npx raxui-react add <name>`. Each requires only
 foundation. Avatar pins Radix Avatar **1.3.1**; Progress pins Radix Progress
 **1.2.1**; Badge, Card and Skeleton reuse Radix Slot **1.5.0**. No icon package is
 required. Roots accept `appearance` (default/flat/glass; unset inherits),
@@ -909,7 +909,7 @@ Roots accept `appearance` (default/flat/glass, unset inherits), `className`, nat
 attributes and refs. Accent, dark mode, density and RTL inherit the theme.
 Tabs and groups accept explicit `dir`; tabs additionally reads the theme direction.
 Breadcrumb's collapsed menu reuses DropdownMenu and portals into the nearest
-SheenThemeProvider. All built-in text is overridable, and icons use inline Lucide
+RaxThemeProvider. All built-in text is overridable, and icons use inline Lucide
 paths (ISC). Custom icon slots support SVG or other markup with two-class sizing.
 
 | Item | Props and defaults |
@@ -936,7 +936,7 @@ pages retain a static highlight until measurement.
 ## Overlays and feedback (phase 3)
 
 Install `tooltip`, `hover-card`, `toast`, `sheet`, `drawer`, `context-menu`, and
-`command` with `npx sheenui-react add <name>`. The toast item includes `toast.tsx`,
+`command` with `npx raxui-react add <name>`. The toast item includes `toast.tsx`,
 `toaster.tsx`, and `use-toast.ts`. Exact pins: Radix Tooltip 1.4.1, HoverCard 1.2.1,
 Toast 1.3.1, ContextMenu 2.4.1, and Vaul 1.1.2. Sheet and Command use the existing
 Radix Dialog 1.3.1. Declared dependencies install shared button, spinner, dialog,
@@ -978,7 +978,7 @@ export function Feedback() {
 }
 ```
 
-Place the example under `SheenThemeProvider`; every overlay portals into the
+Place the example under `RaxThemeProvider`; every overlay portals into the
 nearest provider, inheriting its appearance, mode, accent, density and direction.
 DOM parts forward refs and native attributes. Radix/Vaul roots support their
 controlled/uncontrolled contracts (`open`, `defaultOpen`, `onOpenChange`);
@@ -1012,7 +1012,7 @@ not part of this port.
 
 ## React app shell
 
-Install independently with `npx sheenui-react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
+Install independently with `npx raxui-react add navbar`, `sidebar`, `navigation-menu`, `menubar`, `footer` or `banner`. Each manifest installs its local dependencies, exact package versions and styles. Existing starters are unchanged.
 
 | Component | Composition and behavior |
 | --- | --- |
@@ -1044,7 +1044,7 @@ The reference-based consumer examples in react-test cover all six components, in
 
 ## React data components
 
-Install independently: `npx sheenui-react add data-table`, `data-grid`, `sortable` or `resizable`. Manifests ship every supporting source and stylesheet and pin the approved packages: TanStack Table 8.21.3, TanStack Virtual 3.14.13, dnd-kit core 6.3.1/sortable 10.0.0/modifiers 9.0.0/utilities 3.2.2, and react-resizable-panels 4.14.3. Consumers install only the dependencies their selected component needs.
+Install independently: `npx raxui-react add data-table`, `data-grid`, `sortable` or `resizable`. Manifests ship every supporting source and stylesheet and pin the approved packages: TanStack Table 8.21.3, TanStack Virtual 3.14.13, dnd-kit core 6.3.1/sortable 10.0.0/modifiers 9.0.0/utilities 3.2.2, and react-resizable-panels 4.14.3. Consumers install only the dependencies their selected component needs.
 
 | Component | Public behavior |
 | --- | --- |
@@ -1071,7 +1071,7 @@ DataTable labels translate controls, summaries and selection names; column helpe
 
 ## Advanced components
 
-Install individually with `npx sheenui-react add carousel` (or chat, ai, text-editor, qr-code, speed-dial, kanban). The CLI installs the complete local source/style closure and exact dependency pins. All components inherit SheenUI tokens, appearance, mode, accent and density from the provider. Direction follows the nearest DOM section; overlays inherit the nearest theme provider. Public composition parts forward DOM refs; controllers expose callbacks rather than calling services.
+Install individually with `npx raxui-react add carousel` (or chat, ai, text-editor, qr-code, speed-dial, kanban). The CLI installs the complete local source/style closure and exact dependency pins. All components inherit RaxUI tokens, appearance, mode, accent and density from the provider. Direction follows the nearest DOM section; overlays inherit the nearest theme provider. Public composition parts forward DOM refs; controllers expose callbacks rather than calling services.
 
 | Component | Public API and behavior |
 | --- | --- |
@@ -1104,24 +1104,24 @@ react-test includes the boot-ui usage examples for all seven components. Permane
 
 ## Interrupted installation recovery
 
-React init/add now journal each write under .sheenui-react-transaction before changing managed files. On the next init/add invocation, an interrupted installation is recovered before package/config/lock parsing, then the requested operation is planned again. Original bytes are restored; transaction-created files and owned empty directories are removed. Completed installations with a durable commit marker are kept and only their journal is cleaned up. The .NET/Blazor CLI is unchanged.
+React init/add now journal each write under .raxui-react-transaction before changing managed files. On the next init/add invocation, an interrupted installation is recovered before package/config/lock parsing, then the requested operation is planned again. Original bytes are restored; transaction-created files and owned empty directories are removed. Completed installations with a durable commit marker are kept and only their journal is cleaned up. The .NET/Blazor CLI is unchanged.
 
 Run recovery independently when inspecting an interrupted installation:
 
 ```sh
-npx sheenui-react recover --cwd ./my-app
+npx raxui-react recover --cwd ./my-app
 ```
 
 If a file changed afterward, automatic recovery stops before changing project files and lists the conflicting paths. Review journal.json and its before-N backups; copy originals you want to keep elsewhere. To retain changed paths and roll back the other managed files:
 
 ```sh
-npx sheenui-react recover --keep-changes --cwd ./my-app
+npx raxui-react recover --keep-changes --cwd ./my-app
 ```
 
 This explicitly preserves current conflicting bytes or deletions and removes the journal after successful reconciliation. It does not overwrite edited files with backups. A retained new component may still be untracked by the restored registry lock; inspect it before another init/add instead of deleting it automatically. Paths must stay inside the original project, and linked files/junctions, damaged backups, malformed journals and unknown metadata files are rejected with instructions.
 
 When npm was interrupted, stop any surviving npm process first. Review package.json and package-lock.json backups, then use the explicit keep-changes command to retain package changes and restore managed sources. Repair incomplete package JSON if necessary, and run npm install to reconcile node_modules; recovery does not restore node_modules. A handled npm failure whose invocation returned normally can restore the observed package changes automatically.
 
-If recovery itself was killed, confirm no recovery process is running, remove only .sheenui-react-transaction/recovery.lock, and rerun recover. Keep the remaining journal/backups. A missing/truncated journal or moved project needs manual inspection of the numbered originals; no new writes proceed. A live owner (or reused PID) blocks recovery conservatively. Unrelated files and replacement directories are preserved; an uncertain empty directory can remain after a very early interruption. Do not edit recovery metadata or run other writers during recovery. Successful recovery removes its original backups, so copy any needed conflict originals first. See [ADR 017](adr/017-react-cli-recovery.md) for the filesystem and power-loss limits.
+If recovery itself was killed, confirm no recovery process is running, remove only .raxui-react-transaction/recovery.lock, and rerun recover. Keep the remaining journal/backups. A missing/truncated journal or moved project needs manual inspection of the numbered originals; no new writes proceed. A live owner (or reused PID) blocks recovery conservatively. Unrelated files and replacement directories are preserved; an uncertain empty directory can remain after a very early interruption. Do not edit recovery metadata or run other writers during recovery. Successful recovery removes its original backups, so copy any needed conflict originals first. See [ADR 017](adr/017-react-cli-recovery.md) for the filesystem and power-loss limits.
 
 Run `npm run test:recovery` for real crash/restart tests using Node's built-in runner. `npm run check` includes that suite. The existing CI React jobs run it on Windows and Linux; local verification also uses native Ubuntu through WSL. No public package publishing is part of recovery/readiness verification.

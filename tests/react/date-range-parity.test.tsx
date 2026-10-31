@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 import { DateRangeInput } from "../../registry/react/components/date-range-input/date-range-input"
-import { SheenThemeProvider } from "../../registry/react/foundation/theme"
+import { RaxThemeProvider } from "../../registry/react/foundation/theme"
 import { Wired } from "./control-test-utils"
 
 beforeAll(() => {
@@ -41,9 +41,9 @@ describe("segmented DateRangeInput", () => {
   })
   it("applies presets, renders summary and keeps its calendar in the nearest theme", async () => {
     const user=userEvent.setup()
-    render(<SheenThemeProvider mode="dark" direction="rtl" data-testid="theme"><DateRangeInput locale="en-GB" numberOfMonths={2} unit="nights" name="stay" presets={[{label:"Three nights",range:()=>({from:new Date(2026,9,10),to:new Date(2026,9,13)})}]} /></SheenThemeProvider>)
+    render(<RaxThemeProvider mode="dark" direction="rtl" data-testid="theme"><DateRangeInput locale="en-GB" numberOfMonths={2} unit="nights" name="stay" presets={[{label:"Three nights",range:()=>({from:new Date(2026,9,10),to:new Date(2026,9,13)})}]} /></RaxThemeProvider>)
     await user.click(screen.getByRole("button",{name:"Choose dates"}))
-    const popup=document.querySelector<HTMLElement>('.sheen-date-range-popover')!
+    const popup=document.querySelector<HTMLElement>('.rax-date-range-popover')!
     expect(screen.getByTestId("theme")).toContainElement(popup)
     expect(popup).toHaveAttribute("dir","rtl")
     expect(screen.getAllByRole("grid")).toHaveLength(2)
@@ -51,7 +51,7 @@ describe("segmented DateRangeInput", () => {
     expect(popup).toHaveTextContent("3 nights")
     expect(document.querySelector('input[name="stay_from"]')).toHaveValue("2026-10-10")
     await user.click(screen.getByRole("button",{name:"Done"}))
-    await waitFor(()=>expect(document.querySelector('.sheen-date-range-popover')).toBeNull())
+    await waitFor(()=>expect(document.querySelector('.rax-date-range-popover')).toBeNull())
     await user.click(screen.getByRole("button",{name:"Clear dates"}))
     expect(document.querySelector('input[name="stay_from"]')).toHaveValue("")
     expect(document.querySelector('input[name="stay_to"]')).toHaveValue("")

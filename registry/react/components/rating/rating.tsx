@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { useFieldControlProps } from "@/components/ui/field"
-import { useSheenTheme } from "@/lib/theme"
+import { useRaxTheme } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 
@@ -29,7 +29,7 @@ const StarIcon = () => (
 export type RatingColor = "warning" | "primary" | "danger" | "success"
 
 export interface RatingProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "defaultValue" | "onBlur" | "dir"> {
-  appearance?: import("@/lib/theme").SheenAppearance
+  appearance?: import("@/lib/theme").RaxAppearance
   value?: number
   defaultValue?: number
   onValueChange?: (value: number) => void
@@ -112,7 +112,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
   ) => {
     const wired = useFieldControlProps({ id, disabled, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy, "aria-invalid": ariaInvalid, "aria-required": ariaRequired })
     disabled = wired.disabled ?? false
-    const theme = useSheenTheme({ appearance, direction: dir })
+    const theme = useRaxTheme({ appearance, direction: dir })
     const getDirection = (element: HTMLElement) => theme.direction ?? getComputedStyle(element).direction
     const [uncontrolled, setUncontrolled] = React.useState(defaultValue)
     const value = clamp(valueProp ?? uncontrolled, 0, max)
@@ -180,14 +180,14 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
 
     return (
       <div
-        className={cn("sheen-rating", className)}
+        className={cn("rax-rating", className)}
         data-size={size}
         data-color={color}
         data-readonly={readOnly || undefined}
         data-disabled={disabled || undefined}
         data-invalid={isInvalid || undefined}
         data-hovering={hover !== null || undefined}
-        data-sheen-appearance={appearance}
+        data-rax-appearance={appearance}
         dir={theme.direction}
         {...props}
       >
@@ -195,7 +195,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
           ref={ref}
           {...wired}
           id={wired.id}
-          className="sheen-rating-control"
+          className="rax-rating-control"
           {...(readOnly
             ? { role: "img", "aria-label": ariaLabel ?? valueText }
             : {
@@ -239,7 +239,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
             if (event.pointerType === "mouse" && !dragging.current) setHover(null)
           }}
         >
-          <span ref={starsRef} className="sheen-rating-stars" aria-hidden="true">
+          <span ref={starsRef} className="rax-rating-stars" aria-hidden="true">
             {Array.from({ length: max }, (_, i) => {
               const fill = fillOf(i)
               // Based on the committed value, so hovering afterwards doesn't replay it.
@@ -247,14 +247,14 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
               return (
                 <span
                   key={popping ? `${i}-${pop.n}` : i}
-                  className="sheen-rating-star"
+                  className="rax-rating-star"
                   data-fill={fill === 1 ? "full" : fill > 0 ? "part" : undefined}
                   data-pointed={hover !== null && Math.ceil(hover) - 1 === i ? "" : undefined}
                   data-pop={popping ? "" : undefined}
-                  style={{ "--sheen-rating-fill": fill, "--sheen-rating-i": Math.max(0, i - pop.from) } as React.CSSProperties}
+                  style={{ "--rax-rating-fill": fill, "--rax-rating-i": Math.max(0, i - pop.from) } as React.CSSProperties}
                 >
-                  <span className="sheen-rating-track">{icon ?? <StarIcon />}</span>
-                  <span className="sheen-rating-fill">{icon ?? <StarIcon />}</span>
+                  <span className="rax-rating-track">{icon ?? <StarIcon />}</span>
+                  <span className="rax-rating-fill">{icon ?? <StarIcon />}</span>
                 </span>
               )
             })}
@@ -262,10 +262,10 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
         </div>
 
         {(showValue || showLabel || count !== undefined) && (
-          <span className="sheen-rating-meta" aria-hidden={readOnly ? undefined : true}>
-            {showValue && <span className="sheen-rating-value">{numberFormat.format(shown)}</span>}
-            {showLabel && label && <span className="sheen-rating-label">{label}</span>}
-            {count !== undefined && <span className="sheen-rating-count">({new Intl.NumberFormat(locale).format(count)})</span>}
+          <span className="rax-rating-meta" aria-hidden={readOnly ? undefined : true}>
+            {showValue && <span className="rax-rating-value">{numberFormat.format(shown)}</span>}
+            {showLabel && label && <span className="rax-rating-label">{label}</span>}
+            {count !== undefined && <span className="rax-rating-count">({new Intl.NumberFormat(locale).format(count)})</span>}
           </span>
         )}
 
@@ -309,13 +309,13 @@ const RatingBreakdown = React.forwardRef<HTMLDivElement, RatingBreakdownProps>(
     const number = new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })
 
     return (
-      <div ref={ref} className={cn("sheen-rating-breakdown", className)} data-color={color} {...props}>
-        <div className="sheen-rating-average">
-          <span className="sheen-rating-average-value">{number.format(average)}</span>
+      <div ref={ref} className={cn("rax-rating-breakdown", className)} data-color={color} {...props}>
+        <div className="rax-rating-average">
+          <span className="rax-rating-average-value">{number.format(average)}</span>
           <Rating value={Math.round(average * 10) / 10} max={counts.length} readOnly size="sm" color={color} />
-          <span className="sheen-rating-average-total">{formatTotal(total, new Intl.NumberFormat(locale).format(total))}</span>
+          <span className="rax-rating-average-total">{formatTotal(total, new Intl.NumberFormat(locale).format(total))}</span>
         </div>
-        <ul className="sheen-rating-bars">
+        <ul className="rax-rating-bars">
           {counts
             .map((n, i) => ({ stars: i + 1, n }))
             .reverse()
@@ -323,11 +323,11 @@ const RatingBreakdown = React.forwardRef<HTMLDivElement, RatingBreakdownProps>(
               const percent = total ? Math.round((n / total) * 100) : 0
               return (
                 <li key={stars} aria-label={formatBar(stars, n, percent)}>
-                  <span className="sheen-rating-bar-label" aria-hidden="true">
+                  <span className="rax-rating-bar-label" aria-hidden="true">
                     {new Intl.NumberFormat(locale).format(stars)}
                   </span>
-                  <span className="sheen-rating-bar" aria-hidden="true">
-                    <span style={{ "--sheen-rating-bar": n / most } as React.CSSProperties} />
+                  <span className="rax-rating-bar" aria-hidden="true">
+                    <span style={{ "--rax-rating-bar": n / most } as React.CSSProperties} />
                   </span>
                 </li>
               )

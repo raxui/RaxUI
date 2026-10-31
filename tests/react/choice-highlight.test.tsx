@@ -12,10 +12,10 @@ it("tracks active geometry, hides for disabled/filtered results, and releases ob
     disconnect = disconnect
   })
   function List({ active, disabled = false }: { active?: string; disabled?: boolean }) {
-    return <div><ChoiceHighlight />{["a", "b"].map(id => <div key={id} data-testid={id} className="sheen-choice-option" data-active={active === id || undefined} aria-disabled={id === "b" && disabled || undefined}>{id}</div>)}</div>
+    return <div><ChoiceHighlight />{["a", "b"].map(id => <div key={id} data-testid={id} className="rax-choice-option" data-active={active === id || undefined} aria-disabled={id === "b" && disabled || undefined}>{id}</div>)}</div>
   }
   const view = render(<List active="a" />)
-  const marker = view.container.querySelector<HTMLElement>(".sheen-choice-highlight")!
+  const marker = view.container.querySelector<HTMLElement>(".rax-choice-highlight")!
   Object.defineProperties(view.getByTestId("a"), { offsetTop: { value: 12 }, offsetLeft: { value: 4 }, offsetWidth: { value: 160 }, offsetHeight: { value: 36 } })
   act(() => resize())
   expect(marker).not.toHaveAttribute("hidden")

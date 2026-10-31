@@ -20,19 +20,19 @@
       "source": "registry/react/components/date-range-input/date-range-input.tsx",
       "target": "components/ui/date-range-input.tsx",
       "type": "tsx",
-      "sha256": "13f798237b83fa34a2b1d2f43975fb21d58915cdd06f45103532879232a97475"
+      "sha256": "c60825953c22b8ac7dff48d6bb80b4654fe184d3517ba5b1ce39bb328c62af1c"
     },
     {
       "source": "theme/scss/components/_date-range-input.scss",
-      "target": "styles/sheenui/components/_date-range-input.scss",
+      "target": "styles/raxui/components/_date-range-input.scss",
       "type": "scss",
-      "sha256": "bd6f1ef3efc797bee51f5562e22e6caa77714065fcac1e1a71d6688d40a5bcb0"
+      "sha256": "ab6c7c25b209e533b5655845d94e4f732848f4475e04309b734258e906062d87"
     },
     {
       "source": "registry/react/components/date-range-input/native-date-range-input.tsx",
       "target": "components/ui/native-date-range-input.tsx",
       "type": "tsx",
-      "sha256": "879647872433a925a0c137179fd51f8a2cb60e542b1d97515784d5d7fb100623"
+      "sha256": "3cde676214375e9fa29e459ead0d7bb63f6ccf4c099a8629233c1580ca706d88"
     },
     {
       "source": "registry/react/components/calendar/date-range-presets.ts",

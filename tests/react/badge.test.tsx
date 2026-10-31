@@ -8,7 +8,7 @@ describe("Badge", () => {
     render(<Badge ref={ref} variant={variant} color="success" dot="pulse" size="sm" shape="rounded" appearance="glass">Online</Badge>)
     expect(ref.current).toHaveAttribute("data-variant", variant)
     expect(ref.current).toHaveAttribute("data-color", "success")
-    expect(ref.current?.querySelector(".sheen-badge-dot")).toHaveAttribute("data-pulse", "true")
+    expect(ref.current?.querySelector(".rax-badge-dot")).toHaveAttribute("data-pulse", "true")
   })
   it("names removal and notification counts", () => {
     const remove = vi.fn()

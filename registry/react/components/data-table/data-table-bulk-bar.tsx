@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { createPortal } from "react-dom"
-import { useSheenTheme, sheenThemeAttributes, useSheenPortalContainer } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, useRaxPortalContainer } from "@/lib/theme"
 import { Button } from "@/components/ui/button"
 import { XIcon } from "./data-table-icons"
 import { useTableLabels } from "./data-table-labels"
@@ -10,8 +10,8 @@ import { useTableLabels } from "./data-table-labels"
 /** Floating action bar for selected rows. Portaled so `position: fixed` ignores glass ancestors. */
 function DataTableBulkBar({ count, onClear, children }: { count: number; onClear: () => void; children: React.ReactNode }) {
   const labels = useTableLabels()
-  const container = useSheenPortalContainer()
-  const theme = useSheenTheme()
+  const container = useRaxPortalContainer()
+  const theme = useRaxTheme()
   const [mounted, setMounted] = React.useState(false)
   const [shownCount, setShownCount] = React.useState(count)
 
@@ -28,16 +28,16 @@ function DataTableBulkBar({ count, onClear, children }: { count: number; onClear
   if (!mounted) return null
   return createPortal(
     <div
-      {...sheenThemeAttributes(theme)}
-      className="sheen-table-bulkbar"
+      {...raxThemeAttributes(theme)}
+      className="rax-table-bulkbar"
       role="toolbar"
       aria-label={labels.bulkActions}
       data-state={count > 0 ? "open" : "closed"}
       onAnimationEnd={() => count === 0 && setMounted(false)}
     >
-      <span className="sheen-table-bulkbar-count">{labels.selected(shownCount)}</span>
+      <span className="rax-table-bulkbar-count">{labels.selected(shownCount)}</span>
       {children}
-      <span className="sheen-table-bulkbar-divider" />
+      <span className="rax-table-bulkbar-divider" />
       <Button variant="ghost" size="icon-sm" aria-label={labels.clearSelection} onClick={onClear}>
         <XIcon />
       </Button>

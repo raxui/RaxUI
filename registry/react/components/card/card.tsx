@@ -1,7 +1,7 @@
 "use client"
 
-// SheenUI card. Source-owned: edit freely. Ported from boot-ui.
-import { useSheenTheme, sheenThemeAttributes, SheenThemeBoundary, type SheenAppearance } from "@/lib/theme"
+// RaxUI card. Source-owned: edit freely. Ported from boot-ui.
+import { useRaxTheme, raxThemeAttributes, RaxThemeBoundary, type RaxAppearance } from "@/lib/theme"
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 
@@ -16,7 +16,7 @@ const cardVariantClasses = {
 export type CardVariant = keyof typeof cardVariantClasses
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   variant?: CardVariant
   /** Hover lift, press feedback and focus ring — for cards that are links or buttons. */
   interactive?: boolean
@@ -26,17 +26,17 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = "default", interactive = false, asChild = false, appearance, ...props }, ref) => {
-    const theme = useSheenTheme({ appearance })
+    const theme = useRaxTheme({ appearance })
     const Comp = asChild ? Slot : "div"
     return (
-      <SheenThemeBoundary value={theme}>
+      <RaxThemeBoundary value={theme}>
         <Comp
           ref={ref}
-          {...sheenThemeAttributes(theme)}
-          className={cn("card sheen-card card-glass", cardVariantClasses[variant], interactive && "card-glass-interactive", className)}
+          {...raxThemeAttributes(theme)}
+          className={cn("card rax-card card-glass", cardVariantClasses[variant], interactive && "card-glass-interactive", className)}
           {...props}
         />
-      </SheenThemeBoundary>
+      </RaxThemeBoundary>
     )
   },
 )

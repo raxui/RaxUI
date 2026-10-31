@@ -13,7 +13,7 @@
       "destination": "styles",
       "target": "components/date-input.css",
       "type": "css",
-      "sha256": "c24870fed76ebcce1e33652c27f4976b3593270ffeebdd7f0ed2d3134f1f479f"
+      "sha256": "38195d36887dcc3b8c30de48fcaa5d5d152aaa2a55997feff34a471b828d8a7b"
     }
   ],
   "files": [
@@ -22,7 +22,7 @@
       "destination": "components",
       "target": "DateInput/DateInput.razor",
       "type": "razor",
-      "sha256": "ec233d1c3305562b791803df72f04f6915e24a19f1ff9f27d6070370a82a3420"
+      "sha256": "ef7b59fdf8d431812f54eb60604f60159499510599daf5cd04bf64f8256831e1"
     }
   ]
 }

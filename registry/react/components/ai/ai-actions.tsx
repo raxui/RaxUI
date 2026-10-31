@@ -23,7 +23,7 @@ export const AIActions = React.forwardRef<HTMLDivElement, AIActionsProps>(
     const { copied, copy } = useCopy()
     const l = { copy: "Copy", copied: "Copied", regenerate: "Regenerate", good: "Good response", bad: "Bad response", ...labels }
     return (
-      <div ref={ref} className={cn("sheen-ai-actions", className)} {...props}>
+      <div ref={ref} className={cn("rax-ai-actions", className)} {...props}>
         {copyText !== undefined && (
           <Tooltip content={copied ? l.copied : l.copy}>
             <Button variant="ghost" size="icon-sm" aria-label={copied ? l.copied : l.copy} onClick={() => copy(copyText)}>

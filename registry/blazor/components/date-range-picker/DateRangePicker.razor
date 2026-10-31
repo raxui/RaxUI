@@ -2,7 +2,7 @@
 @inherits DatePickerBase<TValue>
 @using System.Linq.Expressions
 
-<div class="sheen-picker-field" dir="@EffectiveDir" data-sheen-appearance="@Appearance">
+<div class="rax-picker-field" dir="@EffectiveDir" data-rax-appearance="@Appearance">
     <button @attributes="RangeAttributes" @ref="Anchor" type="button" class="@TriggerClass" data-variant="@Variant" data-placeholder="@(SelectedDate is null ? "" : null)"
             data-state="@(Open ? "open" : "closed")" disabled="@(!Ready || EffectiveDisabled)" aria-disabled="@(ReadOnly ? "true" : null)" aria-haspopup="dialog" aria-expanded="@(Open ? "true" : "false")"
             aria-controls="@(ControlId + "-popup")" @onclick="Toggle">
@@ -11,22 +11,22 @@
     </button>
     @if (CanClear && (SelectedDate.HasValue || SelectedEnd.HasValue) && !ReadOnly)
     {
-        <button type="button" class="sheen-picker-clear" disabled="@(!Ready || EffectiveDisabled)" aria-label="@Words.Clear" @onclick="Clear">
+        <button type="button" class="rax-picker-clear" disabled="@(!Ready || EffectiveDisabled)" aria-label="@Words.Clear" @onclick="Clear">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
         </button>
     }
     <input type="hidden" name="@InputName" value="@Serialize(CurrentValue)" disabled="@EffectiveDisabled" />
     <input type="hidden" name="@EndFieldName" value="@Serialize(EndValue)" disabled="@EffectiveDisabled" />
-    <Popover Id="@(ControlId + "-popup")" Anchor="Anchor" Open="Open" OpenChanged="OpenChanged" Label="@Words.PickRange" Class="sheen-picker-popover" Appearance="@Appearance">
+    <Popover Id="@(ControlId + "-popup")" Anchor="Anchor" Open="Open" OpenChanged="OpenChanged" Label="@Words.PickRange" Class="rax-picker-popover" Appearance="@Appearance">
         @if (Open)
         {
-            <div class="sheen-picker-range-body">
+            <div class="rax-picker-range-body">
                 @if (QuickRanges.Count > 0)
                 {
-                    <div class="sheen-picker-presets" role="group" aria-label="@Words.QuickRanges">
+                    <div class="rax-picker-presets" role="group" aria-label="@Words.QuickRanges">
                         @foreach (var preset in QuickRanges)
                         {
-                            <button type="button" class="sheen-picker-preset" disabled="@(!SpanAllowed(preset.From, preset.To))"
+                            <button type="button" class="rax-picker-preset" disabled="@(!SpanAllowed(preset.From, preset.To))"
                                     data-active="@(preset.From == _from && preset.To == _to ? "" : null)" @onclick="@(() => UsePreset(preset))">@preset.Label</button>
                         }
                     </div>
@@ -34,7 +34,7 @@
             <Calendar Range Value="_from" EndValue="_to" RangeChanged="DraftChanged" Min="Min" Max="Max" IsDateDisabled="DisabledDate" Culture="FormatCulture" Text="Words"
                       Today="Today" Month="_month" MonthChanged="@(month => _month = month)" Dir="@EffectiveDir" WeekStartsOn="WeekStartsOn" NumberOfMonths="2" Responsive AutoFocus Appearance="@Appearance" MinDays="MinDays" MaxDays="MaxDays" ExcludeDisabled="ExcludeDisabled" />
             </div>
-            <div class="sheen-picker-footer">
+            <div class="rax-picker-footer">
                 <span aria-live="polite">@(_from.HasValue ? Display(_from) + " – " + Display(_to) : Words.StartPrompt)</span>
                 <div class="d-flex gap-2">
                     <Button Size="sm" Variant="ghost" OnClick="Cancel">@Words.Cancel</Button>

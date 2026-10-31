@@ -47,7 +47,7 @@ export function LinkForm({
   const [value, setValue] = React.useState(href)
   return (
     <form
-      className="sheen-editor-link-form"
+      className="rax-editor-link-form"
       onSubmit={(event) => {
         event.preventDefault()
         event.stopPropagation() // don't submit a surrounding <form>

@@ -3,13 +3,13 @@
 @using Microsoft.JSInterop
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @ref="root" class="sheen-sortable" data-orientation="@Orientation" data-sheen-appearance="@Appearance" dir="@Direction">
+<div @ref="root" class="rax-sortable" data-orientation="@Orientation" data-rax-appearance="@Appearance" dir="@Direction">
     <span id="@instructionsId" class="visually-hidden">@Instructions</span>
     <div class="@Class" style="@Style" data-sortable-content="@instructionsId">
         @foreach(var item in Items){
             var id=GetId(item);var disabled=Disabled||!interactive||(IsDisabled?.Invoke(item)??false);
-            <div @key="id" class="@($"sheen-sortable-item {ItemClass}")" style="@ItemStyle?.Invoke(item)" data-sortable-id="@id" data-disabled="@(disabled?"":null)" data-handle="@(AsHandle?"":null)" tabindex="@(AsHandle&&!disabled?"0":null)" role="@(AsHandle?"button":null)" aria-disabled="@(disabled?"true":null)" aria-label="@(AsHandle?GetLabel(item):null)" aria-describedby="@instructionsId">
-                @if(!AsHandle){<button type="button" class="sheen-sortable-handle" data-sortable-handle disabled="@disabled" aria-label="@($"{HandleLabel} {GetLabel(item)}")" aria-describedby="@instructionsId"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg></button>}
+            <div @key="id" class="@($"rax-sortable-item {ItemClass}")" style="@ItemStyle?.Invoke(item)" data-sortable-id="@id" data-disabled="@(disabled?"":null)" data-handle="@(AsHandle?"":null)" tabindex="@(AsHandle&&!disabled?"0":null)" role="@(AsHandle?"button":null)" aria-disabled="@(disabled?"true":null)" aria-label="@(AsHandle?GetLabel(item):null)" aria-describedby="@instructionsId">
+                @if(!AsHandle){<button type="button" class="rax-sortable-handle" data-sortable-handle disabled="@disabled" aria-label="@($"{HandleLabel} {GetLabel(item)}")" aria-describedby="@instructionsId"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg></button>}
                 @ItemTemplate(item)
             </div>
         }
@@ -38,7 +38,7 @@
     [Parameter] public string? Style { get; set; }
     [Parameter] public string? ItemClass { get; set; }
     [Parameter] public Func<TItem,string>? ItemStyle { get; set; }
-    private readonly string instructionsId=$"sheen-sortable-{Guid.NewGuid():N}";
+    private readonly string instructionsId=$"rax-sortable-{Guid.NewGuid():N}";
     private bool interactive;
     private ElementReference root;private IJSObjectReference? module;private DotNetObjectReference<Sortable<TItem>>? self;
     protected override void OnParametersSet(){

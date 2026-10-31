@@ -1,4 +1,4 @@
-<a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" @attributes="AdditionalAttributes" href="@Href" class="@(TriggerStyle ? "sheen-nav-trigger" : "sheen-nav-link") @Class" aria-current="@((Active ?? Parent?.IsCurrent(Href) ?? false) ? "page" : null)" data-active="@((Active ?? Parent?.IsCurrent(Href) ?? false) ? "" : null)" @onclick="OnClick">@ChildContent</a>
+<a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" @attributes="AdditionalAttributes" href="@Href" class="@(TriggerStyle ? "rax-nav-trigger" : "rax-nav-link") @Class" aria-current="@((Active ?? Parent?.IsCurrent(Href) ?? false) ? "page" : null)" data-active="@((Active ?? Parent?.IsCurrent(Href) ?? false) ? "" : null)" @onclick="OnClick">@ChildContent</a>
 @code {
     [Parameter] public bool PreventDefault { get; set; }
     [Parameter] public string? Class { get; set; }

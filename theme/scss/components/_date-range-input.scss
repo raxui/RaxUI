@@ -1,10 +1,10 @@
-.sheen-date-range-input { display: flex; align-items: center; gap: 0.5rem; }
-.sheen-date-range-input > .sheen-input { min-width: 0; flex: 1; }
+.rax-date-range-input { display: flex; align-items: center; gap: 0.5rem; }
+.rax-date-range-input > .rax-input { min-width: 0; flex: 1; }
 
-.sheen-date-range-input input::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.65; }
-.sheen-date-range-input input:focus::-webkit-calendar-picker-indicator { opacity: 1; }
+.rax-date-range-input input::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.65; }
+.rax-date-range-input input:focus::-webkit-calendar-picker-indicator { opacity: 1; }
 
-.sheen-date-range-input > .sheen-input-group { flex: 1; min-width: 0; }
+.rax-date-range-input > .rax-input-group { flex: 1; min-width: 0; }
 
 // -----------------------------------------------------------------------------
 // DateRangeInput — one field, two typed halves (start → end). The inner
@@ -12,19 +12,19 @@
 // calendar will set next, gets a soft highlight.
 // -----------------------------------------------------------------------------
 
-.sheen-segmented-range {
+.rax-segmented-range {
   &[data-disabled] {
     opacity: 0.55;
   }
 
   &[data-open] {
-    --sheen-input-border: rgba(var(--sheen-input-ring-rgb), 0.65);
+    --rax-input-border: rgba(var(--rax-input-ring-rgb), 0.65);
 
-    box-shadow: 0 0 0 4px rgba(var(--sheen-input-ring-rgb), 0.16);
+    box-shadow: 0 0 0 4px rgba(var(--rax-input-ring-rgb), 0.16);
   }
 }
 
-.sheen-date-range-halves.sheen-input {
+.rax-date-range-halves.rax-input {
   display: flex;
   align-items: center;
   gap: 0.125rem;
@@ -32,14 +32,14 @@
   padding-inline: 0.375rem 0;
 }
 
-.sheen-date-range-half {
+.rax-date-range-half {
   flex: 1 1 0;
   min-width: 0;
-  border-radius: calc(var(--sheen-input-radius) - calc(0.25rem * var(--sheen-radius-scale)));
-  transition: background-color var(--sheen-duration) ease;
+  border-radius: calc(var(--rax-input-radius) - calc(0.25rem * var(--rax-radius-scale)));
+  transition: background-color var(--rax-duration) ease;
 
   // The inner fields are just segments here.
-  .sheen-input-group {
+  .rax-input-group {
     min-height: 0;
     border: 0;
     background: none;
@@ -47,25 +47,25 @@
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
 
-    > .sheen-input {
-      min-height: calc(var(--sheen-input-height) - 0.625rem);
+    > .rax-input {
+      min-height: calc(var(--rax-input-height) - 0.625rem);
       padding-inline: 0.5rem;
     }
 
-    > .sheen-input-slot[data-side="start"] {
+    > .rax-input-slot[data-side="start"] {
       display: none;
     }
   }
 
   // Highlight: the half you're typing in, or the end the calendar sets next.
   &:focus-within,
-  .sheen-segmented-range[data-choosing="from"] &[data-half="from"],
-  .sheen-segmented-range[data-choosing="to"] &[data-half="to"] {
-    background-color: rgba(var(--sheen-input-ring-rgb), 0.08);
+  .rax-segmented-range[data-choosing="from"] &[data-half="from"],
+  .rax-segmented-range[data-choosing="to"] &[data-half="to"] {
+    background-color: rgba(var(--rax-input-ring-rgb), 0.08);
   }
 }
 
-.sheen-date-range-arrow {
+.rax-date-range-arrow {
   display: inline-flex;
   flex-shrink: 0;
   color: var(--bs-secondary-color);
@@ -81,7 +81,7 @@
 }
 
 // ---- Popover ------------------------------------------------------------------------
-.sheen-date-range-presets {
+.rax-date-range-presets {
   display: flex;
   gap: 0.375rem;
   overflow-x: auto;
@@ -94,7 +94,7 @@
   }
 }
 
-.sheen-date-range-preset {
+.rax-date-range-preset {
   flex-shrink: 0;
   padding: 0.3125rem 0.75rem;
   border: 0;
@@ -106,9 +106,9 @@
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background-color var(--sheen-duration-fast) ease,
-    color var(--sheen-duration-fast) ease,
-    transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+    background-color var(--rax-duration-fast) ease,
+    color var(--rax-duration-fast) ease,
+    transform var(--rax-duration-slow) var(--rax-ease-spring);
 
   &:hover {
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
@@ -131,7 +131,7 @@
   }
 }
 
-.sheen-date-range-summary {
+.rax-date-range-summary {
   color: var(--bs-secondary-color);
   font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
@@ -142,7 +142,7 @@
   }
 }
 
-.sheen-date-range-popover .sheen-date-footer {
+.rax-date-range-popover .rax-date-footer {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
   gap: 0.5rem 1rem; margin-top: 0.75rem; padding-top: 0.75rem;
   border-top: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.08);

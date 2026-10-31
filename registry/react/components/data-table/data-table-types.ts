@@ -1,6 +1,6 @@
 import * as React from "react"
 import { type ColumnDef, type Row, type RowData, type SortingState, type VisibilityState } from "@tanstack/react-table"
-import { type SheenAppearance } from "@/lib/theme"
+import { type RaxAppearance } from "@/lib/theme"
 
 export interface DataTableLabels {
   view: string
@@ -37,7 +37,7 @@ export interface DataTableFilterOption {
 
 export interface DataTableProps<TData, TValue> {
   labels?: Partial<DataTableLabels>
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   dir?: "ltr" | "rtl"
   label?: string
   columns: ColumnDef<TData, TValue>[]

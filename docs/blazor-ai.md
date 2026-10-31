@@ -1,6 +1,6 @@
 # Blazor AI
 
-`sheenui add ai` installs the AI conversation parts with `button`, `toggle` and the shared `ai.css`. No npm package, CDN or NuGet package is added. Markdown is rendered by `AIMarkdownParser.cs`, a source-owned C# parser that the CLI installs and hash-checks like the Razor files (#121).
+`raxui add ai` installs the AI conversation parts with `button`, `toggle` and the shared `ai.css`. No npm package, CDN or NuGet package is added. Markdown is rendered by `AIMarkdownParser.cs`, a source-owned C# parser that the CLI installs and hash-checks like the Razor files (#121).
 
 ```razor
 <AIConversation>
@@ -40,4 +40,4 @@ While `Streaming` is true, the text first goes through `CloseOpenMarks` (a port 
 
 ## SSR and tests
 
-Static SSR renders every part read-only, including the Markdown. The prompt field stays disabled until interactive. `AIMarkdownTests` covers the subset, the HTML and URL safety rules, `CloseOpenMarks`, and parsing every streamed prefix. `GeneratedAppTests.AI.cs` installs `ai` into generated .NET 8/9/10 apps. It checks injection safety, actions, burst streaming, the example's full flow (reasoning, tool, Markdown, sources, copy, Arabic, Stop), themes, and static SSR. `examples/blazor/ai/` contains the React-equivalent assistant, which SheenDemo hosts at `#ai`.
+Static SSR renders every part read-only, including the Markdown. The prompt field stays disabled until interactive. `AIMarkdownTests` covers the subset, the HTML and URL safety rules, `CloseOpenMarks`, and parsing every streamed prefix. `GeneratedAppTests.AI.cs` installs `ai` into generated .NET 8/9/10 apps. It checks injection safety, actions, burst streaming, the example's full flow (reasoning, tool, Markdown, sources, copy, Arabic, Stop), themes, and static SSR. `examples/blazor/ai/` contains the React-equivalent assistant, which RaxDemo hosts at `#ai`.

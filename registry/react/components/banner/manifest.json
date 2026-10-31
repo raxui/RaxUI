@@ -16,13 +16,13 @@
       "source": "registry/react/components/banner/banner.tsx",
       "target": "components/ui/banner.tsx",
       "type": "tsx",
-      "sha256": "ab9c8ef8056f21d4c9c94d7034475fd2bf4627c300850ce9127c1f60808e2ec5"
+      "sha256": "8f67e422cb8a952690aa2c234a7f67f97df22de64be360fedbd7f2ccb003364b"
     },
     {
       "source": "theme/scss/components/_banner.scss",
-      "target": "styles/sheenui/components/_banner.scss",
+      "target": "styles/raxui/components/_banner.scss",
       "type": "scss",
-      "sha256": "ac39169e2381712a14df4105b5a0affe0ae4d1a7a73bd495190f98eaa76b7ca6"
+      "sha256": "4beb80a6499fb37405c4afaef691525ea3e73affb6579a4037c4a32eefb7e2b0"
     }
   ]
 }

@@ -17,13 +17,13 @@
       "source": "registry/react/components/dialog/dialog.tsx",
       "target": "components/ui/dialog.tsx",
       "type": "tsx",
-      "sha256": "54836d98f7036ec3b77bba4dcb5fc9c3160163c65526fffda27cfc86a80ac2fa"
+      "sha256": "137ef6b86d29737a3603cc5e8156ae1a501cf667b3961fcbd58ad134d82c3497"
     },
     {
       "source": "theme/scss/components/_dialog.scss",
-      "target": "styles/sheenui/components/_dialog.scss",
+      "target": "styles/raxui/components/_dialog.scss",
       "type": "scss",
-      "sha256": "b51972ecb69b1d2e03e55655f9787a4bfeacffd0d52cd671bf4d394e3416a99a"
+      "sha256": "5135a2bdfbdbd449fdc597814c1af9c3e68fbd8ef1766f57f344c268c9a2ade1"
     }
   ]
 }

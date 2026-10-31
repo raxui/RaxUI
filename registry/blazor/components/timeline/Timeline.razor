@@ -1,7 +1,7 @@
-@* SheenUI Timeline. Source-owned: edit freely. Styled by the timeline component CSS. *@
+@* RaxUI Timeline. Source-owned: edit freely. Styled by the timeline component CSS. *@
 <CascadingValue Value="this">
-    <div tabindex="@(Layout=="horizontal"?0:null)" class="sheen-timeline-wrap" data-layout="@Layout">
-        <ol @attributes="AdditionalAttributes" class="@($"sheen-timeline {Class}")" data-layout="@Layout" data-time="@EffectiveTimePosition" data-size="@Size" data-animated="@(Animated ? "true" : null)" data-sheen-appearance="@Appearance">@ChildContent</ol>
+    <div tabindex="@(Layout=="horizontal"?0:null)" class="rax-timeline-wrap" data-layout="@Layout">
+        <ol @attributes="AdditionalAttributes" class="@($"rax-timeline {Class}")" data-layout="@Layout" data-time="@EffectiveTimePosition" data-size="@Size" data-animated="@(Animated ? "true" : null)" data-rax-appearance="@Appearance">@ChildContent</ol>
     </div>
 </CascadingValue>
 @code {

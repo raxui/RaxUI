@@ -12,7 +12,7 @@ The CLI writes downloaded source into a developer-owned project. Installations m
 ### Registry releases
 
 - Published registry releases are immutable, versioned snapshots.
-- `sheenui.json` selects an exact `registryVersion`. Installation never resolves through a mutable branch such as `main` or an unpinned `latest` URL.
+- `raxui.json` selects an exact `registryVersion`. Installation never resolves through a mutable branch such as `main` or an unpinned `latest` URL.
 - Each snapshot pins exact component and asset versions. Corrections require a new release.
 
 ### Manifests
@@ -24,14 +24,14 @@ The CLI writes downloaded source into a developer-owned project. Installations m
 ### Namespaces
 
 - The CLI reads the evaluated MSBuild `RootNamespace` and `AssemblyName`. It does not infer them from folder names.
-- `componentsNamespace` defaults to `<RootNamespace>.Components.UI` and can be overridden in `sheenui.json`.
+- `componentsNamespace` defaults to `<RootNamespace>.Components.UI` and can be overridden in `raxui.json`.
 - Registry templates use explicit, documented namespace tokens. The CLI substitutes only those tokens, never broad text replacement, and validates the resulting namespace.
 - Generated components declare the namespace explicitly. Its `@using` is added once to the applicable `_Imports.razor`.
 - Changing `componentsPath` or `componentsNamespace` later is a migration, not an implicit move during `add`.
 
 ### Lock file
 
-`sheenui.lock.json` records, in addition to component versions and paths:
+`raxui.lock.json` records, in addition to component versions and paths:
 
 - The exact registry release identity and manifest digest.
 - The registry source hash and the installed hash after namespace substitution, stored separately.
@@ -59,7 +59,7 @@ Reject rooted paths, traversal segments, and destinations that escape the select
 
 ## Consequences
 
-- Any installation can be reproduced from `sheenui.json` and the lock file.
+- Any installation can be reproduced from `raxui.json` and the lock file.
 - Publishing a fix requires cutting a registry release.
 - The installer is more complex than a direct copy, but failures leave the project as it was.
 - Future `update` and `diff` commands can compare source and installed hashes without guessing.

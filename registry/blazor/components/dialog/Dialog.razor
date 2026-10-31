@@ -1,4 +1,4 @@
-@* SheenUI Dialog. Source-owned: edit freely. A native <dialog> opened with showModal() (ADR 013), styled by
+@* RaxUI Dialog. Source-owned: edit freely. A native <dialog> opened with showModal() (ADR 013), styled by
    the shared theme with the same classes and behavior as the React Dialog. Needs an interactive render mode. *@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
@@ -8,34 +8,34 @@
         class="@CssClass"
         aria-labelledby="@(Title is null ? null : TitleId)"
         aria-describedby="@(Description is null ? null : DescriptionId)"
-        data-sheen-appearance="@Appearance"
+        data-rax-appearance="@Appearance"
         @onclose="HandleCloseAsync">
     @if (Title is not null || Description is not null)
     {
-        <div class="sheen-dialog-header">
+        <div class="rax-dialog-header">
             @if (Title is not null)
             {
-                <h2 id="@TitleId" class="sheen-dialog-title">@Title</h2>
+                <h2 id="@TitleId" class="rax-dialog-title">@Title</h2>
             }
             @if (Description is not null)
             {
-                <p id="@DescriptionId" class="sheen-dialog-description">@Description</p>
+                <p id="@DescriptionId" class="rax-dialog-description">@Description</p>
             }
         </div>
     }
     @ChildContent
     @if (Footer is not null)
     {
-        <div class="sheen-dialog-footer">@Footer</div>
+        <div class="rax-dialog-footer">@Footer</div>
     }
     @if (ShowCloseButton)
     {
-        <button type="button" class="btn-close sheen-dialog-close" aria-label="@CloseLabel" @onclick="CloseAsync"></button>
+        <button type="button" class="btn-close rax-dialog-close" aria-label="@CloseLabel" @onclick="CloseAsync"></button>
     }
 </dialog>
 
 @code {
-    private readonly string _id = $"sheen-dialog-{Guid.NewGuid():N}";
+    private readonly string _id = $"rax-dialog-{Guid.NewGuid():N}";
     private ElementReference _element;
     private IJSObjectReference? _module;
     private bool _shown;
@@ -59,7 +59,7 @@
     /// <summary>The close button's accessible name; translate it for your app.</summary>
     [Parameter] public string CloseLabel { get; set; } = "Close";
 
-    /// <summary>default, flat, or glass. When null, the dialog inherits it from the nearest ancestor with data-sheen-appearance.</summary>
+    /// <summary>default, flat, or glass. When null, the dialog inherits it from the nearest ancestor with data-rax-appearance.</summary>
     [Parameter] public string? Appearance { get; set; }
 
     /// <summary>Extra CSS classes appended after the component's own classes.</summary>
@@ -72,7 +72,7 @@
 
     private string TitleId => $"{_id}-title";
     private string DescriptionId => $"{_id}-description";
-    private string CssClass => string.IsNullOrEmpty(Class) ? "sheen-dialog" : $"sheen-dialog {Class}";
+    private string CssClass => string.IsNullOrEmpty(Class) ? "rax-dialog" : $"rax-dialog {Class}";
 
     /// <summary>Closes the dialog and reports Open = false.</summary>
     public async Task CloseAsync()

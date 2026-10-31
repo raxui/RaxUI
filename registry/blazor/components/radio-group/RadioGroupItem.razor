@@ -1,10 +1,10 @@
-@* SheenUI RadioGroupItem. Source-owned: edit freely. The React circle and growing dot (with boot-ui's press and ring)
+@* RaxUI RadioGroupItem. Source-owned: edit freely. The React circle and growing dot (with boot-ui's press and ring)
    around a real radio, so it posts in static SSR and needs no JavaScript. *@
 @using Microsoft.AspNetCore.Components.Forms
 @typeparam TValue
-<span class="@($"sheen-radio sheen-radio-native {Class} {ExtraClass}".TrimEnd())">
-    <InputRadio TValue="TValue" @attributes="AdditionalAttributes" Value="Value" class="sheen-radio-input" />
-    <span class="sheen-radio-indicator" aria-hidden="true"></span>
+<span class="@($"rax-radio rax-radio-native {Class} {ExtraClass}".TrimEnd())">
+    <InputRadio TValue="TValue" @attributes="AdditionalAttributes" Value="Value" class="rax-radio-input" />
+    <span class="rax-radio-indicator" aria-hidden="true"></span>
 </span>
 @code {
     /// <summary>Option value. Give each option a distinct id and label.</summary>

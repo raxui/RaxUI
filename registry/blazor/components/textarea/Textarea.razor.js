@@ -10,8 +10,8 @@ export function init(root) {
     if(state)counter.dataset.state=state;else counter.removeAttribute('data-state')
     // Preserve the text nodes tracked by Blazor's renderer.
     const text=(selector,value)=>{const el=counter.querySelector(selector);if(el.firstChild?.nodeType===Node.TEXT_NODE)el.firstChild.nodeValue=value;else el.textContent=value}
-    text('.sheen-textarea-count-text',state?String(remaining):`${length} / ${max}`)
-    counter.querySelector('.sheen-textarea-count-bar').style.strokeDashoffset=String(1-Math.min(length/max,1))
+    text('.rax-textarea-count-text',state?String(remaining):`${length} / ${max}`)
+    counter.querySelector('.rax-textarea-count-bar').style.strokeDashoffset=String(1-Math.min(length/max,1))
     text('[data-count-status]',state==='limit'?counter.dataset.limitLabel:'')
   }
   const resize = () => {
@@ -31,7 +31,7 @@ export function init(root) {
     input.style.resize = "none"
   }
   const focus = event => {
-    if (!root.classList.contains('sheen-textarea-group') || event.target.closest('button,a,input,select,textarea,[tabindex]')) return
+    if (!root.classList.contains('rax-textarea-group') || event.target.closest('button,a,input,select,textarea,[tabindex]')) return
     event.preventDefault();input.focus()
   }
   root.addEventListener('pointerdown',focus)

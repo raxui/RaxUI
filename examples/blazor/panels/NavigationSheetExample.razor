@@ -1,6 +1,6 @@
 @inherits PanelExampleBase
 <Button Variant="tinted" OnClick="@(() => open = true)">@T("Navigation drawer", "قائمة التنقل")</Button>
-<Sheet @bind-Open="open" Side="start" ShowCloseButton="false" Title="SheenUI" Description="@T("Workspace", "مساحة العمل")" BodyClass="px-2" style="width:min(18rem,calc(100vw - 3rem))">
+<Sheet @bind-Open="open" Side="start" ShowCloseButton="false" Title="RaxUI" Description="@T("Workspace", "مساحة العمل")" BodyClass="px-2" style="width:min(18rem,calc(100vw - 3rem))">
     <nav class="list-group list-group-flush bg-transparent">
         @foreach (var item in items)
         {

@@ -1,10 +1,10 @@
 "use client"
 
-// SheenUI skeleton. Source-owned: edit freely. Ported from boot-ui.
+// RaxUI skeleton. Source-owned: edit freely. Ported from boot-ui.
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 
-import type { SheenAppearance } from "@/lib/theme"
+import type { RaxAppearance } from "@/lib/theme"
 
 import { cn } from "@/lib/utils"
 // React 19 types inert as a boolean and treats "" as false; React 18 only renders the string form.
@@ -15,7 +15,7 @@ type Size = number | string
 const toCss = (v: Size | undefined) => (typeof v === "number" ? `${v}px` : v)
 
 export interface SkeletonProps extends React.HTMLAttributes<HTMLSpanElement> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   /** `rect` (default) · `circle` · `pill` · `text` (one line at the current font size). */
   shape?: "rect" | "circle" | "pill" | "text"
   width?: Size
@@ -38,20 +38,20 @@ const Skeleton = React.forwardRef<HTMLSpanElement, SkeletonProps>(
 
     if (children !== undefined && !loading) {
       return React.isValidElement(children)
-        ? <Slot ref={ref} data-sheen-appearance={appearance} className={cn(wasLoading && "sheen-skeleton-reveal", className)} {...props}>{children}</Slot>
-        : <span ref={ref} data-sheen-appearance={appearance} className={className} {...props}>{children}</span>
+        ? <Slot ref={ref} data-rax-appearance={appearance} className={cn(wasLoading && "rax-skeleton-reveal", className)} {...props}>{children}</Slot>
+        : <span ref={ref} data-rax-appearance={appearance} className={className} {...props}>{children}</span>
     }
 
     const content = children !== undefined
     const skeletonProps = {
-      "data-sheen-appearance": appearance,
+      "data-rax-appearance": appearance,
       "aria-hidden": true,
       "data-shape": content ? undefined : shape,
       "data-animation": animation,
       "data-content": content || undefined,
       // Hidden content stays out of tab order and the accessibility tree.
       ...inert(!!content),
-      className: cn("sheen-skeleton", className),
+      className: cn("rax-skeleton", className),
       // Circles are as tall as they are wide, even when a flex row would stretch them.
       style: { width: toCss(width), height: toCss(height ?? (shape === "circle" && !content ? width : undefined)), ...style },
       ...props,
@@ -83,7 +83,7 @@ export interface SkeletonTextProps extends Omit<SkeletonProps, "shape" | "width"
 
 const SkeletonText = React.forwardRef<HTMLSpanElement, SkeletonTextProps>(
   ({ lines = 3, lastLineWidth = "60%", className, animation, appearance, ...props }, ref) => (
-    <span ref={ref} data-sheen-appearance={appearance} aria-hidden="true" className={cn("sheen-skeleton-text", className)} {...props}>
+    <span ref={ref} data-rax-appearance={appearance} aria-hidden="true" className={cn("rax-skeleton-text", className)} {...props}>
       {Array.from({ length: lines }, (_, i) => (
         <Skeleton key={i} shape="text" animation={animation} width={i === lines - 1 && lines > 1 ? lastLineWidth : "100%"} />
       ))}

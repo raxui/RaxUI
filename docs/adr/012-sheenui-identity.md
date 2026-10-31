@@ -1,6 +1,6 @@
 # ADR 012 — SheenUI identity
 
-Status: Accepted
+Status: Superseded by [ADR 022](022-raxui-identity.md)
 
 ## Decision
 

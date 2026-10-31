@@ -5,19 +5,19 @@
 // row itself shows focus with a soft tint.
 // -----------------------------------------------------------------------------
 
-.sheen-form-section {
-  --sheen-row-pad-x: 1rem;
-  --sheen-row-icon: 1.875rem;
-  --sheen-row-gap: 0.875rem;
+.rax-form-section {
+  --rax-row-pad-x: 1rem;
+  --rax-row-icon: 1.875rem;
+  --rax-row-gap: 0.875rem;
 
   & + & {
     margin-top: 1.75rem;
   }
 }
 
-.sheen-form-section-title {
+.rax-form-section-title {
   margin: 0 0 0.5rem;
-  padding-inline: var(--sheen-row-pad-x);
+  padding-inline: var(--rax-row-pad-x);
   color: var(--bs-secondary-color);
   font-size: 0.8125rem;
   font-weight: 500;
@@ -25,39 +25,39 @@
   text-transform: uppercase;
 }
 
-.sheen-form-section-card {
-  @include sheen-surface;
+.rax-form-section-card {
+  @include rax-surface;
 
   overflow: hidden;
-  border-radius: var(--sheen-radius);
+  border-radius: var(--rax-radius);
 }
 
-.sheen-form-section-footer {
+.rax-form-section-footer {
   margin: 0.5rem 0 0;
-  padding-inline: var(--sheen-row-pad-x);
+  padding-inline: var(--rax-row-pad-x);
   color: var(--bs-secondary-color);
   font-size: 0.8125rem;
   line-height: 1.4;
 }
 
 // ---- Rows ---------------------------------------------------------------------------
-.sheen-form-row {
+.rax-form-row {
   position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  column-gap: var(--sheen-row-gap);
+  column-gap: var(--rax-row-gap);
   row-gap: 0.25rem;
   min-height: 2.875rem;
-  padding: 0.5rem var(--sheen-row-pad-x);
-  transition: background-color var(--sheen-duration-fast) ease;
+  padding: 0.5rem var(--rax-row-pad-x);
+  transition: background-color var(--rax-duration-fast) ease;
 
   // Hairline separator, inset to start after the icon (iOS).
   & + &::before {
     content: "";
     position: absolute;
     top: 0;
-    inset-inline: var(--sheen-row-pad-x) 0;
+    inset-inline: var(--rax-row-pad-x) 0;
     height: 1px;
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
     transform: scaleY(0.5);
@@ -65,7 +65,7 @@
   }
 
   & + &[data-has-icon]::before {
-    inset-inline-start: calc(var(--sheen-row-pad-x) + var(--sheen-row-icon) + var(--sheen-row-gap));
+    inset-inline-start: calc(var(--rax-row-pad-x) + var(--rax-row-icon) + var(--rax-row-gap));
   }
 
   // Without an icon there's no first column.
@@ -83,7 +83,7 @@
 }
 
 // Inline (default): text and control share the line.
-.sheen-form-row:not(.sheen-form-row-link)[data-layout="inline"] {
+.rax-form-row:not(.rax-form-row-link)[data-layout="inline"] {
   grid-template-columns: auto minmax(0, auto) minmax(0, 1fr);
 
   &:not([data-has-icon]) {
@@ -92,89 +92,89 @@
 }
 
 // Stacked: label on top, control full width below.
-.sheen-form-row[data-layout="stacked"] {
+.rax-form-row[data-layout="stacked"] {
   align-items: start;
 
-  .sheen-form-row-control {
+  .rax-form-row-control {
     grid-column: -2 / -1;
     justify-content: stretch;
   }
 }
 
-.sheen-form-row-icon {
-  --sheen-row-icon-rgb: var(--bs-primary-rgb);
+.rax-form-row-icon {
+  --rax-row-icon-rgb: var(--bs-primary-rgb);
 
   display: inline-grid;
   place-items: center;
-  width: var(--sheen-row-icon);
-  height: var(--sheen-row-icon);
-  border-radius: calc(0.5rem * var(--sheen-radius-scale));
+  width: var(--rax-row-icon);
+  height: var(--rax-row-icon);
+  border-radius: calc(0.5rem * var(--rax-radius-scale));
   color: #fff;
-  background-color: rgb(var(--sheen-row-icon-rgb));
+  background-color: rgb(var(--rax-row-icon-rgb));
 
   svg {
     width: 1.125rem;
     height: 1.125rem;
   }
 
-  &[data-color="green"] { --sheen-row-icon-rgb: 52, 199, 89; }
-  &[data-color="red"] { --sheen-row-icon-rgb: 255, 59, 48; }
-  &[data-color="orange"] { --sheen-row-icon-rgb: 255, 149, 0; }
-  &[data-color="yellow"] { --sheen-row-icon-rgb: 255, 204, 0; }
-  &[data-color="teal"] { --sheen-row-icon-rgb: 48, 176, 199; }
-  &[data-color="indigo"] { --sheen-row-icon-rgb: 88, 86, 214; }
-  &[data-color="purple"] { --sheen-row-icon-rgb: 175, 82, 222; }
-  &[data-color="pink"] { --sheen-row-icon-rgb: 255, 45, 85; }
-  &[data-color="gray"] { --sheen-row-icon-rgb: 142, 142, 147; }
+  &[data-color="green"] { --rax-row-icon-rgb: 52, 199, 89; }
+  &[data-color="red"] { --rax-row-icon-rgb: 255, 59, 48; }
+  &[data-color="orange"] { --rax-row-icon-rgb: 255, 149, 0; }
+  &[data-color="yellow"] { --rax-row-icon-rgb: 255, 204, 0; }
+  &[data-color="teal"] { --rax-row-icon-rgb: 48, 176, 199; }
+  &[data-color="indigo"] { --rax-row-icon-rgb: 88, 86, 214; }
+  &[data-color="purple"] { --rax-row-icon-rgb: 175, 82, 222; }
+  &[data-color="pink"] { --rax-row-icon-rgb: 255, 45, 85; }
+  &[data-color="gray"] { --rax-row-icon-rgb: 142, 142, 147; }
 }
 
-.sheen-form-row-text {
+.rax-form-row-text {
   display: grid;
   gap: 0.0625rem;
   min-width: 0;
 
-  .sheen-field-label {
+  .rax-field-label {
     font-size: 0.9375rem;
     font-weight: 400;
   }
 
-  .sheen-field-description {
+  .rax-field-description {
     font-size: 0.75rem;
   }
 }
 
-.sheen-form-row-control {
+.rax-form-row-control {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   min-width: 0;
 
   // Text-like controls take the remaining width and right-align their value.
-  > :is(.form-control, .sheen-input, .sheen-input-group, .sheen-textarea, .sheen-textarea-group) {
+  > :is(.form-control, .rax-input, .rax-input-group, .rax-textarea, .rax-textarea-group) {
     flex: 1;
   }
 
   // The row already has its icon; a field's own leading glyph would repeat it.
-  .sheen-input-group > .sheen-input-slot[data-side="start"] {
+  .rax-input-group > .rax-input-slot[data-side="start"] {
     display: none;
   }
 }
 
-.sheen-form-row .sheen-field-error {
+.rax-form-row .rax-field-error {
   grid-column: 1 / -1;
 }
 
-.sheen-form-row[data-has-icon] .sheen-field-error {
-  padding-inline-start: calc(var(--sheen-row-icon) + var(--sheen-row-gap));
+.rax-form-row[data-has-icon] .rax-field-error {
+  padding-inline-start: calc(var(--rax-row-icon) + var(--rax-row-gap));
 }
 
-.sheen-form-row[data-invalid] .sheen-field-label {
+.rax-form-row[data-invalid] .rax-field-label {
   color: var(--bs-form-invalid-color);
 }
 
 // ---- Controls lose their chrome inside rows ----------------------------------------
-.sheen-form-row-control {
-  :is(.form-control, .sheen-input, .sheen-input-group, .sheen-textarea, .sheen-textarea-group, .form-select) {
+.rax-form-row-control {
+  :is(.form-control, .rax-input, .rax-input-group, .rax-textarea, .rax-textarea-group, .form-select) {
     min-height: 0;
     border-color: transparent !important;
     background-color: transparent !important;
@@ -184,30 +184,30 @@
   }
 
   input.form-control,
-  .sheen-input:not(.sheen-date-segments):not(.sheen-combobox-value) {
+  .rax-input:not(.rax-date-segments):not(.rax-combobox-value) {
     height: auto;
     padding-block: 0.25rem;
     padding-inline-end: 0;
     text-align: end;
   }
 
-  .sheen-input-group {
-    > .sheen-input {
+  .rax-input-group {
+    > .rax-input {
       min-height: 2rem;
     }
 
-    .sheen-input-slot[data-side="end"] {
+    .rax-input-slot[data-side="end"] {
       padding-inline-end: 0;
     }
   }
 
   // Inline rows: date segments and combobox values sit at the end too.
-  .sheen-date-segments,
-  .sheen-combobox-value {
+  .rax-date-segments,
+  .rax-combobox-value {
     justify-content: flex-end;
   }
 
-  .sheen-combobox-trigger {
+  .rax-combobox-trigger {
     justify-content: flex-end;
     text-align: end;
   }
@@ -223,28 +223,28 @@
   }
 
   textarea.form-control,
-  .sheen-textarea {
+  .rax-textarea {
     padding-inline: 0;
   }
 
   // The ring would clip against the card; the row tint shows focus instead.
-  :is(.form-control, .sheen-input, .sheen-textarea, .form-select):focus,
-  :is(.sheen-input-group, .sheen-textarea-group):focus-within {
+  :is(.form-control, .rax-input, .rax-textarea, .form-select):focus,
+  :is(.rax-input-group, .rax-textarea-group):focus-within {
     box-shadow: none !important;
   }
 }
 
-.sheen-form-row[data-layout="stacked"] .sheen-form-row-control :is(.form-control, .sheen-input:not(.sheen-date-segments)) {
+.rax-form-row[data-layout="stacked"] .rax-form-row-control :is(.form-control, .rax-input:not(.rax-date-segments)) {
   text-align: start;
 }
 
 // Errors keep a visible cue on the stripped control.
-.sheen-form-row[data-invalid] .sheen-form-row-control :is(.form-control, .sheen-input, .sheen-textarea, .sheen-combobox-trigger, .form-select) {
+.rax-form-row[data-invalid] .rax-form-row-control :is(.form-control, .rax-input, .rax-textarea, .rax-combobox-trigger, .form-select) {
   color: var(--bs-form-invalid-color);
 }
 
 // ---- Navigation rows -----------------------------------------------------------------
-.sheen-form-row-link {
+.rax-form-row-link {
   grid-template-columns: auto minmax(0, 1fr) auto auto;
   width: 100%;
   border: 0;
@@ -278,11 +278,11 @@
   }
 }
 
-.sheen-form-row-link-label {
+.rax-form-row-link-label {
   font-size: 0.9375rem;
 }
 
-.sheen-form-row-value {
+.rax-form-row-value {
   overflow: hidden;
   color: var(--bs-secondary-color);
   font-size: 0.9375rem;
@@ -290,7 +290,7 @@
   white-space: nowrap;
 }
 
-.sheen-form-row-chevron {
+.rax-form-row-chevron {
   display: inline-flex;
   color: rgba(var(--bs-emphasis-color-rgb), 0.3);
 
@@ -304,13 +304,13 @@
   }
 
   @include motion-safe {
-    transition: transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+    transition: transform var(--rax-duration-slow) var(--rax-ease-spring);
 
-    .sheen-form-row-link:hover & {
+    .rax-form-row-link:hover & {
       transform: translateX(2px);
     }
 
-    [dir="rtl"] .sheen-form-row-link:hover & {
+    [dir="rtl"] .rax-form-row-link:hover & {
       transform: translateX(-2px);
     }
   }

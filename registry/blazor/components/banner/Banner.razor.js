@@ -1,5 +1,5 @@
 const generations=new WeakMap()
-export function remembered(key){try{return !!key&&localStorage.getItem(`sheen-banner:${key}`)==='dismissed'}catch{return false}}
+export function remembered(key){try{return !!key&&localStorage.getItem(`rax-banner:${key}`)==='dismissed'}catch{return false}}
 export function sync(element,position,open){if(!element?.isConnected)return;if(open)generations.set(element,(generations.get(element)??0)+1);if(position==='bottom'){element.setAttribute('popover','manual');if(open&&!element.matches(':popover-open'))element.showPopover()}else if(element.hasAttribute('popover')){if(element.matches(':popover-open'))element.hidePopover();element.removeAttribute('popover')}}
-export async function dismiss(element,key){if(key)try{localStorage.setItem(`sheen-banner:${key}`,'dismissed')}catch{};if(!element)return;const generation=generations.get(element);await Promise.allSettled(element.getAnimations().map(a=>a.finished));if(generations.get(element)===generation&&element.matches(':popover-open'))element.hidePopover()}
-export function reset(key){if(key)try{localStorage.removeItem(`sheen-banner:${key}`)}catch{}}
+export async function dismiss(element,key){if(key)try{localStorage.setItem(`rax-banner:${key}`,'dismissed')}catch{};if(!element)return;const generation=generations.get(element);await Promise.allSettled(element.getAnimations().map(a=>a.finished));if(generations.get(element)===generation&&element.matches(':popover-open'))element.hidePopover()}
+export function reset(key){if(key)try{localStorage.removeItem(`rax-banner:${key}`)}catch{}}

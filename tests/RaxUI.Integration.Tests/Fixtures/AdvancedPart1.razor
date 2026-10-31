@@ -1,0 +1,24 @@
+@page "/advanced-one"
+@rendermode InteractiveServer
+<div id="advanced-theme" data-rax-appearance="@appearance" data-bs-theme="@mode" data-rax-accent="@accent" data-rax-density="@density" dir="@direction" style="padding:1rem">
+<label>Appearance<select id="advanced-appearance" @bind="appearance"><option>default</option><option>flat</option><option>glass</option></select></label>
+<label>Mode<select id="advanced-mode" @bind="mode"><option>light</option><option>dark</option></select></label>
+<label>Direction<select id="advanced-direction" @bind="direction"><option>ltr</option><option>rtl</option></select></label>
+<label>Accent<select id="advanced-accent" @bind="accent"><option>blue</option><option>emerald</option><option>rose</option></select></label>
+<label>Density<select id="advanced-density" @bind="density"><option>default</option><option>compact</option><option>comfortable</option></select></label>
+<Button OnClick="()=>shown=!shown">Toggle examples</Button>
+@if(shown){<section id="advanced-speed"><h1>Speed dial</h1><SpeedDialExamples /></section><section id="advanced-chat" class="my-4"><h2>Chat</h2><ChatExamples /></section>}
+<section id="dial-probe" class="my-4" style="height:340px;padding-top:250px">
+<SpeedDial @bind-Open="probeOpen" CloseOnEscape="@dismiss" CloseOnInteractOutside="@dismiss"><SpeedDialTrigger Label="Probe actions" /><SpeedDialContent><SpeedDialItem><SpeedDialAction Label="Keep open" CloseOnSelect="false" OnSelect="()=>selected++">Keep</SpeedDialAction></SpeedDialItem><SpeedDialItem><SpeedDialAction Label="Disabled action" Disabled>Disabled</SpeedDialAction></SpeedDialItem><SpeedDialItem><SpeedDialAction Label="Close action">Close</SpeedDialAction></SpeedDialItem></SpeedDialContent></SpeedDial>
+<output id="probe-selected">@selected</output><Button OnClick="()=>dismiss=!dismiss">Toggle dismissal</Button>
+<SpeedDial Disabled><SpeedDialTrigger Label="Disabled dial" /><SpeedDialContent><SpeedDialItem><SpeedDialAction Label="Unavailable">Unavailable</SpeedDialAction></SpeedDialItem></SpeedDialContent></SpeedDial>
+</section>
+<section id="scroll-probe" class="my-4"><Button OnClick="()=>count++">Append message</Button><Chat style="height:240px"><ChatMessages>@for(var i=0;i<count;i++){<ChatMessageGroup @key="i" From="other"><ChatBubble>Message @i</ChatBubble></ChatMessageGroup>}</ChatMessages></Chat></section>
+<section id="draft-probe"><ChatComposer @bind-Value="draft" OnSend="text=>sent=text" Label="Draft probe" Disabled="@disabled" MaxRows="3" /><output id="draft-value">@draft</output><output id="draft-sent">@sent</output><Button OnClick="SetDraft">Set draft</Button><Button OnClick="()=>disabled=!disabled">Toggle disabled</Button></section>
+</div>
+@code {
+ private string appearance="default",mode="light",direction="ltr",accent="blue",density="default",draft="initial draft",sent="";
+ private bool shown=true,probeOpen,dismiss=true,disabled;
+ private int selected,count=30;
+ private void SetDraft()=>draft="server draft";
+}

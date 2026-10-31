@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "name": "RaxUI test registry",
+  "components": [
+    { "name": "alpha", "manifest": "components/alpha/manifest.json" },
+    { "name": "beta", "manifest": "components/beta/manifest.json" }
+  ]
+}

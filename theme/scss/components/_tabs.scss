@@ -2,12 +2,12 @@
 // Tabs — Radix Tabs with a sliding, spring-animated indicator.
 //
 // TabsList measures the active trigger and writes its box into
-// --sheen-tabs-indicator-{x,y,width,height}; one indicator element glides
+// --rax-tabs-indicator-{x,y,width,height}; one indicator element glides
 // between tabs. Content slides in from the direction of travel.
 // Variants: segmented (iOS control) · underline · pills.
 // -----------------------------------------------------------------------------
 
-.sheen-tabs {
+.rax-tabs {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -17,8 +17,8 @@
   }
 }
 
-.sheen-tabs-list {
-  --sheen-tabs-thumb-bg: rgb(var(--bs-body-bg-rgb));
+.rax-tabs-list {
+  --rax-tabs-thumb-bg: rgb(var(--bs-body-bg-rgb));
 
   position: relative;
   isolation: isolate; // indicator (z-index: -1) stays above the list background
@@ -32,37 +32,37 @@
   }
 
   [data-bs-theme="dark"] & {
-    --sheen-tabs-thumb-bg: rgba(255, 255, 255, 0.14);
+    --rax-tabs-thumb-bg: rgba(255, 255, 255, 0.14);
   }
 }
 
-.sheen-tabs-indicator {
+.rax-tabs-indicator {
   position: absolute;
   top: 0;
   left: 0;
   z-index: -1;
-  width: var(--sheen-tabs-indicator-width, 0);
-  height: var(--sheen-tabs-indicator-height, 0);
+  width: var(--rax-tabs-indicator-width, 0);
+  height: var(--rax-tabs-indicator-height, 0);
   opacity: 0;
   pointer-events: none;
-  transform: translate(var(--sheen-tabs-indicator-x, 0), var(--sheen-tabs-indicator-y, 0));
+  transform: translate(var(--rax-tabs-indicator-x, 0), var(--rax-tabs-indicator-y, 0));
 
-  .sheen-tabs-list[data-ready] & {
+  .rax-tabs-list[data-ready] & {
     opacity: 1;
   }
 
   // Only animate after the first placement, so it doesn't fly in on load.
   @include motion-safe {
-    .sheen-tabs-list[data-animate] & {
+    .rax-tabs-list[data-animate] & {
       transition:
-        transform 450ms var(--sheen-ease-spring),
-        width 450ms var(--sheen-ease-spring),
-        height 450ms var(--sheen-ease-spring);
+        transform 450ms var(--rax-ease-spring),
+        width 450ms var(--rax-ease-spring),
+        height 450ms var(--rax-ease-spring);
     }
   }
 }
 
-.sheen-tabs-trigger {
+.rax-tabs-trigger {
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
@@ -71,7 +71,7 @@
   gap: 0.5rem;
   padding: 0.4375rem 1rem;
   border: 0;
-  border-radius: calc(var(--sheen-radius-control) - 0.1875rem);
+  border-radius: calc(var(--rax-radius-control) - 0.1875rem);
   color: rgba(var(--bs-emphasis-color-rgb), 0.65);
   background: none;
   font: inherit;
@@ -81,7 +81,7 @@
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
-  transition: color var(--sheen-duration) ease;
+  transition: color var(--rax-duration) ease;
 
   & svg {
     width: 1rem;
@@ -110,20 +110,20 @@
     }
 
     transition:
-      color var(--sheen-duration) ease,
-      transform var(--sheen-duration-slow) var(--sheen-ease-spring);
+      color var(--rax-duration) ease,
+      transform var(--rax-duration-slow) var(--rax-ease-spring);
   }
 }
 
 // ---- Segmented: iOS control — track + floating thumb ------------------------
-.sheen-tabs-list[data-variant="segmented"] {
+.rax-tabs-list[data-variant="segmented"] {
   padding: 0.1875rem;
-  border-radius: var(--sheen-radius-control);
+  border-radius: var(--rax-radius-control);
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
 
-  .sheen-tabs-indicator {
-    border-radius: calc(var(--sheen-radius-control) - 0.1875rem);
-    background-color: var(--sheen-tabs-thumb-bg);
+  .rax-tabs-indicator {
+    border-radius: calc(var(--rax-radius-control) - 0.1875rem);
+    background-color: var(--rax-tabs-thumb-bg);
     box-shadow:
       0 0 0 0.5px rgba(0, 0, 0, 0.04),
       0 1px 2px rgba(0, 0, 0, 0.08),
@@ -131,13 +131,13 @@
   }
 
   // Before JS measures (or without JS), paint the active tab itself.
-  &:not([data-ready]) .sheen-tabs-trigger[data-state="active"] {
-    background-color: var(--sheen-tabs-thumb-bg);
+  &:not([data-ready]) .rax-tabs-trigger[data-state="active"] {
+    background-color: var(--rax-tabs-thumb-bg);
   }
 }
 
 // ---- Underline: header tabs with a sliding bar ------------------------------
-.sheen-tabs-list[data-variant="underline"] {
+.rax-tabs-list[data-variant="underline"] {
   display: flex;
   gap: 1.5rem;
   overflow-x: auto;
@@ -148,10 +148,10 @@
     display: none;
   }
 
-  .sheen-tabs-trigger {
+  .rax-tabs-trigger {
     padding-inline: 0.125rem;
     padding-block: 0.75rem;
-    border-radius: calc(0.375rem * var(--sheen-radius-scale));
+    border-radius: calc(0.375rem * var(--rax-radius-scale));
     color: var(--bs-secondary-color);
 
     &:hover,
@@ -165,16 +165,16 @@
     }
   }
 
-  .sheen-tabs-indicator {
+  .rax-tabs-indicator {
     top: auto;
     bottom: 0;
     height: 2px;
     border-radius: 2px;
     background-color: rgb(var(--bs-primary-rgb));
-    transform: translateX(var(--sheen-tabs-indicator-x, 0));
+    transform: translateX(var(--rax-tabs-indicator-x, 0));
   }
 
-  &:not([data-ready]) .sheen-tabs-trigger[data-state="active"] {
+  &:not([data-ready]) .rax-tabs-trigger[data-state="active"] {
     box-shadow: inset 0 -2px 0 rgb(var(--bs-primary-rgb));
   }
 
@@ -185,32 +185,32 @@
     border-bottom: 0;
     border-inline-start: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
 
-    .sheen-tabs-trigger {
+    .rax-tabs-trigger {
       justify-content: flex-start;
       padding: 0.5rem 1rem;
     }
 
-    .sheen-tabs-indicator {
+    .rax-tabs-indicator {
       top: 0;
       bottom: auto;
       left: -1px;
       width: 2px;
-      height: var(--sheen-tabs-indicator-height, 0);
-      transform: translateY(var(--sheen-tabs-indicator-y, 0));
+      height: var(--rax-tabs-indicator-height, 0);
+      transform: translateY(var(--rax-tabs-indicator-y, 0));
     }
   }
 }
 
-[dir="rtl"] .sheen-tabs-list[data-variant="underline"][data-orientation="vertical"] .sheen-tabs-indicator {
+[dir="rtl"] .rax-tabs-list[data-variant="underline"][data-orientation="vertical"] .rax-tabs-indicator {
   left: auto;
   right: -1px;
 }
 
 // ---- Pills: tinted capsule --------------------------------------------------
-.sheen-tabs-list[data-variant="pills"] {
+.rax-tabs-list[data-variant="pills"] {
   gap: 0.25rem;
 
-  .sheen-tabs-trigger {
+  .rax-tabs-trigger {
     padding: 0.375rem 0.875rem;
     border-radius: 999px;
     color: var(--bs-secondary-color);
@@ -224,57 +224,57 @@
     }
   }
 
-  .sheen-tabs-indicator {
+  .rax-tabs-indicator {
     border-radius: 999px;
     background-color: rgb(var(--bs-primary-rgb));
-    box-shadow: var(--sheen-shadow-sm);
+    box-shadow: var(--rax-shadow-sm);
   }
 
-  &:not([data-ready]) .sheen-tabs-trigger[data-state="active"] {
+  &:not([data-ready]) .rax-tabs-trigger[data-state="active"] {
     background-color: rgb(var(--bs-primary-rgb));
   }
 }
 
 // ---- Content: slide in from the direction of travel -------------------------
-.sheen-tabs-content {
-  --sheen-tabs-shift-x: 0;
-  --sheen-tabs-shift-y: 0;
+.rax-tabs-content {
+  --rax-tabs-shift-x: 0;
+  --rax-tabs-shift-y: 0;
 
   flex: 1;
   min-width: 0;
   outline: none;
 
   &:focus-visible {
-    border-radius: var(--sheen-radius-sm);
+    border-radius: var(--rax-radius-sm);
     box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.35);
   }
 
-  &[data-motion="from-end"] { --sheen-tabs-shift-x: 1.25rem; }
-  &[data-motion="from-start"] { --sheen-tabs-shift-x: -1.25rem; }
+  &[data-motion="from-end"] { --rax-tabs-shift-x: 1.25rem; }
+  &[data-motion="from-start"] { --rax-tabs-shift-x: -1.25rem; }
 
-  [dir="rtl"] &[data-motion="from-end"] { --sheen-tabs-shift-x: -1.25rem; }
-  [dir="rtl"] &[data-motion="from-start"] { --sheen-tabs-shift-x: 1.25rem; }
+  [dir="rtl"] &[data-motion="from-end"] { --rax-tabs-shift-x: -1.25rem; }
+  [dir="rtl"] &[data-motion="from-start"] { --rax-tabs-shift-x: 1.25rem; }
 
   &[data-orientation="vertical"] {
-    &[data-motion] { --sheen-tabs-shift-x: 0; }
-    &[data-motion="from-end"] { --sheen-tabs-shift-y: 0.75rem; }
-    &[data-motion="from-start"] { --sheen-tabs-shift-y: -0.75rem; }
+    &[data-motion] { --rax-tabs-shift-x: 0; }
+    &[data-motion="from-end"] { --rax-tabs-shift-y: 0.75rem; }
+    &[data-motion="from-start"] { --rax-tabs-shift-y: -0.75rem; }
   }
 
   // No motion attribute on first render, so nothing animates on page load.
   &[data-state="active"][data-motion] {
-    animation: sheen-fade-in var(--sheen-duration) ease;
+    animation: rax-fade-in var(--rax-duration) ease;
 
     @include motion-safe {
-      animation: sheen-tabs-content-in 400ms var(--sheen-ease-out);
+      animation: rax-tabs-content-in 400ms var(--rax-ease-out);
     }
   }
 }
 
-@keyframes sheen-tabs-content-in {
+@keyframes rax-tabs-content-in {
   from {
     opacity: 0;
-    transform: translate(var(--sheen-tabs-shift-x), var(--sheen-tabs-shift-y));
+    transform: translate(var(--rax-tabs-shift-x), var(--rax-tabs-shift-y));
   }
 
   to {
@@ -284,30 +284,30 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheen-tabs, .sheen-tabs * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .rax-tabs, .rax-tabs * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-.sheen-tabs .sheen-tabs-trigger svg { width: 1em; height: 1em; }
+.rax-tabs .rax-tabs-trigger svg { width: 1em; height: 1em; }
 
-.sheen-tabs-list[data-variant="segmented"] { --sheen-tabs-thumb-bg: var(--sheen-surface-bg); }
-.sheen-tabs-list[data-variant="segmented"] .sheen-tabs-indicator { box-shadow: var(--sheen-control-shadow); backdrop-filter: var(--sheen-surface-filter); }
-.sheen-tabs-trigger { min-height: var(--sheen-control-height-sm); }
+.rax-tabs-list[data-variant="segmented"] { --rax-tabs-thumb-bg: var(--rax-surface-bg); }
+.rax-tabs-list[data-variant="segmented"] .rax-tabs-indicator { box-shadow: var(--rax-control-shadow); backdrop-filter: var(--rax-surface-filter); }
+.rax-tabs-trigger { min-height: var(--rax-control-height-sm); }
 
 // ---- Glass segmented: transparent track + liquid-glass droplet -------------
 // The track takes the page's own background (hairline only); the thumb is a
 // lens that glides with the shared spring.
-[data-sheen-appearance="glass"] .sheen-tabs-list[data-variant="segmented"] {
-  --sheen-tabs-thumb-bg: rgba(var(--bs-body-bg-rgb), 0.3);
+[data-rax-appearance="glass"] .rax-tabs-list[data-variant="segmented"] {
+  --rax-tabs-thumb-bg: rgba(var(--bs-body-bg-rgb), 0.3);
   background-color: transparent;
   box-shadow: inset 0 0 0 1px rgba(var(--bs-emphasis-color-rgb), 0.12);
 
-  .sheen-tabs-indicator {
+  .rax-tabs-indicator {
     background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.08));
     box-shadow:
       0 0 0 0.5px rgba(var(--bs-emphasis-color-rgb), 0.1),
-      inset 0 1px 1px var(--sheen-glass-highlight),
+      inset 0 1px 1px var(--rax-glass-highlight),
       inset 0 -2px 5px rgba(var(--bs-emphasis-color-rgb), 0.06),
-      0 3px 10px rgba(var(--sheen-shadow-rgb), 0.14);
+      0 3px 10px rgba(var(--rax-shadow-rgb), 0.14);
     -webkit-backdrop-filter: blur(8px) saturate(180%) brightness(1.06);
     backdrop-filter: blur(8px) saturate(180%) brightness(1.06);
 
@@ -335,18 +335,18 @@
     }
   }
 }
-[data-bs-theme="dark"] [data-sheen-appearance="glass"] .sheen-tabs-list[data-variant="segmented"],
-[data-sheen-appearance="glass"][data-bs-theme="dark"] .sheen-tabs-list[data-variant="segmented"] {
-  --sheen-tabs-thumb-bg: rgba(255, 255, 255, 0.14);
-  .sheen-tabs-indicator {
+[data-bs-theme="dark"] [data-rax-appearance="glass"] .rax-tabs-list[data-variant="segmented"],
+[data-rax-appearance="glass"][data-bs-theme="dark"] .rax-tabs-list[data-variant="segmented"] {
+  --rax-tabs-thumb-bg: rgba(255, 255, 255, 0.14);
+  .rax-tabs-indicator {
     background-image: linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.02));
     &::after { background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0) 62%, rgba(255, 255, 255, 0.22)); }
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  [data-sheen-appearance="glass"] .sheen-tabs-list[data-variant="segmented"] {
-    --sheen-tabs-thumb-bg: var(--bs-body-bg);
-    .sheen-tabs-indicator { background-image: none; -webkit-backdrop-filter: none; backdrop-filter: none; &::before { display: none; } }
+  [data-rax-appearance="glass"] .rax-tabs-list[data-variant="segmented"] {
+    --rax-tabs-thumb-bg: var(--bs-body-bg);
+    .rax-tabs-indicator { background-image: none; -webkit-backdrop-filter: none; backdrop-filter: none; &::before { display: none; } }
   }
 }

@@ -10,7 +10,7 @@ import { setTimeout as delay } from "node:timers/promises"
 import { FileTransaction, TRANSACTION_DIR } from "../../../src/react-cli/src/transaction.mjs"
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
-const entry = path.join(repo, "src/react-cli/bin/sheenui-react.mjs")
+const entry = path.join(repo, "src/react-cli/bin/raxui-react.mjs")
 let root, app, children
 const full = name => path.join(app, ...name.split("/"))
 const read = name => readFileSync(full(name), "utf8")
@@ -23,7 +23,7 @@ function cli(...args) {
 const ok = result => { assert.equal(result.code, 0, result.err); return result }
 
 beforeEach(() => {
-  root = mkdtempSync(path.join(tmpdir(), "sheen-recovery-")); app = path.join(root, "app"); children = []
+  root = mkdtempSync(path.join(tmpdir(), "rax-recovery-")); app = path.join(root, "app"); children = []
   mkdirSync(full("src"), { recursive: true })
   writeFileSync(full("package.json"), JSON.stringify({ dependencies: { react: "18.3.1", "react-dom": "18.3.1" }, devDependencies: { vite: "8.3.5" } }))
   writeFileSync(full("src/main.tsx"), 'import "./index.css"; import App from "./App";\n')
@@ -39,7 +39,7 @@ afterEach(async () => {
     const exited = new Promise(resolve => child.once("exit", resolve)); child.kill("SIGKILL"); await exited
   }
   assert.equal(path.dirname(root), path.resolve(tmpdir()))
-  assert.ok(path.basename(root).startsWith("sheen-recovery-"))
+  assert.ok(path.basename(root).startsWith("rax-recovery-"))
   rmSync(root, { recursive: true, force: true })
 })
 
@@ -66,8 +66,8 @@ async function crash(command, at = "first-write", name = "dialog") {
 const rename=fs.renameSync, unlink=fs.unlinkSync, write=fs.writeFileSync, read=fs.readFileSync;
 const app=${JSON.stringify(app)}, ready=${JSON.stringify(ready)}, at=${JSON.stringify(at)};
 function stop(target,kind){const rel=path.relative(app,String(target)).split(path.sep).join("/");
-const project=!rel.startsWith("../")&&!rel.startsWith(".sheenui-react-transaction/");
-const hit=at==="npm"?kind==="npm":at==="cleanup"?kind==="delete"&&rel.startsWith(".sheenui-react-transaction/before-"):at==="first-write"?project&&kind==="write":at==="delete"?project&&kind==="delete":at==="commit"?rel===".sheenui-react-transaction/journal.json"&&JSON.parse(read(target,"utf8")).phase==="committed":rel===at&&kind==="write";
+const project=!rel.startsWith("../")&&!rel.startsWith(".raxui-react-transaction/");
+const hit=at==="npm"?kind==="npm":at==="cleanup"?kind==="delete"&&rel.startsWith(".raxui-react-transaction/before-"):at==="first-write"?project&&kind==="write":at==="delete"?project&&kind==="delete":at==="commit"?rel===".raxui-react-transaction/journal.json"&&JSON.parse(read(target,"utf8")).phase==="committed":rel===at&&kind==="write";
 if(hit){write(ready,rel);Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0)}}
 cp.spawnSync=()=>{write(path.join(app,"package.json"),"npm changed bytes");stop(path.join(app,"package.json"),"npm");return {status:1}};
 fs.renameSync=(from,to)=>{const result=rename(from,to);stop(to,"write");return result};
@@ -86,7 +86,7 @@ fs.unlinkSync=file=>{const result=unlink(file);stop(file,"delete");return result
 }
 
 for (const command of ["init", "add"]) {
-  for (const at of ["first-write", "src/styles/sheenui.scss", "sheenui.react.json", "sheenui.react.lock.json"]) {
+  for (const at of ["first-write", "src/styles/raxui.scss", "raxui.react.json", "raxui.react.lock.json"]) {
     test(`${command}: killed after ${at}, before durable commit, restores exact bytes and directories`, async () => {
       if (command === "add") ok(cli("init"))
       const before = snapshot(); await crash(command, at); ok(cli("recover"))
@@ -96,7 +96,7 @@ for (const command of ["init", "add"]) {
   }
   test(`${command}: next invocation recovers automatically before reading config and lock`, async () => {
     if (command === "add") ok(cli("init"))
-    await crash(command, "sheenui.react.json")
+    await crash(command, "raxui.react.json")
     const result = ok(cli(command, ...(command === "add" ? ["dialog"] : [])))
     assert.match(result.out, /Recovered interrupted/)
     assert.equal(existsSync(full(TRANSACTION_DIR)), false)
@@ -104,8 +104,8 @@ for (const command of ["init", "add"]) {
   test(`${command}: commit marker keeps completed installation and later user edits`, async () => {
     if (command === "add") ok(cli("init"))
     await crash(command, "commit"); writeFileSync(full("src/main.tsx"), "user edit after commit")
-    const before = snapshot(); assert.match(ok(cli("recover")).out, /completed SheenUI installation/)
-    assert.deepEqual(snapshot(), before); assert.ok(existsSync(full("sheenui.react.lock.json")))
+    const before = snapshot(); assert.match(ok(cli("recover")).out, /completed RaxUI installation/)
+    assert.deepEqual(snapshot(), before); assert.ok(existsSync(full("raxui.react.lock.json")))
   })
 }
 
@@ -119,11 +119,11 @@ test("edited and newly created user files survive; explicit keep resolves confli
   const before = snapshot(), result = cli("init")
   assert.equal(result.code, 1); assert.match(result.err, /recovery stopped without changing files/); assert.deepEqual(snapshot(), before)
   ok(cli("recover", "--keep-changes")); assert.equal(read(first), "later user edit"); assert.equal(read("src/lib/user.txt"), "keep me")
-  assert.equal(existsSync(full("sheenui.react.json")), false)
+  assert.equal(existsSync(full("raxui.react.json")), false)
 })
 
 test("later user deletion is preserved instead of silently restoring a modified existing file", async () => {
-  await crash("init", "src/styles/sheenui.scss"); unlinkSync(full("src/App.tsx"))
+  await crash("init", "src/styles/raxui.scss"); unlinkSync(full("src/App.tsx"))
   const before = snapshot(); assert.equal(cli("recover").code, 1); assert.deepEqual(snapshot(), before)
   ok(cli("recover", "--keep-changes")); assert.equal(existsSync(full("src/App.tsx")), false)
 })
@@ -141,7 +141,7 @@ test("recovery rejects outside journal links and keeps their contents untouched"
 })
 
 test("malformed, traversing and damaged journals stop before project writes", async () => {
-  await crash("init", "src/styles/sheenui.scss"); const original = journal(), before = snapshot()
+  await crash("init", "src/styles/raxui.scss"); const original = journal(), before = snapshot()
   for (const mutate of [j => {j.schemaVersion=99},j => {j.files[0].target="../outside"},j => {j.files[0].target="src/../outside"},j => {j.files[0].before={file:"../../outside",hash:"a".repeat(64)}},j => {j.files[0].after=["bad"]},j => {j.root=root}]) {
     const changed=structuredClone(original);mutate(changed);writeFileSync(full(`${TRANSACTION_DIR}/journal.json`),JSON.stringify(changed))
     assert.equal(cli("recover").code,1);assert.deepEqual(snapshot(),before)
@@ -151,7 +151,7 @@ test("malformed, traversing and damaged journals stop before project writes", as
 })
 
 test("hard-linked targets and hard-linked backup files are never restored through", async () => {
-  await crash("init", "src/styles/sheenui.scss");const data=journal(), first=data.files[0].target, outside=path.join(root,"sentinel")
+  await crash("init", "src/styles/raxui.scss");const data=journal(), first=data.files[0].target, outside=path.join(root,"sentinel")
   writeFileSync(outside,"external sentinel");unlinkSync(full(first));linkSync(outside,full(first))
   assert.equal(cli("recover").code,1);assert.equal(readFileSync(outside,"utf8"),"external sentinel")
   unlinkSync(full(first));const saved=data.files.find(f=>f.before).before.file;unlinkSync(full(`${TRANSACTION_DIR}/${saved}`));linkSync(outside,full(`${TRANSACTION_DIR}/${saved}`))
@@ -206,7 +206,7 @@ test("a torn journal/stage write uses the previous complete journal",async()=>{
 })
 
 test("interrupted rollback remains replayable after clearing its reported stale recovery lock",async()=>{
- const before=snapshot();await crash("init","sheenui.react.lock.json");await crash("recover");assert.match(cli("recover").err,/Recovery lock exists/);unlinkSync(full(TRANSACTION_DIR+"/recovery.lock"));ok(cli("recover"));assert.deepEqual(snapshot(),before)
+ const before=snapshot();await crash("init","raxui.react.lock.json");await crash("recover");assert.match(cli("recover").err,/Recovery lock exists/);unlinkSync(full(TRANSACTION_DIR+"/recovery.lock"));ok(cli("recover"));assert.deepEqual(snapshot(),before)
 })
 
 test("a crash while cleaning committed backups never rolls back the installation",async()=>{

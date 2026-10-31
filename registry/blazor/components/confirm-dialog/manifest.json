@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/confirm-dialog.css",
       "type": "css",
-      "sha256": "9d30716e6824d071553013515f022df53e72a6cbcf1544ee2abea39a47bb9c10"
+      "sha256": "2671d5549f6c1f149750b134792eb48285bcd00d3ddb1b832d7cf0d85c122714"
     }
   ],
   "files": [
@@ -21,14 +21,14 @@
       "destination": "components",
       "target": "ConfirmDialog/ConfirmDialog.razor",
       "type": "razor",
-      "sha256": "ac879905bc0369257d83a7ff233de3a3afd0eaf27efdccce53819f44209e75e7"
+      "sha256": "f880e1fddf6c60ba84448d839fec9ff89411a4bef06d1dc61f85161a415c3070"
     },
     {
       "source": "ConfirmDialog.razor.js",
       "destination": "components",
       "target": "ConfirmDialog/ConfirmDialog.razor.js",
       "type": "js",
-      "sha256": "46c9070feca42786272b7bc1261636733010a775137e51bdffd01e440009d5c1"
+      "sha256": "46329eff7f31f462f89fe72835b76bfc06142af1eb6f3538f816d8385de98273"
     }
   ]
 }

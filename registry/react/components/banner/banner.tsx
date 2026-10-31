@@ -4,7 +4,7 @@
 import * as React from "react"
 import { createPortal } from "react-dom"
 
-import { useSheenTheme, sheenThemeAttributes, useSheenPortalContainer, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, useRaxPortalContainer, type RaxAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { TONE_ICON, useDismiss, type AlertTone } from "@/components/ui/alert"
 
@@ -23,7 +23,7 @@ const CloseIcon = () => (
   </svg>
 )
 
-const storageKey = (key: string) => `sheen-banner:${key}`
+const storageKey = (key: string) => `rax-banner:${key}`
 const wasDismissed = (key?: string) => {
   if (!key) return false
   try {
@@ -34,7 +34,7 @@ const wasDismissed = (key?: string) => {
 }
 
 export interface BannerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  appearance?: SheenAppearance
+  appearance?: RaxAppearance
   tone?: AlertTone
   /** `tinted` (default) · `solid` strong brand / status colour · `glass` frosted. */
   variant?: "tinted" | "solid" | "glass"
@@ -80,8 +80,8 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
     },
     ref,
   ) => {
-    const theme = useSheenTheme({ appearance })
-    const container = useSheenPortalContainer()
+    const theme = useRaxTheme({ appearance })
+    const container = useRaxPortalContainer()
     const [mounted, setMounted] = React.useState(false)
     const [remembered, setRemembered] = React.useState(false)
     React.useEffect(() => { setMounted(true); setRemembered(wasDismissed(persistKey)) }, [persistKey])
@@ -100,7 +100,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
     const banner = (
       <div
         ref={ref}
-        {...sheenThemeAttributes(theme)}
+        {...raxThemeAttributes(theme)}
         dir={props.dir ?? (position === "bottom" ? theme.direction : undefined)}
         role={role ?? (tone === "danger" || tone === "warning" ? "alert" : "status")}
         aria-label={label}
@@ -108,19 +108,19 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
         data-variant={variant}
         data-position={position}
         data-state={isOpen ? "open" : "closed"}
-        className={cn("sheen-banner", className)}
+        className={cn("rax-banner", className)}
         onAnimationEnd={onAnimationEnd}
         {...props}
       >
-        <div className="sheen-banner-inner">
-          {icon !== false && <span className="sheen-banner-icon">{icon === true ? TONE_ICON[tone] : icon}</span>}
-          <div className="sheen-banner-text">
-            {title && <strong className="sheen-banner-title">{title}</strong>}
-            {children && <span className="sheen-banner-message">{children}</span>}
+        <div className="rax-banner-inner">
+          {icon !== false && <span className="rax-banner-icon">{icon === true ? TONE_ICON[tone] : icon}</span>}
+          <div className="rax-banner-text">
+            {title && <strong className="rax-banner-title">{title}</strong>}
+            {children && <span className="rax-banner-message">{children}</span>}
           </div>
-          {action && <div className="sheen-banner-actions">{action}</div>}
+          {action && <div className="rax-banner-actions">{action}</div>}
           {dismissible && (
-            <button type="button" className="sheen-banner-close" aria-label={dismissLabel} onClick={dismiss}>
+            <button type="button" className="rax-banner-close" aria-label={dismissLabel} onClick={dismiss}>
               <CloseIcon />
             </button>
           )}
@@ -139,7 +139,7 @@ Banner.displayName = "Banner"
  * stacks them instead of each sticking to top: 0 on top of the other.
  */
 const BannerGroup = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-banner-group", className)} {...props} />
+  <div ref={ref} className={cn("rax-banner-group", className)} {...props} />
 ))
 BannerGroup.displayName = "BannerGroup"
 

@@ -1,4 +1,4 @@
-<li><a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" @attributes="AdditionalAttributes" href="@Href" class="sheen-navbar-link @Class" aria-current="@((Active ?? Parent?.IsCurrent(Href, Exact) ?? false) ? "page" : null)" @onclick="Click">@ChildContent</a></li>
+<li><a data-enhance-nav="@(PreventDefault ? "false" : null)" @onclick:preventDefault="@PreventDefault" @attributes="AdditionalAttributes" href="@Href" class="rax-navbar-link @Class" aria-current="@((Active ?? Parent?.IsCurrent(Href, Exact) ?? false) ? "page" : null)" @onclick="Click">@ChildContent</a></li>
 @code {
     [Parameter] public bool PreventDefault { get; set; }
     [Parameter] public string? Class { get; set; }

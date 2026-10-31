@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-namespace SheenUI.Internal.TextEditor;
+namespace RaxUI.Internal.TextEditor;
 
 internal static partial class TextEditorHtml
 {

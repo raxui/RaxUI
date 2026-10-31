@@ -1,4 +1,4 @@
-// SheenUI tabs. Source-owned: edit freely. Observers and listeners belong to this instance.
+// RaxUI tabs. Source-owned: edit freely. Observers and listeners belong to this instance.
 const instances = new WeakMap();
 const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 function withoutTransition(element, apply) {
@@ -18,13 +18,13 @@ export function init(root) {
         const active = root.querySelector("[aria-selected=true]");
         if (!active) { root.removeAttribute("data-ready"); return; }
         const place = () => {
-            root.style.setProperty("--sheen-tabs-indicator-x", `${active.offsetLeft}px`);
-            root.style.setProperty("--sheen-tabs-indicator-y", `${active.offsetTop}px`);
-            root.style.setProperty("--sheen-tabs-indicator-width", `${active.offsetWidth}px`);
-            root.style.setProperty("--sheen-tabs-indicator-height", `${active.offsetHeight}px`);
+            root.style.setProperty("--rax-tabs-indicator-x", `${active.offsetLeft}px`);
+            root.style.setProperty("--rax-tabs-indicator-y", `${active.offsetTop}px`);
+            root.style.setProperty("--rax-tabs-indicator-width", `${active.offsetWidth}px`);
+            root.style.setProperty("--rax-tabs-indicator-height", `${active.offsetHeight}px`);
             root.setAttribute("data-ready", "");
         };
-        if (!root.hasAttribute("data-ready") || reduced()) withoutTransition(root.querySelector(".sheen-tabs-indicator"), place);
+        if (!root.hasAttribute("data-ready") || reduced()) withoutTransition(root.querySelector(".rax-tabs-indicator"), place);
         else place();
         root.setAttribute("data-animate", "");
     };

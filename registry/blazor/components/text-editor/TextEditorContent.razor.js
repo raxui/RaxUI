@@ -1,4 +1,4 @@
-/*! SheenUI TextEditor engine: Tiptap 3.31.4 and its dependencies, bundled unchanged by scripts/build-text-editor.mjs. Do not edit; rebuild.
+/*! RaxUI TextEditor engine: Tiptap 3.31.4 and its dependencies, bundled unchanged by scripts/build-text-editor.mjs. Do not edit; rebuild.
  * @floating-ui/core@1.8.0 (MIT)
  * @floating-ui/dom@1.8.0 (MIT)
  * @floating-ui/utils@0.2.12 (MIT)

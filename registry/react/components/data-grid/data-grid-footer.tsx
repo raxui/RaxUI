@@ -21,8 +21,8 @@ export function DataGridFooter<TData>({
   return (
     <>
       {hasFooter && (
-        <div role="rowgroup" className="sheen-grid-foot">
-          <div role="row" aria-rowindex={rowsCount + 2} className="sheen-grid-row" style={{ height: rowHeight }}>
+        <div role="rowgroup" className="rax-grid-foot">
+          <div role="row" aria-rowindex={rowsCount + 2} className="rax-grid-row" style={{ height: rowHeight }}>
             {leafColumns.map((column, c) => {
               const kind = column.columnDef.meta?.aggregate
               const result = totals.get(column.id)
@@ -33,14 +33,14 @@ export function DataGridFooter<TData>({
                   role="gridcell"
                   aria-colindex={c + 1}
                   data-align={alignOf(column as Column<TData, unknown>)}
-                  className="sheen-grid-cell sheen-grid-fcell"
+                  className="rax-grid-cell rax-grid-fcell"
                   style={{ width: column.getSize(), ...pinStyle(column as Column<TData, unknown>) }}
                   {...pinAttrs(column as Column<TData, unknown>)}
                 >
                   {kind && (
                     <>
                       {typeof kind === "string" && (
-                        <span className="sheen-grid-agg-label">{labels?.aggregates?.[kind] ?? AGGREGATE_LABEL[kind]}</span>
+                        <span className="rax-grid-agg-label">{labels?.aggregates?.[kind] ?? AGGREGATE_LABEL[kind]}</span>
                       )}
                       <span>
                         {typeof kind === "function"
@@ -85,11 +85,11 @@ export function DataGridStatus<TData>({
   return (
     <>
       {error && (
-        <div className="sheen-grid-error" role="alert">
+        <div className="rax-grid-error" role="alert">
           {error}
         </div>
       )}
-      <div className="sheen-grid-status" aria-live="polite">
+      <div className="rax-grid-status" aria-live="polite">
         <span>
           {labels?.rows ? (
             labels.rows(rowsCount, data.length)
@@ -103,7 +103,7 @@ export function DataGridStatus<TData>({
         {selectedCount > 0 && (
           <span>{labels?.selected ? labels.selected(selectedCount) : `${selectedCount.toLocaleString("en-US")} selected`}</span>
         )}
-        <span className="sheen-grid-status-pos">
+        <span className="rax-grid-status-pos">
           {active.row >= 0 && activeColumn ? `R${active.row + 1} · ${activeColumn.columnDef.meta?.label ?? activeColumn.id}` : ""}
         </span>
       </div>

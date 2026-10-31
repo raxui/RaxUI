@@ -1,10 +1,10 @@
 @* The editable area. Its collocated TextEditorContent.razor.js is the bundled Tiptap engine (ADR 020), which
    TextEditor.razor.js imports; this part renders the sanitized HTML until the editor mounts over it. *@
-@using SheenUI.Internal.TextEditor
-<div class="sheen-editor-scroll" data-editor-scroll>
+@using RaxUI.Internal.TextEditor
+<div class="rax-editor-scroll" data-editor-scroll>
     @if (!Mounted)
     {
-        <div @attributes="Attributes" class="@($"sheen-prose sheen-editor-content {ContentClass}".TrimEnd())" role="textbox" aria-multiline="true" aria-readonly="true" data-editor-static>@((MarkupString)TextEditorHtml.Sanitize(Html))</div>
+        <div @attributes="Attributes" class="@($"rax-prose rax-editor-content {ContentClass}".TrimEnd())" role="textbox" aria-multiline="true" aria-readonly="true" data-editor-static>@((MarkupString)TextEditorHtml.Sanitize(Html))</div>
     }
     <div data-editor-mount hidden="@(!Mounted)"></div>
 </div>

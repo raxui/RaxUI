@@ -1,7 +1,7 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
-<CascadingValue Value="this"><header @ref="element" @attributes="AdditionalAttributes" class="sheen-navbar @Class" data-blazor-shell data-variant="@Variant" data-expand="@Expand" data-floating="@(Floating ? "" : null)" data-open="@(Current ? "" : null)" data-sheen-appearance="@Appearance" style="@(Style + (MaxWidth is null ? "" : $";--sheen-navbar-max:{MaxWidth}"))"><div class="sheen-navbar-bar">@ChildContent</div></header></CascadingValue>
+<CascadingValue Value="this"><header @ref="element" @attributes="AdditionalAttributes" class="rax-navbar @Class" data-blazor-shell data-variant="@Variant" data-expand="@Expand" data-floating="@(Floating ? "" : null)" data-open="@(Current ? "" : null)" data-rax-appearance="@Appearance" style="@(Style + (MaxWidth is null ? "" : $";--rax-navbar-max:{MaxWidth}"))"><div class="rax-navbar-bar">@ChildContent</div></header></CascadingValue>
 @code {
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -17,7 +17,7 @@
     [Parameter] public bool Open { get; set; }
     [Parameter] public bool DefaultOpen { get; set; }
     [Parameter] public EventCallback<bool> OpenChanged { get; set; }
-    internal string MenuId { get; } = "sheen-navbar-" + Guid.NewGuid().ToString("N");
+    internal string MenuId { get; } = "rax-navbar-" + Guid.NewGuid().ToString("N");
     internal bool Current => OpenChanged.HasDelegate ? Open : localOpen ?? (Open || DefaultOpen);
     internal bool Ready { get; private set; }
     private bool? localOpen;

@@ -12,7 +12,7 @@
       "destination": "styles",
       "target": "components/chat.css",
       "type": "css",
-      "sha256": "2a7bc86bbdfae8811702e0f9e9b9ebb910ec1a3f106216f2719920a17b757890"
+      "sha256": "a78cb458fd634556da3684133013af41be0b647fc7c02063c84b2f45620707c2"
     }
   ],
   "files": [
@@ -21,21 +21,21 @@
       "destination": "components",
       "target": "Chat/Chat.razor",
       "type": "razor",
-      "sha256": "6da5c3a528fe5980ca77402213b981801ebfab590b12155aeae7d0651b263c5b"
+      "sha256": "ea8db98d05d051f4d7aff1be465926305ec42249400f8f8dd1e857c9f5c81fdd"
     },
     {
       "source": "ChatBubble.razor",
       "destination": "components",
       "target": "Chat/ChatBubble.razor",
       "type": "razor",
-      "sha256": "7fd320ef0ecf51295b7757abd31dc1bff40e03540bceb9e293fab08817adc186"
+      "sha256": "3ef06cded33435ddeb27105fd0a67a3c13d0a5524b6ac439e1202d17c525b241"
     },
     {
       "source": "ChatComposer.razor",
       "destination": "components",
       "target": "Chat/ChatComposer.razor",
       "type": "razor",
-      "sha256": "3a651264f653f5c36707cb48ac148e01b3f8d048afc919d35c8955fb14402ecf"
+      "sha256": "3e8146f917fddddc5ac7548bdf3b8a14436984ec4010003531ecd98eaa58078d"
     },
     {
       "source": "ChatComposer.razor.js",
@@ -49,35 +49,35 @@
       "destination": "components",
       "target": "Chat/ChatDaySeparator.razor",
       "type": "razor",
-      "sha256": "51497e9e98008f6edbf8e3d135a9b0f867f0ac968bec1994a18870d8997dee0d"
+      "sha256": "6ce884b6f8abc0017a0d955eb5a05d50c203e944c945a16249673ebec36f1b9d"
     },
     {
       "source": "ChatMessageGroup.razor",
       "destination": "components",
       "target": "Chat/ChatMessageGroup.razor",
       "type": "razor",
-      "sha256": "c2b9c05839fb2fec4a381ea84bd7027703837f16bda1486cad8e7346cea8def1"
+      "sha256": "cbd892efa7a6deeed4b61e8b77df1ef23255aedcefda8e94caa999f6f6f2e423"
     },
     {
       "source": "ChatMessages.razor",
       "destination": "components",
       "target": "Chat/ChatMessages.razor",
       "type": "razor",
-      "sha256": "e4093ebaf663e7d6d9a53c2f68572e9ad032196c830fff32bc880a475ce506e3"
+      "sha256": "0d7fd5b4603f84a5b89e52fdfd2a93d7cfa5348d002f63d92430f3594b176898"
     },
     {
       "source": "ChatMessages.razor.js",
       "destination": "components",
       "target": "Chat/ChatMessages.razor.js",
       "type": "js",
-      "sha256": "b11642bd8d2f2f996901b196701a3b8b1e32494ef888ac453d30ce148be8fccf"
+      "sha256": "a790964e230c6da2e0633765186f316b5d5902e8c986413e3f5dde160b4b1a8d"
     },
     {
       "source": "ChatTyping.razor",
       "destination": "components",
       "target": "Chat/ChatTyping.razor",
       "type": "razor",
-      "sha256": "f8a3a642ba6679a9d3deeff60d0ef67c83afff482f12a125be75989063f583d7"
+      "sha256": "13a8fa5c05c3c6b95fed73f0ef3634af34e3b3a17dcff898cd050f8b8a8a8734"
     }
   ]
 }

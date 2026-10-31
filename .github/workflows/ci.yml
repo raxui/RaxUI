@@ -26,24 +26,24 @@ jobs:
             10.0.x
 
       - name: Restore dependencies
-        run: dotnet restore SheenUI.slnx
+        run: dotnet restore RaxUI.slnx
 
       - name: Check code formatting
-        run: dotnet format SheenUI.slnx --verify-no-changes
+        run: dotnet format RaxUI.slnx --verify-no-changes
         if: runner.os == 'Linux'
 
       - name: Build solution
-        run: dotnet build SheenUI.slnx -c Release --no-restore
+        run: dotnet build RaxUI.slnx -c Release --no-restore
 
       - name: Run tests
         shell: pwsh
         run: |
-          ./tests/SheenUI.Integration.Tests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
+          ./tests/RaxUI.Integration.Tests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          dotnet test SheenUI.slnx -c Release --no-build --verbosity normal
+          dotnet test RaxUI.slnx -c Release --no-build --verbosity normal
 
       - name: Pack CLI tool
-        run: dotnet pack src/SheenUI.Cli/SheenUI.Cli.csproj -c Release --no-build
+        run: dotnet pack src/RaxUI.Cli/RaxUI.Cli.csproj -c Release --no-build
 
   react:
     name: React (${{ matrix.os }}, create-vite ${{ matrix.create-vite }})

@@ -4,7 +4,7 @@
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 
-import { useSheenPortalContainer } from "@/lib/theme"
+import { useRaxPortalContainer } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 function assignRef<T>(ref: React.ForwardedRef<T>, node: T | null) { if (typeof ref === "function") ref(node); else if (ref) ref.current = node }
 import { Spinner } from "@/components/ui/spinner"
@@ -61,7 +61,7 @@ function useCommand() {
   return context
 }
 
-const ITEM_SELECTOR = ".sheen-command-item:not([aria-disabled='true'])"
+const ITEM_SELECTOR = ".rax-command-item:not([aria-disabled='true'])"
 
 // ---- Command (root) -------------------------------------------------------------
 
@@ -159,7 +159,7 @@ const Command = React.forwardRef<HTMLDivElement, CommandProps>(
       <CommandContext.Provider value={{ search, setSearch, filter, activeId, setActiveId, listId, listRef }}>
         <div
           ref={ref}
-          className={cn("sheen-command", className)}
+          className={cn("rax-command", className)}
           aria-label={label}
           data-searching={search ? "" : undefined}
           onKeyDown={handleKeyDown}
@@ -192,12 +192,12 @@ export interface CommandInputProps extends Omit<React.InputHTMLAttributes<HTMLIn
 const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps>(({ className, leading, loading, placeholder = "Search commands...", "aria-label": ariaLabel = placeholder, ...props }, ref) => {
   const { search, setSearch, activeId, listId } = useCommand()
   return (
-    <div className="sheen-command-input-wrap">
-      <span className="sheen-command-input-icon">{loading ? <Spinner aria-hidden="true" /> : <SearchIcon />}</span>
+    <div className="rax-command-input-wrap">
+      <span className="rax-command-input-icon">{loading ? <Spinner aria-hidden="true" /> : <SearchIcon />}</span>
       {leading}
       <input
         ref={ref}
-        className={cn("sheen-command-input", className)}
+        className={cn("rax-command-input", className)}
         placeholder={placeholder}
         aria-label={ariaLabel}
         role="combobox"
@@ -244,8 +244,8 @@ const CommandList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
         inner.removeAttribute("data-highlight")
         return
       }
-      inner.style.setProperty("--sheen-command-highlight-y", `${active.offsetTop}px`)
-      inner.style.setProperty("--sheen-command-highlight-h", `${active.offsetHeight}px`)
+      inner.style.setProperty("--rax-command-highlight-y", `${active.offsetTop}px`)
+      inner.style.setProperty("--rax-command-highlight-h", `${active.offsetHeight}px`)
       inner.setAttribute("data-highlight", "")
       active.scrollIntoView({ block: "nearest" })
     })
@@ -258,12 +258,12 @@ const CommandList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
         }}
         id={listId}
         role="listbox"
-        className={cn("sheen-command-list", className)}
+        className={cn("rax-command-list", className)}
         style={{ height }}
         {...props}
       >
-        <div ref={innerRef} className="sheen-command-list-inner">
-          <span className="sheen-command-highlight" aria-hidden="true" />
+        <div ref={innerRef} className="rax-command-list-inner">
+          <span className="rax-command-highlight" aria-hidden="true" />
           {children}
         </div>
       </div>
@@ -300,7 +300,7 @@ const CommandItem = React.forwardRef<HTMLDivElement, CommandItemProps>(
         aria-selected={active}
         aria-disabled={disabled}
         data-active={active ? "" : undefined}
-        className={cn("sheen-command-item", className)}
+        className={cn("rax-command-item", className)}
         onPointerMove={() => !disabled && !active && setActiveId(id)}
         onClick={() => !disabled && onSelect?.(value)}
         {...props}
@@ -320,11 +320,11 @@ const CommandGroup = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
         ref={ref}
         role="group"
         aria-labelledby={heading ? headingId : undefined}
-        className={cn("sheen-command-group", className)}
+        className={cn("rax-command-group", className)}
         {...props}
       >
         {heading && (
-          <div id={headingId} className="sheen-command-group-heading" aria-hidden="true">
+          <div id={headingId} className="rax-command-group-heading" aria-hidden="true">
             {heading}
           </div>
         )}
@@ -336,18 +336,18 @@ const CommandGroup = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
 CommandGroup.displayName = "CommandGroup"
 
 const CommandSeparator = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} role="separator" className={cn("sheen-command-separator", className)} {...props} />
+  <div ref={ref} role="separator" className={cn("rax-command-separator", className)} {...props} />
 ))
 CommandSeparator.displayName = "CommandSeparator"
 
 /** Shown only when no item matches (pure CSS — no item counting needed). */
 const CommandEmpty = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, children = "No results found.", ...props }, ref) => (
-  <div ref={ref} role="presentation" className={cn("sheen-command-empty", className)} {...props}>{children}</div>
+  <div ref={ref} role="presentation" className={cn("rax-command-empty", className)} {...props}>{children}</div>
 ))
 CommandEmpty.displayName = "CommandEmpty"
 
 const CommandLoading = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, children = "Loading…", ...props }, ref) => (
-  <div ref={ref} role="status" className={cn("sheen-command-loading", className)} {...props}>
+  <div ref={ref} role="status" className={cn("rax-command-loading", className)} {...props}>
     <Spinner aria-hidden="true" />
     {children}
   </div>
@@ -355,13 +355,13 @@ const CommandLoading = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
 CommandLoading.displayName = "CommandLoading"
 
 const CommandShortcut = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(({ className, ...props }, ref) => (
-  <span ref={ref} className={cn("sheen-command-shortcut", className)} {...props} />
+  <span ref={ref} className={cn("rax-command-shortcut", className)} {...props} />
 ))
 CommandShortcut.displayName = "CommandShortcut"
 
 /** Keyboard hints bar (↑↓ ↵ esc). */
 const CommandFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("sheen-command-footer", className)} {...props} />
+  <div ref={ref} className={cn("rax-command-footer", className)} {...props} />
 ))
 CommandFooter.displayName = "CommandFooter"
 
@@ -413,9 +413,9 @@ function CommandDialog({
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={setOpen} {...props}>
-      <DialogPrimitive.Portal container={useSheenPortalContainer()}>
-        <DialogPrimitive.Overlay className="sheen-command-overlay" />
-        <DialogPrimitive.Content className={cn("sheen-command-dialog", className)}>
+      <DialogPrimitive.Portal container={useRaxPortalContainer()}>
+        <DialogPrimitive.Overlay className="rax-command-overlay" />
+        <DialogPrimitive.Content className={cn("rax-command-dialog", className)}>
           <DialogPrimitive.Title className="visually-hidden">{title}</DialogPrimitive.Title>
           <DialogPrimitive.Description className="visually-hidden">{description}</DialogPrimitive.Description>
           <Command label={title} {...commandProps}>

@@ -4,7 +4,7 @@
 import * as React from "react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
-import { useSheenPortalContainer } from "@/lib/theme"
+import { useRaxPortalContainer } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 const getDirection = (node: HTMLElement | null) => node && getComputedStyle(node).direction === "rtl" ? "rtl" as const : "ltr" as const
 const mergeRefs = <T,>(...refs: (React.Ref<T> | undefined)[]) => (node: T | null) => { refs.forEach(ref => { if (typeof ref === "function") ref(node); else if (ref) (ref as React.MutableRefObject<T | null>).current = node }) }
@@ -190,7 +190,7 @@ const TooltipTrigger = React.forwardRef<
   // tooltip on a focusable wrapper instead.
   const disabled = asChild && React.isValidElement(children) && (children.props as { disabled?: boolean }).disabled
   const child = disabled ? (
-    <span className="sheen-tooltip-disabled" tabIndex={0}>
+    <span className="rax-tooltip-disabled" tabIndex={0}>
       {children}
     </span>
   ) : (
@@ -220,17 +220,17 @@ const TooltipContent = React.forwardRef<React.ElementRef<typeof TooltipPrimitive
   ({ className, variant = "dark", showArrow = false, sideOffset = 6, collisionPadding = 8, dir, children, ...props }, ref) => {
     const state = React.useContext(TooltipStateContext)
     return (
-      <TooltipPrimitive.Portal container={useSheenPortalContainer()}>
+      <TooltipPrimitive.Portal container={useRaxPortalContainer()}>
         <TooltipPrimitive.Content
           ref={ref}
           sideOffset={sideOffset}
           collisionPadding={collisionPadding}
           dir={dir ?? state?.dir}
-          className={cn("sheen-tooltip-content", variant === "glass" && "sheen-tooltip-glass", className)}
+          className={cn("rax-tooltip-content", variant === "glass" && "rax-tooltip-glass", className)}
           {...props}
         >
           {children}
-          {showArrow && <TooltipPrimitive.Arrow className="sheen-tooltip-arrow" width={12} height={6} />}
+          {showArrow && <TooltipPrimitive.Arrow className="rax-tooltip-arrow" width={12} height={6} />}
         </TooltipPrimitive.Content>
       </TooltipPrimitive.Portal>
     )
@@ -240,13 +240,13 @@ TooltipContent.displayName = TooltipPrimitive.Content.displayName
 
 /** Bold first line of a two-line tooltip. */
 const TooltipTitle = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(({ className, ...props }, ref) => (
-  <span ref={ref} className={cn("sheen-tooltip-title", className)} {...props} />
+  <span ref={ref} className={cn("rax-tooltip-title", className)} {...props} />
 ))
 TooltipTitle.displayName = "TooltipTitle"
 
 /** Key cap for a keyboard shortcut. Shortcuts always read left-to-right. */
 const TooltipShortcut = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(({ className, ...props }, ref) => (
-  <kbd ref={ref} dir="ltr" className={cn("sheen-tooltip-kbd", className)} {...props} />
+  <kbd ref={ref} dir="ltr" className={cn("rax-tooltip-kbd", className)} {...props} />
 ))
 TooltipShortcut.displayName = "TooltipShortcut"
 
@@ -276,7 +276,7 @@ const TruncatedText = React.forwardRef<HTMLSpanElement, TruncatedTextProps>(
         <TooltipTrigger asChild>
           <span
             ref={mergeRefs(ref, textRef)}
-            className={cn("sheen-truncate", className)}
+            className={cn("rax-truncate", className)}
             data-lines={lines > 1 ? "" : undefined}
             style={lines > 1 ? { ...style, WebkitLineClamp: lines } : style}
             {...props}
@@ -284,7 +284,7 @@ const TruncatedText = React.forwardRef<HTMLSpanElement, TruncatedTextProps>(
             {children}
           </span>
         </TooltipTrigger>
-        <TooltipContent side={side} variant={variant} className="sheen-tooltip-wide">
+        <TooltipContent side={side} variant={variant} className="rax-tooltip-wide">
           {tooltip ?? children}
         </TooltipContent>
       </Tooltip>

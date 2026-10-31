@@ -28,7 +28,7 @@ const NativeDateRangeInput = React.forwardRef<HTMLInputElement, NativeDateRangeI
   const change = (next: NativeDateRangeValue) => { if (value === undefined) setInternal(next); onChange?.(next) }
   const descriptions = [wired["aria-describedby"], invalid ? `${id}-range-error` : undefined].filter(Boolean).join(" ") || undefined
   return <>
-    <div className="sheen-date-range-input" data-sheen-appearance={props.appearance}>
+    <div className="rax-date-range-input" data-rax-appearance={props.appearance}>
       <Input {...wired} ref={ref} type="date" id={id} name={name} value={range.start} max={range.end || props.max}
         aria-label={startLabel} aria-labelledby={undefined} aria-describedby={descriptions} invalid={invalid || props.invalid}
         onChange={e => change({ ...range, start: e.target.value })} />
@@ -37,7 +37,7 @@ const NativeDateRangeInput = React.forwardRef<HTMLInputElement, NativeDateRangeI
         aria-label={endLabel} aria-labelledby={undefined} aria-describedby={descriptions} invalid={invalid || props.invalid}
         onChange={e => change({ ...range, end: e.target.value })} />
     </div>
-    {invalid && <p id={`${id}-range-error`} className="sheen-field-error" role="alert">{orderMessage}</p>}
+    {invalid && <p id={`${id}-range-error`} className="rax-field-error" role="alert">{orderMessage}</p>}
   </>
 })
 NativeDateRangeInput.displayName = "NativeDateRangeInput"

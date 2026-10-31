@@ -5,13 +5,13 @@
 // tool calls) open by animating their height.
 // -----------------------------------------------------------------------------
 
-.sheen-ai-conversation {
+.rax-ai-conversation {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.sheen-ai-message {
+.rax-ai-message {
   display: flex;
   gap: 0.75rem;
   min-width: 0;
@@ -19,10 +19,10 @@
   &[data-from="user"] {
     justify-content: flex-end;
 
-    > .sheen-ai-message-body {
+    > .rax-ai-message-body {
       max-width: min(80%, 36rem);
       padding: 0.625rem 1rem;
-      border-radius: calc(1.125rem * var(--sheen-radius-scale));
+      border-radius: calc(1.125rem * var(--rax-radius-scale));
       color: var(--bs-emphasis-color);
       background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
       white-space: pre-wrap;
@@ -30,7 +30,7 @@
     }
   }
 
-  &[data-from="assistant"] > .sheen-ai-message-body {
+  &[data-from="assistant"] > .rax-ai-message-body {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -39,11 +39,11 @@
   }
 
   @include motion-safe {
-    animation: sheen-ai-in 420ms var(--sheen-ease-spring);
+    animation: rax-ai-in 420ms var(--rax-ease-spring);
   }
 }
 
-.sheen-ai-avatar {
+.rax-ai-avatar {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -51,7 +51,7 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  color: var(--sheen-primary-text);
+  color: var(--rax-primary-text);
   background-color: rgba(var(--bs-primary-rgb), 0.1);
 
   svg {
@@ -62,7 +62,7 @@
 
 // ---- Response ---------------------------------------------------------------------------
 
-.sheen-ai-response {
+.rax-ai-response {
   color: var(--bs-emphasis-color);
   font-size: 0.9375rem;
   line-height: 1.65;
@@ -87,13 +87,13 @@
     border-radius: 2px;
     background-color: currentColor;
     vertical-align: text-bottom;
-    animation: sheen-ai-caret 1s steps(1) infinite;
+    animation: rax-ai-caret 1s steps(1) infinite;
   }
 }
 
 // ---- Markdown ------------------------------------------------------------------------------
 
-.sheen-ai-response[data-markdown] {
+.rax-ai-response[data-markdown] {
   white-space: normal;
 
   > :first-child {
@@ -104,8 +104,8 @@
   ul,
   ol,
   blockquote,
-  .sheen-ai-table,
-  .sheen-ai-code {
+  .rax-ai-table,
+  .rax-ai-code {
     margin: 0 0 0.875em;
   }
 
@@ -173,7 +173,7 @@
   }
 
   a {
-    color: var(--sheen-primary-text);
+    color: var(--rax-primary-text);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.2em;
@@ -187,7 +187,7 @@
   // Inline code (fenced code becomes an AICodeBlock).
   :not(pre) > code {
     padding: 0.1em 0.375em;
-    border-radius: calc(0.3125rem * var(--sheen-radius-scale));
+    border-radius: calc(0.3125rem * var(--rax-radius-scale));
     color: var(--bs-emphasis-color);
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
     font-size: 0.875em;
@@ -196,14 +196,14 @@
 
   img {
     max-width: 100%;
-    border-radius: var(--sheen-radius-control);
+    border-radius: var(--rax-radius-control);
   }
 }
 
-.sheen-ai-table {
+.rax-ai-table {
   overflow-x: auto;
   border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
-  border-radius: var(--sheen-radius-control);
+  border-radius: var(--rax-radius-control);
 
   .table {
     --bs-table-bg: transparent;
@@ -230,7 +230,7 @@
   }
 }
 
-.sheen-ai-shimmer {
+.rax-ai-shimmer {
   color: transparent;
   background: linear-gradient(
       90deg,
@@ -245,7 +245,7 @@
   background-clip: text;
 
   @include motion-safe {
-    animation: sheen-ai-shimmer 1.8s linear infinite;
+    animation: rax-ai-shimmer 1.8s linear infinite;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -256,14 +256,14 @@
 
 // ---- Collapsible parts -------------------------------------------------------------------
 
-.sheen-ai-chevron {
+.rax-ai-chevron {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
   color: var(--bs-secondary-color);
 
   @include motion-safe {
-    transition: transform var(--sheen-duration) var(--sheen-ease-spring);
+    transition: transform var(--rax-duration) var(--rax-ease-spring);
   }
 
   [data-state="open"] > button > & {
@@ -271,12 +271,12 @@
   }
 }
 
-.sheen-ai-collapse {
+.rax-ai-collapse {
   display: grid;
   grid-template-rows: 0fr;
 
   @include motion-safe {
-    transition: grid-template-rows 320ms var(--sheen-ease-out);
+    transition: grid-template-rows 320ms var(--rax-ease-out);
   }
 
   > div {
@@ -290,7 +290,7 @@
 }
 
 // Reasoning
-.sheen-ai-reasoning-trigger {
+.rax-ai-reasoning-trigger {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
@@ -307,13 +307,13 @@
   }
 
   &:focus-visible {
-    border-radius: var(--sheen-radius-sm);
+    border-radius: var(--rax-radius-sm);
     outline: 2px solid rgba(var(--bs-primary-rgb), 0.5);
     outline-offset: 2px;
   }
 }
 
-.sheen-ai-reasoning-body {
+.rax-ai-reasoning-body {
   margin-top: 0.5rem;
   padding-inline-start: 0.875rem;
   border-inline-start: 2px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
@@ -324,13 +324,13 @@
 }
 
 // Tool call
-.sheen-ai-tool {
+.rax-ai-tool {
   border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
-  border-radius: var(--sheen-radius-control);
+  border-radius: var(--rax-radius-control);
   overflow: hidden;
 }
 
-.sheen-ai-tool-head {
+.rax-ai-tool-head {
   display: flex;
   align-items: center;
   gap: 0.625rem;
@@ -342,7 +342,7 @@
   font: inherit;
   font-size: 0.875rem;
   text-align: start;
-  transition: background-color var(--sheen-duration-fast) ease;
+  transition: background-color var(--rax-duration-fast) ease;
 
   &:hover {
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.03);
@@ -354,14 +354,14 @@
   }
 }
 
-.sheen-ai-tool-icon {
+.rax-ai-tool-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   width: 1.75rem;
   height: 1.75rem;
-  border-radius: var(--sheen-radius-sm);
+  border-radius: var(--rax-radius-sm);
   color: var(--bs-secondary-color);
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.06);
 
@@ -371,7 +371,7 @@
   }
 }
 
-.sheen-ai-tool-title {
+.rax-ai-tool-title {
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -385,7 +385,7 @@
   }
 }
 
-.sheen-ai-tool-status {
+.rax-ai-tool-status {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -402,23 +402,23 @@
     height: 0.875rem;
   }
 
-  .sheen-ai-tool[data-status="running"] & {
-    color: var(--sheen-primary-text);
+  .rax-ai-tool[data-status="running"] & {
+    color: var(--rax-primary-text);
     background-color: rgba(var(--bs-primary-rgb), 0.1);
   }
 
-  .sheen-ai-tool[data-status="completed"] & {
+  .rax-ai-tool[data-status="completed"] & {
     color: var(--bs-success-text-emphasis);
     background-color: var(--bs-success-bg-subtle);
   }
 
-  .sheen-ai-tool[data-status="error"] & {
+  .rax-ai-tool[data-status="error"] & {
     color: var(--bs-danger-text-emphasis);
     background-color: var(--bs-danger-bg-subtle);
   }
 }
 
-.sheen-ai-tool-body {
+.rax-ai-tool-body {
   display: grid;
   gap: 0.75rem;
   padding: 0.25rem 0.75rem 0.75rem;
@@ -428,7 +428,7 @@
     margin: 0;
     padding: 0.625rem 0.75rem;
     overflow: auto;
-    border-radius: var(--sheen-radius-sm);
+    border-radius: var(--rax-radius-sm);
     color: var(--bs-body-color);
     background-color: rgba(var(--bs-emphasis-color-rgb), 0.04);
     font-size: 0.8125rem;
@@ -436,30 +436,30 @@
   }
 }
 
-.sheen-ai-tool-error {
+.rax-ai-tool-error {
   color: var(--bs-danger-text-emphasis) !important;
 }
 
-.sheen-ai-tool-label {
+.rax-ai-tool-label {
   margin-bottom: 0.25rem;
   color: var(--bs-secondary-color);
   font-size: 0.75rem;
   font-weight: 600;
 }
 
-.sheen-ai-spinner {
+.rax-ai-spinner {
   display: inline-block;
   width: 0.875rem;
   height: 0.875rem;
   border: 2px solid currentColor;
   border-right-color: transparent;
   border-radius: 50%;
-  animation: sheen-ai-spin 0.7s linear infinite;
+  animation: rax-ai-spin 0.7s linear infinite;
 }
 
 // ---- Sources -------------------------------------------------------------------------------
 
-.sheen-ai-sources {
+.rax-ai-sources {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -474,13 +474,13 @@
   }
 }
 
-.sheen-ai-sources-label {
+.rax-ai-sources-label {
   color: var(--bs-secondary-color);
   font-size: 0.75rem;
   font-weight: 600;
 }
 
-.sheen-ai-source {
+.rax-ai-source {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
@@ -493,8 +493,8 @@
   font-size: 0.8125rem;
   text-decoration: none;
   transition:
-    background-color var(--sheen-duration-fast) ease,
-    border-color var(--sheen-duration-fast) ease;
+    background-color var(--rax-duration-fast) ease,
+    border-color var(--rax-duration-fast) ease;
 
   &:hover {
     border-color: rgba(var(--bs-primary-rgb), 0.35);
@@ -507,7 +507,7 @@
   }
 }
 
-.sheen-ai-source-index {
+.rax-ai-source-index {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -515,30 +515,30 @@
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 50%;
-  color: var(--sheen-primary-text);
+  color: var(--rax-primary-text);
   background-color: rgba(var(--bs-primary-rgb), 0.1);
   font-size: 0.6875rem;
   font-weight: 700;
 }
 
-.sheen-ai-source-title {
+.rax-ai-source-title {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.sheen-ai-source-host {
+.rax-ai-source-host {
   flex-shrink: 0;
   color: var(--bs-tertiary-color);
 }
 
 // ---- Code ----------------------------------------------------------------------------------
 
-.sheen-ai-code {
+.rax-ai-code {
   overflow: hidden;
   border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.1);
-  border-radius: var(--sheen-radius-control);
+  border-radius: var(--rax-radius-control);
   background-color: rgba(var(--bs-emphasis-color-rgb), 0.035);
   text-align: left;
   white-space: normal;
@@ -552,7 +552,7 @@
   }
 }
 
-.sheen-ai-code-head {
+.rax-ai-code-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -568,13 +568,13 @@
     gap: 0.25rem;
     padding: 0.25rem 0.5rem;
     border: 0;
-    border-radius: var(--sheen-radius-sm);
+    border-radius: var(--rax-radius-sm);
     color: inherit;
     background: none;
     font: inherit;
     transition:
-      color var(--sheen-duration-fast) ease,
-      background-color var(--sheen-duration-fast) ease;
+      color var(--rax-duration-fast) ease,
+      background-color var(--rax-duration-fast) ease;
 
     svg {
       width: 0.875rem;
@@ -598,7 +598,7 @@
 
 // ---- Actions & suggestions --------------------------------------------------------------------
 
-.sheen-ai-actions {
+.rax-ai-actions {
   display: flex;
   align-items: center;
   gap: 0.125rem;
@@ -606,13 +606,13 @@
   color: var(--bs-secondary-color);
 }
 
-.sheen-ai-suggestions {
+.rax-ai-suggestions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.sheen-ai-suggestion {
+.rax-ai-suggestion {
   padding: 0.4375rem 0.875rem;
   border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.12);
   border-radius: 999px;
@@ -621,9 +621,9 @@
   font: inherit;
   font-size: 0.875rem;
   transition:
-    border-color var(--sheen-duration-fast) ease,
-    background-color var(--sheen-duration-fast) ease,
-    transform var(--sheen-duration) var(--sheen-ease-spring);
+    border-color var(--rax-duration-fast) ease,
+    background-color var(--rax-duration-fast) ease,
+    transform var(--rax-duration) var(--rax-ease-spring);
 
   &:hover {
     border-color: rgba(var(--bs-primary-rgb), 0.4);
@@ -636,8 +636,8 @@
   }
 
   @include motion-safe {
-    animation: sheen-ai-in 420ms var(--sheen-ease-spring) backwards;
-    animation-delay: calc(var(--sheen-i, 0) * 50ms);
+    animation: rax-ai-in 420ms var(--rax-ease-spring) backwards;
+    animation-delay: calc(var(--rax-i, 0) * 50ms);
 
     &:active {
       transform: scale(0.96);
@@ -647,30 +647,30 @@
 
 // ---- Prompt input -------------------------------------------------------------------------------
 
-.sheen-ai-prompt {
+.rax-ai-prompt {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   padding: 0.75rem 0.75rem 0.5rem;
   border: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.12);
-  border-radius: var(--sheen-radius-lg);
+  border-radius: var(--rax-radius-lg);
   background-color: var(--bs-body-bg);
-  box-shadow: var(--sheen-shadow-sm);
+  box-shadow: var(--rax-shadow-sm);
   cursor: text;
   transition:
-    border-color var(--sheen-duration-fast) ease,
-    box-shadow var(--sheen-duration-fast) ease;
+    border-color var(--rax-duration-fast) ease,
+    box-shadow var(--rax-duration-fast) ease;
 
   &:focus-within {
     border-color: rgba(var(--bs-primary-rgb), 0.45);
-    box-shadow: 0 0 0 0.1875rem rgba(var(--bs-primary-rgb), 0.12), var(--sheen-shadow-sm);
+    box-shadow: 0 0 0 0.1875rem rgba(var(--bs-primary-rgb), 0.12), var(--rax-shadow-sm);
   }
 }
 
-.sheen-ai-prompt-field {
+.rax-ai-prompt-field {
   width: 100%;
   min-height: 1.5rem;
-  max-height: calc(var(--sheen-ai-rows, 8) * 1.5em);
+  max-height: calc(var(--rax-ai-rows, 8) * 1.5em);
   padding: 0 0.25rem;
   border: 0;
   color: var(--bs-body-color);
@@ -687,7 +687,7 @@
   }
 }
 
-.sheen-ai-prompt-toolbar {
+.rax-ai-prompt-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -695,21 +695,21 @@
   cursor: default;
 }
 
-.sheen-ai-prompt-tools {
+.rax-ai-prompt-tools {
   display: flex;
   align-items: center;
   gap: 0.25rem;
   min-width: 0;
 }
 
-.btn-glass.sheen-ai-prompt-send {
+.btn-glass.rax-ai-prompt-send {
   width: 2rem;
   height: 2rem;
   min-height: 2rem;
   border-radius: 50%;
 }
 
-.sheen-ai-stop {
+.rax-ai-stop {
   width: 0.625rem;
   height: 0.625rem;
   border-radius: 2px;
@@ -718,20 +718,20 @@
 
 // ---- Motion -------------------------------------------------------------------------------
 
-@keyframes sheen-ai-in {
+@keyframes rax-ai-in {
   from {
     opacity: 0;
     transform: translateY(0.5rem);
   }
 }
 
-@keyframes sheen-ai-caret {
+@keyframes rax-ai-caret {
   50% {
     opacity: 0;
   }
 }
 
-@keyframes sheen-ai-shimmer {
+@keyframes rax-ai-shimmer {
   from {
     background-position: 100% 0;
   }
@@ -741,7 +741,7 @@
   }
 }
 
-@keyframes sheen-ai-spin {
+@keyframes rax-ai-spin {
   to {
     transform: rotate(360deg);
   }

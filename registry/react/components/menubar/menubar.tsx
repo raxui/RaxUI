@@ -4,7 +4,7 @@
 import * as React from "react"
 import * as MenubarPrimitive from "@radix-ui/react-menubar"
 
-import { useSheenTheme, sheenThemeAttributes, SheenThemeBoundary, useSheenPortalContainer, type SheenAppearance } from "@/lib/theme"
+import { useRaxTheme, raxThemeAttributes, RaxThemeBoundary, useRaxPortalContainer, type RaxAppearance } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { withoutTransition } from "@/lib/app-shell-utils"
 import { getDirection } from "@/lib/direction"
@@ -12,7 +12,7 @@ import { useMergedRef } from "@/lib/refs"
 
 // -----------------------------------------------------------------------------
 // Menubar — an app's File / Edit / View bar (on Radix Menubar).
-// Menus use the Dropdown Menu glass and items (`sheen-dropdown-*`).
+// Menus use the Dropdown Menu glass and items (`rax-dropdown-*`).
 //
 //   <Menubar>
 //     <MenubarMenu>
@@ -65,9 +65,9 @@ const ChevronRightIcon = ({ className }: { className?: string }) => (
 
 const Menubar = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Root> & { appearance?: SheenAppearance }
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Root> & { appearance?: RaxAppearance }
 >(({ appearance, className, dir, children, ...props }, ref) => {
-  const theme = useSheenTheme({ appearance, direction: dir })
+  const theme = useRaxTheme({ appearance, direction: dir })
   const rootRef = React.useRef<HTMLDivElement>(null)
   const composedRef = useMergedRef(ref, rootRef)
 
@@ -82,12 +82,12 @@ const Menubar = React.forwardRef<
   useOpenHighlight(rootRef, dir ?? pageDir ?? theme.direction)
 
   return (
-    <SheenThemeBoundary value={{ ...theme, direction: dir ?? pageDir ?? theme.direction }}>
-    <MenubarPrimitive.Root {...sheenThemeAttributes(theme)} ref={composedRef} dir={dir ?? pageDir ?? theme.direction} className={cn("sheen-menubar", className)} {...props}>
-      <span className="sheen-menubar-highlight" aria-hidden="true" />
+    <RaxThemeBoundary value={{ ...theme, direction: dir ?? pageDir ?? theme.direction }}>
+    <MenubarPrimitive.Root {...raxThemeAttributes(theme)} ref={composedRef} dir={dir ?? pageDir ?? theme.direction} className={cn("rax-menubar", className)} {...props}>
+      <span className="rax-menubar-highlight" aria-hidden="true" />
       {children}
     </MenubarPrimitive.Root>
-    </SheenThemeBoundary>
+    </RaxThemeBoundary>
   )
 })
 Menubar.displayName = MenubarPrimitive.Root.displayName
@@ -103,18 +103,18 @@ function useOpenHighlight(rootRef: React.RefObject<HTMLDivElement | null>, direc
     let wasOpen = false
 
     const place = () => {
-      const open = root.querySelector<HTMLElement>(":scope > .sheen-menubar-trigger[data-state=open]")
+      const open = root.querySelector<HTMLElement>(":scope > .rax-menubar-trigger[data-state=open]")
       if (!open) {
         root.removeAttribute("data-open")
         wasOpen = false
         return
       }
       const set = () => {
-        root.style.setProperty("--sheen-menubar-x", `${open.offsetLeft}px`)
-        root.style.setProperty("--sheen-menubar-w", `${open.offsetWidth}px`)
+        root.style.setProperty("--rax-menubar-x", `${open.offsetLeft}px`)
+        root.style.setProperty("--rax-menubar-w", `${open.offsetWidth}px`)
       }
       if (wasOpen) set()
-      else withoutTransition(root.querySelector<HTMLElement>(":scope > .sheen-menubar-highlight"), set)
+      else withoutTransition(root.querySelector<HTMLElement>(":scope > .rax-menubar-highlight"), set)
       root.setAttribute("data-open", "")
       wasOpen = true
     }
@@ -130,7 +130,7 @@ const MenubarMenu = MenubarPrimitive.Menu
 
 const MenubarGroup = MenubarPrimitive.Group
 
-const MenubarPortal = (props: React.ComponentProps<typeof MenubarPrimitive.Portal>) => <MenubarPrimitive.Portal container={useSheenPortalContainer()} {...props} />
+const MenubarPortal = (props: React.ComponentProps<typeof MenubarPrimitive.Portal>) => <MenubarPrimitive.Portal container={useRaxPortalContainer()} {...props} />
 
 const MenubarSub = MenubarPrimitive.Sub
 
@@ -139,16 +139,16 @@ const MenubarRadioGroup = MenubarPrimitive.RadioGroup
 const MenubarTrigger = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Trigger>
->(({ className, ...props }, ref) => <MenubarPrimitive.Trigger ref={ref} className={cn("sheen-menubar-trigger", className)} {...props} />)
+>(({ className, ...props }, ref) => <MenubarPrimitive.Trigger ref={ref} className={cn("rax-menubar-trigger", className)} {...props} />)
 MenubarTrigger.displayName = MenubarPrimitive.Trigger.displayName
 
 const MenubarSubTrigger = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.SubTrigger> & { inset?: boolean }
 >(({ className, inset, children, ...props }, ref) => (
-  <MenubarPrimitive.SubTrigger ref={ref} className={cn("sheen-dropdown-item", inset && "sheen-dropdown-inset", className)} {...props}>
+  <MenubarPrimitive.SubTrigger ref={ref} className={cn("rax-dropdown-item", inset && "rax-dropdown-inset", className)} {...props}>
     {children}
-    <ChevronRightIcon className="sheen-dropdown-chevron" />
+    <ChevronRightIcon className="rax-dropdown-chevron" />
   </MenubarPrimitive.SubTrigger>
 ))
 MenubarSubTrigger.displayName = MenubarPrimitive.SubTrigger.displayName
@@ -159,11 +159,11 @@ const MenubarSubContent = React.forwardRef<
 >(({ className, sideOffset = 6, collisionPadding = 8, ...props }, ref) => (
   <MenubarPortal>
     <MenubarPrimitive.SubContent
-      {...sheenThemeAttributes(useSheenTheme())}
+      {...raxThemeAttributes(useRaxTheme())}
       ref={ref}
       sideOffset={sideOffset}
       collisionPadding={collisionPadding}
-      className={cn("sheen-dropdown-menu sheen-menubar-content", className)}
+      className={cn("rax-dropdown-menu rax-menubar-content", className)}
       {...props}
     />
   </MenubarPortal>
@@ -176,13 +176,13 @@ const MenubarContent = React.forwardRef<
 >(({ className, align = "start", alignOffset = -4, sideOffset = 8, collisionPadding = 8, ...props }, ref) => (
   <MenubarPortal>
     <MenubarPrimitive.Content
-      {...sheenThemeAttributes(useSheenTheme())}
+      {...raxThemeAttributes(useRaxTheme())}
       ref={ref}
       align={align}
       alignOffset={alignOffset}
       sideOffset={sideOffset}
       collisionPadding={collisionPadding}
-      className={cn("sheen-dropdown-menu sheen-menubar-content", className)}
+      className={cn("rax-dropdown-menu rax-menubar-content", className)}
       {...props}
     />
   </MenubarPortal>
@@ -198,7 +198,7 @@ const MenubarItem = React.forwardRef<
 >(({ className, inset, variant = "default", ...props }, ref) => (
   <MenubarPrimitive.Item
     ref={ref}
-    className={cn("sheen-dropdown-item", variant === "destructive" && "sheen-dropdown-item-destructive", inset && "sheen-dropdown-inset", className)}
+    className={cn("rax-dropdown-item", variant === "destructive" && "rax-dropdown-item-destructive", inset && "rax-dropdown-inset", className)}
     {...props}
   />
 ))
@@ -208,8 +208,8 @@ const MenubarCheckboxItem = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.CheckboxItem>
 >(({ className, children, ...props }, ref) => (
-  <MenubarPrimitive.CheckboxItem ref={ref} className={cn("sheen-dropdown-item sheen-dropdown-inset", className)} {...props}>
-    <span className="sheen-dropdown-indicator">
+  <MenubarPrimitive.CheckboxItem ref={ref} className={cn("rax-dropdown-item rax-dropdown-inset", className)} {...props}>
+    <span className="rax-dropdown-indicator">
       <MenubarPrimitive.ItemIndicator>
         <CheckIcon />
       </MenubarPrimitive.ItemIndicator>
@@ -223,8 +223,8 @@ const MenubarRadioItem = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.RadioItem>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.RadioItem>
 >(({ className, children, ...props }, ref) => (
-  <MenubarPrimitive.RadioItem ref={ref} className={cn("sheen-dropdown-item sheen-dropdown-inset", className)} {...props}>
-    <span className="sheen-dropdown-indicator">
+  <MenubarPrimitive.RadioItem ref={ref} className={cn("rax-dropdown-item rax-dropdown-inset", className)} {...props}>
+    <span className="rax-dropdown-indicator">
       <MenubarPrimitive.ItemIndicator>
         <DotIcon />
       </MenubarPrimitive.ItemIndicator>
@@ -238,18 +238,18 @@ const MenubarLabel = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Label> & { inset?: boolean }
 >(({ className, inset, ...props }, ref) => (
-  <MenubarPrimitive.Label ref={ref} className={cn("sheen-dropdown-label", inset && "sheen-dropdown-inset", className)} {...props} />
+  <MenubarPrimitive.Label ref={ref} className={cn("rax-dropdown-label", inset && "rax-dropdown-inset", className)} {...props} />
 ))
 MenubarLabel.displayName = MenubarPrimitive.Label.displayName
 
 const MenubarSeparator = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Separator>
->(({ className, ...props }, ref) => <MenubarPrimitive.Separator ref={ref} className={cn("sheen-dropdown-separator", className)} {...props} />)
+>(({ className, ...props }, ref) => <MenubarPrimitive.Separator ref={ref} className={cn("rax-dropdown-separator", className)} {...props} />)
 MenubarSeparator.displayName = MenubarPrimitive.Separator.displayName
 
 const MenubarShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => (
-  <span className={cn("sheen-dropdown-shortcut", className)} {...props} />
+  <span className={cn("rax-dropdown-shortcut", className)} {...props} />
 )
 MenubarShortcut.displayName = "MenubarShortcut"
 

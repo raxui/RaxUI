@@ -1,4 +1,4 @@
-<div @attributes="AdditionalAttributes" class="sheen-carousel-thumbs @Class">@for(var i=0;i<Carousel.SnapCount;i++){<button type="button" class="sheen-carousel-thumb" data-carousel-index="@i" aria-label="@Carousel.GoToLabel(i)">@Template(i)</button>}</div>
+<div @attributes="AdditionalAttributes" class="rax-carousel-thumbs @Class">@for(var i=0;i<Carousel.SnapCount;i++){<button type="button" class="rax-carousel-thumb" data-carousel-index="@i" aria-label="@Carousel.GoToLabel(i)">@Template(i)</button>}</div>
 @code {
  [CascadingParameter] public Carousel Carousel {get;set;}=default!;
  [Parameter,EditorRequired] public RenderFragment<int> Template {get;set;}=default!;
