@@ -179,12 +179,12 @@ Install the library in this application, or in an existing Vite 6+ application:
 
 ```powershell
 npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\RaxUI\raxui-react-0.1.0-preview.1.tgz"
-npx raxui-react init
+npx @raxui/react init
 npm run dev
 ```
 
 Open the URL printed in the terminal, usually `http://localhost:5173`.
-`init` installs Button automatically; running `npx raxui-react add button`
+`init` installs Button automatically; running `npx @raxui/react add button`
 afterward does not install another copy.
 
 The main installed files are:
@@ -218,7 +218,7 @@ Inside the application, run:
 
 ```powershell
 npm install -D --save-exact --ignore-scripts "C:\Users\saada\source\repos\RaxUI\raxui-react-0.1.0-preview.1.tgz"
-npx raxui-react init
+npx @raxui/react init
 npm run dev
 ```
 

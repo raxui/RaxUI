@@ -16,7 +16,7 @@
       "source": "registry/react/starter-next/page.tsx",
       "target": "app/page.tsx",
       "type": "tsx",
-      "sha256": "e146628663fb4e3a93d17fb951fd88225213232708053f780e7fc4261df24b4c"
+      "sha256": "f4b4f04bb207737d34452c057626ca71e1736c2960d4e1afd2c979e1f8841455"
     },
     {
       "source": "theme/scss/components/_starter.scss",

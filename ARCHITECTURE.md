@@ -191,7 +191,7 @@ Validate the complete installation plan before writing. Stage files and preserve
 
 ### 5.4 React CLI
 
-`src/react-cli` is a Node CLI (`npx raxui-react`, provisional name) for React applications on Vite 6 or later or Next.js 15 or later with the App Router ([ADR 006](docs/adr/006-react-first-milestone.md), [ADR 010](docs/adr/010-vite-6-and-later.md), [ADR 011](docs/adr/011-nextjs.md)). For Next.js it installs under the source root (project root or `src/`), imports the stylesheet from `app/layout.tsx`, and installs the starter as `app/page.tsx`. The first React milestone provides only `init` and `add button`.
+`src/react-cli` is a Node CLI (`npx @raxui/react`, provisional name) for React applications on Vite 6 or later or Next.js 15 or later with the App Router ([ADR 006](docs/adr/006-react-first-milestone.md), [ADR 010](docs/adr/010-vite-6-and-later.md), [ADR 011](docs/adr/011-nextjs.md)). For Next.js it installs under the source root (project root or `src/`), imports the stylesheet from `app/layout.tsx`, and installs the starter as `app/page.tsx`. The first React milestone provides only `init` and `add button`.
 
 - `init` checks for Vite and `src/main.tsx` or `src/main.jsx`, copies the foundation (`src/lib/theme.tsx`, `src/lib/utils.ts`, theme partials under `src/styles/raxui/`), creates `src/styles/raxui.scss`, adds one import to the entry, and installs pinned npm packages with `npm install --ignore-scripts`.
 - `add button` copies `src/components/ui/button.tsx` and its SCSS partial, rewrites `@/lib/*` imports to relative paths, and adds the partial to `src/styles/raxui.scss` once.
