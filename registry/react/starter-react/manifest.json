@@ -22,7 +22,7 @@
       "source": "theme/scss/components/_starter.scss",
       "target": "styles/raxui/components/_starter.scss",
       "type": "scss",
-      "sha256": "aeee34b09e5f4b67f238c936a8d2fd3629c468e42a555e93d7bfb2ce7033d90f"
+      "sha256": "82c1dc18d5d28db0a9f8df029491791da790ea0b7525b83907efc673516f139d"
     }
   ]
 }
