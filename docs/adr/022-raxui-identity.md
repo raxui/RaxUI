@@ -19,7 +19,7 @@ Razor/Blazor. No npm or NuGet publication is part of this change.
 | --- | --- |
 | GitHub repository | `raxui/RaxUI` |
 | .NET solution and namespaces | `RaxUI.slnx`, `RaxUI.Cli` |
-| .NET tool package and command | `RaxUI.Cli`, `raxui` |
+| .NET tool package and command | `RaxUI`, `raxui` |
 | Node package and command | `@raxui/react`, `raxui-react` |
 | Blazor state | `raxui.json`, `raxui.lock.json` |
 | React state | `raxui.react.json`, `raxui.react.lock.json` |

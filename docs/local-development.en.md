@@ -71,7 +71,7 @@ The .NET package filename includes the generated `$version`. If you also ran
 the React commands, its package uses the current React CLI version:
 
 ```text
-RaxUI\nupkg\RaxUI.Cli.<version>.nupkg
+RaxUI\nupkg\RaxUI.<version>.nupkg
 RaxUI\raxui-react-0.1.0-preview.1.tgz
 ```
 
@@ -86,7 +86,7 @@ React CLI version changes, use the actual generated `.tgz` filename when install
 ```powershell
 cd $repo
 
-dotnet tool install RaxUI.Cli `
+dotnet tool install RaxUI `
   --tool-path "$tools" `
   --add-source "$repo\nupkg" `
   --version "$version"

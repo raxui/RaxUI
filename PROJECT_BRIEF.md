@@ -74,7 +74,7 @@ Example workflow:
 dotnet new blazor -n MyApp
 cd MyApp
 
-dotnet tool install --global RaxUI.Cli
+dotnet tool install --global RaxUI
 raxui init
 
 raxui add button

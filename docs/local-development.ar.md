@@ -68,7 +68,7 @@ npm pack ./src/react-cli --pack-destination .
 بالإصدار الحالي إذا نفّذت أوامرها:
 
 ```text
-RaxUI\nupkg\RaxUI.Cli.<version>.nupkg
+RaxUI\nupkg\RaxUI.<version>.nupkg
 RaxUI\raxui-react-0.1.0-preview.1.tgz
 ```
 
@@ -83,7 +83,7 @@ RaxUI\raxui-react-0.1.0-preview.1.tgz
 ```powershell
 cd $repo
 
-dotnet tool install RaxUI.Cli `
+dotnet tool install RaxUI `
   --tool-path "$tools" `
   --add-source "$repo\nupkg" `
   --version "$version"

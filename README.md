@@ -324,7 +324,7 @@ submit buttons and validators; no JavaScript is needed for server validation.
 Once the preview is published to NuGet:
 
 ```sh
-dotnet tool install --global RaxUI.Cli --version 0.1.0-preview.2
+dotnet tool install --global RaxUI --version 0.1.0-preview.2
 dotnet new blazor --interactivity Server -n MyApp
 cd MyApp
 raxui init
@@ -574,7 +574,7 @@ dotnet build RaxUI.slnx -c Release --no-restore
 pwsh tests/RaxUI.Integration.Tests/bin/Release/net10.0/playwright.ps1 install chromium
 dotnet test RaxUI.slnx -c Release --no-build
 dotnet pack src/RaxUI.Cli/RaxUI.Cli.csproj -c Release --no-build -o ./nupkg
-dotnet tool install --tool-path ./local-tools --add-source ./nupkg RaxUI.Cli --version 0.1.0-preview.2
+dotnet tool install --tool-path ./local-tools --add-source ./nupkg RaxUI --version 0.1.0-preview.2
 ```
 
 On Linux, use `install --with-deps chromium` to install browser system dependencies.
@@ -599,7 +599,7 @@ the explicit `publish` option and an existing `v*` tag. Creating a tag alone doe
 not publish anything. When explicitly requested, the workflow builds and tests
 the tagged source, packs the CLI, attaches the package to a GitHub Release, and
 publishes to NuGet. The owner must configure
-the `NUGET_API_KEY` repository secret scoped to `RaxUI.Cli` before tagging.
+the `NUGET_API_KEY` repository secret scoped to `RaxUI` before tagging.
 The tag version controls both the package and registry release identity; component
 versions and their content hashes are independent.
 
