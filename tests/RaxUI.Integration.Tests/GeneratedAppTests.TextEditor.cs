@@ -96,7 +96,7 @@ public partial class GeneratedAppTests
         await Assertions.Expect(form).ToContainTextAsync("Describe the role.");
         await description.ClickAsync(); await page.Keyboard.TypeAsync("Build accessible Blazor components with the RaxUI team.");
         await form.GetByRole(AriaRole.Button, new() { Name = "Save role", Exact = true }).ClickAsync();
-        await Assertions.Expect(form.Locator("output")).ToHaveTextAsync("Saved · 57 characters");
+        await Assertions.Expect(form.Locator("output")).ToHaveTextAsync("Saved · 55 characters");
         await Assertions.Expect(description).Not.ToHaveAttributeAsync("aria-invalid", "true");
 
         // Arabic: labels, RTL keyboard order in the toolbar.

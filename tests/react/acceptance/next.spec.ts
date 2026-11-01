@@ -223,8 +223,8 @@ test("Primary follows the selected accent in every appearance and mode, includin
   await page.goto(baseUrl)
   const primary = page.getByRole("button", { name: "Primary", exact: true })
   const colors = {
-    Light: { Emerald: "rgb(14, 122, 109)", Indigo: "rgb(79, 70, 229)", Amber: "rgb(194, 86, 12)", Blue: "rgb(13, 110, 253)" },
-    Dark: { Emerald: "rgb(19, 131, 113)", Indigo: "rgb(94, 97, 241)", Amber: "rgb(181, 91, 25)", Blue: "rgb(13, 110, 253)" },
+    Light: { Emerald: "rgb(14, 122, 109)", Indigo: "rgb(79, 70, 229)", Amber: "rgb(194, 86, 12)", Blue: "rgb(0, 122, 255)" },
+    Dark: { Emerald: "rgb(19, 131, 113)", Indigo: "rgb(94, 97, 241)", Amber: "rgb(181, 91, 25)", Blue: "rgb(10, 132, 255)" },
   }
   for (const appearance of ["Default", "Flat", "Glass"]) {
     await page.getByRole("button", { name: appearance, exact: true }).click()

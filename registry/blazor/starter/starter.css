@@ -187,7 +187,7 @@
   background: rgba(var(--bs-emphasis-color-rgb), 0.06);
 }
 .rax-accent-swatch[data-rax-swatch=blue] {
-  --rax-swatch-color: #0d6efd;
+  --rax-swatch-color: #007aff;
 }
 .rax-accent-swatch::before {
   content: "";
