@@ -444,6 +444,33 @@ body {
   --rax-glass-blur: 48px;
 }
 
+.glass-sheen {
+  --rax-glass-edge:
+    inset 1px 1px 0 0 rgba(255, 255, 255, 0.55),
+    inset -1px -1px 0 0 rgba(255, 255, 255, 0.14),
+    inset 0 0 24px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 0.5px var(--rax-glass-hairline);
+  isolation: isolate;
+}
+.glass-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03) 38%, transparent 52%, rgba(255, 255, 255, 0.05) 78%, transparent);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-sheen::after {
+    display: none;
+  }
+}
+
+:where(.glass-sheen) {
+  position: relative;
+}
+
 [data-rax-accent]:not([data-bs-theme=dark]) {
   --bs-form-invalid-color: color-mix(in srgb, rgb(var(--bs-danger-rgb)) 88%, #000);
   --bs-code-color: color-mix(in srgb, #d63384 88%, #000);
