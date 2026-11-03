@@ -1,3 +1,6 @@
+<!-- Absolute URL: this README is also the NuGet package readme, where relative images do not render. -->
+<img src="https://raw.githubusercontent.com/raxui/RaxUI/main/docs/assets/raxui-logo.png" alt="RaxUI logo" width="96">
+
 # RaxUI
 
 Formerly SheenUI, and before that BlazorUI. See [the identity change and existing-app guidance](docs/adr/022-raxui-identity.md).

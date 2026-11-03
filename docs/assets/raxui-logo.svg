@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="RaxUI">
+  <rect width="120" height="120" rx="26" fill="#0b1220"/>
+  <g fill="#ffffff">
+    <rect x="22" y="12" width="16" height="16" rx="3"/>
+    <rect x="42" y="12" width="16" height="16" rx="3"/>
+    <rect x="62" y="12" width="16" height="16" rx="3"/>
+    <rect x="22" y="32" width="16" height="16" rx="3"/>
+    <rect x="82" y="32" width="16" height="16" rx="3"/>
+    <rect x="22" y="52" width="16" height="16" rx="3"/>
+    <rect x="42" y="52" width="16" height="16" rx="3"/>
+    <rect x="62" y="52" width="16" height="16" rx="3"/>
+    <rect x="22" y="72" width="16" height="16" rx="3"/>
+    <rect x="62" y="72" width="16" height="16" rx="3"/>
+    <rect x="22" y="92" width="16" height="16" rx="3"/>
+  </g>
+  <rect x="82" y="92" width="16" height="16" rx="3" fill="#0071e3"/>
+</svg>
