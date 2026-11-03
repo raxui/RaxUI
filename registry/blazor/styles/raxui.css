@@ -478,6 +478,7 @@ body {
   --rax-border-color: var(--bs-border-color);
   --rax-control-shadow: 0 1px 3px rgba(var(--bs-emphasis-color-rgb), 0.12);
   --rax-surface-shadow: var(--rax-control-shadow);
+  --rax-edge-shadow: var(--rax-control-shadow);
   --rax-control-radius: var(--rax-radius-control);
   --rax-surface-filter: none;
   --rax-dialog-bg: var(--rax-surface-bg);
@@ -491,6 +492,7 @@ body {
 [data-rax-appearance=flat] {
   --rax-control-shadow: none;
   --rax-surface-shadow: none;
+  --rax-edge-shadow: 0 0 0 1px var(--rax-border-color);
 }
 
 [data-rax-appearance=glass] {

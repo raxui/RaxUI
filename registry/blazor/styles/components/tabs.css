@@ -252,7 +252,7 @@
 }
 
 .rax-tabs-list[data-variant=segmented] .rax-tabs-indicator {
-  box-shadow: var(--rax-control-shadow);
+  box-shadow: var(--rax-edge-shadow);
   backdrop-filter: var(--rax-surface-filter);
 }
 

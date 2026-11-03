@@ -24,7 +24,7 @@
       "source": "theme/scss/components/_slider.scss",
       "target": "styles/raxui/components/_slider.scss",
       "type": "scss",
-      "sha256": "d71384bc198239d8c3d17d9ee716c5832ddbb1794ba1e1f6502fafae15195715"
+      "sha256": "65d77024d28edfdb57de7f4420e28dea2be1a132337092d7df899dc622f2c87f"
     }
   ]
 }

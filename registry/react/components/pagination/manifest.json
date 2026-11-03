@@ -23,7 +23,7 @@
       "source": "theme/scss/components/_pagination.scss",
       "target": "styles/raxui/components/_pagination.scss",
       "type": "scss",
-      "sha256": "97e164324f217f229b32ed3155e8354a84767e2c2dfbec08ac51f8e06fc94126"
+      "sha256": "e9e6aa3605058c25a5f6400ff8ea180a2bb465120d55fe5a2cbaebd6d60def71"
     }
   ]
 }

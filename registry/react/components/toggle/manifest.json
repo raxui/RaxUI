@@ -24,7 +24,7 @@
       "source": "theme/scss/components/_toggle.scss",
       "target": "styles/raxui/components/_toggle.scss",
       "type": "scss",
-      "sha256": "4264009f6ddfcfc5634e2bef8b45b52e2be13f7c5aa686f64c1839723ef80d6c"
+      "sha256": "ea9f06a70d2cdf822528ac9e94449bfa503d9ee6c5470375c640822bf7a6cf83"
     }
   ]
 }

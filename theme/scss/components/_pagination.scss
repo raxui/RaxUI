@@ -297,5 +297,5 @@
 .rax-pagination { --rax-pagination-size: var(--rax-control-height-sm); }
 .rax-pagination[data-variant="glass"] .rax-pagination-content { background: var(--rax-surface-bg); border-color: rgba(var(--bs-emphasis-color-rgb), 0.12); box-shadow: var(--rax-glass-edge), var(--rax-shadow-sm); backdrop-filter: var(--rax-surface-filter); -webkit-backdrop-filter: var(--rax-surface-filter); }
 .rax-pagination { padding: 0.5rem 0.75rem; } // room for the track shadow: overflow-x clips it otherwise
-.rax-pagination-indicator { box-shadow: var(--rax-control-shadow); }
+.rax-pagination-indicator { box-shadow: var(--rax-edge-shadow); }
 .rax-pagination-link[aria-disabled="true"] { pointer-events: none; opacity: .4; }
