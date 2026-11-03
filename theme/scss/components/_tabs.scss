@@ -290,7 +290,7 @@
 .rax-tabs .rax-tabs-trigger svg { width: 1em; height: 1em; }
 
 .rax-tabs-list[data-variant="segmented"] { --rax-tabs-thumb-bg: var(--rax-surface-bg); }
-.rax-tabs-list[data-variant="segmented"] .rax-tabs-indicator { box-shadow: var(--rax-control-shadow); backdrop-filter: var(--rax-surface-filter); }
+.rax-tabs-list[data-variant="segmented"] .rax-tabs-indicator { box-shadow: var(--rax-edge-shadow); backdrop-filter: var(--rax-surface-filter); }
 .rax-tabs-trigger { min-height: var(--rax-control-height-sm); }
 
 // ---- Glass segmented: transparent track + liquid-glass droplet -------------

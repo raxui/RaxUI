@@ -241,12 +241,12 @@
 
 .rax-toggle-group[data-variant=segmented] {
   background: var(--rax-surface-bg);
-  box-shadow: var(--rax-control-shadow);
+  box-shadow: var(--rax-edge-shadow);
   backdrop-filter: var(--rax-surface-filter);
 }
 
 .rax-toggle-group-thumb {
-  box-shadow: var(--rax-control-shadow);
+  box-shadow: var(--rax-edge-shadow);
 }
 
 .rax-toggle-icon-sm {

@@ -286,7 +286,7 @@
   border-radius: 50%;
   border: 0;
   background: #fff;
-  box-shadow: var(--rax-control-shadow);
+  box-shadow: var(--rax-edge-shadow);
   pointer-events: auto;
   cursor: grab;
 }
@@ -296,7 +296,7 @@
   border-radius: 50%;
   border: 0;
   background: #fff;
-  box-shadow: var(--rax-control-shadow);
+  box-shadow: var(--rax-edge-shadow);
   pointer-events: auto;
   cursor: grab;
 }
@@ -344,7 +344,7 @@
 }
 
 .rax-slider .rax-slider-thumb {
-  box-shadow: var(--rax-control-shadow);
+  box-shadow: var(--rax-edge-shadow);
 }
 
 .rax-slider .rax-slider-track {

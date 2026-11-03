@@ -295,7 +295,7 @@
 .rax-toggle .rax-toggle svg { width: 1em; height: 1em; }
 
 .rax-toggle.rax-toggle svg { width: 1em; height: 1em; }
-.rax-toggle-group[data-variant="segmented"] { background: var(--rax-surface-bg); box-shadow: var(--rax-control-shadow); backdrop-filter: var(--rax-surface-filter); }
-.rax-toggle-group-thumb { box-shadow: var(--rax-control-shadow); }
+.rax-toggle-group[data-variant="segmented"] { background: var(--rax-surface-bg); box-shadow: var(--rax-edge-shadow); backdrop-filter: var(--rax-surface-filter); }
+.rax-toggle-group-thumb { box-shadow: var(--rax-edge-shadow); }
 .rax-toggle-icon-sm { width: var(--rax-control-height-sm); padding-inline: 0; }
 .rax-toggle-icon-lg { width: var(--rax-control-height-lg); padding-inline: 0; }
