@@ -57,7 +57,7 @@
       "source": "theme/scss/_materials.scss",
       "target": "styles/raxui/_materials.scss",
       "type": "scss",
-      "sha256": "c23b2ceb1aa2ea9d5a9d8fa1b03e691354c0272380e1f4ddf791e4c0e4fa3923"
+      "sha256": "ddfa7be6adc1b72ad349bc2b12c53ba8929643042335297011949c491355c058"
     },
     {
       "source": "theme/scss/_text.scss",
