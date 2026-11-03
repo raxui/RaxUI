@@ -291,15 +291,21 @@
 
 [data-bs-theme=dark] [data-rax-appearance=glass] .rax-tabs-list[data-variant=segmented],
 [data-rax-appearance=glass][data-bs-theme=dark] .rax-tabs-list[data-variant=segmented] {
-  --rax-tabs-thumb-bg: rgba(255, 255, 255, 0.14);
+  --rax-tabs-thumb-bg: rgba(255, 255, 255, 0.08);
 }
 [data-bs-theme=dark] [data-rax-appearance=glass] .rax-tabs-list[data-variant=segmented] .rax-tabs-indicator,
 [data-rax-appearance=glass][data-bs-theme=dark] .rax-tabs-list[data-variant=segmented] .rax-tabs-indicator {
-  background-image: linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.02));
+  background-image: linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  backdrop-filter: blur(8px) saturate(160%);
+}
+[data-bs-theme=dark] [data-rax-appearance=glass] .rax-tabs-list[data-variant=segmented] .rax-tabs-indicator::before,
+[data-rax-appearance=glass][data-bs-theme=dark] .rax-tabs-list[data-variant=segmented] .rax-tabs-indicator::before {
+  background: radial-gradient(90% 70% at 22% -10%, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 60%), radial-gradient(55% 45% at 72% 112%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 70%);
 }
 [data-bs-theme=dark] [data-rax-appearance=glass] .rax-tabs-list[data-variant=segmented] .rax-tabs-indicator::after,
 [data-rax-appearance=glass][data-bs-theme=dark] .rax-tabs-list[data-variant=segmented] .rax-tabs-indicator::after {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0) 62%, rgba(255, 255, 255, 0.22));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0) 62%, rgba(255, 255, 255, 0.12));
 }
 
 @media (prefers-reduced-transparency: reduce) {

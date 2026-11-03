@@ -23,7 +23,7 @@
       "source": "theme/scss/components/_tabs.scss",
       "target": "styles/raxui/components/_tabs.scss",
       "type": "scss",
-      "sha256": "17a6fff6dd29add8d3d02fa21b8972b686a55ae0ad15a92670454759463938ba"
+      "sha256": "8145b7cef2ed5ae41222d461ee0f90ff52abac43aaafca0bb410282ff9c9fdde"
     }
   ]
 }
