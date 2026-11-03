@@ -55,7 +55,7 @@ backdrop blur remain intact. Override `--rax-control-shadow` and
 | `_tokens.scss` | Glass, shadow, radius, control-size, font, and motion tokens, light and dark |
 | `_accents.scss` | `data-rax-accent` themes |
 | `_appearance.scss` | `data-rax-appearance` and `data-rax-density` tokens |
-| `_materials.scss` | `glass-ultrathin` / `thin` / `regular` / `thick` classes |
+| `_materials.scss` | `glass-ultrathin` / `thin` / `regular` / `thick` classes, and opt-in `glass-sheen` light reflections (uses `::after`) |
 | `_mixins.scss` | `glass()`, `motion-safe` |
 | `_animations.scss`, `_text.scss` | Shared keyframes and text helpers |
 | `_core.scss` | Imports everything above, in order |

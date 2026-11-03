@@ -67,6 +67,11 @@ describe("shared theme", () => {
   it("makes glass opaque when the user prefers reduced transparency", () => {
     expect(css).toMatch(/@media \(prefers-reduced-transparency: reduce\)[\s\S]*--rax-glass-alpha: 1 !important/)
   })
+
+  it("draws the opt-in glass sheen behind content and drops it for reduced transparency", () => {
+    expect(css).toMatch(/\.glass-sheen::after\s*\{[^}]*z-index: -1;/)
+    expect(css).toMatch(/@media \(prefers-reduced-transparency: reduce\)\s*\{\s*\.glass-sheen::after\s*\{\s*display: none;/)
+  })
 })
 
 it("ships the approved overlay defaults and per-panel material bindings", () => {
