@@ -15,22 +15,13 @@ jobs:
     runs-on: ubuntu-24.04 # Playwright 1.58 cannot install Chromium on ubuntu-latest (26.04)
     permissions:
       contents: write
-      id-token: write # NuGet Trusted Publishing exchanges the GitHub OIDC token for a short-lived key
+      id-token: write # NuGet and npm Trusted Publishing exchange the GitHub OIDC token for short-lived credentials
 
     steps:
       - name: Require a version tag
         run: |
           if [[ "$GITHUB_REF" != refs/tags/v* ]]; then
             echo "Select an existing v* tag. Publishing from a branch is not supported."
-            exit 1
-          fi
-
-      - name: Check publishing credentials
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -z "$NPM_TOKEN" ]; then
-            echo "Set the repository NPM_TOKEN secret before publishing."
             exit 1
           fi
 
@@ -50,6 +41,10 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
+
+      # npm Trusted Publishing needs npm 11.5.1 or later; Node 22 ships npm 10.
+      - name: Update npm
+        run: npm install -g npm@^11.5.1
 
       - name: Read version from tag
         run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
@@ -96,10 +91,9 @@ jobs:
       - name: Publish to NuGet
         run: dotnet nuget push './nupkg/*.nupkg' --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
+      # Trusted Publishing (npm package settings: raxui/RaxUI, release.yml) also adds provenance.
       # The first preview is also `latest`, so `npx @raxui/react` resolves it.
       - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish ./src/react-cli --access public --tag latest
 
       - name: Create GitHub Release
