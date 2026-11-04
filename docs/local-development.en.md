@@ -379,5 +379,5 @@ For repository development, run `npm run check`; before merging, run
 - You understand that components are application source files and updating the
   CLI alone does not update them.
 
-For more information, see the [README](../README.md), [React guide](react.md),
+For more information, see the [official website](https://raxui.com/), [README](../README.md), [React guide](react.md),
 and [shared theme guide](../theme/README.md).

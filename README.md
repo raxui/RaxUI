@@ -11,6 +11,11 @@
 </p>
 
 <p align="center">
+  <a href="https://raxui.com/"><strong>raxui.com</strong></a>
+</p>
+
+<p align="center">
+  <a href="https://raxui.com/"><img src="https://img.shields.io/badge/website-raxui.com-blue" alt="Website"></a>
   <a href="https://www.nuget.org/packages/RaxUI"><img src="https://img.shields.io/nuget/vpre/RaxUI?label=nuget" alt="NuGet"></a>
   <a href="https://www.npmjs.com/package/@raxui/react"><img src="https://img.shields.io/npm/v/@raxui/react?label=npm" alt="npm"></a>
   <a href="https://github.com/raxui/RaxUI/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT license"></a>
@@ -79,6 +84,7 @@ Any element can set the theme for the components inside it:
 
 | Guide | What it covers |
 | --- | --- |
+| [Website & Documentation](https://raxui.com/) | Official documentation, live components, and interactive examples |
 | [Blazor guide](https://github.com/raxui/RaxUI/blob/main/docs/blazor.md) | Render modes, `init` and `add`, icons, install guarantees, `raxui update` |
 | [React guide](https://github.com/raxui/RaxUI/blob/main/docs/react.md) | Vite and Next.js setup, theme provider, components, recovery |
 | [Component notes](https://github.com/raxui/RaxUI/blob/main/docs/components.md) | Usage and parameters for every component family |

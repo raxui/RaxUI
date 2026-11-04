@@ -1,6 +1,7 @@
 {
   "name": "raxui-monorepo",
   "private": true,
+  "homepage": "https://raxui.com",
   "type": "module",
   "description": "Node tooling for the RaxUI React library, shared theme, and their tests.",
   "engines": {

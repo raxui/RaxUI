@@ -365,5 +365,5 @@ node src/react-cli/scripts/update-hashes.mjs
 - لا تؤدي إعادة `init` و`add button` بالنسخة نفسها إلى تكرار الاستيرادات.
 - تعرف أن المكونات أصبحت ملفات داخل التطبيق، وأن تحديث الأداة وحده لا يحدّثها.
 
-للتفاصيل الإضافية: [README](../README.md)، و[React](react.md)،
+للتفاصيل الإضافية: [الموقع الرسمي](https://raxui.com/)، و[README](../README.md)، و[React](react.md)،
 و[الثيم المشترك](../theme/README.md).

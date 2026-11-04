@@ -4,6 +4,7 @@
   "description": "Install RaxUI React components (Bootstrap 5.3 SCSS, Radix behavior, shared theme) into Vite and Next.js projects.",
   "type": "module",
   "license": "MIT",
+  "homepage": "https://raxui.com",
   "bin": {
     "raxui-react": "bin/raxui-react.mjs"
   },
