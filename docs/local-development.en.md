@@ -308,7 +308,7 @@ edited component files are kept when their upstream source is unchanged. If both
 changed, the complete operation stops without writing. Save your edits separately,
 restore the installed bytes, update, then reapply the edits; or replace the file
 with the exact new registry source and retry. Keep `raxui.lock.json`. There is no force overwrite.
-See [the full update contract](../README.md#updating-an-existing-blazor-application).
+See [the full update contract](blazor.md#updating-an-existing-blazor-application).
 
 ### Blazor: run the CLI from source
 
