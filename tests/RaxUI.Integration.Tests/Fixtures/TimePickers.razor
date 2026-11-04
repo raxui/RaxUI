@@ -17,7 +17,7 @@
     <TimePicker id="time-en" @bind-Value="englishTime" Culture="English" HourCycle="24" MinuteStep="15" />
     <TimePicker id="time-step-empty" @bind-Value="stepTime" HourCycle="24" MinuteStep="15" Now="@(new TimeOnly(12, 57))" Culture="English" />
     <output id="step-value">@stepTime?.ToString("HH:mm")</output>
-    <TimePicker id="time-readonly" Value="@(new TimeOnly(8, 30))" ReadOnly />
+    <TimePicker id="time-readonly" Value="@(new TimeOnly(8, 30))" Culture="English" HourCycle="12" ReadOnly />
     <TimePicker id="time-disabled" Value="@(new TimeOnly(8, 30))" Disabled />
     <DateTimeInput id="datetime-readonly" Value="@(new DateTime(2026, 10, 26))" ReadOnly />
     <DateTimeInput id="datetime-disabled" Value="@(new DateTime(2026, 10, 26))" Disabled />
