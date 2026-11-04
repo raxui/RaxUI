@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       publish:
-        description: 'Explicitly publish the selected v* tag to NuGet and GitHub Releases'
+        description: 'Explicitly publish the selected v* tag to NuGet, npm and GitHub Releases'
         type: boolean
         default: false
 
@@ -27,9 +27,10 @@ jobs:
       - name: Check publishing credentials
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          if [ -z "$NUGET_API_KEY" ]; then
-            echo "Set the repository NUGET_API_KEY secret before publishing."
+          if [ -z "$NUGET_API_KEY" ] || [ -z "$NPM_TOKEN" ]; then
+            echo "Set the repository NUGET_API_KEY and NPM_TOKEN secrets before publishing."
             exit 1
           fi
 
@@ -44,8 +45,23 @@ jobs:
             9.0.x
             10.0.x
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
       - name: Read version from tag
         run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+
+      # Both CLIs carry the tag's version, which is also their registry release identity.
+      - name: Check React CLI version
+        run: |
+          REACT_VERSION=$(node -p "require('./src/react-cli/package.json').version")
+          if [ "$REACT_VERSION" != "$VERSION" ]; then
+            echo "src/react-cli/package.json is $REACT_VERSION; set it to $VERSION before tagging."
+            exit 1
+          fi
 
       - name: Restore dependencies
         run: dotnet restore RaxUI.slnx
@@ -60,6 +76,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           dotnet test RaxUI.slnx -c Release --no-build
 
+      - name: Test React library
+        run: |
+          npm ci
+          npm run typecheck
+          npm test
+
       - name: Pack CLI
         run: dotnet pack src/RaxUI.Cli/RaxUI.Cli.csproj -c Release --no-build -p:Version=$VERSION -o ./nupkg
 
@@ -72,6 +94,12 @@ jobs:
             exit 1
           fi
           dotnet nuget push './nupkg/*.nupkg' --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      # The first preview is also `latest`, so `npx @raxui/react` resolves it.
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish ./src/react-cli --access public --tag latest
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

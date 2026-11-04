@@ -212,19 +212,20 @@ blue, green, red, orange, yellow, teal, indigo, purple, pink, and gray.
 
 ## Install
 
-The CLI is not published to npm yet; install it from a packed tarball. From this repository:
+In a React + Vite (TypeScript) app:
+
+```sh
+npm install -D --save-exact --ignore-scripts @raxui/react
+npx @raxui/react init
+npx @raxui/react add button
+```
+
+To try an unreleased build, pack the CLI from this repository and install the tarball instead:
 
 ```sh
 npm ci
 npm pack ./src/react-cli --pack-destination .
-```
-
-In a React + Vite (TypeScript) app:
-
-```sh
-npm install -D --save-exact --ignore-scripts /path/to/raxui-react-0.1.0-preview.1.tgz
-npx @raxui/react init
-npx @raxui/react add button
+npm install -D --save-exact --ignore-scripts /path/to/raxui-react-<version>.tgz
 ```
 
 `init`:

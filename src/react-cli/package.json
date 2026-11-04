@@ -1,6 +1,6 @@
 {
   "name": "@raxui/react",
-  "version": "0.1.0-preview.1",
+  "version": "0.1.0-preview.2",
   "description": "Install RaxUI React components (Bootstrap 5.3 SCSS, Radix behavior, shared theme) into Vite and Next.js projects.",
   "type": "module",
   "license": "MIT",
