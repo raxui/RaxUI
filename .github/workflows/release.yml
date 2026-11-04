@@ -12,7 +12,7 @@ jobs:
   release:
     if: ${{ inputs.publish }}
     name: Build & Publish Release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright 1.58 cannot install Chromium on ubuntu-latest (26.04)
     permissions:
       contents: write
       id-token: write # NuGet Trusted Publishing exchanges the GitHub OIDC token for a short-lived key
