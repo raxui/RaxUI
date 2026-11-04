@@ -55,18 +55,20 @@ policy has package owner **raxui**, repository `raxui/RaxUI`, workflow file
 renamed or the policy's creator changes, update the policy and the `user` input of
 the `NuGet/login` step.
 
-npm needs one repository secret, `NPM_TOKEN`: an npm granular access token with
-read and write access to the `@raxui` scope (the **raxui** organization), with 2FA
-bypass enabled for automation. After the first release, npm Trusted Publishing can
-replace it from the package's settings.
+npm also uses Trusted Publishing, so no repository secrets are needed. The
+`@raxui/react` package settings trust `raxui/RaxUI` with workflow file
+`release.yml`, no environment, and allow `npm publish`. npm marks a new trusted
+publisher as pending until its first publish, and drops it if that publish does
+not happen in time; recreate it then. Trusted Publishing needs npm 11.5.1 or
+later, which the workflow installs.
 
 To release, set the same version in `src/RaxUI.Cli/RaxUI.Cli.csproj` and
 `src/react-cli/package.json`, merge, then tag and start the workflow:
 
 ```sh
-git tag v0.1.0-preview.2
-git push origin v0.1.0-preview.2
-gh workflow run release.yml --ref v0.1.0-preview.2 -f publish=true
+git tag v<version>
+git push origin v<version>
+gh workflow run release.yml --ref v<version> -f publish=true
 ```
 
 The workflow stops if the React CLI version does not match the tag. The tag version
