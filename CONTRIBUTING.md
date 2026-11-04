@@ -49,10 +49,16 @@ and tests the tagged source, then:
 2. publishes `src/react-cli` to npm as `@raxui/react`;
 3. attaches the `.nupkg` to a GitHub Release (marked prerelease when the tag has a `-`).
 
-Before the first release, the owner adds two repository secrets:
+NuGet uses Trusted Publishing, so there is no NuGet key to store. The nuget.org
+policy has package owner **raxui**, repository `raxui/RaxUI`, workflow file
+`release.yml`, no environment and glob pattern `RaxUI`. If the workflow file is
+renamed or the policy's creator changes, update the policy and the `user` input of
+the `NuGet/login` step.
 
-- `NUGET_API_KEY`: a nuget.org API key with the **raxui** organization as package owner, allowed to push new packages matching `RaxUI`.
-- `NPM_TOKEN`: an npm granular access token with read and write access to the `@raxui` scope (the **raxui** organization), with 2FA bypass enabled for automation.
+npm needs one repository secret, `NPM_TOKEN`: an npm granular access token with
+read and write access to the `@raxui` scope (the **raxui** organization), with 2FA
+bypass enabled for automation. After the first release, npm Trusted Publishing can
+replace it from the package's settings.
 
 To release, set the same version in `src/RaxUI.Cli/RaxUI.Cli.csproj` and
 `src/react-cli/package.json`, merge, then tag and start the workflow:
