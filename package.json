@@ -66,6 +66,7 @@
     "@types/react": "18.3.31",
     "@types/react-dom": "18.3.7",
     "bootstrap": "5.3.8",
+    "chart.js": "4.6.1",
     "clsx": "2.1.1",
     "embla-carousel-autoplay": "8.6.0",
     "embla-carousel-fade": "8.6.0",

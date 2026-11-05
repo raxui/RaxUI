@@ -1,0 +1,41 @@
+/* Generated from theme/scss by theme/build-css.mjs. Do not edit; change the SCSS and rebuild. */
+.rax-chart {
+  --rax-chart-1: var(--bs-primary);
+  --rax-chart-2: var(--bs-info);
+  --rax-chart-3: var(--bs-success);
+  --rax-chart-4: var(--bs-warning);
+  --rax-chart-5: var(--bs-danger);
+  --rax-chart-6: var(--bs-secondary);
+  --rax-chart-text: var(--bs-secondary-color);
+  --rax-chart-grid: var(--bs-border-color-translucent);
+  --rax-chart-surface: var(--bs-body-bg);
+  --rax-chart-fill-alpha: 0.18;
+  position: relative;
+  display: block;
+  width: 100%;
+  height: var(--rax-chart-height, 300px);
+  font-family: var(--bs-body-font-family);
+}
+.rax-chart > canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+.rax-chart:not([data-state=ready]) {
+  border-radius: calc(0.5rem * var(--rax-radius-scale));
+  background-color: var(--rax-skeleton-base, rgba(var(--bs-emphasis-color-rgb), 0.07));
+}
+.rax-chart:not([data-state=ready]) > canvas {
+  visibility: hidden;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rax-chart[data-state=ready] > canvas {
+    animation: rax-chart-reveal 300ms var(--rax-ease-out) both;
+  }
+}
+
+@keyframes rax-chart-reveal {
+  from {
+    opacity: 0;
+  }
+}

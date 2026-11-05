@@ -131,6 +131,7 @@
     {"name": "carousel", "manifest": "components/carousel/manifest.json"},
     {"name": "kanban", "manifest": "components/kanban/manifest.json"},
     {"name": "ai", "manifest": "components/ai/manifest.json"},
-    {"name": "text-editor", "manifest": "components/text-editor/manifest.json"}
+    {"name": "text-editor", "manifest": "components/text-editor/manifest.json"},
+    {"name": "chart", "manifest": "components/chart/manifest.json"}
   ]
 }

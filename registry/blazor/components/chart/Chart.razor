@@ -1,0 +1,97 @@
+@using System.Globalization
+@using System.Text.Json
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+@* Needs an interactive render mode to paint. Static SSR keeps the sized placeholder and the data table for screen readers. *@
+<div @ref="element" @attributes="AdditionalAttributes" class="rax-chart @Class" role="figure" aria-label="@Label" data-type="@Type" style="@Style">
+    <canvas aria-hidden="true"></canvas>
+    <table class="visually-hidden">
+        <caption>@Label</caption>
+        <thead>
+            <tr>
+                <td></td>
+                @foreach (var series in Shown)
+                {
+                    <th scope="col">@series.Name</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Labels.Count; i++)
+            {
+                var row = i;
+                <tr>
+                    <th scope="row">@Labels[row]</th>
+                    @foreach (var series in Shown)
+                    {
+                        <td>@(row < series.Data.Count ? series.Data[row].ToString(CultureInfo.CurrentCulture) : "")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@code {
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+    private static readonly string[] Types = ["line", "area", "bar", "doughnut", "pie", "sparkline"];
+
+    /// <summary><c>line</c>, <c>area</c>, <c>bar</c>, <c>doughnut</c>, <c>pie</c> or <c>sparkline</c>.</summary>
+    [Parameter] public string Type { get; set; } = "line";
+    /// <summary>Category labels: the x axis, or the slices of a doughnut or pie.</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<string> Labels { get; set; } = Array.Empty<string>();
+    [Parameter, EditorRequired] public IReadOnlyList<ChartTypes.Series> Series { get; set; } = Array.Empty<ChartTypes.Series>();
+    /// <summary>Bar and area: stack the series instead of drawing them side by side or overlapping.</summary>
+    [Parameter] public bool Stacked { get; set; }
+    /// <summary>Bar only: bars grow along the x axis.</summary>
+    [Parameter] public bool Horizontal { get; set; }
+    [Parameter] public bool Legend { get; set; } = true;
+    [Parameter] public bool Grid { get; set; } = true;
+    /// <summary>Height in pixels. Defaults to 300, or 48 for a sparkline.</summary>
+    [Parameter] public int? Height { get; set; }
+    /// <summary>Accessible name of the chart and caption of its data table.</summary>
+    [Parameter] public string Label { get; set; } = "Chart";
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string id = Guid.NewGuid().ToString("N");
+    private ElementReference element;
+    private IJSObjectReference? module;
+    private string? sent;
+    private bool disposed;
+
+    private bool Circular => Type is "doughnut" or "pie";
+    private IEnumerable<ChartTypes.Series> Shown => Circular ? Series.Take(1) : Series;
+    private string Style => FormattableString.Invariant($"--rax-chart-height:{Height ?? (Type == "sparkline" ? 48 : 300)}px;") + (AdditionalAttributes?.TryGetValue("style", out var user) == true ? user?.ToString() : "");
+
+    protected override void OnParametersSet()
+    {
+        if (!Types.Contains(Type)) throw new ArgumentException($"Unknown chart type '{Type}'. Use one of: {string.Join(", ", Types)}.", nameof(Type));
+        if (Height is < 1 or > 4096) throw new ArgumentOutOfRangeException(nameof(Height));
+        foreach (var series in Series)
+            foreach (var color in series.Colors?.Prepend(series.Color) ?? [series.Color])
+                if (!SafeColor(color)) throw new ArgumentException($"Chart colour '{color}' must be a palette slot 1–6 or a solid CSS colour, not a URL or expression.");
+    }
+
+    // The colour reaches a canvas, not CSS, but stays restricted to plain colour syntax like QRCode's.
+    private static bool SafeColor(string? color) => string.IsNullOrEmpty(color) || System.Text.RegularExpressions.Regex.IsMatch(color, @"\A(?:[1-6]|#[0-9a-fA-F]{3,8}|[a-zA-Z]+|rgba?\([0-9.,%\s/]+\)|hsla?\([0-9.,%\sdeg/]+\))\z");
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (disposed) return;
+        var options = new { id, type = Type, labels = Labels, series = Shown.Select(s => new { name = s.Name, data = s.Data, color = s.Color, colors = s.Colors }), stacked = Stacked, horizontal = Horizontal, legend = Legend, grid = Grid };
+        var json = JsonSerializer.Serialize(options, Json);
+        if (json == sent) return; // unchanged data is not sent again over a Server circuit
+        module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./Components/UI/Chart/Chart.razor.js");
+        if (disposed) { await module.DisposeAsync(); return; }
+        await module.InvokeVoidAsync("sync", element, options);
+        sent = json;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        disposed = true;
+        if (module is null) return;
+        try { await module.InvokeVoidAsync("dispose", id); await module.DisposeAsync(); }
+        catch (JSDisconnectedException) { }
+    }
+}

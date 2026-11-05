@@ -1015,3 +1015,28 @@ The reusable samples now cover upload queues/photo grids/CV validation, Badge co
 ### Blazor TextEditor
 
 `raxui add text-editor` installs a rich-text editor on the same Tiptap 3.31.4 engine as React, bundled reproducibly (ADR 020). It has toolbar and bubble formatting, links, task lists, alignment, a counter, EditForm validation, a streamed value for large documents, and a sanitized static SSR view. See [the behavior contract](blazor-text-editor.md) and [examples](../examples/blazor/text-editor/README.md).
+
+### Chart
+
+`raxui add chart` (Blazor) and `npx @raxui/react add chart` install line, area, bar (vertical, horizontal, stacked), doughnut, pie and sparkline charts on Chart.js 4.6.1 (ADR 020). Both take category `Labels` and a list of named `Series`; a series colour is a palette slot `"1"`–`"6"` or a CSS colour.
+
+Colours, grid, text and font come from the `--rax-chart-*` tokens (`--rax-chart-1` is the primary colour), so the accent, light/dark mode and appearance restyle charts without code, and RTL mirrors the axes, legend and tooltip. Each chart is a `role="figure"` with its `Label` as the name and a visually hidden data table for screen readers. New data animates the same chart; a new type or orientation replaces it.
+
+Blazor needs an interactive render mode to paint. Static SSR renders the sized placeholder and the data table only.
+
+```razor
+<Chart Type="bar" Label="Revenue" Labels="months" Series="series" Stacked="true" />
+
+@code {
+    private readonly string[] months = ["Jan", "Feb", "Mar"];
+    private IReadOnlyList<ChartTypes.Series> series =
+    [
+        new("Online", [12, 19, 7]),
+        new("Store", [5, 8, 3]) { Color = "3" },
+    ];
+}
+```
+
+```tsx
+<Chart type="bar" label="Revenue" labels={["Jan", "Feb", "Mar"]} stacked series={[{ name: "Online", data: [12, 19, 7] }, { name: "Store", data: [5, 8, 3], color: "3" }]} />
+```

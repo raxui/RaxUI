@@ -1,0 +1,12 @@
+@* Public data contracts. ChartTypes.razor.js beside this file is the unchanged Chart.js 4.6.1 UMD build (ADR 020). *@
+@code {
+    /// <summary>One named series with a value per label. Doughnut and pie charts draw the first series only.</summary>
+    /// <param name="Name">Shown in the legend, the tooltip and the accessible data table.</param>
+    /// <param name="Data">Values in label order.</param>
+    public sealed record Series(string Name, IReadOnlyList<double> Data) {
+        /// <summary>A palette slot "1"–"6" (the --rax-chart-* tokens) or a solid CSS colour. Empty takes the next slot.</summary>
+        public string? Color { get; init; }
+        /// <summary>Doughnut and pie only: a colour per slice, in label order, in the same forms as <see cref="Color"/>.</summary>
+        public IReadOnlyList<string?>? Colors { get; init; }
+    }
+}
