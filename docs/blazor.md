@@ -36,6 +36,15 @@ raxui init
 raxui add button
 ```
 
+`init` needs the Bootstrap 5.3 that `dotnet new blazor` ships in
+`wwwroot/lib/bootstrap`. Visual Studio's "Blazor Web App" template without sample
+pages leaves it out, and `init` then stops and says how to add it: copy
+`wwwroot/lib/bootstrap` from a new `dotnet new blazor` app and add
+`<link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />`
+before `app.css` in `Components/App.razor`. For right-to-left pages Bootstrap's
+utilities are physical (`ms-*`, `text-start`), so also serve
+`bootstrap.rtl.min.css` for `dir="rtl"`.
+
 `init` asks for an appearance (`default`, `flat`, `glass`) and an accent (`blue`,
 `emerald`, `indigo`, `amber`) on its first run in a terminal. Skip the questions
 with `raxui init --appearance glass --accent emerald`; piped or CI runs use the

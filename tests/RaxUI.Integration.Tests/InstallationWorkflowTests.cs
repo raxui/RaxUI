@@ -472,6 +472,8 @@ public class InstallationWorkflowTests : IDisposable
 
         Assert.Equal(1, initCode);
         Assert.Contains("Bootstrap was not found", error.ToString());
+        // The message says how to add Bootstrap (#156).
+        Assert.Contains("lib/bootstrap/dist/css/bootstrap.min.css", error.ToString());
         Assert.False(File.Exists(Path.Combine(_testDirectory, RaxUiConfig.DefaultFileName)));
     }
 }

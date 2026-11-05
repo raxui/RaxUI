@@ -87,9 +87,13 @@ public class ProjectContext
             .FirstOrDefault(Directory.Exists);
         if (bootstrapDir == null)
         {
+            // Visual Studio's "Blazor Web App" without sample pages has no Bootstrap, so say how to add it (#156).
             throw new InvalidOperationException(
-                $"Bootstrap was not found in '{string.Join("' or '", BootstrapFolders)}'. RaxUI requires template Bootstrap to initialize. " +
-                "Ensure your project was created with 'dotnet new blazor'.");
+                $"Bootstrap was not found in '{string.Join("' or '", BootstrapFolders)}'. RaxUI builds on the Bootstrap 5.3 that " +
+                "'dotnet new blazor' ships; some templates (such as Visual Studio's Blazor Web App without sample pages) leave it out. " +
+                "To add it: copy 'wwwroot/lib/bootstrap' from a new 'dotnet new blazor' app, add " +
+                "<link rel=\"stylesheet\" href=\"@Assets[\"lib/bootstrap/dist/css/bootstrap.min.css\"]\" /> before app.css in " +
+                "Components/App.razor, then run init again.");
         }
 
         var bootstrapCss = FindBootstrapCss(bootstrapDir)
