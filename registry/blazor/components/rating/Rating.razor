@@ -5,10 +5,11 @@
         @for (var i = 0; i <= Max; i++)
         {
             var score = i;
-            @if (score > 0 || Clearable)
+            @* No clear option when it can't be used: disabled radios don't post, so nothing needs the zero. *@
+            @if (score > 0 || Clearable && !Locked)
             {
                 <label class="rax-rating-option">
-                    <InputRadio TValue="int" Value="score" aria-label="@GetValueText(score)" disabled="@(ReadOnly || FieldContext?.Disabled == true)" />
+                    <InputRadio TValue="int" Value="score" aria-label="@GetValueText(score)" disabled="@Locked" />
                     @if (score == 0) { <span class="rax-rating-clear">@ClearLabel</span> }
                     else
                     {
@@ -37,6 +38,7 @@
     [Parameter] public Func<int, string> GetValueText { get; set; } = score => score == 0 ? "No rating" : $"{score} {(score == 1 ? "star" : "stars")}";
 
     [CascadingParameter] private Field.FieldContext? FieldContext { get; set; }
+    private bool Locked => ReadOnly || FieldContext?.Disabled == true;
     [Parameter] public string? Appearance { get; set; }
     [Parameter] public string? Class { get; set; }
     [Parameter] public string Size { get; set; } = "default";

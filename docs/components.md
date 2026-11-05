@@ -324,7 +324,8 @@ Rating parameters: `Max` (5), `Clearable` (true), `ClearLabel` ("Clear rating"),
 `Appearance`, `Class`, and `GetValueText` (English "No rating", "1 star", "2 stars",
 etc.). Translate both label parameters for your app. Native radio arrows select
 whole stars; the zero option clears the rating and posts a real zero. Read-only
-radios are disabled and therefore do not post. Half steps, hover previews and the
+radios are disabled and therefore do not post, so a read-only or disabled rating
+shows only its stars, without the clear option. Half steps, hover previews and the
 rating summary are React-only.
 
 Both controls support static SSR posts through `EditForm FormName="..."` and
