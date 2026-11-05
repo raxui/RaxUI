@@ -1,25 +1,17 @@
-<!-- Absolute URLs only: this README is also the NuGet package readme, where relative links and images do not resolve. -->
-<p align="center">
-  <img src="https://raw.githubusercontent.com/raxui/RaxUI/main/docs/assets/raxui-logo.png" alt="RaxUI" width="96">
-</p>
+<!-- Plain Markdown and absolute URLs only: this README is also the NuGet package readme, which does not render raw HTML or resolve relative links. -->
+![RaxUI](https://raw.githubusercontent.com/raxui/RaxUI/main/docs/assets/raxui-logo.png)
 
-<h1 align="center">RaxUI</h1>
+# RaxUI
 
-<p align="center">
-  Source-owned Blazor and React components with one shared theme.<br>
-  A CLI copies the components into your app. You own the code and can change any of it.
-</p>
+Source-owned Blazor and React components with one shared theme.
+A CLI copies the components into your app. You own the code and can change any of it.
 
-<p align="center">
-  <a href="https://raxui.com/"><strong>raxui.com</strong></a>
-</p>
+**[raxui.com](https://raxui.com/)**
 
-<p align="center">
-  <a href="https://raxui.com/"><img src="https://img.shields.io/badge/website-raxui.com-blue" alt="Website"></a>
-  <a href="https://www.nuget.org/packages/RaxUI"><img src="https://img.shields.io/nuget/vpre/RaxUI?label=nuget" alt="NuGet"></a>
-  <a href="https://www.npmjs.com/package/@raxui/react"><img src="https://img.shields.io/npm/v/@raxui/react?label=npm" alt="npm"></a>
-  <a href="https://github.com/raxui/RaxUI/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT license"></a>
-</p>
+[![Website](https://img.shields.io/badge/website-raxui.com-blue)](https://raxui.com/)
+[![NuGet](https://img.shields.io/nuget/vpre/RaxUI?label=nuget)](https://www.nuget.org/packages/RaxUI)
+[![npm](https://img.shields.io/npm/v/@raxui/react?label=npm)](https://www.npmjs.com/package/@raxui/react)
+[![MIT license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/raxui/RaxUI/blob/main/LICENSE)
 
 > **Preview:** RaxUI is in preview. APIs and file layouts can still change between releases.
 
