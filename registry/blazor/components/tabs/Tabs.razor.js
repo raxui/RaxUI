@@ -12,6 +12,16 @@ export function init(root) {
     if (!root?.isConnected) return;
     if (instances.has(root)) { instances.get(root).measure(); return; }
     const media = matchMedia("(prefers-reduced-motion: reduce)");
+    let shown = null;
+    // A scrolling list keeps the active tab in view without scrolling the page. Box edges rather
+    // than scrollLeft, so the same sums work in RTL, where scrollLeft counts negative.
+    const reveal = tab => {
+        if (root.scrollWidth <= root.clientWidth) return;
+        const list = root.getBoundingClientRect(), item = tab.getBoundingClientRect(), gap = 16;
+        const left = item.left - gap - list.left, right = item.right + gap - list.right;
+        const delta = left < 0 ? left : right > 0 ? right : 0;
+        if (delta) root.scrollBy({ left: delta, behavior: reduced() || !root.hasAttribute("data-animate") ? "instant" : "smooth" });
+    };
     const measure = () => {
         const elements = root.querySelectorAll("[role=tab]");
         for (const element of elements) resizes.observe(element);
@@ -26,6 +36,8 @@ export function init(root) {
         };
         if (!root.hasAttribute("data-ready") || reduced()) withoutTransition(root.querySelector(".rax-tabs-indicator"), place);
         else place();
+        // Only when the selection changes, so resizing doesn't undo a manual scroll.
+        if (active !== shown) { reveal(active); shown = active; }
         root.setAttribute("data-animate", "");
     };
     const keydown = event => {

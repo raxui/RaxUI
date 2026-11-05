@@ -17,13 +17,13 @@
       "source": "registry/react/components/tabs/tabs.tsx",
       "target": "components/ui/tabs.tsx",
       "type": "tsx",
-      "sha256": "bb84e4349d4b42404a8bb08b849baec466c150f9fbed1237a655e4fdcf84c028"
+      "sha256": "97ed34124adca21a71b324c42c8ce0e18448d10103ec54d7ef3d44c42540d64b"
     },
     {
       "source": "theme/scss/components/_tabs.scss",
       "target": "styles/raxui/components/_tabs.scss",
       "type": "scss",
-      "sha256": "8145b7cef2ed5ae41222d461ee0f90ff52abac43aaafca0bb410282ff9c9fdde"
+      "sha256": "6fb76eb72f3d3c8afacd327b570cf898b29d8739b417cd7c31fa767c1bc3f3f4"
     }
   ]
 }
