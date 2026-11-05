@@ -6,7 +6,7 @@
 Source-owned Blazor and React components with one shared theme.
 A CLI copies the components into your app. You own the code and can change any of it.
 
-**[raxui.com](https://raxui.com/)**
+**[raxui.com](https://raxui.com/)** · **[Live dashboard demo](https://blazor.raxui.com/)**
 
 [![Website](https://img.shields.io/badge/website-raxui.com-blue)](https://raxui.com/)
 [![NuGet](https://img.shields.io/nuget/vpre/RaxUI?label=nuget)](https://www.nuget.org/packages/RaxUI)
@@ -77,6 +77,7 @@ Any element can set the theme for the components inside it:
 | Guide | What it covers |
 | --- | --- |
 | [Website & Documentation](https://raxui.com/) | Official documentation, live components, and interactive examples |
+| [Dashboard demo](https://blazor.raxui.com/) | A full admin dashboard built with RaxUI Blazor components |
 | [Blazor guide](https://github.com/raxui/RaxUI/blob/main/docs/blazor.md) | Render modes, `init` and `add`, icons, install guarantees, `raxui update` |
 | [React guide](https://github.com/raxui/RaxUI/blob/main/docs/react.md) | Vite and Next.js setup, theme provider, components, recovery |
 | [Component notes](https://github.com/raxui/RaxUI/blob/main/docs/components.md) | Usage and parameters for every component family |
