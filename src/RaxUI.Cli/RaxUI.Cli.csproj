@@ -8,7 +8,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>raxui</ToolCommandName>
     <PackageId>RaxUI</PackageId>
-    <Version>0.1.0-preview.2</Version>
+    <Version>0.1.0-preview.3</Version>
     <Description>Source-first Blazor UI components installed into your project.</Description>
     <Authors>SaadAlsaree</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
