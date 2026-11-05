@@ -509,11 +509,14 @@
     padding-inline: 0;
   }
 
+  // The collapsible's chevron also drops its auto start margin: an auto margin takes the free space
+  // that justify-content centres with, and pushes the icon towards the start.
   .rax-sidebar[data-collapsible="icon"] & > span:last-of-type,
   .rax-sidebar[data-collapsible="icon"] & > svg:last-child:not(:first-child) {
     flex: 0 0 0;
     width: 0;
     min-width: 0;
+    margin-inline-start: 0;
   }
 }
 

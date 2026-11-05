@@ -27,7 +27,7 @@
       "source": "theme/scss/components/_sidebar.scss",
       "target": "styles/raxui/components/_sidebar.scss",
       "type": "scss",
-      "sha256": "07ee9f4c262561a47db004b9a3ab08870e486781c5a0ccbe025055d946868f07"
+      "sha256": "a6cc860c40e79e10c1b61f9094058123811bfcba9ba32e56bf9b0032ec57146d"
     },
     {
       "source": "registry/react/foundation/app-shell-utils.ts",
