@@ -42,7 +42,7 @@
         new(){Id="amount",Title=T("Amount","المبلغ"),Value=r=>r.Amount,Format=v=>Money((decimal)v!),Align="end"},
         new(){Id="actions",Title=T("Actions","الإجراءات"),Value=r=>r.Id,Cell=Actions,Sortable=false,Searchable=false,Hideable=false}
     };
-    private DataTableTypes.Labels Labels=>Arabic?new(){Search="بحث في الطلبات أو العملاء…",View="العرض",Columns="الأعمدة",Compact="مضغوط",Comfortable="مريح",Reset="مسح الفلاتر",Empty="لا توجد نتائج.",SelectAll="تحديد صفوف الصفحة",SelectRow="تحديد الطلب",ClearSelection="إلغاء التحديد",RowsPerPage="صفوف الصفحة",Previous="السابق",Next="التالي",Pagination="الصفحات",MorePages="صفحات أخرى",BulkActions="إجراءات جماعية",Results=n=>$"{n} نتائج",Selected=n=>$"{n} محدد",Page=n=>$"صفحة {n}"}:new(){Search="Search orders or customers…"};
+    private DataTableTypes.Labels Labels=>Arabic?new(){Search="بحث في الطلبات أو العملاء…",View="العرض",Columns="الأعمدة",Compact="مضغوط",Comfortable="مريح",Reset="مسح الفلاتر",Empty="لا توجد نتائج.",SelectAll="تحديد صفوف الصفحة",SelectRow="تحديد الطلب",ClearSelection="إلغاء التحديد",RowsPerPage="صفوف الصفحة",Previous="السابق",Next="التالي",Pagination="الصفحات",MorePages="صفحات أخرى",BulkActions="إجراءات جماعية",Results=n=>$"{n} نتائج",Selected=n=>$"{n} محدد",SelectionSummary=(n,total)=>$"{n} من {total} محدد",Page=n=>$"صفحة {n}"}:new(){Search="Search orders or customers…"};
     private void Export(int count)=>message=T($"Export started · {count} orders · CSV",$"بدء التصدير · {count} طلب · CSV");
     private void Delete(IReadOnlyList<Order> rows){var ids=rows.Select(x=>x.Id).ToHashSet();orders=orders.Where(x=>!ids.Contains(x.Id)).ToList();message=T($"Deleted {ids.Count} orders",$"تم حذف {ids.Count} طلب");}
 }

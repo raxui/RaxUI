@@ -31,6 +31,22 @@
     align-items: stretch;
   }
 
+  // Wider than its container (many tabs, a phone): scroll sideways inside its own width instead
+  // of widening the page. The scripts keep the active tab in view. The list now clips, so the
+  // focus ring is drawn inside the trigger, as the underline variant already did.
+  &:not([data-orientation="vertical"]) {
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .rax-tabs-trigger:focus-visible {
+      box-shadow: inset 0 0 0 2px rgba(var(--bs-primary-rgb), 0.5);
+    }
+  }
+
   [data-bs-theme="dark"] & {
     --rax-tabs-thumb-bg: rgba(255, 255, 255, 0.14);
   }

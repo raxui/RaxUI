@@ -126,12 +126,15 @@ const TabsList = React.forwardRef<
       if (!list.hasAttribute("data-ready")) list.setAttribute("data-ready", "")
       if (!list.hasAttribute("data-animate") && !frame) frame = requestAnimationFrame(() => list.setAttribute("data-animate", ""))
 
-      // Scrollable lists: keep the active tab in view without scrolling the page.
+      // Scrollable lists: keep the active tab in view without scrolling the page. Box edges rather
+      // than offsetLeft/scrollLeft, so the same sums work in RTL, where scrollLeft counts negative.
       if (list.scrollWidth > list.clientWidth) {
-        const start = active.offsetLeft - 16
-        const end = active.offsetLeft + active.offsetWidth + 16
-        if (start < list.scrollLeft) list.scrollTo({ left: start, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })
-        else if (end > list.scrollLeft + list.clientWidth) list.scrollTo({ left: end - list.clientWidth, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })
+        const box = list.getBoundingClientRect()
+        const item = active.getBoundingClientRect()
+        const left = item.left - 16 - box.left
+        const right = item.right + 16 - box.right
+        const delta = left < 0 ? left : right > 0 ? right : 0
+        if (delta) list.scrollBy({ left: delta, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })
       }
     }
 

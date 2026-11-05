@@ -21,6 +21,10 @@
   display: block;
   width: 100%;
   height: var(--rax-chart-height, 300px);
+  // The screen-reader <table class="visually-hidden"> can't shrink below its rows (tables ignore a
+  // small height), so it would hang below the chart and lengthen the page. Clipping keeps it read
+  // by screen readers but out of layout. Tooltips are drawn on the canvas, so nothing is cut.
+  overflow: clip;
   font-family: var(--bs-body-font-family);
 
   > canvas {

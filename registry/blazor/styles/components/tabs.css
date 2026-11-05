@@ -20,6 +20,16 @@
   flex-direction: column;
   align-items: stretch;
 }
+.rax-tabs-list:not([data-orientation=vertical]) {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.rax-tabs-list:not([data-orientation=vertical])::-webkit-scrollbar {
+  display: none;
+}
+.rax-tabs-list:not([data-orientation=vertical]) .rax-tabs-trigger:focus-visible {
+  box-shadow: inset 0 0 0 2px rgba(var(--bs-primary-rgb), 0.5);
+}
 [data-bs-theme=dark] .rax-tabs-list {
   --rax-tabs-thumb-bg: rgba(255, 255, 255, 0.14);
 }
