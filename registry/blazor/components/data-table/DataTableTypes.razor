@@ -35,6 +35,8 @@
         public string BulkActions { get; init; } = "Bulk actions";
         public Func<int,string> Results { get; init; } = n => $"{n} results";
         public Func<int,string> Selected { get; init; } = n => $"{n} selected";
+        /// <summary>Footer text while rows are selected: (selected, total of filtered rows).</summary>
+        public Func<int,int,string> SelectionSummary { get; init; } = (n, total) => $"{n} of {total} row{(total == 1 ? "" : "s")} selected";
         public Func<int,string> Page { get; init; } = n => $"Page {n}";
     }
 }

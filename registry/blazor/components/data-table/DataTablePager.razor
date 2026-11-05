@@ -1,6 +1,7 @@
 @typeparam TItem
 <div class="rax-data-table-footer">
-    <span aria-live="polite">@Text.Results(State.Filtered.Count) · @Text.Selected(State.SelectedRows.Count)</span>
+    @* As React: the selection appears only once a row is selected (never on a table without selection). *@
+    <span aria-live="polite">@(State.SelectedRows.Count > 0 ? Text.SelectionSummary(State.SelectedRows.Count, State.Filtered.Count) : Text.Results(State.Filtered.Count))</span>
     <div class="rax-table-pagination">
         <label class="d-flex align-items-center gap-2">@Text.RowsPerPage
             <Select TValue="int" Value="State.PageSize" ValueChanged="Size" Size="sm" aria-label="@Text.RowsPerPage">

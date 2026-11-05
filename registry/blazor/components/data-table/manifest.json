@@ -41,7 +41,7 @@
       "destination": "components",
       "target": "DataTable/DataTablePager.razor",
       "type": "razor",
-      "sha256": "0e9dc38cce597de20ef49583b296b69d5c6dce6bbcc17d02d4ce80e4f1d3058a"
+      "sha256": "05e850406266b555a56a762ec7f6455680713ef85ba258502508442184883242"
     },
     {
       "source": "DataTableState.razor",
@@ -62,7 +62,7 @@
       "destination": "components",
       "target": "DataTable/DataTableTypes.razor",
       "type": "razor",
-      "sha256": "b892e1af27287592cd0d423774262698c649f2bfafb4f2e76d325af65325b176"
+      "sha256": "32b4ea8705d3507098e573378973c151bab46172264317a63409a60ccf7cd030"
     }
   ]
 }
