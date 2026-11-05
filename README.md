@@ -17,7 +17,7 @@ A CLI copies the components into your app. You own the code and can change any o
 
 ## Features
 
-- **67 components** for Blazor and React, from buttons and forms to data grids, calendars, chat and a rich text editor.
+- **68 components** for Blazor and React, from buttons and forms to data grids, charts, calendars, chat and a rich text editor.
 - **Your code, not a dependency.** `add` copies `.razor` or `.tsx` files and their CSS into your project. Installed components run without the CLI.
 - **One theme, three looks.** `default`, `flat` and `glass` appearances, light and dark mode, accents, density and RTL, set with HTML attributes.
 - **Built on Bootstrap 5.3.** React uses Radix UI for behaviour and accessibility. Blazor uses native `<dialog>` and `popover` with small JavaScript modules.

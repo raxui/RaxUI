@@ -1,0 +1,31 @@
+@page "/chart-demo"
+@rendermode InteractiveServer
+<div data-rax-appearance="@appearance" data-bs-theme="@mode" data-rax-accent="@accent" style="padding:1rem">
+    <label>Mode<select id="chart-mode" @bind="mode"><option>light</option><option>dark</option></select></label>
+    <label>Accent<select id="chart-accent" @bind="accent"><option>default</option><option>emerald</option></select></label>
+    <label>Appearance<select id="chart-appearance" @bind="appearance"><option>default</option><option>glass</option></select></label>
+    <section id="sales" style="width:640px">
+        <Chart Type="@type" Label="Sales" Labels="months" Series="sales" />
+        <button id="more" type="button" @onclick="More">More</button>
+        <button id="as-line" type="button" @onclick="@(() => type = "line")">Line</button>
+    </section>
+    <section id="share" style="width:320px">
+        <Chart Type="doughnut" Label="Share" Labels="@(["Web", "Mobile", "Store"])" Series="@([new ChartTypes.Series("Share", [50, 30, 20]) { Colors = ["2"] }])" />
+    </section>
+    <section id="trend" style="width:160px">
+        <Chart Type="sparkline" Label="Trend" Labels="months" Series="@([new ChartTypes.Series("Visits", [3, 5, 4, 8])])" />
+    </section>
+    <section id="arabic" dir="rtl" lang="ar" style="width:640px">
+        <Chart Type="bar" Horizontal="true" Label="المبيعات" Labels="@(["يناير", "فبراير", "مارس", "أبريل"])" Series="@([new ChartTypes.Series("الإيرادات", [12, 19, 7, 11])])" />
+    </section>
+</div>
+@code {
+    private string mode = "light", accent = "default", appearance = "default", type = "bar";
+    private readonly string[] months = ["Jan", "Feb", "Mar", "Apr"];
+    private IReadOnlyList<ChartTypes.Series> sales =
+    [
+        new("Revenue", [12, 19, 7, 11]),
+        new("Cost", [5, 8, 3, 6]) { Color = "5" },
+    ];
+    private void More() => sales = [new("Revenue", [20, 25, 30, 35]), sales[1]];
+}

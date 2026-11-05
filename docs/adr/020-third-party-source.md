@@ -43,3 +43,13 @@ Reference vectors are regenerated with `node scripts/generate-qr-vectors.mjs <pa
 - RaxUI behavior (toolbar, menus, link form, counter, value transport) lives in the readable, source-owned `TextEditor.razor.js`, which imports the engine.
 
 Built from Tiptap 3.31.4: 466,930 bytes (46 KB of it license text), 134 KB gzip, 113 KB Brotli. SHA-256 `12b5dd5e6b70f51b4679297cb1207b76db44c1238f11d31c8f9d664bcf43e92d`. It is loaded only by pages that render a TextEditor.
+
+## Extension for Chart
+
+**Chart engine.** Chart.js 4.6.1 publishes a self-contained UMD build, so it follows the Embla rule and is installed byte-for-byte unchanged. Its ESM build is not used: it imports the bare specifier `@kurkle/color` and shared chunks.
+
+- `chart.umd.min.js`: Chart.js 4.6.1, MIT, 210,082 bytes (71 KB gzip), SHA-256 `87364cc2b2a76a6684929e7d6b80b18a897794db38400caff1fcf1791c6925d2`. It bundles @kurkle/color 0.3.2 (MIT). Source: https://registry.npmjs.org/chart.js/-/chart.js-4.6.1.tgz (`dist/chart.umd.min.js`).
+- It installs as `ChartTypes.razor.js`, collocated with the existing `ChartTypes.razor` contracts. Imported as a module, the UMD wrapper sets `globalThis.Chart`.
+- The full MIT notices of Chart.js and @kurkle/color are at the top of the source-owned `Chart.razor.js`, which imports the engine, so they are delivered with it.
+- React installs the same version from npm (`chart.js` 4.6.1 in the manifest `packages`). Both frameworks build the Chart.js configuration with the same `chartConfig` logic; keep `Chart.razor.js` and `chart.tsx` in step.
+- Updates replace the file, update the version, size and hash here and in both manifests, and rerun the browser tests.

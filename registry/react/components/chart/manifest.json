@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "chart",
+  "version": "0.1.0",
+  "description": "Source-owned chart on Chart.js, matching Blazor.",
+  "requires": [
+    "foundation"
+  ],
+  "packages": {
+    "chart.js": "4.6.1"
+  },
+  "styles": [
+    "components/chart"
+  ],
+  "files": [
+    {
+      "source": "registry/react/components/chart/chart.tsx",
+      "target": "components/ui/chart.tsx",
+      "type": "tsx",
+      "sha256": "4098544df046d17a373d740e778e7281cae6106e97f8e1a59addff86f64759b1"
+    },
+    {
+      "source": "theme/scss/components/_chart.scss",
+      "target": "styles/raxui/components/_chart.scss",
+      "type": "scss",
+      "sha256": "6c3c8e9cae9e385aa6ccb77e6d02da5f975ac0300352a13ce45421b51d160302"
+    }
+  ]
+}

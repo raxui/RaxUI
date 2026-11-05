@@ -71,6 +71,7 @@
     { "name": "text-editor", "manifest": "registry/react/components/text-editor/manifest.json" },
     { "name": "qr-code", "manifest": "registry/react/components/qr-code/manifest.json" },
     { "name": "speed-dial", "manifest": "registry/react/components/speed-dial/manifest.json" },
-    { "name": "kanban", "manifest": "registry/react/components/kanban/manifest.json" }
+    { "name": "kanban", "manifest": "registry/react/components/kanban/manifest.json" },
+    { "name": "chart", "manifest": "registry/react/components/chart/manifest.json" }
   ]
 }

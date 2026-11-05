@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "name": "chart",
+  "version": "0.1.0",
+  "description": "Source-owned chart matching React, on vendored Chart.js 4.6.1 (ADR 020).",
+  "dependencies": [],
+  "assets": [
+    {
+      "source": "styles/components/chart.css",
+      "destination": "styles",
+      "target": "components/chart.css",
+      "type": "css",
+      "sha256": "c433449dcbf495eaae36d9a6198d6b020a939f63aef5046d53103d6261e1d422"
+    }
+  ],
+  "files": [
+    {
+      "source": "Chart.razor",
+      "destination": "components",
+      "target": "Chart/Chart.razor",
+      "type": "razor",
+      "sha256": "bda3ddb5e2addef47118c39e4277ffaea3f9b89c4e89baeb59fa22c2670b55cd"
+    },
+    {
+      "source": "Chart.razor.js",
+      "destination": "components",
+      "target": "Chart/Chart.razor.js",
+      "type": "js",
+      "sha256": "3ba102eb55fa06f15e90239e46e04f8c1acbe31d4c57d645838a4cc6222ef206"
+    },
+    {
+      "source": "ChartTypes.razor",
+      "destination": "components",
+      "target": "Chart/ChartTypes.razor",
+      "type": "razor",
+      "sha256": "de235f1b1660e91e4516b8f5581191c62cc1b980e8a9e1378af05f2093ba5cae"
+    },
+    {
+      "source": "chart.umd.min.js",
+      "destination": "components",
+      "target": "Chart/ChartTypes.razor.js",
+      "type": "js",
+      "sha256": "87364cc2b2a76a6684929e7d6b80b18a897794db38400caff1fcf1791c6925d2"
+    }
+  ]
+}
