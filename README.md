@@ -6,7 +6,9 @@
 Source-owned Blazor and React components with one shared theme.
 A CLI copies the components into your app. You own the code and can change any of it.
 
-**[raxui.com](https://raxui.com/)** · **[Live dashboard demo](https://blazor.raxui.com/)**
+**[raxui.com](https://raxui.com/)**
+
+**[Blazor dashboard demo](https://blazor.raxui.com/)**
 
 [![Website](https://img.shields.io/badge/website-raxui.com-blue)](https://raxui.com/)
 [![NuGet](https://img.shields.io/nuget/vpre/RaxUI?label=nuget)](https://www.nuget.org/packages/RaxUI)
@@ -82,7 +84,6 @@ Any element can set the theme for the components inside it:
 | [React guide](https://github.com/raxui/RaxUI/blob/main/docs/react.md) | Vite and Next.js setup, theme provider, components, recovery |
 | [Component notes](https://github.com/raxui/RaxUI/blob/main/docs/components.md) | Usage and parameters for every component family |
 | [Shared theme](https://github.com/raxui/RaxUI/blob/main/theme/README.md) | Tokens, appearances, glass materials |
-| [Local development](https://github.com/raxui/RaxUI/blob/main/docs/local-development.en.md) ([العربية](https://github.com/raxui/RaxUI/blob/main/docs/local-development.ar.md)) | Using RaxUI from a clone without published packages |
 | [Architecture](https://github.com/raxui/RaxUI/blob/main/ARCHITECTURE.md) and [decisions](https://github.com/raxui/RaxUI/tree/main/docs/adr) | How the registry, CLIs and theme fit together |
 
 RaxUI was previously named SheenUI, and BlazorUI before that. If you have an app using an older name, see [ADR 022](https://github.com/raxui/RaxUI/blob/main/docs/adr/022-raxui-identity.md).
