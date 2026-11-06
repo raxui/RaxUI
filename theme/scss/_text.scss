@@ -26,3 +26,10 @@
     }
   }
 }
+
+// Arabic-script languages join their letters, so any tracking, negative or positive, pulls the joins
+// apart. Components and app headings set letter-spacing for Latin text; these languages reset it.
+// Matching the element's own language keeps a lang="en" island inside an Arabic page tracked.
+:is(:lang(ar), :lang(fa), :lang(ur), :lang(ps), :lang(ckb)) {
+  letter-spacing: 0 !important;
+}
