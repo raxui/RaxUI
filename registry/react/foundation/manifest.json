@@ -63,7 +63,7 @@
       "source": "theme/scss/_text.scss",
       "target": "styles/raxui/_text.scss",
       "type": "scss",
-      "sha256": "419aaa4554604b17645a58d5328526320d8aae5cf7eb5da609ff98e46c0bc842"
+      "sha256": "64dd249fabade7cac0db56650393525725f9bbf47dff455ffc67e9c4744709b4"
     },
     {
       "source": "theme/scss/_appearance.scss",
