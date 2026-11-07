@@ -66,6 +66,12 @@
       "sha256": "64dd249fabade7cac0db56650393525725f9bbf47dff455ffc67e9c4744709b4"
     },
     {
+      "source": "theme/scss/_typeset.scss",
+      "target": "styles/raxui/_typeset.scss",
+      "type": "scss",
+      "sha256": "d363817d8e7773c63e1a2d363767655f2091a80e50289bddd4e88036dfeefea2"
+    },
+    {
       "source": "theme/scss/_appearance.scss",
       "target": "styles/raxui/_appearance.scss",
       "type": "scss",
@@ -75,7 +81,7 @@
       "source": "theme/scss/_core.scss",
       "target": "styles/raxui/_core.scss",
       "type": "scss",
-      "sha256": "797df76eb1f6c8ec550aa79750fee642879acedd8b77f5e7a566b602c14c6b5b"
+      "sha256": "2af75a320af66e0571f5b333c1242ad50be900a45df930759fb43cba24021dfa"
     },
     {
       "source": "registry/react/foundation/direction.ts",

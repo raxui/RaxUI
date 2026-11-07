@@ -1,4 +1,4 @@
-import { onKeyDown } from "../DropdownMenu/DropdownMenu.razor.js"
+import { clampToViewport, onKeyDown } from "../DropdownMenu/DropdownMenu.razor.js"
 const states = new WeakMap()
 export function init(target, menu) {
   const controller = new AbortController()
@@ -16,8 +16,9 @@ export function init(target, menu) {
   const show = (x, y, keyboard) => {
     generation++; menu.dataset.state = "open"; target.dataset.state = "open"
     if (!menu.matches(":popover-open")) menu.showPopover()
-    menu.style.left = `${Math.max(8, Math.min(x, innerWidth - menu.offsetWidth - 8))}px`
-    menu.style.top = `${Math.max(8, Math.min(y, innerHeight - menu.offsetHeight - 8))}px`
+    const [left, top] = clampToViewport(x, y, menu.offsetWidth, menu.offsetHeight)
+    menu.style.left = `${left}px`
+    menu.style.top = `${top}px`
     target.setAttribute("aria-expanded", "true")
     if (keyboard) menu.querySelector('[role="menuitem"]:not(:disabled)')?.focus(); else menu.focus()
   }

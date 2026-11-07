@@ -17,6 +17,21 @@ describe("shared theme", () => {
     expect(css).toContain(selector)
   })
 
+  it("ships .rax-typeset streaming-safe, RTL-aware and above Bootstrap's reboot", () => {
+    const rules = css.split("}").filter((rule) => rule.includes(".rax-typeset"))
+    expect(rules.length).toBeGreaterThan(20)
+    for (const rule of rules) {
+      const selector = rule.slice(0, rule.indexOf("{"))
+      // Streamed blocks must not restyle earlier ones.
+      expect(selector, selector).not.toMatch(/:last-child|:has\(|:empty/)
+      // One class of specificity: beats reboot's element rules, loses to utilities.
+      if (selector.includes(":where(")) expect(selector.trim(), selector).toMatch(/^\.rax-typeset :where\(/)
+      expect(rule, selector).not.toMatch(/(margin|padding|border)-(left|right)\b/)
+    }
+    // Bootstrap's `.h1 { @extend h1 }` adds `, .h1` to the list when compiled together.
+    expect(css).toMatch(/\.rax-typeset :where\(h1(, \.h1)?\):not\(:where\(\.rax-not-typeset \*\)\)/)
+  })
+
   it("keeps the Blazor theme CSS in sync with the SCSS (run npm run theme:css after edits)", async () => {
     // @ts-expect-error -- plain ESM build script without type declarations
     const { compileBlazorTheme } = await import("../../theme/build-css.mjs")

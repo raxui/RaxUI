@@ -1,4 +1,5 @@
-// Source-owned: position extracted from DropdownMenu (ADR 013); DropdownMenu remains unchanged.
+// Source-owned: positioning shares DropdownMenu's viewport helpers (ADR 013).
+import { alignToTrigger, clampToViewport, originX } from "../DropdownMenu/DropdownMenu.razor.js"
 const GAP = 4
 const MARGIN = 8
 const instances = new WeakMap()
@@ -41,19 +42,18 @@ function position(trigger, menu) {
   const anchor = trigger.getBoundingClientRect()
   // offset sizes ignore the opening animation's scale.
   menu.style.setProperty("--radix-popover-trigger-width", `${anchor.width}px`)
-  menu.style.setProperty("--radix-popover-content-available-height", `${Math.max(anchor.top, window.innerHeight - anchor.bottom) - GAP - MARGIN}px`)
+  const viewportHeight = document.documentElement.clientHeight
+  menu.style.setProperty("--radix-popover-content-available-height", `${Math.max(anchor.top, viewportHeight - anchor.bottom) - GAP - MARGIN}px`)
   const width = menu.offsetWidth
   const height = menu.offsetHeight
-  const rtl = getComputedStyle(trigger).direction === "rtl"
-  const start = rtl ? anchor.right - width : anchor.left
-  const left = Math.max(MARGIN, Math.min(start, window.innerWidth - width - MARGIN))
+  const left = alignToTrigger(anchor, width, getComputedStyle(trigger).direction === "rtl")
   const below = anchor.bottom + GAP
   const above = anchor.top - GAP - height
-  const preferredTop = below + height <= window.innerHeight - MARGIN || above < MARGIN ? below : above
-  const top = Math.max(MARGIN, Math.min(preferredTop, window.innerHeight - height - MARGIN))
+  const preferredTop = below + height <= viewportHeight - MARGIN || above < MARGIN ? below : above
+  const [, top] = clampToViewport(left, preferredTop, width, height)
   menu.style.left = `${left}px`
   menu.style.top = `${top}px`
-  menu.style.transformOrigin = `${top === below ? "top" : "bottom"} ${rtl ? "right" : "left"}`
+  menu.style.transformOrigin = `${top === below ? "top" : "bottom"} ${originX(left, width, anchor)}`
 }
 
 

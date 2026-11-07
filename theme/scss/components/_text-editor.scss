@@ -391,28 +391,17 @@
 // ---- Prose: shared typography for the editor and for displaying saved HTML ------------
 
 .rax-prose {
+  // Prose comes from .rax-typeset (theme/scss/_typeset.scss); this is the editor preset.
+  --rax-typeset-size: 1rem;
+  --rax-typeset-leading: 1.6;
+  --rax-typeset-flow: 0.625em;
+
   color: var(--bs-emphasis-color);
-  font-size: 1rem;
-  line-height: 1.6;
-  overflow-wrap: break-word;
 
-  > :first-child {
-    margin-top: 0;
-  }
-
-  > :last-child {
-    margin-bottom: 0;
-  }
-
-  p {
-    margin: 0 0 0.625em;
-  }
-
+  // Documents keep a tighter heading scale than articles.
   h1,
   h2,
   h3 {
-    margin: 1.1em 0 0.4em;
-    color: var(--bs-emphasis-color);
     font-weight: 700;
     line-height: 1.25;
     letter-spacing: -0.015em;
@@ -424,17 +413,13 @@
 
   a {
     color: var(--bs-link-color);
-    text-decoration: underline;
     text-decoration-color: rgba(var(--bs-link-color-rgb), 0.35);
-    text-underline-offset: 0.18em;
     cursor: pointer;
 
     &:hover {
       text-decoration-color: currentColor;
     }
   }
-
-  strong { font-weight: 650; }
 
   mark {
     padding: 0.05em 0.15em;
@@ -445,81 +430,9 @@
     -webkit-box-decoration-break: clone;
   }
 
-  code {
-    padding: 0.125em 0.375em;
-    border-radius: calc(0.375rem * var(--rax-radius-scale));
-    color: var(--bs-emphasis-color);
-    background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
-    font-size: 0.875em;
-  }
-
+  // Tiptap keeps whitespace in code blocks.
   pre {
-    margin: 0.75em 0;
-    padding: 0.875rem 1rem;
-    overflow-x: auto;
-    border-radius: calc(0.75rem * var(--rax-radius-scale));
-    color: var(--bs-emphasis-color);
-    background-color: rgba(var(--bs-emphasis-color-rgb), 0.055);
-    font-size: 0.875rem;
-    line-height: 1.55;
-    direction: ltr;
-    text-align: left;
     white-space: pre;
-
-    code {
-      padding: 0;
-      background: none;
-      font-size: inherit;
-    }
-  }
-
-  blockquote {
-    margin: 0.75em 0;
-    padding: 0.125em 0;
-    padding-inline-start: 1rem;
-    border-inline-start: 3px solid rgba(var(--bs-primary-rgb), 0.5);
-    color: var(--bs-secondary-color);
-
-    p:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  ul,
-  ol {
-    margin: 0 0 0.625em;
-    padding-inline-start: 1.5em;
-
-    p {
-      margin: 0;
-    }
-
-    li + li,
-    li > ul,
-    li > ol {
-      margin-top: 0.2em;
-    }
-
-    li > ul,
-    li > ol {
-      margin-bottom: 0;
-    }
-  }
-
-  ul li::marker {
-    color: var(--bs-secondary-color);
-  }
-
-  ol li::marker {
-    color: var(--bs-secondary-color);
-    font-variant-numeric: tabular-nums;
-  }
-
-  hr {
-    margin: 1.25em 0;
-    border: 0;
-    border-top: 1px solid rgba(var(--bs-emphasis-color-rgb), 0.15);
-    opacity: 1;
   }
 
   // Checklist: round checks like Reminders.
@@ -542,6 +455,7 @@
       > div {
         flex: 1;
         min-width: 0;
+        margin-block-start: 0;
       }
 
       &[data-checked="true"] > div {

@@ -13,7 +13,7 @@
       "destination": "styles",
       "target": "components/ai.css",
       "type": "css",
-      "sha256": "cf9e1c7dfdf24438674f70daf46d7cc1c4a245cc927d44c3d94a7aaf9214aafb"
+      "sha256": "36e49816ee3c4aa44dc0b359e0fe52efe0e389eb67a46ae89b3f9a00af10cd11"
     }
   ],
   "files": [
@@ -29,7 +29,7 @@
       "destination": "components",
       "target": "AI/AICodeBlock.razor",
       "type": "razor",
-      "sha256": "79a7b7c2bbfd5773a999398884fbf0d6c3648b093cce512a709ba639dc37a3be"
+      "sha256": "4bb6060d6fabae342df528dd4d87269a811e505dd437d2747c1f24a6b9da34f9"
     },
     {
       "source": "AICodeBlock.razor.js",
@@ -57,7 +57,7 @@
       "destination": "components",
       "target": "AI/AIMarkdown.razor",
       "type": "razor",
-      "sha256": "738fc2e69ccd4139bc275e59635037ac3529218d31860e6ce6121faef5c15088"
+      "sha256": "9a19ba78831a8f6b6c516b189e8ab053aec2c6654965a51fb3351a875af992c7"
     },
     {
       "source": "AIMarkdownParser.cs",
@@ -99,7 +99,7 @@
       "destination": "components",
       "target": "AI/AIResponse.razor",
       "type": "razor",
-      "sha256": "7d5b23ea86639c965774e2227115b9946972e3903ea7a8b222b665518cb9ce59"
+      "sha256": "0e97a2c95b4c8fd0250cac4e2bae3207836788ed15855f97edb7df6ea6dbfa22"
     },
     {
       "source": "AIShimmer.razor",

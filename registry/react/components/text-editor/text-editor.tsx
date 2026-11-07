@@ -125,7 +125,7 @@ const TextEditorClient = React.forwardRef<HTMLDivElement, TextEditorProps>(
     const isInvalid = invalid || ariaInvalid === true || ariaInvalid === "true"
     const attributes = Object.fromEntries(
       Object.entries({
-        class: cn("rax-prose rax-editor-content", contentClassName),
+        class: cn("rax-typeset rax-prose rax-editor-content", contentClassName),
         role: "textbox",
         "aria-multiline": "true",
         id,

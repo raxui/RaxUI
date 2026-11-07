@@ -1,0 +1,155 @@
+// -----------------------------------------------------------------------------
+// .rax-typeset: readable prose for plain HTML and rendered Markdown (articles,
+// docs, help text). Put the class on a wrapper; three variables drive every size
+// and gap inside it:
+//   --rax-typeset-size     base font size
+//   --rax-typeset-leading  line height
+//   --rax-typeset-flow     space between blocks
+// Selectors are `.rax-typeset :where(...)`: one class beats Bootstrap's reboot
+// element rules, and Bootstrap utilities (!important) or a class of your own
+// declared later still win. Spacing uses margin-block-start only, with no
+// :last-child or :has(), so streamed blocks never restyle the ones before them.
+// Logical properties keep RTL correct. Add .rax-not-typeset to a wrapper to opt its
+// contents out (for example an embedded component).
+// -----------------------------------------------------------------------------
+
+// The opted-out element keeps its place in the flow; only its contents are left alone.
+$_skip: ":not(:where(.rax-not-typeset *))";
+
+@mixin _prose($selector) {
+  .rax-typeset :where(#{$selector})#{$_skip} {
+    @content;
+  }
+}
+
+.rax-typeset {
+  --rax-typeset-size: 1rem;
+  --rax-typeset-leading: 1.75;
+  --rax-typeset-flow: 1.25em;
+  --rax-typeset-font-body: inherit;
+  --rax-typeset-font-heading: inherit;
+  --rax-typeset-font-mono: var(--bs-font-monospace);
+  font-family: var(--rax-typeset-font-body);
+  font-size: var(--rax-typeset-size);
+  line-height: var(--rax-typeset-leading);
+  overflow-wrap: break-word;
+}
+
+// Flow: every block starts flush; space comes only from the block before it.
+@include _prose("h1, h2, h3, h4, h5, h6, p, ul, ol, dl, dd, blockquote, pre, table, figure, hr, img, video") {
+  margin-block: 0;
+}
+@include _prose("* + *") {
+  margin-block-start: var(--rax-typeset-flow);
+}
+@include _prose("* + :is(h2, h3, h4, h5, h6)") {
+  margin-block-start: calc(var(--rax-typeset-flow) * 1.75);
+}
+@include _prose(":is(h1, h2, h3, h4, h5, h6) + *") {
+  margin-block-start: calc(var(--rax-typeset-flow) * 0.5);
+}
+@include _prose("li + li, li > * + *, dd + dt") {
+  margin-block-start: calc(var(--rax-typeset-flow) * 0.4);
+}
+
+@include _prose("h1, h2, h3, h4, h5, h6") {
+  color: var(--bs-emphasis-color);
+  font-family: var(--rax-typeset-font-heading);
+  font-weight: 650;
+  text-wrap: balance;
+}
+@include _prose("h1") { font-size: 2.25em; font-weight: 750; line-height: 1.15; letter-spacing: -0.02em; }
+@include _prose("h2") { font-size: 1.5em; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
+@include _prose("h3") { font-size: 1.25em; line-height: 1.4; }
+@include _prose("h4") { font-size: 1.125em; line-height: 1.5; }
+@include _prose("h5, h6") { font-size: 1em; line-height: 1.5; }
+
+@include _prose("a") {
+  color: var(--rax-primary-text);
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.2em;
+}
+@include _prose("strong, b, dt") {
+  color: var(--bs-emphasis-color);
+  font-weight: 600;
+}
+
+@include _prose("ul, ol") {
+  padding-inline-start: 1.5em;
+}
+@include _prose("li::marker") {
+  font-variant-numeric: tabular-nums;
+  color: var(--bs-secondary-color);
+}
+@include _prose("dd") {
+  padding-inline-start: 1.5em;
+}
+
+@include _prose("blockquote") {
+  padding-inline-start: 1em;
+  border-inline-start: 0.1875em solid var(--bs-border-color);
+  color: var(--bs-secondary-color);
+}
+
+@include _prose("code, kbd, samp") {
+  font-family: var(--rax-typeset-font-mono);
+  font-size: 0.875em;
+}
+@include _prose(":not(pre) > code") {
+  padding: 0.15em 0.35em;
+  border-radius: var(--bs-border-radius-sm);
+  background: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  color: var(--bs-emphasis-color);
+}
+// Code reads left to right even on an RTL page.
+@include _prose("pre") {
+  direction: ltr;
+  overflow-x: auto;
+  padding: 1em 1.25em;
+  border-radius: var(--bs-border-radius);
+  background: rgba(var(--bs-emphasis-color-rgb), 0.055);
+  font-size: 0.875em;
+  line-height: 1.6;
+  text-align: left;
+}
+@include _prose("pre code") {
+  font-size: inherit;
+}
+
+@include _prose("hr") {
+  border: 0;
+  border-block-start: 1px solid var(--bs-border-color);
+  opacity: 1;
+}
+
+@include _prose("img, video") {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--bs-border-radius);
+}
+@include _prose("figcaption") {
+  margin-block-start: 0.5em;
+  color: var(--bs-secondary-color);
+  font-size: 0.875em;
+}
+
+@include _prose("table") {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375em;
+  line-height: 1.5;
+}
+@include _prose("th, td") {
+  padding: 0.5em 0.75em;
+  border-block-end: 1px solid var(--bs-border-color);
+  text-align: start;
+  vertical-align: top;
+}
+@include _prose("th") {
+  color: var(--bs-emphasis-color);
+  font-weight: 600;
+}
+// Wrap a wide table in .rax-typeset-scroll to scroll it instead of squeezing it.
+@include _prose(".rax-typeset-scroll") {
+  overflow-x: auto;
+}

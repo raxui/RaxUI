@@ -28,7 +28,7 @@
       "destination": "components",
       "target": "Menubar/Menubar.razor.js",
       "type": "js",
-      "sha256": "22fc61940d92e571073e834628c433b6356bf9fd0d9bd1b1caf01e9cf9c2acee"
+      "sha256": "fca9eae4149a7c768892cdf05d42841d8569bd9392b4ead0fa9d9675decf8aee"
     },
     {
       "source": "MenubarCheckboxItem.razor",

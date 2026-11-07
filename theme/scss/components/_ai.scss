@@ -94,31 +94,18 @@
 // ---- Markdown ------------------------------------------------------------------------------
 
 .rax-ai-response[data-markdown] {
+  // Prose comes from .rax-typeset (theme/scss/_typeset.scss); this is the chat preset.
+  --rax-typeset-size: 0.9375rem;
+  --rax-typeset-leading: 1.65;
+  --rax-typeset-flow: 0.875em;
+
   white-space: normal;
 
-  > :first-child {
-    margin-top: 0;
-  }
-
-  p,
-  ul,
-  ol,
-  blockquote,
-  .rax-ai-table,
-  .rax-ai-code {
-    margin: 0 0 0.875em;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 1.25em 0 0.5em;
-    color: var(--bs-emphasis-color);
+  // Answers keep compact headings.
+  :is(h1, h2, h3, h4, h5, h6) {
     font-weight: 600;
     line-height: 1.3;
+    letter-spacing: 0;
   }
 
   h1 { font-size: 1.375rem; }
@@ -126,28 +113,10 @@
   h3 { font-size: 1.0625rem; }
   h4, h5, h6 { font-size: 1rem; }
 
-  ul,
-  ol {
-    padding-inline-start: 1.375rem;
-
-    ul,
-    ol {
-      margin: 0.25em 0 0;
-    }
-  }
-
-  li + li {
-    margin-top: 0.25em;
-  }
-
-  li::marker {
-    color: var(--bs-secondary-color);
-  }
-
   // GFM task lists
   li:has(> input[type="checkbox"]) {
     list-style: none;
-    margin-inline-start: -1.375rem;
+    margin-inline-start: -1.5em;
 
     > input {
       margin-inline-end: 0.5rem;
@@ -156,47 +125,9 @@
     }
   }
 
-  blockquote {
-    padding-inline-start: 0.875rem;
-    border-inline-start: 3px solid rgba(var(--bs-emphasis-color-rgb), 0.15);
-    color: var(--bs-secondary-color);
-
-    > :last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  hr {
-    margin: 1.25em 0;
-    border-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
-    opacity: 1;
-  }
-
-  a {
-    color: var(--rax-primary-text);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
-  }
-
-  strong {
-    color: var(--bs-emphasis-color);
-    font-weight: 600;
-  }
-
-  // Inline code (fenced code becomes an AICodeBlock).
+  // Inline code stays isolated so RTL answers keep its order.
   :not(pre) > code {
-    padding: 0.1em 0.375em;
-    border-radius: calc(0.3125rem * var(--rax-radius-scale));
-    color: var(--bs-emphasis-color);
-    background-color: rgba(var(--bs-emphasis-color-rgb), 0.07);
-    font-size: 0.875em;
     unicode-bidi: isolate;
-  }
-
-  img {
-    max-width: 100%;
-    border-radius: var(--rax-radius-control);
   }
 }
 

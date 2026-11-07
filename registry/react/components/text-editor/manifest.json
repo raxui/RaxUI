@@ -30,13 +30,13 @@
       "source": "registry/react/components/text-editor/text-editor.tsx",
       "target": "components/ui/text-editor.tsx",
       "type": "tsx",
-      "sha256": "ceb479c7432bb766b64f7d39303f19701115b31abcc85d91a80741336bd59016"
+      "sha256": "b1df7797384a2753fb90f935a1a98d7c60da6cc9b3ca267939545b3cd4fe67b3"
     },
     {
       "source": "theme/scss/components/_text-editor.scss",
       "target": "styles/raxui/components/_text-editor.scss",
       "type": "scss",
-      "sha256": "53715e479755d17c16d9a3bf3b8ec2b4a28f603fedd78aad9f071508d3a561c2"
+      "sha256": "500dba2e245dea04a19590769296d9a29e01c94cf01c70180ab4600ccb9a5b60"
     },
     {
       "source": "registry/react/components/text-editor/text-editor-config.tsx",

@@ -27,7 +27,7 @@
       "source": "theme/scss/components/_ai.scss",
       "target": "styles/raxui/components/_ai.scss",
       "type": "scss",
-      "sha256": "e56696b4ceef9d92b38d244ebdf0517684e7b78d916199a2aceb5120ae492f78"
+      "sha256": "844164e35c40b2d34eeb88ce8e7e9c97b38d42406ef1f55d9fb4c0ab7cf2d5df"
     },
     {
       "source": "registry/react/components/ai/ai-shared.tsx",
@@ -39,7 +39,7 @@
       "source": "registry/react/components/ai/ai-response.tsx",
       "target": "components/ui/ai-response.tsx",
       "type": "tsx",
-      "sha256": "5bb9c76fff3ef720e5c84659f6893dc32698767577a8e3f9f23c4e9aaa36c703"
+      "sha256": "6c78fc592b8ea5c845fb6fd4263fe6951aefb5b32037d43d838335baeb769dde"
     },
     {
       "source": "registry/react/components/ai/ai-reasoning.tsx",
@@ -63,7 +63,7 @@
       "source": "registry/react/components/ai/ai-code-block.tsx",
       "target": "components/ui/ai-code-block.tsx",
       "type": "tsx",
-      "sha256": "b5e27edb8abac798fc2a7e155ddd7f8df1e665a2388917f39212d4b2a8f5f379"
+      "sha256": "91a22d7978ad5b09dc00861d063e4dc3ccb8b7e0c6833fd6bf8a58a33b594939"
     },
     {
       "source": "registry/react/components/ai/ai-actions.tsx",

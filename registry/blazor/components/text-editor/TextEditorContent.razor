@@ -4,7 +4,7 @@
 <div class="rax-editor-scroll" data-editor-scroll>
     @if (!Mounted)
     {
-        <div @attributes="Attributes" class="@($"rax-prose rax-editor-content {ContentClass}".TrimEnd())" role="textbox" aria-multiline="true" aria-readonly="true" data-editor-static>@((MarkupString)TextEditorHtml.Sanitize(Html))</div>
+        <div @attributes="Attributes" class="@($"rax-typeset rax-prose rax-editor-content {ContentClass}".TrimEnd())" role="textbox" aria-multiline="true" aria-readonly="true" data-editor-static>@((MarkupString)TextEditorHtml.Sanitize(Html))</div>
     }
     <div data-editor-mount hidden="@(!Mounted)"></div>
 </div>
