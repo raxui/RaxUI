@@ -495,6 +495,10 @@ body {
   color: color-mix(in srgb, rgba(var(--bs-danger-rgb), var(--bs-text-opacity, 1)) var(--rax-text-mix), var(--rax-text-ink)) !important;
 }
 
+:is(:lang(ar), :lang(fa), :lang(ur), :lang(ps), :lang(ckb)) {
+  letter-spacing: 0 !important;
+}
+
 .rax-typeset {
   --rax-typeset-size: 1rem;
   --rax-typeset-leading: 1.75;

@@ -79,6 +79,10 @@ describe("shared theme", () => {
     expect(withStarter).toMatch(/#blazor-error-ui\s*\{\s*display: none;/)
   })
 
+  it("resets letter-spacing for Arabic-script languages, whose letters join", () => {
+    expect(css).toContain(":is(:lang(ar), :lang(fa), :lang(ur), :lang(ps), :lang(ckb)) {\n  letter-spacing: 0 !important;\n}")
+  })
+
   it("makes glass opaque when the user prefers reduced transparency", () => {
     expect(css).toMatch(/@media \(prefers-reduced-transparency: reduce\)[\s\S]*--rax-glass-alpha: 1 !important/)
   })
