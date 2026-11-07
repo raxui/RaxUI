@@ -92,7 +92,7 @@ export const MARKDOWN_COMPONENTS: Components = {
   },
   a: ({ node: _node, ...props }) => <a {...props} target="_blank" rel="noreferrer" />,
   table: ({ node: _node, ...props }) => (
-    <div className="rax-ai-table">
+    <div className="rax-ai-table rax-not-typeset">
       <table className="table table-sm" {...props} />
     </div>
   ),
@@ -110,7 +110,7 @@ export const AIResponse = React.forwardRef<HTMLDivElement, AIResponseProps>(
   ({ streaming, markdown, codeLabels, className, children, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("rax-ai-response", className)}
+      className={cn("rax-ai-response", markdown && "rax-typeset", className)}
       data-streaming={streaming ? "" : undefined}
       data-markdown={markdown ? "" : undefined}
       dir="auto"

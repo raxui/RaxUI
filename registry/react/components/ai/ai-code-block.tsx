@@ -16,7 +16,7 @@ export const AICodeBlock = React.forwardRef<HTMLDivElement, AICodeBlockProps>(
   ({ code, language, copyLabel = "Copy", copiedLabel = "Copied", className, ...props }, ref) => {
     const { copied, copy } = useCopy()
     return (
-      <div ref={ref} className={cn("rax-ai-code", className)} dir="ltr" {...props}>
+      <div ref={ref} className={cn("rax-ai-code rax-not-typeset", className)} dir="ltr" {...props}>
         <div className="rax-ai-code-head">
           <span>{language}</span>
           <button type="button" onClick={() => copy(code)} data-copied={copied ? "" : undefined}>

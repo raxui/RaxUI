@@ -1,6 +1,6 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
-<div @attributes="AdditionalAttributes" class="rax-ai-code @Class" dir="ltr">
+<div @attributes="AdditionalAttributes" class="rax-ai-code rax-not-typeset @Class" dir="ltr">
 <div class="rax-ai-code-head"><span>@Language</span><button type="button" @onclick="Copy" data-copied="@(copied ? "" : null)"><AIIcon Name="@(copied ? "check" : "copy")" /><span aria-live="polite">@(copied ? CopiedLabel : CopyLabel)</span></button></div>
 <pre><code>@Code</code></pre>
 </div>

@@ -1,5 +1,5 @@
 @implements IDisposable
-<div @attributes="AdditionalAttributes" class="rax-ai-response @Class" data-streaming="@(Streaming ? "" : null)" data-markdown="@(Markdown ? "" : null)" dir="auto" aria-busy="@(Streaming ? "true" : null)">
+<div @attributes="AdditionalAttributes" class="rax-ai-response @(Markdown ? "rax-typeset" : null) @Class" data-streaming="@(Streaming ? "" : null)" data-markdown="@(Markdown ? "" : null)" dir="auto" aria-busy="@(Streaming ? "true" : null)">
 @if (Markdown && Text is not null) { <AIMarkdown Text="@Text" Streaming="Streaming" CopyLabel="@CopyLabel" CopiedLabel="@CopiedLabel" /> }
 else { @Text @ChildContent }
 </div>

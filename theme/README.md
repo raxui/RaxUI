@@ -43,9 +43,34 @@ backdrop blur remain intact. Override `--rax-control-shadow` and
 // Your Bootstrap variables, e.g. $primary: #0a84ff;
 @import "variables";                 // theme defaults for Bootstrap variables
 @import "bootstrap/scss/bootstrap";
-@import "core";                      // tokens, accents, mixins, animations, materials, text, appearance
+@import "core";                      // tokens, accents, mixins, animations, materials, text, typeset, appearance
 @import "components/button";         // one line per installed component
 ```
+
+## Typeset
+
+Put `rax-typeset` on a wrapper to style the plain HTML inside it: headings, paragraphs,
+links, lists, blockquotes, code, tables, rules, images and figures. It ships in `raxui.css`
+(Blazor) and the foundation SCSS (React), so there is nothing to install.
+
+```html
+<article class="rax-typeset">@((MarkupString)html)</article>
+```
+
+Three variables drive every size and gap; set them on the wrapper or a preset class of your own:
+
+```css
+.docs { --rax-typeset-size: 0.9375rem; --rax-typeset-leading: 1.75; --rax-typeset-flow: 1.25em; }
+.reading { --rax-typeset-size: 1.125rem; --rax-typeset-leading: 1.9; --rax-typeset-flow: 2em; }
+```
+
+`--rax-typeset-font-body`, `--rax-typeset-font-heading` and `--rax-typeset-font-mono` change the fonts.
+Colours come from Bootstrap and RaxUI tokens, so dark mode, accents and `dir="rtl"` follow
+the page; code blocks stay left to right. Rules use `.rax-typeset :where(...)`: they beat
+Bootstrap's reboot, and Bootstrap utilities still win. Spacing uses only
+`margin-block-start`, so streamed Markdown never restyles earlier blocks. Add `rax-not-typeset`
+to opt a subtree (for example an embedded component) out, and wrap a wide table in
+`<div class="rax-typeset-scroll">` to scroll it.
 
 ## Files
 
@@ -58,4 +83,5 @@ backdrop blur remain intact. Override `--rax-control-shadow` and
 | `_materials.scss` | `glass-ultrathin` / `thin` / `regular` / `thick` classes, and opt-in `glass-sheen` light reflections (uses `::after`) |
 | `_mixins.scss` | `glass()`, `motion-safe` |
 | `_animations.scss`, `_text.scss` | Shared keyframes and text helpers |
+| `_typeset.scss` | `rax-typeset` prose styles for HTML and rendered Markdown |
 | `_core.scss` | Imports everything above, in order |

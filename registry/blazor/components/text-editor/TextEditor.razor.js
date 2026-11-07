@@ -156,7 +156,7 @@ export function init(key, root, dotnet, options) {
     editable: options.editable,
     autofocus: options.autofocus ? "end" : false,
     editorProps: {
-      attributes: { ...attributes(options), class: `rax-prose rax-editor-content ${options.contentClass ?? ""}`.trim() },
+      attributes: { ...attributes(options), class: `rax-typeset rax-prose rax-editor-content ${options.contentClass ?? ""}`.trim() },
       // Ctrl/⌘+K: link. Stopped here so page-level shortcuts (a command palette) don't also see it.
       handleKeyDown: (view, event) => {
         const mod = IS_MAC ? event.metaKey : event.ctrlKey

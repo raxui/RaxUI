@@ -40,7 +40,7 @@
                     }
                     b.CloseElement(); break;
                 case MdTable t:
-                    b.OpenElement(18, "div"); b.AddAttribute(19, "class", "rax-ai-table"); b.OpenElement(20, "table"); b.AddAttribute(21, "class", "table table-sm");
+                    b.OpenElement(18, "div"); b.AddAttribute(19, "class", "rax-ai-table rax-not-typeset"); b.OpenElement(20, "table"); b.AddAttribute(21, "class", "table table-sm");
                     b.OpenElement(22, "thead"); b.OpenElement(23, "tr");
                     for (var i = 0; i < t.Head.Count; i++) { b.OpenElement(24, "th"); if (t.Align[i] is { } a) b.AddAttribute(25, "style", "text-align:" + a); Inlines(b, t.Head[i]); b.CloseElement(); }
                     b.CloseElement(); b.CloseElement(); b.OpenElement(26, "tbody");

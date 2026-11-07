@@ -495,6 +495,173 @@ body {
   color: color-mix(in srgb, rgba(var(--bs-danger-rgb), var(--bs-text-opacity, 1)) var(--rax-text-mix), var(--rax-text-ink)) !important;
 }
 
+.rax-typeset {
+  --rax-typeset-size: 1rem;
+  --rax-typeset-leading: 1.75;
+  --rax-typeset-flow: 1.25em;
+  --rax-typeset-font-body: inherit;
+  --rax-typeset-font-heading: inherit;
+  --rax-typeset-font-mono: var(--bs-font-monospace);
+  font-family: var(--rax-typeset-font-body);
+  font-size: var(--rax-typeset-size);
+  line-height: var(--rax-typeset-leading);
+  overflow-wrap: break-word;
+}
+
+.rax-typeset :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, dd, blockquote, pre, table, figure, hr, img, video):not(:where(.rax-not-typeset *)) {
+  margin-block: 0;
+}
+
+.rax-typeset :where(* + *):not(:where(.rax-not-typeset *)) {
+  margin-block-start: var(--rax-typeset-flow);
+}
+
+.rax-typeset :where(* + :is(h2, h3, h4, h5, h6)):not(:where(.rax-not-typeset *)) {
+  margin-block-start: calc(var(--rax-typeset-flow) * 1.75);
+}
+
+.rax-typeset :where(:is(h1, h2, h3, h4, h5, h6) + *):not(:where(.rax-not-typeset *)) {
+  margin-block-start: calc(var(--rax-typeset-flow) * 0.5);
+}
+
+.rax-typeset :where(li + li, li > * + *, dd + dt):not(:where(.rax-not-typeset *)) {
+  margin-block-start: calc(var(--rax-typeset-flow) * 0.4);
+}
+
+.rax-typeset :where(h1, h2, h3, h4, h5, h6):not(:where(.rax-not-typeset *)) {
+  color: var(--bs-emphasis-color);
+  font-family: var(--rax-typeset-font-heading);
+  font-weight: 650;
+  text-wrap: balance;
+}
+
+.rax-typeset :where(h1):not(:where(.rax-not-typeset *)) {
+  font-size: 2.25em;
+  font-weight: 750;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.rax-typeset :where(h2):not(:where(.rax-not-typeset *)) {
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.rax-typeset :where(h3):not(:where(.rax-not-typeset *)) {
+  font-size: 1.25em;
+  line-height: 1.4;
+}
+
+.rax-typeset :where(h4):not(:where(.rax-not-typeset *)) {
+  font-size: 1.125em;
+  line-height: 1.5;
+}
+
+.rax-typeset :where(h5, h6):not(:where(.rax-not-typeset *)) {
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+.rax-typeset :where(a):not(:where(.rax-not-typeset *)) {
+  color: var(--rax-primary-text);
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.2em;
+}
+
+.rax-typeset :where(strong, b, dt):not(:where(.rax-not-typeset *)) {
+  color: var(--bs-emphasis-color);
+  font-weight: 600;
+}
+
+.rax-typeset :where(ul, ol):not(:where(.rax-not-typeset *)) {
+  padding-inline-start: 1.5em;
+}
+
+.rax-typeset :where(li::marker):not(:where(.rax-not-typeset *)) {
+  font-variant-numeric: tabular-nums;
+  color: var(--bs-secondary-color);
+}
+
+.rax-typeset :where(dd):not(:where(.rax-not-typeset *)) {
+  padding-inline-start: 1.5em;
+}
+
+.rax-typeset :where(blockquote):not(:where(.rax-not-typeset *)) {
+  padding-inline-start: 1em;
+  border-inline-start: 0.1875em solid var(--bs-border-color);
+  color: var(--bs-secondary-color);
+}
+
+.rax-typeset :where(code, kbd, samp):not(:where(.rax-not-typeset *)) {
+  font-family: var(--rax-typeset-font-mono);
+  font-size: 0.875em;
+}
+
+.rax-typeset :where(:not(pre) > code):not(:where(.rax-not-typeset *)) {
+  padding: 0.15em 0.35em;
+  border-radius: var(--bs-border-radius-sm);
+  background: rgba(var(--bs-emphasis-color-rgb), 0.07);
+  color: var(--bs-emphasis-color);
+}
+
+.rax-typeset :where(pre):not(:where(.rax-not-typeset *)) {
+  direction: ltr;
+  overflow-x: auto;
+  padding: 1em 1.25em;
+  border-radius: var(--bs-border-radius);
+  background: rgba(var(--bs-emphasis-color-rgb), 0.055);
+  font-size: 0.875em;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.rax-typeset :where(pre code):not(:where(.rax-not-typeset *)) {
+  font-size: inherit;
+}
+
+.rax-typeset :where(hr):not(:where(.rax-not-typeset *)) {
+  border: 0;
+  border-block-start: 1px solid var(--bs-border-color);
+  opacity: 1;
+}
+
+.rax-typeset :where(img, video):not(:where(.rax-not-typeset *)) {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--bs-border-radius);
+}
+
+.rax-typeset :where(figcaption):not(:where(.rax-not-typeset *)) {
+  margin-block-start: 0.5em;
+  color: var(--bs-secondary-color);
+  font-size: 0.875em;
+}
+
+.rax-typeset :where(table):not(:where(.rax-not-typeset *)) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375em;
+  line-height: 1.5;
+}
+
+.rax-typeset :where(th, td):not(:where(.rax-not-typeset *)) {
+  padding: 0.5em 0.75em;
+  border-block-end: 1px solid var(--bs-border-color);
+  text-align: start;
+  vertical-align: top;
+}
+
+.rax-typeset :where(th):not(:where(.rax-not-typeset *)) {
+  color: var(--bs-emphasis-color);
+  font-weight: 600;
+}
+
+.rax-typeset :where(.rax-typeset-scroll):not(:where(.rax-not-typeset *)) {
+  overflow-x: auto;
+}
+
 :root, [data-rax-appearance=default], [data-rax-appearance=flat], [data-rax-appearance=glass],
 :where([data-bs-theme]:not([data-rax-appearance=flat] *, [data-rax-appearance=glass] *)) {
   --rax-surface-bg: var(--bs-body-bg);
