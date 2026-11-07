@@ -739,8 +739,9 @@ grouped results and multiple selection. Blazor retains its existing single-value
 controls. Options use unique values; the React APIs below describe both modes.
 
 Blazor Popover uses the native `popover` top layer and a disposable collocated JS
-module extracted from DropdownMenu (ADR 013). It aligns below the trigger's inline
-start, flips above if needed, follows scroll/resize and content size, and inherits
+module that imports DropdownMenu's positioning helpers (ADR 013), so installing it
+also installs `dropdown-menu`. It aligns below the trigger's inline start, switches
+to inline end near a viewport edge, flips above if needed, follows scroll/resize and content size, and inherits
 its theme, accent and RTL direction. Set `Trigger` and `ChildContent` fragments,
 `@bind-Open`, `Label` (accessible panel name), `Appearance` and `Class`.
 An external input can supply `Anchor` instead of a Trigger. TriggerAttributes,

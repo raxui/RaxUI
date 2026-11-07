@@ -10,14 +10,16 @@ export function init(trigger, content, side, align, openDelay, closeDelay, inter
   const place = () => {
     if (!content.matches(":popover-open")) return
     const a = trigger.getBoundingClientRect(), w = content.offsetWidth, h = content.offsetHeight
+    // clientWidth/clientHeight exclude the scrollbars that innerWidth/innerHeight include.
+    const { clientWidth: vw, clientHeight: vh } = document.documentElement
     const rtl = getComputedStyle(trigger).direction === "rtl"
     let s = options.side
     if (s === "start") s = rtl ? "right" : "left"
     if (s === "end") s = rtl ? "left" : "right"
     if (s === "top" && a.top < h + 14) s = "bottom"
-    else if (s === "bottom" && a.bottom + h + 14 > innerHeight) s = "top"
+    else if (s === "bottom" && a.bottom + h + 14 > vh) s = "top"
     else if (s === "left" && a.left < w + 14) s = "right"
-    else if (s === "right" && a.right + w + 14 > innerWidth) s = "left"
+    else if (s === "right" && a.right + w + 14 > vw) s = "left"
     const end = (options.align === "end") !== rtl
     let x = options.align === "center" ? a.left + (a.width - w) / 2 : end ? a.right - w : a.left
     let y = s === "top" ? a.top - h - 6 : a.bottom + 6
@@ -26,8 +28,8 @@ export function init(trigger, content, side, align, openDelay, closeDelay, inter
       y = options.align === "center" ? a.top + (a.height - h) / 2 : options.align === "end" ? a.bottom - h : a.top
     }
     content.dataset.side = s
-    content.style.left = `${Math.max(8, Math.min(x, innerWidth - w - 8))}px`
-    content.style.top = `${Math.max(8, Math.min(y, innerHeight - h - 8))}px`
+    content.style.left = `${Math.max(8, Math.min(x, vw - w - 8))}px`
+    content.style.top = `${Math.max(8, Math.min(y, vh - h - 8))}px`
   }
   const open = () => {
     clearTimeout(timer); generation++

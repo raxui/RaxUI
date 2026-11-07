@@ -26,7 +26,7 @@
       "destination": "components",
       "target": "NavigationMenu/NavigationMenu.razor.js",
       "type": "js",
-      "sha256": "b43ccd9c5035506e5dafc57fa1adf8cc48d674f9ed8564499d5d8e2424c54ce0"
+      "sha256": "d61ffc834a6795826cf2f7f516682a56d4fcb0eaaaaa2feb17116f741a06aeb5"
     },
     {
       "source": "NavigationMenuContent.razor",

@@ -1,3 +1,4 @@
+import { alignToTrigger, clampToViewport } from "../DropdownMenu/DropdownMenu.razor.js"
 const states=new WeakMap()
 const itemSelector='[role="menuitem"],[role="menuitemcheckbox"],[role="menuitemradio"]'
 export function init(root,receiver,options){
@@ -10,10 +11,10 @@ export function init(root,receiver,options){
   const items=menu=>[...menu.querySelectorAll(itemSelector)].filter(el=>el.closest('[data-menubar-content]')===menu&&!el.disabled&&el.getAttribute('aria-disabled')!=='true')
   const triggerFor=menu=>document.getElementById(menu.getAttribute('aria-labelledby'))
   const rtl=()=>getComputedStyle(root).direction==='rtl'
-  const place=menu=>{const trigger=triggerFor(menu);if(!trigger)return;const b=trigger.getBoundingClientRect(),w=menu.offsetWidth,h=menu.offsetHeight,sub=menu.hasAttribute('data-submenu');let x=rtl()?b.right-w:b.left,y=b.bottom+4
-   if(sub){x=rtl()?b.left-w-4:b.right+4;y=b.top;if(x<8||x+w>innerWidth-8)x=rtl()?b.right+4:b.left-w-4}
-   if(!sub&&y+h>innerHeight-8&&b.top-h-4>=8)y=b.top-h-4
-   menu.style.left=`${Math.max(8,Math.min(x,innerWidth-w-8))}px`;menu.style.top=`${Math.max(8,Math.min(y,innerHeight-h-8))}px`;menu.style.maxHeight=`${innerHeight-16}px`
+  const place=menu=>{const trigger=triggerFor(menu);if(!trigger)return;const b=trigger.getBoundingClientRect(),w=menu.offsetWidth,h=menu.offsetHeight,sub=menu.hasAttribute('data-submenu'),{clientWidth:vw,clientHeight:vh}=document.documentElement;let x=alignToTrigger(b,w,rtl()),y=b.bottom+4
+   if(sub){x=rtl()?b.left-w-4:b.right+4;y=b.top;if(x<8||x+w>vw-8)x=rtl()?b.right+4:b.left-w-4}
+   if(!sub&&y+h>vh-8&&b.top-h-4>=8)y=b.top-h-4
+   const [left,top]=clampToViewport(x,y,w,h);menu.style.left=`${left}px`;menu.style.top=`${top}px`;menu.style.maxHeight=`${vh-16}px`
   }
   const mark=()=>{const t=triggers().find(el=>el.dataset.shellValue===s.value);root.toggleAttribute('data-open',!!t);root.querySelectorAll('[data-menubar-trigger]').forEach(el=>{el.dataset.state=el===t?'open':'closed';el.setAttribute('aria-expanded',String(el===t));el.tabIndex=el===t||!t&&el===triggers()[0]?0:-1});if(t){const b=t.getBoundingClientRect(),o=root.getBoundingClientRect();root.style.setProperty('--rax-menubar-x',`${b.left-o.left+root.scrollLeft}px`);root.style.setProperty('--rax-menubar-w',`${b.width}px`)}}
   const hide=menu=>{allMenus().filter(child=>menu.contains(child)&&child!==menu).reverse().forEach(hide);if(menu.matches(':popover-open'))menu.hidePopover();triggerFor(menu)?.setAttribute('aria-expanded','false');menu.removeAttribute('data-hover')}

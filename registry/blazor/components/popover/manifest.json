@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "Source-owned popover with Field integration.",
   "dependencies": [
+    "dropdown-menu",
     "field"
   ],
   "assets": [
@@ -28,7 +29,7 @@
       "destination": "components",
       "target": "Popover/Popover.razor.js",
       "type": "js",
-      "sha256": "c4c211327778acb09bd6b8c33d5fe0e366604de789cfa39b13febb6a748c31eb"
+      "sha256": "08f8678d29d11112a6d2a81e8d84edc14c63ea56105a1f7176cddfceb4bbe38b"
     },
     {
       "source": "ChoiceSearch.razor",

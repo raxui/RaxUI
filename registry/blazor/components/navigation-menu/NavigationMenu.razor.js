@@ -10,9 +10,11 @@ export function init(root,receiver,options){
   backdrop.setAttribute('popover','manual')
   const place=()=>{
    const trigger=triggers().find(el=>el.dataset.shellValue===s.value),panel=panels().find(el=>el.dataset.shellValue===s.value);if(!trigger||!panel)return
-   const b=(s.options.viewportAlign==='start'?root:trigger).getBoundingClientRect(),rtl=getComputedStyle(root).direction==='rtl',width=panel.offsetWidth,height=Math.min(panel.scrollHeight,innerHeight-16)
-   const x=Math.max(8,Math.min(rtl?b.right-width:b.left,innerWidth-width-8)),y=Math.max(8,Math.min(b.bottom+8,innerHeight-height-8))
-   panel.style.left=`${x}px`;panel.style.top=`${y}px`;panel.style.maxHeight=`${innerHeight-y-8}px`
+   // clientWidth/clientHeight exclude the scrollbars that innerWidth/innerHeight include.
+   const {clientWidth:vw,clientHeight:vh}=document.documentElement
+   const b=(s.options.viewportAlign==='start'?root:trigger).getBoundingClientRect(),rtl=getComputedStyle(root).direction==='rtl',width=panel.offsetWidth,height=Math.min(panel.scrollHeight,vh-16)
+   const x=Math.max(8,Math.min(rtl?b.right-width:b.left,vw-width-8)),y=Math.max(8,Math.min(b.bottom+8,vh-height-8))
+   panel.style.left=`${x}px`;panel.style.top=`${y}px`;panel.style.maxHeight=`${vh-y-8}px`
    const indicator=root.querySelector('[data-nav-indicator]');if(indicator){indicator.setAttribute('popover','manual');indicator.hidden=false;if(!indicator.matches(':popover-open'))indicator.showPopover();indicator.dataset.state='visible';indicator.style.position='fixed';indicator.style.left=`${trigger.getBoundingClientRect().left}px`;indicator.style.top=`${b.bottom}px`;indicator.style.width=`${trigger.offsetWidth}px`}
    backdrop.style.width=`${width}px`;backdrop.style.height=`${panel.offsetHeight}px`;backdrop.style.left=`${x}px`;backdrop.style.top=`${y}px`
   }
