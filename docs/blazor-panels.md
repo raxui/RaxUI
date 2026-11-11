@@ -47,4 +47,4 @@ Material tokens remain shared with React: Sheet surface opacity 45%, Drawer 40%,
 
 ## Verification
 
-The generated-app browser suite installs the published registry assets and samples in .NET 8/9/10 projects. It covers desktop/mobile and LTR/RTL placement, material/backdrop tokens, long content, mouse/touch/cancel/flick gestures, keyboard snapping, nested focus/scroll cleanup, responsive switching and closed static SSR. Browser checks use Chromium; native modal and touch behavior on other engines and physical devices still needs separate validation.
+The generated-app browser suite installs the published registry assets and samples in .NET 8/9/10/11 projects. It covers desktop/mobile and LTR/RTL placement, material/backdrop tokens, long content, mouse/touch/cancel/flick gestures, keyboard snapping, nested focus/scroll cleanup, responsive switching and closed static SSR. Browser checks use Chromium; native modal and touch behavior on other engines and physical devices still needs separate validation.

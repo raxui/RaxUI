@@ -9,6 +9,7 @@ public partial class GeneratedAppTests
     [InlineData("net8.0")]
     [InlineData("net9.0")]
     [InlineData("net10.0")]
+    [InlineData("net11.0")]
     public async Task Data_components_install_and_match_React_behavior(string targetFramework)
     {
         var app = Path.Combine(_root, "SampleApp");

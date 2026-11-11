@@ -9,6 +9,7 @@ public partial class GeneratedAppTests
     [InlineData("net8.0")]
     [InlineData("net9.0")]
     [InlineData("net10.0")]
+    [InlineData("net11.0")]
     public async Task Text_editor_installs_edits_and_round_trips_safely(string targetFramework)
     {
         var app = Path.Combine(_root, "SampleApp");

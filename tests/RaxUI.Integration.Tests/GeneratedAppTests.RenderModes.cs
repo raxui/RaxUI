@@ -9,6 +9,7 @@ public partial class GeneratedAppTests
     [InlineData("net8.0", "Auto")]
     [InlineData("net9.0", "Auto")]
     [InlineData("net10.0", "Auto")]
+    [InlineData("net11.0", "Auto")]
     [InlineData("net10.0", "WebAssembly")]
     public async Task Components_work_in_every_render_mode(string targetFramework, string interactivity)
     {

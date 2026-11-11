@@ -151,7 +151,7 @@ FieldError shows every message for the field, joined. Use
 `.Cascade(CascadeMode.Stop)` on a rule to show only its first failure, for
 example "required" before "not a valid email".
 
-Blazilla 2.4.2 is covered by the browser tests on .NET 8, 9, and 10: its
+Blazilla 2.4.2 is covered by the browser tests on .NET 8, 9, 10, and 11: its
 messages reach Field and FieldError, set `is-invalid`/`aria-invalid`, focus the
 first invalid control, and block submit until the form is valid.
 
@@ -186,7 +186,7 @@ it accepts `Label`, `Value`, `Description`, `Icon`, `IconColor`, `Destructive`,
 Install `input`, `input-group`, `textarea`, `checkbox`, `radio-group`, `switch`,
 or `select` with `raxui add <name>`. Each installs `field`. All controls wrap
 Blazor's built-in form inputs: `@bind-Value`, `ValueChanged`, `ValueExpression`,
-EditContext validation, and native static SSR posting work on .NET 8, 9 and 10.
+EditContext validation, and native static SSR posting work on .NET 8, 9, 10 and 11.
 They read the cascading Field attributes themselves; no splat is needed.
 Explicit HTML attributes override Field defaults. Give Field the control's `Id`
 so its label still points to the right element.
@@ -612,7 +612,7 @@ wall-time parsing policy; custom Culture controls the interactive UI.
 `examples/blazor/RaxDemo.razor` includes the standalone wheels and combined
 field, with an Arabic/English switch. After init, add both `date-range-picker`
 and `date-time-input` before copying the page. Browser acceptance covers
-Interactive Server on .NET 8, 9 and 10; WebAssembly hosting is not covered.
+Interactive Server on .NET 8, 9, 10 and 11; WebAssembly hosting is not covered.
 
 ## Popover, combobox and autocomplete
 

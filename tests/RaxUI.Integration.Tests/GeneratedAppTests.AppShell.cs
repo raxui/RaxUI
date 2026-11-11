@@ -9,6 +9,7 @@ public partial class GeneratedAppTests
     [InlineData("net8.0")]
     [InlineData("net9.0")]
     [InlineData("net10.0")]
+    [InlineData("net11.0")]
     public async Task App_shell_installs_builds_and_behaves_in_a_clean_app(string targetFramework)
     {
         var app = Path.Combine(_root, "SampleApp");

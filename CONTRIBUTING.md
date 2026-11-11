@@ -12,7 +12,7 @@ merging. See [local verification](docs/local-checks.md) for coverage and prerequ
 GitHub CI runs only through **Actions → CI → Run workflow** after this change is
 merged; pushes and pull requests do not start hosted jobs automatically.
 
-Requires the .NET 8, 9, and 10 SDKs (the CLI multi-targets and the end-to-end
+Requires the .NET 8, 9, 10, and 11 SDKs (the CLI multi-targets and the end-to-end
 test builds an app on each) and PowerShell 7 for Playwright's install script.
 
 ```sh
@@ -21,7 +21,7 @@ dotnet build RaxUI.slnx -c Release --no-restore
 pwsh tests/RaxUI.Integration.Tests/bin/Release/net10.0/playwright.ps1 install chromium
 dotnet test RaxUI.slnx -c Release --no-build
 dotnet pack src/RaxUI.Cli/RaxUI.Cli.csproj -c Release --no-build -o ./nupkg
-dotnet tool install --tool-path ./local-tools --add-source ./nupkg RaxUI --version 0.1.0-preview.2
+dotnet tool install --tool-path ./local-tools --add-source ./nupkg RaxUI --version 0.1.0-preview.5
 ```
 
 On Linux, use `install --with-deps chromium` to install browser system dependencies.

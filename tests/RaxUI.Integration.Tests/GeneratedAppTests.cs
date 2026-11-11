@@ -29,6 +29,7 @@ public partial class GeneratedAppTests : IDisposable
     [InlineData("net8.0")]
     [InlineData("net9.0")]
     [InlineData("net10.0")]
+    [InlineData("net11.0")]
     public async Task Init_and_add_button_produce_an_app_that_builds_and_reruns_cleanly(string targetFramework)
     {
         var app = Path.Combine(_root, "SampleApp");

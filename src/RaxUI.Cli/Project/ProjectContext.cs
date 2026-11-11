@@ -6,7 +6,7 @@ namespace RaxUI.Cli.Project;
 public class ProjectContext
 {
     /// <summary>Supported Blazor Web App targets (ADR 009).</summary>
-    public static readonly string[] SupportedTargetFrameworks = ["net8.0", "net9.0", "net10.0"];
+    public static readonly string[] SupportedTargetFrameworks = ["net8.0", "net9.0", "net10.0", "net11.0"];
 
     // .NET 9+ templates ship Bootstrap under lib/; .NET 8 under bootstrap/.
     private static readonly string[] BootstrapFolders = ["wwwroot/lib/bootstrap", "wwwroot/bootstrap"];
