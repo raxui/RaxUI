@@ -29,7 +29,7 @@ A CLI copies the components into your app. You own the code and can change any o
 
 ### Blazor
 
-For Blazor Web Apps on .NET 8, 9 or 10.
+For Blazor Web Apps on .NET 8, 9, 10 or 11.
 
 ```sh
 dotnet tool install --global RaxUI --prerelease

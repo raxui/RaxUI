@@ -37,7 +37,7 @@ Accessible text is parameterized: `Instructions`, `ItemHandleLabel`, `ColumnHand
 
 ## SSR and tests
 
-Static SSR renders the full board read-only: grips are disabled and cards are not focusable. Use an interactive render mode to move cards. `GeneratedAppTests.Kanban.cs` installs Kanban into generated .NET 8/9/10 apps. It covers keyboard, mouse and touch moves, cross-column moves, disabled cards and columns, Escape, column reordering, limits, RTL with Arabic announcements, flat/glass/dark appearance, and static SSR. `examples/blazor/kanban/` contains the copyable English and Arabic boards; the test renders them, and RaxDemo hosts them at `#kanban`.
+Static SSR renders the full board read-only: grips are disabled and cards are not focusable. Use an interactive render mode to move cards. `GeneratedAppTests.Kanban.cs` installs Kanban into generated .NET 8/9/10/11 apps. It covers keyboard, mouse and touch moves, cross-column moves, disabled cards and columns, Escape, column reordering, limits, RTL with Arabic announcements, flat/glass/dark appearance, and static SSR. `examples/blazor/kanban/` contains the copyable English and Arabic boards; the test renders them, and RaxDemo hosts them at `#kanban`.
 
 ## Sortable engine change
 

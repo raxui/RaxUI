@@ -11,7 +11,7 @@ represent the outcome of these local commands.
 ## Prerequisites
 
 - Node.js 22+ and npm.
-- .NET 10 SDK, plus the .NET 8/9 runtimes/SDKs for full Blazor application tests.
+- .NET 11 SDK (the CLI targets `net11.0`), plus the .NET 8/9/10 runtimes/SDKs for full Blazor application tests.
 - PowerShell 7 (`pwsh`) for the full suite's Blazor browser installer.
 - Run `npm ci` once from the repository root, and again after dependency changes.
 - Internet access for initial restore and for the full suite, which creates real
@@ -42,9 +42,9 @@ with `[check] PASS`; do not treat partial output as a pass.
 | Generated shared CSS freshness | Yes | Yes |
 | TypeScript types | Yes | Yes |
 | React, Node CLI, theme, registry tests and hashes | Yes | Yes |
-| .NET 8/9/10 CLI build and C# formatting | Yes | Yes |
+| .NET 8/9/10/11 CLI build and C# formatting | Yes | Yes |
 | .NET unit and integration tests without browser E2E | Yes | Yes |
-| Real Blazor application/browser tests on .NET 8, 9, 10 | No | Yes |
+| Real Blazor application/browser tests on .NET 8, 9, 10, 11 | No | Yes |
 | Local NuGet package creation | No | Yes |
 | Real Vite applications: create-vite 6.5.0, 7.1.3, 9.3.1 | No | Yes |
 | Real Next.js applications: 15.5.28, 16.4.3 | No | Yes |

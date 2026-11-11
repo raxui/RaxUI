@@ -9,6 +9,7 @@ public partial class GeneratedAppTests
     [InlineData("net8.0")]
     [InlineData("net9.0")]
     [InlineData("net10.0")]
+    [InlineData("net11.0")]
     public async Task Upload_badge_avatar_examples_and_sortable_overlay_match_react(string targetFramework)
     {
         var app = Path.Combine(_root, "SampleApp");

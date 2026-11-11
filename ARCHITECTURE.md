@@ -440,7 +440,7 @@ This section specifies a later milestone. The first milestone only records basel
 
 RaxUI must distinguish between component rendering and browser interactivity.
 
-The tested support targets are Blazor Web Apps on .NET 8, 9, and 10 in every render mode: static SSR, Interactive Server, Interactive WebAssembly and Interactive Auto, including prerendering ([ADR 009](docs/adr/009-dotnet-8-9-10.md), [ADR 021](docs/adr/021-blazor-render-modes.md)). For WebAssembly and Auto, the CLI runs in the server project and installs components into the referenced `.Client` project. `init` reads the target framework, finds the template Bootstrap (`wwwroot/bootstrap/` on .NET 8, `wwwroot/lib/bootstrap/` on 9 and 10), upgrades the unmodified .NET 8 Bootstrap 5.1 to 5.3, and writes links in each template's form (plain URLs on .NET 8, `@Assets[...]` on 9 and 10). Standalone WebAssembly (`blazorwasm`) and additional hosting models are future support targets until tested. Reusable components do not hard-code `@rendermode`; the consumer selects interactivity at the page or application boundary.
+The tested support targets are Blazor Web Apps on .NET 8, 9, 10, and 11 in every render mode: static SSR, Interactive Server, Interactive WebAssembly and Interactive Auto, including prerendering ([ADR 009](docs/adr/009-dotnet-8-9-10.md), [ADR 021](docs/adr/021-blazor-render-modes.md)). For WebAssembly and Auto, the CLI runs in the server project and installs components into the referenced `.Client` project. `init` reads the target framework, finds the template Bootstrap (`wwwroot/bootstrap/` on .NET 8, `wwwroot/lib/bootstrap/` on 9, 10, and 11), upgrades the unmodified .NET 8 Bootstrap 5.1 to 5.3, and writes links in each template's form (plain URLs on .NET 8, `@Assets[...]` on 9, 10, and 11). Standalone WebAssembly (`blazorwasm`) and additional hosting models are future support targets until tested. Reusable components do not hard-code `@rendermode`; the consumer selects interactivity at the page or application boundary.
 
 ### Static SSR
 
@@ -563,7 +563,7 @@ Accepted ADRs:
 - [006 — React first milestone](docs/adr/006-react-first-milestone.md)
 - [007 — Blazor uses the shared theme](docs/adr/007-blazor-shared-theme.md)
 - [008 — Starter app replaces the template shell](docs/adr/008-starter-app.md)
-- [009 — Blazor on .NET 8, 9, and 10](docs/adr/009-dotnet-8-9-10.md)
+- [009 — Blazor on .NET 8, 9, 10, and 11](docs/adr/009-dotnet-8-9-10.md)
 - [010 — React on Vite 6 and later](docs/adr/010-vite-6-and-later.md)
 - [011 — Next.js 15+ (App Router)](docs/adr/011-nextjs.md)
 - [012 — SheenUI identity and existing applications](docs/adr/012-sheenui-identity.md) (superseded by 022)

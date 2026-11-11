@@ -125,7 +125,7 @@ public class InstallationWorkflowTests : IDisposable
 
         var error = new StringWriter();
         Assert.Equal(1, Program.Run(["init"], _testDirectory, new StringWriter(), error));
-        Assert.Contains("targets net7.0. Supported: net8.0, net9.0, net10.0", error.ToString());
+        Assert.Contains("targets net7.0. Supported: net8.0, net9.0, net10.0, net11.0", error.ToString());
     }
 
     [Fact]

@@ -30,7 +30,7 @@ The project aims to make building polished Blazor interfaces easier while preser
 
 ## 4. Target Frameworks
 
-The first implementation milestone targeted **.NET 10 Blazor Web App with Interactive Server**, including prerendering. Blazor Web Apps on **.NET 8, 9, and 10** are now supported; the CLI itself runs on any of these SDKs ([ADR 009](docs/adr/009-dotnet-8-9-10.md)).
+The first implementation milestone targeted **.NET 10 Blazor Web App with Interactive Server**, including prerendering. Blazor Web Apps on **.NET 8, 9, 10, and 11** are now supported; the CLI itself runs on any of these SDKs ([ADR 009](docs/adr/009-dotnet-8-9-10.md)).
 
 Long-term support targets are:
 
@@ -62,7 +62,7 @@ The first React milestone targets **React 18.3 and 19 with TypeScript and Vite 6
 
 Shared by both: JSON registry format, Git and GitHub, and Markdown documentation.
 
-Use the .NET 10 SDK (with the .NET 8 and 9 SDKs for multi-target builds and tests) and Node.js 22 as the development baselines, while keeping framework-specific dependencies and compatibility requirements explicit.
+Use the .NET 11 SDK (with the .NET 8, 9, and 10 SDKs for multi-target builds and tests) and Node.js 22 as the development baselines, while keeping framework-specific dependencies and compatibility requirements explicit.
 
 ## 6. Source-First Distribution Model
 

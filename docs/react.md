@@ -729,7 +729,7 @@ wall-time parsing policy; custom Culture controls the interactive UI.
 `examples/blazor/RaxDemo.razor` includes the standalone wheels and combined
 field, with an Arabic/English switch. After init, add both `date-range-picker`
 and `date-time-input` before copying the page. Browser acceptance covers
-Interactive Server on .NET 8, 9 and 10; WebAssembly hosting is not covered.
+Interactive Server on .NET 8, 9, 10 and 11; WebAssembly hosting is not covered.
 
 ## Popover, combobox and autocomplete
 

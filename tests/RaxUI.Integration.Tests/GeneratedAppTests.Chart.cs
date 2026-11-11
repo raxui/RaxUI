@@ -9,6 +9,7 @@ public partial class GeneratedAppTests
     [InlineData("net8.0")]
     [InlineData("net9.0")]
     [InlineData("net10.0")]
+    [InlineData("net11.0")]
     public async Task Chart_installs_paints_and_follows_the_theme(string targetFramework)
     {
         var app = Path.Combine(_root, "SampleApp");
