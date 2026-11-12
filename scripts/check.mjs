@@ -51,7 +51,7 @@ run("Blazor TextEditor engine reproduces from package-lock.json", process.execPa
 npm("TypeScript", ["run", "typecheck"])
 npm("React, CLI, registry, and theme tests", ["test"])
 npm("React CLI crash/restart recovery", ["run", "test:recovery"])
-run("Build .NET 8/9/10", "dotnet", ["build", "RaxUI.slnx", "-c", "Release"])
+run("Build .NET 8/9/10/11", "dotnet", ["build", "RaxUI.slnx", "-c", "Release"])
 run("C# formatting", "dotnet", ["format", "RaxUI.slnx", "--verify-no-changes", "--no-restore"])
 
 if (full) {
